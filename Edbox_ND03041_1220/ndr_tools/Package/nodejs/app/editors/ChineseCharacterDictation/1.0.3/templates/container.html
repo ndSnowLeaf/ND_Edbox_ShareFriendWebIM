@@ -1,0 +1,129 @@
+<div class="exam_wood freecombination ui_dev_layout">
+    <div class="com_layout com_layout_large">
+        <div class="com_lay_main ChineseCharacterDictation_wrapper">
+            <div class="com_lay_header">
+                <time-box model="model.time"></time-box>
+                <div class="ui_layout_operationTips" style="display: none;">
+                    <a class="nes_btn_pt nes_help" href="javascript:" translate="dictation.label.help"></a>
+                    <a class="nes_btn_pt nes_example ui_has_bf_line" href="javascript:" translate="dictation.label.sample"></a>
+                </div>
+            </div>
+            <div class="com_lay_contain">
+                <div class="com_lay_mboard">
+                    <div class="com_lay_boardtit">
+                        <h2 class="com_u_boardtit">
+                            <!--<p class="tit" contenteditable="true">{{model.title}}</p><!--此处建议使用p标签配合contenteditable属性的形式，也可换成input-->
+                            <textarea title-box class="tit" maxlength="70" ng-model="model.title"></textarea>
+                        </h2>
+                    </div>
+                    <div class="com_lay_board" onselectstart="return false;">
+                        <nd-loader message="pageLoadingMessage" ng-show="isPageLoading"></nd-loader>
+                        <div class="ChineseCharacterDictation_content">
+                            <div class="ChineseCd_content_bd">
+                                <div class="ChineseCd_content_bd_title">
+                                    <span class="ChineseCd_txt" ng-if="interactiveMode != INTERACTIVE_MODE.ADD">
+                                        <label translate="dictation.panel.chapter.name" translate-values="{chapter_name: model.chapter_name}"></label>
+                                        <label translate="dictation.label.word.dictate"></label>
+                                        <label translate="dictation.label.word.added" translate-values="{amount: wordsAmountDisplay}"></label>
+                                    </span>
+                                    <span class="ChineseCd_txt" ng-if="interactiveMode === INTERACTIVE_MODE.ADD">
+                                        <label translate="dictation.panel.chapter.name" translate-values="{chapter_name: AddModeHandle.chapter_name}"></label>
+                                        <label translate="dictation.label.word.dictate"></label>
+                                        <label translate="dictation.label.word.selected" translate-values="{amount: wordAmountSelectedDisplay}"></label>
+                                    </span>
+                                </div>
+                                <ul class="ChineseCd_content_bd_main" ng-click="ViewModeHandle.view($event);" ng-show="interactiveMode != INTERACTIVE_MODE.ADD"
+                                    ng-class="{'ChineseCharacterDictation_scrollbar':interactiveMode === INTERACTIVE_MODE.DELETE}">
+                                    <li class="ChineseCd_items_list" ng-repeat="word in model.words track by $index" ng-index="{{$index}}">
+                                        <div class="ChineseCd_items_list_bd">
+                                            <div class="list_bd_txt_box">
+                                                <!-- list_bd_txt单字的时候的时候添加类名 fz_30 来放大字号 -->
+                                                <span class="list_bd_txt" ng-bind="word.text" ng-class="{'fz_30': word.text.length === 1}"></span>
+                                            </div>
+                                            <a href="javascript:;" class="list_bd_delete" ng-class="{'hide_dom': interactiveMode != INTERACTIVE_MODE.DELETE}"></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="ChineseCd_content_bd_main ChineseCharacterDictation_scrollbar" ng-click="AddModeHandle.select($event);" ng-if="interactiveMode === INTERACTIVE_MODE.ADD">
+                                    <li class="ChineseCd_items_list" ng-repeat="word in AddModeHandle.wordsSearched track by $index" ng-index="{{$index}}">
+                                        <div class="ChineseCd_items_list_bd">
+                                            <div class="list_bd_txt_box">
+                                                <!-- list_bd_txt单字的时候的时候添加类名 fz_30 来放大字号 -->
+                                                <span class="list_bd_txt" ng-bind="word.text" ng-class="{'fz_30': word.text.length === 1}"></span>
+                                            </div>
+                                            <!-- 选中状态 .list_bd_select 添加类名 .on -->
+                                            <a href="javascript:;" class="list_bd_select" ng-class="{'on': word.selected}"></a>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="ChineseCd_content_ft">
+                                <div class="ChineseCd_ft_txt_tips" ng-show="model.words.length > 30">
+                                    <span class="ft_tips_txt" translate="dictation.label.tip"></span><span class="ft_tips_txt" translate="dictation.warning.maximum"></span>
+                                </div>
+                                <div class="ChineseCd_ft_btns_nor" ng-show="interactiveMode === INTERACTIVE_MODE.VIEW">
+                                    <div class="com_u_btn_has_pop">
+                                        <!--按钮不可点击添加类名 .com_s_disabled ,自定义配置图标类名 例如 iconleft是固定的 icon_add 表示是加号私有图标-->
+                                        <a href="###" class="com_u_btn4" ng-click="AddModeHandle.enter();" ng-class="{'com_s_disabled':isPageLoading || ViewModeHandle.isAddDisable}">
+                                            <i class="iconleft icons_add"></i><span class="com_s_txt" translate="dictation.btn.word.add"></span>
+                                        </a>
+                                        <div class="btns_toolpop" ng-show="addWordToolPopFlag">
+                                            <div class="btns_foot_box">
+                                                <a href="###" class="com_u_btn4 " ng-click="AddModeHandle.create();"><span class="com_s_txt" translate="dictation.btn.word.create"></span></a>
+                                                <a href="###" class="com_u_btn4 " ng-click="AddModeHandle.search();"><span class="com_s_txt" translate="dictation.btn.word.search"></span></a>
+                                            </div>
+                                            <a href="javascript:;" class="btns_toolpop_close" ng-click="AddModeHandle.exit();"></a>
+                                        </div>
+                                    </div>
+                                    <!--按钮不可点击添加类名 .com_s_disabled ,自定义配置图标类名 例如 iconleft是固定的 icon_add 表示是加号私有图标-->
+                                    <a href="###" class="com_u_btn4 " ng-click="DeleteModeHandle.enter();" ng-class="{'com_s_disabled':!(model.words.length > 0)}">
+                                        <i class="iconleft icons_del"></i><span class="com_s_txt" translate="dictation.btn.word.delete"></span>
+                                    </a>
+                                </div>
+                                <div class="ChineseCd_ft_btns_add" ng-show="interactiveMode === INTERACTIVE_MODE.ADD" ng-switch="AddModeHandle.wordAmountSearched">
+                                    <a href="###" class="com_u_btn4 " ng-click="AddModeHandle.search(true);" ng-switch-when="0"><span class="com_s_txt" translate="dictation.btn.word.search"></span></a>
+                                    <a href="###" class="com_u_btn4 " ng-click="AddModeHandle.confirmAdd();" ng-switch-when="0"><span class="com_s_txt" translate="dictation.btn.return"></span></a>
+                                    <a href="###" class="com_u_btn4 " ng-click="AddModeHandle.confirmAdd();" ng-switch-default><span class="com_s_txt" translate="dictation.btn.add.confirm"></span></a>
+                                </div>
+                                <div class="ChineseCd_ft_btns_del" ng-show="interactiveMode === INTERACTIVE_MODE.DELETE">
+                                    <a href="###" class="com_u_btn4 " ng-click="DeleteModeHandle.exit();" ng-class="{'com_s_disabled':!DeleteModeHandle.isExitable}">
+                                        <span class="com_s_txt" translate="dictation.btn.done"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 查看字卡的弹窗 -->
+                        <word-card-view word="wordSelected" close="ViewModeHandle.exit" ng-show="!!wordSelected"></word-card-view>
+                        <!-- /查看字卡的弹窗 -->
+
+                        <!-- 创建字卡的弹窗 -->
+                        <word-card-new save="AddModeHandle.addWordCallback" quit="AddModeHandle.quitCreate" ng-if="addWordPanelFlag"></word-card-new>
+                        <!-- /创建字卡的弹窗 -->
+
+                        <!-- 选择单元的弹窗 -->
+                        <chapter-selector after-select-chapter="AddModeHandle.selectChapterCallback"></chapter-selector>
+                        <!-- /选择单元的弹窗 -->
+
+                        <!-- 字词覆盖的弹窗 -->
+                        <confirm-popup-main ng-show="ReplaceConfirmPopup.isVisible"
+									   message-dynamic="ReplaceConfirmPopup.wordsRepeat" message-static="ReplaceConfirmPopup.tipText"
+                                       btn-ok-name="ReplaceConfirmPopup.okName" btn-cancel-name="ReplaceConfirmPopup.cancelName"
+                                       btn-ok-handle="ReplaceConfirmPopup.ok" btn-cancel-handle="ReplaceConfirmPopup.cancel"></confirm-popup-main>
+                        <!-- /字词覆盖的弹窗 -->
+
+                        <!-- 请先选择一本教材的弹窗 -->
+                        <div class="ChineseCharacterDictation_tips_pop_wrapper" ng-if="noBookTipShow">
+                            <div class="ChineseCd_tips_pop_bg">
+                                <div class="ChineseCd_tips_pop_bd _padding_none">
+                                    <span class="ft_tips_txt ng-binding" ng-bind="noBookTipMessage"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /请先选择一本教材的弹窗 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

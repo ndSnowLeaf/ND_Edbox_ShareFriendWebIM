@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='DynamicAnswer'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "DynamicAnswer",
+            type: "",
+            subtype: ""
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.componentSettings = {};
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                ClassroomUtils.log(JSON.stringify(message));
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {
+                level: Logger.DEBUG
+            });
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.$view.hide();
+            this.model = model;
+            var def = $.Deferred();
+            var self = this;
+            if (this.isApp && this.isStudent) {
+
+            } else if (this.isPPTShell) {
+                this.__interface = {
+                    execute: self._createDelegate(self._execute, [], true, self),
+                    //以下三个方法实现发送题目流程中需要实现的方法
+                    getExerciseData: self._createDelegate(self._getExerciseData, [], true, self),
+                    exerciseToolStartSuccess: self._createDelegate(self._exerciseToolStartSuccess, [], true, self),
+                    exerciseToolStartFail: self._createDelegate(self._exerciseToolStartFail, [], true, self)
+                };
+            }
+            $.getJSON('configuration/component.json')
+                .done(function (data) {
+                    self.componentSetting = data;
+                    def.resolve();
+                });
+            return def.promise();
+        },
+        pageShow: function () {
+            this._bindEvent();
+        },
+        pageLeave: function () {
+            this._unbindEvent();
+        },
+        destroy: function () {
+
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function () {
+
+        },
+        setState: function (state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+            var self = this;
+            if (this.isPPTShell || this.isPC) {
+                //监听动态创建的presenter加载完成
+                self.$addEventListener('PresenterLoaded', PresenterEventType.IC_PLAYER_EVENT, self._presenterLoaded);
+            }
+        },
+        _unbindEvent: function () {
+            var self = this;
+            self.$removeEventListener();
+        },
+        _execute: function (options) {
+            var self = this;
+            self.logger.debug("收到icplayer的addTool唤醒动态创建习题 " + JSON.stringify(options));
+            //如果事件名称没有定义,或定义错误
+            if (!options) {
+                return false;
+            }
+
+
+            self.questionCode = options.questionCode;
+            self.questionMode = options.questionMode;//questionMode='TemporaryQuestion'，questionMode='DynamicAnswer'
+            if (self.questionMode === 'TemporaryQuestion') {
+                self.questionType = 'TemporaryQuestion';
+                self._temporaryQuestion();
+            } else {
+                self.screenshot = {
+                    imgUrl: options.imgUrl,
+                    imgWidth: options.imgWidth,
+                    imgHeight: options.imgHeight
+                };
+                self._sendQuestion();
+            }
+        },
+        //发送题目
+        _getExerciseData: function (data) {
+            var self = this;
+            data.extraData = {toolKey: self.questionType};
+            if (self.questionMode === 'TemporaryQuestion') {//口头临时出题
+                data.questionInfo = {type_code: "TemporaryQuestion", type_name: "TemporaryQuestion"};
+                data.extraData.toolOptions = {
+                    questionCode: self.questionCode,
+                    width: '100%',
+                    height: '100%'
+                };
+            } else {//截图出题
+                data.extraData.toolOptions = {
+                    files: [{
+                        type: 'question',
+                        url: self.physicPath
+                    }]
+                };
+            }
+        },
+        //发送题目成功
+        _exerciseToolStartSuccess: function () {
+            var self = this;
+            if (!!self.tool) {
+                self.tool.show({
+                    "visibility": "visible"
+                });
+            } else {
+                self.logger.debug("ICPlyaer不支持tool.show(),需要升级6.1.7.5_dev以上版本");
+            }
+        },
+        //发送题目失败
+        _exerciseToolStartFail: function () {
+            var self = this;
+            self.playerController.removeTool(self.tool.unqiueId);
+        },
+        _temporaryQuestion: function () {
+            var self = this;
+            self.$requireComponent('TemporaryQuestionLauncher', [{
+                name: 'questionCode',
+                type: 'string',
+                value: self.questionCode
+            }
+            ]).then(function (presenter) {
+                console.log(presenter);
+                self.logger.debug("口头临时出题启动器启动成功");
+            });
+        },
+        _sendQuestion: function () {
+            var self = this;
+            self.logger.debug("开始动态创建题目");
+            //1.保存题目
+            $.post('http://127.0.0.1:3001/v0.1/dynamic_create_question?_lang_=' + self.currentLanguage, {
+                questionCode: self.questionCode,
+                chapterId: self.urlParams.chapter_id,
+                chapterName: self.urlParams.chapter_name,
+                creator: self.urlParams.creator,
+                imgUrl: self.screenshot.imgUrl,
+                imgWidth: self.screenshot.imgWidth,
+                imgHeight: self.screenshot.imgHeight
+            }, function (data) {
+                self.logger.debug("动态创建题目完毕");
+                var toolConfigPath = '';
+                //2.唤醒相关题型
+                if (data.physicPath && data.questionId) {
+                    self.physicPath = data.physicPath;
+                    self.questionId = data.questionId;
+                    switch (self.questionCode) {
+                        case 'choice':
+                        case 'judge':
+                        case 'nd_handwritequestion':
+                            self.questionType = 'BasicQuestionTool';
+                            self.logger.debug("开始唤醒基础题");
+                            if (self.componentSetting['BasicQuestionTool']) {
+                                toolConfigPath = self.componentSetting['BasicQuestionTool'].href;
+                                self.logger.debug('ToolConfigPath:' + toolConfigPath);
+                            }
+                            self.playerController.addTool(toolConfigPath, {
+                                __sys: {
+                                    visibility: 'visible'
+                                },
+                                visibility: 'visible',
+                                questionId: self.questionId,
+                                physicPath: self.physicPath,
+                                questionCode: self.questionCode,
+                                type: 'image'
+                            }).done(function (tool) {
+                                self.logger.debug("唤醒基础题成功");
+                                self.tool = tool;
+                            }).fail(function (tool) {
+                                self.logger.debug("唤醒基础题失败");
+                                self.tool = tool;
+                                self.$dispatchEvent('sendEvent', PresenterEventType.NATIVE_EVENT, {
+                                    eventName: 'DynamicAnswerEvent',
+                                    eventData: {
+                                        type: 'error',
+                                        message: '唤醒题目' + self.questionCode + '失败'
+                                    }
+                                });
+                            });
+                            break;
+                        case 'subjectivebase':
+                            self.questionType = 'Subjectivebase';
+                            self.logger.debug("开始唤醒主观题");
+                            if (self.componentSetting['Subjectivebase']) {
+                                toolConfigPath = self.componentSetting['Subjectivebase'].href
+                                    .replace('${ref-path-addon}', player.refPath['ref-path-addon']);
+                                self.logger.debug('ToolConfigPath:' + toolConfigPath);
+                            }
+                            self.playerController.addTool(toolConfigPath, {
+                                __sys: {
+                                    visibility: 'visible'
+                                },
+                                visibility: 'visible',
+                                questionId: self.questionId,
+                                physicPath: self.physicPath,
+                                questionCode: self.questionCode,
+                                imgWidth: self.screenshot.imgWidth,
+                                imgHeight: self.screenshot.imgHeight,
+                                type: 'image'
+                            }).done(function (tool) {
+                                self.logger.debug("唤醒主观题成功,启动发题流程");
+                                self.tool = tool;
+                                //3、题目presenter加载完成后，启动发题流程
+                                //主动题接入新框架，不需要手动启动，由框架来启动，框架会发出PresenterLoaded事件
+                                //self.playerController.startFlow('exerciseToolStart');
+                            }).fail(function (tool) {
+                                self.logger.debug("唤醒主观题失败");
+                                self.tool = tool;
+                                self.$dispatchEvent('sendEvent', PresenterEventType.NATIVE_EVENT, {
+                                    eventName: 'DynamicAnswerEvent',
+                                    eventData: {
+                                        type: 'error',
+                                        message: '唤醒题目' + self.questionCode + '失败'
+                                    }
+                                });
+                            });
+                            break;
+                        default:
+                            break;
+                    }
+                    //保存成功题目，通知互动课堂
+                    self.$dispatchEvent('Exam', PresenterEventType.NATIVE_EVENT, {
+                        type: "saveQuestion",
+                        value: {
+                            questionId: data.questionId,
+                            packageDir: data.physicPath
+                        }
+                    });
+                } else { //创建题目失败
+                    self.logger.debug("动态创建题目失败");
+                    self.$dispatchEvent('sendEvent', PresenterEventType.NATIVE_EVENT, {
+                        eventName: 'DynamicAnswerEvent',
+                        eventData: {
+                            type: 'error',
+                            message: '创建题目失败'
+                        }
+                    });
+                }
+            });
+        },
+        _presenterLoaded: function (eventData) {
+            var self = this;
+            self.logger.debug("启动发题流程");
+            //3、题目presenter加载完成后，启动发题流程
+            self.playerController.startFlow('exerciseToolStart');
+        }
+    }, 'DynamicAnswer');
+
+    window.AddonDynamicAnswer_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/icon_close.png' />
+
+
+</resources>
+
+</addon>

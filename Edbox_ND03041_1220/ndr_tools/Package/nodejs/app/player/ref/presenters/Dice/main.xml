@@ -1,0 +1,1051 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="undefined"/><property name="stat_mode" displayName="题目内容" type="string" isLocalized="undefined"/></properties><dependencies><jsDependency><javaScript name="out_frame" version="1.0.4"/><javaScript name="knockout" version="3.3.0"/><javaScript name="common_css" version="1.0.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .ui_btn_handle{display:inline-block;margin:0 .75em;padding:0 1.41667em;height:3.16667em;line-height:3.16667em;border:1px solid #397274;background:-webkit-linear-gradient(bottom,#e9e9e9,#fff);background:linear-gradient(0deg,#e9e9e9 0,#fff);text-align:center;vertical-align:middle;border-radius:.41667em}.exam_skin_wood .ui_btn_handle .ui_btn_handle_text{font-size:1.5em;color:#384650}.exam_skin_wood .ui_btn_handle.active,.exam_skin_wood .ui_btn_handle:active{background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .ui_btn_handle.active .ui_btn_handle_text,.exam_skin_wood .ui_btn_handle:active .ui_btn_handle_text{color:#fff}.exam_skin_wood .ui_btn_handle.disabled{border-color:#93989a;background:-webkit-linear-gradient(top,#c8d1d7,#c1c8cc);background:linear-gradient(180deg,#c8d1d7 0,#c1c8cc);cursor:default}.exam_skin_wood .ui_btn_handle.disabled .ui_btn_handle_text{color:#969fa4}.exam_skin_wood .throwdice_wrapper{height:100%;background:#bfd3e2}.exam_skin_wood .throwdice_inner{width:62.25em;height:37.08333em;position:absolute;left:50%;top:50%;padding:5em 0;margin-left:-31.125em;margin-top:-18.54167em}.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_aside{display:none}.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main{width:38em;margin:0 auto;float:none}.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main .btns-primary:last-child{display:none}.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main .throwdice_btn_throw .btns-primary-icon{width:.95833em;background:url(resources/wood/images/chirality.png) no-repeat 0;background-size:100% auto}.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main .throwdice_btn_throw.active .btns-primary-icon,.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main .throwdice_btn_throw.click_disabled .btns-primary-icon,.exam_skin_wood .throwdice_inner.throwdice_only .throwdice_main .throwdice_btn_throw:active .btns-primary-icon{background-image:url(resources/wood/images/chirality_active.png)}.exam_skin_wood .throwdice_nocount .throwdice_aside{display:none}.exam_skin_wood .throwdice_main{width:30.41667em;height:100%;float:left;background:#b4c9d9;border-radius:.41667em}.exam_skin_wood .throwdice_main .main_area_up{height:20.33333em;position:relative}.exam_skin_wood .throwdice_main .main_area_up .dices_wrap{position:absolute;width:22.5em;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.exam_skin_wood .throwdice_main .main_area_up .dice_tooltip{overflow:hidden;padding:0 1em;height:1em;font-size:1.25em;color:#384650;position:absolute;width:100%;bottom:1.25em;text-align:center;white-space:nowrap;text-overflow:ellipsis;display:none}.exam_skin_wood .throwdice_main .main_area_up .dice_tooltip.show{display:block}.exam_skin_wood .throwdice_main .main_area_up .dice_item{width:8.33333em;height:8.33333em;overflow:hidden;background:url(resources/wood/images/pop_dice.png) no-repeat 0 0;background-size:auto 100%;position:relative;float:left;margin:0 1.45833em}.exam_skin_wood .throwdice_main .main_area_up .dice_item .dice_in{float:left;width:500%;height:100%;background-size:contain;-webkit-background-size:contain}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="1"]{background-position:0 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="2"]{background-position:-8.33333em 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="3"]{background-position:-16.66667em 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="4"]{background-position:-25em 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="5"]{background-position:-33.33333em 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item[data-val="6"]{background-position:-41.66667em 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item.rolling{background:0 0}.exam_skin_wood .throwdice_main .main_area_up .dice_item.rolling.item1 .dice_in{background-image:url(resources/wood/images/pop_dice_roll.png);animation:rolling step-end .5s infinite;-webkit-animation:rolling step-end .5s infinite}.exam_skin_wood .throwdice_main .main_area_up .dice_item.rolling.item2 .dice_in{background-image:url(resources/wood/images/pop_dice_roll.png);animation:rolling step-end .55s infinite;-webkit-animation:rolling step-end .55s infinite}.exam_skin_wood .throwdice_main .main_area_down{height:6.75em;line-height:6.75em;text-align:center;background:url(resources/wood/images/line_bg.png) repeat-x 0 0}@-webkit-keyframes rolling{0%{-webkit-transform:translateX(0)}20%{-webkit-transform:translateX(-20%)}40%{-webkit-transform:translateX(-40%)}60%{-webkit-transform:translateX(-60%)}80%{-webkit-transform:translateX(-80%)}to{-webkit-transform:translateX(0)}}@keyframes rolling{0%{-webkit-transform:translateX(0);transform:translateX(0)}20%{-webkit-transform:translateX(-20%);transform:translateX(-20%)}40%{-webkit-transform:translateX(-40%);transform:translateX(-40%)}60%{-webkit-transform:translateX(-60%);transform:translateX(-60%)}80%{-webkit-transform:translateX(-80%);transform:translateX(-80%)}to{-webkit-transform:translateX(0);transform:translateX(0)}}.exam_skin_wood .throwdice_aside{width:30.41667em;height:100%;float:right;background:#b4c9d9;border-radius:.41667em}.exam_skin_wood .throwdice_aside .btns-primary-icon{width:1.33333em;background-image:url(../../views/ThrowDice/resources/wood/images/icons_refresh.png)}.exam_skin_wood .throwdice_aside .aside_area_up{height:20.33333em;padding:3.125em 2em 0}.exam_skin_wood .throwdice_aside .aside_area_down{text-align:center;height:6.75em;line-height:6.75em;background:url(resources/wood/images/line_bg.png) repeat-x 0 0}.exam_skin_wood .throwdice_aside .aside_area_down .icon_refresh{width:.83333em;height:.83333em;display:inline-block;margin-right:8px;overflow:hidden;vertical-align:middle;position:relative;margin-top:-.125em;background:url(resources/wood/images/icon_refresh.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .throwdice_aside .aside_area_down .ui_btn_handle:active .icon_refresh{background:url(resources/wood/images/icon_refresh_active.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .throwdice_foot_nav{height:2.83333em;line-height:2.83333em;overflow:hidden;width:25em;border-radius:.41667em;position:absolute;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%);top:100%;display:-webkit-box;display:-ms-flexbox;display:flex;border:1px solid #397274}.exam_skin_wood .throwdice_foot_nav li{-webkit-box-flex:1;-ms-flex:1;flex:1;border-right:1px solid #397274;height:100%;line-height:2.83333em}.exam_skin_wood .throwdice_foot_nav li:last-child{border-right:none}.exam_skin_wood .throwdice_foot_nav li a{background:-webkit-linear-gradient(bottom,#e9e9e9,#fff);background:linear-gradient(0deg,#e9e9e9 0,#fff);text-align:center;display:block;height:100%;color:#384650;font-size:1.08333em}.exam_skin_wood .throwdice_foot_nav li a.active,.exam_skin_wood .throwdice_foot_nav li a:active{background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .throwdice_foot_nav li a.active span,.exam_skin_wood .throwdice_foot_nav li a:active span{color:#fff}.exam_skin_wood .throwdice_foot_nav li a.disabled{background:-webkit-linear-gradient(top,#c8d1d7,#c1c8cc);background:linear-gradient(180deg,#c8d1d7 0,#c1c8cc)}.exam_skin_wood .throwdice_foot_nav li a.disabled span{color:#969fa4}.exam_skin_wood .throwdice_score_hd{border-left:2px solid #10aeb4;border-right:2px solid #10aeb4;border-bottom:2px solid #10aeb4;background:#10aeb4;line-height:4.625em;height:4.625em;border-radius:.41667em .41667em 0 0;color:#fff;padding-top:1px}.exam_skin_wood .throwdice_score_hd .score{width:70%;float:left;text-align:center;font-size:1.58333em;border-right:2px solid #dee7ee}.exam_skin_wood .throwdice_score_hd .num{width:30%;float:right;text-align:center;font-size:1.58333em}.exam_skin_wood .throwdice_score_bd{border-left:2px solid #999da0;border-right:2px solid #999da0;border-bottom:2px solid #999da0;border-radius:0 0 .41667em .41667em;background:#dee7ee;max-height:9.33333em}.exam_skin_wood .throwdice_score_bd .cell{line-height:4.625em;height:4.625em;border-bottom:2px solid #999da0}.exam_skin_wood .throwdice_score_bd .cell:last-child{border-bottom:none}.exam_skin_wood .throwdice_score_bd .score{width:70%;float:left;text-align:center;font-size:1.58333em;border-right:2px solid #999da0;color:#626f79;word-break:break-all;word-wrap:break-word;height:100%}.exam_skin_wood .throwdice_score_bd .score b{font-weight:400}.exam_skin_wood .throwdice_score_bd .num{width:30%;height:100%;float:right;text-align:center;font-size:1.58333em;color:#626f79;position:relative}.exam_skin_wood .throwdice_score_bd .num b{font-weight:400;display:inline-block}.exam_skin_wood .throwdice_score_bd .num i{position:absolute;right:-.33333em;font-size:1.2em;top:50%;width:2.5em;height:1em;margin-top:-.5em;line-height:.83333em;color:#13b2b8;display:none}.exam_skin_wood .throwdice_score_bd .num.countanim b{-webkit-animation:countAnimshow .7s ease .3s forwards;animation:countAnimshow .7s ease .3s forwards}.exam_skin_wood .throwdice_score_bd .num.countanim i{display:block;-webkit-animation:countAnim .7s ease 0s forwards;animation:countAnim .7s ease 0s forwards;opacity:1}@-webkit-keyframes countAnimshow{0%{-webkit-transform:scale(1);transform:scale(1)}50%{-webkit-transform:scale(2);transform:scale(2)}to{-webkit-transform:scale(1);transform:scale(1)}}@keyframes countAnimshow{0%{-webkit-transform:scale(1);transform:scale(1)}50%{-webkit-transform:scale(2);transform:scale(2)}to{-webkit-transform:scale(1);transform:scale(1)}}@-webkit-keyframes countAnim{to{top:.5em;opacity:0}}@keyframes countAnim{to{top:.5em;opacity:0}}.typefaces_long .exam_skin_wood .throwdice_main .main_area_down .btns-primary-icon{display:none}.typefaces_long .exam_skin_wood .throwdice_main .main_area_down .com_btns{overflow:hidden;padding:0 .5em;width:10.83333em;height:3.58333em;line-height:1.66667em}.typefaces_long .exam_skin_wood .throwdice_main .main_area_down .com_btns:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_long .exam_skin_wood .throwdice_main .main_area_down .com_btns .btns-primary-txt{display:inline-block;vertical-align:middle;max-width:96%}.typefaces_long .exam_skin_wood .throwdice_aside .com_btns{overflow:hidden;max-width:80%;white-space:nowrap;text-overflow:ellipsis}.typefaces_long .exam_skin_wood .throwdice_foot_nav{width:42.29167em;height:2.91667em;line-height:2.91667em}.typefaces_long .exam_skin_wood .throwdice_foot_nav li{line-height:1.41667em}.typefaces_long .exam_skin_wood .throwdice_foot_nav li a{display:-webkit-box;display:-ms-flexbox;display:flex;padding:.125em .20833em;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.typefaces_long .exam_skin_wood .throwdice_foot_nav li span{-webkit-box-flex:1;-ms-flex:1;flex:1}.typefaces_long .exam_skin_wood .throwdice_score_hd{overflow:hidden;position:relative;width:100%;line-height:2.08333em}.typefaces_long .exam_skin_wood .throwdice_score_hd:before{content:"";position:absolute;left:58%;top:0;bottom:-2px;margin-left:-2px;width:2px;background:#dee7ee}.typefaces_long .exam_skin_wood .throwdice_score_hd:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_long .exam_skin_wood .throwdice_score_hd .num,.typefaces_long .exam_skin_wood .throwdice_score_hd .score{display:inline-block;float:none;overflow:hidden;padding:0 .20833em;max-height:100%;min-height:1.2em;vertical-align:middle}.typefaces_long .exam_skin_wood .throwdice_score_hd .score{width:58%;white-space:nowrap;text-overflow:ellipsis;border-right:none}.typefaces_long .exam_skin_wood .throwdice_score_hd .num{width:39%}.typefaces_long .exam_skin_wood .throwdice_score_bd .score{width:58%}.typefaces_long .exam_skin_wood .throwdice_score_bd .num{width:42%}.typefaces_ru_RU .exam_skin_wood .throwdice_main .main_area_down .btns-primary-icon{display:none}.typefaces_ru_RU .exam_skin_wood .throwdice_main .main_area_down .com_btns{overflow:hidden;padding:0 .5em;width:10.83333em;height:3.58333em;line-height:1.66667em}.typefaces_ru_RU .exam_skin_wood .throwdice_main .main_area_down .com_btns:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .throwdice_main .main_area_down .com_btns .btns-primary-txt{display:inline-block;vertical-align:middle;max-width:96%}.typefaces_ru_RU .exam_skin_wood .throwdice_aside .com_btns{overflow:hidden;max-width:80%;white-space:nowrap;text-overflow:ellipsis}.typefaces_ru_RU .exam_skin_wood .throwdice_foot_nav{width:42.29167em;height:2.91667em;line-height:2.91667em}.typefaces_ru_RU .exam_skin_wood .throwdice_foot_nav li{line-height:1.41667em}.typefaces_ru_RU .exam_skin_wood .throwdice_foot_nav li a{display:-webkit-box;display:-ms-flexbox;display:flex;padding:.125em .20833em;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.typefaces_ru_RU .exam_skin_wood .throwdice_foot_nav li span{-webkit-box-flex:1;-ms-flex:1;flex:1}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd{overflow:hidden;position:relative;width:100%;line-height:2.08333em}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd:before{content:"";position:absolute;left:58%;top:0;bottom:-2px;margin-left:-2px;width:2px;background:#dee7ee}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd .num,.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd .score{display:inline-block;float:none;overflow:hidden;padding:0 .20833em;max-height:100%;min-height:1.2em;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd .score{width:58%;white-space:nowrap;text-overflow:ellipsis;border-right:none}.typefaces_ru_RU .exam_skin_wood .throwdice_score_hd .num{width:39%}.typefaces_ru_RU .exam_skin_wood .throwdice_score_bd .score{width:58%}.typefaces_ru_RU .exam_skin_wood .throwdice_score_bd .num{width:42%}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="throwdice_wrapper"><div class="throwdice_inner throwdice_only dice_contain"><div class="throwdice_main"><div class="main_area_up"><div class="dices_wrap"><div class="dice_item item1" id="dice01" data-val="5"><span class="dice_in"></span></div><div class="dice_item item2" id="dice02" data-val="5"><span class="dice_in"></span></div></div><div class="dice_tooltip" id="tipDicing" data-bind="text:rolling_dice"></div><div class="dice_tooltip" id="tipCrazyDicing" data-bind="text:rolling_dice_crazy"></div></div><div class="main_area_down"><a class="com_btns btns-primary throwdice_btn_throw" href="javascript:;" id="btnDiceOnce"><b class="btns-primary-icon"></b> <span class="btns-primary-txt" data-bind="text:roll_one_time"></span> </a><a class="com_btns btns-primary" href="javascript:;" id="btnDiceTen"><span class="btns-primary-txt" data-bind="text:roll_ten_times"></span></a></div></div><div class="throwdice_aside" id="diceSide" style="display: none"><div class="aside_area_up" id="timesTable" style="display: none"><div class="throwdice_score_hd"><span class="score" data-bind="text:roll_sum"></span> <span class="num" data-bind="text:roll_times"></span></div><div class="throwdice_score_bd scrollbar_style_gray"><div class="cell"><span class="score"><b>5, 6, 7, 8, 9</b></span><span class="num"><b id="timesFive2Nine">--</b> <i></i></span></div><div class="cell"><span class="score">2, 3, 4, 10, 11, 12</span> <span class="num"><b id="timesOthers">--</b> <i></i></span></div></div></div><div class="aside_area_down"><a class="ui_btn_handle" id="btnRestart" href="javascript:;"><span class="ui_btn_handle_text"><b class="icon_refresh"></b><em data-bind="html:restart"></em></span></a></div></div><ul class="throwdice_foot_nav" id="listStatMode"><li><a href="javascript:;" class="list_btn" stat_mode="none"><span data-bind="text:no_statistical_table"></span></a></li><li><a href="javascript:;" class="list_btn" stat_mode="times"><span data-bind="text:statistics_probability"></span></a></li></ul></div></div><div class="resources" style="display: none"><audio id="audioDiceOnce" data-src="resources/medias/dice_once.mp3"></audio><audio id="audioDiceTen" data-src="resources/medias/dice_ten.mp3"></audio></div></div>]]></view><presenter><![CDATA['use strict';
+
+function AddonDice_create() {
+    /**
+     * 获取Module当前的运行环境, 通过icPlayer提供的接口
+     * 已定义的环境枚举包括
+     * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)
+     * icCreatePlayer.RUNTIME.STUDENT_MOBILE(学生端)
+     * icCreatePlayer.RUNTIME.PROJECTION_MOBILE(投影端)
+     * icCreatePlayer.RUNTIME.WEB(WEB端 )
+     * icCreatePlayer.RUNTIME.TEACHER_PC(PC端)
+     * 判断例子
+     * if(currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE)
+     */
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var isMobileTeacher = currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE; //教师端
+    var isMobileStudent = currentRuntime === icCreatePlayer.RUNTIME.STUDENT_MOBILE; //学生端
+    var isMobileProjection = currentRuntime === icCreatePlayer.RUNTIME.PROJECTION_MOBILE; //投影端
+    var isWeb = currentRuntime === icCreatePlayer.RUNTIME.WEB; //WEB端
+    var isPCTeacher = currentRuntime === icCreatePlayer.RUNTIME.TEACHER_PC; //PC端
+    var isApp = !(isWeb || isPCTeacher);
+    var isPPTshell = false;
+
+    var bridgeListeners = {}; //注册Bridge监听器对象集
+    var $currentScope = {}; //视图模型(KO)
+    var $view; //视图DOM
+    var i18nModel = {}; //国际化数据模型
+
+    //常量定义
+    var Constants = {
+        //统计模式
+        STAT_MODE_NONE: 'none', //无统计表
+        STAT_MODE_TIMES: 'times', //统计概率(次数)
+        STAT_MODE_RULE: 'rule', //探究规律
+
+        //投影端事件定义
+        USER_INPUT_DICEONCE: 'diceonce', //掷一掷
+        USER_INPUT_DICETEN: 'diceten', //掷10次
+        USER_INPUT_RESULT: 'result', //掷出结果
+        USER_INPUT_RESTART: 'restart', //重新开始
+
+        //同步事件枚举
+        SYNC_REQUEST: 'request', //请求同步
+        SYNC_CANCEL: 'cancel', //取消同步
+        SYNC_STOP: 'stop', //结束同步
+
+        //样式名称
+        CSS_BTN_DISABLED: 'click_disabled', //按钮不可用状态样式
+        CSS_DICE_ROLL: 'rolling', //骰子滚动样式
+        CSS_PLUS_HINT: 'countanim', //概率统计表格次数累加样式
+
+        //动画持续时间
+        DURATION_DICE_ROLL_ONCE: 1000, //掷一掷 动画持续时间（单位：毫秒）
+        DURATION_DICE_ROLL_TEN: 3000, //掷10次 动画持续时间（单位：毫秒）
+        DURATION_PLUS_HINT: 500,
+
+        DICE_01_NUM: 5,
+        DICE_02_NUM: 3
+    };
+
+    //国际化处理命名空间
+    var i18nMessages = {};
+
+    var RULE_TABLE_COLORS = ['', '', '#D0CECE', '#4472C4', '#FFFF00', '#00B050', '#7030A0', '#FF0000', '#70AD47', '#ED7D31', '#7F7F7F', '#C00000', '#525252'];
+
+    var toStuDicesPair = [Constants.DICE_01_NUM, Constants.DICE_02_NUM];
+    var toStuDicesAfterAniPair = [Constants.DICE_01_NUM, Constants.DICE_02_NUM];
+    /* ============================ #region: Presenter API ============================ */
+    /**
+     * Module的逻辑
+     * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+     * @param model 模型对象
+     * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+     */
+    var presenterLogic = function presenterLogic(view, model, isPreview) {
+        $currentScope.question_id = model.question_id;
+        $currentScope.module_id = model.ID;
+        $currentScope.statMode = model.stat_mode;
+        $currentScope.timesDiceRecord = { five2nine: 0, others: 0 };
+        $currentScope.ruleDiceRecord = {};
+        //$currentScope.userInputEventSeqNo = 0; //投影端事件顺序记录
+        $view = $(view);
+
+        //Step1. 音效加载
+        $.each(Utils.find('audio'), function (k, audio) {
+            // if (!(audio.id === 'audioDiceTen' && $currentScope.statMode === Constants.STAT_MODE_NONE)) {
+            var $audio = $(audio);
+            $audio.attr('src', $currentScope.basePath + $audio.data('src'));
+            // }
+        });
+
+        //Step2. 视图渲染
+        //renderView();
+        renderView(model);
+        //国际化处理
+        setI18n(i18nModel, view);
+    };
+
+    var presenter = function presenter() {};
+
+    var service = {};
+
+    service.setLocationProperties = function (properties) {
+        i18nModel = properties;
+    };
+
+    service.getQuestionInfo = function () {
+        return {
+            "id": $currentScope.question_id,
+            "type_code": "dice",
+            "type_name": i18nModel.roll_dice,
+            'statistics_type': 'no_need',
+            "url": '{stat_mode: + "' + $currentScope.statMode + '"}',
+            'notExistStatistics': true,
+            'noNeedQuizProgress': true
+        };
+    };
+    service.getExtendData = function () {
+        var options = {
+            width: '100%',
+            DiceState: {
+                statMode: $currentScope.statMode,
+                dicesPair: toStuDicesPair,
+                timesDiceRecord: {
+                    five2nine: $currentScope.timesFive2NineCtrl.html(),
+                    others: $currentScope.timesOthersCtrl.html()
+                },
+                isDiceRolling: $currentScope.isDiceRolling,
+                rollDicePair: $currentScope.dicesPair
+            }
+        };
+
+        console.log('options:', options);
+        return options;
+    };
+    //重要,必须实现
+    presenter.metaInfo = {
+        name: "Dice",
+        type: PresenterType.PRESENTER_COMPONENT
+    };
+    //重要,必须实现
+    presenter.getService = function () {
+        return service;
+    };
+
+    /**
+     * 编辑环境下, 创建/刷新预览视图的方法;
+     * Module在编辑环境下,model改变; 位置改变; DOM结构改变时都会促发该方法
+     * @param view 预览视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     */
+    presenter.createPreview = function (view, model) {
+        //Todo: 在此处一般进行model的数据有效性验证
+        presenterLogic(view, model, true);
+    };
+
+    //设置根路径
+    presenter.setBasePath = function (path) {
+        $currentScope.basePath = path;
+    };
+
+    //传入页面的url参数
+    presenter.setUrlParams = function (urlParams) {
+        if (urlParams) {
+            $currentScope.urlParams = urlParams;
+            isPPTshell = urlParams.sys === 'pptshell';
+        }
+    };
+
+    /**
+     * 运行环境下, 初始化Module的方法
+     * @param view 运行视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+     */
+    presenter.run = function (view, model) {
+        presenterLogic(view, model, false);
+    };
+
+    /**
+     * addon所在的页面显示出来时调用（预加载的页显示，后退的缓存页显示）
+     */
+    presenter.pageShow = function () {
+        //isPPTshell && Utils.find('.exam_wood').removeClass('full_page');
+
+        //绑定Module事件
+        // bindEvent();
+    };
+
+    /**
+     * addon所在的页面离开时（但还在缓存页中）调用
+     */
+    presenter.pageLeave = function () {
+        //停止所有音效
+        Utils.stopAllAudios();
+
+        //解除绑定的Module事件
+        //  unBindEvent();
+    };
+
+    /**
+     * 运行环境下, 销毁Module时执行的方法
+     * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+     */
+    presenter.destroy = function () {
+        // 掷一掷按钮事件
+        $currentScope.btnDiceOnce.off('click');
+        $currentScope.btnDiceTen.off('click');
+        $currentScope.btnRestart.off('click');
+        $currentScope.btnStopSync.off('click');
+        Utils.find('#listStatMode .list_btn').off('click');
+
+        //停止所有音效
+        Utils.destroyAllAudios();
+
+        //清除Timeout
+        Utils.clearRollTimeout();
+        clearRefreshTimesTimeout();
+
+        bridgeListeners = null;
+        Utils = null;
+        $currentScope = null;
+        $view = null;
+        Constants = null;
+    };
+
+    /**
+     * 获得当前Module的状态信息;
+     * 可用于Module的状态恢复和保存
+     */
+    presenter.getState = function () {
+        //TODO: 添加符合Module需求的状态对象
+        var moduleState = JSON.stringify({
+            module_id: $currentScope.module_id
+        });
+        return moduleState;
+    };
+
+    /**
+     * 设置Module当前状态
+     * @param state Module状态对象
+     */
+    presenter.setState = function (state) {
+        var currentState;
+        if (state) {
+            currentState = JSON.parse(state);
+            //ToDo:处理Module的状态恢复
+        }
+    };
+
+    /**
+     * 绑定事件的方法
+     */
+    //function bindEvent() {
+    //    isMobileProjection && Utils.registerBridgeListener('TriggerUserInput', NativeEventHandler.triggerUserInputHandler);
+    //    isMobileStudent && Utils.registerBridgeListener('SyncCallback', NativeEventHandler.syncCallbackHandler);
+    //    isMobileTeacher && Utils.registerBridgeListener('UserInputMessageCallback', NativeEventHandler.userInputMessageCallbackHandler);
+    //}
+
+    //var NativeEventHandler = {
+    //    'triggerUserInputHandler': function (eventData) { //投影端事件
+    //        if (eventData.source === $currentScope.module_id) {
+    //            if ($currentScope.userInputEventSeqNo < eventData.value.eventSeqNo) {
+    //                $currentScope.userInputEventSeqNo = eventData.value.eventSeqNo;
+    //
+    //                $currentScope.isDiceRolling && stopAnimation(); //!important
+    //
+    //                if (eventData.item != Constants.USER_INPUT_RESTART) {
+    //                    //数据丢失处理
+    //                    if ($currentScope.statMode === Constants.STAT_MODE_TIMES) {
+    //                        $currentScope.timesDiceRecord = eventData.value.timesDiceRecord;
+    //
+    //                        $currentScope.timesDiceRecord.five2nine > 0 && $currentScope.timesFive2NineCtrl.text($currentScope.timesDiceRecord.five2nine);
+    //                        $currentScope.timesDiceRecord.others > 0 && $currentScope.timesOthersCtrl.text($currentScope.timesDiceRecord.others);
+    //                    }
+    //
+    //                    $currentScope.ruleDiceRecord = eventData.value.ruleDiceRecord;
+    //                }
+    //
+    //                switch (eventData.item) {
+    //                    case Constants.USER_INPUT_DICEONCE: //掷一掷
+    //                        onClickBtnDiceOnce(true, eventData.value.dicesPair);
+    //
+    //                        break;
+    //                    case Constants.USER_INPUT_DICETEN: //掷10次
+    //                        onClickBtnDiceTen(true, eventData.value.dicesPair);
+    //
+    //                        break;
+    //                    case Constants.USER_INPUT_RESTART: //重新开始
+    //                        onClickBtnRestart(true);
+    //
+    //                        break;
+    //                    default:
+    //                }
+    //            }
+    //        }
+    //    },
+    //    'syncCallbackHandler': function (eventData) {  //同步事件
+    //        if (eventData.type === Constants.SYNC_STOP) { //结束同步
+    //            if (eventData.value && eventData.value.syncId === $currentScope.syncId) {
+    //                stopAnimation();
+    //            }
+    //        }
+    //    },
+    //    'userInputMessageCallbackHandler': function (message) {
+    //        if (message.success) {
+    //            Utils.removeUserInputMessage(message.messageId);　//清除数据
+    //        } else {
+    //            Utils.resendUserInputMessage(message.messageId);　//事件重发
+    //        }
+    //    }
+    //};
+
+
+    /**
+     * 解除事件绑定的方法
+     */
+    //function unBindEvent() {
+    //    Utils.unRegisterBridgeListener();
+    //}
+
+    /**
+      * 实现Module多语言适配的方法, 如Module存在i18n的支持, 请务必实现此方法
+      * icplayer会加载当前i18n的配置信息,并通过location参数传入
+      * @param location 表示当前语言环境的配置信息, 为JSON数组的键值对
+      */
+    //presenter.setLocationProperties = function (location) {
+    //    i18nModel = location;
+    //};
+
+    /**
+     *国际化数据绑定
+     * model 数据模型
+     * view 需要绑定的视图
+     */
+    function setI18n(model, view) {
+        ko.applyBindings(model, view);
+    }
+
+    /*/!**
+    * 以下一组为可选运行时初始化函数, icPlayer会根据运行时的不同, 在执行presenter.run 函数之前, 执行对应运行时的初始化函数;
+    * 如Module在不同运行时需要执行不同初始化操作, 可进行单独实现
+    *!/
+    //移动环境教师端
+    presenter.initTeacherMobile = function() {
+    };
+    //移动环境学生端
+    presenter.initStudentMobile = function() {
+    };
+    //移动环境投影端
+    presenter.initProjectionMobile = function() {
+    };
+    //Web端
+    presenter.initWeb = function() {
+    };
+    //教师端PC
+    presenter.initTeacherPc = function () {
+    };*/
+
+    /**
+     * 定义该函数，可以使用player的方法(注意：该函数执行优先于presenter.run)
+     * @param controller Object controller是Player Controller 。内部api太多，具体参考Player-services.htm
+     */
+    presenter.setPlayerController = function (controller) {
+        $currentScope.controller = controller;
+        $currentScope.eventBus = $currentScope.controller.getEventBus();
+
+        $currentScope.eventBus.addEventListener('SyncCallback', presenter); //老师端监听结束同步回调事件
+    };
+
+    /**
+     * Module端H5事件接收处理
+     * @param eventName 事件名称
+     * @param eventData 事件数据
+     */
+    //presenter.onEventReceived = function (eventName, eventData) {
+    //    if (eventName === 'SyncCallback') { //同步事件回调 - 老师端、投影端
+    //        switch (eventData.type) {
+    //            case Constants.SYNC_REQUEST: //请求同步
+    //                if (eventData.value && eventData.value.result) {
+    //                    $currentScope.syncId = eventData.value.syncId;
+    //                    $currentScope.btnStopSync.show(); //隐藏“结束同步”按钮
+    //                } else { //请求同步失败
+    //                    ClassroomUtils.showTipMessageBox(eventData.value.message);
+    //                }
+    //
+    //                break;
+    //            case Constants.SYNC_CANCEL: //请求取消同步
+    //                if (eventData.value && eventData.value.syncId === $currentScope.syncId) {
+    //                    if (eventData.value.result) {
+    //                        $currentScope.btnStopSync.hide(); //隐藏“结束同步”按钮
+    //                    } else {
+    //                        ClassroomUtils.showMessageBox([{html: '关闭'}, {
+    //                            html: '重试', target: 'h5',
+    //                            callback: {
+    //                                eventName: 'Dice',
+    //                                eventData: {source: $currentScope.module_id, item: 'retry'}
+    //                            }
+    //                        }], eventData.value.message);
+    //                    }
+    //                }
+    //
+    //                break;
+    //            default:
+    //        }
+    //
+    //        return;
+    //    }
+    //};
+
+    /**
+     * 获取题目的描述信息
+     * @returns {{id: *, type_code: string, type_name: string, item: string, url: *}}
+     */
+
+    /* ============================ #endregion: Presenter API ============================ */
+
+    /* ============================ #region: Presenter Function ============================ */
+    function renderView(model) {
+        $currentScope.btnDiceOnce = Utils.find('#btnDiceOnce');
+        $currentScope.btnDiceTen = Utils.find('#btnDiceTen');
+        $currentScope.btnRestart = Utils.find('#btnRestart');
+        $currentScope.btnStopSync = Utils.find('#btnStopSync');
+        $currentScope.tipDicing = Utils.find('#tipDicing');
+        $currentScope.tipCrazyDicing = Utils.find('#tipCrazyDicing');
+        $currentScope.dice01 = Utils.find('#dice01');
+        $currentScope.dice02 = Utils.find('#dice02');
+        $currentScope.timesTable = Utils.find('#timesTable');
+        $currentScope.ruleTable = Utils.find('#ruleTable');
+        $currentScope.timesFive2NineCtrl = Utils.find('#timesFive2Nine');
+        $currentScope.timesOthersCtrl = Utils.find('#timesOthers');
+        $currentScope.audioDiceOnce = Utils.find('#audioDiceOnce');
+        $currentScope.audioDiceTen = Utils.find('#audioDiceTen');
+
+        if (model.__ExtendModel && !$.isEmptyObject(model.__ExtendModel)) {
+            $currentScope.statMode = model.__ExtendModel.DiceState.statMode;
+            refreshPairDice(model.__ExtendModel.DiceState.dicesPair);
+
+            if (model.__ExtendModel.DiceState.statMode == "times") {
+                $currentScope.timesFive2NineCtrl.html(model.__ExtendModel.DiceState.timesDiceRecord.five2nine);
+                $currentScope.timesOthersCtrl.html(model.__ExtendModel.DiceState.timesDiceRecord.others);
+                $currentScope.timesDiceRecord.five2nine += model.__ExtendModel.DiceState.timesDiceRecord.five2nine == "--" ? 0 : parseInt(model.__ExtendModel.DiceState.timesDiceRecord.five2nine);
+                $currentScope.timesDiceRecord.others += model.__ExtendModel.DiceState.timesDiceRecord.others == "--" ? 0 : parseInt(model.__ExtendModel.DiceState.timesDiceRecord.others);
+            }
+
+            /*是否是动画中推送*/
+            if (model.__ExtendModel.DiceState.isDiceRolling) {
+                doStuAnimation(model.__ExtendModel.DiceState.rollDicePair);
+            }
+        } else {
+            refreshPairDice([Constants.DICE_01_NUM, Constants.DICE_02_NUM]);
+            renderRuleTable();
+        }
+
+        //!isMobileStudent && Utils.find('.com_layout.diceroll').removeClass('treestudent');
+        //isPPTshell && Utils.find('#listStatMode').show();
+        Utils.find('#listStatMode').show();
+
+        switchStatMode();
+        //如果存在__ExtendModel且不为空则是addTool启动起来的
+        bindEventToButton();
+    }
+
+    function switchStatMode() {
+        switch ($currentScope.statMode) {
+            case Constants.STAT_MODE_NONE:
+                Utils.find('#listStatMode .list_btn[stat_mode="none"]').addClass('active');
+                Utils.find('.dice_contain').addClass('throwdice_only');
+                Utils.find('#diceSide').hide();
+                $currentScope.btnDiceTen.hide();
+
+                break;
+            case Constants.STAT_MODE_TIMES:
+            case Constants.STAT_MODE_RULE:
+                Utils.find('.dice_contain').removeClass('throwdice_only');
+                Utils.find('#diceSide').show();
+                $currentScope.btnDiceTen.show();
+                $currentScope.btnRestart.show();
+                $currentScope.btnRestart.parent().show();
+                if ($currentScope.statMode === Constants.STAT_MODE_TIMES) {
+                    Utils.find('#listStatMode .list_btn[stat_mode="times"]').addClass('active');
+                    $currentScope.ruleTable.hide();
+                    $currentScope.timesTable.show();
+                } else {
+                    Utils.find('#listStatMode .list_btn[stat_mode="rule"]').addClass('active');
+                    $currentScope.timesTable.hide();
+                    $currentScope.ruleTable.show();
+                }
+
+                break;
+            default:
+        }
+    }
+    /*动画过程中推送，学生端从动画初始态开始动画*/
+    function doStuAnimation(rollDicePair) {
+        if (rollDicePair.length > 1) {
+            onClickBtnDiceTen(true, rollDicePair);
+        } else {
+            onClickBtnDiceOnce(true, rollDicePair);
+        }
+    }
+
+    //功能按钮事件绑定
+    function bindEventToButton() {
+        if (!isMobileProjection) {
+            // 掷一掷按钮事件
+            $currentScope.btnDiceOnce.on('click', function () {
+                onClickBtnDiceOnce(false);
+            });
+
+            // 掷10次按钮事件
+            $currentScope.btnDiceTen.on('click', function () {
+                onClickBtnDiceTen(false);
+            });
+
+            // 重新开始按钮事件
+            $currentScope.btnRestart.on('click', function () {
+                onClickBtnRestart(false);
+            });
+
+            // 结束同步按钮事件
+            $currentScope.btnStopSync.on('click', onClickBtnStopSync);
+
+            //if (isPPTshell) {
+            Utils.find('#listStatMode .list_btn').on('click', function (event) {
+                //var $target = $(event.target);
+                var $target = $(this);
+                if ($target.hasClass("active")) {
+                    return;
+                } else {
+                    Utils.find('#listStatMode .list_btn').removeClass('active');
+                    $currentScope.statMode = $target.attr('stat_mode');
+                    resetDiceRecordState();
+                    switchStatMode();
+                }
+            });
+            //}
+        }
+    }
+
+    //点击掷一掷按钮事件
+    function onClickBtnDiceOnce(isProjection, dicesPairInput) {
+        if ($currentScope.isDiceRolling) return;
+
+        $currentScope.isDiceRolling = true;
+
+        //Step1. 禁用功能按键（不包含“重新开始”），显示提示语“正在掷骰子”
+        switchDiceOnceBtnState(true);
+        switchDiceTenBtnState(true);
+        $currentScope.tipDicing.show();
+
+        //Step2. 获取1对随机数
+        var dicesPair = isProjection ? dicesPairInput : getRandomDicesPair(1);
+
+        //Step3. 通知投影端（播放动画、音效）
+        //!isProjection && Utils.sendUserInput(Constants.USER_INPUT_DICEONCE, {
+        //    eventSeqNo: ++$currentScope.userInputEventSeqNo,
+        //    dicesPair: dicesPair,
+        //    timesDiceRecord: $currentScope.timesDiceRecord,
+        //    ruleDiceRecord: $currentScope.ruleDiceRecord
+        //});
+
+        //Step4. 播放动画、音效，在该动画结束后，才能继续以下步骤
+        playAnimation(dicesPair);
+    }
+
+    //点击掷10次按钮事件
+    function onClickBtnDiceTen(isProjection, dicesPairInput) {
+        if ($currentScope.isDiceRolling) return;
+
+        $currentScope.isDiceRolling = true;
+
+        //Step1. 禁用功能按键（不包含“重新开始”），显示提示语“正在疯狂掷骰子”
+        switchDiceOnceBtnState(true);
+        switchDiceTenBtnState(true);
+        $currentScope.tipCrazyDicing.show();
+
+        //Step2. 获取10对随机数
+        var dicesPair = isProjection ? dicesPairInput : getRandomDicesPair(10);
+
+        //Step3. 通知投影端（播放动画、音效）
+        //!isProjection && Utils.sendUserInput(Constants.USER_INPUT_DICETEN, {
+        //    eventSeqNo: ++$currentScope.userInputEventSeqNo,
+        //    dicesPair: dicesPair,
+        //    timesDiceRecord: $currentScope.timesDiceRecord,
+        //    ruleDiceRecord: $currentScope.ruleDiceRecord
+        //});
+
+        //Step4. 播放动画、音效，在该动画结束后，才能继续以下步骤
+        playAnimation(dicesPair);
+    }
+
+    //恢复按钮状态，隐藏提示语，初始化正在Rolling状态
+    function clearDicingState() {
+
+        //Step7. 激活功能按键（不包含“重新开始”），隐藏提示语
+        switchDiceOnceBtnState(false);
+        switchDiceTenBtnState(false);
+        switchRestartBtnState(false);
+        $currentScope.tipDicing.hide();
+        $currentScope.tipCrazyDicing.hide();
+
+        $currentScope.isDiceRolling = false;
+    }
+
+    //重新开始，状态恢复
+    function resetDiceRecordState() {
+        //停止动画、音效
+        stopAnimation();
+
+        //骰子恢复原状
+        refreshPairDice([Constants.DICE_01_NUM, Constants.DICE_02_NUM]);
+
+        //清空统计表格中的数据
+        switch ($currentScope.statMode) {
+            case Constants.STAT_MODE_NONE:
+
+                break;
+            case Constants.STAT_MODE_TIMES:
+                $currentScope.timesDiceRecord.five2nine = 0;
+                $currentScope.timesDiceRecord.others = 0;
+                $currentScope.timesFive2NineCtrl.html('--');
+                $currentScope.timesOthersCtrl.html('--');
+
+                $currentScope.timesFive2NineCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+                $currentScope.timesOthersCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+
+                break;
+            case Constants.STAT_MODE_RULE:
+                //$currentScope.ruleDiceRecord = {};
+                //$currentScope.ruleTable.find('div:eq(0) span').text('');
+                //$currentScope.ruleTable.find('span').css('background-color', '');
+
+                break;
+            default:
+        }
+
+        //恢复按钮状态，隐藏提示语，初始化正在Rolling状态
+        clearDicingState();
+    }
+
+    //点击重新开始按钮事件
+    function onClickBtnRestart(isProjection) {
+        if ($currentScope.isRestarting) return;
+
+        $currentScope.isRestarting = true;
+
+        //Step2. 通知投影端（重新开始）
+        //!isProjection && Utils.sendUserInput(Constants.USER_INPUT_RESTART, {eventSeqNo: ++$currentScope.userInputEventSeqNo});
+
+        //清空统计表格中的数据，两粒骰子将回到未进行任何操作时的立体展示阶段
+        resetDiceRecordState(false);
+
+        $currentScope.isRestarting = false;
+    }
+
+    //点击结束同步按钮事件
+    function onClickBtnStopSync() {
+        $currentScope.eventBus.sendEvent('Sync', {
+            source: $currentScope.module_id,
+            type: Constants.SYNC_CANCEL,
+            value: { syncId: $currentScope.syncId }
+        });
+    }
+
+    //切换掷一掷按钮的状态
+    function switchDiceOnceBtnState(isDisable) {
+        shouldDisableButton($currentScope.btnDiceOnce, isDisable);
+    }
+
+    //切换掷10次按钮的状态
+    function switchDiceTenBtnState(isDisable) {
+        shouldDisableButton($currentScope.btnDiceTen, isDisable);
+    }
+
+    //切换重新开始按钮的状态
+    function switchRestartBtnState(isDisable) {
+        shouldDisableButton($currentScope.btnRestart, isDisable);
+    }
+
+    //切换按钮的状态
+    function shouldDisableButton($btn, isDisable) {
+        if ($btn) {
+            isDisable ? $btn.addClass(Constants.CSS_BTN_DISABLED) : $btn.removeClass(Constants.CSS_BTN_DISABLED);
+        }
+    }
+
+    /**
+     * 探究规律统计表格的渲染
+     */
+    function renderRuleTable() {
+        $('<div style="width: 100%; height: 100%; text-align: center; color: #fff; font-size: 2rem;letter-spacing: 1em}">' + i18nModel['coming_soon'] + '</div>').appendTo($currentScope.ruleTable);
+        //var header = $('<div/>').appendTo($currentScope.ruleTable);
+        //for (var j = 0; j < 13; j++) {
+        //    $('<span class="box" id="0_' + j + '"/>').appendTo(header);
+        //}
+        //
+        //for (var i = 12; i > 0; i--) {
+        //    var row = $('<div/>').appendTo($currentScope.ruleTable);
+        //    for (var j = 0; j < 13; j++) {
+        //        if (j === 0) {
+        //            $('<span class="box">' + i + '</span>').appendTo(row);
+        //        } else {
+        //            $('<span class="box color" id="' + i + '_' + j + '"/>').appendTo(row);
+        //        }
+        //    }
+        //}
+        //
+        //var footer = $('<div/>').appendTo($currentScope.ruleTable);
+        //for (var j = 0; j < 13; j++) {
+        //    if (j > 0) {
+        //        $('<span class="box">' + j + '</span>').appendTo(footer);
+        //    } else {
+        //        $('<span class="box"/>').appendTo(footer);
+        //    }
+        //}
+    }
+
+    /**
+     * 播放动画、音效
+     * @param isCrazy 疯狂掷骰子
+     */
+    function playAnimation(dicesPair) {
+        if (dicesPair) {
+            var dicePair, diceRollDuration;
+            if (dicesPair.length > 1) {
+                dicePair = dicesPair[dicesPair.length - 1];
+                diceRollDuration = Constants.DURATION_DICE_ROLL_TEN;
+                $currentScope.audioPlaying = $currentScope.audioDiceTen;
+            } else {
+                dicePair = dicesPair[0];
+                diceRollDuration = Constants.DURATION_DICE_ROLL_ONCE;
+                $currentScope.audioPlaying = $currentScope.audioDiceOnce;
+            }
+
+            $currentScope.dicesPair = dicesPair;
+            Utils.playAudioObject($currentScope.audioPlaying, 0);
+            Utils.DiceRoll([$currentScope.dice01, $currentScope.dice02], diceRollDuration, dicePair, afterAnimation);
+        }
+    }
+
+    function afterAnimation() {
+
+        if ($currentScope.isDiceRolling) {
+            //动画过程中，未点击重新开始
+            ////Step5. 停止音效
+            //Utils.stopAudio($currentScope.audioPlaying[0]);
+
+            //Step6. 根据不同的统计模式进行统计显示
+            switch ($currentScope.statMode) {
+                case Constants.STAT_MODE_NONE:
+                    clearDicingState();
+                    //此时记录骰子数字
+                    toStuDicesPair = $currentScope.dicesPair[$currentScope.dicesPair.length - 1];
+                    break;
+                case Constants.STAT_MODE_TIMES:
+                    refreshTimesTable($currentScope.dicesPair, false, clearDicingState);
+                    break;
+                case Constants.STAT_MODE_RULE:
+                    refreshRuleTable($currentScope.dicesPair, false, clearDicingState);
+
+                    break;
+                default:
+            }
+        }
+    }
+
+    /**
+     * 立刻停止动画、音效
+     * @param isCrazy 疯狂掷骰子
+     */
+    function stopAnimation() {
+        //停止音效
+        if ($currentScope.audioPlaying) {
+            Utils.stopAudio($currentScope.audioPlaying[0]);
+            $currentScope.audioPlaying = null;
+        }
+
+        //停止动画
+        Utils.clearRollTimeout();
+        clearRefreshTimesTimeout();
+        $currentScope.dice01.removeClass(Constants.CSS_DICE_ROLL);
+        $currentScope.dice02.removeClass(Constants.CSS_DICE_ROLL);
+
+        $currentScope.isDiceRolling = false;
+    }
+
+    /**
+     * 获取随机骰子对
+     * @param times 掷出次数
+     * @returns {Array} 骰子对
+     */
+    function getRandomDicesPair(times) {
+        times = times || 1;
+
+        var dicesPair = [];
+        for (var i = 0; i < times; i++) {
+            dicesPair.push(Utils.getRandomNumberArray(6, 1, 2));
+        }
+
+        return dicesPair;
+    }
+
+    /**
+     * 展示两粒骰子的向上面
+     */
+    function refreshPairDice(dicePair) {
+        Utils.setDiceNum($currentScope.dice01, dicePair[0]);
+        Utils.setDiceNum($currentScope.dice02, dicePair[1]);
+
+        //推送给学生的骰子数字
+        toStuDicesPair = [Constants.DICE_01_NUM, Constants.DICE_02_NUM];
+    }
+
+    /**
+     * 刷新次数统计表
+     * @param dicesPair 骰子对
+     */
+    function refreshTimesTable(dicesPair, isSetDiceNum, callback) {
+        if (dicesPair) {
+            isSetDiceNum && refreshPairDice(dicesPair[dicesPair.length - 1]);
+
+            var five2ninePlus = 0,
+                othersPlus = 0;
+            $.each(dicesPair, function (index, pair) {
+                var diceResult = pair[0] + pair[1];
+                diceResult >= 5 && diceResult <= 9 ? five2ninePlus++ : othersPlus++;
+            });
+
+            refreshTimes(five2ninePlus, othersPlus, callback);
+        }
+    }
+
+    //刷新概率统计表格
+    $currentScope.refreshTimesTimeout = null;
+    function refreshTimes(five2ninePlus, othersPlus, callback) {
+        clearRefreshTimesTimeout();
+
+        if (five2ninePlus > 0) {
+            $currentScope.timesFive2NineCtrl.next().text('+' + five2ninePlus);
+            $currentScope.timesFive2NineCtrl.parent().addClass(Constants.CSS_PLUS_HINT);
+        }
+        if (othersPlus > 0) {
+            $currentScope.timesOthersCtrl.next().text('+' + othersPlus);
+            $currentScope.timesOthersCtrl.parent().addClass(Constants.CSS_PLUS_HINT);
+        }
+
+        $currentScope.refreshTimesTimeout = setTimeout(function () {
+            if (five2ninePlus > 0) {
+                $currentScope.timesDiceRecord.five2nine += five2ninePlus;
+                $currentScope.timesFive2NineCtrl.text($currentScope.timesDiceRecord.five2nine);
+                $currentScope.timesFive2NineCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+            }
+            if (othersPlus > 0) {
+                $currentScope.timesDiceRecord.others += othersPlus;
+                $currentScope.timesOthersCtrl.text($currentScope.timesDiceRecord.others);
+                $currentScope.timesOthersCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+            }
+
+            //此时记录骰子数字
+            toStuDicesPair = $currentScope.dicesPair[$currentScope.dicesPair.length - 1];
+
+            callback && callback();
+
+            $currentScope.refreshTimesTimeout = null;
+        }, Constants.DURATION_PLUS_HINT);
+    }
+
+    //停止刷新概率表格
+    function clearRefreshTimesTimeout() {
+        if ($currentScope.refreshTimesTimeout) {
+            $currentScope.timesFive2NineCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+            $currentScope.timesOthersCtrl.parent().removeClass(Constants.CSS_PLUS_HINT);
+
+            clearTimeout($currentScope.refreshTimesTimeout);
+            $currentScope.refreshTimesTimeout = null;
+        }
+    }
+
+    /**
+     * 刷新规律统计表
+     * @param dicesPair 骰子对
+     */
+    function refreshRuleTable(dicesPair, isSetDiceNum, callback) {
+        if (dicesPair) {
+            isSetDiceNum && refreshPairDice(dicesPair[dicesPair.length - 1]);
+
+            //dicesPair && $.each(dicesPair, function (index, pair) {
+            //    var key = (pair[0] + pair[1]);
+            //    if ($currentScope.ruleDiceRecord[key]) {
+            //        $currentScope.ruleDiceRecord[key]++;
+            //    } else {
+            //        $currentScope.ruleDiceRecord[key] = 1;
+            //    }
+            //
+            //    if ($currentScope.ruleDiceRecord[key] > 12) { //加和的值次数超过12次
+            //        Utils.find('#0_' + key).text($currentScope.ruleDiceRecord[key]);
+            //    } else {
+            //        Utils.find('#' + $currentScope.ruleDiceRecord[key] + '_' + key).css('background-color', RULE_TABLE_COLORS[key]);
+            //    }
+            //});
+            //此时记录骰子数字
+            toStuDicesPair = $currentScope.dicesPair[$currentScope.dicesPair.length - 1];
+
+            callback && callback();
+        }
+    }
+
+    /* ============================ #endregion: Presenter Function ============================ */
+
+    /* ============================ #region: 辅助类 ============================ */
+    var Utils = {
+        //根据选择器获取DOM对象
+        find: function find(selector) {
+            return $view.find(selector);
+        },
+        //获取[n, m]区间的随机数字数组
+        'getRandomNumberArray': function getRandomNumberArray(m, n, size) {
+            if (size && size > 1) {
+                var array = [];
+                for (var i = 0; i < size; i++) {
+                    array.push(this.getRandomNumber(m, n));
+                }
+
+                return array;
+            }
+
+            return this.getRandomNumber(m, n);
+        },
+        //获取[n, m]区间的随机数字
+        'getRandomNumber': function getRandomNumber(m, n) {
+            if (m > n) {
+                return Math.round(Math.random() * (m - n) + n);
+            } else {
+                return Math.round(Math.random() * (n - m) + m);
+            }
+        },
+        //设置骰子数字
+        'setDiceNum': function setDiceNum(dice, value) {
+            dice && dice.attr('data-val', value);
+        },
+        //掷骰子动画类
+        'DiceRoll': function DiceRoll($actors, duration, nums, callback) {
+            if (!$actors) return;
+
+            var diceRoll = {};
+            diceRoll.$actors = $actors;
+            diceRoll.duration = duration;
+            diceRoll._ret = nums;
+            diceRoll.rolling = false;
+
+            return Utils._roll(diceRoll, callback);
+        },
+        '_roll': function _roll(diceRoll, callback) {
+            if (diceRoll.rolling) return;
+            Utils.clearRollTimeout();
+
+            this.$actors = diceRoll.$actors;
+            diceRoll.rolling = true;
+            !diceRoll._ret && (diceRoll._ret = Utils.getRandomNumber(6, 1, diceRoll.$actors.length));
+            $.each(diceRoll.$actors, function () {
+                this.addClass(Constants.CSS_DICE_ROLL);
+            });
+
+            Utils.diceRollTimeout = setTimeout(function () {
+                $.each(diceRoll.$actors, function (index, item) {
+                    Utils.setDiceNum(item, diceRoll._ret[index]);
+                    item.removeClass(Constants.CSS_DICE_ROLL);
+                });
+
+                diceRoll.rolling = false;
+                callback && callback();
+
+                Utils.diceRollTimeout = null;
+            }, diceRoll.duration);
+
+            return diceRoll._ret;
+        },
+        'clearRollTimeout': function clearRollTimeout() {
+            if (this.diceRollTimeout) {
+                this.$actors && $.each(this.$actors, function () {
+                    this.removeClass(Constants.CSS_DICE_ROLL);
+                });
+
+                clearTimeout(this.diceRollTimeout);
+                this.diceRollTimeout = null;
+                this.$actors = null;
+            }
+        },
+        /**
+         * 播放音效
+         * @param audioId 音效ID
+         * @param delay 延迟播放（单位：毫秒）
+         */
+        'playAudioById': function playAudioById(audioId, delay) {
+            Utils.playAudioObject(Utils.find(audioId), delay);
+        },
+        /**
+         * 播放音效
+         * @param $audio 音效jq对象
+         * @param delay 延迟播放（单位：毫秒）
+         */
+        'playAudioObject': function playAudioObject($audio, delay) {
+            try {
+                var audio = $audio[0];
+                if (audio) {
+                    this.stopAudio(audio);
+                    if (delay && delay > 0) {
+                        setTimeout(function () {
+                            audio.play();
+                        }, delay);
+                    } else {
+                        audio.play();
+                    }
+                }
+            } catch (e) {
+                //alert(e);
+            }
+        },
+        //停止音效
+        'stopAudio': function stopAudio(audio) {
+            try {
+                if (audio && audio.played) {
+                    audio.currentTime = 0.001;
+                    audio.pause();
+                }
+            } catch (e) {
+                //alert(e);
+            }
+        },
+        //停止所有音效
+        'stopAllAudios': function stopAllAudios() {
+            $.each(Utils.find('audio'), function (index, item) {
+                Utils.stopAudio(item);
+            });
+        },
+        //销毁所有音效
+        'destroyAllAudios': function destroyAllAudios() {
+            $.each(Utils.find('audio'), function (index, item) {
+                item.pause();
+                item.src = '';
+                item.load();
+                $(item).remove();
+            });
+        }
+    };
+    /* ============================ #endregion: 辅助类 ============================ */
+
+    return presenter;
+}]]></presenter><resources><file src="./resources/medias/dice_once.mp3"/><file src="./resources/medias/dice_once.wav"/><file src="./resources/medias/dice_ten.mp3"/><file src="./resources/medias/dice_ten.wav"/><file src="./resources/wood/images/chirality_active.png"/><file src="./resources/wood/images/chirality.png"/><file src="./resources/wood/images/icon_refresh_active.png"/><file src="./resources/wood/images/icon_refresh.png"/><file src="./resources/wood/images/line_bg.png"/><file src="./resources/wood/images/pop_dice_roll.png"/><file src="./resources/wood/images/pop_dice.png"/></resources></addon>

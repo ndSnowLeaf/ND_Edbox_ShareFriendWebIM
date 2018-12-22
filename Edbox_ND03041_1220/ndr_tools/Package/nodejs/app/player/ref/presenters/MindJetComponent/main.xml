@@ -1,0 +1,759 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MindJetComponent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="IcTimer" version="1.0" />
+    <javaScript  name="MinderMap" version="1.2.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * 对外服务实例
+ * @param presenter Presenter实例
+ * @param mainMinderMap 思维导图实例
+ * @param isGlobalDisplayOnLockChanged 锁屏时自动全屏显示
+ * @constructor
+ */
+function MindJetComponentService(presenter, mainMinderMap, isGlobalDisplayOnLockChanged) {
+  this.presenter = presenter;
+  this.mainMinderMap = mainMinderMap; //主思维导图类库对象
+  this.previewMinderMap = null; //预览用思维导图类库对象
+  this.isGlobalDisplayOnLockChanged = isGlobalDisplayOnLockChanged || false;
+  this.lastStateTimestamp = 0; //最新状态的生效时间 主要应用于异常流恢复的特殊处理逻辑
+  this.isFinished = false; //结束作答
+
+  //状态数据对象
+  this.stateDataObj = {
+    isLocked: false, //是否锁屏
+    scale: null, //显示比例值, 修复PMS-61366, 默认空值
+    isAllowSubmit: false //是否已作答
+  };
+
+  //学生端接收老师修改的答案
+  if (presenter.isStudent) {
+    var self = this;
+    self.answerModifiedByTeacher = null; //被老师修改过的答案
+    presenter.$addEventListener('ModifyAnswer', PresenterEventType.IC_PLAYER_EVENT, function(eventData) {
+      self.answerModifiedByTeacher = eventData.value;
+      self.__syncAnswerFromTeacher();
+    });
+  }
+}
+
+MindJetComponentService.prototype = {
+  /****实现思维导图学科工具推送所需接口****/
+  getExtendData: function() {
+    this.mainMinderMap.blur();
+
+    return {
+      questionId: "MMST_" + new Date().valueOf(),
+      data: this.mainMinderMap.getData()
+    };
+  },
+
+  /****实现思维导图统计插件所需接口****/
+        /**
+         * 询问思维导图是否发生变化
+         * @returns {*}
+         */
+  askMindJetContentIsChanged: function() {
+    this.mainMinderMap.blur();
+
+    var isChanged = this.mainMinderMap.hasChange();
+    if (isChanged) {
+      return {
+        isChanged: true,
+        data: this.mainMinderMap.getData()
+      }
+    } else {
+      return {
+        isChanged: false
+      };
+    }
+  },
+  /**
+   * 重置思维导图
+   * @param data
+   */
+  resetMindJetContent: function (data) {
+    this.__resetMapContent(data);
+  },
+  /**
+   * 监听工具窗口变化
+   * @param data
+   */
+  onResizeScreen: function (data) {
+    this.mainMinderMap && this.mainMinderMap.onResize(data);
+  },
+  /****实现工具事件的接口****/
+  broadcastEvent: function(name, data) {
+    switch (name) {
+      case 'mindjet_zoom_in': //缩小
+      case 'mindjet_zoom_out': //放大
+      case 'mindjet_zoom_slide': //拖动滑块
+        this._setMapScale(data, true);
+
+        break;
+      case 'mindjet_map_position': //定位
+        this.mainMinderMap.rootCenter();
+
+        break;
+      case 'mindjet_global_view': //全局
+        this.mainMinderMap.matchParent();
+
+        break;
+      case 'mindjet_tool_close': //关闭 - 学科工具
+        this.presenter._destroyMinderMap();
+        window.close();
+
+        break;
+      case 'mindjet_un_do': //撤销 - 不使用OperateHistoryController
+        this.undo();
+
+        break;
+      case 'mindjet_re_do': //还原 - 不使用OperateHistoryController
+        this.redo();
+
+        break;
+      default:
+        ;
+    }
+  },
+  /****实现操作历史的接口****/
+  undo: function(data) {
+    this.mainMinderMap.undo(data);
+  },
+  redo: function(data) {
+    this.mainMinderMap.redo(data);
+  },
+  /****实现互动习题的接口****/
+  getQuestionInfo: function() {
+    return {
+      id: this.presenter.model.questionId,
+      type_code: "mindjet",
+      type_name: "思维导图",
+      url: "",
+      item: "mindjet",
+      dispatchOnly: true,
+      notExistStatistics: false
+    };
+  },
+  setLocationProperties: function(properties) {
+    this.presenter.$locales = properties;
+    this.presenter.$translator.setData(properties);
+  },
+  showAnswer: function(answerType) {},
+  getResult: function() {
+    var result = {
+      questionId: this.presenter.model.questionId,
+      answerState: this.stateDataObj.isAllowSubmit ? 'COMPLETE' : 'NO_ANSWER', //'表示题型的作答情况, 定义三种状态: 未作答(NO_ANSWER), 未完成(NO_COMPLETE), 完成(COMPLETE)',
+      answer: {
+        answer_result: true,
+        correct_response: null,
+        user_response: []
+      }
+    };
+    if (result.answerState === 'NO_ANSWER') {
+      result.answer.user_response.push({});
+
+      return result; //未作答直接返回
+    }
+
+    //调用截图
+    if (typeof ClassroomUtils !== 'undefined' && typeof ClassroomUtils.screenShot === 'function') {
+      var self = this,
+        $deferred = $.Deferred();
+      result.answer.user_response.push($deferred);
+      self.mainMinderMap.blur(); //失去激活态，避免截图出现红框节点
+
+      var clientRect = self.presenter.view.getBoundingClientRect();
+      setTimeout(function() {
+        self.__lock();
+
+        ClassroomUtils.screenShot({
+          "left": clientRect.left,
+          "top": clientRect.top + 3, //PMS-109499: 请听老师讲解
+          "width": clientRect.width,
+          "height": clientRect.height,
+          "outputWidth": clientRect.width,
+          "outputHeight": clientRect.height
+        }).done(function(url) {
+          self.__toDataUrl(url, function(base64) {
+            self.__unLock();
+            base64 = base64.replace(/^data:.+?;base64,/, ''); //.replace('data:image/webp;base64,', '');
+
+            $deferred.resolve(base64);
+          });
+        }).fail(function() {
+          self.__unLock();
+          $deferred.resolve(null);
+        });
+      }, 300);
+    }
+
+    return result;
+  },
+  getInterceptId: function() {
+    return this.presenter.model.questionId;
+  },
+  beforeSendAnswer: function(sendData) {
+    if (!!sendData.answer && sendData.answer.user_response.length > 0) {
+      sendData.answer.data = [
+        {
+          type: "thumb", //缩略图
+          data_type: "file",
+          value: sendData.answer.user_response[0],
+          extra: null
+        },
+        {
+          type: "detail", //详细答案
+          data_type: "raw",
+          value: JSON.stringify(this.mainMinderMap.getData() || {}),
+          extra: {
+            submitTimestamp: ClassroomUtils.getMasterSystemTimeMS()
+          }
+        }
+      ];
+
+      delete sendData.answer.user_response;
+    }
+
+    return sendData;
+  },
+  afterSendAnswer: function(service) {},
+  resetQuestion: function() {},
+  showResultHint: function(options) {},
+  lockQuestion: function(options) {
+    if (options && options.type === 'OnFinish') {
+      this.isFinished = true;
+    }
+
+    //不允许编辑但允许拖动、缩放
+    this.stateDataObj.isLocked = true;
+    this.__lock();
+
+    this.isGlobalDisplayOnLockChanged && this.__delayGlobalDisplay();
+  },
+  unlockQuestion: function(options) {
+    this.isFinished = false;
+    this.stateDataObj.isLocked = false;
+
+    //同步教师修改的作答结果
+    var isSync = this.__syncAnswerFromTeacher();
+    if (!isSync) {
+      this.mainMinderMap.setEditAble(true);
+      this.isGlobalDisplayOnLockChanged && this.__delayGlobalDisplay();
+    }
+
+    //作答状态从修改->重新提交，先调用getState->unlockQuestion，所以这时的stateObj.isLocked===true
+    this.presenter._notifyStateChange(false);
+    this.__unLock();
+  },
+  finishQuestion: function() {
+    this.unlockQuestion();
+  },
+  /****实现思维导图编辑的接口****/
+  getCourseObjectData: function() {
+    return this.mainMinderMap.getData();
+  },
+  showPreview: function(container) {
+    var deffer = $.Deferred();
+
+    //是否需要新实例化一个思维导图类库
+    this.closePreview();
+    this.previewMinderMap = MinderMap.create({
+      maxScale: 2.5,
+      minScale: 0.1,
+      renderDataAutoLayout: false,
+      editAble: false,
+      contentClickViewAble: true,
+      baseScale: 1.5,
+      langData: this.presenter.$locales
+    });
+
+    this.previewMinderMap.setData(this.getCourseObjectData());
+    this.previewMinderMap.render(container);
+    this.previewMinderMap.matchParent();
+    this.mainMinderMap.setLock(true);
+
+    deffer.resolve();
+  },
+  closePreview: function() {
+    if (!!this.previewMinderMap) {
+      this.previewMinderMap.destroy();
+      this.previewMinderMap = null;
+    }
+    this.mainMinderMap.setLock(false);
+  },
+  /****实现状态恢复的接口****/
+  getState: function() {
+    var stateObj = {
+      map_data: this.mainMinderMap ? this.mainMinderMap.getData() : {},
+      lastStateTimestamp: this.lastStateTimestamp
+    };
+
+    return $.extend(stateObj, this.stateDataObj);
+  },
+  setState: function(stateObj) {
+    if (!!stateObj) {
+      this.lastStateTimestamp = stateObj.lastStateTimestamp || 0;
+
+      //是否已作答
+      this._setAllowSubmit(stateObj.isAllowSubmit);
+
+      //Step1. 数据恢复
+      //临时方案: 由于MindMap对象暂时无法进行状态恢复的数据重新渲染，导致状态恢复时需要重新实例化MindMap(调用上层的_initializeMinderMap方法)
+      this.mainMinderMap = this.presenter._initializeMinderMap(stateObj.map_data);
+
+      //Step2. 百分比缩放恢复  TODO 或许应该由工具栏自实现状态恢复
+      !!stateObj.scale && this._setMapScale(stateObj.scale, true);
+
+      //Step3. 操作状态恢复
+      if (!!stateObj.isLocked && stateObj.__isSubmitSucceed === true) { //支持思维导图多次交互特性，状态恢复bug-99606、99658 修复
+        this.lockQuestion(true);
+      } else {
+        this.unlockQuestion(true);
+      }
+    }
+  },
+  /****实现互动课堂状态恢复的接口****/
+  getClassroomStatus: function() {
+    return this.getState();
+  },
+  setClassroomStatus: function(stateObj) {
+    // 开始恢复
+    this.presenter.isInRecovering = true;
+    this.setState(stateObj);
+    // 通知状态恢复完成
+    this.presenter.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+      presenterCode: 'MindJetComponent' // 当前模块代码,也就是metaInfo.name
+    });
+    this.presenter.isInRecovering = false;
+  },
+  clearClassroomStatus: function() {
+    // ...
+  },
+  /****以下开始为Presenter的私有方法*****/
+  _refreshStateTimestamp: function() {
+    this.lastStateTimestamp = ClassroomUtils.getMasterSystemTimeMS();
+  },
+  //设置缩放比例
+  _setMapScale: function(scale, isSync) {
+    this.stateDataObj.scale = scale;
+
+    if (isSync) {
+      this.mainMinderMap.scale(scale);
+    }
+  },
+  //设置是否可提交标识
+  _setAllowSubmit: function(value) {
+    this.stateDataObj.isAllowSubmit = value;
+  },
+  //设置当前思维导图实例
+  _setMainMinderMap: function(mainMinderMap) {
+    this.mainMinderMap = mainMinderMap;
+  },
+  /****以下开始为Service的私有方法*****/
+  //锁定
+  __lock: function() {
+    this.mainMinderMap.setEditAble(false);
+    this.presenter._lockToolbar(true);
+  },
+  //解锁
+  __unLock: function() {
+    if (!this.isFinished) {
+      this.mainMinderMap.setEditAble(true);
+      this.presenter._lockToolbar(false);
+    }
+  },
+  //设置思维导图数据
+  __resetMapContent: function(data) {
+    this.mainMinderMap = this.presenter._initializeMinderMap(data);
+  },
+  /**
+   * 同步教师修改的作答结果
+   *
+   * answerModifiedByTeacher的数据结构，参照MindJetStatisPlugin api:syncAnswer
+   *
+   * @returns {boolean}
+   * @private
+   */
+  __syncAnswerFromTeacher: function() {
+    //收到老师修改的答案，并且当前处于可作答状态
+    if (this.answerModifiedByTeacher && this.stateDataObj.isLocked === false) {
+      /**
+       * 通过时间戳的比对来识别收到的老师修改答案是否有效
+       *  该方案用于防止一个异常流的case：老师修改学生答案，然后再次发题给学生，学生在老师的基础上继续作答，在不提交的情况下异常重启，此时状态恢复：
+       *  1. setState接口被调用后，传入学生最新作答的结果数据，并显示在界面上
+       *  2. 收到ModifyAnswer事件，获取老师修改的答案，但此时这个数据是失效的，因为异常前学生已在老师修改的基础上作答了
+       *
+       *  补充：针对这种情况，如何互动课堂能够识别到而不向业务组件发送ModifyEvent事件，就不需要这样的处理方案；
+       *        仅仅这个异常流case而加入时间戳，挺不划算，业务组件本不应该耦合这类框架逻辑
+       * @type {*|number}
+       */
+      var modifyTimestamp = this.answerModifiedByTeacher.modifyAnswerTimestamp || 0, //老师修改时间
+        isValid = modifyTimestamp >= this.lastStateTimestamp; //老师修改时间 与 最新状态的生效时间
+      if (isValid) {
+        this.__resetMapContent(JSON.parse(this.answerModifiedByTeacher.answer));
+      }
+      this.answerModifiedByTeacher = null;
+
+      return isValid;
+    }
+
+    return false;
+  },
+  //延迟全屏显示
+  __delayGlobalDisplay: function(delaySecs) {
+    var self = this;
+    IcTimer.scheduleTask(function() {
+      self.mainMinderMap.matchParent();
+    }, delaySecs || 300, false);
+  },
+  __toDataUrl: function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (MindJetComponentService);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_mindJetComponentService_js__ = __webpack_require__(0);
+
+
+(function () {
+    /** 常量定义 */
+    var LOCAL_CONSTANTS_DEFINE = {
+        EVENT_SCALE: 'scale',
+        EVENT_CONTENT_CHANGE: 'contentChange',
+        EVENT_STATE_CHANGE: 'change',
+        EVENT_MAP_ZOOM: 'mindjet_map_zoom',
+        EVENT_STATE_REDO: 'mindjet_redo_state',
+        EVENT_STATE_UNDO: 'mindjet_undo_state',
+        EVENT_TOOLBAR_LOCK: 'mindjet_toolbar_lock'
+    };
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+			toolKey: "MindMapSubjectTool",
+            name: "MindJetComponent",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.UTILITY_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.mainMinderMap = null;
+            this.$locales = null; //国际化文本翻译，用于传递给MindMap库
+            this.isInRecovering = false;        // 是否是恢复阶段
+        },
+        getService: function () {
+            if (!this._service_) { 
+                this._service_ = new __WEBPACK_IMPORTED_MODULE_0__libs_mindJetComponentService_js__["a" /* default */](this, this.mainMinderMap, this.isPPTShell);
+                this._service_.__ScopeId__ = this.__ScopeId__;
+            }
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.view = view;
+            this.model = model;
+            this.__ScopeId__ = model.scopeId;
+            !!this._service_ && (this._service_.__ScopeId__ = this.__ScopeId__);
+        },
+		afterRender: function() {
+			//渲染思维导图
+            var self = this;
+            this.$translatorDeferred.done(function () {
+                if (!self.mainMinderMap) {
+                    self._initializeMinderMap(self.model.questionData);
+                }
+
+                //针对学科工具方式，推送后整个屏幕变大
+                self.$addEventListener('resetPresentersStyle', PresenterEventType.IC_PLAYER_EVENT, function() {
+                    self.mainMinderMap.matchParent();
+                });
+            });
+		},
+        destroy: function () {
+            //销毁思维导图类图实例
+            this._destroyMinderMap();
+            this.$locales = null;
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _isPreviewMode: function () {
+            return this.urlParams && this.urlParams.isPreview && this.urlParams.isPreview.toLowerCase() === 'true';
+        },
+        _isND25: function () {
+            return this.isApp && navigator.userAgent && navigator.userAgent.indexOf('101同学派') > -1;
+        },
+        //实例化思维导图类库对象
+        _initializeMinderMap: function (mapData) {
+            //销毁思维导图类库对象
+            this._destroyMinderMap();
+
+            //Step1. 实例化思维导图类库
+            var animateFlag = !this._isND25();
+            var isPreview = this._isPreviewMode();
+            var $view = $(this.view);
+            this.mainMinderMap = MinderMap.create({
+                maxScale: 2.5,                                       //最大缩放比例
+                minScale: 0.1,                                       //最小缩放比例
+                renderDataAutoLayout: false,                        //初始化数据时是否进行自动布局，默认自动布局
+                editAble: !isPreview,                                //是否可编辑
+                contentClickViewAble: isPreview || this.isPPTShell, //隐藏的节点，点击后是否显示内容
+                showMenu: this.isPC || this.isWeb,                 //是否显示右键菜单
+                ignoreAttrTextVisible: this.isStudent,              //学生端忽略老师备课的隐藏内容
+                animate: animateFlag,                                //是否打开动画效果
+                baseScale: this.isPC ? 1.5 : 1.4,
+				triggerBlurContainer: $view.parents('.mindMap_box')[0],
+                langData: this.$locales,                            //多语言包
+                viewPort: [$view.width(), $view.height()]           //用于窗口大小变化时的自适应
+            });
+            this._service_._setMainMinderMap(this.mainMinderMap);
+
+            //Step2. 注册思维导图回调事件
+            this._registerMinderMapCallback();
+
+            //Step3. 注入数据并渲染
+            this.mainMinderMap.setData(mapData || this.model.questionData);
+            this.mainMinderMap.render(this.view);
+            this.mainMinderMap.matchParent();
+
+            return this.mainMinderMap;
+        },
+        //发送H5事件
+        _sendH5Event: function (eventName, value) {
+            this.$dispatchEvent(eventName, PresenterEventType.IC_PLAYER_EVENT, {
+				source: 'MindJetComponent',
+                event: eventName,
+                value: value,
+                scopeId: this.__ScopeId__
+            });
+        },
+        //注册思维导图回调事件
+        _registerMinderMapCallback: function () {
+            var minderMapObj = this.mainMinderMap;
+
+            //注册思维导图内部缩放事件回调
+            minderMapObj.on(LOCAL_CONSTANTS_DEFINE.EVENT_SCALE, this._onMindMapScale.bind(this));
+
+            //注册思维导图操作步骤回调（撤销、还原）
+            minderMapObj.on(LOCAL_CONSTANTS_DEFINE.EVENT_STATE_CHANGE, this._onMindMapStateChange.bind(this));
+
+            //学生端注册思维导图内容变化事件回调：初始提交按钮为不可用状态, 待学生操作后, 变成可用状态
+            if (this.isStudent) {
+                minderMapObj.on(LOCAL_CONSTANTS_DEFINE.EVENT_CONTENT_CHANGE, this._onMindMapContentChange.bind(this));
+            }
+        },
+        //思维导图内部缩放事件回调
+        _onMindMapScale: function (data) {
+            this._sendH5Event(LOCAL_CONSTANTS_DEFINE.EVENT_MAP_ZOOM, data);
+
+            if (this._service_) {
+				//设置缩放比例, 但不需要通知思维导图类库，因为就是它通知的
+                this._service_._setMapScale(data, false);
+				
+				//通知状态恢复筛选器，答题状态变化
+                this._notifyStateChange(false);
+
+                //通知课堂状态控制器，答题状态变化
+                this._notifyClassroomStateChange();
+            }
+        },
+        //思维导图操作步骤回调
+        _onMindMapStateChange: function () {
+            //还原按钮的状态变化
+            this._sendH5Event(LOCAL_CONSTANTS_DEFINE.EVENT_STATE_REDO, this.mainMinderMap.hasRedo());
+
+            //撤销按钮的状态变化
+            this._sendH5Event(LOCAL_CONSTANTS_DEFINE.EVENT_STATE_UNDO, this.mainMinderMap.hasUndo());
+
+            //通知课堂状态控制器，答题状态变化
+            this._notifyClassroomStateChange();
+        },
+        //思维导图内容变化回调
+        _onMindMapContentChange: function () {
+            //置为可提交状态
+			this._service_ && this._service_._setAllowSubmit(true);
+
+            //通知作答流程控制器，答题状态变化
+            this.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT, {canSubmit: true});
+
+            //通知状态恢复筛选器，答题状态变化
+            this._notifyStateChange(true);
+
+            //通知课堂状态控制器，答题状态变化
+            this._notifyClassroomStateChange();
+        },
+        //通知状态恢复筛选器，答题状态变化
+        _notifyStateChange: function (isRefreshStateTime) {
+            this.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+				
+			if(isRefreshStateTime) {
+				//刷新状态数据时间
+				this._service_ && this._service_._refreshStateTimestamp();
+			}	
+        },
+        //通知课堂状态控制器，答题状态变化
+        _notifyClassroomStateChange: function () {
+            if (this.isPPTShell && !this.isInRecovering) {
+                this.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: 'MindJetComponent' // 当前模块代码,也就是metaInfo.name
+                });
+            }
+        },
+        //锁定工具栏
+        _lockToolbar: function (isLock) {
+            this._sendH5Event(LOCAL_CONSTANTS_DEFINE.EVENT_TOOLBAR_LOCK, isLock);
+        },
+        //销毁思维导图类库对象
+        _destroyMinderMap: function () {
+            if (!!this.mainMinderMap) {
+                this.mainMinderMap.off(LOCAL_CONSTANTS_DEFINE.EVENT_SCALE);
+                this.mainMinderMap.off(LOCAL_CONSTANTS_DEFINE.EVENT_STATE_CHANGE);
+                this.mainMinderMap.off(LOCAL_CONSTANTS_DEFINE.EVENT_CONTENT_CHANGE);
+
+                this.mainMinderMap.destroy();
+                this.mainMinderMap = null;
+            }
+        }
+    }, "MindJetComponent");
+
+    window.AddonMindJetComponent_create = function () {
+        return new Presenter();
+    }
+})();
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,159 @@
+<div class="freeCombination_wrapper table_config" ng-click="preventClick($event)" ng-show="show">
+    <div class="freeCombination_poptable" style="min-width: 356.44372px;min-height: 529.36378px;">
+        <div class="freeCombination_pt_title_wrapper">
+            <span class="freeCombination_pt_title">表格属性</span>
+            <span class="freeCombination_ptt_icon" ng-click="cancel()"></span>
+        </div>
+
+        <div class="freeCombination_pt_content_wrapper " ng-class="{'show_content1':!other,'show_content2':other}"> <!--加类show_content1，显示表格属性的表单，加类show_content2，显示高级表单-->
+            <div class="freeCombination_ptc_tab_title">
+                <span class="freeCombination_ptct_title1"  ng-click="setOther(false)">表格属性</span>
+                <span class="freeCombination_ptct_title2" ng-click="setOther(true)">高级</span>
+            </div>
+            <div class="freeCombination_ptc_tab_content_wrapper" style="min-width: 339.31485px;min-height: 388.25449px;"> <!--拖拉改变表格宽度和高度时，改变.freeCombination_ptc_tab_content_wrapper的宽度或者高度-->
+                <div class="freeCombination_ptc_tab_content content1 " ng-show="!other">
+                    <table class="freeCombination_ptc_table freeCombination_ptc_table1" >
+                        <tr>
+                            <td>行数</td>
+                            <td><input  type="text" ng-model="config.rows"/></td>
+                            <td>宽度</td>
+                            <td><input  type="text"  ng-model="config.width"/></td>
+
+                        </tr>
+                        <tr>
+                            <td>列数</td>
+                            <td><input  type="text" ng-model="config.columns"/></td>
+                            <td>高度</td>
+                            <td><input  type="text"  ng-model="config.height"/></td>
+                        </tr>
+                    </table>
+
+                    <table class="freeCombination_ptc_table freeCombination_ptc_table2">
+                        <tr>
+                            <td>标题单元格</td>
+                            <td>
+                                <div class="freeCombination_ptct_select" ng-click="setTitleConfigShow($event,true)">
+                                    <span ng-bind="config.titleconfig"></span>
+                                    <span class="freeCombination_ptct_icon"></span>
+                                    <ul class="ui_fcb_select_box freeCombination_ptct_ul" ng-class="{'show_dom':showtitleconfig}"> <!--.freeCombination_ptct_ul显示下拉菜单加类show_dom-->
+                                        <li class="ui_fcb_select_list" ng-click="setTitleConfig($event,'无')">
+                                            <span class="ui_fcb_select_text">无</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setTitleConfig($event,'第一行')">
+                                            <span class="ui_fcb_select_text">第一行</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setTitleConfig($event,'第一列')">
+                                            <span class="ui_fcb_select_text">第一列</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setTitleConfig($event,'第一行和第一列')">
+                                            <span class="ui_fcb_select_text">第一行和第一列</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="freeCombination_ptc_table freeCombination_ptc_table3" >
+                        <tr>
+                            <td>对齐方式</td>
+                            <td>
+                                <div class="freeCombination_ptct_select" ng-click="setAlignConfigShow($event,true)">
+                                    <span ng-bind="config.alignconfig"></span>
+                                    <span class="freeCombination_ptct_icon"></span>
+                                    <ul class="ui_fcb_select_box freeCombination_ptct_ul "  ng-class="{'show_dom':showalignconfig}"> <!--.freeCombination_ptct_ul显示下拉菜单加类show_dom-->
+                                        <li class="ui_fcb_select_list" ng-click="setAlignConfig($event,'没有设置')">
+                                            <span class="ui_fcb_select_text">&lt;没有设置&gt;</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setAlignConfig($event,'左对齐')">
+                                            <span class="ui_fcb_select_text">左对齐</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setAlignConfig($event,'居中')">
+                                            <span class="ui_fcb_select_text">居中</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list"  ng-click="setAlignConfig($event,'右对齐')">
+                                            <span class="ui_fcb_select_text">右对齐</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <table class="freeCombination_ptc_table freeCombination_ptc_table4">
+                        <tr>
+                            <td>间距</td>
+                            <td><input  type="text" ng-model="config.cellspacing"/></td>
+                            <td>边框</td>
+                            <td><input  type="text" ng-model="config.border"/></td>
+                            <td>边距</td>
+                            <td><input  type="text" ng-model="config.cellpadding"/></td>
+                        </tr>
+                    </table>
+
+                    <table class="freeCombination_ptc_table freeCombination_ptc_table5" >
+                        <tr>
+                            <td>标题</td>
+                            <td><input  type="text"  ng-model="config.title"/></td>
+                        </tr>
+                        <tr>
+                            <td>摘要</td>
+                            <td><input  type="text"  ng-model="config.abbr"/></td>
+                        </tr>
+                    </table>
+
+
+                </div>
+                <div class="freeCombination_ptc_tab_content content2 " ng-show="other"> <!--freeCombination_ptc_tab_content加类hide_dom可隐藏-->
+                    <table class="freeCombination_ptc_table ">
+                        <tr>
+                            <td>ID</td>
+                            <td><input class="freeCombination_ptct_input_id" type="text" ng-model="config.id"/></td>
+                        </tr>
+                        <tr>
+                            <td>语言方向</td>
+                            <td>
+                                <div class="freeCombination_ptct_select freeCombination_content2_select"  ng-click="setDirShow($event,true)">
+                                    <span ng-bind="config.dir">没有设置</span>
+                                    <span class="freeCombination_ptct_icon"></span>
+                                    <ul class="ui_fcb_select_box freeCombination_ptct_ul "  ng-class="{'show_dom':showdir}"> <!--.freeCombination_ptct_ul显示下拉菜单加类show_dom&ndash;&gt;-->
+                                        <li class="ui_fcb_select_list" ng-click="setDir($event,'没有设置')">
+                                            <span class="ui_fcb_select_text">&lt;没有设置&gt;</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list" ng-click="setDir($event,'从左到右(LTR)')">
+                                            <span class="ui_fcb_select_text">从左到右(LTR)</span>
+                                        </li>
+                                        <li class="ui_fcb_select_list" ng-click="setDir($event,'从右到左(RTL)')">
+                                            <span class="ui_fcb_select_text">从右到左(RTL)</span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>样式</td>
+                            <td><input class="freeCombination_ptct_input_style"  type="text" ng-model="config.style"/></td>
+                        </tr>
+                        <tr>
+                            <td>样式类</td>
+                            <td><input class="freeCombination_ptct_input_class" type="text"ng-model="config.class"/></td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="freeCombination_pt_bottom">
+            <span class="freeCombination_ptb_btn btn_yes "   ng-click="create()"> <!--鼠标点击加类名ui_btn_active-->
+                <span class="freeCombination_ptb_btn_text">确定</span>
+            </span>
+            <span class="freeCombination_ptb_btn btn_no"   ng-click="cancel()">
+                <span class="freeCombination_ptb_btn_text">取消</span>
+            </span>
+        </div>
+
+    </div>
+</div>

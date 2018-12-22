@@ -1,0 +1,1 @@
+exports.Float=function(){},exports.PositiveInteger=function(){},exports.VARBINARY=function(){};

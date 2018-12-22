@@ -1,0 +1,81 @@
+
+<div class="comui101_pop" ng-show="model.isVisible">
+    <div class="comui101_pop_bg ">
+
+        <!-- 弹窗内容区 -->
+        <div class="comui101_pop_hd" >
+            <span class="comui101_txt" translate="color.pop.title"></span>
+        </div>
+        <!-- /弹窗内容区 -->
+        <!-- 弹窗内容区 -->
+        <div class="comui101_pop_main" >
+            <div class="fillcolor_detail_group" ng-style="{'width':'970px','height':model.popHeight+'px'}">
+                <div class="com_model_header"  ng-show="model.isShowDetail">
+                    <!--<div class="com_model_ipt_item">-->
+                        <!--<input placeholder="输入搜索内容" type="text">-->
+                        <!--<a href="javascript:;" class="btn_model_search"></a>-->
+                    <!--</div>-->
+                    <div class="left_item">
+                        <!-- 初始页面不需要返回按钮 -->
+                        <a href="javascript:;" class="com_model_btn_back" ng-click="goBack();" translate="color.btn.go.back"></a>
+                        <!--<div class="com_model_breadcrumb">-->
+                            <!--<a href="javascript:;" class="link_breadcrumb">图片分类</a><span class="arrow_breadcrumb">&gt;</span>-->
+                            <!--<a href="javascript:;" class="link_breadcrumb">英魂之刃英魂之刃英魂之刃英魂之刃英魂之刃英魂之刃英魂之刃</a>-->
+                        <!--</div>-->
+                        <!-- <div class="com_search_result">
+                            搜索：<span class="highlight">关键字</span>
+                            <span class="search_tips">共有<span class="highlight">555</span>条结果</span>
+                        </div> -->
+                    </div>
+                </div>
+                <div ng-show="model.isShowPictureList">
+                    <div class="fillcolor_pic_item">
+                        <ul class="fillcolor_pic_list" ng-click="selectPicture($event);">
+                            <li ng-repeat="item in model.pictureList track by $index" ng-index="{{$index}}">
+                                <a href="javascript:;" class="fillcolor_pic_cell">
+                                    <div class="fillcolor_pic">
+                                        <img ng-src="{{item.pictureLocation}}" alt="{{item.title}}"/>
+                                    </div>
+                                    <p class="fillcolor_pic_name" ng-bind="item.title"></p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!--<tm-pagination conf="paginationConf"></tm-pagination>-->
+                </div>
+                <div class="fillcolor_detail" ng-show="model.isShowDetail">
+                    <p class="fillcolor_title" ng-bind="model.currentItem.title"></p>
+                    <div class="fillcolor_pic_view">
+                        <img ng-src="{{model.currentItem.previewLocation?model.currentItem.previewLocation:model.currentItem.pictureLocation}}" alt="{{model.currentItem.title}}"/>
+                    </div>
+                    <div class="fillcolor_btn_item">
+                        <!-- 不可点击加类disabled -->
+                        <a class="fillcolor_btn_fill" href="javascript:;" ng-click="confirmSelectPicture();" translate="color.btn.picture.select">
+                        </a>
+                    </div>
+                    <div class="fillcolor_pic_info">
+                        <div class="fillcolor_color_item">
+                            <p class="fillcolor_lab" translate="color.text.recommend.color"></p>
+                            <ul class="fillcolor_color_list">
+                                <li class="fillcolor_color_cell" ng-repeat="colorItem in model.currentItem.recommendedColor">
+                                    <a href="javascript:;" class="fillcolor_btn_color color1" ng-style="{'background-color':colorItem}"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="fillcolor_info_item">
+                            <p class="fillcolor_lab" translate="color.text.description"></p>
+                            <p ng-bind="model.currentItem.description"></p>
+                            <p><span translate="color.text.copyright"></span>:<span ng-bind="model.currentItem.copyright"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nd-loader message="model.loadingMessage" ng-show="model.isLoading"></nd-loader>
+        </div>
+        <!-- /弹窗内容区 -->
+
+        <!-- 右边关闭按钮 -->
+        <a href="###" class="comui101_btn_close" ng-click="exit();"><span></span></a>
+        <!-- /右边关闭按钮 -->
+    </div>
+</div>

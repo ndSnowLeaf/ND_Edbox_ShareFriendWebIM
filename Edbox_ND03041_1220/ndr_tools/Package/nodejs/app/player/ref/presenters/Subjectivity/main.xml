@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Subjectivity'>
+<properties>
+
+                <property name="id" displayName="题目id" type="string" isLocalized="false" />
+                <property name="type_code" displayName="题目类型编码" type="string" values="choice,multiplechoice,vote,textentry,order,match,judge,graphicgapmatch,textentrymultiple,handwrite,data" isLocalized="false" />
+                <property name="type_name" displayName="题目的类型名称" type="string" isLocalized="false" />
+                <property name="url" displayName="题目xml地址" type="question" isLocalized="false" />
+                <property name="theme" displayName="题目主题" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="out_frame" version="1.0.4" />
+    <javaScript  name="timer" version="1.0.1" />
+    <javaScript  name="btn_commit" version="1.0.1" />
+    <javaScript  name="messagebox" version="1.0.1" />
+    <javaScript  name="btn_pptshell" version="1.0.0" />
+    <javaScript  name="statisWrap" version="1.0.0" />
+    <javaScript  name="PageXmlParser" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonSubjectivity_create = function () {
+        var launcher = new BasicLauncher({
+            "defaultConfig": 'simple',
+            // 获取数据XML解析为JSON
+            "dataParse": function (model, pageModels) {
+                var me = this;
+                var deferred = $.Deferred();
+
+                if (model.url !== undefined && model.url !== null) {
+                    QtiPlayer.load(model.url, {
+                        refPath: icCreatePlayer.ref_path
+                    }, function (data) {
+                        //题目数据获取后，渲染到界面上
+                        if (data.modelMap) {
+                            for (var item in data.modelMap) {
+                                console.log('---------------------题干数据--------------------------');
+                                console.log(data.modelMap[item]);
+                                ClassroomUtils.log('[Subjectivity] 题干数据 ' + JSON.stringify(data.modelMap[item]));
+                                console.log('---------------------提示数据--------------------------');
+                                console.log(data.hintFeedback[item]);
+                                ClassroomUtils.log('[Subjectivity] 提示数据 ' + JSON.stringify(data.hintFeedback[item]));
+
+                                model.data = JSON.stringify(data.modelMap[item]);
+                                model.tip = JSON.stringify(data.hintFeedback[item]);
+                            }
+                            //统计平台，截图题型
+                            var sys = me._getQueryString('sys');
+                            var isScreenImage = me._getQueryString('isScreenImage');
+                            if (sys != null && sys.toLowerCase() === 'icrstatisticsplatform' && isScreenImage === '1') {
+                                model.isTool = '1';
+                            }
+                            deferred.resolve(model);
+                        }
+                        model.isTool = '0';
+                    }, function() {
+                        model.isTool = model.is_tool ? '1' : '0';
+                        model.data = JSON.stringify({});
+                        model.tip = JSON.stringify({});
+                        deferred.resolve(model);
+                    });
+                } else {
+                    model.isTool = model.is_tool ? '1' : '0';
+                    model.data = JSON.stringify({});
+                    model.tip = JSON.stringify({});
+                    deferred.resolve(model);
+                }
+
+                return deferred.done(
+                    function (data) {
+                        data.isWhole = data.isWhole || 0;
+                        data.questionType = 'subjectivity';
+                        data.examId = me._getExamId();
+                        //D类统计
+                        data.config = JSON.stringify({
+                            "toolbar": [].slice.apply(["exit", "order", "question", "parsing", "reference", "send.again"], model.isTool ? [0, -1] : [0]),
+                            "plugins": ["AnswerContrast", "AnswerAssessment"]
+                        });
+                    }
+                );
+            },
+            "presenterParserMapping": {
+                "answerFlowController": function (config, model) {
+                    config.value.linkQuestionId = model.id;
+                }
+            },
+            "getEnvironment": function () {
+                var envName;
+                var sys = this._getQueryString('sys');
+                if (this.isPPTShell || (sys != null && sys.toLowerCase() === 'icrstatisticsplatform')) {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.PPTShell;
+                } else {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.Pad;
+                }
+                return envName;
+            },
+            "getComponent": function (model) {
+                return [
+                    {
+                        presenter: 'SubjectivityRemake',
+                        autowired: ['id', 'type_code', 'type_name', 'url', 'theme', 'data', 'tip', 'isTool'],
+                        renderTo: "subjectivity"
+                    },
+                    {presenter: "InteractionTimer", value: {'view_type': 'new_timer'}, renderTo: "timer"},
+                    {
+                        presenter: 'InteractionSubmitButton',
+                        value: {
+                            'can_modify': 'true',
+                            'linkQuestionType': 'write',
+                            'linkQuestionId': model.id,
+                            'view_type': 'new_em_button'
+                        },
+                        renderTo: "submit",
+                        applyTo: ['pad']
+                    }
+                ];
+            },
+            "getController": function (model) {
+                return [
+                    //主观题启动器 require d类统计
+                    {
+                        presenter: "AnswerClassStatis",
+                        autowired: ['config'],
+                        applyTo: ['ppt']
+                    },
+                    {
+                        presenter: 'ClassroomStatusController',
+                        value: {
+                            'questionId': model.id
+                        }
+                    }
+                ]
+            },
+            "getLayout": function (model) {
+                return {
+                    presenter: "SubjectivityLayout",
+                    value: {'questionType': 'subjectivity', 'noSendQuestion': model.is_tool || false}
+                };
+            },
+            "_getExamId": function () {
+                var examId = '';
+                this.$addEventListener('TaskInfoCallback', PresenterEventType.IC_PLAYER_EVENT, function (eventData) {
+                    if (eventData && eventData.value) {
+                        examId = eventData.value.examId;
+                    }
+                });
+                this.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, {'item': 'exam', 'type': 'query'});
+                return examId;
+            },
+            '_getQueryString': function(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            },
+            "presenterParserMapping": {
+                'interactionStateRecoverFilter': function (model) {
+                    model.applyTo = ['pad'];
+                },
+                'objectiveStatController': function (model) {
+                    model.applyTo = [];
+                },
+                'answerFlowController': function (config, model) {
+                    config.value.linkQuestionId = model.id;
+                }
+            }
+        });
+
+        function _createDelegate (fn, args, isAppendArgs, scope, exceptionHandler) {
+            return function () {
+                //如果创建的时候没有输入参数，使用调用的参数
+                var callArgs = args || arguments;
+                if (isAppendArgs === true) {
+                    //arguments数组化
+                    callArgs = Array.prototype.slice.call(arguments, 0);
+                    callArgs = callArgs.concat(args);
+                }
+                try {
+                    return fn.apply(scope || window, callArgs);
+                } catch (e) {
+                    if ($.isFunction(exceptionHandler)) {
+                        return exceptionHandler(e);
+                    } else {
+                        throw e;
+                    }
+                }
+            };
+        };
+
+        // 重写启动器的run方法，截图做题时跳过require，先读取xml，之后再require
+        launcher.run = function(view, model) {
+            var self = this;
+            this.view = view;
+            this.model = model;
+
+            if (model.is_tool !== undefined && model.is_tool == true) {
+                this.__interface = {
+                    execute: _createDelegate(self._execute, [], true, self),
+                    getExerciseData: _createDelegate(self._getExerciseData, [], true, self)
+                };
+                return;
+            } else {
+                this._start(view, model);
+            }
+        };
+
+        launcher._execute = function(options) {
+            if (!options || (!options.physicPath && options.files.length === 0)) {
+                return;
+            }
+
+            var self = this;
+            var courseWareObjectUrl = options.physicPath || options.files[0].url;
+            PageXmlParser.loadPageXML(courseWareObjectUrl).then(function(pageXML) {
+                var questionModel = null;
+                questionModel = PageXmlParser.getPropertiesModel(pageXML, 'Subjectivity');
+                questionModel.is_tool = true; //截图出题标识
+                questionModel.isTool = '1';
+
+                if (!!questionModel.url) {
+                    questionModel.url = questionModel.url.replace('\$\{ref-base\}\/\.\.', courseWareObjectUrl).replace(/\\/g, '\/');
+
+                    if(!self.isApp) {
+                        questionModel.url = 'file:///' + questionModel.url;
+                    }
+                }
+                self.model = questionModel;
+                self._start(self.view, questionModel);
+            }, function(XMLHttpRequest) {
+                console.log(XMLHttpRequest);
+            });
+        };
+
+        launcher._getExerciseData = function (data) {
+            data.questionInfo = {
+                id: this.model.id,
+                type_code: "subjectivity",
+                type_name: "主观题",
+                url: this.model.url,
+                item: "subjectivity",
+                dispatchOnly: true
+            };
+        };
+
+        return launcher;
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/data.xml' />
+<file src='./resources/images/audio_bg.png' />
+<file src='./resources/images/bg_com_hand_write.png' />
+<file src='./resources/images/bg_com_hd_write.png' />
+<file src='./resources/images/bg_left_shadow.png' />
+<file src='./resources/images/bg_left_shadow2.png' />
+<file src='./resources/images/bg_right_shadow.png' />
+<file src='./resources/images/bg_right_shadow2.png' />
+<file src='./resources/images/bg_wood_sub.png' />
+<file src='./resources/images/bot_border_bg.png' />
+<file src='./resources/images/bot_border_bg2.png' />
+<file src='./resources/images/bot_border_bg3.png' />
+<file src='./resources/images/btns_bgs_nor.png' />
+<file src='./resources/images/btns_bgs_nor_press.png' />
+<file src='./resources/images/btns_sub_save.png' />
+<file src='./resources/images/btns_sub_save_p.png' />
+<file src='./resources/images/btn_tools_1.png' />
+<file src='./resources/images/btn_tools_2.png' />
+<file src='./resources/images/btn_tools_3.png' />
+<file src='./resources/images/btn_tools_4.png' />
+<file src='./resources/images/btn_tools_5.png' />
+<file src='./resources/images/btn_tools_bg.png' />
+<file src='./resources/images/btn_tools_bg_press.png' />
+<file src='./resources/images/compop_dec1.png' />
+<file src='./resources/images/compop_dec2.png' />
+<file src='./resources/images/icons_audio_start.png' />
+<file src='./resources/images/icons_audio_stop.png' />
+<file src='./resources/images/icons_sub_back.png' />
+<file src='./resources/images/icons_sub_back2.png' />
+<file src='./resources/images/icons_s_ok.png' />
+<file src='./resources/images/icons_s_re.png' />
+<file src='./resources/images/icon_arrow_down.png' />
+<file src='./resources/images/icon_arrow_left.png' />
+<file src='./resources/images/icon_arrow_right.png' />
+<file src='./resources/images/icon_arrow_up.png' />
+<file src='./resources/images/icon_audio_ms.png' />
+<file src='./resources/images/icon_btns_bg_nor.png' />
+<file src='./resources/images/icon_btns_bg_press.png' />
+<file src='./resources/images/icon_clear_s.png' />
+<file src='./resources/images/icon_clear_s_p.png' />
+<file src='./resources/images/icon_delete_zg.png' />
+<file src='./resources/images/icon_delete_zg2.png' />
+<file src='./resources/images/icon_delete_zg2_p.png' />
+<file src='./resources/images/icon_pen_s.png' />
+<file src='./resources/images/icon_pen_s_p.png' />
+<file src='./resources/images/icon_play_b_m.png' />
+<file src='./resources/images/icon_s_bulb.png' />
+<file src='./resources/images/icon_s_bulb2.png' />
+<file src='./resources/images/icon_s_clo.png' />
+<file src='./resources/images/icon_s_qd.png' />
+<file src='./resources/images/icon_s_qx.png' />
+<file src='./resources/images/icos_m_play_nor.png' />
+<file src='./resources/images/icos_m_play_nor_p.png' />
+<file src='./resources/images/icos_m_play_on.png' />
+<file src='./resources/images/icos_m_stop_nor.png' />
+<file src='./resources/images/icos_m_stop_nor_p.png' />
+<file src='./resources/images/image_bg.png' />
+<file src='./resources/images/kaiqi.png' />
+<file src='./resources/images/lefs_2.png' />
+<file src='./resources/images/lefs_l.png' />
+<file src='./resources/images/media/icons_pic.png' />
+<file src='./resources/images/media/icons_pic2.png' />
+<file src='./resources/images/media/icons_play.png' />
+<file src='./resources/images/media/icons_sound.png' />
+<file src='./resources/images/media/icons_stop.png' />
+<file src='./resources/images/media/icons_video.png' />
+<file src='./resources/images/media/icon_sound_none.png' />
+<file src='./resources/images/media/icon_sound_nor.png' />
+<file src='./resources/images/media/sub_bg_audio.jpg' />
+<file src='./resources/images/over_bg_bot.png' />
+<file src='./resources/images/pen_brushwork/pen1_bold_black.png' />
+<file src='./resources/images/pen_brushwork/pen1_bold_grey.png' />
+<file src='./resources/images/pen_brushwork/pen1_bold_red.png' />
+<file src='./resources/images/pen_brushwork/pen1_nor_black.png' />
+<file src='./resources/images/pen_brushwork/pen1_nor_grey.png' />
+<file src='./resources/images/pen_brushwork/pen1_nor_red.png' />
+<file src='./resources/images/pen_brushwork/pen1_thin_black.png' />
+<file src='./resources/images/pen_brushwork/pen1_thin_grey.png' />
+<file src='./resources/images/pen_brushwork/pen1_thin_red.png' />
+<file src='./resources/images/pen_brushwork/pen2_bold_black.png' />
+<file src='./resources/images/pen_brushwork/pen2_bold_grey.png' />
+<file src='./resources/images/pen_brushwork/pen2_bold_red.png' />
+<file src='./resources/images/pen_brushwork/pen2_nor_black.png' />
+<file src='./resources/images/pen_brushwork/pen2_nor_grey.png' />
+<file src='./resources/images/pen_brushwork/pen2_nor_red.png' />
+<file src='./resources/images/pen_brushwork/pen2_thin_black.png' />
+<file src='./resources/images/pen_brushwork/pen2_thin_grey.png' />
+<file src='./resources/images/pen_brushwork/pen2_thin_red.png' />
+<file src='./resources/images/pen_brushwork/pen3_bold_black.png' />
+<file src='./resources/images/pen_brushwork/pen3_bold_grey.png' />
+<file src='./resources/images/pen_brushwork/pen3_bold_red.png' />
+<file src='./resources/images/pen_brushwork/pen3_nor_black.png' />
+<file src='./resources/images/pen_brushwork/pen3_nor_grey.png' />
+<file src='./resources/images/pen_brushwork/pen3_nor_red.png' />
+<file src='./resources/images/pen_brushwork/pen3_thin_black.png' />
+<file src='./resources/images/pen_brushwork/pen3_thin_grey.png' />
+<file src='./resources/images/pen_brushwork/pen3_thin_red.png' />
+<file src='./resources/images/pop_bg_main.png' />
+<file src='./resources/images/pop_bg_main.webp' />
+<file src='./resources/images/tool_bar_bg_rb.png' />
+<file src='./resources/images/tool_s_r_on.png' />
+<file src='./resources/images/tuikai.png' />
+
+
+</resources>
+
+</addon>

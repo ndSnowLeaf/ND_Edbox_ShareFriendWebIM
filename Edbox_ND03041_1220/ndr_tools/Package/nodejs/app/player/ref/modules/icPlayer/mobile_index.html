@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="full">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="telephone=no;address=no;email=no" name="format-detection" />
+
+    <title>课件</title>
+    <link rel="stylesheet" href="ndplayer/theme/default/ndplayer.css?v=e33eee85e52824c6">
+    <style>
+        .full {
+            width: 100%;
+            height: 100%;
+            /* background-color:white;*/
+        }
+
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #loadingdiv_index {
+            position: absolute;
+            top: 45%;
+            left: 45%;
+            z-index: 999999999999;
+            text-align: center;
+            margin: 0px;
+            font-size: 24px;
+        }
+    </style>
+    <script type="text/javascript" src="javascript/jquery-1.10.2.min.js"></script>
+    <!-- inject:develop:config -->
+    <!-- endinject -->
+
+    <script>
+        function updateIcrBridge() {
+            // 兼容原有Bridge的接口
+            Bridge.randomkey = function (l) {
+                var x = "0123456789qwertyuioplkjhgfdsazxcvbnm";
+                var tmp = "";
+                var timestamp = new Date().getTime();
+                for (var i = 0; i < l; i++) {
+                    tmp += x.charAt(Math.ceil(Math.random() * 100000000) % x.length);
+                }
+                return timestamp + tmp;
+            };
+            Bridge.loadApk = function (apk) {
+
+            };
+
+            // 获取互动课堂的Bridge
+            var icrBridge = Bridge.require('IcrBridge');
+            if (typeof icrBridge === 'undefined') {
+                console.error('icrBridge is not exist');
+                return;
+            }
+            Bridge.onPageLoaded = function () {
+                console.log('onPageLoaded');
+                icrBridge.onPageLoaded();
+            };
+            Bridge.onMainLoaded = function () {
+                console.log('onMainLoaded');
+                icrBridge.onMainLoaded();
+            };
+        }
+    </script>
+<script src="http://101.com/JsBridge.js" onload="updateIcrBridge();"></script>
+</head>
+
+<body class="full">
+    <div id="loadingdiv_index">loading...</div>
+    <div id="_icplayer" class="full"></div>
+    <script src="ndplayer/ndplayer.js?v=92cba586b1967534"></script>
+    <script src="ndplayer/platforms/app.js?v=667da8a96b2b8c63"></script>
+    <script type="text/javascript">
+        'use strict';
+        var isLoadConfig = (icCreatePlayer.request('loadconfig') == 'true');
+        var isTransparent = (icCreatePlayer.request('transparent') == 'true');
+        var wsUrl = decodeURIComponent(icCreatePlayer.request('wsurl'));
+        var width = icCreatePlayer.request('width') || "device-width";
+        var height = icCreatePlayer.request('height') || "device-height";
+        var mMeta;
+        if (!icCreatePlayer.request('width')) {
+            mMeta = '<meta content="initial-scale=1.0,user-scalable=no" name="viewport" />';
+        } else {
+            mMeta = '<meta name="viewport" content="width=' + width + ',height=' + height + ',user-scalable=no" />';
+        }
+        $('head').prepend(mMeta);
+        var player;
+
+        function setBackGround(flag) {
+            if (flag)
+                $('#_icplayer').css({
+                    'background-color': 'rgba(255, 255, 255, 0)',
+                    'border': 'hidden'
+                });
+            else
+                $('#_icplayer').css({
+                    'background-color': '#ffffff',
+                    'border': 'hidden'
+                });
+        }
+        /**
+         * 重新加载main.xml
+         * @param  {[type]} url            课件的main.xml
+         * @param  {[type]} refPath        refpath
+         * @param  {[type]} stateToken     状态恢复的token
+         * @param  {[type]} startPageIndex 开始页吗
+         * @return {[type]}
+         */
+        function loadMain(url, refPath, stateToken, startPageIndex) {
+            player.release();
+            player = null;
+            $('#_icplayer').html('');
+            player = icCreatePlayer.create({
+                'waitDialog': WaitImage,
+                'hidePage': '',
+                'url': url,
+                'startPageIndex': startPageIndex || 0,
+                'stateToken': stateToken,
+                'refPath': {
+                    'ref-path': refPath
+                },
+                'listeners': {
+                    'render': function () {
+                        if (isApp && Bridge.onMainLoaded) {
+                            Bridge.onMainLoaded();
+                        }
+                    }
+
+                }
+
+            });
+            player.render('#_icplayer');
+        }
+
+        function loadConfig(option) {
+            player = icCreatePlayer.create(option);
+            player.render('#_icplayer');
+        }
+        var WaitImage = {
+            show: function () {
+                if (document.getElementById("loadingdiv_index") != undefined)
+                    document.getElementById("loadingdiv_index").style.display = 'block';
+            },
+            hide: function () {
+                if (document.getElementById("loadingdiv_index") != undefined)
+                    document.getElementById("loadingdiv_index").style.display = 'none';
+            }
+        };
+        if (typeof (MathJax) !== 'undefined') {
+            MathJax.Hub.Config({
+                showMathMenu: false //不显示公式右键长安菜单
+            });
+
+        }
+        if (isTransparent)
+            setBackGround(true);
+        else
+            setBackGround(false);
+        if (!isLoadConfig) {
+            loadConfig({
+                'waitDialog': WaitImage,
+                'templateKey': icCreatePlayer.request('tk')
+            }, '#_icplayer');
+        } else {
+            var hidePage = 'footer,header,left,right';
+            if (icCreatePlayer.request('terminal') === 'student')
+                hidePage = 'toolbar,footer,header,left,right';
+            loadConfig({
+                'hidePage': hidePage,
+                'url': 'courseware/main.xml',
+                'startPageIndex': -1,
+                'waitDialog': WaitImage,
+                'listeners': {
+                    'render': function () {
+                        if (typeof MathJax !== "undefined")
+                            MathJax.Hub.Configured();
+                        if (wsUrl && wsUrl !== '')
+                            icCreatePlayer.sync.start(player, wsUrl);
+                    }
+
+                }
+            }, '#_icplayer');
+        }
+        window.onresize = function () {
+            if (icCreatePlayer.utils.getFontSize) {
+                player.setContainerFontSize(icCreatePlayer.utils.getFontSize());
+            }
+        }
+    </script>
+
+</body>
+
+</html>

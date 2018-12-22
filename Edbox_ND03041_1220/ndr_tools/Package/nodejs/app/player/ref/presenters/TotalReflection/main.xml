@@ -1,0 +1,980 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="optics" version="1.0.0"/><javaScript name="tools_common" version="1.3.0"/><javaScript name="AlamedaRequire" version="0.3.2"/><javaScript name="knockout" version="3.3.0"/><javaScript name="snap_svg" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .totalreflection{position:relative;width:100%;height:100%;background-color:#bfd3e2;text-align:center;overflow:hidden}.exam_skin_wood .totalreflection .totalreflection_middle{position:absolute;left:0;right:0;top:2.66667em;bottom:4.91667em}.exam_skin_wood .totalreflection .totalreflection_middle:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .totalreflection .totalreflection_mid_container{position:relative;display:inline-block;width:71.58333em;height:100%;vertical-align:middle}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre1 .totalreflect_preset_02,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre1 .totalreflection_glass_material .pos_4_1,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre1 .totalreflection_store_material .pos_5_1,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre1 .totalreflection_water_material .pos_3_1,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_01,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_glass,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_tip{display:none}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .pos_2{display:inline-block;position:absolute;top:.83333em;left:50%;-webkit-transform:translateX(-50%);transform:translateX(-50%)}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .pos_2 .text_sin{font-size:6.04167em;font-family:Times New Roman;font-style:italic;color:#525354}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .pos_2 .text_c{font-size:3.95833em;font-family:Times New Roman;font-style:italic;color:#525354}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .pos_2 .text_equal{font-size:2.5em;font-family:Times New Roman;color:#525354;font-weight:700}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .pos_2 .N_one_bg{display:block;background:url(resources/wood/images/n_one_black.png) no-repeat;width:3.58333em;height:6.54167em;background-size:100% auto;float:right}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_water_material{display:inline-block;position:absolute;top:2.29167em;left:.20833em;width:25.625em;height:27.08333em;background:url(resources/wood/images/water_material.png) no-repeat;background-size:100% 100%}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_water_material .water_svg_contain{width:100%;height:100%;position:relative;z-index:333}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_water_material .pos_3_1{position:relative;bottom:6.66667em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_glass_material{display:inline-block;position:absolute;left:23.33333em;top:2.70833em;width:25.625em;height:27.08333em;background:url(resources/wood/images/glass_material.png) no-repeat;background-size:100% 100%}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_glass_material .glass_svg_contain{width:100%;height:100%;position:relative;z-index:666}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_glass_material .pos_4_1{position:relative;bottom:7.08333em;left:.20833em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_store_material{display:inline-block;position:absolute;right:-.41667em;top:2.29167em;width:25.625em;height:27.08333em;background:url(resources/wood/images/store_material.png) no-repeat;background-size:100% 100%}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_store_material .store_svg_contain{width:100%;height:100%;position:relative;z-index:999}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflection_store_material .pos_5_1{position:relative;bottom:6.66667em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02{position:relative}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .text_material{font-size:2em;font-weight:700;color:#333}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .text_c{font-size:3.95833em;font-family:Times new Roman;font-style:italic}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .text_n{font-size:6.04167em;font-family:Times new Roman;font-style:italic;color:#cb1f1f}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .text_count{font-size:3.95833em;font-family:Times new Roman;font-weight:700;color:#cb1f1f}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .text_totalreflection{font-size:2.5em;font-weight:700;color:#cb2020}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_1{position:absolute;right:3em;top:3.29167em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_3{position:absolute;top:16.45833em;left:19.54167em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_4{position:absolute;top:16.66667em;left:40.79167em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_5{position:absolute;top:16.45833em;left:62.5em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_6{position:absolute;left:6.16667em;top:27.70833em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_7{position:absolute;left:31.875em;top:27.70833em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_8{position:absolute;left:53.875em;top:27.70833em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_9{position:absolute;top:33.33333em;left:6.75em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_10{position:absolute;top:33.33333em;left:32.20833em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_11{position:absolute;top:33.33333em;left:53.875em}.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_10 .text_count,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_11 .text_count,.exam_skin_wood .totalreflection .totalreflection_mid_container.totalreflection_pre2 .totalreflect_preset_02 .pos_9 .text_count{color:#2383cc}.exam_skin_wood .totalreflection .totalreflection_tip{position:absolute;top:.5em;left:.83333em;padding:.5em 1em .5em .95833em;background:rgba(106,159,201,.37);border-radius:.33333em;white-space:nowrap}.exam_skin_wood .totalreflection .totalreflection_tip_word{display:inline-block;text-align:left;vertical-align:top;font-weight:700}.exam_skin_wood .totalreflection .totalreflection_tip_word .fansheguangxian,.exam_skin_wood .totalreflection .totalreflection_tip_word .fanshejiao,.exam_skin_wood .totalreflection .totalreflection_tip_word .rusheguangxian,.exam_skin_wood .totalreflection .totalreflection_tip_word .rushejiao,.exam_skin_wood .totalreflection .totalreflection_tip_word .zhesheguangxian,.exam_skin_wood .totalreflection .totalreflection_tip_word .zheshejiao{height:2.75em;line-height:2.75em}.exam_skin_wood .totalreflection .totalreflection_tip_word .fansheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .fanshejiao .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .rusheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .rushejiao .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .zhesheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .zheshejiao .text{font-size:2em}.exam_skin_wood .totalreflection .totalreflection_tip_word .rusheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .rushejiao .text{color:#4d4d4d}.exam_skin_wood .totalreflection .totalreflection_tip_word .fansheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .fanshejiao .text{color:#04740b}.exam_skin_wood .totalreflection .totalreflection_tip_word .zhesheguangxian .text,.exam_skin_wood .totalreflection .totalreflection_tip_word .zheshejiao .text{color:#cb1f1f}.exam_skin_wood .totalreflection .totalreflection_tip_pic{display:inline-block;margin-left:1.41667em;width:3.04167em;text-align:center;vertical-align:top}.exam_skin_wood .totalreflection .totalreflection_tip_pic li{width:100%;height:2.75em;background:url(resources/wood/images/totalreflection_tips.png) no-repeat;background-size:100% auto}.exam_skin_wood .totalreflection .totalreflection_tip_pic .rusheguangxian{background-position:0 0}.exam_skin_wood .totalreflection .totalreflection_tip_pic .rushejiao{background-position:0 -2.66667em}.exam_skin_wood .totalreflection .totalreflection_tip_pic .fansheguangxian{background-position:0 -5.5em}.exam_skin_wood .totalreflection .totalreflection_tip_pic .fanshejiao{background-position:0 -8.04167em}.exam_skin_wood .totalreflection .totalreflection_tip_pic .zhesheguangxian{background-position:0 -10.95833em}.exam_skin_wood .totalreflection .totalreflection_tip_pic .zheshejiao{background-position:0 -13.75em}.exam_skin_wood .totalreflection .totalreflection_static_txt{z-index:1;position:absolute;top:0;left:0;width:100%;height:100%;background:0 0;pointer-events:none}.exam_skin_wood .totalreflection .totalreflection_glass{position:absolute;width:70.54167em;height:45.83333em;top:-9.375em;left:0;background:url(resources/wood/images/glass_semiarc.png) no-repeat;background-size:100% 100%}.exam_skin_wood .totalreflection .totalreflection_glass .glass_svg_container{position:relative;width:100%;height:100%;z-index:999}.exam_skin_wood .totalreflection .totalreflection_svg_container{width:100%;height:100%;position:relative;float:right}.exam_skin_wood .totalreflection .text_kq{font-size:3.54167em;font-weight:700;color:#4d4d4d}.exam_skin_wood .totalreflection .text_glass{font-size:3.54167em;font-weight:700;color:#6a9ea1}.exam_skin_wood .totalreflection .text_c{font-size:2.5em;font-weight:700;color:#2383cc;font-family:Times New Roman;font-style:italic}.exam_skin_wood .totalreflection .text_arcsin{font-size:3.54167em;font-weight:700;font-family:Times New Roman;font-style:italic;color:#2383cc}.exam_skin_wood .totalreflection .text_totalreflection{font-size:2.5em;font-weight:700;color:#cb1f1f}.exam_skin_wood .totalreflection .text_explain_01{font-size:2em;color:#2383cc;font-weight:700}.exam_skin_wood .totalreflection .text_explain_02{font-size:2em;color:#2383cc;font-weight:700;text-align:left}.exam_skin_wood .totalreflection .totalreflect_preset_01{position:relative}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_1{position:absolute;right:3em;top:3.29167em}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_2{position:absolute;right:22.5em;top:13.875em}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_3{position:absolute;right:4.375em;top:22.25em}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_3 .N_one_bg{display:block;width:1.91667em;height:4.16667em;background:url(resources/wood/images/n_one.png) no-repeat;background-size:100% auto;float:right;bottom:1em}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_4{position:absolute;left:50%;top:31em;-webkit-transform:translateX(-50%);transform:translateX(-50%)}.exam_skin_wood .totalreflection .totalreflect_preset_01 .pos_5{position:absolute;padding:.41667em;max-width:22.91667em;right:.83333em;top:28.54167em;text-align:left}.exam_skin_wood .totalreflection .totalreflection_main{float:left;position:relative;width:63.33333em;height:37.33333em}.exam_skin_wood .totalreflection .totalreflection_foot{position:absolute;left:0;right:0;bottom:0;padding:0 4.16667em;height:4.91667em;background:#cfdee9}.exam_skin_wood .totalreflection .totalreflection_btm_right{position:relative;float:right;height:100%;padding:1.04167em 11.875em 0 1.04167em}.exam_skin_wood .totalreflection .totalreflection_btm_right:before{content:"";position:absolute;left:0;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);display:block;float:left;width:0;height:3.875em;border-left:1px solid #b3c1cb;border-right:1px solid #e7f3fc}.exam_skin_wood .totalreflection .totalreflection_brbtn_lay{float:left;margin:0 1.04167em}.exam_skin_wood .totalreflection .totalreflection_brbtn{display:block;padding:0 .75em;min-width:8.58333em;height:3em;line-height:2.75em;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);border:1px solid #397274;border-radius:.58333em;color:#333;text-align:center}.exam_skin_wood .totalreflection .totalreflection_brbtn .text{font-size:1.5em}.exam_skin_wood .totalreflection .totalreflection_brbtn.click_disabled{border-color:#93989a;background:-webkit-linear-gradient(top,#c8d1d7,#c1c8cc);background:linear-gradient(180deg,#c8d1d7 0,#c1c8cc)}.exam_skin_wood .totalreflection .totalreflection_brbtn.click_disabled .text{color:#97a0a6}.exam_skin_wood .totalreflection .totalreflection_brbtn:not(.click_disabled):active{background:-webkit-linear-gradient(top,#89c5c7,#77b8ba);background:linear-gradient(180deg,#89c5c7 0,#77b8ba);color:#fff}.exam_skin_wood .totalreflection .totalreflection_btm_left{float:right;height:100%}.exam_skin_wood .totalreflection .totalreflection_left_btn{position:relative;display:inline-block;float:left;min-width:5.41667em;height:100%;margin:0 1.79167em;text-align:center}.typefaces_long .exam_skin_wood .totalreflection_tip_word .fansheguangxian,.typefaces_long .exam_skin_wood .totalreflection_tip_word .fanshejiao,.typefaces_long .exam_skin_wood .totalreflection_tip_word .rusheguangxian,.typefaces_long .exam_skin_wood .totalreflection_tip_word .rushejiao,.typefaces_long .exam_skin_wood .totalreflection_tip_word .zhesheguangxian,.typefaces_long .exam_skin_wood .totalreflection_tip_word .zheshejiao{white-space:normal;line-height:1;margin:.4em 0;text-align:center}.typefaces_long .exam_skin_wood .totalreflection_tip_word .fansheguangxian .text,.typefaces_long .exam_skin_wood .totalreflection_tip_word .fanshejiao .text,.typefaces_long .exam_skin_wood .totalreflection_tip_word .rusheguangxian .text,.typefaces_long .exam_skin_wood .totalreflection_tip_word .rushejiao .text,.typefaces_long .exam_skin_wood .totalreflection_tip_word .zhesheguangxian .text,.typefaces_long .exam_skin_wood .totalreflection_tip_word .zheshejiao .text{font-size:1.41667em}.typefaces_long .exam_skin_wood .totalreflection_tip_word .rusheguangxian,.typefaces_long .exam_skin_wood .totalreflection_tip_word .rushejiao{max-width:9.58333em}.typefaces_long .exam_skin_wood .totalreflection_tip_word .fansheguangxian{max-width:10.41667em}.typefaces_long .exam_skin_wood .totalreflection_tip_word .fanshejiao{max-width:9.58333em}.typefaces_long .exam_skin_wood .totalreflection_tip_word .zhesheguangxian{max-width:12.08333em}.typefaces_long .exam_skin_wood .totalreflection_tip_word .zheshejiao{max-width:11.66667em}.typefaces_long .exam_skin_wood .totalreflection_tip_pic li{margin:.4em 0}.typefaces_long .exam_skin_wood .totalreflect_preset_01 .pos_1 .text_kq,.typefaces_long .exam_skin_wood .totalreflection_pre2 .totalreflect_preset_02 .pos_1 .text_kq{font-size:2.5em;font-weight:700}.typefaces_long .exam_skin_wood .totalreflect_preset_01 .pos_2{top:14.4em;right:22.2em}.typefaces_long .exam_skin_wood .totalreflect_preset_01 .pos_2 .text_glass{font-size:2.5em;font-weight:700}.typefaces_long .exam_skin_wood .totalreflection_btm_right{padding-right:6.875em;padding-left:3.2em}.typefaces_long .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay{max-width:12.5em}.typefaces_long .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay .totalreflection_brbtn{line-height:1.33333em;padding:0 1.35em}.typefaces_long .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay .totalreflection_brbtn .text{font-size:1.08333em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(3) .tool_operate_bar{margin-top:1.25em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(3) .tool_operate_bar .tool_operate_text{display:none}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:first-of-type .tool_operate_bar{margin-top:.41667em;max-width:10.83333em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2){margin:0 4em 0 1.3em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar{margin-top:.58333em;max-width:15.83333em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar .tool_operate_imgcnt{height:2.11667em}.typefaces_long .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar .tool_operate_text{font-size:1.08333em;margin-top:0}.typefaces_long .exam_skin_wood p.pos_3_1,.typefaces_long .exam_skin_wood p.pos_4_1,.typefaces_long .exam_skin_wood p.pos_5_1{max-width:12em;margin:0 auto}.typefaces_long .exam_skin_wood .totalreflection_tip_pic{margin-left:.2em}.typefaces_long .exam_skin_wood .totalreflection .text_totalreflection{font-size:2.08333em}.typefaces_long .exam_skin_wood .totalreflection .text_explain_01{font-size:1.45833em}.typefaces_long .exam_skin_wood .totalreflection .text_explain_02{font-size:1.45833em;display:block}.typefaces_long .exam_skin_wood .totalreflection .totalreflection_pre2 .text_totalreflection{font-size:2em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fansheguangxian,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fanshejiao,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rusheguangxian,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rushejiao,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zhesheguangxian,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zheshejiao{white-space:normal;line-height:1;margin:.4em 0;text-align:center}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fansheguangxian .text,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fanshejiao .text,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rusheguangxian .text,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rushejiao .text,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zhesheguangxian .text,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zheshejiao .text{font-size:1.41667em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rusheguangxian,.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .rushejiao{max-width:9.58333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fansheguangxian{max-width:10.41667em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .fanshejiao{max-width:9.58333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zhesheguangxian{max-width:12.08333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_word .zheshejiao{max-width:11.66667em}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_pic li{margin:.4em 0}.typefaces_ru_RU .exam_skin_wood .totalreflect_preset_01 .pos_1 .text_kq,.typefaces_ru_RU .exam_skin_wood .totalreflection_pre2 .totalreflect_preset_02 .pos_1 .text_kq{font-size:2.5em;font-weight:700}.typefaces_ru_RU .exam_skin_wood .totalreflect_preset_01 .pos_2{top:14.4em;right:22.2em}.typefaces_ru_RU .exam_skin_wood .totalreflect_preset_01 .pos_2 .text_glass{font-size:2.5em;font-weight:700}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_right{padding-right:6.875em;padding-left:3.2em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay{max-width:12.5em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay .totalreflection_brbtn{line-height:1.33333em;padding:0 1.35em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_right .totalreflection_brbtn_lay .totalreflection_brbtn .text{font-size:1.08333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(3) .tool_operate_bar{margin-top:1.25em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(3) .tool_operate_bar .tool_operate_text{display:none}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:first-of-type .tool_operate_bar{margin-top:.41667em;max-width:10.83333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2){margin:0 4em 0 1.3em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar{margin-top:.58333em;max-width:15.83333em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar .tool_operate_imgcnt{height:2.11667em}.typefaces_ru_RU .exam_skin_wood .totalreflection_btm_left .totalreflection_left_btn:nth-of-type(2) .tool_operate_bar .tool_operate_text{font-size:1.08333em;margin-top:0}.typefaces_ru_RU .exam_skin_wood p.pos_3_1,.typefaces_ru_RU .exam_skin_wood p.pos_4_1,.typefaces_ru_RU .exam_skin_wood p.pos_5_1{max-width:12em;margin:0 auto}.typefaces_ru_RU .exam_skin_wood .totalreflection_tip_pic{margin-left:.2em}.typefaces_ru_RU .exam_skin_wood .totalreflection .text_totalreflection{font-size:2.08333em}.typefaces_ru_RU .exam_skin_wood .totalreflection .text_explain_01{font-size:1.45833em}.typefaces_ru_RU .exam_skin_wood .totalreflection .text_explain_02{font-size:1.45833em;display:block}.typefaces_ru_RU .exam_skin_wood .totalreflection .totalreflection_pre2 .text_totalreflection{font-size:2em}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="totalreflection lightMovement"><div class="totalreflection_middle"><div class="totalreflection_mid_container totalreflection_pre1 _container"><div class="totalreflection_tip"><ul class="totalreflection_tip_word"><li class="rusheguangxian"><span class="text" data-bind="text:total_reflection_incident_ray"></span></li><li class="rushejiao"><span class="text" data-bind="text:total_reflection_incident_angle"></span></li><li class="fansheguangxian"><span class="text" data-bind="text:total_reflection_reflection_ray"></span></li><li class="fanshejiao"><span class="text" data-bind="text:total_reflection_reflection_angle"></span></li><li class="zhesheguangxian"><span class="text" data-bind="text:total_reflection_refracted_ray"></span></li><li class="zheshejiao"><span class="text" data-bind="text:total_reflection_refracted_angle"></span></li></ul><ul class="totalreflection_tip_pic"><li class="rusheguangxian"></li><li class="rushejiao"></li><li class="fansheguangxian"></li><li class="fanshejiao"></li><li class="zhesheguangxian"></li><li class="zheshejiao"></li></ul></div><div class="totalreflection_static_txt"><div class="totalreflect_preset_01"><p class="pos_1"><span class="text_kq" data-bind="text:total_reflection_air"></span></p><p class="pos_2"><span class="text_glass" data-bind="text:total_reflection_glass"></span></p><div class="text_onekey_expression hide_dom _big_glass_total_reflection"><div class="pos_3"><span class="text_c">C=</span> <span class="text_arcsin">arcsin</span> <span class="N_one_bg"></span></div><p class="pos_4"><span class="text_totalreflection" data-bind="text:total_reflection"></span></p><div class="pos_5"><span class="text_explain_01" data-bind="text:total_reflection_Into_the_optically_thinner_medium_denser_medium"></span> <span class="text_explain_02" data-bind="text:total_reflection_incident_angle_greater_than_critical_angle"></span></div></div></div><div class="totalreflect_preset_02"><p class="pos_1"><span class="text_kq" data-bind="text:total_reflection_air"></span></p><p class="pos_2"><span class="text_sin">sin</span> <span class="text_c">C</span> <span class="text_equal">=</span> <span class="N_one_bg"></span></p><p class="pos_3"><span class="text_material" data-bind="text:total_reflection_water"></span></p><p class="pos_4"><span class="text_material" data-bind="text:total_reflection_glass"></span></p><p class="pos_5"><span class="text_material" data-bind="text:total_reflection_diamond"></span></p><div class="pos_6 _water_n"><span class="text_n">n</span><span class="text_count">=1.33</span></div><div class="pos_7 _small_glass_n"><span class="text_n">n</span><span class="text_count">=1.5</span></div><div class="pos_8 _diamond_n"><span class="text_n">n</span><span class="text_count">=2.42</span></div><div class="pos_9 _water_c"><span class="text_c">C</span><span class="text_count">=48.8°</span></div><div class="pos_10 _small_glass_c"><span class="text_c">C</span><span class="text_count">=41.8°</span></div><div class="pos_11 _diamond_c"><span class="text_c">C</span><span class="text_count">=24.4°</span></div></div></div><div class="totalreflection_glass"><div class="glass_svg_container _big_glass_svg_container"></div></div><div class="totalreflection_water_material"><div class="water_svg_contain _water_svg_container"></div><p class="pos_3_1"><span class="text_totalreflection" data-bind="text:total_reflection"></span></p></div><div class="totalreflection_glass_material"><div class="glass_svg_contain _small_glass_svg_container"></div><p class="pos_4_1"><span class="text_totalreflection" data-bind="text:total_reflection"></span></p></div><div class="totalreflection_store_material"><div class="store_svg_contain _diamond_svg_container"></div><p class="pos_5_1"><span class="text_totalreflection" data-bind="text:total_reflection"></span></p></div></div></div><div class="totalreflection_foot"><div class="footer_inbock"><ul class="totalreflection_btm_right clearfix"><li class="totalreflection_brbtn_lay"><a href="javascript:" class="totalreflection_brbtn _btn_one_key_complete"><em class="text" data-bind="text:total_reflection_a_key_to_complete"></em></a></li></ul><ul class="totalreflection_btm_left clearfix"><li class="totalreflection_left_btn"><a href="javascript:" class="tool_operate_bar _btn_critical_angle"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_critical_angle"></i> </span><span class="tool_operate_text" data-bind="text:total_reflection_critical_angle"></span></a></li><li class="totalreflection_left_btn"><a href="javascript:;" class="tool_operate_bar _btn_different_refraction"><span class="tool_operate_imgcnt"><label class="com_applicationset_switch"><input type="checkbox"></label></span><span class="tool_operate_text" data-bind="text:total_reflection_different_refraction"></span></a></li><li class="totalreflection_left_btn"><a href="javascript:;" class="tool_operate_bar click_disabled _btn_reset"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_reset"></i> </span><span class="tool_operate_text" data-bind="text:total_reflection_reset"></span></a></li></ul></div></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+(function () {
+    var helper = {
+        bigGlassOptics: undefined,
+        waterOptics: undefined,
+        samllGlassOptics: undefined,
+        diamondOptics: undefined,
+        oneKeyCompleteClicked: false,
+        defaultBigGlassIncidentRotateAngle: 285, //大玻璃默认的旋转角度
+        defaultBigGlassIncidentAngle: 15, //大玻璃默认的入射角度
+        defaultCompareViewIncidentRotateAngle: 311.8, //对比视图默认的旋转角度
+        defaultCompareViewIncidentAngle: 41.8, //对比视图默认的入射角度
+        curBigGlassIncidentRotateAngle: 285, //当前大玻璃的旋转角度
+        curCompareViewIncidentRotateAngle: 311.8, //当前大玻璃的旋转角度
+        opticsName: {
+            BIG_GLASS: 'bigGlass',
+            WATER: 'water',
+            SMALL_GLASS: 'smallGlass',
+            DIAMOND: 'diamond'
+        },
+        opticsRefractiveIndex: {
+            GLASS: 1.5,
+            WATER: 1.33,
+            DIAMOND: 2.42
+        },
+        reflectedRay: {
+            startColor: 0x04740b,
+            endColor: 0x04d50b,
+            unitColor: Number((0xd5 - 0x74) / 41.8)
+        },
+        refractedRay: {
+            startColor: 0xcb1f1f,
+            endColor: 0xff1f1f,
+            unitColor: Number((0xff - 0xcb) / 90)
+        },
+        waterCriticalAngle: Number((180 / Math.PI * Math.asin(1 / 1.33)).toFixed(1)), //水全反射角度
+        glassCriticalAngle: Number((180 / Math.PI * Math.asin(1 / 1.5)).toFixed(1)), //玻璃全反射角度
+        diamondCriticalAngle: Number((180 / Math.PI * Math.asin(1 / 2.42)).toFixed(1)), //金刚石全反射角度
+        domObj: {},
+        i18n: null
+    };
+    var totalReflectionController = null;
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'TotalReflection',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function $init() {
+            var self = this;
+            self._super();
+            //定义日志
+            self.logger.appendHandler(function (message, context) {
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {
+                level: Logger.DEBUG
+            });
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function constructor(parent) {
+                this.parent = parent;
+            },
+            setLocationProperties: function setLocationProperties(properties) {
+                helper.i18n = properties;
+            },
+            getExtendData: function getExtendData() {
+                var options = {
+                    curBigGlassIncidentRotateAngle: helper.curBigGlassIncidentRotateAngle,
+                    btnCriticalAngleState: !helper.domObj.$btnCriticalAngle.hasClass('click_disabled'), //临界角是否可用
+                    oneKeyCompleteClicked: helper.oneKeyCompleteClicked, //一键完成是否被点击过
+                    btnResetState: !helper.domObj.$btnReset.hasClass('click_disabled'), //重置按钮是否可用
+                    activatedScene: helper.domObj.$btnDifferentRefractionLabel.hasClass('checked') ? 2 : 1
+                };
+                if (options.activatedScene === 2) {
+                    $.extend(options, {
+                        compareViewIncidentRotateAngle: helper.curCompareViewIncidentRotateAngle
+                    });
+                }
+                return options;
+            },
+            getQuestionInfo: function getQuestionInfo() {
+                return {
+                    id: helper.model.ID,
+                    type_code: 'TotalReflection',
+                    type_name: helper.i18n['total_reflection'],
+                    url: '',
+                    item: 'TotalReflection',
+                    statistics_type: 'no_need',
+                    dispatchOnly: true,
+                    notExistStatistics: true,
+                    noNeedQuizProgress: true
+                };
+            }
+        },
+        getService: function getService() {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function run(view, model) {
+            var self = this;
+            $.extend(helper, {
+                bigGlassOptics: null,
+                waterOptics: null,
+                samllGlassOptics: null,
+                diamondOptics: null,
+                oneKeyCompleteClicked: false,
+                defaultBigGlassIncidentRotateAngle: 285, //大玻璃默认的旋转角度
+                defaultBigGlassIncidentAngle: 15, //大玻璃默认的入射角度
+                defaultCompareViewIncidentRotateAngle: 311.8, //对比视图默认的旋转角度
+                defaultCompareViewIncidentAngle: 41.8, //对比视图默认的入射角度
+                curBigGlassIncidentRotateAngle: 285, //当前大玻璃的旋转角度
+                curCompareViewIncidentRotateAngle: 311.8 //当前大玻璃的旋转角度
+            });
+            helper.model = model;
+            helper.$view = $(view);
+            self._initComponent();
+            var $deferred = $.Deferred();
+            require(['TotalReflectionController'], function (TotalReflectionController) {
+                totalReflectionController = new TotalReflectionController({ helper: helper });
+            }).then(function () {
+                self.logger.log('加载[TotalReflectionController]模块完成');
+                $deferred.resolve();
+            }).catch(function () {
+                self.logger.error('加载模块[TotalReflectionController]失败');
+                $deferred.reject();
+            });
+            this.__interface = {
+                resizeScreen: function resizeScreen(data) {
+                    //data {ratio:4/3||3/4}
+                    var ratio = eval(data.ratio);
+                    this.resizeScreen(ratio);
+                }
+            };
+            return $deferred.promise();
+        },
+        pageShow: function pageShow(view, model) {
+            var self = this;
+            ko.applyBindings(helper.i18n, view);
+            self._bindEvent();
+            Optics.PublishSubscribe.reset();
+            totalReflectionController.init();
+            this._pushProcess();
+        },
+        pageLeave: function pageLeave() {
+            this._unbindEvent();
+        },
+        destroy: function destroy() {},
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function getState() {},
+        setState: function setState(state, options) {},
+        /****以下开始为Presenter的私有方法*****/
+        //全屏
+        resizeScreen: function resizeScreen(ratio) {
+            //console.log('this.helper.bigGlassOptics',helper.bigGlassOptics._container);
+            helper.bigGlassOptics._svg.attr({
+                width: helper.bigGlassOptics._svg.attr('width') * ratio,
+                height: helper.bigGlassOptics._svg.attr('height') * ratio
+            });
+            if (helper.waterOptics !== null) {
+                helper.waterOptics._svg.attr({
+                    width: helper.waterOptics._svg.attr('width') * ratio,
+                    height: helper.waterOptics._svg.attr('height') * ratio
+                });
+                helper.samllGlassOptics._svg.attr({
+                    width: helper.samllGlassOptics._svg.attr('width') * ratio,
+                    height: helper.samllGlassOptics._svg.attr('height') * ratio
+                });
+                helper.diamondOptics._svg.attr({
+                    width: helper.diamondOptics._svg.attr('width') * ratio,
+                    height: helper.diamondOptics._svg.attr('height') * ratio
+                });
+            }
+        },
+        _pushProcess: function _pushProcess() {
+            //工具窗口是否有推送数据
+            var extendData = helper.model['__ExtendModel'];
+            if ($.isEmptyObject(extendData)) {
+                return;
+            }
+
+            //设置当前入射角旋转位置
+            helper.bigGlassOptics.incidentRay.changeRotateAngle(extendData.curBigGlassIncidentRotateAngle);
+            //临界角按钮是否可用
+            extendData.btnCriticalAngleState ? helper.domObj.$btnCriticalAngle.removeClass('click_disabled') : helper.domObj.$btnCriticalAngle.addClass('click_disabled');
+            //一键完成按钮是否被点击过
+            helper.oneKeyCompleteClicked = extendData.oneKeyCompleteClicked;
+            extendData.oneKeyCompleteClicked && helper.domObj.$btnOneKeyComplete.trigger('click');
+
+            helper.bigGlassOptics.publishSubscribe.publish(helper.bigGlassOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, {
+                name: helper.opticsName.BIG_GLASS
+            });
+            helper.bigGlassOptics.publishSubscribe.publish(helper.bigGlassOptics.publishSubscribe.OnIncidentAngleChangedEvent, {
+                name: helper.opticsName.BIG_GLASS,
+                inAngle: helper.bigGlassOptics.incidentRay.angleValue,
+                rotateAngle: helper.bigGlassOptics.incidentRay.rotateAngle
+            });
+            helper.bigGlassOptics.publishSubscribe.publish(helper.bigGlassOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, {
+                name: helper.opticsName.BIG_GLASS,
+                inAngle: helper.bigGlassOptics.incidentRay.angleValue,
+                rotateAngle: helper.bigGlassOptics.incidentRay.rotateAngle
+            });
+
+            //重置按钮是否可用
+            extendData.btnResetState ? helper.domObj.$btnReset.removeClass('click_disabled') : helper.domObj.$btnReset.addClass('click_disabled');
+
+            //是否打开对比视图
+            if (extendData.activatedScene === 2) {
+                helper.domObj.$btnDifferentRefraction.trigger('click');
+                helper.waterOptics.incidentRay.changeRotateAngle(extendData.compareViewIncidentRotateAngle);
+                helper.samllGlassOptics.incidentRay.changeRotateAngle(extendData.compareViewIncidentRotateAngle);
+                helper.diamondOptics.incidentRay.changeRotateAngle(extendData.compareViewIncidentRotateAngle);
+
+                //必须要OnIncidentRayRotateButtonDownEvent事件，才能旋转，而且down与up之间要成对出现
+                helper.waterOptics.publishSubscribe.publish(helper.waterOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, {
+                    name: helper.opticsName.WATER
+                });
+                helper.waterOptics.publishSubscribe.publish(helper.waterOptics.publishSubscribe.OnIncidentAngleChangedEvent, {
+                    name: helper.opticsName.WATER,
+                    inAngle: helper.waterOptics.incidentRay.angleValue,
+                    rotateAngle: helper.waterOptics.incidentRay.rotateAngle
+                });
+                helper.waterOptics.publishSubscribe.publish(helper.waterOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, {
+                    name: helper.opticsName.WATER,
+                    inAngle: helper.waterOptics.incidentRay.angleValue,
+                    rotateAngle: helper.waterOptics.incidentRay.rotateAngle
+                });
+
+                helper.samllGlassOptics.publishSubscribe.publish(helper.samllGlassOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, {
+                    name: helper.opticsName.SMALL_GLASS
+                });
+                helper.samllGlassOptics.publishSubscribe.publish(helper.samllGlassOptics.publishSubscribe.OnIncidentAngleChangedEvent, {
+                    name: helper.opticsName.SMALL_GLASS,
+                    inAngle: helper.samllGlassOptics.incidentRay.angleValue,
+                    rotateAngle: helper.samllGlassOptics.incidentRay.rotateAngle
+                });
+                helper.samllGlassOptics.publishSubscribe.publish(helper.samllGlassOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, {
+                    name: helper.opticsName.SMALL_GLASS,
+                    inAngle: helper.samllGlassOptics.incidentRay.angleValue,
+                    rotateAngle: helper.samllGlassOptics.incidentRay.rotateAngle
+                });
+
+                helper.diamondOptics.publishSubscribe.publish(helper.diamondOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, {
+                    name: helper.opticsName.DIAMOND
+                });
+                helper.diamondOptics.publishSubscribe.publish(helper.diamondOptics.publishSubscribe.OnIncidentAngleChangedEvent, {
+                    name: helper.opticsName.DIAMOND,
+                    inAngle: helper.diamondOptics.incidentRay.angleValue,
+                    rotateAngle: helper.diamondOptics.incidentRay.rotateAngle
+                });
+                helper.diamondOptics.publishSubscribe.publish(helper.diamondOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, {
+                    name: helper.opticsName.DIAMOND,
+                    inAngle: helper.diamondOptics.incidentRay.angleValue,
+                    rotateAngle: helper.diamondOptics.incidentRay.rotateAngle
+                });
+            }
+        },
+        _initComponent: function _initComponent() {
+            //大容器
+            helper.domObj.$container = helper.$view.find('._container');
+            //单个玻璃容器
+            helper.domObj.$glassSvgContainer = helper.$view.find('._big_glass_svg_container');
+            //大玻璃全反射字样
+            helper.domObj.$bigGlassTotalReflection = helper.$view.find('._big_glass_total_reflection');
+            //水容器
+            helper.domObj.$waterSvgContainer = helper.$view.find('._water_svg_container');
+            //水容器全反射字样
+            helper.domObj.$waterTotalReflection = helper.domObj.$waterSvgContainer.next('p');
+            //小玻璃容器
+            helper.domObj.$smallGlassSvgContainer = helper.$view.find('._small_glass_svg_container');
+            //小玻璃全反射字样
+            helper.domObj.$smallGlassTotalReflection = helper.domObj.$smallGlassSvgContainer.next('p');
+            //金刚石容器
+            helper.domObj.$diamondSvgContainer = helper.$view.find('._diamond_svg_container');
+            //金刚石全反射字样
+            helper.domObj.$diamondTotalReflection = helper.domObj.$diamondSvgContainer.next('p');
+            //临界角按钮
+            helper.domObj.$btnCriticalAngle = helper.$view.find('._btn_critical_angle');
+            //不同折射率按钮
+            helper.domObj.$btnDifferentRefraction = helper.$view.find('._btn_different_refraction');
+            //不同折射率按钮开关
+            helper.domObj.$btnDifferentRefractionLabel = helper.domObj.$btnDifferentRefraction.find('label');
+            //重置按钮
+            helper.domObj.$btnReset = helper.$view.find('._btn_reset');
+            //一键完成
+            helper.domObj.$btnOneKeyComplete = helper.$view.find('._btn_one_key_complete');
+
+            //对比视图水的n值
+            helper.domObj.$waterN = helper.$view.find('._water_n');
+            //对比视图小玻璃的n值
+            helper.domObj.$smallGlassN = helper.$view.find('._small_glass_n');
+            //对比视图金刚石的n值
+            helper.domObj.$diamondN = helper.$view.find('._diamond_n');
+            //对比视图水的c值
+            helper.domObj.$waterC = helper.$view.find('._water_c');
+            //对比视图小玻璃的c值
+            helper.domObj.$smallGlassC = helper.$view.find('._small_glass_c');
+            //对比视图金刚石的c值
+            helper.domObj.$diamondC = helper.$view.find('._diamond_c');
+        },
+        _bindEvent: function _bindEvent() {
+            //点击临界角
+            helper.domObj.$btnCriticalAngle.on('click', function (e) {
+                e.preventDefault();
+                totalReflectionController.clickCriticalAngleHandler(e);
+            });
+            //点击不同折射率
+            helper.domObj.$btnDifferentRefraction.on('click', function (e) {
+                e.preventDefault();
+                totalReflectionController.clickDifferentRefractionHandler(e);
+            });
+            helper.domObj.$btnReset.on('click', function (e) {
+                totalReflectionController.clickResetHandler(e);
+            });
+            //点击一键完成
+            helper.domObj.$btnOneKeyComplete.on('click', function (e) {
+                e.preventDefault();
+                totalReflectionController.clickOneKeyCompleteHandler(e);
+            });
+        },
+        _unbindEvent: function _unbindEvent() {
+            helper.domObj.$btnCriticalAngle.off('click');
+            helper.domObj.$btnDifferentRefraction.off('click');
+            helper.domObj.$btnOneKeyComplete.off('click');
+        }
+    }, 'TotalReflection');
+
+    window.AddonTotalReflection_create = function () {
+        return new Presenter();
+    };
+})();
+'use strict';
+
+/**
+ * 全反射控制器
+ */
+define('TotalReflectionController', function () {
+    var TotalReflectionController = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+        },
+        init: function init() {
+            this.initBigGlass();
+            this._bindEvent();
+        },
+        initBigGlass: function initBigGlass() {
+            this.initBigGlass = this._resetBigGlass;
+            //渲染光路图
+            var option = {
+                name: this.helper.opticsName.BIG_GLASS,
+                lineColor: '#333',
+                lineLength: 350,
+                lineWidth: 4,
+                limitRotate: {
+                    limit: true,
+                    minAngle: 270,
+                    maxAngle: 360
+                },
+                angleTextSize: 50,
+                angleRadius: 60,
+                incidentRayDefaultRotateAngle: this.helper.defaultBigGlassIncidentRotateAngle, //入射角默认旋转度数
+                incidentRayVisibility: 'visible',
+                incidentAngleFillOpacity: 0.5,
+                incidentAngleTextColor: '#333333',
+                incidentRayArrowPos: 140,
+                incidentRayWidth: 8.57,
+                incidentAngleTextInterval: 80,
+
+                reflectedAngleFillColor: '#04740b',
+                reflectedAngleFillOpacity: 0.3,
+                reflectedAngleTextColor: '#04740b',
+                reflectedRayArrowPos: 100,
+                reflectedAngleTextInterval: 80,
+
+                normalWidth: 3,
+                normalLength: 240,
+                normalOpacity: 0.7,
+
+                refractedRayLength: 260,
+                refractedRayArrowPos: 100,
+                refractedAngleFillColor: '#cb1f1f',
+                refractedAngleFillOpacity: 0.3,
+                refractiveIndex: this.helper.opticsRefractiveIndex.GLASS, //折射率
+                criticalAngleRayOpacity: 0.5,
+                container: this.helper.domObj.$glassSvgContainer[0]
+            };
+            this.helper.bigGlassOptics = new Optics(option);
+
+            this._changeReflectedRayColorAndOpacity(this.helper.bigGlassOptics, this.helper.defaultBigGlassIncidentAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.bigGlassOptics, this.helper.defaultBigGlassIncidentAngle);
+        },
+        initCompareView: function initCompareView() {
+            var _this = this;
+
+            this.initCompareView = this._resetCompareView;
+
+            var commonOpt = {
+                viewboxWidth: 600,
+                viewboxHeight: 400,
+                color: '#333',
+                lineLength: 220,
+                lineWidth: 4,
+                limitRotate: {
+                    limit: true,
+                    minAngle: 270,
+                    maxAngle: 360
+                },
+                angleRadius: 60,
+                incidentRayDefaultRotateAngle: this.helper.defaultCompareViewIncidentRotateAngle,
+                visibility: 'visible',
+                angleVisibility: 'visible',
+                angleTextVisibility: 'visible',
+                criticalAngleRayVisibility: 'hidden',
+                angleFillOpacity: 0.6,
+                angleTextSize: 40,
+                angleTextInterval: 92,
+
+                normalOpacity: 0.7,
+                normalLength: 200,
+                normalWidth: 3,
+
+                incidentAngleTextColor: '#333333',
+                incidentRayVisibility: 'visible',
+                incidentAngleFillColor: '#333333',
+                incidentRayWidth: 8.57,
+                incidentRayArrowPos: 60,
+                incidentAngleTextInterval: 90,
+
+                reflectedAngleFillColor: '#04740b',
+                reflectedAngleFillOpacity: 0.3,
+                reflectedAngleTextColor: '#04740b',
+                reflectedRayArrowPos: 60,
+                reflectedAngleTextInterval: 90,
+
+                refractedAngleFillColor: '#cb1f1f',
+                refractedAngleFillOpacity: 0.3
+            };
+            var waterOpticsOpt = $.extend({}, commonOpt, {
+                name: this.helper.opticsName.WATER,
+                refractiveIndex: this.helper.opticsRefractiveIndex.WATER, //折射率
+                container: this.helper.domObj.$waterSvgContainer[0]
+            });
+            var samllGlassOpticsOpt = $.extend({}, commonOpt, {
+                name: this.helper.opticsName.SMALL_GLASS,
+                refractiveIndex: this.helper.opticsRefractiveIndex.GLASS, //折射率
+                container: this.helper.domObj.$smallGlassSvgContainer[0]
+            });
+            var diamondOpticsOpt = $.extend({}, commonOpt, {
+                name: this.helper.opticsName.DIAMOND,
+                refractiveIndex: this.helper.opticsRefractiveIndex.DIAMOND, //折射率
+                container: this.helper.domObj.$diamondSvgContainer[0]
+            });
+
+            this.helper.waterOptics = new Optics(waterOpticsOpt);
+            this._changeReflectedRayColorAndOpacity(this.helper.waterOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.waterOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+            this.helper.samllGlassOptics = new Optics(samllGlassOpticsOpt);
+            this._changeReflectedRayColorAndOpacity(this.helper.samllGlassOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.samllGlassOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+            this.helper.diamondOptics = new Optics(diamondOpticsOpt);
+            this._changeReflectedRayColorAndOpacity(this.helper.diamondOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.diamondOptics, this.helper.defaultCompareViewIncidentRotateAngle);
+
+            this._calcWaterTotalReflection(this.helper.waterOptics);
+            this._calcGlassTotalReflection(this.helper.samllGlassOptics);
+            this._calcDiamondTotalReflection(this.helper.diamondOptics);
+
+            var curRotateOpticsName = undefined;
+            //水旋转被按下
+            this.helper.waterOptics.publishSubscribe.subscribe(this.helper.waterOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.WATER) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.samllGlassOptics, true);
+                _this._highlightIncidentRay(_this.helper.diamondOptics, true);
+                curRotateOpticsName = _this.helper.opticsName.WATER;
+            });
+            //小玻璃旋转被按下
+            this.helper.samllGlassOptics.publishSubscribe.subscribe(this.helper.samllGlassOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.SMALL_GLASS) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.waterOptics, true);
+                _this._highlightIncidentRay(_this.helper.diamondOptics, true);
+                curRotateOpticsName = _this.helper.opticsName.SMALL_GLASS;
+            });
+            //金刚石旋转被按下
+            this.helper.diamondOptics.publishSubscribe.subscribe(this.helper.diamondOptics.publishSubscribe.OnIncidentRayRotateButtonDownEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.DIAMOND) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.waterOptics, true);
+                _this._highlightIncidentRay(_this.helper.samllGlassOptics, true);
+                curRotateOpticsName = _this.helper.opticsName.DIAMOND;
+            });
+            //
+            //水旋转弹起
+            this.helper.waterOptics.publishSubscribe.subscribe(this.helper.waterOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.WATER) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.samllGlassOptics, false);
+                _this._highlightIncidentRay(_this.helper.diamondOptics, false);
+            });
+            //小玻璃旋转弹起
+            this.helper.samllGlassOptics.publishSubscribe.subscribe(this.helper.samllGlassOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.SMALL_GLASS) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.waterOptics, false);
+                _this._highlightIncidentRay(_this.helper.diamondOptics, false);
+            });
+            //金刚石旋转弹起
+            this.helper.diamondOptics.publishSubscribe.subscribe(this.helper.diamondOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.DIAMOND) {
+                    return;
+                }
+                _this._highlightIncidentRay(_this.helper.waterOptics, false);
+                _this._highlightIncidentRay(_this.helper.samllGlassOptics, false);
+            });
+
+            this.helper.waterOptics.publishSubscribe.subscribe(this.helper.waterOptics.publishSubscribe.OnIncidentAngleChangedEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.WATER || curRotateOpticsName !== _this.helper.opticsName.WATER) {
+                    return;
+                }
+                _this._compareViewSubscribe(_this.helper.waterOptics, args);
+            });
+            this.helper.samllGlassOptics.publishSubscribe.subscribe(this.helper.samllGlassOptics.publishSubscribe.OnIncidentAngleChangedEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.SMALL_GLASS || curRotateOpticsName !== _this.helper.opticsName.SMALL_GLASS) {
+                    return;
+                }
+                _this._compareViewSubscribe(_this.helper.samllGlassOptics, args);
+            });
+            this.helper.diamondOptics.publishSubscribe.subscribe(this.helper.diamondOptics.publishSubscribe.OnIncidentAngleChangedEvent, function (topic, args) {
+                if (args.name !== _this.helper.opticsName.DIAMOND || curRotateOpticsName !== _this.helper.opticsName.DIAMOND) {
+                    return;
+                }
+                _this._compareViewSubscribe(_this.helper.diamondOptics, args);
+            });
+        },
+        clickCriticalAngleHandler: function clickCriticalAngleHandler(e) {
+            if (this.helper.domObj.$btnCriticalAngle.hasClass('click_disabled')) {
+                return;
+            }
+            //重置按钮可用
+            this.helper.domObj.$btnReset.removeClass('click_disabled');
+            var criticalAngle = this.helper.glassCriticalAngle;
+            this.helper.bigGlassOptics.incidentRay.changeRotateAngle(270 + criticalAngle);
+        },
+        clickDifferentRefractionHandler: function clickDifferentRefractionHandler(e) {
+            //重置按钮可用
+            this.helper.domObj.$btnReset.removeClass('click_disabled');
+            this.helper.domObj.$btnDifferentRefractionLabel.toggleClass('checked');
+            if (this.helper.domObj.$btnDifferentRefractionLabel.hasClass('checked')) {
+                //打开对比视图
+                this.helper.domObj.$container.removeClass('totalreflection_pre1').addClass('totalreflection_pre2');
+                //禁用临界角按钮、一键完成按钮
+                this.helper.domObj.$btnCriticalAngle.addClass('click_disabled');
+                this.helper.domObj.$btnOneKeyComplete.addClass('click_disabled');
+                this.initCompareView();
+            } else {
+                this._resetCompareView(true);
+                this.helper.domObj.$container.addClass('totalreflection_pre1').removeClass('totalreflection_pre2');
+                //恢复临界角按钮、一键完成按钮可用
+                var criticalAngle = this.helper.glassCriticalAngle;
+                if (this.helper.bigGlassOptics.incidentRay.angleValue === Number(criticalAngle.toFixed(1))) {
+                    this.helper.domObj.$btnCriticalAngle.addClass('click_disabled');
+                } else {
+                    this.helper.domObj.$btnCriticalAngle.removeClass('click_disabled');
+                }
+                !this.helper.oneKeyCompleteClicked && this.helper.domObj.$btnOneKeyComplete.removeClass('click_disabled');
+            }
+        },
+        clickResetHandler: function clickResetHandler(e) {
+            if (this.helper.domObj.$btnReset.hasClass('click_disabled')) {
+                return;
+            }
+            //清除对比视图
+            this.helper.domObj.$container.addClass('totalreflection_pre1').removeClass('totalreflection_pre2');
+            this._resetBigGlass();
+            this._resetCompareView(true);
+
+            this.helper.domObj.$btnReset.addClass('click_disabled');
+            this.helper.domObj.$btnCriticalAngle.removeClass('click_disabled');
+            this.helper.oneKeyCompleteClicked = false;
+            this.helper.domObj.$btnDifferentRefractionLabel.removeClass('checked');
+            this.helper.domObj.$btnOneKeyComplete.removeClass('click_disabled');
+        },
+        clickOneKeyCompleteHandler: function clickOneKeyCompleteHandler(e) {
+            if (this.helper.domObj.$btnOneKeyComplete.hasClass('click_disabled')) {
+                return;
+            }
+            this.helper.oneKeyCompleteClicked = true;
+            this.helper.domObj.$btnOneKeyComplete.addClass('click_disabled');
+            //重置按钮可用
+            this.helper.domObj.$btnReset.removeClass('click_disabled');
+            //入射线角度、入射线角度文本
+            this.helper.bigGlassOptics.incidentRay.showAngle(true);
+
+            //法线可以见
+            this.helper.bigGlassOptics.normal.show(true);
+            //反射线、反射角度、反射角度文本可见
+            this.helper.bigGlassOptics.reflectedRay.showLine(true);
+            this.helper.bigGlassOptics.reflectedRay.showAngle(true);
+
+            //折射线、折射角度、折射角度文本可见
+            if (this.helper.bigGlassOptics.incidentRay.angleValue < this.helper.glassCriticalAngle) {
+                this._showRefractedRay(this.helper.bigGlassOptics, true);
+            }
+            //全反射标记是否可见
+            if (this.helper.oneKeyCompleteClicked) {
+                this.helper.bigGlassOptics.incidentRay.angleValue < this.helper.glassCriticalAngle ? this.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom') : this.helper.domObj.$bigGlassTotalReflection.removeClass('hide_dom');
+            } else {
+                this.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom');
+            }
+            //0度90度不显示文本
+            if (this.helper.bigGlassOptics.incidentRay.angleValue === 0 || this.helper.bigGlassOptics.incidentRay.angleValue === 90) {
+                this.helper.bigGlassOptics.incidentRay.showAngle(false);
+                this.helper.bigGlassOptics.incidentRay.showAngleText(false);
+                this.helper.bigGlassOptics.reflectedRay.showAngle(false);
+                this.helper.bigGlassOptics.reflectedRay.showAngleText(false);
+            } else {
+                this.helper.bigGlassOptics.incidentRay.showAngle(true);
+                this.helper.bigGlassOptics.incidentRay.showAngleText(true);
+                this.helper.bigGlassOptics.reflectedRay.showAngle(true);
+                this.helper.bigGlassOptics.reflectedRay.showAngleText(true);
+            }
+        },
+        _bindEvent: function _bindEvent() {
+            var _this2 = this;
+
+            //监听大玻璃入射角的变化
+            this.helper.bigGlassOptics.publishSubscribe.subscribe(this.helper.bigGlassOptics.publishSubscribe.OnIncidentAngleChangedEvent, function (topic, args) {
+                if (args.name !== _this2.helper.opticsName.BIG_GLASS) {
+                    return;
+                }
+                //重置按钮可用
+                _this2.helper.domObj.$btnReset.removeClass('click_disabled');
+
+                var criticalAngle = _this2.helper.glassCriticalAngle;
+                var isShow = args.inAngle + 2 >= criticalAngle && args.inAngle - 2 <= criticalAngle;
+                _this2.helper.bigGlassOptics.criticalAngleRay.show(isShow);
+
+                if (args.inAngle < criticalAngle && _this2.helper.oneKeyCompleteClicked) {
+                    _this2._showRefractedRay(_this2.helper.bigGlassOptics, true);
+                } else {
+                    _this2._showRefractedRay(_this2.helper.bigGlassOptics, false);
+                }
+                if (_this2.helper.oneKeyCompleteClicked) {
+                    args.inAngle < criticalAngle ? _this2.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom') : _this2.helper.domObj.$bigGlassTotalReflection.removeClass('hide_dom');
+                    _this2._showAngleText(_this2.helper.bigGlassOptics, args.inAngle);
+                } else {
+                    _this2.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom');
+                }
+
+                if (args.inAngle === Number(criticalAngle.toFixed(1))) {
+                    _this2.helper.domObj.$btnCriticalAngle.addClass('click_disabled');
+                } else {
+                    _this2.helper.domObj.$btnCriticalAngle.removeClass('click_disabled');
+                }
+
+                //改变反射线颜色
+                _this2._changeReflectedRayColorAndOpacity(_this2.helper.bigGlassOptics, args.inAngle);
+                //改变折射线颜色
+                _this2._changeRefractedRayColorAndOpacity(_this2.helper.bigGlassOptics, args.inAngle);
+
+                _this2.helper.curBigGlassIncidentRotateAngle = args.rotateAngle;
+            });
+            //监听大玻璃介质手放开
+            this.helper.bigGlassOptics.publishSubscribe.subscribe(this.helper.bigGlassOptics.publishSubscribe.OnIncidentRayRotateButtonUpEvent, function (topic, args) {
+                if (args.name !== _this2.helper.opticsName.BIG_GLASS) {
+                    return;
+                }
+                var criticalAngle = _this2.helper.glassCriticalAngle;
+
+                if (args.inAngle < criticalAngle && _this2.helper.oneKeyCompleteClicked) {
+                    _this2._showRefractedRay(_this2.helper.bigGlassOptics, true);
+                } else {
+                    _this2._showRefractedRay(_this2.helper.bigGlassOptics, false);
+                }
+
+                if (_this2.helper.oneKeyCompleteClicked) {
+                    args.inAngle < criticalAngle ? _this2.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom') : _this2.helper.domObj.$bigGlassTotalReflection.removeClass('hide_dom');
+                } else {
+                    _this2.helper.domObj.$bigGlassTotalReflection.addClass('hide_dom');
+                }
+
+                //在临界角2度范围之内
+                if (args.inAngle + 2 >= criticalAngle && args.inAngle - 2 <= criticalAngle) {
+                    _this2.helper.bigGlassOptics.incidentRay.changeRotateAngle(270 + criticalAngle);
+                    _this2.helper.bigGlassOptics.criticalAngleRay.show(false);
+                    _this2._showRefractedRay(_this2.helper.bigGlassOptics, false);
+                }
+
+                if (_this2.helper.bigGlassOptics.incidentRay.angleValue === Number(criticalAngle.toFixed(1))) {
+                    _this2.helper.domObj.$btnCriticalAngle.addClass('click_disabled');
+                } else {
+                    _this2.helper.domObj.$btnCriticalAngle.removeClass('click_disabled');
+                }
+            });
+        },
+        _compareViewSubscribe: function _compareViewSubscribe(optics, args) {
+            //记录当前视图的入射角旋转角度
+            this.helper.curCompareViewIncidentRotateAngle = args.rotateAngle;
+
+            optics.name !== this.helper.opticsName.WATER && this.helper.waterOptics.incidentRay.changeRotateAngle(args.rotateAngle);
+            optics.name !== this.helper.opticsName.SMALL_GLASS && this.helper.samllGlassOptics.incidentRay.changeRotateAngle(args.rotateAngle);
+            optics.name !== this.helper.opticsName.DIAMOND && this.helper.diamondOptics.incidentRay.changeRotateAngle(args.rotateAngle);
+
+            this._calcWaterTotalReflection(this.helper.waterOptics);
+            this._calcGlassTotalReflection(this.helper.samllGlassOptics);
+            this._calcDiamondTotalReflection(this.helper.diamondOptics);
+
+            this._changeReflectedRayColorAndOpacity(this.helper.waterOptics, args.inAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.waterOptics, args.inAngle);
+            this._changeReflectedRayColorAndOpacity(this.helper.samllGlassOptics, args.inAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.samllGlassOptics, args.inAngle);
+            this._changeReflectedRayColorAndOpacity(this.helper.diamondOptics, args.inAngle);
+            this._changeRefractedRayColorAndOpacity(this.helper.diamondOptics, args.inAngle);
+
+            //是否显示角度文本
+            this._showAngleText(this.helper.waterOptics, args.inAngle);
+            this._showAngleText(this.helper.samllGlassOptics, args.inAngle);
+            this._showAngleText(this.helper.diamondOptics, args.inAngle);
+        },
+        _calcWaterTotalReflection: function _calcWaterTotalReflection(optics) {
+            if (optics.incidentRay.angleValue >= this.helper.waterCriticalAngle) {
+                this._showRefractedRay(optics, false);
+                this.helper.domObj.$waterTotalReflection.removeClass('hide_dom');
+                this.helper.domObj.$waterN.removeClass('hide_dom');
+                this.helper.domObj.$waterC.removeClass('hide_dom');
+            } else {
+                this._showRefractedRay(optics, true);
+                this.helper.domObj.$waterTotalReflection.addClass('hide_dom');
+                this.helper.domObj.$waterN.addClass('hide_dom');
+                this.helper.domObj.$waterC.addClass('hide_dom');
+            }
+        },
+        _calcGlassTotalReflection: function _calcGlassTotalReflection(optics) {
+            if (optics.incidentRay.angleValue >= this.helper.glassCriticalAngle) {
+                this._showRefractedRay(optics, false);
+                this.helper.domObj.$smallGlassTotalReflection.removeClass('hide_dom');
+                this.helper.domObj.$smallGlassN.removeClass('hide_dom');
+                this.helper.domObj.$smallGlassC.removeClass('hide_dom');
+            } else {
+                this._showRefractedRay(optics, true);
+                this.helper.domObj.$smallGlassTotalReflection.addClass('hide_dom');
+                this.helper.domObj.$smallGlassN.addClass('hide_dom');
+                this.helper.domObj.$smallGlassC.addClass('hide_dom');
+            }
+        },
+        _calcDiamondTotalReflection: function _calcDiamondTotalReflection(optics) {
+            if (optics.incidentRay.angleValue >= this.helper.diamondCriticalAngle) {
+                this._showRefractedRay(optics, false);
+                this.helper.domObj.$diamondTotalReflection.removeClass('hide_dom');
+                this.helper.domObj.$diamondN.removeClass('hide_dom');
+                this.helper.domObj.$diamondC.removeClass('hide_dom');
+            } else {
+                this._showRefractedRay(optics, true);
+                this.helper.domObj.$diamondTotalReflection.addClass('hide_dom');
+                this.helper.domObj.$diamondN.addClass('hide_dom');
+                this.helper.domObj.$diamondC.addClass('hide_dom');
+            }
+        },
+        /**
+         * 显示或隐藏折射线
+         * @param optics 光路对象
+         * @param isShow true显示，false隐藏
+         */
+        _showRefractedRay: function _showRefractedRay(optics, isShow) {
+            optics.refractedRay.showLine(isShow);
+            optics.refractedRay.showAngle(isShow);
+            if (optics.refractedRay.angleValue === 0 || optics.refractedRay.angleValue === 90) {
+                optics.refractedRay.showAngleText(false);
+            } else {
+                optics.refractedRay.showAngleText(isShow);
+            }
+        },
+        /**
+         * 0和90度时不显示度数
+         * @param optics
+         * @param inAngle
+         * @private
+         */
+        _showAngleText: function _showAngleText(optics, inAngle) {
+            var isShow = inAngle !== 0 && inAngle !== 90;
+            optics.incidentRay.showAngle(isShow);
+            optics.incidentRay.showAngleText(isShow);
+            optics.reflectedRay.showAngle(isShow);
+            optics.reflectedRay.showAngleText(isShow);
+        },
+        _resetBigGlass: function _resetBigGlass() {
+            this.helper.bigGlassOptics.incidentRay.changeRotateAngle(this.helper.defaultBigGlassIncidentRotateAngle);
+            //入射线角度、入射线角度文本
+            this.helper.bigGlassOptics.incidentRay.showAngle(false);
+            this.helper.bigGlassOptics.incidentRay.showAngleText(false);
+
+            //法线可以见
+            this.helper.bigGlassOptics.normal.show(false);
+            //反射线、反射角度、反射角度文本可见
+            this.helper.bigGlassOptics.reflectedRay.showLine(false);
+            this.helper.bigGlassOptics.reflectedRay.showAngle(false);
+            this.helper.bigGlassOptics.reflectedRay.showAngleText(false);
+            //折射线、折射角度、折射角度文本可见
+            this.helper.bigGlassOptics.refractedRay.showLine(false);
+            this.helper.bigGlassOptics.refractedRay.showAngle(false);
+            this.helper.bigGlassOptics.refractedRay.showAngleText(false);
+        },
+        _resetCompareView: function _resetCompareView(isHide) {
+            if (!!isHide) {
+                this.helper.waterOptics && this.helper.waterOptics.incidentRay.changeRotateAngle(this.helper.defaultCompareViewIncidentRotateAngle);
+                this.helper.samllGlassOptics && this.helper.samllGlassOptics.incidentRay.changeRotateAngle(this.helper.defaultCompareViewIncidentRotateAngle);
+                this.helper.diamondOptics && this.helper.diamondOptics.incidentRay.changeRotateAngle(this.helper.defaultCompareViewIncidentRotateAngle);
+            }
+
+            this.helper.waterOptics && (isHide ? this.helper.domObj.$waterSvgContainer.css({
+                position: 'relative',
+                left: '10000px'
+            }) : this.helper.domObj.$waterSvgContainer.css({ position: 'relative', left: '0' }));
+            this.helper.samllGlassOptics && (isHide ? this.helper.domObj.$smallGlassSvgContainer.css({
+                position: 'relative',
+                left: '10000px'
+            }) : this.helper.domObj.$smallGlassSvgContainer.css({ position: 'relative', left: '0' }));
+            this.helper.diamondOptics && (isHide ? this.helper.domObj.$diamondSvgContainer.css({
+                position: 'relative',
+                left: '10000px'
+            }) : this.helper.domObj.$diamondSvgContainer.css({ position: 'relative', left: '0' }));
+        },
+        _changeReflectedRayColorAndOpacity: function _changeReflectedRayColorAndOpacity(optics, inAngle) {
+            //临界角
+            var criticalAngle = void 0;
+            if (optics.name === this.helper.opticsName.WATER) {
+                criticalAngle = 48.8;
+            } else if (optics.name === this.helper.opticsName.DIAMOND) {
+                criticalAngle = 24.4;
+            } else {
+                criticalAngle = 41.8;
+            }
+            var reflectedRayColor = parseInt((inAngle > criticalAngle ? criticalAngle : inAngle) * this.helper.reflectedRay.unitColor).toString(16);
+
+            reflectedRayColor = this._prefixInteger(reflectedRayColor, 2);
+            reflectedRayColor = Number(this.helper.reflectedRay.startColor + Number('0x00' + reflectedRayColor + '00')).toString(16);
+            reflectedRayColor = '#' + this._prefixInteger(reflectedRayColor, 6);
+
+            var reflectedRayOpacity = inAngle / criticalAngle;
+            reflectedRayOpacity = reflectedRayOpacity < 0.3 ? 0.3 : reflectedRayOpacity;
+            reflectedRayOpacity = reflectedRayOpacity > 1 ? 1 : reflectedRayOpacity;
+
+            var lineWidth = reflectedRayOpacity * (6 / (1 - 0.3));
+            optics.reflectedRay.lineWidth = lineWidth;
+            if (optics.name === this.helper.opticsName.BIG_GLASS) {
+                optics.reflectedRay.reflectedRayNode.attr({
+                    d: 'M 0 0 h 350 v ' + lineWidth + ' h -350 z',
+                    transform: 'translate(0,' + -lineWidth / 2 + ')'
+                });
+            } else {
+                optics.reflectedRay.reflectedRayNode.attr({
+                    d: 'M 0 0 h 220 v ' + lineWidth + ' h -220 z',
+                    transform: 'translate(0,' + -lineWidth / 2 + ')'
+                });
+            }
+
+            optics.reflectedRay.reflectedRayNode.attr({
+                fill: reflectedRayColor,
+                opacity: reflectedRayOpacity
+            });
+            optics.reflectedRay.arrow.arrowNode.attr({
+                fill: reflectedRayColor,
+                opacity: reflectedRayOpacity
+            });
+        },
+        _changeRefractedRayColorAndOpacity: function _changeRefractedRayColorAndOpacity(optics, inAngle) {
+            var refractedSinVal = optics.refractedRay.refractiveIndex * Math.sin(inAngle * Math.PI / 180);
+            refractedSinVal > 1 && (refractedSinVal = 1);
+            refractedSinVal < -1 && (refractedSinVal = -1);
+            var refractedAngle = Math.asin(refractedSinVal) * 180 / Math.PI;
+
+            var refractedRayColor = parseInt(refractedAngle * this.helper.refractedRay.unitColor).toString(16);
+            refractedRayColor = this._prefixInteger(refractedRayColor, 2);
+            refractedRayColor = Number(this.helper.refractedRay.startColor + Number('0x' + refractedRayColor + '0000')).toString(16);
+            refractedRayColor = '#' + this._prefixInteger(refractedRayColor, 6);
+
+            var refractedRayOpacity = (90 - refractedAngle) / 90;
+            refractedRayOpacity = refractedRayOpacity < 0.3 ? 0.3 : refractedRayOpacity;
+            refractedRayOpacity = refractedRayOpacity > 1 ? 1 : refractedRayOpacity;
+
+            var lineWidth = refractedRayOpacity * (6 / (1 - 0.3));
+            optics.refractedRay.lineWidth = lineWidth;
+            if (optics.name === this.helper.opticsName.BIG_GLASS) {
+                optics.refractedRay.refractedRayNode.attr({
+                    d: 'M 0 0 h 260 v ' + lineWidth + ' h -260 z',
+                    transform: 'translate(0,' + -optics.refractedRay.refractedRayNode.getBBox().height / 2 + ')'
+                });
+            } else {
+                optics.refractedRay.refractedRayNode.attr({
+                    d: 'M 0 0 h 220 v ' + lineWidth + ' h -220 z',
+                    transform: 'translate(0,' + -optics.refractedRay.refractedRayNode.getBBox().height / 2 + ')'
+                });
+            }
+
+            optics.refractedRay.refractedRayNode.attr({
+                fill: refractedRayColor,
+                opacity: refractedRayOpacity
+            });
+            optics.refractedRay.arrow.arrowNode.attr({
+                fill: refractedRayColor,
+                opacity: refractedRayOpacity
+            });
+        },
+        _highlightIncidentRay: function _highlightIncidentRay(optics, isShow) {
+            if (isShow) {
+                //旋转按钮高亮
+                optics.incidentRay.operationButton.rotateButtonGroupNode.select('path:nth-child(2)').attr({
+                    fill: '#e06313'
+                });
+                //入射线高亮
+                optics.incidentRay.incidentRayNode.attr({
+                    stroke: '#fff',
+                    strokeWidth: 3
+                });
+                //箭头高亮
+                optics.incidentRay.arrow.arrowNode.attr({
+                    stroke: '#fff',
+                    strokeWidth: 2
+                });
+            } else {
+                //旋转按钮高亮
+                optics.incidentRay.operationButton.rotateButtonGroupNode.select('path:nth-child(2)').attr({
+                    fill: '#ffffff'
+                });
+                //入射线高亮
+                optics.incidentRay.incidentRayNode.attr({
+                    stroke: 'none'
+                });
+                //箭头高亮
+                optics.incidentRay.arrow.arrowNode.attr({
+                    stroke: 'none'
+                });
+            }
+        },
+        /**
+         * 前面补0
+         * @param num num传入的数字，
+         * @param n n需要的字符长度
+         * @return {string}
+         * @private
+         */
+        _prefixInteger: function _prefixInteger(num, n) {
+            return (Array(n).join(0) + num).slice(-n);
+        }
+    });
+
+    return TotalReflectionController;
+});]]></presenter><resources><file src="./resources/wood/images/critical_angle_active.png"/><file src="./resources/wood/images/critical_angle_disabled.png"/><file src="./resources/wood/images/critical_angle.png"/><file src="./resources/wood/images/glass_material.png"/><file src="./resources/wood/images/glass_semiarc.png"/><file src="./resources/wood/images/n_one_black.png"/><file src="./resources/wood/images/n_one.png"/><file src="./resources/wood/images/rotate_btn_active.png"/><file src="./resources/wood/images/rotate_btn.png"/><file src="./resources/wood/images/store_material.png"/><file src="./resources/wood/images/totalreflection_tips.png"/><file src="./resources/wood/images/water_material.png"/></resources></addon>

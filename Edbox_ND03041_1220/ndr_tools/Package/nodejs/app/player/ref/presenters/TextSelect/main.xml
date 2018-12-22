@@ -1,0 +1,294 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TextSelect'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" />
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="时间" type="string" isLocalized="false" />
+                <property name="question_url" type="jsonFile" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_TextSelect .com_lay_header .pptshell_btn{text-align:center}.addon_TextSelect .exam_wood .com_lay_contain{position:relative}.addon_TextSelect .exam_wood .com_m_sideboard_1{float:none!important}.addon_TextSelect .com_u_boardtit#addon_title{font-family:'Microsoft YaHei',Helvetica,Arial,sans-serif}.addon_TextSelect .exam_wood .com_lay_contain .pptshell_mask{position:absolute;top:0;left:0;width:100%;height:100%;z-index:999;display:none}.addon_TextSelect .exam_wood .com_lay_contain .pptshell_mask.show{display:block}.addon_TextSelect .student_loading{position:absolute;width:100%;height:100%;left:0;top:0;background-color:transparent;z-index:2}.addon_TextSelect .loading_contents{background-color:rgba(0,0,0,.7);border-radius:10px;width:300px;height:100px;margin:350px auto;color:#fff;line-height:100px;text-align:center;font-size:24px}.addon_TextSelect .ts_content_content span{background:#e6c795!important;color:#fff;border:1px solid #ae7f32;border-bottom-width:3px;position:relative;cursor:pointer;text-shadow:none;border-radius:5px;padding:3px 6px}.addon_TextSelect .textselect_box{float:none;margin:0 36px!important;padding:48px 0!important}.addon_TextSelect .textselect_box .textselect_container{background:rgba(255,255,255,.1);color:#5d390d;text-shadow:.5px .5px 0 rgba(255,255,255,.3);height:100%;overflow-y:auto;font-size:20px;padding:54px 36px;border-radius:8px;line-height:2}.addon_TextSelect .textselect_box .textselect_container .textselect_option{background:#e6c795;color:#fff;border:1px solid #ae7f32;border-bottom-width:3px;position:relative;cursor:pointer;text-shadow:none;border-radius:5px;padding:3px 6px}.addon_TextSelect .textselect_box .textselect_container .textselect_selected{background:#76c1ea!important;color:#fff;border:1px solid #4b8aad;border-bottom-width:3px}.addon_TextSelect .textselect_box .textselect_container .textselect_error{background:#f25657!important;color:#fff;border:1px solid #c14242;border-bottom-width:3px}.addon_TextSelect .textselect_box .textselect_container .textselect_correct{background:#6fd071!important;color:#fff;border:1px solid #48914a;border-bottom-width:3px}.addon_TextSelect .textselect_result{float:left;margin:20px 0 0 35%;color:#5e390c;font-size:24px}.addon_TextSelect .textselect_result span{color:#fd9000;font-size:40px}.addon_TextSelect ul{list-style:none}.addon_TextSelect *{margin:0;padding:0}.addon_TextSelect a{text-decoration:none}#quiz_textselect_answercontent{word-break:break-word}.textselect_item_key{overflow:hidden;padding:10px}.textselect_item_key .NotMasterItem_key{float:left;margin:0 20px}.textselect_item_key .NotMasterItem_value_default{padding:0;margin:0}.textselect_item_key .NotMasterItem_value_default div{background:#ccc;padding:5px;margin:5px;border-radius:5px;text-align:center;font-size:24px}.addon_QuizStatistics .ts_content_content{font-size:26px}.addon_QuizStatistics .ts_content_content span{border-radius:5px;padding:0 10px;background-color:#a6c8ff;color:#fff;margin:0 5px;cursor:pointer}.addon_QuizStatistics .ts_content_content span.correct{background-color:green}.addon_QuizStatistics .statis_text_keycss{width:80px;height:45px;line-height:45px;font-size:24px;text-align:center;border-radius:5px;border:1px solid #ccc}.addon_QuizStatistics .NotMasterTooltip_default_div{font-size:24px}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="exam_wood" style="width: 100%;height: 100%"><div class="com_layout"><div class="com_lay_header"><div class="com_u_timebox"></div><div class="com_lay_toptool"></div></div><div class="com_lay_contain"><div class="pptshell_mask"></div><div class="com_lay_mboard"><div class="com_lay_boardtit"><h2 class="com_u_boardtit" id="addon_title" data-bind="html:title"></h2></div><div class="com_lay_board"><div class="com_m_sideboard_1 textselect_box"><div class="textselect_container"><div class="ts_content_content" data-bind="html:content,css:{showAnswer:showAnswer()}" style="word-break: break-all"></div></div></div></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BasicPresenter.extend({
+        getQuestionInfo: function () {
+            return {id: this.presenterModel.question_id, type_code: 'textselect', type_name: '文本选择', url: this.presenterModel.question_id, dispatchOnly: true}
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.model = [];
+            this.componentSetting = {};
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            $(view).width(0);
+            $(view).height(0)
+            this.presenterModel = model;
+            var self = this;
+
+            //适配颗粒中定义的数据
+            self._adaptedOriginData(model);
+            self.logger.debug("TextSelect model " + JSON.stringify(model));
+            //构建组件配置
+            self._configComponents();
+            //加载启动器
+            self.model.push({
+                name: "Components",
+                type: "json",
+                text: JSON.stringify(self.componentSetting)
+            });
+
+            self.$requireComponent('ComponentLoader', self.model, $(view), {
+                left: 0,
+                top: 0,
+                width: 0,
+                height: 0
+            });
+        },
+        destroy: function () {},
+        /****以下开始为Presenter的私有方法*****/
+        _adaptedOriginData: function (model) {
+            var self = this;
+            var timeLimit = 0;
+            if (model.question_url.timer.timer_type == 'countdown') {
+                timeLimit = parseInt(model.question_url.timer.time_minute) * 60 + parseInt(model.question_url.timer.time_second)
+            }
+            //添加题型所需要的数据
+            this.model.push({"name": "questionType", "type": "string", "value": "TextSlectRemake"});
+            this.model.push({
+                name: "TimerController",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        name: "timer_type",
+                        type: "string",
+                        value: model.question_url.timer.timer_type
+                    }, {
+                        name: "isPauseOnSubmit",
+                        type: "boolean",
+                        value: "false"
+                    }, {
+                        name: "time_limit",
+                        type: "string",
+                        value: timeLimit
+                    }
+                ])
+            });
+            this.model.push({
+                name: "InteractionSubmitButton",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        name: "can_modify",
+                        type: "string",
+                        value: true
+                    }, {
+                        name: "linkQuestionType",
+                        type: "string",
+                        value: "textselect"
+                    }, {
+                        name: "linkQuestionId",
+                        type: "string",
+                        value: model['question_id']
+                    }, {
+                        name: "view_type",
+                        type: "string",
+                        value: 'new_em_button'
+                    }
+                ])
+            });
+            this.model.push({
+                name: "InteractionTimer",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        "name": "view_type",
+                        "type": "string",
+                        "value": "new_timer"
+                    }
+                ])
+            });
+            this.model.push({
+                name: "TextSelectRemake",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        "name": "questionId",
+                        "type": "string",
+                        "value": model.question_id
+                    }, {
+                        name: "questionData",
+                        type: "json",
+                        text: JSON.stringify(model.question_url)
+                    }
+                ])
+            });
+
+            this.model.push({
+                name: "ObjectiveInteractionLayout",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        name: "questionType",
+                        type: "string",
+                        value: "TextSelect"
+                    }, {
+                        name: "specialTemplate",
+                        type: "string",
+                        value: "false"
+                    }
+                ])
+            });
+            this.model.push({
+                name: "AnswerFlowController",
+                type: "string",
+                value: JSON.stringify([
+                    {
+                        name: "showResultOnSubmit",
+                        type: "string",
+                        value: "false"
+                    }
+                ])
+            });
+            this.model.push({name: "ObjectiveStatisticsRemake", type: "string", value: JSON.stringify([])});
+            this.model.push({
+                name: 'ClassroomStatusController',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'questionId',
+                        type: 'string',
+                        value: model.question_id
+                    }
+                ])
+            });
+        },
+        _configComponents: function () {
+            //根据不同的运行场景定义需要加载的组件
+            if (this.isPPTShell || this.isWeb) {
+                //如果是PPTShell的场景
+                this.componentSetting = {
+                    controllers: [
+                        {
+                            presenter: "InteractionStateRecoverFilter"
+                        }, {
+                            presenter: "I18nFilter"
+                        }, {
+                            presenter: "AnswerFlowController",
+                            depends: [
+                                {
+                                    property: "TimerService",
+                                    presenter: "TimerController"
+                                }
+                            ]
+                        }, {
+                            presenter: "ObjectiveStatController"
+                        }, {
+                            presenter: 'ClassroomStatusController'
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [
+                        {
+                            presenter: "InteractionTimer",
+                            renderTo: "TopLeftPanel"
+                        }, {
+                            presenter: "InteractionSubmitButton",
+                            renderTo: "BottomPanel"
+                        }, {
+                            presenter: "TextSelectRemake",
+                            renderTo: "CenterPanel"
+                        }, {
+                            presenter: "ObjectiveStatisticsRemake",
+                            renderTo: "StatisticsPanel"
+                        }
+                    ]
+                };
+            } else if (this.isStudent) {
+                //如果是学生端Pad或Web的场景
+                this.componentSetting = {
+                    controllers: [
+                        {
+                            presenter: "InteractionStateRecoverFilter"
+                        }, {
+                            presenter: "I18nFilter"
+                        }, {
+                            presenter: "AnswerFlowController",
+                            depends: [
+                                {
+                                    property: "TimerService",
+                                    presenter: "TimerController"
+                                }
+                            ]
+                        }, {
+                            presenter: "AnswerProgressController"
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [
+                        {
+                            presenter: "InteractionTimer",
+                            renderTo: "TopLeftPanel"
+                        }, {
+                            presenter: "InteractionSubmitButton",
+                            renderTo: "TopRightPanel"
+                        }, {
+                            presenter: "TextSelectRemake",
+                            renderTo: "CenterPanel"
+                        }
+                    ]
+                };
+            }
+        }
+    }, "TextSelect");
+
+    window.AddonTextSelect_create = function () {
+        return new Presenter();
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/bo_CN/zh.po' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/zh.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/zh_CN.po' />
+
+
+</resources>
+
+</addon>

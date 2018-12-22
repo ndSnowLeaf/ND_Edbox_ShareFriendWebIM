@@ -1,0 +1,463 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='HandWriter'>
+<properties>
+
+                <property name="examId" displayName="课堂(考试)号" type="string" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+                <property name="isAutoGetState" displayName="是否启动内部计时器进行状态保存" type="int" />
+                <property name="isSinglePage" displayName="是否单页模式" type="int" />
+                <property name="questionType" displayName="习题类型" type="string" />
+                <property name="title" displayName="作文题标题" type="string" />
+                <property name="writer_background" displayName="手写板背景" type="json" isLocalized="false" />
+                <property name="commentData" displayName="评语数据" type="json" />
+                <property name="initData" displayName="手写板model数据" type="json" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="basicPresenter" version="1.0.1" />
+    <javaScript  name="write_css" version="1.0.5" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(2);
+var self = null;
+
+var Presenter = BasicPresenter.extend({
+    // 元数据信息
+    metaInfo: {
+        name: 'HandWriter',
+        type: PresenterType.PRESENTER_COMPONENT
+    },
+    // Presenter的初始化方法
+    $init: function () {
+        this._super();
+        this.writer = null;
+        this.containerSelector = '.com_lay_write';
+
+        // 日志记录
+        this.logger.appendHandler(function (message) {
+            console.log(message);
+            ClassroomUtils.log(JSON.stringify(message));
+        }, {level: Logger.DEBUG});
+    },
+    getService: function () {
+        if (this._service_ == null) {
+            this._service_ = Service();
+            this._service_.constructor(this);
+        }
+        return this._service_;
+    },
+    /**
+     * 以下开始为icPlayer的生命周期方法
+     */
+    run: function (view, model) {
+        self = this;
+        this.model = model;
+        if (this.model.__containerSelector) {
+            this.containerSelector = this.model.__containerSelector;
+        }
+
+        if (model.initData !== undefined) {
+            model.initData.client = this.currentRuntime;
+            model.initData.nativeId = model.initData.nativeId || 'writer';
+            this.logger.debug('run ', JSON.stringify(model));
+            var options = [
+                {'name': 'initData', 'type': 'json', 'value': model.initData}
+            ];
+            var config = {
+                'StudentMobile': {
+                    addonId: 'NativeHandWriter',
+                    layout: {
+                        left: 0,
+                        top: 0,
+                        width: 0,
+                        height: 0
+                    },
+                    properties: options,
+                    callback: function (addon) {
+                        self.writer = addon;
+                    }
+                },
+                'TeacherPc': {
+                    addonId: 'H5HandWriter',
+                    renderTo: this.containerSelector,
+                    layout: {
+                        left: 0,
+                        top: 0,
+                        width: '100%',
+                        height: 0
+                    },
+                    properties: options,
+                    callback: function (addon) {
+                        self.writer = addon;
+                    }
+                }
+            };
+            /**
+             * Web环境下使用PC白板的配置
+             */
+            config.Web = config.TeacherPc;
+            return this.playerController.require(config[this.currentRuntime]);
+        }
+    },
+    pageShow: function () {
+    },
+    pageLeave: function () {
+        this.writer = null;
+    },
+    destroy: function () {
+    }
+}, 'HandWriter');
+
+module.exports = Presenter;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Presenter = __webpack_require__(0);
+
+window.AddonHandWriter_create = function () {
+    return new Presenter();
+};
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var Service = function () {
+    var _parent = null;
+    var hasService = function (name) {
+        if (_parent.writer !== null && _parent.writer.getService()[name] !== undefined) {
+            return true;
+        }
+        return false;
+    };
+
+    return {
+        constructor: function (parent) {
+            _parent = parent;
+        },
+        // 用于Controller识别此Presenter
+        isHandWrite: function () {
+            return true;
+        },
+        // 显示或隐藏手写板
+        show: function (show) {
+            _parent.logger.debug('show');
+            if (hasService('show')) {
+                _parent.writer.getService().show(show);
+            }
+        },
+        // 隐藏/显示工具栏
+        showToolbar: function (show) {
+            _parent.logger.debug('showToolbar');
+            if (hasService('showToolbar')) {
+                _parent.writer.getService().showToolbar(show);
+            }
+        },
+        // 清空轨迹
+        clean: function () {
+            _parent.logger.debug('clean');
+            if (hasService('clean')) {
+                _parent.writer.getService().clean();
+            }
+        },
+        // 设置编辑状态
+        edit: function (isEdit) {
+            _parent.logger.debug('edit: ' + isEdit.toString());
+            if (hasService('edit')) {
+                _parent.writer.getService().edit(isEdit);
+            }
+        },
+        // 清空标题划线部分
+        editTitle: function (isEdit) {
+            _parent.logger.debug('editTitle: ' + isEdit.toString());
+            if (hasService('editTitle')) {
+                _parent.writer.getService().editTitle(isEdit);
+            }
+        },
+        // 获取轨迹数据
+        getStrokeData: function (options) {
+            _parent.logger.debug('getStrokeData: ' + JSON.stringify(options));
+            if (hasService('getStrokeData')) {
+                return _parent.writer.getService().getStrokeData(options);
+            }
+            return null;
+        },
+        // 设置轨迹数据
+        parseStrokeData: function (data) {
+            _parent.logger.debug('parseStrokeData: ' + data);
+            if (hasService('parseStrokeData')) {
+                return _parent.writer.getService().parseStrokeData(data);
+            }
+            return null;
+        },
+        // 第二次加载题目
+        // 1、清空画板 2、并加载背景图 3、加载轨迹
+        loadNewQuestion: function (backgroundOptions, answer, extraData) {
+            _parent.logger.debug('loadNewQuestion: [backgroundOptions] ' + JSON.stringify(backgroundOptions) + ' [answer] ' + JSON.stringify(answer) + ' [extraData] ' + JSON.stringify(extraData));
+            if (hasService('loadNewQuestion')) {
+                _parent.writer.getService().loadNewQuestion(backgroundOptions, answer, extraData);
+            }
+        },
+        // 获取手写板Top值
+        getTop: function () {
+            _parent.logger.debug('getTop');
+            if (hasService('getTop')) {
+                return _parent.writer.getService().getTop();
+            }
+        },
+        // 设置手写板Top值
+        setTop: function (top, saved) {
+            _parent.logger.debug('setTop: ' + 'top = ' + top + ', saved = ' + saved);
+            if (hasService('setTop')) {
+                _parent.writer.getService().setTop(top, saved);
+            }
+        },
+        // 关闭PopWin
+        closePopWin: function () {
+            _parent.logger.debug('closePopWin');
+            if (hasService('closePopWin')) {
+                _parent.writer.getService().closePopWin();
+            }
+        },
+        closeRecordPopWin: function (option) {
+            _parent.logger.debug('closePopWin');
+            if (hasService('closeRecordPopWin')) {
+                _parent.writer.getService().closeRecordPopWin(option);
+            }
+        },
+        // 获取画布对象，三角板接入
+        getCanvases: function () {
+            if (hasService('getCanvases')) {
+                return _parent.writer.getService().getCanvases();
+            }
+            return null;
+        },
+        // 重置书写状态
+        resetWritingFlag: function () {
+            _parent.logger.debug('resetWritingFlag');
+            if (hasService('resetWritingFlag')) {
+                _parent.writer.getService().resetWritingFlag();
+            }
+        },
+        // 获取状态数据
+        getState: function () {
+            _parent.logger.debug('getState');
+            if (hasService('getState')) {
+                return _parent.writer.getService().getState();
+            }
+            return null;
+        },
+        // 恢复状态数据
+        setState: function (state) {
+            _parent.logger.debug('setState:' + JSON.stringify(state));
+            if (hasService('setState')) {
+                _parent.writer.getService().setState(state);
+            }
+        },
+        // 添加页
+        addPage: function (data) {
+            _parent.logger.debug('addPage:' + JSON.stringify(data));
+            if (hasService('addPage')) {
+                _parent.writer.getService().addPage(data);
+            }
+        },
+        // 删除页
+        delPage: function (data) {
+            _parent.logger.debug('delPage' + JSON.stringify(data));
+            if (hasService('delPage')) {
+                _parent.writer.getService().delPage(data);
+            }
+        },
+        // 跳转页
+        gotoPage: function (data) {
+            _parent.logger.debug('gotoPage' + JSON.stringify(data));
+            if (hasService('gotoPage')) {
+                _parent.writer.getService().gotoPage(data);
+            }
+        },
+        // 重置导航页
+        resetPage: function (data) {
+            _parent.logger.debug('resetPage' + JSON.stringify(data));
+            if (hasService('resetPage')) {
+                _parent.writer.getService().resetPage(data);
+            }
+        },
+        // 获取题型
+        getQuestionType: function () {
+            return _parent.model.questionType || _parent.model.initData.questionType;
+        },
+        // 设置生生互评与手写板的轨迹
+        setCommentStrokeData: function (data) {
+            _parent.logger.debug('setCommentStrokeData' + JSON.stringify(data));
+            if (hasService('setCommentStrokeData')) {
+                _parent.writer.getService().setCommentStrokeData(data);
+            }
+        },
+        // 获取生生互评主观题截图URL
+        getImagesUrl: function () {
+            if (hasService('getImagesUrl')) {
+                _parent.writer.getService().getImagesUrl();
+            }
+        },
+        // 显示生生互评的快捷评语
+        showCommentSquare: function (data) {
+            if (hasService('showCommentSquare')) {
+                _parent.writer.getService().showCommentSquare(data);
+            }
+        },
+        //显示快速评语
+        showCorrect: function (data) {
+            if (hasService('showCorrect')) {
+                _parent.writer.getService().showCorrect(data);
+            }
+        },
+        //切换成查看评语结果状态
+        showCommentResult: function (data) {
+            if (hasService('showCommentResult')) {
+                _parent.writer.getService().showCommentResult(data);
+            }
+        },
+        //恢复课堂状态（提供给controller）
+        setClassroomStatus: function (state) {
+            if (hasService('setClassroomStatus')) {
+                _parent.writer.getService().setClassroomStatus(state);
+            }
+        },
+        // 暂停录音
+        pauseRecord: function () {
+            if (hasService('pauseRecord')) {
+                _parent.writer.getService().pauseRecord();
+            }
+        },
+        // 释放录音
+        releaseRecord: function () {
+            if (hasService('releaseRecord')) {
+                _parent.writer.getService().releaseRecord();
+            }
+        },
+        // 暂停播放器
+        pausePlayer: function () {
+            if (hasService('pausePlayer')) {
+                _parent.writer.getService().pausePlayer();
+            }
+        },
+        // 显示音频按钮
+        showAudioButton: function () {
+            if (hasService('showAudioButton')) {
+                _parent.writer.getService().showAudioButton();
+            }
+        }
+    };
+};
+
+module.exports = Service;
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

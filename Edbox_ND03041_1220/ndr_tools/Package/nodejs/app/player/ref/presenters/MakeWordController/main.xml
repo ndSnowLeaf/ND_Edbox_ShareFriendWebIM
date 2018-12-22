@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MakeWordController'>
+<properties>
+
+                <property name="id" displayName="题目ID" type="string" />
+                <property name="examId" displayName="课堂ID" type="string" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="6.0.0" />
+    <javaScript  name="BasicWriteController" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var self = null;
+    var Presenter = BasicWriteController.extend({
+        metaInfo: {
+            name: 'MakeWordController',
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        $getInterfaceMethods: function () {
+            var filterList = [
+                //手写
+                {
+                    interface: 'writerService',
+                    methods: ['getStrokeData', 'parseStrokeData', 'edit', 'editTitle', 'clean', 'closePopWin']
+                },
+                //组词题panel
+                {
+                    interface: 'panelService',
+                    methods: ['renderPage', 'resetNavigatorClass']
+                }
+            ]
+            return filterList;
+        },
+        $beforePresenterRun: function (name, metaInfo, service) {
+            this.logger.debug('获取到需要的service');
+            if (metaInfo.name === 'HandWriter' || metaInfo.name === 'MakeWordPanel') {
+                this.services[name] = service;
+            }
+        },
+        /**
+         * Presenter的初始化方法
+         */
+        $init: function () {
+            self = this;
+            this._super();
+            this.writerService = null;
+            // 是否可以切换
+            this.canSwitchWord = true;
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        getService: function () {
+            if (!this._service_) {
+                var service = {
+                    /**
+                     * 返回手写轨迹
+                     * @returns {*}
+                     */
+                    getResult: function (options) {
+                        var me = this;
+                        var $deferred = $.Deferred();
+                        var strokePromise = this.parent.services.writerService.getStrokeData(options || {});
+                        strokePromise.done(function (strokeData) {
+                            self.result.answers[self.result.current] = strokeData.data[0];
+                            $deferred.resolve(constructUserAnswer(self.result.answers));
+                        });
+                        var state = (this.parent.currentStatus !== this.parent.WRITE_STATUS.incomplete ? 'COMPLETE' : 'NO_ANSWER');
+                        var result = {
+                            answer: {
+                                answer_result: true,
+                                correct_response: null,
+                                user_response: [
+                                    $deferred.promise()
+                                ]
+                            },
+                            questionId: this.parent.model.id,
+                            answerState: state
+                        };
+                        return result;
+                    },
+                    resetQuestion: function () {
+                        this._super();
+                        this.parent.result = {
+                            answers: [],
+                            finishes: [],
+                            current: 0
+                        };
+                        this.parent.services.panelService.renderPage(this.parent.result.current);
+                        this.parent.services.panelService.resetNavigatorClass(this.parent.result.finishes);
+                    },
+                    /**
+                     *  状态恢复
+                     * @returns {{status: (*|number), answer: *}}
+                     */
+                    getState: function () {
+                        return {
+                            status: this.parent.currentStatus,
+                            answer: this.parent.result
+                        };
+                    },
+                    setState: function (state) {
+                        if (state) {
+                            this.parent.currentStatus = state.status;
+                            this.parent.answer = state.answer;
+                        }
+                    },
+                    /**
+                     * 获取课堂状态
+                     */
+                    getClassroomStatus: function () {
+                        var $defer = $.Deferred();
+                        var status = this.parent.result;
+                        var _status = $.extend(true, {}, status);
+                        $defer.resolve(_status);
+                        return $defer.promise();
+                    },
+                    /**
+                     * 设置课堂状态 
+                     */
+                    setClassroomStatus: function (status) {
+                        self.result = status;
+                        self.services.panelService.renderPage(status.current);
+                        self.services.panelService.resetNavigatorClass(status.finishes);
+                        //通知数据恢复完成
+                        self.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: self.metaInfo.name });
+                    },
+                    /**
+                     * 清除课堂状态
+                     */
+                    clearClassroomStatus: function () {
+
+                    }
+                }
+                var ServiceClass = this.getServiceClass().extend(service);
+
+                this._service_ = new ServiceClass(this);
+            }
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this._super(view, model);
+            self.$view = $(view);
+            self.model = model;
+            this.result = {
+                answers: [],
+                finishes: [],
+                current: 0
+            };
+        },
+        pageShow: function () {
+            this._super();
+        },
+        destroy: function () {
+            this._super();
+        },
+        _bindEvent: function () {
+            this._super();
+            // 切换页
+            this.$addEventListener('MakewordChangePage', PresenterEventType.IC_PLAYER_EVENT, this._changePage);
+            // 手写事件
+            this.$addEventListener('HandWriterStartWrite', PresenterEventType.IC_PLAYER_EVENT, this._handWriterStartWrite);
+            //WriteLayout加载完毕
+            this.$addEventListener('WriteLayoutLoaded', PresenterEventType.IC_PLAYER_EVENT, this._requireHandWriter.bind(this));
+        },
+
+        /**
+         * 切换页
+         * @param eventData
+         * @private
+         */
+        _changePage: function (eventData) {
+            this.logger.debug('MakeWordController收到MakewordChangePage事件，this.canSwitchWord=' + this.canSwitchWord);
+            if (this.canSwitchWord) {
+                this.canSwitchWord = false;
+                var pageIndex = eventData.pageIndex;
+                var strokePromise = $.Deferred();
+                var strokeDataResult = self.writerService.getStrokeData({});
+                //H5HandWriter返回的轨迹是string类型，NativeHandWriter返回的是promise对象
+                if (typeof strokeDataResult === 'object') {
+                    strokePromise = strokeDataResult;
+                } else {
+                    strokePromise.resolve(strokeDataResult);
+                }
+                strokePromise.done(function (strokeData) {
+                    self.logger.debug('getStrokeDataDone, type: ' + typeof strokeData);
+                    if (!self.result.finishes[pageIndex]) { //切换页未作答过，启动监听开始书写事件
+                        self.writerService.resetWritingFlag();
+                    }
+                    if (typeof strokeData === 'object') {
+                        if (strokeData.data[0]) {
+                            self.result.answers[self.result.current] = strokeData.data[0];
+                        }
+                    } else {
+                        self.result.answers[self.result.current] = strokeData;
+                    }
+                    // 生成手写板轨迹
+                    if (self.result.answers[pageIndex]) {
+                        var parseStrokeDataPromise = self.writerService.parseStrokeData(self.result.answers[pageIndex]);
+                        parseStrokeDataPromise.done(function (parseStrokeData) {
+                            self.logger.debug('parseStrokeDataDone');
+                            self.result.current = pageIndex;
+                            self.services.panelService.renderPage(pageIndex);
+                            self.services.panelService.resetNavigatorClass(self.result.finishes);
+                            self.canSwitchWord = true;
+                            self._commitStatusUpdate();
+                        });
+                    } else {
+                        self.writerService.clean();
+                        self.result.current = pageIndex;
+                        self.services.panelService.renderPage(pageIndex);
+                        self.services.panelService.resetNavigatorClass(self.result.finishes);
+                        self.canSwitchWord = true;
+                        self._commitStatusUpdate();
+                    }
+                });
+            }
+        },
+        _handWriterStartWrite: function (eventData) {
+            this.logger.debug('handWriterStartWrite, current page index: ', self.result.current);
+            if (!self.result.finishes[self.result.current]) {
+                self.result.finishes[self.result.current] = true;
+                self._commitStatusUpdate();
+            }
+            this.currentStatus = this.WRITE_STATUS.writing;
+            // 改变按钮状态
+            this.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                canSubmit: true,
+                linkQuestionId: self.model.id
+            });
+            this.startWrite = true;
+        },
+        /**
+         * 加载手写板
+         * @private
+         */
+        _requireHandWriter: function (eventData) {
+            if (eventData.questionType && eventData.questionType === 'makeword') {
+                var initData = this.model.initData;
+                initData.position = this.layoutService.getContainerPosition();
+                var config = {
+                    addonId: 'HandWriter',
+                    renderTo: '.com_lay_write',
+                    layout: {
+                        left: 0,
+                        top: 0,
+                        width: 0,
+                        height: 0
+                    },
+                    properties: [
+                        { 'name': 'initData', type: 'json', 'value': initData }
+                    ],
+                    callback: function (addon) {
+                        self.writerService = addon.getService();
+                    }
+                };
+                this.playerController.require(config);
+                this.logger.debug('RequireHandWriter successfully!');
+            }
+        },
+        /**
+         * 状态变更通知
+         */
+        _commitStatusUpdate: function () {
+            if (player.getPlayerServices().getRuntime() === icCreatePlayer.RUNTIME.TEACHER_PC) {
+                this.logger.debug('发送css_classroom_status_changed保存课堂状态事件');
+                this.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                });
+            }
+        }
+    });
+
+    var constructUserAnswer = function (result) {
+        var obj = { datas: [] };
+        for (var i = 0; i < result.length; i++) {
+            obj.datas.push({ "data": result[i] || "", "type": "write_stroke" });
+        }
+        return JSON.stringify(obj);
+    }
+
+    window.AddonMakeWordController_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

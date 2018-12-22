@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<presenter id='demoPresenter'>
+
+    <dependencies>
+        <androidDependency>
+        </androidDependency>
+        <iosDependency>
+            <![CDATA[ test ]]>
+        </iosDependency>
+        <jsDependency>
+        </jsDependency>
+        <moduleDependency>
+        </moduleDependency>
+    </dependencies>
+    <css>
+        .aaa{}
+    </css>
+    <view>
+        <![CDATA[
+         <div id='text-area'>Hello World!</div>
+]]>
+    </view>
+    <preview>
+    </preview>
+    <script>
+        <![CDATA[
+
+function create() {
+    var presenter = {
+        "run": function (view,model) {
+            var deferred = $.Deferred();
+            var me=this;
+            window.setTimeout(function(){
+                console.log('async');              
+                me.c.getPlayerEvent().dispatch('PLAYER.PRINTSCREEN');
+                deferred.resolve();
+            },6000);
+            console.log('run');
+            return deferred.promise();
+        },
+        'onEventReceived':function(name,data,target){
+            console.log(target);
+        },
+        'pageShow':function(view,model){
+            console.log('pageShow');
+        },
+        "initWeb":function(){
+            console.log('initweb');
+        },
+        'setUrlParams':function(o) {
+        },
+        'setPlayerController':function(c){
+           this.c = c;
+        },
+        'setBasePath':function(url){
+        },
+        'setPaint':function(paint){
+        },
+        'afterRender':function(){
+           console.log('afterRender');
+        },
+        'setState':function(){
+           console.log('setState');
+        },
+        'setLocationProperties':function(o){
+           console.log(o)
+        },
+        '__interface':{
+            'processBeforeRun':function(module){
+                console.log('processBeforeRun',module)
+            },
+            'processAfterRun':function(module){
+                console.log('processAfterRun',module)
+            },
+            'setCallbackList':function(list){
+                console.log(list);
+            },
+             "_wrap":function(target){
+                console.log(target);
+                var deferred = $.Deferred();
+                window.setTimeout(function(){
+                    deferred.resolve('.ic_player');
+                },1000);
+                <!--return '.ic_player';-->
+                return deferred.promise();
+            }
+        }
+    };
+    return presenter;
+}
+]]>
+    </script>
+</presenter>

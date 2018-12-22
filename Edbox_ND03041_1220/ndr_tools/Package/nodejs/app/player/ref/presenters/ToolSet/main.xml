@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?><addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/><property name="question_url" displayName="题目内容" type="json" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="knockout" version="3.3.0"/><javaScript name="tools_common" version="1.0.0"/><javaScript name="lodash" version="4.11.1"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .fraction_backBtn{z-index:5;display:inline-block;position:absolute;left:5em;bottom:1.08333em;width:3.16667em;height:3.25em;background:url(resources/wood/images/icon_back2.png) no-repeat;background-size:100% auto}.exam_skin_wood .fraction_backBtn.ui_btn_active,.exam_skin_wood .fraction_backBtn:active{background-position:0 100%}.exam_skin_wood .fraction_backBtn.change_backBtn{background:url(resources/wood/images/icon_back.png) no-repeat;background-size:100% auto}.exam_skin_wood .fraction_backBtn.change_backBtn.ui_btn_active,.exam_skin_wood .fraction_backBtn.change_backBtn:active{background-position:0 100%}.exam_skin_wood .fraction_of_total_wrap{position:relative;width:100%;height:100%;padding-top:2.66667em;overflow:hidden;background:url(resources/wood/images/background.jpg) 50% repeat-x;background-size:80em auto}.exam_skin_wood .fraction_of_total_wrap:before{content:"";position:absolute;left:50%;top:50%;margin-left:-56.04167em;margin-top:-19.875em;width:115.25em;height:38.875em;background:url(resources/wood/images/tree.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .fraction_of_total{position:absolute;width:80em;height:45em;background-size:100% auto;left:50%;top:50%;margin:-22.5em auto auto -40em}.exam_skin_wood .fraction_of_total:after,.exam_skin_wood .fraction_of_total:before{content:"";left:-160em;right:-160em;height:300%;z-index:-1;position:absolute}.exam_skin_wood .fraction_of_total:before{bottom:0;background:#c0ebfd}.exam_skin_wood .fraction_of_total:after{top:50%;background:#85c320}.exam_skin_wood .fraction_of_total .f_entrance_list{position:absolute;width:53em;height:12.5em;top:50%;left:50%;margin-top:-4%;margin-left:-26.5em;text-align:left}.exam_skin_wood .fraction_of_total .f_entrance_com{position:relative;display:inline-block;width:9.58333em;height:8.83333em;cursor:pointer;background-repeat:no-repeat;background-position:top;vertical-align:top}.exam_skin_wood .fraction_of_total .f_entrance_com .text_box{position:absolute;display:inline-block;padding:.41667em;width:100%;height:4.08333em;bottom:-4.16667em;text-align:center}.exam_skin_wood .fraction_of_total .f_entrance_com .text_box .txt{color:#5e3d04;font-size:2.08333em;font-family:microsoft yahei;font-weight:700}.exam_skin_wood .fraction_of_total .f_entrance_1{width:20em;background-image:url(resources/wood/images/icon_3.png);background-size:9.58333em auto;height:8.3em}.exam_skin_wood .fraction_of_total .f_entrance_1 .text_box{-webkit-transform:rotate(2deg);transform:rotate(2deg);padding-left:0}.exam_skin_wood .fraction_of_total .f_entrance_2{width:15.33333em;background-image:url(resources/wood/images/icon_1.png);background-size:8.75em auto;background-position:center 1em}.exam_skin_wood .fraction_of_total .f_entrance_3{width:15em;height:7.6em;margin-left:1.5em;background-image:url(resources/wood/images/icon_2_2.png);background-size:9.58333em auto}.exam_skin_wood .fraction_of_total .f_entrance_3 .text_box{-webkit-transform:rotate(-4deg);transform:rotate(-4deg)}.exam_skin_wood .fraction_of_total .f_entrance_3 .text_box .txt{padding-left:.2em}]]></css><view/><presenter><![CDATA['use strict';
+
+(function () {
+  var Presenter = BasicPresenter.extend({
+    metaInfo: {
+      name: 'ToolSet',
+      type: PresenterType.PRESENTER_COMPONENT
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function $init() {
+      var me = this;
+      me._super();
+      me.$view = null;
+      me.model = null;
+      me.currentToolKey = null;
+      me.currentPresenter = null;
+      me.deferred = $.Deferred();
+      me.moduleKey = 'ToolSet';
+      me.eventType = {
+        touchstart: 'touchstart mousedown',
+        touchmove: 'touchmove mousemove',
+        touchend: 'touchend mouseup',
+        touchcancel: 'touchcancel mouseleave'
+      };
+      me.i18nModel = {
+        'FractionGraph': '认识分数',
+        'CompareFraction': '比较分数大小',
+        'CalculateFraction': '分数计算'
+      };
+      me.service = {
+        getQuestionInfo: function getQuestionInfo() {
+          return {
+            id: me.model.question_id,
+            type_code: 'toolset',
+            type_name: '工具集',
+            statistics_type: 'no_need',
+            notExistStatistics: true,
+            noNeedQuizProgress: true
+          };
+        },
+        getExtendData: function getExtendData() {
+          if (me.currentPresenter) {
+            if (me.currentPresenter.getService && me.currentPresenter.getService().getExtendData) {
+              return {
+                state: 'tool',
+                toolKey: me.currentToolKey,
+                toolExtendData: me.currentPresenter.getService().getExtendData()
+              };
+            } else {
+              return {
+                state: 'tool',
+                toolKey: me.currentToolKey
+              };
+            }
+          } else {
+            return {
+              state: 'init'
+            };
+          }
+        },
+        setLocationProperties: function setLocationProperties(data) {
+          if (!$.isEmptyObject(data)) {
+            me.i18nModel = data;
+          }
+        }
+      };
+    },
+    /** **以下开始为icPlayer的生命周期方法*****/
+    run: function run(view, model) {
+      this.$view = $(view);
+      this.model = model;
+      this._loadTemplate();
+      return this.deferred.promise();
+    },
+    __interface: {
+      resizeScreen: function resizeScreen(data) {
+        if (this.currentPresenter && this.currentPresenter.__interface && $.isFunction(this.currentPresenter.__interface.resizeScreen)) {
+          this.currentPresenter.__interface.resizeScreen.call(this.currentPresenter, data);
+        }
+      }
+    },
+    getService: function getService() {
+      return this.service;
+    },
+    destroy: function destroy() {},
+    setState: function setState(state) {},
+    getState: function getState() {},
+    _initData: function _initData() {
+      var me = this;
+      if (me.model.__ExtendModel) {
+        var extendData = me.model.__ExtendModel;
+        if (extendData.state === 'tool') {
+          var toolSetView = me.$view.find('.js_toolset_view');
+          toolSetView.css('display', 'none');
+          if (extendData.toolExtendData) {
+            var toolModel = [];
+            toolModel.push({
+              name: '__ExtendModel',
+              type: 'json',
+              text: JSON.stringify(extendData.toolExtendData)
+            });
+            me._switchTool(extendData.toolKey, toolModel);
+          } else {
+            me._switchTool(extendData.toolKey);
+          }
+        }
+      }
+    },
+    _loadTemplate: function _loadTemplate() {
+      var me = this;
+      $.ajax({
+        url: me.basePath + 'resources/FractionSet_Template.html',
+        success: function success(result) {
+          me.$view.html(result);
+          me.$view.find('.js_toolset_1').text(me.i18nModel.FractionGraph);
+          me.$view.find('.js_toolset_2').text(me.i18nModel.CompareFraction);
+          me.$view.find('.js_toolset_3').text(me.i18nModel.CalculateFraction);
+
+          me._bindEvent();
+          me._initData();
+          me.deferred.resolve();
+        },
+        type: 'GET',
+        dataType: 'html'
+      });
+    },
+    _bindEvent: function _bindEvent() {
+      var me = this;
+      var entryFun = _.throttle(function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+        var toolKey = $(this).data('value');
+        me._switchTool(toolKey, []);
+      }, 200, { leading: false, trailing: true });
+      var returnStartFun = _.throttle(function () {
+        $(this).addClass('ui_btn_active');
+        me._updateView('return');
+        me.playerController.updateTool(me.moduleKey, me.moduleKey);
+        me.currentPresenter = null;
+      }, 200, { leading: false, trailing: true });
+      var returnEndFun = _.throttle(function () {
+        $(this).removeClass('ui_btn_active');
+      }, 200, { leading: false, trailing: true });
+      me.$view.find('.js_toolset_entry').bind(me.eventType.touchstart, entryFun);
+      me.$view.find('.js_toolset_entry').bind(me.eventType.touchend, function (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      });
+      var returnBT = me.$view.find('.js_toolset_return');
+      returnBT.bind(me.eventType.touchstart, returnStartFun);
+      returnBT.bind(me.eventType.touchend, returnEndFun);
+      returnBT.bind(me.eventType.touchcancel, returnEndFun);
+    },
+    _switchTool: function _switchTool(toolKey, toolModel) {
+      var me = this;
+      if (toolKey) {
+        me.currentToolKey = toolKey;
+        me.$view.find('.js_toolset_container').html('');
+        me.$requireComponent(toolKey, toolModel || [], me.$view.find('.js_toolset_container')).done(function (presenter) {
+          me.currentPresenter = presenter;
+          if (me.playerController) {
+            me.playerController.updateTool(me.moduleKey, toolKey);
+          }
+          me._updateView();
+        });
+      }
+    },
+    _updateView: function _updateView(type) {
+      var me = this;
+      var returnButton = me.$view.find('.js_toolset_return');
+      var toolSetView = me.$view.find('.js_toolset_view');
+      var toolView = me.$view.find('.js_toolset_container');
+      if (type === 'return') {
+        toolSetView.css('display', '');
+        returnButton.css('display', 'none');
+        toolView.css('display', 'none');
+        if (me.currentPresenter && $.isFunction(me.currentPresenter.destroy)) {
+          me.currentPresenter.destroy();
+        }
+      } else {
+        if (this.currentPresenter && $.isFunction(this.currentPresenter.getButton)) {
+          var button = this.currentPresenter.getButton();
+          returnButton.css('left', button.left);
+          returnButton.css('bottom', button.bottom);
+          if (button.type === 'noCircle') {
+            returnButton.removeClass('change_backBtn');
+          } else {
+            returnButton.addClass('change_backBtn');
+          }
+        } else if (this.currentPresenter && $.isFunction(this.currentPresenter.getButtonPosition)) {
+          var _button = this.currentPresenter.getButtonPosition();
+          returnButton.css('left', _button.left);
+          returnButton.css('bottom', _button.bottom);
+          if (_button.type === 'noCircle') {
+            returnButton.removeClass('change_backBtn');
+          } else {
+            returnButton.addClass('change_backBtn');
+          }
+        }
+        toolSetView.css('display', 'none');
+        returnButton.css('display', '');
+        toolView.css('display', '');
+      }
+    }
+  }, 'ToolSet');
+
+  window.AddonToolSet_create = function () {
+    return new Presenter();
+  };
+})();]]></presenter><resources><file src="./resources/FractionSet_Template.html"/><file src="./resources/wood/images/background_c.jpg"/><file src="./resources/wood/images/background.jpg"/><file src="./resources/wood/images/icon_1.png"/><file src="./resources/wood/images/icon_2_2.png"/><file src="./resources/wood/images/icon_3.png"/><file src="./resources/wood/images/icon_back.png"/><file src="./resources/wood/images/icon_back2.png"/><file src="./resources/wood/images/tree.png"/></resources></addon>

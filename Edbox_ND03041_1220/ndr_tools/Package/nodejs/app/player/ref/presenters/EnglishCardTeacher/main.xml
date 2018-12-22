@@ -1,0 +1,854 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='presenter_englishcardteacher'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="jquery-ui-touch-punch" version="0.2.3.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="english_card_wrapper" data-bind="{css:{english_card_middle:content()=='MiddleGrade',english_card_junior:content()=='JuniorGrade',show_sentences:content()=='sentences'}}"><a href="#" class="btn_card_close _js_close" data-bind="click:onClose"></a><div class="english_card_main" data-bind="{css:{hide_right:(menu().transform.hide() && menu().phrase.hide() && menu().sentences.hide())}}"><div class="english_card_main_wrap"><div class="detail_info_left"><div class="com_word_wrap"><div class="ec_com_word_show"><em data-bind="text:vocabulary"></em></div></div><div class="com_phonetic_wrap"><div class="ec_com_phonetic" data-bind="{css:{hide_visibility:!menu().phonetic.active(),hide_dom:content()=='sentences'}}"><div class="com_phonetic_en"><div class="ec_phonetic_txt" _lang="lang_voice_english" data-bind="{css:{hide_dom:phoneticUS()==''}}">英 :</div><div class="ec_phonetic_txt"><span data-bind="text:phonetic"></span></div><a class="word_audio" data-bind="click:onPlayAudio,visible:phonetic()!=''"><audio data-bind="attr:{src:audio}">您的浏览器不支持audio</audio></a></div><div class="com_phonetic_us" data-bind="{css:{hide_dom:phoneticUS()==''}}"><div class="ec_phonetic_txt" _lang="lang_voice_american">美 :</div><div class="ec_phonetic_txt"><span data-bind="text:phoneticUS"></span></div><a class="word_audio" data-bind="click:onPlayAudio,visible:phoneticUS()!=''"><audio data-bind="attr:{src:audio}">您的浏览器不支持audio</audio></a></div></div></div><div class="com_definition_wrap"><div class="ec_com_definition" data-bind="{css:{hide_visibility:!menu().definition.active()}}"><span data-bind="text:definition"></span></div></div></div><div class="detail_info_media"><div class="ec_com_media" data-bind="{css:{hide_visibility:!menu().media.active()}}"><div class="ec_carousel" data-bind="css:{hide_dom:(picture().length==0 || showMediaType() != 0)}"><div class="carousel_content" data-bind="event:{mousedown:onSwipeImg, touchstart:onSwipeImg, mousemove:onSwipeImg, touchmove:onSwipeImg, mouseup:onSwipeImg, touchend:onSwipeImg, mouseout:onSwipeImg, touchcancel:onSwipeImg},foreach:picture,style:{width:(picture().length*100)+'%'}"><img data-bind="attr:{src:$data},style:{width:($parent.picture().length>0?(100/$parent.picture().length)+'%':'0%')}"></div><div class="carousel_points_group" data-bind="foreach:picture"><a data-bind="click:$parent.onChangePictureIndex,css: {on:$parent.pictureIndex()==$index()}"></a></div><div class="media_pic_remark" data-bind="css:{hide:hideRemark,hide_visibility:description()===undefined||description()==''}"><p data-bind="text:description"></p><a href="javascript:void(0);" class="turn_up_down" data-bind="click:onHideRemark"><span></span></a></div></div><div class="ec_video" data-bind="css:{hide_dom:(video() == '' || showMediaType() != 1)}"><video style="width: 100%;height: 100%" data-bind="attr:{src:video}" controls="controls"></video></div><div class="media_switch"><a class="switch_carousel" data-bind="click:onChangeMediaType,css:{hide_dom:picture().length==0,on:showMediaType()==0}"><span></span></a> <a class="switch_video" data-bind="click:onChangeMediaType,css:{hide_dom:video() == '',on:showMediaType()==1}"><span></span></a></div></div></div><div class="detail_info_right detail_info_scroll _js_lower_class" data-bind="{css:{hide_dom:(!menu().transform.active() && !menu().phrase.active() && !menu().sentences.active())}}"><ul><li class="com_transform_wrap" data-bind="{css:{hide_dom:(!menu().transform.active() || content()=='sentences')}}"><div class="ec_com_transform" data-bind="foreach: VariableForm"><p style="line-height: 1.6667em" data-bind="if:VariableForms.length>0"><span data-bind="text:(VariableFormCatagory+': ')"></span> <span data-bind="text: VariableForms[0]"></span></p></div></li><li class="com_phrase_wrap" data-bind="{css:{hide_dom:(!menu().phrase.active() || combvocabulary().length==0 || content()=='sentences')}}"><div class="ec_com_phrase"><p _lang="lang_title_phrase">词组：</p><div data-bind="foreach:combvocabulary"><p data-bind="html:WordEntry"></p></div></div></li><li class="com_sentences_wrap" data-bind="{css:{hide_dom:!menu().sentences.active()}}"><div class="ec_com_sentences"><p _lang="lang_title_sentences">例句：</p><div data-bind="foreach:samplesentences"><p data-bind="html:SampleSentence"></p><p data-bind="text:Translate"></p></div></div></li></ul></div></div></div><div class="english_card_menu"><ul class="menu_list"><li class="item_menu phonetic" menu-name="phonetic" data-bind="click:onMenu,css:{on:menu().phonetic.active,hide_dom:menu().phonetic.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_phonetic">音标</em></a></li><li class="item_menu definition" menu-name="definition" data-bind="click:onMenu,css:{on:menu().definition.active,hide_dom:menu().definition.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_definition">释义</em></a></li><li class="item_menu media" menu-name="media" data-bind="click:onMenu,css:{on:menu().media.active,hide_dom:menu().media.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_media">多媒体</em></a></li><li class="item_menu transform" menu-name="transform" data-bind="click:onMenu,css:{on:menu().transform.active,hide_dom:menu().transform.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_transform">变形</em></a></li><li class="item_menu phrase" menu-name="phrase" data-bind="click:onMenu,css:{on:menu().phrase.active,hide_dom:menu().phrase.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_phrase">词组</em></a></li><li class="item_menu sentences" menu-name="sentences" data-bind="click:onMenu,css:{on:menu().sentences.active,hide_dom:menu().sentences.hide}"><a href="#" class="menu"><em class="word" _lang="lang_btn_sentences">例句</em></a></li><a href="#" class="btn_all_hide" data-bind="click:onShowAll,css:{hide_dom:showAll}" _lang="lang_btn_hideall">全部隐藏</a> <a href="#" class="btn_all_show" data-bind="click:onShowAll,css:{hide_dom:!showAll()}" _lang="lang_btn_showall">全部显示</a> <a href="#" class="btn_start_practice _js_send_exercise" data-bind="css:{hide_dom:!InClass()},click:onSendExercise" _lang="lang_btn_exercise">书写练习</a></ul></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "EnglishCardTeacher",
+            type: "",
+            subtype: ""
+        },
+        /**
+         * 2.0.0
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            var INFO = {
+                id: null,
+                identify: null,
+                mAssetIndex: 0,
+                mData: null,
+                mResourceReady: false,
+                mViewReady: true,
+                mRelations: null,
+                mKoBinded: false,
+                mStyle: { //，默认为高年级。低年级(JuniorGrade)english_card_junior, 中年级(MiddleGrade)english_card_middle，高年级(HighGrade),短语(sentences)show_sentences
+                    JuniorGrade: "english_card_junior",
+                    MiddleGrade: "english_card_middle",
+                    HighGrade: "",
+                    sentences: "show_sentences"
+                },
+                mEventName: {
+                    SwitchWordCardStatus: "SwitchWordCardStatus",
+                    ActiveWordCard: "ActiveWordCard",
+                    ShowCardClose: "ShowCardClose"
+                },
+                mSelector: { //选择器
+                    closeBtn: "a._js_close",
+                    card_wrapper: ".english_card_wrapper",
+                    menu_phonetic: ".english_card_menu li.phonetic",
+                    menu_definition: ".english_card_menu li.definition",
+                    menu_media: ".english_card_menu li.media",
+                    menu_transform: ".english_card_menu li.transform",
+                    menu_phrase: ".english_card_menu li.phrase",
+                    menu_sentences: ".english_card_menu li.sentences",
+                    sendExerciseBtn: "a._js_send_exercise"
+                },
+                mMenu: {
+                    phonetic: {
+                        selector: ".menu_list .phonetic",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    },
+                    definition: {
+                        selector: ".menu_list .definition",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    },
+                    media: {
+                        selector: ".menu_list .media",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    },
+                    transform: {
+                        selector: ".menu_list .transform",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    },
+                    phrase: {
+                        selector: ".menu_list .phrase",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    },
+                    sentences: {
+                        selector: ".menu_list .sentences",
+                        active: ko.observable(false), //激活，"on",不激活：""
+                        hide: ko.observable(false), //显示，""，隐藏："hide_dom"
+                        check: true
+                    }
+                },
+                mViewModel: {} //ko数据绑定模型
+            };
+            this.INFO = INFO;
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        service: Class.extend({
+            $init: function(parent) {
+                this.parent = parent;
+            },
+            setLocationProperties: function(properties) {
+                this.parent.languageSet = properties;
+                this.parent.$translatorDeferred.resolve();
+            },
+            isPointInDom: function(event) {
+                var tool = this.presenter.$view;
+                var _w = tool.element.width(),
+                    _h = tool.element.height();
+                var _A = this.getRotateDeg(tool.element[0]); //这里取返就是为了算相对位置直接取旋转前的X,Y，
+                var finalXY = this.getRotateXY(event.pageX, event.pageY, _A, tool.element[0]);
+                var _finalX = finalXY.x,
+                    _finalY = finalXY.y;
+                if (_finalX >= 0 && _finalX <= _w && _finalY >= 0 && _finalY <= _h) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            getRotateDeg: function(dom) {
+                var me = $(dom),
+                    angle;
+                var matrix = me.css("-webkit-transform") ||
+                    me.css("-moz-transform") ||
+                    me.css("-ms-transform") ||
+                    me.css("-o-transform") ||
+                    me.css("transform");
+                if (typeof matrix === 'string' && matrix !== 'none' && matrix !== '') {
+                    var values = matrix.split('(')[1].split(')')[0].split(',');
+                    var a = values[0];
+                    var b = values[1];
+                    angle = (Math.atan2(b, a) * (180 / Math.PI)).toFixed(3);
+                } else {
+                    angle = 0;
+                }
+                return angle;
+            },
+            getRotateXY: function(x, y, angle, dom) {
+                var p = this.findOffset(dom);
+                var t = this.getRotateOriginXY(dom);
+
+                x = x - parseInt(p.x) - t.x;
+                y = y - parseInt(p.y) - t.y;
+                if (angle < 0) {
+                    angle = 360 + angle % 360; //3个限项 0-90 90-180 180-270 270-360
+                } else {
+                    angle = angle % 360; //3个限项 0-90 90-180 180-270 270-360
+                }
+                var goalX = x * Math.cos(angle * Math.PI / 180) + y * Math.sin(angle * Math.PI / 180);
+                var goalY = y * Math.cos(angle * Math.PI / 180) - x * Math.sin(angle * Math.PI / 180);
+                return {
+                    x: goalX + t.x,
+                    y: goalY + t.y
+                };
+            },
+            findOffset: function(obj) {
+                var curX = 0,
+                    curY = 0;
+                if (obj.offsetParent) {
+                    do {
+                        curX += obj.offsetLeft;
+                        curY += obj.offsetTop;
+                    } while (obj = obj.offsetParent);
+                    return {
+                        x: curX,
+                        y: curY
+                    };
+                } else
+                    return {
+                        "x": 0,
+                        "y": 0
+                    };
+            },
+            getRotateOriginXY: function(dom) {
+                var str = $(dom).css('transform-origin');
+                return str ? {
+                    x: parseFloat(str.split(' ')[0], 10),
+                    y: parseFloat(str.split(' ')[1], 10)
+                } : {
+                    x: 0,
+                    y: 0
+                };
+            },
+            getOriSize: function() {
+                var context = this.parent;
+                var wordCard = context.$view.find(context.INFO.mSelector.card_wrapper);
+                var h = wordCard.height();
+                var w = parseFloat(wordCard.find(".english_card_main").css("min-width")) + wordCard.find(".english_card_menu").width();
+                return { width: w, height: h };
+            },
+            setPosition: function(position) {
+                var context = this.parent;
+                var wordCard = context.$view.find(context.INFO.mSelector.card_wrapper);
+                if ((wordCard.css('left') == '-1000px' && wordCard.css('top') == '-1000px') || (position.left == -1000 && position.top == -1000)) {
+                    wordCard.css({ left: position.left, top: position.top });
+                }
+            },
+            getIdentify: function() {
+                var parent = this.parent;
+                return parent.INFO.identify;
+            },
+            changeCard: function(data) { //控制器调用入口
+                return this.setResource(data);
+            },
+            setResource: function(data) { //设置词卡资源
+                var id = data.identify;
+                var parent = this.parent;
+                parent.INFO.mData = data;
+                parent.INFO.identify = id;
+                parent.INFO.id = id;
+
+                //重置词卡资源
+                var def = $.Deferred();
+                var url = data.resourceRoot + "/resources/relations.json";
+                parent._resetWordCard(url).done(function(relations) { //获得资源后，显示词卡
+                    parent._showWordCard(relations, data);
+                    def.resolve();
+                });
+                return def;
+            }
+        }),
+        getService: function() {
+            //加载对外的Service模块
+            var self = this;
+            if (!this["_service_"]) {
+                this["_service_"] = new this.service(self);
+            }
+            return this["_service_"];
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var self = this;
+            self.$view = $(view);
+
+            var outterFontSize = parseFloat(self.$view.closest(".woc_com_wrapper").css("font-size"));
+            if (model.env == "FullPreviewCard") {
+                 var fontsize = outterFontSize *2/3;
+            } else {
+                var fontsize = model.env == "PreviewCard" ? outterFontSize : 4 * outterFontSize / 5;
+            }
+            
+            self.$view.css("font-size", fontsize + "px");
+
+            var def = $.Deferred();
+            require(['CodeExtract'], function(libCode) {
+                self.CodeExtract = libCode;
+                def.done(function(lang) {
+                    self.CodeExtract.translateLanguage(lang);
+                });
+            });
+            this.$translatorDeferred.done(function() {
+                var properties = self.languageSet;
+                for (var k in properties) {
+                    self.$view.find('[_lang="lang_' + k + '"]').html(properties[k]);
+                }
+                def.resolve(self.languageSet);
+            });
+        },
+        pageShow: function() {
+
+        },
+        pageLeave: function() {
+            this._unbindEvent();
+        },
+        destroy: function() {
+
+        },
+        /**如果不需要处理icplayer的状态恢w w复事件, 请将以下两个方法删除掉**/
+        getState: function() {
+
+        },
+        setState: function(state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _resetWordCard: function(url) {
+            var self = this;
+            var def = $.Deferred();
+            //self.INFO.mResourceReady = false;
+            $.getJSON(url, function(relations) {
+                if (relations) {
+                    def.resolve(relations);
+                }
+            });
+            return def;
+        },
+        _resetMenuState: function(menu) { //重置菜单状态
+            for (var m in menu) {
+                menu[m].active(false);
+                menu[m].hide(false);
+            }
+        },
+        _resetMedia: function() {
+            this.$view.find(".carousel_content").css("left", "0");
+        },
+        _showWordCard: function(relations, data) {
+
+            var content = relations['WordProp'] == 'phrase'||relations['WordProp'] == '' ? 'sentences' : data.content; //如果词性是WordProp，标识短语
+            var resourceRoot = data.resourceRoot;
+            var selector = this.INFO.mSelector;
+            var filter = this.CodeExtract.filter;
+
+            //数据过滤,将地址${ref-path}替换成真实地址
+            filter.mediaPath.call(this, relations, resourceRoot);
+            filter.samplesentences.call(this, relations);
+            filter.combvocabulary.call(this, relations);
+            filter.variableForm.call(this, relations);
+
+            //数据绑定
+            var viewModel = this.INFO.mViewModel;
+            if (!this.INFO.mKoBinded) { //初次绑定
+                //事件相关
+                viewModel.onClose = this._onClose.bind(this); //关闭词汇卡
+                viewModel.onSendExercise = this._onSendExercise.bind(this); //发送练习
+                viewModel.onMenu = this._onMenu.bind(this); //点击菜单
+                viewModel.onShowAll = this._onShowAll.bind(this); //点击全部显示|隐藏全部
+                viewModel.onHideRemark = this._onHideRemark.bind(this); //点击隐藏备注|显示备注
+                viewModel.onChangeMediaType = this._onChangeMediaType.bind(this); //切换媒体类型
+                viewModel.onChangePictureIndex = this._onChangePictureIndex.bind(this); //点击图片小点
+                viewModel.onSwipeImg = this.CodeExtract._onSwipeImg.bind(this); //滑动图片事件
+                viewModel.onPlayAudio = this._onPlayAudio.bind(this); //播放音频
+                //数据相关
+                viewModel.InClass = ko.observable(data.scene == "InClass"); //是否课堂中，用于发送练习按钮显示
+                viewModel.vocabulary = ko.observable(relations.Vocabulary); //词汇
+                viewModel.wordprop = ko.observable(relations.WordProp); //词性
+                viewModel.Paraphrase = ko.observable(relations.Paraphrase); //释义
+                viewModel.definition = ko.observable((relations.WordProp == "phrase" || relations.WordProp == "" ? "" : (relations.WordProp + ". ")) + (relations.Paraphrase ? relations.Paraphrase : "")); //词性.释义
+                viewModel.phonetic = ko.observable((relations.Phonogram && relations.Phonogram.length) > 0 ? relations.Phonogram[0]["Phonogram"] : ""); //音标
+                viewModel.phoneticUS = ko.observable((relations.Phonogram && relations.Phonogram.length) > 1 ? relations.Phonogram[1]["Phonogram"] : ""); //音标
+                viewModel.pictureIndex = ko.observable(0); //当前图片索引
+                var picture = [];
+                var descriptions = [];
+                if (relations.MultPictureWithDesc != undefined && 　relations.MultPictureWithDesc.length > 0) {
+                    for (var b = 0, length = relations.MultPictureWithDesc.length; b < length; b++) {
+                        picture[b] = relations.MultPictureWithDesc[b].multPictureUrl;
+                        descriptions[b] = relations.MultPictureWithDesc[b].description[0];
+                    }
+                    viewModel.picture = ko.observableArray(picture); //图片
+                    viewModel.descriptions = ko.observableArray(descriptions);
+                    viewModel.description = ko.observable(descriptions[0]);
+                } else {
+                    viewModel.picture = ko.observableArray([]);
+                    viewModel.descriptions = ko.observableArray([]);
+                    viewModel.description = ko.observable("");
+                }
+                viewModel.combvocabulary = ko.observableArray((relations.CombVocabulary && relations.CombVocabulary.length > 0) ? relations.CombVocabulary : []); //词组
+                viewModel.samplesentences = ko.observableArray((relations.SampleSentences && relations.SampleSentences.length > 0) ? relations.SampleSentences : []); //例句
+                viewModel.VariableForm = ko.observableArray((relations.VariableForm && relations.VariableForm.length > 0) ? relations.VariableForm : []); //变形
+                viewModel.video = ko.observable((relations.MultVideo && relations.MultVideo.length > 0) ? relations.MultVideo[0] : ""); //视频
+                viewModel.audio = ko.observable((relations.Phonogram && relations.Phonogram.length) > 0 ? filter.translateRefPath(relations.Phonogram[0]["AudioPath"], resourceRoot) : ""); //音频
+                viewModel.audioUS = ko.observable((relations.Phonogram && relations.Phonogram.length) > 1 ? filter.translateRefPath(relations.Phonogram[1]["AudioPath"], resourceRoot) : ""); //音频
+                viewModel.showMediaType = ko.observable(viewModel.picture().length > 0 ? 0 : (viewModel.video() != "" ? 1 : -1)); //-1:不显示，0：图片，1：视频
+                viewModel.menu = ko.observable(this.INFO.mMenu);
+                
+                var hideTransform = true,
+                    VariableForms;
+                for (var i = 0, len = relations.VariableForm.length; i < len; i++) {
+                    VariableForms = relations.VariableForm[i]["VariableForms"];
+                    if (VariableForms && VariableForms.length > 0) {
+                        hideTransform = false;
+                        break;
+                    }
+                }
+                viewModel.menu().transform.hide(hideTransform||content=='sentences'); //是否隐藏变形
+                viewModel.menu().phrase.hide((!relations.CombVocabulary || relations.CombVocabulary.length == 0 ||content=='sentences')); //是否隐藏词组
+                viewModel.menu().sentences.hide((!relations.SampleSentences || relations.SampleSentences.length == 0)); //是否隐藏例句
+                viewModel.menu().media.hide((relations.MultVideo.length == 0 && relations.MultPictureWithDesc.length == 0)); //是否隐藏多媒体
+                viewModel.showAll = ko.observable(true);
+                viewModel.hideRemark = ko.observable(false);
+                viewModel.content = ko.observable(content);
+                // viewModel.hasPhoneticUS = ko.observable(false);
+                // viewModel.hasPhoneticEN = ko.observable(true);
+                ko.applyBindings(viewModel, this.$view[0]);
+            } else {
+                viewModel.InClass(data.scene == "InClass"); //是否课堂中，用于发送练习按钮显示
+                viewModel.vocabulary(relations.Vocabulary); //词汇
+                viewModel.wordprop(relations.WordProp); //词性
+                viewModel.Paraphrase(relations.Paraphrase); //释义
+                viewModel.definition((relations.WordProp == "phrase"||relations.WordProp == "" ? "" : (relations.WordProp + ".")) + (relations.Paraphrase ? relations.Paraphrase : "")); //词性.释义
+                viewModel.phonetic((relations.Phonogram && relations.Phonogram.length) > 0 ? relations.Phonogram[0]["Phonogram"] : ""); //音标
+                viewModel.phoneticUS((relations.Phonogram && relations.Phonogram.length) > 1 ? relations.Phonogram[1]["Phonogram"] : ""); //音标
+                var picture = [];
+                var descriptions = [];
+                if (relations.MultPictureWithDesc != undefined && relations.MultPictureWithDesc.length > 0) {
+                    for (var b = 0, length = relations.MultPictureWithDesc.length; b < length; b++) {
+                        picture[b] = relations.MultPictureWithDesc[b].multPictureUrl;
+                        descriptions[b] = relations.MultPictureWithDesc[b].description[0];
+                    }
+                    viewModel.picture(picture);
+                    viewModel.descriptions(descriptions);
+                    viewModel.description(descriptions[0]);
+                } else {
+                    viewModel.picture([]);
+                    viewModel.descriptions([]);
+                    viewModel.description("");
+                }
+                // viewModel.picture((relations.MultPicture && relations.MultPicture.length > 0) ? relations.MultPicture : []); //图片
+                viewModel.combvocabulary((relations.CombVocabulary && relations.CombVocabulary.length > 0) ? relations.CombVocabulary : []); //词组
+                viewModel.samplesentences((relations.SampleSentences && relations.SampleSentences.length > 0) ? relations.SampleSentences : []); //例句
+                viewModel.VariableForm((relations.VariableForm && relations.VariableForm.length > 0) ? relations.VariableForm : []); //变形
+                viewModel.video((relations.MultVideo && relations.MultVideo.length > 0) ? relations.MultVideo[0] : ""); //视频
+                viewModel.audio((relations.Phonogram && relations.Phonogram.length) > 0 ? filter.translateRefPath(relations.Phonogram[0]["AudioPath"], resourceRoot) : ""); //音频
+                viewModel.audioUS((relations.Phonogram && relations.Phonogram.length) > 1? filter.translateRefPath(relations.Phonogram[1]["AudioPath"], resourceRoot) : ""); //音频
+                viewModel.pictureIndex(0); //当前图片索引
+                viewModel.showMediaType(viewModel.picture().length > 0 ? 0 : (viewModel.video() != "" ? 1 : -1)); //-1:不显示，0：图片，1：视频
+                this._resetMenuState(viewModel.menu());
+                this._resetMedia();
+                var hideTransform = true,
+                    VariableForms;
+                for (var i = 0, len = relations.VariableForm.length; i < len; i++) {
+                    VariableForms = relations.VariableForm[i]["VariableForms"];
+                    if (VariableForms && VariableForms.length > 0) {
+                        hideTransform = false;
+                        break;
+                    }
+                }
+                viewModel.menu().transform.hide(hideTransform||content=='sentences'); //是否隐藏变形
+                viewModel.menu().phrase.hide((!relations.CombVocabulary || relations.CombVocabulary.length == 0||content=='sentences')); //是否隐藏词组
+                viewModel.menu().sentences.hide((!relations.SampleSentences || relations.SampleSentences.length == 0)); //是否隐藏例句
+                viewModel.menu().media.hide((relations.MultVideo.length == 0 && relations.MultPictureWithDesc.length == 0)); //是否隐藏多媒体
+                viewModel.showAll(true);
+                viewModel.hideRemark(true);
+
+                // viewModel.hasPhoneticUS(false);
+                // viewModel.hasPhoneticEN(true);
+
+                viewModel.content(content);
+            }
+            this.INFO.mKoBinded = true;
+            this._bindEvent();
+        },
+        _bindEvent: function() {
+            var self = this;
+            self._unbindEvent();
+            var selector = self.INFO.mSelector;
+            var $CardWrapper = self.$view.find(selector.card_wrapper);
+
+            //拖拽功能
+            $CardWrapper.draggable();
+            //点击词卡，获取焦点
+            $CardWrapper.on("click", self, function(ev) {
+                var self = ev.data;
+                self._changeFocusWordCard(self);
+            });
+        },
+        _unbindEvent: function() {},
+        _changeFocusWordCard: function(context) {
+            context.$dispatchEvent(context.INFO.mEventName.ActiveWordCard, PresenterEventType.IC_PLAYER_EVENT, { identify: context.INFO.identify });
+        },
+        _onClose: function(viewmodel, ev) { //关闭词汇卡
+            var self = this;
+            this._stopVideo();
+            self.$dispatchEvent(self.INFO.mEventName.ShowCardClose, PresenterEventType.IC_PLAYER_EVENT, { identify: self.INFO.identify, scene: self.INFO.mData["scene"] });
+            ev.stopPropagation();
+        },
+        _onSendExercise: function() { //发送练习
+            var self = this;
+            self._changeFocusWordCard(self);
+            self.$dispatchEvent(self.INFO.mEventName.SwitchWordCardStatus, PresenterEventType.IC_PLAYER_EVENT, {
+                identify: self.INFO.identify,
+                status: "Practise",
+                cardData: {
+                    answer: self.INFO.mViewModel.vocabulary(),
+                    paraphrase: self.INFO.mViewModel.Paraphrase(),
+                    wordprop: self.INFO.mViewModel.wordprop(),
+                    files: self.INFO.mViewModel.picture(),
+                    description: self.INFO.mViewModel.description(),
+                },
+                type: "english"
+            });
+        },
+        _onMenu: function(viewmodel, ev) { //切换菜单
+            var $card = this.$view;
+            var menuName = $(ev.currentTarget).attr("menu-name");
+            var active = viewmodel.menu()[menuName].active();
+            active = !active;
+            viewmodel.menu()[menuName].active(active);
+
+            //如果关闭多媒体，要把视频停止
+            if (!active && menuName == "media") {
+                this._stopVideo();
+            }
+
+            var showAll = false,
+                show = false;
+            for (var m in viewmodel.menu()) {
+                show = $card.find(this.INFO.mMenu[m]["selector"]).css("display") == "none" ? false : true;
+                if (!viewmodel.menu()[m].active() && !viewmodel.menu()[m].hide() && show) {
+                    showAll = true;
+                    break;
+                }
+            }
+            viewmodel.showAll(showAll);
+            ev.stopPropagation();
+        },
+        _onShowAll: function(viewmodel, ev) { //显示全部
+            var showAll = viewmodel.showAll();
+            showAll = !showAll;
+            for (var m in viewmodel.menu()) {
+                if (!viewmodel.menu()[m].hide())
+                    viewmodel.menu()[m].active(!showAll);
+            }
+            viewmodel.showAll(showAll);
+            this._stopVideo();
+            ev.stopPropagation();
+        },
+        _onHideRemark: function(viewmodel, ev) { // 备注
+            var hideRemark = viewmodel.hideRemark();
+            hideRemark = !hideRemark;
+            viewmodel.hideRemark(hideRemark);
+        },
+        _onChangeMediaType: function(viewmodel, ev) {
+            var $target = $(ev.currentTarget);
+            var type = 0;
+            if ($target.is(".switch_video")) {
+                type = 1;
+            } else {
+                this._stopVideo();
+            }
+            viewmodel.showMediaType(type);
+        },
+        _onChangePictureIndex: function(viewmodel, ev) {
+            var targetIndex = $(ev.currentTarget).index();
+            var viewModel = this.INFO.mViewModel;
+            var currentIndex = viewModel.pictureIndex();
+            if (targetIndex != currentIndex) {
+                currentIndex = targetIndex;
+                viewModel.pictureIndex(currentIndex);
+                viewModel.description(viewModel.descriptions()[currentIndex]);
+                $(ev.currentTarget).parent().siblings(".carousel_content").animate({ "left": -currentIndex * 100 + "%" }, 200);
+            }
+        },
+        _onPlayAudio: function(viewmodel, ev) {
+            if (viewmodel.audio() != "") {
+                var audio = $(ev.target).find("audio")[0];
+                audio.play();
+            }
+        },
+        _stopVideo: function() {
+            var video = this.$view.find(".ec_video video");
+            if (video[0] && video[0].pause) {
+                video[0].pause();
+            }
+        }
+    });
+
+    window.AddonEnglishCardTeacher_create = function() {
+        return new Presenter('EnglishCardTeacher');
+    }
+})();
+/**
+ * 老师端业务无关代码抽取
+ * Created by Administrator on 2016/11/25.
+ */
+define("CodeExtract", function() {
+
+    //变形类型枚举
+    var VariableFormEnum = {
+        VariForm2Third: "单数第三人称",
+        VariForm2Plural: "复数",
+        VariForm2Part: "现在分词",
+        VariForm2Latest: "过去式",
+        VariForm2LatestPart: "过去分词",
+        VariForm2Er: "比较级",
+        VariForm2St: "最高级"
+    };
+
+    var libCode = {};
+
+    libCode._onSwipeImg = function(viewmodel, ev) { //滑动图片
+        var $target = $(ev.currentTarget);
+        var length = $target.children().length;
+        var itemWidth = parseFloat($($target.children().get(0)).css("width"));
+        switch (ev.type) {
+            case "mousedown":
+            case "touchstart":
+                var dataIndex = $target.attr("data-index");
+                if (dataIndex == undefined) {
+                    $target.attr("data-index", 0);
+                }
+                var l = parseFloat($target.css("left"));
+                l = isNaN(l) ? 0 : l;
+                var clientX = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+                $target.attr("startX", clientX);
+                $target.attr("startLeft", l);
+                $target.attr("dragging", true);
+                break;
+            case "mousemove":
+            case "touchmove":
+                var dragging = $target.attr("dragging");
+                if (dragging == "true") {
+                    var l = parseFloat($target.attr("startLeft"));
+                    var startX = parseFloat($target.attr("startX"));
+                    var x = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+
+                    var distance = x - startX;
+                    var newLeft = l + distance;
+                    if (newLeft > 0) {
+                        newLeft = 0;
+                    } else if (newLeft < -((length - 1) * itemWidth)) {
+                        newLeft = -(length - 1) * itemWidth;
+                    }
+                    $target.css("left", newLeft + "px");
+                }
+                break;
+            case "mouseup":
+            case "touchend":
+            case "mouseout":
+            case "touchcancel":
+                var dragging = $target.attr("dragging");
+                if (dragging == "true") {
+                    var l = parseFloat($target.css("left"));
+                    l = isNaN(l) ? 0 : l;
+                    var startX = parseFloat($target.attr("startX"));
+                    var x = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+                    var distance = x - startX;
+                    var newLeft = l + distance;
+
+                    var index = parseInt($target.attr("data-index"));
+                    var toIndex = index;
+                    if (distance >= (itemWidth / 3)) {
+                        toIndex = index - 1;
+                    } else if (distance <= -(itemWidth / 3)) {
+                        toIndex = index + 1;
+                    }
+                    if (newLeft > 0) {
+                        toIndex = 0;
+                    } else if (newLeft < -((length - 1) * itemWidth)) {
+                        toIndex = length - 1;
+                    }
+                    $target.attr("data-index", toIndex);
+                    newLeft = -(toIndex) * itemWidth;
+                    viewmodel.pictureIndex(toIndex);
+                    viewmodel.description(viewmodel.descriptions()[toIndex]);
+                    $target.animate({ "left": newLeft + "px" }, 200);
+                }
+                $target.removeAttr("dragging");
+                break;
+        }
+        ev.stopPropagation();
+        ev.preventDefault();
+    };
+
+    libCode.filter = {
+        mediaPath: filterMediaPath,
+        samplesentences: filterSampleSentences,
+        combvocabulary: filterCombVocabulary,
+        variableForm: filterVariableForm,
+        translateRefPath: translateRefPath
+    };
+
+
+    /**
+     * 多语言转换
+     * @param lang
+     */
+    libCode.translateLanguage = function(lang) {
+        if (lang) {
+            for (var key in VariableFormEnum) {
+                if (key in lang) {
+                    VariableFormEnum[key] = lang[key];
+                }
+            }
+        }
+    }
+
+    /**
+     * refpath路径转换
+     * @param path
+     * @param resourceRoot
+     * @returns {string}
+     */
+    function translateRefPath(path, resourceRoot) {
+        var path, result, basePath = decodeURI(resourceRoot + "/_ref"),
+            refPath = "#{ref-path}".replace("#", "$");
+        if (path) {
+            path = path.indexOf("?") > 0 ? path.substring(0, path.indexOf("?")) : path; //先去掉参数
+            result = path.replace(refPath, basePath);
+            return result;
+        }
+    }
+
+    /**
+     * 过滤多媒体路径
+     * @param relations
+     */
+    function filterMediaPath(relations, resourceRoot) {
+        var i, len, path, basePath = decodeURI(resourceRoot + "/_ref"),
+            refPath = "#{ref-path}".replace("#", "$");
+        if ((relations.MultVideo && relations.MultVideo.length > 0)) {
+            for (i = 0, len = relations.MultVideo.length; i < len; i++) {
+                path = relations.MultVideo[i];
+                relations.MultVideo[i] = translateRefPath(path, resourceRoot);
+            }
+        }
+        if ((relations.MultPictureWithDesc  && relations.MultPictureWithDesc.length > 0)) {
+            for (i = 0, len = relations.MultPictureWithDesc.length; i < len; i++) {
+                path = relations.MultPictureWithDesc[i].multPictureUrl;
+                relations.MultPictureWithDesc[i].multPictureUrl = translateRefPath(path, resourceRoot);
+            }
+        }
+        if ((relations.MultAudio && relations.MultAudio.length > 0)) {
+            for (i = 0, len = relations.MultAudio.length; i < len; i++) {
+                path = relations.MultAudio[i];
+                relations.MultAudio[i] = translateRefPath(path, resourceRoot);
+            }
+        }
+    }
+
+    /**
+     * 过滤例句
+     * @param relations
+     */
+    function filterSampleSentences(relations) {
+        if (relations.SampleSentences && relations.SampleSentences.length > 0) {
+            var i, j, len, jlen, sen, key, candidateKeywords = [];
+
+            candidateKeywords.push(relations.Vocabulary); //放入原型
+            if (relations.VariableForm && relations.VariableForm.length > 0) { //放入变形
+                var VariableForm;
+                for (i = 0, len = relations.VariableForm.length; i < len; i++) {
+                    VariableForm = relations.VariableForm[i];
+                    if (VariableForm["VariableForms"] && VariableForm["VariableForms"].length > 0) {
+                        candidateKeywords.push(VariableForm["VariableForms"][0]);
+                    }
+                }
+            }
+
+            candidateKeywords.sort(function(a, b) { //对长度排序
+                return a.length <= b.length;
+            });
+            //正则匹配替换样式
+            for (i = 0, len = relations.SampleSentences.length; i < len; i++) {
+                sen = relations.SampleSentences[i];
+                key = sen.KeyWord;
+                if (key && (key = trim(key), key.length > 0)) { //key存在
+                    sen.SampleSentence = sen.SampleSentence.replace(new RegExp(key, "gm"), "<em>" + key + "</em>");
+                } else { //key不存在，就要用原型和变形匹配
+                    for (j = 0, jlen = candidateKeywords.length; j < jlen; j++) {
+                        key = candidateKeywords[j];
+                        if (new RegExp(key, "gm").test(sen.SampleSentence)) { //匹配成功
+                            sen.SampleSentence = sen.SampleSentence.replace(new RegExp(key, "gm"), "<em>" + key + "</em>");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 过滤词组
+     * @param relations
+     */
+    function filterCombVocabulary(relations) {
+        if (relations.CombVocabulary && relations.CombVocabulary.length > 0) {
+            var i, j, len, jlen, vocabulary, key, candidateKeywords = [];
+
+            candidateKeywords.push(relations.Vocabulary); //放入原型
+            if (relations.VariableForm && relations.VariableForm.length > 0) { //放入变形
+                var VariableForm;
+                for (i = 0, len = relations.VariableForm.length; i < len; i++) {
+                    VariableForm = relations.VariableForm[i];
+                    if (VariableForm["VariableForms"] && VariableForm["VariableForms"].length > 0) {
+                        candidateKeywords.push(VariableForm["VariableForms"][0]);
+                    }
+                }
+            }
+
+            candidateKeywords.sort(function(a, b) { //对长度排序
+                return a.length <= b.length;
+            });
+
+            for (i = 0, len = relations.CombVocabulary.length; i < len; i++) {
+                vocabulary = relations.CombVocabulary[i];
+                key = vocabulary.KeyWord;
+                if (key && (key = trim(key), key.length > 0)) { //key存在
+                    vocabulary.WordEntry = vocabulary.WordEntry.replace(new RegExp(key, "gm"), "<em>" + key + "</em>");
+                    vocabulary.WordEntry += "</br>" + vocabulary.Translate;
+                } else {
+                    for (j = 0, jlen = candidateKeywords.length; j < jlen; j++) {
+                        key = trim(candidateKeywords[j]);
+                        if (new RegExp(key, "gm").test(vocabulary.WordEntry)) { //匹配成功
+                            vocabulary.WordEntry = vocabulary.WordEntry.replace(new RegExp(key, "gm"), "<em>" + key + "</em>");
+                            vocabulary.WordEntry += "</br>" + vocabulary.Translate;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * 过滤变形
+     * @param relations
+     */
+    function filterVariableForm(relations) {
+        if (relations.VariableForm && relations.VariableForm.length > 0) {
+            var i, len, VariableForm;
+            for (i = 0, len = relations.VariableForm.length; i < len; i++) {
+                VariableForm = relations.VariableForm[i];
+                VariableForm['VariableFormCatagory'] = VariableFormEnum[VariableForm['VariableFormCatagory']];
+            }
+        }
+    }
+
+    /**
+     * 去掉字符串前后空格
+     * @param str
+     * @returns {*}
+     */
+    function trim(str) {
+        var reg = /^\s*|\s*$/g;
+        return str.replace(reg, "");
+    }
+
+    return libCode;
+});]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

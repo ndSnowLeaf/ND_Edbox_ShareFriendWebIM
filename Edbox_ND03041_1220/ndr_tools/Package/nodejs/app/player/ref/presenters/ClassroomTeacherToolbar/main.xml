@@ -1,0 +1,170 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ClassroomTeacherToolbar'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/**
+ * @file    互动课堂教师端工具栏(ClassroomTeacherToolbar)
+ * @author  linliwei
+ * @version  1.0.0
+ * @since    2016-5-10 16:26:42
+ */
+function AddonClassroomTeacherToolbar_create() {
+
+    var presenter = function () {
+    };
+
+    /**
+     * 需要和工具栏进行交互的按钮名称
+     * BTN_EXAM : 发送任务
+     */
+    var NATIVE_BUTTONS = {
+        BTN_EXAM: "exam"
+    };
+
+    /**
+     * 相关事件
+     * @const
+     */
+    presenter.NATIVE_EVENTS = {
+        NATIVE_TOOLBAR: "NativeToolbar",
+        EXAM: "Exam"
+    };
+
+    /**
+     * 相关事件参数
+     * @const
+     */
+    presenter.NATIVE_EVENT_ITEMS = {
+        SHOW: "show"
+    };
+
+
+    /***************************************************************************************************************************************
+     * 插件核心方法
+     ***************************************************************************************************************************************/
+    /**
+     * 事件监听器
+     */
+    var bridgeListeners = {};
+
+    /**
+     * 保存playerController
+     *
+     * @public
+     * @param {Object} controller icPlayer的PlayerController对象
+     */
+    presenter.setPlayerController = function (controller) {
+        presenter.playerController = controller;
+    };
+
+
+    /**
+     * 监听事件
+     */
+    var listenEvents = function () {
+        if (ClassroomUtils.isApp()) {
+            var eventHandlers = {
+                NativeToolbar: handleNativeToolbarCallback
+            };
+            bridgeListeners = ClassroomUtils.addNativeEventListeners(eventHandlers);
+        }
+
+    };
+    /**
+     * 销毁事件
+     */
+    presenter.destroy = function () {
+        ClassroomUtils.removeNativeEventListeners(bridgeListeners);
+    };
+
+    /**
+     * 播放
+     *
+     * @public
+     * @param {Object} view 视图DOM对象
+     * @param {Object} model 参数数据
+     */
+    presenter.run = function (view, model) {
+        ClassroomUtils.log("工具栏初始化-run方法调用"); 
+        presenter.view = view;
+        presenter.$view = $(view);
+        presenter.model = model;
+        listenEvents();
+    };
+
+    presenter.setPlayerController = function (controller) {
+        presenter.playerController = controller;
+        presenter.eventBus = presenter.playerController.getEventBus();
+    };
+
+    presenter.destroy = function () {
+        ClassroomUtils.removeNativeEventListeners(bridgeListeners);
+    };
+
+    /**
+     * 接收Native工具栏发送的消息
+     * 做相应的逻辑处理
+     */
+    var handleNativeToolbarCallback = function (eventData) {
+        var value = eventData.value;
+        switch (value) {
+            case NATIVE_BUTTONS.BTN_EXAM:
+                examNativeHandler(eventData);
+                break;
+        }
+    };
+
+
+
+    /**
+     * 发送任务逻辑处理
+     */
+    var examNativeHandler = function () {
+
+        ClassroomUtils.fireEvent(presenter.NATIVE_EVENTS.EXAM, {
+            source: "classroomToolbar",
+            type: presenter.NATIVE_EVENT_ITEMS.SHOW,
+            value: {}
+        });
+    };
+
+
+    return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+
+
+</resources>
+
+</addon>

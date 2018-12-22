@@ -1,0 +1,1 @@
+CKEDITOR.plugins.add("texzilla",{icons:"texzilla",init:function(editor){CKEDITOR.dialog.add("texzillaDialog",this.path+"dialogs/texzilla.js"),editor.addCommand("texzillaDialog",new CKEDITOR.dialogCommand("texzillaDialog")),editor.ui.addButton("texzilla",{label:"Insert MathML based on (La)TeX",command:"texzillaDialog",icon:this.path+"icons/texzilla.png",toolbar:"insert"})}});

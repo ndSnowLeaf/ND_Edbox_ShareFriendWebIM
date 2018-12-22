@@ -1,0 +1,2483 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='FreeCombinationLoader'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="NDMediaPlayer" version="1.0.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_FreeCombinationLoader ._fct_operating_mask{position:absolute;z-index:10;top:1em;left:0;bottom:0;right:1.1em;text-align:center}.addon_FreeCombinationLoader ._fct_operating_mask ._fct_message_panel{display:inline-block;background-color:rgba(0,0,0,.7);color:#fff;padding:20px 30px;border-radius:5px;margin-top:6em;font-size:1.8em}.addon_FreeCombinationLoader ._fct_operating_mask ._fct_message_panel._submit_waiting{display:none;margin-left:-2em}.exam_skin_wood .com_wrapper_pad .fct_gray_scrollbar::-webkit-scrollbar{width:.2em;height:.2em}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="FreeCombination_txt_wrap"><div class="FreeCombination_txt scrollbar_style_gray"><div class="fct_title_box"><div class="txt"></div></div><div class="fct_res_slidebox"><a href="javascript:void(0);" class="fct_res_slide_prev click_disabled"></a> <i class="fct_res_shadow_l"></i><div class="fct_res_list_box"><ul></ul></div><i class="fct_res_shadow_r"></i> <a href="javascript:void(0);" class="fct_res_slide_next"></a></div></div></div><div style="width:100%;height:0"><div class="com_layout_main fct_resize_main"><div class="FreeCombination_resize_wrapper"><a href="javascript:void(0);" class="FreeCombination_resize"><span class="FreeCombination_resize_text expansion"></span> <span class="FreeCombination_resize_text collapse"></span></a></div><span class="fct_modification_foot"></span><div class="_fct_operating_mask"><p class="_fct_message_panel _loading"></p></div><div class="fct_operating_box fct_gray_scrollbar"><div class="fct_operating_area"></div></div></div><div class="nhw_write_toolbar hide_dom" style="width: 5em"><ul class="nhw_write_toolbar_list" style="width: 100%;position: absolute;top: 0;bottom: 0;left: 0"></ul></div></div><div class="fct_com_pop_wrapper hide_dom"><div class="fct_com_pop_square"><a href="javascript:void(0);" class="fct_com_btn_close fct_com_btn_rb"><em></em><span class="fctpl_btn_close_pic1"></span></a> <a href="javascript:void(0);" class="fct_com_btn_close fct_com_btn_lb"><em></em><span class="fctpl_btn_close_pic1"></span></a><div class="fct_res_slidebox fct_res_preview_mode"><a href="javascript:void(0);" class="fct_res_slide_prev"></a><div class="fct_res_list_box"><ul></ul></div><a href="javascript:void(0);" class="fct_res_slide_next"></a></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonFreeCombinationLoader_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 互动习题接口服务，实现互动习题需要的接口
+ */
+
+var CONSTANTS = {
+    MODE_SELECT: 'select', //切换到选择模式
+    MODE_WRITE: 'write', //切换到手写模式
+    MODE_PEN_TYPE: 'penType', //切换到手写模式 - 笔迹类型
+    MODE_PEN_WEIGHT: 'penWeight', //切换到手写模式 - 笔迹粗细
+    MODE_PEN_COLOR: 'penColor', //切换到手写模式 - 笔迹颜色
+    MODE_ERASE: 'erase', //切换到擦除模式
+    MODE_FILL_COLOR: 'fillColor', //切换到涂色模式
+    MODE_FILL_COLOR_CLICK: 'fillColorClick', //学生端点击涂色按钮时，切换到涂色模式
+    MODE_UNDO: 'undo', //撤销操作
+    MODE_REDO: 'redo', //还原操作
+    MODE_RESET: 'reset', //回到初始状态
+    MODE_NO_ACTIVE: 'no_active', //无激活元素模式
+
+    ELEMENT_MODE_DISABLED: 0, //元素 - 禁用模式
+    ELEMENT_MODE_SELECT: 1, //元素 - 选择模式
+    ELEMENT_MODE_FILL_COLOR: 2, //元素 - 涂色模式
+    WRITE_TYPE_DISABLED: 0, //手写板 - 可穿透
+    WRITE_TYPE_WRITE: 1, //手写板 - 书写
+    WRITE_TYPE_ERASE: 2, //手写板 - 擦除
+    WRITE_WEIGHT_MAP: {
+        'thin': 3,
+        'middle': 12,
+        'wide': 15
+    }
+};
+
+var GetImageBase64 = function (url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function () {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+            callback(reader.result);
+        };
+        reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
+};
+
+var currentPresenter = null, //当前Presenter对象
+    $historyManager = null; //历史状态管理
+
+function BehaviorMode(presenter, service) {
+    this.presenter = presenter;
+    this.service = service;
+}
+BehaviorMode.prototype[CONSTANTS.MODE_SELECT] = function (data) { //选择模式行为
+    this.service.__setOperatingMode(CONSTANTS.MODE_SELECT, data);
+
+    this.presenter.freeCombinationManager.setElementMode(CONSTANTS.ELEMENT_MODE_SELECT);
+    this.presenter.writer.setWriteType(CONSTANTS.WRITE_TYPE_DISABLED);
+};
+BehaviorMode.prototype[CONSTANTS.MODE_WRITE] = function (data) { //书写模式行为
+    this.service.__setOperatingMode(CONSTANTS.MODE_WRITE, data);
+
+    var writer = this.presenter.writer;
+    writer.setWriteType(CONSTANTS.WRITE_TYPE_WRITE);
+    writer.setPenThickness(data.width);
+    writer.setPenColor(data.color);
+    this[CONSTANTS.MODE_NO_ACTIVE]();
+};
+BehaviorMode.prototype[CONSTANTS.MODE_ERASE] = function (data) { //擦除模式行为
+    this.service.__setOperatingMode(CONSTANTS.MODE_ERASE, data);
+
+    this.presenter.writer.setWriteType(CONSTANTS.WRITE_TYPE_ERASE);
+    this[CONSTANTS.MODE_NO_ACTIVE]();
+};
+BehaviorMode.prototype[CONSTANTS.MODE_FILL_COLOR] = function (data) { //涂色模式行为
+    this.service.__setOperatingMode(CONSTANTS.MODE_FILL_COLOR, data);
+    this.presenter.freeCombinationManager.fillColor(data.color);
+    this.presenter.writer.setWriteType(CONSTANTS.WRITE_TYPE_DISABLED);
+};
+BehaviorMode.prototype[CONSTANTS.MODE_FILL_COLOR_CLICK] = function (data) { //涂色模式行为(点击涂色按钮)
+    this.service.__setOperatingMode(CONSTANTS.MODE_FILL_COLOR, data);
+    this.presenter.writer.setWriteType(CONSTANTS.WRITE_TYPE_DISABLED);
+};
+BehaviorMode.prototype[CONSTANTS.MODE_NO_ACTIVE] = function () { //无激活元素模式
+    //所有元素失去激活态
+    this.presenter.freeCombinationManager.inactiveElements();
+
+    //涂色按钮可用
+    this.service.__sendEvent2ToolBar({
+        PaintColor: true
+    });
+};
+
+//构造函数
+function FreeCombinationLoaderService(presenter) {
+    currentPresenter = presenter;
+
+    //状态对象
+    this.stateDataObj = {
+        isAllowSubmit: false, //是否可提交
+        isLocked: false, //是否被锁定
+        isMiniViewerOpened: false, //题干附件收起、展开状态
+        operatingMode: {
+            mode: CONSTANTS.MODE_SELECT
+        } //操作模式数据（选择模式、书写模式{手写笔的粗度、颜色}、涂色模式{颜色}、擦除模式{是否一键清除}）
+    };
+    this.behaviorMode = new BehaviorMode(presenter, this);
+    this.handWriteParams = {
+        width: 12,
+        color: 0xFF000000
+    }; //手写笔触初始参数：中等粗细，黑色
+    this.isFinished = false; // 结束作答标识符
+
+    this.toolbarComponentState = {
+        itemState: {},
+        enabledReset: false,
+        activedItem: ''
+    }; // 工具栏状态
+
+    this.isInRecovering = false; // 是否是恢复状态
+
+    //加载历史状态管理器
+    this.__loadHistoryManager();
+}
+
+FreeCombinationLoaderService.prototype = {
+    /****实现工具事件的接口****/
+    receiveBroadcastEvent: function (name, data) {
+        switch (name) {
+            case CONSTANTS.MODE_PEN_WEIGHT: //书写模式 - 笔迹粗细
+                this.handWriteParams.width = CONSTANTS.WRITE_WEIGHT_MAP[data.weight] || data.weight;
+                this.behaviorMode[CONSTANTS.MODE_WRITE](this.handWriteParams);
+
+                break;
+            case CONSTANTS.MODE_PEN_COLOR: //书写模式 - 笔迹颜色
+                this.handWriteParams.color = data.color;
+                this.behaviorMode[CONSTANTS.MODE_WRITE](this.handWriteParams);
+
+                break;
+            case CONSTANTS.MODE_WRITE: //书写模式
+                this.handWriteParams.color = data.penColor;
+                this.handWriteParams.width = CONSTANTS.WRITE_WEIGHT_MAP[data.penWeight] || data.penWeight;
+                this.behaviorMode[CONSTANTS.MODE_WRITE](this.handWriteParams);
+
+                break;
+            case CONSTANTS.MODE_SELECT: //选择模式
+            case CONSTANTS.MODE_ERASE: //擦除模式
+            case CONSTANTS.MODE_FILL_COLOR: //涂色模式
+            case CONSTANTS.MODE_FILL_COLOR_CLICK: //涂色模式(点击涂色按钮)
+                this.behaviorMode[name](data);
+
+                break;
+            case CONSTANTS.MODE_UNDO: //撤销操作
+                $historyManager.undo();
+                this.__sendEvent2ToolBar({
+                    Undo: $historyManager.enableUndo(),
+                    Redo: true,
+                    Reset: $historyManager.enableUndo()
+                });
+
+                break;
+            case CONSTANTS.MODE_REDO: //还原操作
+                $historyManager.redo();
+                this.__sendEvent2ToolBar({
+                    Undo: true,
+                    Redo: $historyManager.enableRedo(),
+                    Reset: true
+                });
+
+                break;
+            case CONSTANTS.MODE_RESET: //回到初始状态
+                $historyManager.clear();
+                this.resetQuestion();
+
+                break;
+            default:
+        }
+        this.__saveToolbarState({
+            name: name,
+            data: data
+        });
+        currentPresenter._changeClassroomStatus();
+    },
+    /****实现互动习题的接口****/
+    getQuestionInfo: function () {
+        return {
+            id: currentPresenter.model.QuestionId,
+            item: 'freeCombination',
+            url: '',
+            type_code: 'freeCombination',
+            type_name: '元素组合题',
+            dispatchOnly: true
+        };
+    },
+    /****实现国际化支持的接口****/
+    setLocationProperties: function (properties) {
+        currentPresenter.$translator.setData(properties);
+    },
+    /****获取互动习题的接口****/
+    showAnswer: function () {
+
+    },
+    __screenShotAnswer: function ($deferred, screenShotDelays) {
+        var self = this;
+        setTimeout(function () {
+            var clientRect = currentPresenter._getStageClientRect();
+            ClassroomUtils.screenShot({
+                "left": clientRect.left,
+                "top": clientRect.top,
+                "width": clientRect.width,
+                "height": clientRect.height,
+                "outputWidth": clientRect.width,
+                "outputHeight": clientRect.height
+            }).done(function (url) {
+                GetImageBase64(url, function (base64) {
+                    self.__afterScreenShot();
+                    base64 = base64.replace(/^data:.+?;base64,/, ''); //.replace('data:image/webp;base64,', '');
+
+                    $deferred.resolve(base64);
+                });
+            }).fail(function (reason) {
+                console.log("errorMsg:" + reason);
+                $deferred.resolve(null);
+            });
+        }, screenShotDelays);
+    },
+    getResult: function () {
+        var result = {
+            questionId: currentPresenter.model.QuestionId,
+            answerState: this.stateDataObj.isAllowSubmit ? 'COMPLETE' : 'NO_ANSWER',
+            answer: {
+                answer_result: true,
+                correct_response: null,
+                user_response: []
+            }
+        };
+
+        if (typeof ClassroomUtils !== 'undefined' && typeof ClassroomUtils.screenShot === 'function') {
+            var self = this,
+                $deferred = $.Deferred(),
+                screenShotDelays;
+            result.answer.user_response.push($deferred);
+
+            //Step0. 计算截屏延迟时间
+            screenShotDelays = self.__calcScreenShotDelays();
+
+            //Step1. 截屏前相关操作
+            self.__beforeScreenShot();
+
+            //Step2. 获取手写轨迹、调用屏幕截图
+            self.__HandWriteStrokeData = null;
+            var handWriteStrokeData = currentPresenter.writer.getStrokeData();
+            if (handWriteStrokeData && handWriteStrokeData['then']) {
+                handWriteStrokeData.then(function (strokeData) {
+                    self.__HandWriteStrokeData = strokeData;
+                    self.__screenShotAnswer($deferred, screenShotDelays);
+                });
+            } else {
+                self.__HandWriteStrokeData = handWriteStrokeData;
+                self.__screenShotAnswer($deferred, screenShotDelays);
+            }
+        }
+
+        return result;
+    },
+    getInterceptId: function () {
+        return currentPresenter.model.QuestionId;
+    },
+    beforeSendAnswer: function (sendData) {
+        if (!!sendData.answer && sendData.answer.user_response.length > 0) {
+            sendData.answer.data = [{
+                type: 'write_with_background', //手写加背景
+                value: {
+                    'write': (this.__HandWriteStrokeData && this.__HandWriteStrokeData.value || null),
+                    'background': sendData.answer.user_response[0]
+                }
+            }];
+
+            delete sendData.answer.user_response;
+        }
+
+        return sendData;
+    },
+    afterSendAnswer: function (service) {},
+    resetQuestion: function () {
+        currentPresenter.freeCombinationManager.resetElementState();
+        currentPresenter.writer.resetElementState();
+
+        this.behaviorMode[CONSTANTS.MODE_NO_ACTIVE]();
+        this.__sendEvent2ToolBar({
+            RetractToolbar: true,
+            Undo: false,
+            Redo: false,
+            Reset: false
+        }); //修复bug-93369：, EnableToolbar: true
+    },
+    lockQuestion: function (options) {
+        if (options && options.type === 'OnFinish') {
+            this.isFinished = true;
+        }
+
+        this.stateDataObj.isLocked = true;
+        this.__lockQuestion();
+    },
+    __lockQuestion: function (options) {
+        currentPresenter.writer.setActive(false); //禁用手写板
+        this.__sendEvent2ToolBar({
+            RetractToolbar: true,
+            EnableToolbar: false
+        }); //隐藏工具栏上的所有弹窗、禁用工具栏
+        this.__toggleFctOperatingMask(true);
+        currentPresenter.isStudent && currentPresenter.attachmentMiniViewer.setEnable(false); //学生端：不能操作题干附件
+        currentPresenter.attachmentViewer.close(); //关闭附件查看弹窗
+    },
+    unlockQuestion: function () {
+        this.isFinished = false;
+        this.stateDataObj.isLocked = false;
+
+        this.__unlockQuestion();
+    },
+    __unlockQuestion: function () {
+        currentPresenter.writer.setActive(true);
+        this.__sendEvent2ToolBar({
+            EnableToolbar: true
+        });
+        this.__toggleFctOperatingMask(false);
+        currentPresenter.attachmentMiniViewer.setEnable(true);
+    },
+    finishQuestion: function () {
+
+        this.unlockQuestion();
+    },
+    showResultHint: function () {
+
+    },
+    getState: function () {
+        this.stateDataObj.isMiniViewerOpened = currentPresenter.isMiniViewerOpened;
+
+        return $.extend(true, {}, this.stateDataObj);
+    },
+    setState: function (stateObj) {
+        if (!!stateObj) {
+            this.stateDataObj = stateObj;
+
+            if (stateObj.isMiniViewerOpened) {
+                currentPresenter._expandStemAttachment();
+            } else {
+                currentPresenter._collapseStemAttachment();
+            }
+
+            if (stateObj.isLocked) {
+                this.lockQuestion();
+            } else {
+                this.unlockQuestion();
+            }
+
+            //手写板组件状态恢复
+            currentPresenter.writer && currentPresenter.writer.recoverStrokeData && currentPresenter.writer.recoverStrokeData();
+        }
+    },
+
+    /** 课堂状态控制器接口 */
+    getClassroomStatus: function () {
+        var answerState = this.getState();
+        return {
+            answerState: answerState,
+            attachmentViewer: currentPresenter.attachmentViewer.getState(),
+            attachmentMiniViewer: currentPresenter.attachmentMiniViewer.getState(),
+            freeCombinationManager: currentPresenter.freeCombinationManager.getState(),
+            handWriteComponentLoader: currentPresenter.handWriteComponentLoader.getState(),
+            toolbarComponent: this.toolbarComponentState,
+            showAttachmentMiniViewer: currentPresenter.isMiniViewerOpened
+        };
+    },
+    setClassroomStatus: function (stateObj) {
+        this.isInRecovering = true;
+        if (stateObj) {
+            this.setState(stateObj.answerState);
+            // 设置工具栏状态
+            this.toolbarComponentState = stateObj.toolbarComponent;
+            this.__restoreToolbarState(stateObj.toolbarComponent);
+            // 设置手写板数据
+            currentPresenter.handWriteComponentLoader.setState(stateObj.handWriteComponentLoader);
+            // 设置元素组合器状态
+            currentPresenter.freeCombinationManager.setState(stateObj.freeCombinationManager);
+            // 设置题干罗列组件状态
+            currentPresenter.attachmentMiniViewer.setState(stateObj.attachmentMiniViewer);
+            // 设置题干附件查看组件状态
+            currentPresenter.attachmentViewer.setState(stateObj.attachmentViewer);
+            if (!stateObj.showAttachmentMiniViewer) {
+                currentPresenter._collapseStemAttachment();
+            }
+            // 通知状态恢复完成
+            currentPresenter.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: 'FreeCombinationLoader' // 当前模块代码,也就是metaInfo.name
+            });
+        }
+        this.isInRecovering = false;
+    },
+    clearClassroomStatus: function () {
+        // ...
+    },
+
+
+    /****以下开始为Service的限制外部访问方法: _代表protected(当前组件内所有模块的都可以调用)，__代表private(只有当前模块可以调用) *****/
+    //添加历史操作记录
+    _addHistoryState: function (data) {
+        //Step1: 添加历史操作记录
+        this.stateDataObj.isAllowSubmit = true;
+        $historyManager.addState(data);
+
+        //Step2: 通知工具栏: 可撤销、不可还原、一键清除可用
+        this.__sendEvent2ToolBar({
+            Undo: true,
+            Redo: false,
+            Reset: true
+        });
+
+        //Step3. 通知作答流程控制器，答题状态变化
+        this.__broadInteractionStateChanged();
+    },
+    //激活元素后
+    _afterActiveElement: function (elementInfo) {
+        if (!!elementInfo) {
+            var isPaintColorable = false;
+            if (elementInfo.type === 'shape') {
+                isPaintColorable = currentPresenter.freeCombinationManager.isPaintColorable(elementInfo.identifier);
+            }
+
+            if (isPaintColorable) {
+                this.__sendEvent2ToolBar({
+                    PaintColor: true
+                });
+            } else {
+                this.__sendEvent2ToolBar({
+                    PaintColor: false,
+                    RetractToolbar: true
+                });
+            }
+        }
+    },
+    //通知作答流程控制器，答题状态变化
+    __broadInteractionStateChanged: function () {
+        currentPresenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+            PresenterEventType.IC_PLAYER_EVENT, {
+                canSubmit: true
+            });
+
+        currentPresenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+            PresenterEventType.IC_PLAYER_EVENT);
+    },
+    //通知作答流程控制器，答题状态变化
+    __broadClassroomStateChanged: function () {
+        if (!this.isInRecovering) {
+            currentPresenter.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: 'FreeCombinationLoader' // 当前模块代码,也就是metaInfo.name
+            });
+        }
+    },
+    //加载历史操作管理器
+    __loadHistoryManager: function () {
+        var presenterService = this;
+        var EStateHistoryManager = __webpack_require__(5);
+        var stateService = {
+            getState: function (currentStateInStack) {
+                //获取元素或元素组合
+                var elements = [];
+                if ($.isArray(currentStateInStack)) {
+                    $.each(currentStateInStack, function () {
+                        elements.push(this.element);
+                    });
+                } else {
+                    elements = currentStateInStack.element;
+                }
+
+                //获取元素或元素组合的当前状态数据
+                if ($.isArray(elements)) {
+                    var stateObj = [];
+                    $.each(elements, function () {
+                        stateObj.push({
+                            element: this,
+                            state: this.getElementState()
+                        });
+                    });
+
+                    return stateObj;
+                } else {
+                    return {
+                        element: elements,
+                        state: elements.getElementState()
+                    };
+                }
+            },
+            /**
+             * 设置元素状态
+             * @param stateObj 状态对象（数组或单值）， 结构如下：
+             *  [{element, state},...] //element:元素; state:元素状态
+             *
+             *  actionType: undo|redo  //主要给手写板设计的
+             */
+            setState: function (stateObj, actionType) {
+                if (!!stateObj) {
+                    if ($.isArray(stateObj)) { //组合元素case
+                        $.each(stateObj, function (index, item) {
+                            this.element && this.element.setElementState(this.state, actionType);
+
+                            if (index === 0 && this.element.getElementInfo) {
+                                currentPresenter.freeCombinationManager.activeElement(this.element);
+                            }
+                        });
+                    } else { //单元素case
+                        if (stateObj.element) {
+                            if (stateObj.element === currentPresenter.writer) { //手写板组件
+                                stateObj.element.setElementState({
+                                    state: stateObj.state,
+                                    action: actionType
+                                });
+                            } else { //元素类组件
+                                stateObj.element.setElementState(stateObj.state, actionType);
+                                currentPresenter.freeCombinationManager.activeElement(stateObj.element);
+                            }
+                        }
+                    }
+
+                    //Step3. 通知作答流程控制器，答题状态变化
+                    presenterService.__broadInteractionStateChanged();
+                }
+            }
+        };
+
+        $historyManager = new EStateHistoryManager(stateService);
+    },
+    //学生端截屏前的操作
+    __beforeScreenShot: function () {
+        //Step1. 收起题干附件
+        currentPresenter._collapseStemAttachment();
+
+        //Step2. 关闭附件查看
+        currentPresenter.attachmentViewer.close();
+
+        //Step3. 元素失去选中状态
+        currentPresenter.freeCombinationManager.inactiveElements();
+
+        //Step4. 隐藏工具栏上的所有弹窗
+        this.__sendEvent2ToolBar({
+            RetractToolbar: true
+        });
+
+
+        this.__lockQuestion(true);
+    },
+    //学生端截屏后的操作
+    __afterScreenShot: function () {
+        //this.__unlockQuestion(true);
+    },
+    //操作模式 getter setter
+    __setOperatingMode: function (mode, data) {
+        this.stateDataObj.operatingMode = {
+            mode: mode,
+            data: data
+        };
+    },
+    //通知工具栏
+    __sendEvent2ToolBar: function (eventData) {
+        if (currentPresenter.toolbarService) {
+            if ($.isPlainObject(eventData)) {
+                for (var key in eventData) {
+                    switch (key) {
+                        case 'EnableToolbar':
+                            currentPresenter.toolbarService.setToolbarEnabled(eventData[key] || false);
+
+                            break;
+                        case 'RetractToolbar':
+                            currentPresenter.toolbarService.retractToolbar();
+
+                            break;
+                        case 'Reset':
+                            this.toolbarComponentState.enabledReset = eventData[key] || false;
+                            currentPresenter.toolbarService.setItemEnabled(key, eventData[key] || false);
+                            break;
+                        default:
+                            currentPresenter.toolbarService.setItemEnabled(key, eventData[key] || false);
+                    }
+                }
+            }
+        }
+    },
+    // 保存工具栏状态
+    __saveToolbarState: function (options) {
+        if (currentPresenter.isPC) {
+            var state = this.toolbarComponentState;
+            var itemState = state.itemState;
+            switch (options.name) {
+                case CONSTANTS.MODE_PEN_WEIGHT: //书写模式 - 笔迹粗细
+                case CONSTANTS.MODE_PEN_COLOR: //书写模式 - 笔迹颜色
+                case CONSTANTS.MODE_WRITE: //书写模式
+                    !itemState.PenColor && (itemState.PenColor = {});
+                    state.activedItem = 'PenColor';
+                    if (options.data.weight) {
+                        itemState.PenColor.weight = options.data.weight;
+                    }
+                    if (options.data.color) {
+                        itemState.PenColor.color = options.data.color;
+                    }
+                    break;
+                case CONSTANTS.MODE_FILL_COLOR: //涂色模式
+                case CONSTANTS.MODE_FILL_COLOR_CLICK: //涂色模式(点击涂色按钮)
+                    !itemState.PaintColor && (itemState.PaintColor = {});
+                    state.activedItem = 'PaintColor';
+                    if (options.data.color) {
+                        itemState.PaintColor.color = options.data.color;
+                    }
+                    break;
+                case CONSTANTS.MODE_ERASE: //擦除模式
+                    state.activedItem = 'Erase';
+                    break;
+                case CONSTANTS.MODE_SELECT: //选择模式
+                default:
+                    state.activedItem = 'SelectMode';
+                    break;
+            }
+            itemState.PaintColor && (itemState.PaintColor.showPopup = state.activedItem === 'PaintColor');
+        }
+    },
+    // 恢复工具栏状态
+    __restoreToolbarState: function (state) {
+        switch (state.activedItem) {
+            case 'SelectMode':
+                this.behaviorMode[CONSTANTS.MODE_SELECT]();
+                break;
+            case 'PenColor':
+                this.behaviorMode[CONSTANTS.MODE_WRITE](Object.assign({
+                    width: CONSTANTS.WRITE_WEIGHT_MAP[state.itemState.PenColor.weight] || state.itemState.PenColor.weight
+                }, state.itemState.PenColor));
+                break;
+            case 'Erase':
+                this.behaviorMode[CONSTANTS.MODE_ERASE]();
+                break;
+            case 'PaintColor':
+                this.behaviorMode[CONSTANTS.MODE_FILL_COLOR](state.itemState.PaintColor);
+                break;
+        }
+        currentPresenter.toolbarService.setToolbarState(state);
+        if (state.enabledReset) {
+            currentPresenter.toolbarService.setItemEnabled('Reset', true);
+        }
+    },
+    //是否为ND2.5
+    __isND25: function () {
+        if (currentPresenter.isApp && !!navigator.userAgent) {
+            return navigator.userAgent.indexOf('101同学派') > -1;
+        }
+
+        return false;
+    },
+    //计算延迟截屏时间
+    __calcScreenShotDelays: function () {
+        var screenShotDelays = 0;
+        if (this.__isND25()) {
+            screenShotDelays = 1000;
+
+            if (!currentPresenter.isMiniViewerOpened) { //如果题干处于收起状态，可适当降低延迟截屏时间
+                screenShotDelays = 500;
+            }
+        } else {
+            screenShotDelays = 700;
+
+            if (!currentPresenter.isMiniViewerOpened) { //如果题干处于收起状态，可适当降低延迟截屏时间
+                screenShotDelays = 300;
+            }
+        }
+
+        return screenShotDelays;
+    },
+    //显示或隐藏舞台区域的遮盖层，以此达到启用或禁止舞台区域的操作
+    __toggleFctOperatingMask: function (showMask) {
+        var $mask = currentPresenter.$view.find('._fct_operating_mask');
+
+        if (showMask) {
+            $mask.show();
+        } else {
+            $mask.hide();
+        }
+    }
+};
+
+
+module.exports = FreeCombinationLoaderService;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/**
+ * 元素组合管理器
+ * 接口列表：
+ *   1. init 初始化
+ *   2. inactiveElements 所有元素失去选中态
+ *   3. activeElement 激活某个元素
+ *   4. setElementMode 设置元素模式
+ *   5. resetElementState 初始化元素状态
+ *   6. isPaintColorable 是否可涂色
+ *   7. destroy 销毁
+ *   8. getState 获取状态
+ *   9. setState 设置状态
+ */
+
+//加载FreeCombineElement组件的数据模型
+function ConvertFreeCombineElementProperties(option, identifier, stageSetting) {
+    var properties = [{
+            name: 'identifier',
+            type: 'string',
+            value: identifier
+        },
+        {
+            name: 'stage',
+            type: 'json',
+            text: JSON.stringify(stageSetting)
+        }
+    ];
+
+    for (var key in option) {
+        if (option.hasOwnProperty(key)) {
+            var value = option[key],
+                valueType = (typeof value).toLocaleLowerCase(),
+                item = {
+                    name: key,
+                    value: value
+                };
+
+            switch (valueType) {
+                case 'number':
+                    item.type = 'number';
+                    break;
+                case 'boolean':
+                    item.type = 'boolean';
+                    item.value = item.value ? 'true' : 'false';
+                    break;
+                case 'object':
+                    item.type = 'json';
+                    item.text = JSON.stringify(item.value);
+                    delete item.value;
+                    break;
+                default:
+                    item.type = 'string';
+            }
+
+            properties.push(item);
+        }
+    }
+
+    return properties;
+}
+
+var currentPresenter;
+
+//构造函数
+function FreeCombinationManager(presenter, initZindex) {
+    currentPresenter = presenter;
+
+    this.activedElementId = null;
+    this.elementList = []; //元素数组
+    this.elementIdentifierMap = {}; //元素标识映射表 {identifier --> {element, renderTo},...}
+    this.activedZindex = initZindex; //激活元素的层次初始值，后续累加
+}
+
+FreeCombinationManager.prototype = {
+    //初始化
+    init: function (stageSize, stageElements) {
+        var promise = this.__loadElements(stageSize, stageElements);
+        this.__bindEvent();
+
+        return promise;
+    },
+    //所有元素失去选中态
+    inactiveElements: function () {
+        if (this.activedElementId) {
+            this.__setElementActive(this.activedElementId, false);
+            this.activedElementId = null;
+        }
+    },
+    //激活某个元素
+    activeElement: function (_identifier) {
+        if (_identifier) {
+            var identifier, element;
+            if (_identifier.getElementInfo) {
+                element = _identifier;
+                identifier = element.getElementInfo().identifier;
+            } else {
+                identifier = _identifier;
+                element = this.elementIdentifierMap[identifier].element;
+            }
+
+            //之前选中的元素失去激活态
+            this.activedElementId && this.__setElementActive(this.activedElementId, false);
+
+            //记录当前选中的元素ID，并激活同组的元素
+            this.activedElementId = identifier;
+            this.__setElementActive(this.activedElementId, true);
+
+            var service = currentPresenter.getService();
+            service._afterActiveElement && service._afterActiveElement(element.getElementInfo());
+        }
+    },
+    //涂色
+    fillColor: function (color) {
+        if (this.activedElementId && this.isPaintColorable(this.activedElementId)) {
+            var mapValue = this.elementIdentifierMap[this.activedElementId];
+            mapValue.element.fillColor(color);
+        }
+    },
+    //设置元素模式
+    setElementMode: function (mode, data) {
+        $.each(this.elementList, function (index, item) {
+            item.setElementMode(mode, data);
+        });
+    },
+    //初始化元素状态
+    resetElementState: function () {
+        for (var key in this.elementIdentifierMap) {
+            var value = this.elementIdentifierMap[key];
+            value.element.resetElementState();
+            value.renderTo.css('z-index', value.renderTo.data('zindex'));
+        }
+    },
+    //当前元素是否可涂色（考虑元素组合情况）
+    isPaintColorable: function (identifier) {
+        var element = this.elementIdentifierMap[identifier].element,
+            elementInfo = element.getElementInfo();
+
+        return elementInfo.colorable;
+    },
+    //销毁
+    destroy: function () {
+        this.elementList = null;
+        this.elementIdentifierMap = null;
+        this.activedElementId = null;
+    },
+
+    getState: function () {
+        return {
+            elementStates: this.elementList.map(function (item) {
+                return item.getElementState()
+            }),
+            activedElementId: this.activedElementId
+        };
+    },
+    setState: function (state) {
+        if (state) {
+            this.elementList.forEach(function (element, index) {
+                if (state.elementStates[index]) {
+                    element.setElementState(state.elementStates[index]);
+                }
+            });
+            this.activeElement(state.activedElementId);
+        }
+    },
+
+    /****以下开始为私有方法*****/
+    __stageElements2Build: function (stageElements) {
+        //创建元素 元素按层级排序
+        stageElements.sort(function (a, b) {
+            return (a.zIndex || 0) - (b.zIndex || 0);
+        });
+
+        var stageElements2Build = [],
+            groupMapTemp = {};
+        $.each(stageElements, function (index, item) {
+            var group = item.group;
+            if (group && group.id != '-1') {
+                delete item.group;
+
+                var groupId = group.id;
+                if (groupMapTemp.hasOwnProperty(groupId)) {
+                    groupMapTemp[groupId].elements.push(item);
+                } else {
+                    var array = {
+                        group: group,
+                        moveable: item.moveable,
+                        elements: [item]
+                    };
+                    groupMapTemp[groupId] = array;
+
+                    stageElements2Build.push(array);
+                }
+            } else {
+                stageElements2Build.push(item);
+            }
+        });
+
+        return stageElements2Build;
+    },
+    __loadElements: function (stageSize, stageElements) {
+        var self = this,
+            deferred = $.Deferred(),
+            deferredList = [],
+            stageClientRect = currentPresenter._getStageClientRect(),
+            elementList = this.elementList,
+            elementIdentifierMap = this.elementIdentifierMap;
+
+        var stageSetting = {
+            top: stageClientRect.top,
+            bottom: stageClientRect.bottom,
+            left: stageClientRect.left,
+            right: stageClientRect.right,
+            width: stageClientRect.width,
+            height: stageClientRect.height,
+            scale: Math.min(stageClientRect.width / stageSize.width, stageClientRect.height / stageSize.height)
+        };
+
+        var stageElements2Build = this.__stageElements2Build(stageElements);
+        $.each(stageElements2Build, function (index, item) {
+            var def, properties,
+                identifier = 'Element_' + index,
+                renderTo = $('<div style="position: absolute;"/>'),
+                zIndex = (item.moveable ? 2 : 1);
+
+            renderTo.css('z-index', zIndex).data('zindex', zIndex).appendTo(currentPresenter.$stage);
+            properties = ConvertFreeCombineElementProperties(item, identifier, stageSetting);
+            def = currentPresenter.$requireComponent('FreeCombineElement', properties, renderTo, {
+                width: '0',
+                height: '0'
+            });
+            deferredList.push(def);
+
+            elementIdentifierMap[identifier] = {
+                element: null,
+                renderTo: renderTo,
+                moveable: item.moveable
+            };
+        });
+
+        //获取元素、设置元素组合
+        $.when.apply(self, deferredList).done(function () {
+            $.each(arguments, function (index, element) {
+                var element = element.getService(),
+                    elementInfo = element.getElementInfo();
+
+                element.setStage(currentPresenter.$stage[0]);
+                elementIdentifierMap[elementInfo.identifier].element = element;
+                elementList.push(element);
+            });
+
+            deferred.resolve();
+        });
+
+        return deferred.promise();
+    },
+    //设置元素激活状态
+    __setElementActive: function (identifier, isActive) {
+        //元素自身
+        this.__setElementSelfActive(identifier, isActive);
+    },
+    //设置元素激活状态
+    __setElementSelfActive: function (identifier, isActive) {
+        var mapValue = this.elementIdentifierMap[identifier];
+
+        mapValue.element.setActive(isActive);
+        if (isActive && mapValue.moveable) { //激活且非锁定元素
+            mapValue.renderTo.css('z-index', ++this.activedZindex);
+        }
+    },
+    __onFreeCombineElementEventCallback: function (eventData) {
+        switch (eventData.type) {
+            case 'active': //元素选中
+                this.activeElement(eventData.data.identifier);
+                this.currentActiveIdentifier = eventData.data.identifier;
+                currentPresenter._changeClassroomStatus();
+                break;
+            case 'update': //元素更新状态
+                var element = this.elementIdentifierMap[eventData.data.identifier].element;
+                currentPresenter.getService()._addHistoryState({
+                    element: element,
+                    state: eventData.data.state
+                });
+                currentPresenter._changeClassroomStatus();
+                break;
+            default:
+        }
+    },
+    __bindEvent: function () {
+        //元素类组件事件监听
+        currentPresenter.$addEventListener('FreeCombineElementEvent', PresenterEventType.IC_PLAYER_EVENT, this.__onFreeCombineElementEventCallback.bind(this));
+    }
+};
+
+module.exports = FreeCombinationManager;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+/**
+ * 题干附件查看组件
+ * 接口列表：
+ *   1. init 初始化
+ *   2. close 关闭
+ *   3. isOpened 是否打开着
+ *   4. show 查看附件
+ *   5. destroy 销毁
+ *   6. getState 获取状态
+ *   7. setState 设置状态
+ */
+var EVENT_BUTTON_CLICK = 'mouseup touchend',
+    CSS_CLICK_DISABLED = 'click_disabled';
+
+var NDMEDIA_RENDER_OPTIONS = {
+    autoAdaptSize: true,
+    mutuallyExclusive: true,
+    containerId: '__fct_media_',
+    returnInstances: true,
+    mediaPreload: true,
+    style: '',
+    img: {
+        render: false //是否渲染img标签
+    },
+    video: {
+        render: true,
+        width: 0,
+        height: 0,
+        supportFullscreen: false,
+        showPlayBtnInVideo: true,
+        showFullscreenBtn: false //是否显示全屏按钮,supportFullscreen=false时有效,组件内部会判断如果当前环境不支持全屏时，则这个参数无效
+    },
+    audio: {
+        render: true,
+        width: 0,
+        height: 0 //自定义高度,默认180
+    }
+}
+
+//设置元素的translateX样式
+function setElementTranslateX($element, value) {
+    var translateX = 'translateX(' + value + '%)';
+    $element.css({
+        'transform': translateX,
+        '-moz-transform': translateX,
+        '-webkit-transform': translateX
+    });
+}
+
+var currentPresenter = null; //当前Presenter实例
+
+function H5StemAttachmentViewer(presenter, $container, attachments) {
+    currentPresenter = presenter;
+
+    this.$container = $container;
+    this.attachments = attachments || [];
+    this.isOpened = false;
+
+    this.slidePrev = this.$container.find('.fct_res_slide_prev');
+    this.slideNext = this.$container.find('.fct_res_slide_next');
+    this.currentResIndex = 0;
+    this.resAmount = this.attachments.length;
+    this.fctResListBox = this.$container.find('.fct_res_list_box ul');
+    this.mediaList = {};
+    this.currentMediaInfo = null;
+}
+
+H5StemAttachmentViewer.prototype = {
+    //初始化
+    init: function () {
+        if (!currentPresenter.isApp && !currentPresenter.isPPTShell) {
+            this.$container.addClass('mask_opacity_low');
+        }
+
+        //加载附件
+        this.__render();
+
+        //绑定事件
+        this.__bindEvent();
+    },
+    //关闭
+    close: function (event) {
+        !!event && event.preventDefault();
+
+        //关闭弹窗
+        this.$container.addClass('hide_dom');
+        this.isOpened = false;
+
+        //停止音视频的播放
+        this.__stopCurrentMedia();
+        currentPresenter._changeClassroomStatus();
+    },
+    //是否打开着
+    isOpened: function () {
+        return this.isOpened;
+    },
+    //查看附件
+    show: function (index) {
+        this.__showAttachmentByIndex(index, true);
+
+        //显示组件窗口
+        this.$container.removeClass('hide_dom');
+        this.isOpened = true;
+    },
+    //销毁
+    destroy: function () {
+        delete this.mediaList;
+
+        //解绑事件
+        this.$container.find('.fct_com_btn_close').off(EVENT_BUTTON_CLICK);
+        this.slidePrev.off(EVENT_BUTTON_CLICK);
+        this.slideNext.off(EVENT_BUTTON_CLICK);
+        this.$container.find('video').off('click');
+        this.$container.find('video,audio').off('canplay ended').remove();
+    },
+
+    getState() {
+        return {
+            isOpen: this.isOpened, // 弹窗打开状态
+            currentIndex: this.currentResIndex, // 当前浏览内容的index
+            currentMedia: this.currentMediaInfo // 当前播放媒体的信息
+        };
+    },
+    setState(state) {
+        if (state) {
+            if (state.isOpen) {
+                this.show(~~state.currentIndex);
+                //还原播放时间
+                if (state.currentMedia) {
+                    setTimeout(function () {
+                        NDMediaPlayer.mediaSkip(state.currentMedia.mediaType, state.currentMedia.index, Math.max(0, state.currentMedia.currentTime - 1));
+                    }, 50);
+                }
+            }
+        }
+    },
+
+    /****以下开始为Viewer的私有方法*****/
+    __render: function () {
+        var self = this,
+            li, slideDiv, element;
+        $.each(self.attachments, function (index, item) {
+            var li = $('<li></li>'),
+                slideDiv = $('<div class="fct_slide_a"><div class="item_vertical_mc"></div></div>');
+            switch (item.type) {
+                case 'picture':
+                    element = $('<img alt="" />').attr('src', item.url);
+
+                    break;
+                case 'video':
+                    //这里指定preload="none", 修复bug-85384, 原因在于多个多媒体同时下载时会概率性造成请求pending
+                    element = $('<video controls="controls" preload="none" style="max-width:100%; max-height: 100%;"></video>').attr('src', item.url);
+
+                    break;
+                case 'audio':
+                    //这里指定preload="none", 修复bug-85384, 原因在于多个多媒体同时下载时会概率性造成请求pending
+                    element = $('<audio controls="controls" preload="none" style="width:100%; height: 100%;"></audio>').attr('src', item.url);
+
+                    break;
+                case 'table':
+                    element = $(item.html);
+
+                    break;
+                default:
+            }
+
+            slideDiv.addClass('insert_' + item.type);
+            slideDiv.find('.item_vertical_mc').append(element);
+            slideDiv.appendTo(li);
+            li.appendTo(self.fctResListBox);
+        });
+
+        if (this.attachments.some(function (item) {
+                return item.type === 'video' || item.type === 'audio'
+            })) {
+            window.NDMediaPlayer.mediaOnTimeupdate(function (o) {
+                self.currentMediaInfo = o;
+                currentPresenter._changeClassroomStatus();
+            });
+        }
+    },
+    __bindEvent: function () {
+        //关闭按钮
+        this.$container.find('.fct_com_btn_close').on(EVENT_BUTTON_CLICK, this.close.bind(this));
+
+        //左右滑动按钮
+        this.slidePrev.on(EVENT_BUTTON_CLICK, this.__slidePrev.bind(this));
+        this.slideNext.on(EVENT_BUTTON_CLICK, this.__slideNext.bind(this));
+
+        //音视频(二次播放问题)
+        this.$container.find('video').on('click', function (event) {
+            event.target.controls = !(event.target.controls || false);
+        });
+        this.$container.find('video,audio').on('ended', function (event) {
+            event.target.load();
+        });
+    },
+    //向前滑
+    __slidePrev: function (event) {
+        !!event && event.preventDefault();
+
+        if (this.currentResIndex > 0) {
+            this.__stopCurrentMedia();
+            this.__showAttachmentByIndex(--this.currentResIndex, true);
+        }
+        currentPresenter._changeClassroomStatus();
+    },
+    //向后滑
+    __slideNext: function (event) {
+        !!event && event.preventDefault();
+
+        if (this.currentResIndex < this.resAmount - 1) {
+            this.__stopCurrentMedia();
+            this.__showAttachmentByIndex(++this.currentResIndex, true);
+        }
+        currentPresenter._changeClassroomStatus();
+    },
+    //显示指定附件
+    __showAttachmentByIndex: function (index, autoPlay) {
+        this.currentResIndex = index;
+
+        //定位到指定附件位置
+        setElementTranslateX(this.fctResListBox, -index * 100);
+
+        // 内容是音视频
+        if (this.attachments[index].type === 'video' || this.attachments[index].type === 'audio') {
+            // 使用NDMediaPlayer 渲染
+            var media_id = '__media_' + index;
+            if (!this.mediaList[media_id]) {
+                setTimeout(function (i) {
+                    var $container = this.fctResListBox.find('.item_vertical_mc').eq(i);
+                    // 设置音视频渲染宽高
+                    if (!NDMEDIA_RENDER_OPTIONS.video.width) {
+                        NDMEDIA_RENDER_OPTIONS.video.width = NDMEDIA_RENDER_OPTIONS.audio.width = $container.width();
+                        NDMEDIA_RENDER_OPTIONS.video.height = NDMEDIA_RENDER_OPTIONS.audio.height = $container.height();
+                    }
+                    // 渲染
+                    var renderResult = NDMediaPlayer.render($container, NDMEDIA_RENDER_OPTIONS);
+                    // 保存渲染实例
+                    this.mediaList[media_id] = renderResult[Object.keys(renderResult)[0]];
+                    // 自动播放
+                    autoPlay && this.mediaList[media_id].mediaPlay();
+                }.bind(this, index), 0);
+            } else {
+                autoPlay && this.mediaList[media_id].mediaPlay();
+            }
+        } else {
+            this.currentMediaInfo = null;
+        }
+
+        if (this.currentResIndex === 0) {
+            this.slidePrev.addClass(CSS_CLICK_DISABLED);
+        } else {
+            this.slidePrev.removeClass(CSS_CLICK_DISABLED);
+        }
+        if (this.currentResIndex === this.resAmount - 1) {
+            this.slideNext.addClass(CSS_CLICK_DISABLED);
+        } else {
+            this.slideNext.removeClass(CSS_CLICK_DISABLED);
+        }
+    },
+    //停止所有音视频播放
+    __stopCurrentMedia: function () {
+        NDMediaPlayer.mediaPauseAll(this.fctResListBox);
+    }
+};
+
+
+module.exports = H5StemAttachmentViewer;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/**
+ * 手写板加载
+ */
+var DEF_WRITE_MODE = 0, //默认穿透模式
+    INSTANT_ID = "FreeCombinationNativeCp";
+var currentPresenter = null; //当前Presenter实例
+
+function HandWriteComponentLoader(presenter) {
+    currentPresenter = presenter;
+}
+
+HandWriteComponentLoader.prototype = {
+    //初始化
+    init: function (renderTo, renderPosition, zIndex) {
+        this.__load(renderTo, renderPosition, zIndex);
+    },
+    //销毁
+    destroy: function () {
+        if (currentPresenter.isApp) {
+            currentPresenter.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+                'presenterId': 'write_element',
+                'instanceId': INSTANT_ID
+            });
+        }
+        if (this.$scrollBox) {
+            this.$scrollBox.off('scroll');
+            this.$scrollBox = null;
+        }
+    },
+
+    getState: function () {
+        return {
+            strokeData: currentPresenter.writer.getElementState(),
+            containerScrollTop: this.$scrollBox.scrollTop()
+        };
+    },
+    setState: function (state) {
+        if (state) {
+            currentPresenter.writer.setElementState({
+                state: state.strokeData
+            });
+            if (!!state.containerScrollTop) {
+                this.$scrollBox.scrollTop(state.containerScrollTop);
+            }
+        }
+    },
+
+    /****以下开始为Viewer的私有方法*****/
+    __sendToPresenter: function (type, data) {
+        currentPresenter.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            'instanceId': INSTANT_ID,
+            "type": type,
+            "data": data
+        });
+    },
+    __onToolbarEvent: function (data) {
+        switch (data.name) {
+            case 'select':
+            case 'write':
+            case 'fillColor':
+            case 'fillColorClick':
+            case 'erase':
+            case 'undo':
+            case 'redo':
+                currentPresenter.getService().receiveBroadcastEvent(data.name, data.data);
+                break;
+            case 'reset':
+                ClassroomUtils.showMessageBox && ClassroomUtils.showMessageBox(
+                    [{
+                            style: 'default',
+                            target: 'h5',
+                            html: currentPresenter.$translate('label.btn.no')
+                        },
+                        {
+                            style: 'primary',
+                            target: 'h5',
+                            html: currentPresenter.$translate('label.btn.yes'),
+                            callback: {
+                                eventName: 'toolbarClearConfirm',
+                                eventData: {}
+                            }
+                        }
+                    ],
+                    currentPresenter.$translate('label.clear.confirm') //'该操作将清空所有作答痕迹，确定要清除吗？'
+                );
+                break;
+            default:
+                ;
+        }
+    },
+    __onHandWriteEventCallback: function (eventData) {
+        //手写题的选择弹窗消失
+        currentPresenter.toolbarService.retractToolbar();
+
+        //推送操作记录到堆栈中
+        currentPresenter.getService()._addHistoryState({
+            element: currentPresenter.writer,
+            state: eventData.state
+        });
+    },
+    __onToolbarClearConfirm: function () {
+        currentPresenter.getService().receiveBroadcastEvent('reset');
+    },
+    __onScrollChangeCallback: function (eventData) {
+        var scrollTop = (this.$scrollBox[0].scrollTop || 0);
+        if (Math.abs(scrollTop - eventData.y) > 2) {
+            this.$scrollBox[0].scrollTop = eventData.y;
+        }
+    },
+    __onScrollH5Box: function () {
+        currentPresenter.writer.setScroll({
+            x: 0,
+            y: this.$scrollBox[0].scrollTop
+        });
+    },
+    __onGetStrokeDataCallback: function (eventData) {
+        this.getStrokeDataDeferred && this.getStrokeDataDeferred.resolve(eventData);
+    },
+    __injectHandWrite: function () {
+        var self = this;
+        self.$scrollBox = currentPresenter.$stage.parents('.fct_operating_box');
+        self.$scrollBox.on('scroll', self.__onScrollH5Box.bind(self));
+
+        currentPresenter.writer = {
+            'setVisible': function (value) {
+                self.__sendToPresenter("showWritePanel", value);
+            },
+            'setActive': function (value) {
+                self.__sendToPresenter("draw", value);
+            },
+            'setWriteType': function (type) {
+                self.__sendToPresenter("switchTool", type);
+            },
+            'setPenThickness': function (thickness) {
+                self.__sendToPresenter("setPenThickness", thickness);
+            },
+            'setPenColor': function (color) {
+                self.__sendToPresenter("setPenColor", color);
+            },
+            'resetElementState': function () {
+                self.__sendToPresenter("clean", {});
+            },
+            'offsetPosition': function (offset) {
+                self.__sendToPresenter("resizePanel", offset);
+            },
+            'getElementState': function () {
+                return null;
+            },
+            'setElementState': function (stateObj) {
+                self.__sendToPresenter("rollbackStroke", stateObj.action);
+            },
+            'getStrokeData': function () {
+                self.getStrokeDataDeferred = $.Deferred();
+                self.__sendToPresenter("getStrokeData", {});
+
+                return self.getStrokeDataDeferred;
+            },
+            'setScroll': function (offset) {
+                self.__sendToPresenter("setScroll", offset);
+            },
+            'recoverStrokeData': function () {
+                self.__sendToPresenter("recoverStrokeData", {});
+            }
+        };
+
+        currentPresenter.$addEventListener('startWriteCallback', PresenterEventType.NATIVE_EVENT, this.__onHandWriteEventCallback.bind(this));
+        currentPresenter.$addEventListener('toolbarClearConfirm', PresenterEventType.NATIVE_EVENT, this.__onToolbarClearConfirm.bind(this));
+        currentPresenter.$addEventListener('scrollChangeCallback', PresenterEventType.NATIVE_EVENT, this.__onScrollChangeCallback.bind(this));
+        currentPresenter.$addEventListener('getStrokeDataCallback', PresenterEventType.NATIVE_EVENT, this.__onGetStrokeDataCallback.bind(this));
+    },
+    __injectToolbar: function () {
+        var self = this;
+
+        var toolbarService = {
+            'setItemEnabled': function (itemID, enableFlag) {
+                if (itemID === 'PenColor') {
+                    itemID = 'write';
+                } else if (itemID === 'PaintColor') {
+                    itemID = 'fillColor';
+                } else {
+                    itemID = itemID.toLowerCase()
+                }
+                self.__sendToPresenter("elementtoolbar_native", {
+                    name: "setItemEnabled",
+                    data: {
+                        identify: itemID,
+                        enabled: enableFlag
+                    }
+                });
+            },
+            'setItemVisibility': function () {},
+            'setToolbarEnabled': function (enableFlag) {
+                self.__sendToPresenter("elementtoolbar_native", {
+                    name: "setToolbarEnabled",
+                    data: {
+                        enabled: enableFlag
+                    }
+                });
+            },
+            'retractToolbar': function () {
+                ClassroomUtils.closeMessageBox();
+                self.__sendToPresenter("dismissDialog", {});
+            }
+        };
+
+        //撤销、还原、一键还原不可用
+        toolbarService.setItemEnabled('Undo', false);
+        toolbarService.setItemEnabled('Redo', false);
+        toolbarService.setItemEnabled('Reset', false);
+
+        currentPresenter.toolbarService = toolbarService;
+        currentPresenter.$addEventListener('event_native_elementtoolbar', PresenterEventType.NATIVE_EVENT, this.__onToolbarEvent.bind(this));
+    },
+    __injectAttachmentView: function () {
+        var resources = currentPresenter.__getStemAttachments(),
+            MediaTypeEnum = {
+                'picture': 0,
+                'audio': 1,
+                'video': 2
+            };
+        $.each(resources, function () {
+            this.type = MediaTypeEnum[this.type] || 0;
+            this.path = this.url;
+            delete this.url;
+        });
+
+        var self = this;
+        currentPresenter.attachmentViewer = {
+            'init': function () {},
+            'isOpened': function () {
+                return true;
+            },
+            'show': function (index) {
+                self.__sendToPresenter("showResourceDialog", {
+                    index: index,
+                    resources: resources
+                });
+            },
+            'close': function () {
+                self.__sendToPresenter("dismissResourceDialog", {});
+            },
+            'destroy': function () {}
+        }
+    },
+    __getExamId: function () {
+        var examId = '';
+        currentPresenter.$addEventListener('TaskInfoCallback', PresenterEventType.IC_PLAYER_EVENT, function (eventData) {
+            if (eventData && eventData.value) {
+                examId = eventData.value.examId;
+            }
+        });
+        currentPresenter.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, {
+            'item': 'exam',
+            'type': 'query'
+        });
+
+        return examId;
+    },
+    //修复bug:IOS端不兼容 JSON.stringify($.extend({}, ClientRect)) 方法出错
+    __convert2Position: function (clientRect) {
+        if (!clientRect) return {};
+
+        return {
+            left: clientRect.left,
+            right: clientRect.right,
+            top: clientRect.top,
+            bottom: clientRect.bottom,
+            width: clientRect.width,
+            height: clientRect.height
+        };
+    },
+    __load: function (renderTo, renderPosition, zIndex) {
+        if (currentPresenter.isApp) {
+            currentPresenter.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+                'presenterId': 'write_element',
+                'instanceId': INSTANT_ID,
+                'initData': JSON.stringify({
+                    "initWritePanel": {
+                        "position": this.__convert2Position(renderPosition.write)
+                    },
+                    "initToolbar": {
+                        "position": this.__convert2Position(renderPosition.toolbar)
+                    },
+                    "isAutoSaveState": true,
+                    "lessonId": this.__getExamId()
+                })
+            });
+
+            this.__injectHandWrite(); //手写板组件服务对象
+            this.__injectToolbar(); //工具栏组件服务对象
+            this.__injectAttachmentView(); //附件查看组件服务对象
+        } else {
+            var requireSetting = this.__initRequireSetting(renderTo, renderPosition, zIndex);
+            currentPresenter.$requireComponent(requireSetting.addonId, requireSetting.properties, requireSetting.renderTo, requireSetting.layout).then(function (addon) {
+                var service = addon.getService();
+                if (service != undefined) {
+                    if (service['then']) {
+                        service.then(function () {
+                            if (!addon._service_.getStrokeData) {
+                                addon._service_.getStrokeData = function () {
+                                    return {};
+                                };
+                            }
+
+                            currentPresenter.writer = addon._service_;
+                            currentPresenter.writer.setWriteType(DEF_WRITE_MODE);
+                        });
+                    } else {
+                        if (!service.getStrokeData) {
+                            service.getStrokeData = function () {
+                                return {};
+                            };
+                        }
+
+                        currentPresenter.writer = service;
+                        currentPresenter.writer.setWriteType(DEF_WRITE_MODE);
+                    }
+                }
+            });
+
+            //手写事件监听
+            currentPresenter.$addEventListener('HandWriterStartWrite', PresenterEventType.IC_PLAYER_EVENT, this.__onHandWriteEventCallback.bind(this));
+            //手写完成事件
+            currentPresenter.$addEventListener('HandWriterEndWrite', PresenterEventType.IC_PLAYER_EVENT, function () {
+                currentPresenter._changeClassroomStatus();
+            });
+            //容器滚动事件
+            this.$scrollBox = currentPresenter.$stage.parents('.fct_operating_box');
+            this.$scrollBox.on('scroll', function () {
+                currentPresenter._changeClassroomStatus();
+            });
+        }
+    },
+    __initRequireSetting: function (renderTo, renderPosition, zIndex) {
+        var properties = [{
+                    name: 'isAutoGetState',
+                    type: 'int',
+                    value: 1
+                },
+                {
+                    name: 'renderPosition',
+                    type: 'json',
+                    text: JSON.stringify(this.__convert2Position(renderPosition.write))
+                },
+                {
+                    name: 'renderStyle',
+                    type: 'json',
+                    text: JSON.stringify({
+                        'z-index': zIndex,
+                        'position': 'absolute'
+                    })
+                }
+            ],
+            config = {
+                addonId: 'HandWriteComponent',
+                renderTo: renderTo,
+                layout: {
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%'
+                },
+                properties: properties
+            };
+
+        return config;
+    }
+};
+
+module.exports = HandWriteComponentLoader;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+/**
+ * 题干附件罗列组件Mini
+ *
+ * 接口列表：
+ *   1. init 初始化
+ *   2. setEnable 设置是否可用
+ *   3. destroy 销毁
+ *   4. getState 获取状态
+ *   5. setState 设置状态
+ */
+//设置元素的translateX样式
+function setElementTranslateX($element, value) {
+    var translateX = 'translateX(' + value + 'px)';
+    $element.css({
+        'transform': translateX,
+        '-moz-transform': translateX,
+        '-webkit-transform': translateX
+    });
+}
+
+var EVENT_BUTTON_CLICK = 'mouseup touchend',
+    MAX_ELEMENTS_LIST_BOX = 7; //最大可显示的附件个数
+
+var currentPresenter = null; //当前Presenter实例
+
+function StemAttachmentMiniViewer(presenter, $container, attachments) {
+    currentPresenter = presenter;
+
+    this.$container = $container;
+    this.attachments = attachments || [];
+    this.isEnable = true; //是否可操作
+
+    this.currentActivedIndex = -1;
+    this.currentSlideTimes = 0;
+}
+
+StemAttachmentMiniViewer.prototype = {
+    //初始化
+    init: function () {
+        //加载附件
+        this.__render();
+
+        //绑定事件
+        this.__bindEvent();
+    },
+    //设置是否可用
+    setEnable: function (isEnable) {
+        this.isEnable = isEnable || false;
+    },
+    //销毁
+    destroy: function () {
+        var $container = this.$container;
+
+        $container.find('.fct_res_list_box ul').off(EVENT_BUTTON_CLICK);
+        $container.find('.fct_res_slide_prev').off(EVENT_BUTTON_CLICK);
+        $container.find('.fct_res_slide_next').off(EVENT_BUTTON_CLICK);
+    },
+
+    getState: function () {
+        return {
+            currentIndex: this.currentActivedIndex,
+            slideTimes: this.currentSlideTimes,
+            prevButtonEnable: !this.$container.find('.fct_res_slide_prev').hasClass('click_disabled'),
+            nextButtonEnable: !this.$container.find('.fct_res_slide_next').hasClass('click_disabled')
+        };
+    },
+    setState: function (state) {
+        if (state) {
+            if (!!~state.currentIndex) {
+                this.$container.find('.fct_slide_a').eq(+state.currentIndex).addClass('on');
+            }
+
+            var $fctResListBox = this.$container.find('.fct_res_list_box > ul');
+            setElementTranslateX($fctResListBox, -(+state.slideTimes * $fctResListBox.find('li').eq(0).outerWidth()));
+            this.currentSlideTimes = +state.slideTimes;
+
+            this.$container.find('.fct_res_slide_prev')[state.prevButtonEnable ? 'removeClass' : 'addClass']('click_disabled');
+            this.$container.find('.fct_res_slide_next')[state.nextButtonEnable ? 'removeClass' : 'addClass']('click_disabled');
+        }
+    },
+
+    /****以下开始为Viewer的限制外部访问方法: _代表protected(当前组件内所有模块的都可以调用)，__代表private(只有当前模块可以调用) *****/
+    __render: function () {
+        var fctResListBox = this.$container.find('.fct_res_list_box ul');
+        $.each(this.attachments, function (index, item) {
+            var li = $('<li data-index="' + index + '"></li>'),
+                slideDiv;
+            switch (item.type) {
+                case 'picture':
+                    var image = $('<img alt="" />').attr('src', item.url),
+                        slideDiv = $('<a href="javascript:void(0);" class="fct_slide_a insert_picture"><div class="item_vertical_mc"></div><span class="icon"></span></a>');
+
+                    slideDiv.find('.item_vertical_mc').append(image);
+
+                    break;
+                case 'video':
+                    //这里只需要加载视频的预览页，所以只需要将preload="meta",只载入元数据
+                    var video = $('<video preload="meta" style="max-width:100%; max-height:100%;"></video>').attr('src', item.url),
+                        slideDiv = $('<a href="javascript:void(0);" class="fct_slide_a insert_video"><div class="item_vertical_mc"></div><span class="icon"></span><span class="play"></span></a>');
+
+                    slideDiv.find('.item_vertical_mc').append(video);
+
+                    break;
+                case 'audio':
+                    slideDiv = $('<a href="javascript:void(0);" class="fct_slide_a insert_audio"><div class="item_vertical_mc"></div><span class="icon"></span><span class="play"></span></a>');
+
+                    break;
+                case 'table':
+                    var table = $(item.html).css({
+                            width: '100%',
+                            height: '100%'
+                        }),
+                        slideDiv = $('<a href="javascript:void(0);" class="fct_slide_a insert_table"><div class="item_vertical_mc"></div><span class="icon"></span></a>');
+
+                    slideDiv.find('.item_vertical_mc').append(table);
+
+                    break;
+                default:
+            }
+
+            slideDiv.appendTo(li);
+            li.appendTo(fctResListBox);
+        });
+    },
+    __bindEvent: function () {
+        var self = this,
+            $container = this.$container;
+
+        //附件项点击事件
+        var fctResList = $container.find('.fct_res_list_box ul'),
+            currentActiveItem = null;
+        fctResList.on(EVENT_BUTTON_CLICK, 'li', function (event) {
+            !!event && event.preventDefault();
+
+            if (self.isEnable) {
+                !!currentActiveItem && currentActiveItem.removeClass('on');
+                currentActiveItem = $(event.currentTarget).find('.fct_slide_a');
+                currentActiveItem.addClass('on');
+
+                currentPresenter.attachmentViewer.show($(event.currentTarget).data('index'));
+
+                self.currentActivedIndex = $(event.currentTarget).data('index');
+
+                currentPresenter._changeClassroomStatus();
+            }
+        });
+
+        //左右翻按钮事件
+        var cssClickDisabled = 'click_disabled',
+            attachmentAmount = this.attachments.length,
+            slidePrev = $container.find('.fct_res_slide_prev'),
+            slideNext = $container.find('.fct_res_slide_next');
+        if (attachmentAmount > MAX_ELEMENTS_LIST_BOX) {
+            var canSlideTimesAmount = attachmentAmount - MAX_ELEMENTS_LIST_BOX,
+                fctResListBox = $container.find('.fct_res_list_box ul');
+
+            var offset = fctResListBox.find('li').eq(0).outerWidth();
+            slidePrev.on(EVENT_BUTTON_CLICK, function (event) {
+                event.preventDefault();
+
+                if (self.isEnable) {
+                    slideNext.hasClass(cssClickDisabled) && slideNext.removeClass(cssClickDisabled);
+                    if (self.currentSlideTimes > 0) {
+                        setElementTranslateX(fctResListBox, -(--self.currentSlideTimes * offset));
+
+                        if (self.currentSlideTimes === 0) {
+                            slidePrev.addClass(cssClickDisabled);
+                        }
+                    }
+                }
+
+                currentPresenter._changeClassroomStatus();
+            });
+
+            slideNext.on(EVENT_BUTTON_CLICK, function (event) {
+                event.preventDefault();
+
+                if (self.isEnable) {
+                    slidePrev.hasClass(cssClickDisabled) && slidePrev.removeClass(cssClickDisabled);
+                    if (self.currentSlideTimes < canSlideTimesAmount) {
+                        setElementTranslateX(fctResListBox, -(++self.currentSlideTimes * offset));
+
+                        if (self.currentSlideTimes === canSlideTimesAmount) {
+                            slideNext.addClass(cssClickDisabled);
+                        }
+                    }
+                }
+
+                currentPresenter._changeClassroomStatus();
+            });
+        } else {
+            slidePrev.addClass(cssClickDisabled);
+            slideNext.addClass(cssClickDisabled);
+        }
+    }
+};
+
+module.exports = StemAttachmentMiniViewer;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+/**
+ * 接口列表：
+ *   1. addState 添加状态
+ *   2. undo 撤销
+ *   3. redo 还原
+ *   4. undo 撤销
+ *   5. clear 清空历史操作记录
+ *   6. enableUndo 是否可撤销
+ *   7. enableRedo 是否可还原
+ */
+/**
+ * 历史状态管理
+ *
+ * @param stateService 状态服务(该服务需提供两个接口：setState、getState)
+ * @param capacity 允许最大的撤销还原步骤数(默认或负数 代表无限制)
+ * @constructor
+ */
+function EStateHistoryManager(stateService, capacity) {
+    this.stateService = stateService;
+    this.historyHolder = new OperateHistoryHolder(capacity);
+}
+
+EStateHistoryManager.prototype = {
+    //添加状态(上一个: 是前一个状态而并非当前状态，否则没法做撤销操作)
+    addState: function (stateObj) {
+        this.historyHolder.pushUndo(stateObj);
+    },
+    //撤销
+    undo: function () {
+        if (this.enableUndo()) {
+            var state = this.historyHolder.popUndo();
+
+            this.historyHolder.pushRedo(this.stateService.getState(state));
+            this.stateService.setState && this.stateService.setState(state, 'undo');
+        }
+    },
+    //还原
+    redo: function () {
+        if (this.enableRedo()) {
+            var state = this.historyHolder.popRedo();
+
+            this.historyHolder.pushUndo(this.stateService.getState(state), true);
+            this.stateService.setState && this.stateService.setState(state, 'redo');
+        }
+    },
+    //清空历史操作记录
+    clear: function () {
+        this.historyHolder.clear();
+    },
+    //是否可撤销
+    enableUndo: function () {
+        return this.historyHolder.enableUndo();
+    },
+    //是否可还原
+    enableRedo: function () {
+        return this.historyHolder.enableRedo();
+    }
+};
+
+/**
+ * 历史状态队列管理器
+ *
+ * @param capacity  允许最大的撤销还原步骤数(默认或负数 代表无限制)
+ * @constructor
+ */
+var OperateHistoryHolder = function (capacity) {
+    this.capacity = capacity || 0;
+    this.undoStack = [];
+    this.redoStack = [];
+};
+
+OperateHistoryHolder.prototype = {
+    //是否可撤销
+    enableUndo: function () {
+        return this.undoStack.length > 0;
+    },
+    //是否可还原
+    enableRedo: function () {
+        return this.redoStack.length > 0;
+    },
+    //清空历史操作记录
+    clear: function () {
+        this.undoStack = [];
+        this.redoStack = [];
+    },
+    /**
+     * 添加撤销步骤状态对象 ：外部操作时导致状态改变时
+     * @param state 上一个状态
+     * @param keepRedoStack 保留还原队列数据
+     */
+    pushUndo: function (state, keepRedoStack) {
+        !keepRedoStack && (this.redoStack = []);
+
+        this.__push(this.undoStack, state);
+    },
+    /**
+     * 返回当前撤销步骤状态对象
+     * @param currentState 当前状态
+     * @returns {*}
+     */
+    popUndo: function () {
+        return this.__pop(this.undoStack);
+    },
+    /**
+     * 添加撤销步骤状态对象 ：外部操作时导致状态改变时
+     * @param state 上一个状态
+     */
+    pushRedo: function (state) {
+        this.__push(this.redoStack, state);
+    },
+    /**
+     * 返回当前还原步骤状态对象
+     * @param currentState 当前状态
+     * @returns {*}
+     */
+    popRedo: function () {
+        return this.__pop(this.redoStack);
+    },
+
+    /****以下开始为私有方法*****/
+    //添加状态到状态堆栈内
+    __push: function (stack, state) {
+        if (this.capacity > 0 && stack.length >= this.capacity) stack.splice(0, 1);
+
+        stack.push(state);
+    },
+    //返回状态堆栈的当前状态对象
+    __pop: function (stack) {
+        if (stack && stack.length > 0) return stack.pop();
+
+        return null;
+    }
+};
+
+module.exports = EStateHistoryManager;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(0);
+
+//空对象模式
+var NULL_FUNC = function () {};
+
+function newNullObject(methods) {
+    var instance = {};
+
+    if ($.isArray(methods)) {
+        $.each(methods, function () {
+            if (Object.prototype.toString.call(this) === '[object String]') {
+                instance[this] = NULL_FUNC;
+            }
+        });
+    }
+
+    return instance;
+}
+
+//常量定义
+var CONSTANTS = {
+    Z_INDEX_INIT_ACTED: 100, //激活元素的初始层级（后续会累加）
+    Z_INDEX_STAGE_MASK: 9999, //舞台区域遮盖层的层级定义
+    Z_INDEX_HAND_WRITE: 99999 //手写板层级
+};
+
+var Presenter = BaseController.extend({
+    metaInfo: {
+        name: 'FreeCombinationLoader',
+        type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+
+        //这里使用了空对象模式，避免在调用对象接口的地方需要先判断是否对象不为空时再调用其相关接口
+        this.writer = newNullObject(['setVisible', 'setActive', 'setWriteType', 'setPenThickness', 'setPenColor', 'resetElementState', 'offsetPosition']); //手写板组件
+        this.writerRenderPosition = {}; //手写板初始渲染位置
+        this.isMiniViewerOpened = false; //收起、展开状态
+        this.attachmentMiniViewer = newNullObject(['init', 'setEnable', 'destroy', 'getState', 'setState']); //题干附件展示组件Mini
+        this.attachmentViewer = newNullObject(['init', 'close', 'isOpened', 'show', 'destroy', 'getState', 'setState']); //题干附件展示组件
+        this.freeCombinationManager = newNullObject(['init', 'inactiveElements', 'activeElement', 'fillColor', 'setElementMode', 'resetElementState', 'isPaintColorable', 'destroy']); //元素管理组件
+        this.toolbarService = newNullObject(['setItemEnabled', 'setItemVisibility', 'setToolbarEnabled', 'retractToolbar', 'getState', 'setState']); //工具栏服务
+        this.handWriteComponentLoader = newNullObject(['destroy', 'getState', 'setState']); //手写板加载组件
+        this.hasLoadedAttachments = false; //是否载入附件标识
+
+        this.h5Map2Native = {
+            delay: this._isND25() ? 510 : 160,
+            writeOffset: null //展开时Native手写板应该向下移动的距离
+        };
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    getService: function () {
+        if (!this._service_) {
+            this._service_ = new Service(this);
+        }
+        return this._service_;
+    },
+    $getInterfaceMethods: function () {
+        return [{
+            interface: 'IToolbarEvent',
+            methods: ['setItemEnabled', 'setItemVisibility', 'setToolbarEnabled']
+        }];
+    },
+    $beforePresenterRun: function (interfaceName, metaInfo, service) {
+        if (interfaceName === 'IToolbarEvent') {
+            this.toolbarService = service;
+        }
+    },
+    $afterPresenterRun: function (interfaceName, metaInfo, service) {
+        if (interfaceName === 'IToolbarEvent') {
+            if (this.toolbarService) {
+                //撤销、还原、一键还原不可用
+                this.toolbarService.setItemEnabled('Undo', false);
+                this.toolbarService.setItemEnabled('Redo', false);
+                this.toolbarService.setItemEnabled('Reset', false);
+            }
+        }
+    },
+    $afterSetLayoutService: function (service) {
+        this.__handleStyleForLayout(service);
+    },
+
+    /****以下开始为icPlayer的生命周期方法*****/
+    /**
+     * @param model {
+     *     StemContent: html,          //题干内容,
+     *     StemAttachment: [object]    //题干附件 - 见wiki
+     *     StageSize: {
+     *        StageWidth: int,            //标准舞台宽度,
+     *        StageHeight: int,           //标准舞台高度,
+     *     },
+     *     StageElements:object        //舞台元素 - 见wiki
+     * }
+     */
+    run: function (view, model) {
+        this.$view = $(view);
+        this.model = model;
+        this.$stage = this.$view.find('.fct_operating_area'); //元素舞台
+
+        //界面渲染
+        return this.__render();
+    },
+    pageShow: function () {
+        //事件绑定
+        this.__bindEvent();
+    },
+    pageLeave: function () {
+        this.__unbindEvent();
+    },
+    destroy: function () {
+        this.h5Map2Native = null;
+        /*
+            //解除事件（H5, Native）
+            this.$removeEventListener();
+
+            this.attachmentMiniViewer.destroy();
+            this.attachmentViewer.destroy();
+            this.freeCombinationManager.destroy();
+            this.handWriteComponentLoader.destroy();
+			*/
+    },
+
+    /****以下开始为Presenter的限制外部访问方法: _代表protected(当前组件内所有模块的都可以调用)，__代表private(只有当前模块可以调用) *****/
+    _isND25: function () {
+        return this.isApp && navigator.userAgent && navigator.userAgent.indexOf('101同学派') > -1;
+    },
+    _changeClassroomStatus() {
+        if (this.isPPTShell && this._service_) {
+            this._service_.__broadClassroomStateChanged();
+        }
+    },
+    //获取舞台矩形区域范围
+    _getStageClientRect: function () {
+        if (this.isMiniViewerOpened) {
+            if (!this.$stageRectExpanded) {
+                this.$stageRectExpanded = this.$stage[0].getBoundingClientRect();
+            }
+
+            return this.$stageRectExpanded;
+        } else {
+            if (!this.$stageRectCollapsed) {
+                this.$stageRectCollapsed = this.$stage[0].getBoundingClientRect();
+            }
+
+            return this.$stageRectCollapsed;
+        }
+    },
+    //触发题干展开状态
+    _expandStemAttachment: function () {
+        if (!this.isMiniViewerOpened) {
+            this.$view.find('.com_layout_main').addClass('fct_open');
+            this.isMiniViewerOpened = true;
+
+            if (this.isApp) {
+                var self = this,
+                    h5Map2Native = this.h5Map2Native;
+                if (!h5Map2Native.writeOffset) {
+                    var currentClientRect = this._getStageClientRect();
+                    h5Map2Native.writeOffset = currentClientRect.top - this.writerRenderPosition.top;
+                }
+
+                setTimeout(function () {
+                    self.writer.offsetPosition({
+                        x: 0,
+                        y: h5Map2Native.writeOffset
+                    });
+                }, h5Map2Native.delay);
+            }
+        }
+    },
+    //触发题干收起状态
+    _collapseStemAttachment: function () {
+        if (this.isMiniViewerOpened) {
+            this.$view.find('.com_layout_main').removeClass('fct_open');
+            this.isMiniViewerOpened = false;
+
+            if (this.isApp) {
+                var self = this;
+                setTimeout(function () {
+                    self.writer.offsetPosition({
+                        x: 0,
+                        y: 0
+                    });
+                }, self.h5Map2Native.delay);
+            }
+        }
+    },
+
+    //界面渲染
+    __render: function () {
+        //Step1. 国际化文本
+        this.__setI18nLabel();
+
+        //Step2. 题干内容
+        this.$view.find('.FreeCombination_txt .txt').html(this.model.StemContent);
+        var fctOperatingBox = this.$view.find('.fct_operating_box');
+
+        //Step3. 题干附件 - 非学生端需要载入附件展示组件
+        this.__loadStemAttachment();
+
+        //Step4. 舞台元素
+        var deferred = this.__buildStageElements();
+
+        //Step5. 载入手写板组件
+        this.__requireHandWriter();
+
+        return deferred;
+    },
+    //国际化翻译
+    __setI18nLabel: function () {
+        var self = this,
+            $view = this.$view;
+
+        this.$translatorDeferred.done(function () {
+            $view.find('.FreeCombination_resize_text.expansion').text(self.$translate('label.btn.expansion')); //展开
+            $view.find('.FreeCombination_resize_text.collapse').text(self.$translate('label.btn.collapse')); //收起
+            $view.find('._fct_operating_mask ._loading').text(self.$translate('label.element.loading')); //元素加载中...
+        });
+
+    },
+    __getStemAttachments: function () {
+        var self = this;
+
+        //题干中添加的资源，下发到学生端时，仅图片、表格下发，视频、音频不下发（即学生端只出现图片、表格，没有视频、音频）
+        var attachments = [];
+        if (self.isStudent) {
+            $.each(self.model.StemAttachment.attachments, function (index, item) {
+                if (item.type != 'video' && item.type != 'audio') {
+                    attachments.push(item);
+                }
+            });
+        } else {
+            attachments = self.model.StemAttachment.attachments;
+        }
+
+        return attachments;
+    },
+    //载入题干附件
+    __loadStemAttachment: function () {
+        var self = this;
+
+        //Step1. 题干中添加的资源
+        var attachments = self.__getStemAttachments();
+
+        if (attachments.length > 0) {
+            //Step2. 渲染题干附件区域
+            var StemAttachmentMiniViewer = __webpack_require__(4);
+            self.attachmentMiniViewer = new StemAttachmentMiniViewer(self, self.$view.find('.FreeCombination_txt .fct_res_slidebox'), attachments);
+            self.attachmentMiniViewer.init();
+
+            if (!self.isApp) {
+                //Step3. 载入附件展示组件 非PAD端加载H5附件展示组件、PAD端加载Native附件展示组件(二期实现)
+                var H5StemAttachmentViewer = __webpack_require__(2);
+                self.attachmentViewer = new H5StemAttachmentViewer(self, self.$view.find('.fct_com_pop_wrapper'), attachments);
+                self.attachmentViewer.init();
+            }
+        } else {
+            //无附件时隐藏题干附件区域
+            self.$view.find('.com_layout_main').addClass('no_resources');
+            self.$view.find('.FreeCombination_txt_wrap .fct_res_slidebox').hide();
+        }
+
+        this.hasLoadedAttachments = true; //已载入附件
+        this.__handleStyleForLayout();
+    },
+    /**
+     * 题干样式、展开\收起按钮 处理
+     * 1. 题干只有一行时，添加样式txt_row1， 否则添加样式txt_row2
+     * 2. 当题干只有一行，且无题干附件时，隐藏展开\收起按钮
+     *
+     * 为保证该方法只会被执行一次，添加了标示符this._handleStyleForLayoutFlag(只在该函数内部使用)命令规范：_{函数名}Flag
+     *
+     * @private
+     */
+    __handleStyleForLayout: function (_service) {
+        var layoutService = _service || this.layoutService;
+        if (!!layoutService && this.hasLoadedAttachments && !this._handleStyleForLayoutFlag) {
+            this._handleStyleForLayoutFlag = true;
+
+            var titleBox = this.$view.find('.FreeCombination_txt .fct_title_box'),
+                layoutMain = this.$view.find('.com_layout_main'),
+                baseFontSize = layoutService.getLayoutFontSize(), //布局基准字体大小
+                shouldExpandStem = true; //是否展开题干附件区域标识符，默认展开
+
+            //判断题干内容容器的高度是否超过布局基准字体大小的3.5倍，如果超过说明题干有两行，否则只有一行
+            if (titleBox.height() / baseFontSize > 3.5) {
+                layoutMain.addClass('txt_row2');
+            } else {
+                layoutMain.addClass('txt_row1');
+
+                //当题干只有一行，且无题干附件时，隐藏展开\收起按钮
+                if (this.$view.find('.com_layout_main').hasClass('no_resources')) {
+                    shouldExpandStem = false;
+                    this.$view.find('.FreeCombination_resize').hide();
+                }
+            }
+
+            //展开题干附件区域
+            shouldExpandStem && this._expandStemAttachment();
+        }
+    },
+    //构建舞台元素
+    __buildStageElements: function () {
+        var self = this,
+            deferred = $.Deferred();
+        var FreeCombinationManager = __webpack_require__(1);
+        self.freeCombinationManager = new FreeCombinationManager(self, CONSTANTS.Z_INDEX_INIT_ACTED);
+        self.freeCombinationManager.init(self.model.StageSize, self.model.StageElements.elements).then(function () {
+            deferred.resolve();
+
+            var $mask = self.$view.find('._fct_operating_mask');
+            $mask.css('z-index', CONSTANTS.Z_INDEX_STAGE_MASK).hide();
+            $mask.find('._loading').hide();
+        });
+        return deferred;
+    },
+    //载入手写板组件
+    __requireHandWriter: function () {
+        this.writerRenderPosition = this._getStageClientRect();
+
+        //Pad端显示该区域，以此计算Native工具栏的显示位置
+        var toolbarPosition = {};
+        if (this.isApp) {
+            var $toolbar = this.$view.find('.nhw_write_toolbar');
+            if ($toolbar[0]) {
+                $toolbar.removeClass('hide_dom');
+                toolbarPosition = $toolbar.find('.nhw_write_toolbar_list')[0].getBoundingClientRect();
+            }
+        }
+
+        var self = this;
+        var HandWriteComponentLoader = __webpack_require__(3);
+        var handWriteComponentLoader = new HandWriteComponentLoader(self),
+            renderPosition = {
+                write: self.writerRenderPosition,
+                toolbar: toolbarPosition
+            };
+        handWriteComponentLoader.init(self.$stage[0], renderPosition, CONSTANTS.Z_INDEX_HAND_WRITE);
+
+        self.handWriteComponentLoader = handWriteComponentLoader;
+    },
+    //题干附件区域 展开|收起状态的切换
+    __StemAttachmentToggle: function (event) {
+        if (event) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+
+        if (this.isMiniViewerOpened) {
+            this._collapseStemAttachment();
+        } else {
+            this._expandStemAttachment();
+        }
+        this._changeClassroomStatus();
+    },
+    __bindEvent: function () {
+        //展开\收起点击事件
+        this.$view.find('.FreeCombination_resize').on('mouseup touchend', this.__StemAttachmentToggle.bind(this));
+    },
+    __unbindEvent: function () {
+        //展开\收起点击事件
+        this.$view.find('.FreeCombination_resize').off('mouseup touchend');
+
+        //解除事件（H5, Native）
+        this.$removeEventListener();
+
+        this.attachmentMiniViewer.destroy();
+        this.attachmentViewer.destroy();
+        this.freeCombinationManager.destroy();
+        this.handWriteComponentLoader.destroy();
+    }
+}, 'FreeCombinationLoader');
+
+module.exports = function () {
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

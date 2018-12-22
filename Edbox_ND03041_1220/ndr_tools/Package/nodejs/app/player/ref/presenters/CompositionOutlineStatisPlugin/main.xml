@@ -1,0 +1,856 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompositionOutlineStatisPlugin'>
+<properties>
+
+                <property />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="es6-promise" version="1.0.0" />
+    <javaScript  name="vue-libs" version="2.1.3" />
+    <javaScript  name="ModuleComponent" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.js_nd_loader{position:absolute;z-index:999;top:0;bottom:0;left:0;right:0;width:100%!important;height:100%!important;justify-content:center;align-items:center;display:-webkit-flex;-webkit-justify-content:center;-webkit-align-items:center}.js_nd_loader .js_nd_loader_content{line-height:1;padding:7px;border-radius:5px;background-color:rgba(0,0,0,.498039);color:#fff;text-align:center;word-wrap:break-word;font-size:1.2em;letter-spacing:3px}.js_nd_loader .js_nd_loader_content svg path:nth-child(2){animation:svg-load .5s linear infinite;-webkit-animation:svg-load .5s linear infinite;-moz-animation:svg-load .5s linear infinite;-o-animation:svg-load .5s linear infinite}@keyframes svg-load{from{transform:rotate(0);transform-origin:20px 20px}to{transform:rotate(360deg);transform-origin:20px 20px}}]]>
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/*!   updated: 2017-04-10 10:28:16   */
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 14);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PresenterName = "CompositionOutlineStatisPlugin";
+exports.FLAG_MANAGER_RECEIVABLE = "__FLAG_MANAGER_RECEIVABLE__";
+var PluginStatus;
+(function (PluginStatus) {
+    PluginStatus[PluginStatus["Loaded"] = 1] = "Loaded";
+    PluginStatus[PluginStatus["Enter"] = 2] = "Enter";
+    PluginStatus[PluginStatus["Exit"] = 3] = "Exit";
+    PluginStatus[PluginStatus["ListRefresh"] = 4] = "ListRefresh";
+    PluginStatus[PluginStatus["ListRendering"] = 5] = "ListRendering"; // 插件修改列表渲染
+})(PluginStatus = exports.PluginStatus || (exports.PluginStatus = {}));
+exports.StatisticsInjector = {
+    CLOSE_DETAIL_VIEW: 'CloseDetailView',
+    INJECT_ACTION_TYPE_RENDER: 'ListItemRender',
+    INJECT_ACTION_TYPE_CLICK: 'ListItemClick',
+    INJECT_ACTION_TYPE_EXIT: 'ExitExam',
+    CLASS_LAYOUT_CONTAINER: 'container_to_peerreview',
+    CLASS_INJECT_ITEM: 'comList_mark' //追加到D类统计ListItem上的样式名
+};
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var WeakMapImpl = window["WeakMap"];
+if (typeof WeakMapImpl != "function") {
+    WeakMapImpl = function () {
+        this.map = {};
+    };
+    WeakMapImpl.prototype.get = function (key) {
+        return this.map[key];
+    };
+    WeakMapImpl.prototype.set = function (key, value) {
+        this.map[key] = value;
+    };
+    WeakMapImpl.prototype.delete = function (key) {
+        return delete this.map[key];
+    };
+}
+var ProtectedWeakMap = (function () {
+    function ProtectedWeakMap() {
+        this.weakMap = new WeakMapImpl();
+    }
+    ProtectedWeakMap.prototype.get = function (key) {
+        return this.weakMap.get(key);
+    };
+    ProtectedWeakMap.prototype.set = function (key, value) {
+        this.weakMap.set(key, value);
+    };
+    ProtectedWeakMap.prototype.delete = function (key) {
+        return this.weakMap.delete(key);
+    };
+    return ProtectedWeakMap;
+}());
+exports.ProtectedWeakMap = ProtectedWeakMap;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var views_1 = __webpack_require__(15);
+var constants_1 = __webpack_require__(2);
+var presenter_utils_1 = __webpack_require__(13);
+var api_1 = __webpack_require__(12);
+var PluginApp = (function () {
+    function PluginApp(presenter) {
+        this.presenter = presenter;
+        this.api = new api_1.Api(presenter);
+        this.studentsModifiedCached = {};
+        this.status = constants_1.PluginStatus.Loaded;
+    }
+    /**
+     * Presenter 入口
+     * @param view 视图对象
+     * @param model 数据模型
+     */
+    PluginApp.prototype.run = function (view, model) {
+        this.$view = new views_1.default({
+            data: this.createViewState(),
+            methods: {
+                $i18n: this.presenter.$translate.bind(this.presenter),
+            }
+        });
+        this.$view.$mount(view);
+    };
+    //注入思维导图管理器
+    PluginApp.prototype.injectMindJetManager = function (manager) {
+        this.mindJetManager = manager;
+    };
+    /**
+     * 组件销毁
+     */
+    PluginApp.prototype.destroy = function () {
+        this.$view.$destroy();
+        this.presenter.$removeEventListener();
+        delete this.statService;
+        delete this.mindJetManager;
+        delete this.presenter;
+        delete this.studentsModifiedCached;
+        delete this.api;
+        delete this.$view;
+    };
+    /** 视图组件相关 */
+    PluginApp.prototype.createViewState = function () {
+        return {
+            popupOptions: {
+                shown: false,
+                masked: true,
+                closeButton: 'right'
+            },
+            isLoading: false
+        };
+    };
+    //private showConfirmPopup() {
+    //    this.$view['popupOptions'].shown = true;
+    //}
+    PluginApp.prototype.showLoading = function (isLoading) {
+        this.$view['isLoading'] = isLoading;
+    };
+    /** 实现IStatisticsPluginService接口 */
+    //提供统计组件的布局容器
+    PluginApp.prototype.injectLayout = function (topPanel, bottomPanel) {
+    };
+    //设置插件的状态
+    PluginApp.prototype.setPluginStatus = function (status) {
+        this.status = status;
+    };
+    //提供统计组件的服务接口
+    PluginApp.prototype.setStatisticsService = function (statService) {
+        this.statService = statService;
+        //通知统计组件当前插件进入使用状态
+        statService.plugin.enter(constants_1.PresenterName);
+        this.status = constants_1.PluginStatus.ListRendering;
+        this.statService.plugin.changeStatus(constants_1.PresenterName, this.status);
+        //列表项目的渲染过程
+        //statService.injectAction(PresenterName, StatisticsInjector.INJECT_ACTION_TYPE_RENDER, this.ListItemRender.bind(this));
+        //当列表项目被点击时执行额外执行的过程
+        statService.injectAction(constants_1.PresenterName, constants_1.StatisticsInjector.INJECT_ACTION_TYPE_CLICK, this.ListItemClick.bind(this));
+        //当关闭弹窗详情时
+        statService.injectAction(constants_1.PresenterName, constants_1.StatisticsInjector.CLOSE_DETAIL_VIEW, this.CloseDetailView.bind(this));
+        //当退出本题时
+        statService.injectAction(constants_1.PresenterName, constants_1.StatisticsInjector.INJECT_ACTION_TYPE_EXIT, this.ExitExam.bind(this));
+    };
+    //private ListItemRender(viewModel:any, data:any):void {
+    //    if(this.status != PluginStatus.ListRendering) return;
+    //
+    //    // 判断是否是被修改学生，如果不是什么都不做
+    //    let studentId = viewModel.studentId, cache = this.studentsModifiedCached;
+    //    if (cache.hasOwnProperty(studentId)) {
+    //        //Step1. 列表项外框标红
+    //        viewModel.extendStyle = StatisticsInjector.CLASS_INJECT_ITEM;
+    //
+    //        //Step2. 列表项显示被修改的答案
+    //        let answerModified = cache[studentId];
+    //        if (answerModified) {
+    //            if (this.isValid4Modified(answerModified, data, studentId)) {
+    //                viewModel._modifiedData = [{
+    //                    data_type: 'raw',
+    //                    type: 'thumb',
+    //                    value: JSON.stringify(answerModified.data)
+    //                }];
+    //            }
+    //        }
+    //    }
+    //}
+    PluginApp.prototype.renderMinderMap = function (callback) {
+        if (callback) {
+            setTimeout(function () {
+                callback();
+            }, 100);
+        }
+    };
+    PluginApp.prototype.ListItemClick = function (data) {
+        if (this.status != constants_1.PluginStatus.ListRendering)
+            return true;
+        //let studentId = data.answerData.studentId;
+        //let cache = this.studentsModifiedCached;
+        //if (cache.hasOwnProperty(studentId)) {
+        //    //Step1. 数据变量赋值
+        //    $(this.$view.$el).removeClass('hide-dom');
+        //    this.currentDetailData = data;
+        //
+        //    //Step2. 详情弹窗，显示Loading
+        //    this.showLoading(true);
+        //
+        //    //Step3. 获取展现数据
+        //    let answerModified = cache[studentId], studentAnswer:any = null;
+        //    if (this.isValid4Modified(answerModified, data, studentId)) {
+        //        studentAnswer = answerModified.data;
+        //    } else {
+        //        studentAnswer = this.getStudentAnswer(data); //获取学生答案
+        //    }
+        //
+        //    //Step4. 加载思维导图组件,隐藏Loading
+        //    this.renderMinderMap(function () {
+        //        this.mindJetManager.resetMindJetContent(studentAnswer);
+        //        this.showLoading(false);
+        //    }.bind(this));
+        //} else {
+        //Step1. 获取学生答案， 判断是否为未作答学生
+        var studentAnswer = this.getStudentAnswer(data);
+        if (studentAnswer === null) {
+            $(this.$view.$el).addClass('hide-dom');
+            return true;
+        }
+        //Step2. 数据变量赋值
+        $(this.$view.$el).removeClass('hide-dom');
+        this.currentDetailData = data;
+        //Step3. 详情弹窗，显示Loading
+        this.showLoading(true);
+        //Step4. 加载思维导图组件，隐藏Loading
+        if (this.mindJetManager) {
+            this.renderMinderMap(function () {
+                this.mindJetManager.resetMindJetContent(studentAnswer);
+                this.showLoading(false);
+            }.bind(this));
+        }
+        else {
+            this.presenter[constants_1.FLAG_MANAGER_RECEIVABLE] = true;
+            var properties_1 = presenter_utils_1.PresenterUtils.Convert2ComponentProperties({
+                QuestionId: new Date().getTime() + '',
+                QuestionContent: {
+                    outlineTemplate: studentAnswer
+                },
+                isStatisticDetail: true
+            });
+            this.renderMinderMap(function () {
+                var promise = this.presenter.$requireComponent('CompositionOutlineBusiness', properties_1, this.$view.$el);
+                promise.then(function () {
+                    this.showLoading(false);
+                }.bind(this));
+            }.bind(this));
+        }
+        //}
+        return true;
+    };
+    PluginApp.prototype.CloseDetailView = function () {
+        //if (this.mindJetManager && this.currentDetailData) {
+        //    let result:MindJetChangedAskResult = this.mindJetManager.askMindJetContentIsChanged();
+        //    if (result.isChanged) {
+        //        this.currentModifiedData = result.data;
+        //        this.showConfirmPopup();
+        //
+        //        return this.createClosePromise();
+        //    }
+        //}
+        //不保存
+        return true;
+    };
+    PluginApp.prototype.ExitExam = function () {
+        this.studentsModifiedCached = {};
+        this.api && this.api.destroy();
+    };
+    /** 私有方法 */
+    ///**
+    // * 创建关闭详情界面的Promise
+    // * @returns {any}
+    // */
+    //private createClosePromise():any {
+    //    if (this.$ClosePromise) {
+    //        this.$ClosePromise.reject();
+    //    }
+    //
+    //    this.$ClosePromise = $.Deferred();
+    //    return this.$ClosePromise;
+    //}
+    ///**
+    // * Promise resolve
+    // * @param isClose 是否同意关闭详情界面
+    // */
+    //private resolveClosePromise(isClose:boolean) {
+    //    this.$ClosePromise.resolve(isClose);
+    //}
+    ////是 - 按钮
+    //private onConfirmYes():void {
+    //    let modifiedData:any = this.currentModifiedData;
+    //    this.studentsModifiedCached[this.currentDetailData.answerData.studentId] = {
+    //        data: modifiedData,
+    //        updateTimestamp: ClassroomUtils.getMasterSystemTimeMS()
+    //    };
+    //    this.statService.refreshThumbItem(this.currentDetailData.answerData.studentId, {});
+    //    this.api.syncAnswer(this.currentDetailData.answerData.studentId, modifiedData);
+    //
+    //    this.onConfirmNo();
+    //}
+    //
+    ////否 - 按钮
+    //private onConfirmNo():void {
+    //    delete this.currentDetailData;
+    //    delete this.currentModifiedData;
+    //
+    //    this.mindJetManager.clearMindJetContent();
+    //    this.resolveClosePromise(true);
+    //}
+    //
+    ////取消 - 按钮
+    //private onConfirmCancel():void {
+    //    this.resolveClosePromise(false);
+    //}
+    //获取学生答案
+    PluginApp.prototype.getStudentAnswer = function (data) {
+        var studentData = data.answerData.data, studentAnswer = null;
+        if (Array.isArray(studentData)) {
+            studentData.forEach(function (item) {
+                if (item.type === 'detail') {
+                    studentAnswer = JSON.parse(item.value);
+                    return false;
+                }
+            });
+        }
+        return studentAnswer;
+    };
+    return PluginApp;
+}());
+exports.PluginApp = PluginApp;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var weak_map_1 = __webpack_require__(3);
+var PresenterMap = new weak_map_1.ProtectedWeakMap(); //Presenter私有变量属性存放
+var PluginAppMap = new weak_map_1.ProtectedWeakMap(); //Presenter私有变量属性存放
+var PresenterService = (function () {
+    function PresenterService(presenter, app) {
+        this._SERVICE_ID_ = presenter._CLASS_ID_;
+        PresenterMap.set(this, presenter);
+        PluginAppMap.set(this, app);
+    }
+    /**
+     * Override toString toLocaleString
+     *  to avoid window.WeakMap is unsupportable,
+     *  a service instance as key in {} equals to its _SERVICE_ID_, so that each instance is unique..
+     * @returns {any}
+     */
+    PresenterService.prototype.toString = function () {
+        return this._SERVICE_ID_;
+    };
+    PresenterService.prototype.toLocaleString = function () {
+        return this.toString();
+    };
+    /** 实现IPresenterService接口 */
+    PresenterService.prototype.destroy = function () {
+        PresenterMap.delete(this);
+        PluginAppMap.delete(this);
+    };
+    /** 实现IInteractionI18n接口 */
+    PresenterService.prototype.setLocationProperties = function (properties) {
+        PresenterMap.get(this).$translator.setData(properties);
+    };
+    /** 实现IStatisticsPluginService接口 */
+    PresenterService.prototype.injectLayout = function (topPanel, bottomPanel) {
+    };
+    PresenterService.prototype.setStatisticsService = function (statService) {
+        PluginAppMap.get(this).setStatisticsService(statService);
+    };
+    //设置插件的状态
+    PresenterService.prototype.setPluginStatus = function (status) {
+        PluginAppMap.get(this).setPluginStatus(status);
+    };
+    return PresenterService;
+}());
+exports.PresenterService = PresenterService;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=js_nd_loader><div class=js_nd_loader_content><svg version=1.1 x=0 y=0 width=40px height=40px viewbox=\"0 0 40 40\" enable-background=\"new 0 0 40 40\" xml:space=preserve><path opacity=0.2 fill=#FFFFFF d=\"M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946 s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634 c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z\"></path><path fill=#FFFFFF d=\"M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0 C22.32,8.481,24.301,9.057,26.013,10.047z\"></path></svg></div></div>"
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"ndui-pop pop_black\" v-bind:class=\"{'hide-dom':!options.shown}\" @touchend=onPopupTouchEnd @mouseup=onPopupTouchEnd><div class=\"ndui-pop-mask hide-dom\"></div><div class=ndui-pop-square><div class=ndui-pop-wrap><a href=javascript:; class=\"ndui-pop-close hide-dom\"><em></em> <span class=preload-btn-close-pic1></span> <span class=preload-btn-close-pic2></span></a><div class=ndui-pop-box><div class=ndui-pop-box-txtwrap><p class=ndui-pop-box-tip><span class=txt v-once>{{ $i18n('label.save.confirm') }}</span></p></div><div class=ndui-pop-box-btnwrap @touchstart.prevent=onPopupBtnDown @mousedown.prevent=onPopupBtnDown @touchend.prevent=onPopupBtnUp @mouseup.prevent=onPopupBtnUp><a href=javascript:; class=ndui-btn-white-confirm data-code=yes><span class=ndui-btn-txt>{{ $i18n('btn.yes') }}</span></a> <a href=javascript:; class=ndui-btn-white-confirm data-code=no><span class=ndui-btn-txt>{{ $i18n('btn.no') }}</span></a> <a href=javascript:; class=ndui-btn-white-confirm data-code=cancel><span class=ndui-btn-txt>{{ $i18n('btn.cancel') }}</span></a></div></div></div></div></div>"
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"composition-mindmap static-view\"><nd-loader v-bind:class=\"{'hide-dom': !isLoading}\"></nd-loader></div>"
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(1);
+var NDLoader = (function (_super) {
+    __extends(NDLoader, _super);
+    function NDLoader() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return NDLoader;
+}(Vue));
+NDLoader = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(6)
+    })
+], NDLoader);
+exports.default = NDLoader;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(1);
+var mixins_1 = __webpack_require__(11);
+var Modal = __webpack_require__(16).Modal;
+var D_CSS_UI_BTN = '.ndui-btn-white-confirm';
+var CSS_UI_BTN_ACTIVE = 'ui_btn_active';
+var PopupComfirm = (function (_super) {
+    __extends(PopupComfirm, _super);
+    function PopupComfirm() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PopupComfirm.prototype.onPopupTouchEnd = function () {
+        $(this.$el).find(D_CSS_UI_BTN).removeClass(CSS_UI_BTN_ACTIVE);
+    };
+    PopupComfirm.prototype.onPopupBtnDown = function (event) {
+        var $target = $(event.target).closest(D_CSS_UI_BTN);
+        if ($target[0]) {
+            $target.addClass(CSS_UI_BTN_ACTIVE);
+        }
+    };
+    PopupComfirm.prototype.onPopupBtnUp = function (event) {
+        var $target = $(event.target).closest(D_CSS_UI_BTN);
+        if ($target[0]) {
+            var code = $target['data']('code');
+            switch (code) {
+                case 'yes':
+                    this.onPopupBtnYes();
+                    break;
+                case 'no':
+                    this.onPopupBtnNo();
+                    break;
+                case 'cancel':
+                    this.onPopupBtnCancel();
+                    break;
+                default:
+            }
+        }
+    };
+    PopupComfirm.prototype.onPopupBtnYes = function () {
+        this.$emit('confirm-yes');
+        this.closePopup();
+    };
+    PopupComfirm.prototype.onPopupBtnNo = function () {
+        this.$emit('confirm-no');
+        this.closePopup();
+    };
+    PopupComfirm.prototype.onPopupBtnCancel = function () {
+        this.closePopup();
+    };
+    PopupComfirm.prototype.closePopup = function () {
+        this['options'].shown = false;
+    };
+    return PopupComfirm;
+}(Vue));
+PopupComfirm = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(7),
+        mixins: [mixins_1.i18n],
+        props: ['options'],
+        components: {
+            'modal': Modal
+        }
+    })
+], PopupComfirm);
+exports.default = PopupComfirm;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+//mixins: autoComponent
+exports.autoComponent = {
+    beforeCreate: function () {
+        var _this = this;
+        Object.keys(this.$options.components).forEach(function (key) {
+            var component = _this.$options.components[key];
+            if (component.template === 'automatic') {
+                var rootComponent = _this.$root.$options.components[key];
+                _this.$options.components[key] = rootComponent ? rootComponent : {
+                    template: ''
+                };
+            }
+        });
+    }
+};
+//mixins: i18n
+exports.i18n = {
+    beforeCreate: function () {
+        //root component
+        if (this !== this.$root) {
+            (this.$options.methods || (this.$options.methods = {}))['$i18n'] = function () {
+                return this.$root.$i18n.apply(this.$root, arguments);
+            };
+        }
+    }
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Api = (function () {
+    function Api(presenter) {
+        this.presenter = presenter;
+    }
+    Api.prototype.createChannel = function () {
+        if (this.hasCreateChannel)
+            return;
+        this.hasCreateChannel = true;
+        this.presenter.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+            presenterId: Api.INSTANCE_ID,
+            instanceId: Api.INSTANCE_ID
+        });
+    };
+    Api.prototype.destroy = function () {
+        this.hasCreateChannel = false;
+        /* �˳�������, ��PC�����Զ����ٴ���
+         this.presenter.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+         presenterId: INSTANCE_ID,
+         instanceId: INSTANCE_ID
+         });
+         */
+    };
+    //ͬ������
+    Api.prototype.syncAnswer = function (studentId, answer) {
+        this.createChannel();
+        //ͬ������
+        this.presenter.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: Api.INSTANCE_ID,
+            type: 'send',
+            data: {
+                studentId: studentId,
+                answer: JSON.stringify(answer)
+            }
+        });
+    };
+    return Api;
+}());
+Api.INSTANCE_ID = 'ModifyStudentAnswer';
+exports.Api = Api;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PresenterUtils = (function () {
+    function PresenterUtils() {
+    }
+    PresenterUtils.Convert2ComponentProperties = function (option) {
+        var properties = [];
+        for (var key in option) {
+            if (option.hasOwnProperty(key)) {
+                var value = option[key];
+                var valueType = (typeof value).toLocaleLowerCase();
+                var item = { name: key, value: value };
+                switch (valueType) {
+                    case 'number':
+                        item.type = 'number';
+                        break;
+                    case 'boolean':
+                        item.type = 'boolean';
+                        item.value = item.value ? 'true' : 'false';
+                        break;
+                    case 'object':
+                        if ($.isArray(value)) {
+                            item.type = 'list';
+                        }
+                        else {
+                            item.type = 'json';
+                        }
+                        item.text = JSON.stringify(item.value);
+                        delete item.value;
+                        break;
+                    default:
+                        item.type = 'string';
+                }
+                properties.push(item);
+            }
+        }
+        return properties;
+    };
+    return PresenterUtils;
+}());
+exports.PresenterUtils = PresenterUtils;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var constants_1 = __webpack_require__(2);
+var weak_map_1 = __webpack_require__(3);
+var presenter_service_1 = __webpack_require__(5);
+var app_1 = __webpack_require__(4);
+var PluginAppMap = new weak_map_1.ProtectedWeakMap(); //Presenter私有变量属性存放
+var Presenter = (function (_super) {
+    __extends(Presenter, _super);
+    function Presenter() {
+        var _this = _super.call(this) || this;
+        _this.metaInfo = Object.assign((_this.metaInfo || {}), {
+            name: constants_1.PresenterName,
+            type: PresenterType.PRESENTER_FILTER,
+            subType: "AnswerClassStatisticsExtend"
+        });
+        _this.logger.appendHandler(function (message, context) {
+            window.console.debug(message);
+        }, { level: Logger.DEBUG });
+        //构建颗粒应用与服务
+        var app = new app_1.PluginApp(_this);
+        PluginAppMap.set(_this, app);
+        _this._service_ = new presenter_service_1.PresenterService(_this, app);
+        return _this;
+    }
+    /**
+     * Override toString toLocaleString
+     *  to avoid window.WeakMap is unsupportable,
+     *  a service instance as key in {} equals to its _CLASS_ID_, so that each instance is unique..
+     * @returns {any}
+     */
+    Presenter.prototype.toString = function () {
+        return this._CLASS_ID_;
+    };
+    Presenter.prototype.toLocaleString = function () {
+        return this.toString();
+    };
+    Presenter.prototype.$getInterfaceMethods = function () {
+        return [
+            {
+                interface: 'IMindJetManager',
+                methods: ['askMindJetContentIsChanged', 'resetMindJetContent']
+            }
+        ];
+    };
+    Presenter.prototype.$afterPresenterRun = function (interfaceName, metaInfo, service) {
+        if (interfaceName === 'IMindJetManager') {
+            if (this[constants_1.FLAG_MANAGER_RECEIVABLE] === true) {
+                PluginAppMap.get(this).injectMindJetManager(service);
+            }
+        }
+    };
+    /**
+     * 获取颗粒服务
+     * @returns {IPresenterService}
+     */
+    Presenter.prototype.getService = function () {
+        return this._service_;
+    };
+    /**
+     * Presenter 入口
+     * @param view 视图对象
+     * @param model 数据模型
+     */
+    Presenter.prototype.run = function (view, model) {
+        PluginAppMap.get(this).run(view, model);
+    };
+    /**
+     * 组件销毁
+     */
+    Presenter.prototype.destroy = function () {
+        PluginAppMap.delete(this);
+    };
+    return Presenter;
+}(BaseController));
+window["Addon" + constants_1.PresenterName + "_create"] = function () { return new Presenter(); };
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(1);
+var popup_confirm_1 = __webpack_require__(10);
+var nd_loader_1 = __webpack_require__(9);
+var Index = (function (_super) {
+    __extends(Index, _super);
+    function Index() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return Index;
+}(Vue));
+Index = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(8),
+        components: {
+            'popup-confirm': popup_confirm_1.default,
+            'nd-loader': nd_loader_1.default
+        }
+    })
+], Index);
+exports.default = Index;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = __ModuleComponent;
+
+/***/ })
+/******/ ]);
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

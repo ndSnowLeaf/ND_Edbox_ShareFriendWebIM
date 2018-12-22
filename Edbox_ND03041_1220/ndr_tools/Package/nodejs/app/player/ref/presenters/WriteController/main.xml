@@ -1,0 +1,750 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WriteController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="BasicWriteController" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _create_comment_config = __webpack_require__(5);
+
+var _create_comment_config2 = _interopRequireDefault(_create_comment_config);
+
+var _build_background = __webpack_require__(1);
+
+var _build_background2 = _interopRequireDefault(_build_background);
+
+var _constant = __webpack_require__(4);
+
+var _constant2 = _interopRequireDefault(_constant);
+
+var _service = __webpack_require__(6);
+
+var _service2 = _interopRequireDefault(_service);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by Administrator on 2016/12/29.
+ */
+
+var Presenter = BasicWriteController.extend({
+	metaInfo: {
+		name: "WriteController",
+		type: "presenterController"
+	},
+	/**
+  * Presenter的初始化方法
+  * @private
+  */
+	$init: function $init() {
+		this._super();
+	},
+
+
+	$afterPresenterRun: function $afterPresenterRun(interfaceName, metaInfo, service) {
+		//加载手写板, 由启动器加载
+		if (interfaceName === 'layoutService') {
+			var position = service.getContainerPositionPromise();
+			if (position.done) {
+				//返回promise对象
+				position.done(function (data) {
+					this._requireHandWriter(data);
+				}.bind(this));
+			} else {
+				//返回对象
+				this._requireHandWriter(position);
+			}
+		}
+	},
+
+	//重写此方法
+	getService: function getService() {
+		if (!this._service_) {
+			//重写getResult方法
+			var ServiceClass = this.getServiceClass().extend(_service2.default);
+
+			this._service_ = new ServiceClass(this);
+		}
+
+		return this._service_;
+	},
+
+
+	/****以下开始为icPlayer的生命周期方法*****/
+	run: function run(view, model) {
+		this._super(view, model);
+
+		this._runInterface();
+
+		//设置背景图，供基类发送给101ppt
+		this.setBackground(model.writer_background);
+	},
+	pageShow: function pageShow() {
+		this._super();
+		//发送背景图数据给人气投票
+		this._sendToPopularBackground();
+	},
+	setBackground: function setBackground(background) {
+		this.background = (0, _build_background2.default)(background, _constant2.default.SEND_BACKGROUND.TO_TEACHER);
+		console.log("设置发送给老师端的背景图数据:", this.background);
+	},
+
+
+	/****以下开始为Presenter的私有方法*****/
+	_bindEvent: function _bindEvent() {
+		this._super();
+
+		//接收人气投票的事件，发送背景图
+		this.$addEventListener('sendBackgroundByPopular', PresenterEventType.IC_PLAYER_EVENT, this._sendToPopularBackground.bind(this));
+		//一键清除后可提交
+		this.$addEventListener('writeShowMessageBox', PresenterEventType.IC_PLAYER_EVENT, this._startWriteHandler.bind(this));
+		//WriteLayout加载完毕
+		// this.$addEventListener('WriteLayoutLoaded',
+		// PresenterEventType.IC_PLAYER_EVENT, this._requireHandWriter.bind(this));
+	},
+
+
+	//interface接口下的方法
+	_runInterface: function _runInterface() {
+		//调用截图做题方法
+		this.__interface.getExerciseData = this.__getExerciseData.bind(this);
+		//生生互评接口
+		this.__interface.startCommentDataParse = this.__startCommentDataParse.bind(this);
+	},
+
+
+	//继承的方法
+	_startWriteHandler: function _startWriteHandler() {
+		this._super();
+
+		//发送可提交事件
+		if (this.needSubmit) {
+			this.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+				canSubmit: true,
+				linkQuestionId: this.model.id
+			});
+		}
+	},
+
+	/**
+  * 加载手写板
+  * @private
+  */
+	_requireHandWriter: function _requireHandWriter(containerPosition) {
+		// if (eventData.questionType && eventData.questionType === 'write') {
+		var initData = this.model.initData;
+		initData.position = containerPosition;
+		var config = {
+			addonId: 'HandWriter',
+			renderTo: '.com_lay_write',
+			layout: {
+				left: 0,
+				top: 0,
+				width: 0,
+				height: 0
+			},
+			properties: [{ 'name': 'initData', type: 'json', 'value': initData }],
+			callback: function callback(addon) {}
+		};
+		return this.playerController.require(config);
+		// }
+	},
+
+
+	//发送背景图数据给人气投票
+	_sendToPopularBackground: function _sendToPopularBackground() {
+		var background = (0, _build_background2.default)(this.model.writer_background, _constant2.default.SEND_BACKGROUND.TO_POPULAR_VOTE);
+
+		console.log("发送背景图数据给人气投票：", background);
+		this.$dispatchEvent('sendBackgroundByWrite', PresenterEventType.IC_PLAYER_EVENT, background);
+	},
+
+
+	/**
+  * 截图做题要实现的接口
+  */
+	__getExerciseData: function __getExerciseData(data) {
+		if (data.questionInfo == undefined) {
+			data.questionInfo = this._service_.getQuestionInfo();
+			var eventData = {
+				type: 'show'
+			};
+			this._sendToTeacherBackground(eventData);
+			// this.services.writerService.edit(false);
+		}
+	},
+
+
+	/**
+  * 生生互评，启动生生互评启动器
+  * @param data
+  * @private
+  */
+	__startCommentDataParse: function __startCommentDataParse(data) {
+		var back = {};
+		if (this.answer && this.answer.data[0].extra.background) {
+			for (var key in this.answer.data[0].extra.background) {
+				back[key] = this.answer.data[0].extra.background[key];
+			}
+			if (this.answer.data[0].extra.screenshot == 1) {
+				// back.type = 3;
+			} else {
+				back.bottom = back.writer_height - back.bottom;
+				back.right = back.writer_width - back.right;
+			}
+		} else {
+			for (var key in this.background) {
+				back[key] = this.background[key];
+			}
+			back.right = back.writer_width - back.left - back.width;
+			back.bottom = back.writer_height - back.top - back.height;
+		}
+
+		//放入背景图数据
+		var tmpData = JSON.parse(data.data);
+		tmpData.data[0].extra = tmpData.data[0].extra || {};
+		tmpData.data[0].extra.background = back;
+		data.data = JSON.stringify(tmpData);
+
+		/**
+   * 进入生生互评，手写板发出的提交事件会被AnswerFlowController截获
+   * 改变model.id，保证提交事件能被生生互评控制器获取
+   *
+   */
+		//进入生生互评，手写板将不需要发送提交事件
+		this.needSubmit = false;
+		this.model.id = ClassroomUtils.uuid();
+
+		data.result = true;
+		data.id = this.model.id;
+		this.services.writerService.show(false);
+		this.services.layoutService.showMask(false);
+
+		this.playerController.require((0, _create_comment_config2.default)(data));
+	},
+
+	/**
+  * 重写基类方法
+  * 全屏播放视频回调处理
+  * @private
+  */
+	_fullScreenEventHandler: function _fullScreenEventHandler() {
+		this._super();
+		this.services.writerService.show(this.screenfull.isFullscreen ? false : true);
+	},
+	/**
+  * 多媒体全屏播放事件
+  * @param eventData
+  * @private
+  */
+	_setDisplayStatus: function _setDisplayStatus(eventData) {
+		this._super();
+		var value = eventData.isFull;
+		this.logger.debug('[receive setDisplayStatus]', value);
+		this.services.writerService.show(value === true ? false : true);
+	}
+});
+
+exports.default = Presenter;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _create_for_teacher = __webpack_require__(3);
+
+var _create_for_teacher2 = _interopRequireDefault(_create_for_teacher);
+
+var _create_for_popular_vote = __webpack_require__(2);
+
+var _create_for_popular_vote2 = _interopRequireDefault(_create_for_popular_vote);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/**
+ * Created by Administrator on 2016/12/31.
+ */
+exports.default = function (originalBackground, sendTo) {
+    "use strict";
+
+    var creator = sendTo == "popular_vote" ? _create_for_popular_vote2.default : _create_for_teacher2.default;
+
+    var background = {};
+
+    for (var key in originalBackground) {
+        background[key] = originalBackground[key];
+    }
+
+    background.writer_height = 1350;
+    background.writer_width = originalBackground.type === 3 ? 1575 : 1616;
+
+    //学生端不支持此方法，故去掉
+    //Object.assign(background, originalBackground, {writer_width: 1610,writer_height: 1350});
+
+    //type 3 为截图做题
+    return originalBackground.type === 3 ? creator.forCutting(background) : creator.default(background);
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/12/30.
+ */
+
+exports.default = {
+    default: function _default(background) {
+        var writer_width = background.writer_width,
+            writer_height = background.writer_height,
+            width = background.width,
+            height = background.height,
+            top = background.top,
+            right = background.right,
+            bottom = background.bottom,
+            left = background.left,
+            type = background.type,
+            url = background.url;
+
+
+        width = writer_width - right - left;
+        height = parseInt(height * 1.0 / background.width * width);
+        bottom = writer_height - top - height;
+
+        return { writer_width: writer_width, writer_height: writer_height, width: width, height: height, top: top, right: right, bottom: bottom, left: left, type: type, url: url };
+    },
+
+
+    //截图做题
+    forCutting: function forCutting(background) {
+        var writer_width = background.writer_width,
+            writer_height = background.writer_height,
+            width = background.width,
+            height = background.height,
+            top = background.top,
+            right = background.right,
+            bottom = background.bottom,
+            left = background.left,
+            type = background.type,
+            url = background.url;
+
+
+        writer_width = 1620;
+        width = parseInt(width);
+        height = parseInt(height);
+        type = 2;
+        if (width < writer_width) {
+            left = (writer_width - width) / 2;
+            right = writer_width - left - width;
+            bottom = writer_height - height;
+            top = 0;
+        } else {
+            left = top = right = bottom = 0;
+            width = writer_width;
+            height = writer_height;
+        }
+
+        return { writer_width: writer_width, writer_height: writer_height, width: width, height: height, top: top, right: right, bottom: bottom, left: left, type: type, url: url };
+    }
+};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/12/30.
+ */
+
+exports.default = {
+    default: function _default(background) {
+        var writer_width = background.writer_width,
+            writer_height = background.writer_height,
+            width = background.width,
+            height = background.height,
+            top = background.top,
+            right = background.right,
+            bottom = background.bottom,
+            left = background.left,
+            type = background.type,
+            url = background.url;
+
+
+        right = writer_width - right;
+        right = right < 0 ? writer_width : right;
+        width = right - left;
+        height = parseInt(height * 1.0 / background.width * width);
+        bottom = top + height;
+
+        return { writer_width: writer_width, writer_height: writer_height, width: width, height: height, top: top, right: right, bottom: bottom, left: left, type: type, url: url };
+    },
+
+
+    //截图做题
+    forCutting: function forCutting(background) {
+        var writer_width = background.writer_width,
+            writer_height = background.writer_height,
+            width = background.width,
+            height = background.height,
+            top = background.top,
+            right = background.right,
+            bottom = background.bottom,
+            left = background.left,
+            type = background.type,
+            url = background.url;
+
+
+        width = parseInt(width);
+        height = parseInt(height);
+        type = 2;
+
+        if (width < writer_width) {
+            left = (writer_width - width) / 2;
+            right = left + width;
+            bottom = height;
+            top = 0;
+        } else {
+            width = right = writer_width;
+            height = bottom = writer_height;
+            left = top = 0;
+        }
+
+        return { writer_width: writer_width, writer_height: writer_height, width: width, height: height, top: top, right: right, bottom: bottom, left: left, type: type, url: url };
+    }
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/12/31.
+ */
+exports.default = {
+    SEND_BACKGROUND: {
+        TO_TEACHER: "teacher",
+        TO_POPULAR_VOTE: "popular_vote"
+    }
+};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+/**
+ * Created by Administrator on 2016/12/29.
+ */
+
+exports.default = function (data) {
+
+    return {
+        presenterId: 'StudentComment',
+        name: 'StudentComment',
+        layout: {
+            left: 0,
+            top: 0,
+            width: '100%',
+            height: '100%'
+        },
+        properties: [{ 'name': 'startTimestamp', 'type': 'int', 'value': data.startTimestamp }, { 'name': 'targetUserId', 'type': 'string', 'value': data.targetUserId }, { 'name': 'targetUserName', 'type': 'string', 'value': data.targetUserName }, { 'name': 'isAnonymous', 'type': 'string', 'value': data.isAnonymous.toString() }, { 'name': 'data', 'type': 'json', 'value': JSON.parse(data.data) }, { 'name': 'id', 'type': 'string', 'value': data.id }, { 'name': 'originalPageNum', 'type': 'int', 'value': 1 }]
+    };
+};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+function constructUserAnswer(strokeData) {
+    if ((typeof strokeData === 'undefined' ? 'undefined' : _typeof(strokeData)) !== 'object') {
+        throw new Error('stroke data must be an object');
+    }
+
+    var screenshot = 0;
+    var result = {
+        data: []
+    };
+
+    if (strokeData.background !== undefined) {
+        var background = strokeData.background;
+
+        // 截图做题的时候，type强制改为2,以便pc端使用
+        if (background.type === 3) {
+            background.type = 2;
+            screenshot = 1;
+        } else {
+            background.bottom = background.writer_height - background.bottom;
+            background.right = background.writer_width - background.right;
+        }
+    }
+
+    for (var key in strokeData.data) {
+        var item = {
+            type: 'write',
+            data_type: 'write',
+            value: strokeData.data[key],
+            extra: {
+                page: key,
+                screenshot: screenshot,
+                md5: strokeData.dataMD5[key],
+                background: strokeData.background
+            }
+        };
+        if (strokeData.extra) {
+            $.extend(item.extra, JSON.parse(strokeData.extra));
+        }
+
+        result.data.push(item);
+    }
+
+    return result;
+}
+
+exports.default = {
+    getState: function getState() {
+        return {
+            status: this.parent.currentStatus,
+            answer: this.parent.answer
+        };
+    },
+    setState: function setState(state) {
+        if (state) {
+            this.parent.currentStatus = state.status;
+            this.parent.answer = state.answer;
+        }
+    },
+    // 重写getResult方法
+    getResult: function getResult(options) {
+        // 从native获取到轨迹，拼凑好答案格式再resolve
+        var $deferred = $.Deferred();
+        var parent = this.parent;
+
+        if (this.parent.services.writerService != null) {
+            var strokePromise = this.parent.services.writerService.getStrokeData(options || {});
+            strokePromise.done(function (strokeData) {
+                parent.answer = constructUserAnswer(strokeData);
+                $deferred.resolve(parent.answer);
+            });
+        } else {
+            $deferred.resolve(parent.answer);
+        }
+
+        var state = parent.currentStatus !== parent.WRITE_STATUS.incomplete ? 'COMPLETE' : 'NO_ANSWER';
+        var result = {
+            answer: {
+                answer_result: true,
+                correct_response: null,
+                user_response: [$deferred.promise()]
+            },
+            questionId: parent.model.id,
+            answerState: state
+        };
+
+        return result;
+    },
+    lockQuestion: function lockQuestion(data) {
+        this._super();
+        // 停止媒体
+        this.parent._stopMediaPlay();
+
+        // 只有老师强制结束，才遮罩
+        if (data != null && data.type !== undefined && data.type === 'OnFinish') {
+            var parent = this.parent;
+            // 显示遮罩
+            if (this.parent.services.layoutService != null) {
+                this.parent.services.layoutService.showMask(true);
+            } else {
+                setTimeout(function () {
+                    parent.services.layoutService.showMask(true);
+                }, 1000);
+            }
+        }
+    },
+    unlockQuestion: function unlockQuestion() {
+        this._super();
+        // 隐藏遮罩
+        this.parent.services.layoutService.showMask(false);
+    }
+};
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _presenter = __webpack_require__(0);
+
+var _presenter2 = _interopRequireDefault(_presenter);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+window.AddonWriteController_create = function () {
+  return new _presenter2.default('WriteController');
+}; /**
+    * Created by Administrator on 2016/12/29.
+    */
+/**
+ * 手写题控制器
+ */
+
+/***/ })
+/******/ ]);
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/新建文本文档.txt' />
+
+
+</resources>
+
+</addon>

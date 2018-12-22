@@ -1,0 +1,30 @@
+<div>
+    <div class="mixmodule_list">
+        <div class="mixmodule_list_th clearfix"><span class="mixmodule_list_cols cols_01"><em class="text" ref="lang_name"></em></span>
+            <span class="mixmodule_list_cols cols_02">
+                <em class="text" ref="lang_accuracy"></em>
+            </span>
+            <span class="mixmodule_list_cols cols_03">
+                <em class="text" ref="lang_spend"></em>
+            </span>
+            <span class="mixmodule_list_cols cols_04">
+                <em class="text" ref="lang_operation"></em>
+            </span>
+        </div>
+        <ul class="mixmodule_list_body scrollbar_style_light" ref="userlist">
+            <li class="mixmodule_list_td clearfix" :class="[s.style]" v-for="s in students">
+                <span class="mixmodule_list_cols cols_01"><em class="text">{{s.studentName}}</em></span>
+                <span class="mixmodule_list_cols cols_02"><em class="text">{{s.accuracy}}</em></span>
+                <span class="mixmodule_list_cols cols_03"><em class="text">{{s.time}}</em></span>
+                <span class="mixmodule_list_cols cols_04"><em class="text js_seeStudentAnswer" v-on:click="detail($event,s.userId)" ref="lang_seeDetail"></em></span>
+            </li>
+        </ul>
+    </div>
+    <div class="tab_box js_btn_user_type">
+        <a class="btn_tab" v-on:click="toggleUserList($event,'all')" ref="lang_all" :class="{on:mShowingfilter == 'all'}"></a>
+        <a class="btn_tab" v-on:click="toggleUserList($event,'correct')" ref="lang_right" :class="{on:mShowingfilter == 'correct'}"></a>
+        <a class="btn_tab" v-on:click="toggleUserList($event,'error')" ref="lang_wrong" :class="{on:mShowingfilter == 'error'}"></a>
+        <a class="btn_tab" v-on:click="toggleUserList($event,'undo')" ref="lang_noAnswer" :class="{on:mShowingfilter == 'undo'}"></a>
+    </div>
+    <div class="mixmodule_right_btn" v-on:click="hideuser"><a href="#" class="list_view_btn"><em class="text" ref="lang_hideList"></em></a></div>
+</div>

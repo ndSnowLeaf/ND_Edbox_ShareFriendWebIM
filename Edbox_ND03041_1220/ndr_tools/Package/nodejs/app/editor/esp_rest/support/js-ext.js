@@ -1,0 +1,1 @@
+String.prototype.startsWith=function(t){return this.slice(0,t.length)===t},String.prototype.endsWith=function(t){return-1!==this.indexOf(t,this.length-t.length)},Array.prototype.contains=function(t){for(var n=this.length;n--;)if(this[n]===t)return!0;return!1},module.exports.jsExt={};

@@ -1,0 +1,1537 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ExpressionGraph'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="common_css" version="1.0.0" />
+    <javaScript  name="ex_graph_calculator" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";
+/*remove .exam_skin_wood .graphfunc_list_to_choice li .func span*/
+.exam_skin_wood .graphfunc_list_had_choice .equation_box .equation {
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  -moz-transform: translate(0, -50%);
+  word-break: break-all;
+  word-wrap: break-word; }
+.exam_skin_wood .graphfunc_aside .aside_hd .icon_classify:before, .exam_skin_wood .graphfunc_handle_tool a:before, .exam_skin_wood .graphfunc_handlestep_tip .close:before {
+  font-family: iconfont !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: .2px;
+  -moz-osx-font-smoothing: grayscale; }
+.exam_skin_wood .graphfunc_list_had_choice .slide_arrow:before, .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox:before, .exam_skin_wood .graphfunc_list_had_choice li .close:before {
+  font-family: iconfont !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: .2px;
+  -moz-osx-font-smoothing: grayscale; }
+.exam_skin_wood .graphfunc_list_to_choice .classify_item .icon_elastic:before {
+  font-family: iconfont !important;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: .2px;
+  -moz-osx-font-smoothing: grayscale; }
+.exam_skin_wood .graphfunc_box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #bfd3e2;
+  padding: 2.66667em 4em 0; }
+.exam_skin_wood .graphfunc_aside {
+  float: left;
+  width: 20.83333em;
+  max-width: 20.83333em;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  height: 100%;
+  border-right: 1px solid #ccc;
+  background: #fafafa;
+  padding-bottom: 2.91667em; }
+  .exam_skin_wood .graphfunc_aside .aside_hd {
+    text-align: center;
+    height: 2.91667em;
+    line-height: 2.91667em;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+    background: #fafafa;
+    border-top: 1px solid #ccc; }
+    .exam_skin_wood .graphfunc_aside .aside_hd .tit {
+      font-size: 1.25em; }
+    .exam_skin_wood .graphfunc_aside .aside_hd .icon_classify {
+      position: absolute;
+      left: .625em;
+      top: 50%;
+      margin-top: -.54167em;
+      font-size: 1.08333em;
+      line-height: 1.08333em;
+      cursor: pointer; }
+      .exam_skin_wood .graphfunc_aside .aside_hd .icon_classify:before {
+        content: "\e601";
+        font-size: 1.16667em;
+        color: #666; }
+      .exam_skin_wood .graphfunc_aside .aside_hd .icon_classify:hover:before {
+        color: #333; }
+  .exam_skin_wood .graphfunc_aside .aside_bd {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    top: 2.91667em;
+    overflow: auto;
+    background: #FFF; }
+.exam_skin_wood .graphfunc_main {
+  padding-left: 20.83333em;
+  height: 100%;
+  position: relative; }
+.exam_skin_wood .graphfunc_main_content {
+  height: 100%;
+  overflow: hidden;
+  cursor: move; }
+.exam_skin_wood .graphfunc_handlestep_tip {
+  position: absolute;
+  left: .41667em;
+  top: 3.45833em;
+  width: 13.33333em;
+  height: 6.25em;
+  line-height: 6.25em;
+  white-space: nowrap;
+  background: rgba(47, 47, 47, 0.8);
+  z-index: 120;
+  color: #fff;
+  border-radius: 0.41667em; }
+  .exam_skin_wood .graphfunc_handlestep_tip b {
+    font-size: 1.25em; }
+  .exam_skin_wood .graphfunc_handlestep_tip:before {
+    content: "";
+    position: absolute;
+    left: .41667em;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    border-left: .41667em solid transparent;
+    border-right: .41667em solid transparent;
+    border-bottom: 0.625em solid rgba(47, 47, 47, 0.8); }
+  .exam_skin_wood .graphfunc_handlestep_tip .close {
+    position: absolute;
+    right: .20833em;
+    top: .20833em;
+    overflow: hidden; }
+    .exam_skin_wood .graphfunc_handlestep_tip .close:before {
+      content: "\e600";
+      font-size: 1.25em;
+      line-height: 1.25em;
+      vertical-align: top;
+      color: #e7e6e6; }
+    .exam_skin_wood .graphfunc_handlestep_tip .close:active:before {
+      color: #fff; }
+.exam_skin_wood .graphfunc_list_to_choice {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0em;
+  top: 2.91667em;
+  overflow-y: auto;
+  overflow-x: hidden; }
+  .exam_skin_wood .graphfunc_list_to_choice .graphfunc_classify_item {
+    background-color: #1a1a1a;
+    min-height: 100%; }
+  .exam_skin_wood .graphfunc_list_to_choice .classify_item {
+    border-bottom: 1px solid #191919;
+    text-align: left; }
+    .exam_skin_wood .graphfunc_list_to_choice .classify_item .name {
+      background: #3a3a3a;
+      color: #fff;
+      font-size: 1.25em;
+      padding: .83333em;
+      cursor: pointer;
+      text-align: left; }
+    .exam_skin_wood .graphfunc_list_to_choice .classify_item .icon_elastic {
+      margin-right: 5px; }
+      .exam_skin_wood .graphfunc_list_to_choice .classify_item .icon_elastic:before {
+        content: "\e602";
+        font-size: 1.25em; }
+    .exam_skin_wood .graphfunc_list_to_choice .classify_item.expand .icon_elastic:before {
+      content: ""; }
+    .exam_skin_wood .graphfunc_list_to_choice .classify_item.expand .list {
+      display: block; }
+    .exam_skin_wood .graphfunc_list_to_choice .classify_item .list {
+      padding: 0 .83333em;
+      position: relative;
+      display: none; }
+  .exam_skin_wood .graphfunc_list_to_choice li {
+    padding: .625em .41667em;
+    border-bottom: 1px solid #5a5a5a;
+    position: relative;
+    font-family: Times New Roman 斜体;
+    min-height: 3.33333em; }
+    .exam_skin_wood .graphfunc_list_to_choice li:last-child {
+      border-bottom: none; }
+    .exam_skin_wood .graphfunc_list_to_choice li .pic {
+      width: 2.91667em;
+      height: 2.91667em;
+      overflow: hidden;
+      border-radius: 5px;
+      position: absolute;
+      left: .41667em;
+      top: 0.625em; }
+      .exam_skin_wood .graphfunc_list_to_choice li .pic img {
+        max-width: 100%; }
+    .exam_skin_wood .graphfunc_list_to_choice li .func {
+      padding-left: 3.33333em;
+      color: #fff;
+      min-height: 2.91667em;
+      position: relative; }
+.exam_skin_wood .graphfunc_list_had_choice {
+  text-align: left;
+  padding: 0.41667em 0.83333em 0.41667em 0.41667em; }
+  .exam_skin_wood .graphfunc_list_had_choice .equation_box .equation, .exam_skin_wood .graphfunc_list_had_choice .para_item .name {
+    font-family: Symbola, "Times New Roman", serif;
+    font-size: 1.22223em;
+    /*font-size: 1.33333em;*/
+    font-style: italic; }
+  .exam_skin_wood .graphfunc_list_had_choice li {
+    margin-top: .41667em;
+    margin-bottom: 1.25em;
+    border: 1px solid #e9e9e9;
+    background: #fafafa;
+    position: relative; }
+    .exam_skin_wood .graphfunc_list_had_choice li .close {
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin-top: -1.15385em;
+      margin-right: -.75em;
+      overflow: hidden; }
+      .exam_skin_wood .graphfunc_list_had_choice li .close:before {
+        content: "\e600";
+        font-size: 1.5em;
+        line-height: 1.5em;
+        vertical-align: top;
+        color: #cbcbcb; }
+      .exam_skin_wood .graphfunc_list_had_choice li .close:hover:before {
+        color: #666; }
+  .exam_skin_wood .graphfunc_list_had_choice .switch_item {
+    position: absolute;
+    left: .29167em;
+    top: 50%;
+    margin-top: -0.625em; }
+    .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox {
+      -webkit-appearance: none;
+      width: 1.66667em;
+      height: 1.66667em;
+      text-align: center;
+      vertical-align: middle;
+      outline: 0;
+      cursor: pointer;
+      padding: 0;
+      margin: 0; }
+      .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox:before {
+        color: #ccc;
+        content: "\e605";
+        font-size: 1.66667em;
+        vertical-align: top;
+        position: relative;
+        top: -.125em;
+        left: -0.04167em; }
+      .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox:checked:before {
+        color: #64bd63; }
+  .exam_skin_wood .graphfunc_list_had_choice .func_detail {
+    padding-left: 2.08333em;
+    padding-right: 2.5em;
+    position: relative; }
+  .exam_skin_wood .graphfunc_list_had_choice .equation_box {
+    border-left: 1px solid #e8e8e8;
+    min-height: 3.33333em;
+    position: relative; }
+    .exam_skin_wood .graphfunc_list_had_choice .equation_box .equation {
+      position: absolute;
+      left: .625em;
+      top: 50%; }
+  .exam_skin_wood .graphfunc_list_had_choice .slide_arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    margin-top: -.58333em;
+    transition: all .3s;
+    -webkit-transition: all 0.3s; }
+    .exam_skin_wood .graphfunc_list_had_choice .slide_arrow:before {
+      content: "\e604";
+      font-size: 1.33333em;
+      color: #cbcbcb; }
+    .exam_skin_wood .graphfunc_list_had_choice .slide_arrow:hover:before {
+      color: #999; }
+    .exam_skin_wood .graphfunc_list_had_choice .slide_arrow.expand {
+      -webkit-transform: rotate(180deg);
+      transform: rotate(180deg); }
+  .exam_skin_wood .graphfunc_list_had_choice .func_paras {
+    display: none; }
+  .exam_skin_wood .graphfunc_list_had_choice .para_item {
+    border-top: 1px solid #e9e9e9;
+    padding: 1.04167em; }
+  .exam_skin_wood .graphfunc_list_had_choice .para_region_bar {
+    position: relative;
+    height: 1.25em;
+    padding: 0 1.66667em;
+    margin-top: 0.41667em; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_num {
+      position: absolute;
+      top: 50%;
+      margin-top: -.625em;
+      font-size: 1.25em;
+      font-family: arial;
+      cursor: pointer; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_bar {
+      position: relative; }
+      .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_bar .bar_line {
+        margin-top: .41667em;
+        height: .5em;
+        display: block;
+        background-color: #ddd;
+        border-radius: 3px; }
+      .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_bar .bar_circle {
+        position: absolute;
+        top: 50%;
+        cursor: pointer;
+        margin-top: -.91667em;
+        border-radius: 1.83333em;
+        width: 1.83333em;
+        height: 1.83333em;
+        background: rgba(79, 129, 189, 0.35); }
+        .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_bar .bar_circle b {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          margin-top: -.91667em;
+          margin-left: -.91667em;
+          border-radius: 44px;
+          width: 1.83333em;
+          height: 1.83333em;
+          background: #4f81bd;
+          -webkit-transform: scale(0.25, 0.25);
+          transform: scale(0.25, 0.25);
+          -webkit-transition: -webkit-transform .2s;
+          transition: -webkit-transform .2s;
+          transition: transform .2s;
+          transition: transform 0.2s, -webkit-transform 0.2s; }
+        .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .region_bar .bar_circle:hover b {
+          -webkit-transform: scale(1, 1);
+          transform: scale(1, 1); }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .min {
+      left: 0; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .max {
+      right: 0; }
+  .exam_skin_wood .graphfunc_list_had_choice .para_region {
+    padding: 0 2.08333em;
+    margin-top: 0.83333em; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region .region_num {
+      font-size: 1.16667em;
+      font-family: arial; }
+  .exam_skin_wood .graphfunc_list_had_choice .para_region_numerial {
+    height: 1.125em;
+    cursor: pointer; }
+  .exam_skin_wood .graphfunc_list_had_choice .para_region_edit {
+    padding: 0 .83333em;
+    margin-top: 0.41667em;
+    text-align: center; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_edit .region_num, .exam_skin_wood .graphfunc_list_had_choice .para_region_edit .region_var {
+      font-size: 1em;
+      /*1.16667*/
+      font-family: Symbola, "Times New Roman", serif;
+      font-style: italic; }
+    .exam_skin_wood .graphfunc_list_had_choice .para_region_edit .ipt_num {
+      width: 2.43em;
+      /*2.91667*/
+      height: 1.66667em;
+      border: 1px solid #e8e8e8;
+      font-size: 1.16667em; }
+.exam_skin_wood .graphfunc_handle_tool {
+  position: absolute;
+  right: .83333em;
+  top: 1.04167em;
+  z-index: 10; }
+  .exam_skin_wood .graphfunc_handle_tool a {
+    width: 2.08333em;
+    height: 2.08333em;
+    line-height: 2.08333em;
+    display: block; }
+    .exam_skin_wood .graphfunc_handle_tool a:before {
+      font-size: 1.16667em;
+      line-height: .83333em;
+      color: #737373; }
+    .exam_skin_wood .graphfunc_handle_tool a:hover:before {
+      color: #555; }
+  .exam_skin_wood .graphfunc_handle_tool .tool_reset {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    border: 1px solid #ddd;
+    background: #f0f0f0;
+    border-radius: .25em;
+    margin-bottom: .25em;
+    text-align: center;
+    cursor: pointer;
+    color: #666; }
+    .exam_skin_wood .graphfunc_handle_tool .tool_reset:before {
+      content: "\e608";
+      position: relative;
+      top: -2px; }
+  .exam_skin_wood .graphfunc_handle_tool .tool_zoom {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+    border: 1px solid #ddd;
+    background: #f0f0f0;
+    border-radius: .25em;
+    margin-bottom: .625em;
+    text-align: center;
+    cursor: pointer;
+    color: #666;
+    font-size: 100%; }
+    .exam_skin_wood .graphfunc_handle_tool .tool_zoom .tool_biger {
+      border-bottom: 1px solid #ddd; }
+      .exam_skin_wood .graphfunc_handle_tool .tool_zoom .tool_biger:before {
+        content: ""; }
+    .exam_skin_wood .graphfunc_handle_tool .tool_zoom .tool_smaller:before {
+      content: ""; }
+.exam_skin_wood .graphfunc_dialog_box {
+  position: absolute;
+  white-space: nowrap;
+  z-index: 2000; }
+  .exam_skin_wood .graphfunc_dialog_box.middle {
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%); }
+  .exam_skin_wood .graphfunc_dialog_box .tip_text {
+    padding: 0 1.04167em; }
+  .exam_skin_wood .graphfunc_dialog_box .msg_wrap {
+    display: inline-block;
+    position: relative;
+    margin-top: 0;
+    padding: 1.25em 0;
+    width: 100%;
+    white-space: normal;
+    background: rgba(47, 47, 47, 0.8);
+    color: #fff;
+    border-radius: .20833em;
+    vertical-align: middle;
+    z-index: 120; }
+  .exam_skin_wood .graphfunc_dialog_box .btn_group {
+    text-align: center; }
+  .exam_skin_wood .graphfunc_dialog_box .msg_wrap .msg_text {
+    margin-bottom: .83333em;
+    padding: 0 1.66667em;
+    line-height: 1.875em; }
+    .exam_skin_wood .graphfunc_dialog_box .msg_wrap .msg_text .text {
+      font-size: 1.25em;
+      text-align: center; }
+  .exam_skin_wood .graphfunc_dialog_box .msg_wrap .cancel, .exam_skin_wood .graphfunc_dialog_box .msg_wrap .confirm {
+    display: inline-block;
+    margin: .54167em 1.08333em 0;
+    padding: 0 1em;
+    height: 2em;
+    line-height: 2em;
+    min-width: 4.5em;
+    background: #11b0b6;
+    cursor: pointer; }
+  .exam_skin_wood .graphfunc_dialog_box .msg_wrap .cancel:active, .exam_skin_wood .graphfunc_dialog_box .msg_wrap .confirm:active {
+    background: #62999b; }
+  .exam_skin_wood .graphfunc_dialog_box .msg_wrap .cancel .btn_text, .exam_skin_wood .graphfunc_dialog_box .msg_wrap .confirm .btn_text {
+    font-size: 1em; }
+
+/*
+.exam_skin_wood .graphfunc_list_to_choice li .func span {
+    display: inline-block;
+    position: absolute;
+    left: 3.33333em;
+    top: 50%;
+    font-family: Times New Roman 斜体;
+    font-size: 1.25em
+}
+*/
+@font-face {
+  font-family: "iconfont";
+  src: url('resources/fonts/iconfont.eot?t=1464147029');
+  /* IE9*/
+  src: url('resources/fonts/iconfont.eot?t=1464147029#iefix') format("embedded-opentype"), url('resources/fonts/iconfont.woff?t=1464147029') format("woff"), url('resources/fonts/iconfont.ttf?t=1464147029') format("truetype"), url('resources/fonts/iconfont.svg?t=1464147029#iconfont') format("svg");
+  /* iOS 4.1- */ }
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-stroke-width: 0.2px;
+  -moz-osx-font-smoothing: grayscale; }
+
+.icon-close:before {
+  content: "\e600"; }
+
+.icon-fenlei:before {
+  content: "\e601"; }
+
+.icon-home:before {
+  content: "\e608"; }
+
+.icon-jia:before {
+  content: "\e606"; }
+
+.icon-jian:before {
+  content: "\e607"; }
+
+.icon-shousuojiahao:before {
+  content: "\e602"; }
+
+.icon-shousuojianhao:before {
+  content: "\e603"; }
+
+.icon-xiala:before {
+  content: "\e604"; }
+
+.icon-wanchenggou:before {
+  content: "\e605"; }
+
+.addon_ExpressionGraph {
+  /*function model start */
+  /*function model end */ }
+  .addon_ExpressionGraph .cutspace {
+    margin-right: -2px; }
+  .addon_ExpressionGraph .sup {
+    vertical-align: .8em;
+    margin-bottom: -0.2em;
+    font-size: 50%;
+    display: inline-block;
+    line-height: normal; }
+  .addon_ExpressionGraph .friction {
+    display: inline-block;
+    vertical-align: -0.6em;
+    padding: 0.2em;
+    text-align: center;
+    line-height: normal; }
+  .addon_ExpressionGraph .frictionup {
+    display: block; }
+  .addon_ExpressionGraph .frictiondown {
+    display: block;
+    border-top: 1px solid; }
+  .addon_ExpressionGraph .sub {
+    display: inline-block;
+    margin-bottom: -0.2em;
+    margin-left: 0em;
+    font-size: 50%;
+    vertical-align: -0.5em;
+    line-height: normal; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .linear {
+    background-image: url('resources/img/Linear.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .quadration {
+    background-image: url('resources/img/Quadration.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .parabola_x {
+    background-image: url('resources/img/Parabola_x.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .parabola_y {
+    background-image: url('resources/img/Parabola_y.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .inverse_Proportional {
+    background-image: url('resources/img/Inverse_Proportional.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .exponential {
+    background-image: url('resources/img/Exponential.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .logarithmic {
+    background-image: url('resources/img/Logarithmic.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .power {
+    background-image: url('resources/img/Power.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .sin {
+    background-image: url('resources/img/Sin.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .cos {
+    background-image: url('resources/img/COS.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .tan {
+    background-image: url('resources/img/TAN.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .cot {
+    background-image: url('resources/img/COT.PNG');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .sec {
+    background-image: url('resources/img/SEC.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .csc {
+    background-image: url('resources/img/CSC.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .circle {
+    background-image: url('resources/img/Circle.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .ellipse {
+    background-image: url('resources/img/Ellipse.png');
+    background-size: contain; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .para_value .ipt_num {
+    width: 6.91667em;
+    height: 1.66667em;
+    border: 1px solid #e8e8e8;
+    font-size: 1.16667em; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_main_content i {
+    font-family: 'desmos';
+    font-style: normal; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .func {
+    padding-left: 3.33333em;
+    color: #fff;
+    min-height: 2.91667em;
+    line-height: 2.4em;
+    position: relative;
+    font-size: 1.08333em; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_to_choice li .func span {
+    left: 3.33333em;
+    font-family: Symbola, "Times New Roman", serif;
+    font-style: italic; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .equation_box .equation span {
+    font-family: Symbola, "Times New Roman", serif;
+    font-style: italic; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .min {
+    width: 2.666em;
+    padding: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .para_region_bar .max {
+    width: 2.666em;
+    padding: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-align: right; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.black.checked:before {
+    color: #000000; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.blue.checked:before {
+    color: #4F81BD; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.green.checked:before {
+    color: #9BBB59; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.orange.checked:before {
+    color: #F79646; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.purple.checked:before {
+    color: #8064A2; }
+  .addon_ExpressionGraph .exam_skin_wood .graphfunc_list_had_choice .switch_item .ipt_checkbox.red.checked:before {
+    color: #C0504D; }
+  .addon_ExpressionGraph .graphfunc_dialog_confirm {
+    visibility: hidden;
+    width: 100%;
+    height: 100%;
+    padding: 38%; }
+  .addon_ExpressionGraph .graphfunc_dialog_msg {
+    visibility: hidden; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="exam_skin_wood" id="layout" >
+    <div class="graphfunc_box">
+        <div class="graphfunc_aside">
+            <div class="aside_hd">
+                <span class="icon_classify"></span>
+                <span class="tit">函数表达式列表</span>
+                <div class="graphfunc_handlestep_tip">
+                    <span>点击这里可以添加函数哦！</span>
+                    <a href="#" class="close"></a>
+                </div>
+            </div>
+            <!-- 已选函数列表 start -->
+            <div class="aside_bd  scrollbar_style_gray">
+                <ul class="graphfunc_list_had_choice">
+                   <!--add function-->
+                </ul>
+            </div>
+            <!-- 已选函数列表 end -->
+            <!-- 函数选择列表 start -->
+            <div class="graphfunc_list_to_choice scrollbar_style_gray" style="z-index: 3000;">
+                <div class="graphfunc_classify_item">
+                    <div class="classify_item expand">
+                        <p class="name"><span class="icon_elastic"></span>一次函数</p>
+                        <ul class="list">
+                            <li id="Linear">
+                                <a href="#">
+                                    <div class="pic linear"></div>
+                                    <div class="func"><span>y=kx+b</span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>二次函数</p>
+                        <ul class="list">
+                            <li id="Quadration">
+                                <a href="#">
+                                    <div class="pic quadration"></div>
+                                    <div class="func"><span> <span class="cutspace">y = ax</span> <span
+                                            class="sup">2</span> <span>+ bx + c</span> </span></div>
+                                </a>
+                            </li>
+                            <li id="Parabola_X">
+                                <a href="#">
+                                    <div class="pic parabola_x"></div>
+                                    <div class="func"><span> <span class="cutspace">y</span> <span
+                                            class="sup">2</span> <span>= 2px</span> </span></div>
+                                </a>
+                            </li>
+                            <li id="Parabola_Y">
+                                <a href="#">
+                                    <div class="pic parabola_y"></div>
+                                    <div class="func"><span> <span class="cutspace">x</span> <span
+                                            class="sup">2</span> <span>= 2py</span> </span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>正反比例函数</p>
+                        <ul class="list">
+                            <li id="Directly_Proportional">
+                                <a href="#">
+                                    <div class="pic linear"></div>
+                                    <div class="func"><span>y = kx</span></div>
+                                </a>
+                            </li>
+                            <li id="Inverse_Proportional">
+                                <a href="#">
+                                    <div class="pic inverse_Proportional"></div>
+                                    <div class="func">
+									<span>
+										<span>y = </span>
+										<span class="friction">
+											<span class="frictionup">k</span>
+											<span class="frictiondown">x</span>
+										</span>
+									</span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>指数函数</p>
+                        <ul class="list">
+                            <li id="Exponential">
+                                <a href="#">
+                                    <div class="pic exponential"></div>
+                                    <div class="func"><span> <span class="cutspace">y = a</span> <span
+                                            class="sup">x</span> </span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>对数函数</p>
+                        <ul class="list">
+                            <li id="Logarithmic">
+                                <a href="#">
+                                    <div class="pic logarithmic"></div>
+                                    <div class="func"><span> <span class="cutspace">y = log</span> <span
+                                            class="sub">a</span><span>(x)</span></span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>幂函数</p>
+                        <ul class="list">
+                            <li id="Power">
+                                <a href="#">
+                                    <div class="pic power"></div>
+                                    <div class="func"><span> <span class="cutspace">y = x</span> <span
+                                            class="sup">a</span> </span> </span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>三角函数</p>
+                        <ul class="list">
+                            <li id="SIN">
+                                <a href="#">
+                                    <div class="pic sin"></div>
+                                    <div class="func"><span>y = sin(x)</span></div>
+                                </a>
+                            </li>
+                            <li id="COS">
+                                <a href="#">
+                                    <div class="pic cos"></div>
+                                    <div class="func"><span>y = cos(x)</span></div>
+                                </a>
+                            </li>
+                            <li id="TAN">
+                                <a href="#">
+                                    <div class="pic tan"></div>
+                                    <div class="func"><span>y = tan(x)</span></div>
+                                </a>
+                            </li>
+                            <li id="COT">
+                                <a href="#">
+                                    <div class="pic cot"></div>
+                                    <div class="func"><span>y = cot(x)</span></div>
+                                </a>
+                            </li>
+                            <li id="SEC">
+                                <a href="#">
+                                    <div class="pic sec"></div>
+                                    <div class="func"><span>y = sec(x)</span></div>
+                                </a>
+                            </li>
+                            <li id="CSC">
+                                <a href="#">
+                                    <div class="pic csc"></div>
+                                    <div class="func"><span>y = csc(x)</span></div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="classify_item">
+                        <p class="name"><span class="icon_elastic"></span>图形函数</p>
+                        <ul class="list">
+                            <li id="Circle">
+                                <a href="#">
+                                    <div class="pic circle"></div>
+                                    <div class="func"><span> <span class="cutspace">(x-a)</span> <span
+                                            class="sup">2</span> <span
+                                            class="cutspace">+ (y-b)</span> <span class="sup">2</span> <span
+                                            class="cutspace">= r</span> <span class="sup">2</span> </span></div>
+                                </a>
+                            </li>
+                            <li id="Circle_standard">
+                                <a href="#">
+                                    <div class="pic circle"></div>
+                                    <div class="func">
+                                        <span> <span class="cutspace">x</span> <span
+                                                class="sup">2</span> <span class="cutspace">+ y</span> <span
+                                                class="sup">2</span> <span> + Dx + Ey + F = 0</span> </span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li id="Ellipse">
+                                <a href="#">
+                                    <div class="pic ellipse"></div>
+                                    <div class="func">
+									<span>
+                                 <span class="friction">
+                                      <span class="frictionup">
+                                           <span class="cutspace">x</span>
+                                           <span class="sup">2</span>
+                                      </span>
+                                      <span class="frictiondown">
+                                           <span class="cutspace">a</span>
+                                              <span class="sup">2</span>
+                                      </span>
+                                 </span>
+                                 <span> + </span>
+                                 <span class="friction">
+                                     <span class="frictionup">
+                                         <span class="cutspace">y</span>
+                                         <span class="sup">2</span>
+                                    </span>
+                                    <span class="frictiondown">
+                                        <span class="cutspace">b</span>
+                                        <span class="sup">2</span>
+                                    </span>
+                                </span>
+                                <span>= 1</span>
+                            </span>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- 函数选择列表 end -->
+        </div>
+        <div class="graphfunc_main">
+            <div id="graph" class="graphfunc_main_content">
+            </div>
+        </div>
+    </div>
+
+    <div class="graphfunc_dialog_box middle graphfunc_dialog_confirm">
+        <div class="msg_wrap">
+            <p class="msg_text"><em class="text">"清空"将清空数轴上的所有内容<br>是否确定"清空"?</em></p>
+            <div class="btn_group">
+                <a class="cancel"><em class="btn_text">确定</em></a>
+                <a class="confirm"><em class="btn_text">取消</em></a>
+            </div>
+
+        </div>
+    </div>
+    <!-- 弹出框 end -->
+
+    <!-- 信息提示框 start -->
+
+    <div class="graphfunc_dialog_box middle graphfunc_dialog_msg">
+        <div class="msg_wrap">
+            <p class="tip_text">请输入正确的数字</p>
+        </div>
+    </div>
+    <!-- 信息提示框 end -->
+
+</div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function(parent) {
+                this.parent = parent;
+            }
+        },
+        getService: function() {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var elt = document.getElementById('graph');
+            ExpressionGraph.GraphManager.getInstance().initalize(elt);
+            //ExpressionGraph.GraphManager.getInstance().addExpression("Parabola_x", ExpressionGraph.ExpressionType.Parabola_X);
+            var colorMap=[Desmos.Colors.BLACK,Desmos.Colors.BLUE,Desmos.Colors.GREEN,Desmos.Colors.ORANGE,Desmos.Colors.PURPLE,Desmos.Colors.RED];
+            var colorClass=["black","blue","green","orange","purple","red"];
+            var use= [0,0,0,0,0];
+            var count = 0;
+            var key = 0;
+
+            var html_template ='<li id="idName">\
+                                <div class="func_detail">\
+                                     <label class="switch_item">\
+                                        <span class="ipt_checkbox checked"/>\
+                                     </label>\
+                                    <div class="equation_box">\
+                                        <p class="equation"></p>\
+                                    </div>\
+                                    <a href="javascript:void(0)" class="slide_arrow"></a>\
+                                </div>\
+                                <div class="func_paras">\
+                                </div>\
+                                <a class="close" href="javascript:void(0)"></a>\
+                             </li>'; 
+
+            var html_params =
+                '<div class="para_item">\
+                    <div class="para_value">\
+                         <span flag="param_name" class="name"> a =&nbsp;</span>\
+                         <input flag="param_value" type="number" class="ipt_num" value="3"/>\
+                    </div>\
+                    <div class="para_region para_region_bar clearfix">\
+                        <span flag="left_show" class="region_num min">1</span>\
+                        <input id="range" class="mdl-slider mdl-js-upper-slider" type="range" min="1" max="6" value="3" tabindex="50" step="1">\
+                        <span flag="right_show" class="region_num max">6</span>\
+                    </div>\
+                    <div class="para_region_edit">\
+                        <input flag="param_left" type="number" class="ipt_num" value="1"/>\
+                        <span flag="param_tag" class="region_var"> ≤ a ≤ </span>\
+                        <input flag="param_right" type="number" class="ipt_num" value="6"/>\
+                        <span class="region_var"> 步进:</span>\
+                        <input flag="param_step" type="number" class="ipt_num" value="1"/>\
+                    </div>\
+                </div>';
+
+            $(function () {
+                /*点击函数公式分类效果*/
+                (function () {
+                    var $classifyIcon = $(".icon_classify"),
+                        $choiceList = $(".graphfunc_list_to_choice");
+
+                    //点击分类弹出函数选择列表
+                    $classifyIcon.on("click", function (event) {
+                        event.stopPropagation();
+                        if ($choiceList.is(":visible")) {
+                            $choiceList.slideUp("fast");
+                        } else {
+                            $choiceList.slideDown("fast");
+                            var _t = $('.exam_skin_wood .graphfunc_handlestep_tip');
+                            if(_t.is(":visible")){
+                               _t.css('display','none');
+                            }
+                        }
+                    });
+
+                    //点击分类函数弹出子列表
+                    $(".classify_item .name").on("click", function (event) {
+                        event.stopPropagation();
+                        var $this = $(this),
+                            $parent = $this.parents(".classify_item").eq(0),
+                            $list = $parent.find(".list");
+                        if ($parent.hasClass("expand")) {
+                            $list.slideUp("fast");
+                            $parent.removeClass("expand");
+                        } else {
+                            $list.slideDown("fast");
+                            $parent.addClass("expand");
+                        }
+                    });
+                    $("body").on("click", function (event) {
+                        var $target = $(event.target);
+                        if (!$target.closest($choiceList).length) {
+                            $choiceList.slideUp("fast");
+                        }
+                    })
+                })();
+            });
+
+
+            //$('.graphfunc_list_had_choice').delegate('input[flag]','blur',function(){
+            //    console.log(this);
+            //
+            //});
+            //
+            //$('.graphfunc_list_had_choice').delegate('input[id]','input propertychange',function(){
+            //    console.log(this);
+            //    $(this).parents('li[id]');
+            //
+            //});
+
+            $('.graphfunc_list_had_choice').delegate("span[flag*='show']",'mousemove',function(){
+                console.log(this);
+                var $this = $(this);
+                var v = $this.text();
+                if( v.length > 4 ) {
+                    //$this.append("<span>"+ v +"</span>");
+                    console.log(event.clientX);
+                    ToolTip.ShowTip(this,event,v);
+                }
+            });
+
+            $('.graphfunc_list_had_choice').delegate("span[flag*='show']",'mouseout',function(){
+                console.log(this);
+                var $this = $(this);
+                var v = $this.text();
+                if( v.length > 4 ) {
+                    ToolTip.HideTip();
+                }
+            });
+
+            var tooltipHtml = '<div id="tipPanel" style="background:white; padding:6px 8px; \
+                                                    z-index: 999;position:absolute;display:none;border:solid 4px #09c; font-size:14px; color:#555;">\
+                                </div>';
+            var ToolTip={
+                _tipPanel:null,
+                Init:function(){
+                    if(null==this._tipPanel){
+                       $(view).append(tooltipHtml);
+                        this._tipPanel = tooltipHtml;
+                    }
+                },
+                ShowTip:function(oTarget,event){
+                    if($("#tipPanel")==null)
+                        return;
+                    var tempStr="";
+                    if(arguments.length>2){
+                        for(var i=2;i<arguments.length;i++){
+                            tempStr+="<p>"+arguments[i]+"</p>";
+                        }
+                    }
+                    $("#tipPanel").html(tempStr);
+                    //var pos=this.GetPos(oTarget);
+                    var mOffsetLeft = 0,mOffsetTop = 0;
+                    if($('.tooldiolag_control').length != 0) {
+                        mOffsetLeft = $('.tooldiolag_control').get(0).offsetLeft;
+                    }
+                    if($('.tooldiolag_control').length != 0){
+                        mOffsetTop = $('.tooldiolag_control').get(0).offsetTop
+                    }
+                    $("#tipPanel").get(0).style.left=(event.clientX -mOffsetLeft - oTarget.offsetWidth/2)+"px";
+                    $("#tipPanel").get(0).style.top=(event.clientY - mOffsetTop - oTarget.offsetHeight - 10)+"px";
+                    $("#tipPanel").get(0).style.display="";
+                },
+                HideTip:function(){
+                    if($("#tipPanel")==null)
+                        return;
+                    $("#tipPanel").get(0).style.display="none";
+                    this._tipPanel = null;
+                }
+            };
+            ToolTip.Init();
+            /**
+             * 选中一个函数模版，动态添加函数公式
+             */
+            $('ul[class="list"] li').on('click', function() {
+                console.log("choose one func:" + this.id);
+                count++;//函数图像显示总量
+                key++;
+                var uuid = key + "";//uuid（一直增加）
+                var func_id = this.id + "_" + uuid;
+                if (count > 5) {
+                    //超过最大值时候的处理
+                    count = 5;
+                    //选中目标函数收起公式模版
+                    $(".graphfunc_list_to_choice").slideUp("fast");
+                    //alert("超过5个函数！");
+                    //showConfirm("超过5个函数！");
+                    showMsg("超过5个函数！");
+                    //show dialog
+                    return;
+                }
+                var co = getColor();
+                var color = co[1];
+                console.log("add: " + this.id);
+                //跟据模版的id来获取html模版实例
+                var instance = ExpressionGraph.ExpressionType[this.id];
+                var params = instance.params;//参数详风i_calculator.js的模版枚举
+                var len = params.length;
+                var _html = $(html_template);//动态生成显示生成函数的html模版
+
+                if (len == 0) {
+                    $(_html).find("a.slide_arrow").remove();
+                }
+
+                _html.attr("id", this.id + "_" + key);
+                //添加函数表式的html
+                _html.find('p[class="equation"]').append(instance.html);
+                _html.find('.ipt_checkbox').addClass(colorClass[co[0]]).unbind('click').bind('click', function () {
+
+                    var $this = $(this);
+                    if ($this.hasClass("checked")) {
+                        ExpressionGraph.GraphManager.getInstance().hideExpression($(this).parents('li').get(0).id);
+                        var _t = $(this).parent().parent().find(".slide_arrow");
+                        if (_t.hasClass('expand')) {
+                            _t.removeClass("expand");
+                            _t.parent().parent().children(".func_paras").slideUp("fast");
+                        }
+                        $this.removeClass("checked");
+                    } else {
+                        ExpressionGraph.GraphManager.getInstance().showExpression($(this).parents('li').get(0).id);
+
+                        $this.addClass("checked");
+                    }
+
+                    //if(isCheck){
+                    //    ExpressionGraph.GraphManager.getInstance().showExpression($(this).parents('li').get(0).id);
+                    //}else{
+                    //    ExpressionGraph.GraphManager.getInstance().hideExpression($(this).parents('li').get(0).id);
+                    //    var _t = $(this).parent().parent().find(".slide_arrow");
+                    //    if(_t.hasClass('expand')){
+                    //        _t.removeClass("expand");
+                    //        _t.parent().parent().children(".func_paras").slideUp("fast");
+                    //    }
+                    //}
+                });
+
+                var range_id = [];
+                //动态生成参数dom节点
+                for (var i = 0; i < len; i++) {
+                    var p = params[i];
+                    var t = $(html_params);//参数dom模版
+                    //更改相应结点信息
+                    t.find('span[flag="param_name"]').text(p + '=');
+                    t.find('input[flag="param_value"]').attr('flag', p + uuid);
+                    t.find('input[flag="param_step"]').attr('flag', 'step_' + p + uuid);
+                    t.find('input[flag="param_left"]').attr('flag', 'left_' + p + uuid);
+                    t.find('input[flag="param_right"]').attr('flag', 'right_' + p + uuid);
+                    t.find('span[flag="left_show"]').attr('flag', 'left_show_' + p + uuid);
+                    t.find('span[flag="right_show"]').attr('flag', 'right_show_' + p + uuid);
+                    t.find('input[id="range"]').attr('id', 'range_' + p + uuid);
+                    t.find('span[flag="param_tag"]').text('≤ ' + p + ' ≤');
+                    range_id.push(p + uuid);
+                    //添加一个参数节点
+                    _html.find('div[class="func_paras"]').append(t);
+                }
+                //添加总的参数节点
+                $('ul[class="graphfunc_list_had_choice"]').append(_html);
+
+                //添加事件
+                for (var i = 0, idLen = range_id.length; i < idLen; i++) {
+                    var _id = range_id[i];
+                    var o = document.getElementById("range_" + _id);
+                    componentHandler.upgradeElement(o);
+                    $(o).unbind('input propertychange').bind('input propertychange', function () {
+                        var _this = this.id;
+                        var id = _this.substring(_this.indexOf("_") + 1);
+                        var t = $('input[flag=' + id + ']');
+                        t.val(this.value);
+                        var v = [];
+                        for (var j = 0; j < idLen; j++) {
+                            var _id = range_id[j];
+                            var o1 = document.getElementById("range_" + _id);
+                            v.push(o1.value);
+                        }
+                        ExpressionGraph.GraphManager.getInstance().changeParam(func_id, v);
+                    });
+                    $('input[flag=' + _id + ']').unbind('blur').bind('blur', function () {
+                        updataFunc(this.getAttribute('flag'), this.value, func_id, 'value', this);
+                    });
+                    $('input[flag=step_' + _id + ']').unbind('blur').bind('blur', function () {
+                        updataFunc(this.getAttribute('flag'), this.value, func_id, 'step', this);
+                    });
+                    $('input[flag=left_' + _id + ']').unbind('blur').bind('blur', function () {
+                        updataFunc(this.getAttribute('flag'), this.value, func_id, 'range_left', this);
+                    });
+                    $('input[flag=right_' + _id + ']').unbind('blur').bind('blur', function () {
+                        updataFunc(this.getAttribute('flag'), this.value, func_id, 'range_right', this);
+                    });
+                }
+
+                function updataFunc(flag, value, _uuid, str, _t) {
+                    if (value.length > 9) {
+                        showMsg("设置的数字过大，请重设！");
+                        _t.focus();
+                        _t.select();
+                        return;
+                    }
+                    var _value = parseFloat(value);
+                    var _this = flag;
+                    var id = _this.substring(_this.indexOf("_") + 1);
+                    var _o = document.getElementById("range_" + id);
+
+                    var max = parseFloat(_o.max);
+                    var min = parseFloat(_o.min);
+
+                    if (str === 'step') {
+                        if (isNaN(_value) || _value === undefined) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("不能为空请重设！");
+                            return;
+                        }
+                        if (_value > (max - min)) {
+                            //alert("超过范围，请重设！");
+                            showMsg("超过范围，请重设！");
+                            //showConfirm("超过范围，请重设！");
+                            var t = $('input[flag=step_' + id + ']');
+                            t.val(1.00);
+                            _value = 1.00;
+                        } else if (_value <= 0) {
+                            showMsg("步进值必须大于0，请重设！");
+                            //showConfirm("超过范围，请重设！");
+                            var t = $('input[flag=step_' + id + ']');
+                            t.val(1.00);
+                            _value = 1.00;
+                        }
+                        //判断输入的精度
+                        var _p = (_value + "").split('\.');
+                        if (_p.length > 1 && _p[1].length > 3) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("最小精度到0.001，请重设！");
+                            return;
+                        }
+                        var t1 = $('input[flag=' + id + ']');
+                        t1.val(min);
+                        _o.MaterialUpperSlider.changeStep(_value);
+                    } else if (str === 'range_left') {
+                        if (isNaN(_value) || _value === undefined) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("不能为空请重设！");
+                            return;
+                        }
+                        if (_value > max) {
+                            //alert("超过范围，请重设！");
+                            showMsg("超过" + max + "，请重设！");
+                            _value = min;
+                            var t = $('input[flag=' + id + ']');
+                            $('input[flag=left_' + id + ']').val(_value);
+                            t.val(_value);
+                        }
+                        var _step = $('input[flag=step_' + id + ']');
+                        if (max - _value < _step.val()) {
+                            //alert("超过范围，请重设！");
+                            showMsg("小于步进的值，请设置步进值！");
+                            _step.focus();
+                            _step.select();
+                        }
+                        var p_value = $('input[flag=' + id + ']');
+                        if (p_value.val() < _value) {
+                            p_value.val(_value)
+                        }
+
+                        //判断输入的精度
+                        var _p = (_value + "").split('\.');
+                        if (_p.length > 1 && _p[1].length > 3) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("最小精度到0.001，请重设！");
+                            return;
+                        }
+                        _o.MaterialUpperSlider.changeRange(_value, null);
+                        $('span[flag=left_show_' + id + ']').text(_value);
+                    } else if (str === 'range_right') {
+                        if (isNaN(_value) || _value === undefined) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("不能为空请重设！");
+                            return;
+                        }
+                        if (_value < min) {
+                            //alert("超过范围，请重设！");
+                            showMsg("小于最小" + min + "，请重设！");
+                            _value = max;
+                            var t = $('input[flag=' + id + ']');
+                            $('input[flag=right_' + id + ']').val(_value);
+                            t.val(_value);
+                        }
+
+                        var _step = $('input[flag=step_' + id + ']');
+                        if (_value - min < _step.val()) {
+                            //alert("超过范围，请重设！");
+                            showMsg("小于步进的值，请设置步进值！");
+                            _step.focus();
+                            _step.select();
+                        }
+
+                        var p_value = $('input[flag=' + id + ']');
+                        if (p_value.val() > _value) {
+                            p_value.val(_value)
+                        }
+                        //判断输入的精度
+                        var _p = (_value + "").split('\.');
+                        if (_p.length > 1 && _p[1].length > 3) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("最小精度到0.001，请重设！");
+                            return;
+                        }
+                        _o.MaterialUpperSlider.changeRange(null, _value);
+                        $('span[flag=right_show_' + id + ']').text(_value);
+                    } else {
+                        if (isNaN(_value) || _value === undefined) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("不能为空请重设！");
+                            return;
+                        }
+                        if (_value > max) {
+                            //alert("超过范围，请重设！");
+                            showMsg("超过最大值" + max + "，请重设！");
+                            if (_value > max) _value = max;
+                            var t = $('input[flag=' + id + ']');
+                            t.val(_value);
+                        } else if (_value < min) {
+                            //alert("超过范围，请重设！");
+                            showMsg("小于最小值" + min + "，请重设！");
+                            if (_value < min) _value = min;
+                            var t = $('input[flag=' + id + ']');
+                            t.val(_value);
+                        }
+                        //判断输入的精度
+                        var _p = (_value + "").split('\.');
+                        if (_p.length > 1 && _p[1].length > 3) {
+                            _t.focus();
+                            _t.select();
+                            showMsg("最小精度到0.001，请重设！");
+                            return;
+                        }
+                        //判断 是否符合步进
+                        //var t1 =  $('input[flag=step_'+id+']');
+                        //t1 =  parseFloat(_value - min).toFixed(3) / t1.val();
+                        //t1 = parseFloat(t1).toString();
+                        //if(t1.indexOf(".") >= 0) {
+                        //    showMsg("不符合步进，请重设！");
+                        //    _t.focus();
+                        //    _t.select();
+                        //    return;
+                        //}
+                        _o.MaterialUpperSlider.change(_value);
+                    }
+                    var v = [];
+                    for (var j = 0; j < idLen; j++) {
+                        var _id = range_id[j];
+                        var o1 = document.getElementById("range_" + _id);
+                        v.push(o1.value);
+                    }
+                    ExpressionGraph.GraphManager.getInstance().changeParam(_uuid, v);
+                }
+
+                //添加图形
+                console.log(func_id);
+                ExpressionGraph.GraphManager.getInstance().addExpression(func_id, ExpressionGraph.ExpressionType[this.id], color);
+                //更新一次函数
+                var v = [];
+                for (var i = 0, idLen = range_id.length; i < idLen; i++) {
+                    var _id = range_id[i];
+                    var o1 = document.getElementById("range_" + _id);
+                    v.push(o1.value);
+                }
+                ExpressionGraph.GraphManager.getInstance().changeParam(func_id, v);
+                //点击箭头下拉和收缩
+                if ($(".slide_arrow").length != 0) {
+
+                $(".slide_arrow").unbind('click').on("click", function () {
+                    var $this = $(this);
+                    if ($this.hasClass("expand")) {
+                        $this.removeClass("expand");
+                        $this.parents("li").eq(0).find(".func_paras").slideUp("fast");
+                    } else {
+                        $this.addClass("expand");
+                        $this.parents("li").eq(0).find(".func_paras").slideDown("fast");
+                    }
+                });
+                }
+                /**
+                 *绑定删除函数
+                 * */
+                $('a[class="close"]').unbind('click').on('click',function(){
+                    console.log("close");
+
+                    var callback = function(_this){
+                        var _t = _this.parent().get(0).id;
+                        ExpressionGraph.GraphManager.getInstance().removeExpression(_t);
+                        var str =  _this.parent().find('span.ipt_checkbox').get(0).className.split(" ");
+                        var _tempColor;
+                        for(var i= 0,len = str.length;i<len;i++ ){
+                            if(str[i]!="ipt_checkbox"&&str[i]!="checked")_tempColor = str[i];
+                        }
+                        recycleColor(_tempColor);
+                        count--;
+                        _this.parent().remove();
+                    }
+                    showConfirm("是否删除函数？", callback,$(this));
+                });
+                //选中目标函数收起公式模版
+                $(".graphfunc_list_to_choice").slideUp("fast");
+            });
+            //获取一个颜色
+            function getColor(){
+                for(var i = 0,len=5;i<len;i++){
+                    if(use[i] === 0) {
+                        use[i]  = 1;
+                        return [i,colorMap[i]];
+                    }
+                }
+            }
+            //回收颜色
+            function recycleColor(color){
+                for(var i= 0,len=5;i<len;i++){
+                    if(colorClass[i] === color){
+                        use[i] = 0;
+                    }
+                }
+            }
+
+            /**
+             * @description 初始化提示信息
+             */
+            $('.exam_skin_wood .graphfunc_handlestep_tip .close').unbind('click').bind('click',function(){
+               $(this).parent().css('display','none');
+            });
+
+            function showConfirm(msg,callback,args){
+                if(!msg || msg == '') return;
+
+                $('.graphfunc_dialog_confirm').css('visibility','visible');
+                $('.graphfunc_dialog_confirm .text').text(msg);
+
+                $('.graphfunc_dialog_confirm .cancel').unbind('click').bind('click', function (){
+                    callback && callback(args);
+                    $('.graphfunc_dialog_confirm').css('visibility','hidden');
+                });
+
+                $('.graphfunc_dialog_confirm .confirm').unbind('click').bind('click', function (){
+                    $('.graphfunc_dialog_confirm').css('visibility','hidden');
+                });
+
+            }
+
+            function showMsg(msg){
+                if(!msg || msg == '') return;
+                var _t = $('.graphfunc_dialog_msg');
+                _t.find('p[class="tip_text"]').text(msg);
+                _t.css('visibility','visible');
+                setTimeout(function(){
+                    _t.css('visibility','hidden');
+                },1000 * 2);
+            }
+
+        },
+        pageShow: function() {
+            //this.$bindEvent();
+        },
+        pageLeave: function() {
+            //this.$unbindEvent();
+        },
+        destroy: function() {
+            $("body").unbind('click');
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function() {
+
+        },
+        setState: function(state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function() {
+
+        },
+        _unbindEvent: function() {
+
+        }
+    });
+
+    window.AddonExpressionGraph_create = function() {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/css/style.css' />
+<file src='./resources/css/style.scss' />
+<file src='./resources/fonts/iconfont.css' />
+<file src='./resources/fonts/iconfont.eot' />
+<file src='./resources/fonts/iconfont.scss' />
+<file src='./resources/fonts/iconfont.svg' />
+<file src='./resources/fonts/iconfont.ttf' />
+<file src='./resources/fonts/iconfont.woff' />
+<file src='./resources/img/Circle.png' />
+<file src='./resources/img/COS.png' />
+<file src='./resources/img/COT.PNG' />
+<file src='./resources/img/CSC.png' />
+<file src='./resources/img/Ellipse.png' />
+<file src='./resources/img/Exponential.png' />
+<file src='./resources/img/ic_close_black_24dp_1x.png' />
+<file src='./resources/img/Inverse_Proportional.png' />
+<file src='./resources/img/Linear.png' />
+<file src='./resources/img/Logarithmic.png' />
+<file src='./resources/img/Parabola_x.png' />
+<file src='./resources/img/Parabola_y.png' />
+<file src='./resources/img/Power.png' />
+<file src='./resources/img/Quadration.png' />
+<file src='./resources/img/SEC.png' />
+<file src='./resources/img/Sin.png' />
+<file src='./resources/img/TAN.png' />
+
+
+</resources>
+
+</addon>

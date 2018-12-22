@@ -1,0 +1,1 @@
+var LRU=require("lru-cache"),options={max:500,maxAge:144e5},cache=LRU(options),Q=require("q");exports.set=function(e,t){return Q.fcall(function(){return cache.set(e,t)})},exports.get=function(e){return Q.fcall(function(){return cache.get(e)})},exports.setSynchro=function(e,t){return cache.set(e,t)},exports.getSynchro=function(e){return cache.get(e)};

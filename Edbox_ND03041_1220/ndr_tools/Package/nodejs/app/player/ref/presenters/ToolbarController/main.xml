@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ToolbarController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "ToolbarController",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        EVENTS_DEFINITION: {
+            INSERT: "mindjet_editor_insert",
+            SAVE: "mindjet_editor_save",
+            PREVIEW: "mindjet_editor_preview",
+            UNDO: "mindjet_un_do",
+            REDO: "mindjet_re_do"
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this.historyService = this.editorService = undefined;
+            this.historyEvents = [];
+            this.editorEvents = [];
+            this.functionalService= undefined;
+            this.services = {IToolbar: [], IToolbarEvent: []};
+            this.toolbarEvents = [];
+			this.$editorServicePromise = $.Deferred(); //Warning:临时性修复bug-99161,根本的还得由ComponentLoader来解决 
+            this.logger.appendHandler(function(message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        $getInterfaceMethods: function() {
+            return [
+                {
+                    interface: 'IToolbar',
+                    methods: ['initToolbar', "setZoom","enAbleUndo","enAbleRedo"]
+                },
+                {
+                    interface: 'IToolbarEvent',
+                    methods: ['broadcastEvent']
+                }
+            ];
+        },
+        $isUnderControl: function(metaInfo, service) {
+            if(metaInfo.name == this.functionalServiceName) {
+                this.functionalService = service;
+                return true;
+            }
+            return false;
+        },
+        $afterPresenterRun: function(interfaceName, metaInfo, service) {
+            if(this.services.hasOwnProperty(interfaceName)) {
+                //After presenter run, the presenter.service must has property:__ScopeId__
+                if(service.__ScopeId__ === this.__ScopeId__) {
+                    if($.inArray(service, this.services[interfaceName]) < 0) {
+                        this.services[interfaceName].push(service);
+                        if(interfaceName == 'IToolbar') {
+                            service.initToolbar(this.model);
+                        }
+                    }
+                }
+            }
+        },
+        /**this.isPPTShell
+         * Presenter对外暴露的方法
+         */
+        _ServiceClass_: {
+            constructor: function(parent) {
+                this.parent = parent;
+                this.__ScopeId__ = parent.__ScopeId__;
+            },
+            setHistoryService: function(service) {
+                this.parent.historyService = service;
+                if(service['getEvents']) {
+                    this.parent.historyEvents = service.getEvents();
+                }
+            },
+            setEditorService: function(service) {
+                this.parent.editorService = service;
+                if(service['getEvents']) {
+                    this.parent.editorEvents = service.getEvents();
+                }
+                this.parent.$editorServicePromise.resolve();
+            }
+        },
+        getService: function() {
+            if(this._service_) return this._service_;
+
+            this._service_ = $.extend({}, this._ServiceClass_);
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            this.model = model;
+            this.__ScopeId__ = model.scopeId;
+            !!this._service_ && (this._service_.__ScopeId__ = model.scopeId);
+            this.functionalServiceName = model.operator;
+
+            if(model.editorServiceFlag) {
+                var self = this;
+                this.$editorServicePromise.then(function() {
+                    self._bindEvent();
+                });
+            } else {
+                this._bindEvent();
+            }
+        },
+        destroy: function() {
+            this._unbindEvent();
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function() {
+            var self = this;
+
+            $.each(this.model.toolSettings.items, function(index, group) {
+                var buttons = JSON.parse(group.value);
+                //防止事件被重复添加绑定
+                    $.each(buttons, function(index, item){
+                        if($.inArray(item.event, self.toolbarEvents) < 0) {
+                        //如果是操作历史事件
+                        if($.inArray(item.event, self.historyEvents) >= 0) {
+                            self.$addEventListener(item.event, PresenterEventType.IC_PLAYER_EVENT, self._operateHistoryEvent);
+                        }
+                        //如果是编辑器事件
+                        else if($.inArray(item.event, self.editorEvents) >= 0) {
+                            self.$addEventListener(item.event, PresenterEventType.IC_PLAYER_EVENT, self._editorEvent);
+                        }
+                        //其他的事件
+                        else {
+                            self.$addEventListener(item.event, PresenterEventType.IC_PLAYER_EVENT, self._toolbarEvent);
+                        }
+                    }
+                });
+                
+            });
+
+            //监听思维导图内部缩放事件
+            self.$addEventListener("mindjet_map_zoom", PresenterEventType.IC_PLAYER_EVENT, function(data) {
+                if(data.scopeId != self.__ScopeId__) return;
+
+                $.each(self.services.IToolbar, function(index, item){
+                    !!item.setZoom && item.setZoom(data);
+                });  
+            });
+
+            //监听撤销是否可操作事件
+            self.$addEventListener("mindjet_undo_state", PresenterEventType.IC_PLAYER_EVENT, function(data) {
+                if(data.scopeId != self.__ScopeId__) return;
+
+                $.each(self.services.IToolbar, function(index, item){
+                    !!item.enAbleUndo && item.enAbleUndo(data);
+                }); 
+            });
+
+            //监听还原是否可操作事件
+            self.$addEventListener("mindjet_redo_state", PresenterEventType.IC_PLAYER_EVENT, function(data) {
+                if(data.scopeId != self.__ScopeId__) return;
+
+                $.each(self.services.IToolbar, function(index, item){
+                    !!item.enAbleRedo && item.enAbleRedo(data);
+                });
+            });
+
+            //监听撤销还原按钮是否锁住的事件
+            self.$addEventListener("mindjet_toolbar_lock", PresenterEventType.IC_PLAYER_EVENT, function(data) {
+                if(data.scopeId != self.__ScopeId__) return;
+
+                $.each(self.services.IToolbar, function(index, item){
+                    !!item.toolbarLock && item.toolbarLock(data);
+                });
+            });
+
+        },
+        _unbindEvent: function() {
+            this.$removeEventListener();
+        },
+        _toolbarEvent: function(data) {
+            if(data.scopeId === this.__ScopeId__) {
+                $.each(this.services.IToolbarEvent, function(index, item) {
+                    item.broadcastEvent(data.event, data.value);
+                });
+            }
+        },
+        //编辑器响应的事件
+        _editorEvent: function(data) {
+            switch(data.event) {
+                case this.EVENTS_DEFINITION.INSERT: //插入
+                    this.editorService.insert(this.functionalServiceName);
+
+                    break;
+                case this.EVENTS_DEFINITION.SAVE: //保存
+                    this.editorService.save(this.functionalServiceName);
+
+                    break;
+                case this.EVENTS_DEFINITION.PREVIEW: //预览
+                    this.editorService.preview(this.functionalServiceName);
+
+                    break;
+                default:;
+            }
+        },
+        //操作历史服务响应的事件
+        _operateHistoryEvent: function(data) {
+            if(data.event == this.EVENTS_DEFINITION.UNDO) {
+                this.historyService.undo(this.functionalServiceName);
+            } else if(data.event == this.EVENTS_DEFINITION.REDO) {
+                this.historyService.redo(this.functionalServiceName);
+            }
+        }
+    }, "ToolbarController");
+
+    window.AddonToolbarController_create = function() {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

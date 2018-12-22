@@ -1,0 +1,1880 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='FillColorBusiness'>
+<properties>
+
+                <property name="questionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="fillColorData" displayName="填色游戏数据" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="vue-libs" version="2.1.10" />
+    <javaScript  name="ModuleComponent" version="1.0.0" />
+    <javaScript  name="tools_common" version="1.1.0" />
+    <javaScript  name="typescript-polyfill" version="1.0.0" />
+    <javaScript  name="ClassroomUtils" version="2.0.8" />
+    <javaScript  name="lodash" version="4.11.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.exam_skin_wood .fillColor_wrapper .layout_FreeCombination .nhw_write_toolbar{right:.29167em}.exam_skin_wood .layout_FillColor{position:absolute;left:.20833em;top:0;right:.20833em;bottom:0;background:rgba(255,255,255,.3);box-shadow:0 0 .25em 0 rgba(0,0,0,.3);border-radius:.66667em}.exam_skin_wood .layout_FillColor.take_up_leftbar .com_layout_main{left:0;border-radius:0 0 .66667em .66667em}.exam_skin_wood .layout_FillColor.take_up_leftbar .com_layout_main .com_layout_main_att{left:8.54167em}.exam_skin_wood .layout_FillColor.take_up_leftbar .FillColor_txt_wrap{left:0;border-radius:.66667em}.exam_skin_wood .layout_FillColor.take_up_leftbar .FillColor_txt_wrap .FillColor_txt{padding-left:7.91667em}.exam_skin_wood .layout_FillColor.take_up_leftbar .left_fillcolor_bar .fc_switch_btn,.exam_skin_wood .layout_FillColor.take_up_leftbar .left_fillcolor_bar .ndui-tool-box{display:none}.exam_skin_wood .layout_FillColor.take_up_leftbar .ndui-tool-colse{-webkit-transform:rotate(-180deg);transform:rotate(-180deg)}.exam_skin_wood .layout_FillColor .com_layout_main{top:3.83333em;right:0;bottom:0;left:5.66667em;background:#f6f2e8;border-top:1px solid #ded7cc;overflow:initial;border-radius:0 0 .66667em}.exam_skin_wood .layout_FillColor .com_layout_main .inner,.exam_skin_wood .layout_FillColor .com_layout_main .inner img{width:100%;height:100%}.exam_skin_wood .layout_FillColor .com_layout_main .inner.animate_set{-webkit-animation:con_show_animate 1s linear 1 forwards;animation:con_show_animate 1s linear 1 forwards;-webkit-transform-origin:center center;transform-origin:center center}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att{width:52.91667em;height:33.16667em;left:2.875em;top:.70833em;position:absolute}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att .inner_show_txt{color:#fff;font-weight:700;font-size:1.16667em;-webkit-text-stroke:1px #000;position:absolute;top:.83333em;left:.83333em}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att:before{content:'';position:absolute;bottom:-.125em;left:-.125em;width:1.25em;height:1.25em;border-left:.125em solid #e2ded6;border-bottom:.125em solid #e2ded6;pointer-events:none}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att:after{content:'';position:absolute;bottom:-.125em;right:-.125em;width:1.25em;height:1.25em;border-right:.125em solid #e2ded6;border-bottom:.125em solid #e2ded6;pointer-events:none}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att .layout_att_inner{width:100%;height:100%}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att .layout_att_inner:before{content:'';position:absolute;top:-.125em;left:-.125em;width:1.25em;height:1.25em;border-left:.125em solid #e2ded6;border-top:.125em solid #e2ded6;pointer-events:none}.exam_skin_wood .layout_FillColor .com_layout_main .com_layout_main_att .layout_att_inner:after{content:'';position:absolute;top:-.125em;right:-.125em;width:1.25em;height:1.25em;border-right:.125em solid #e2ded6;border-top:.125em solid #e2ded6;pointer-events:none}.exam_skin_wood .layout_FillColor .FillColor_txt_wrap{position:absolute;right:0;top:0;left:5.66667em;height:100%;background:#f1ebde;border-radius:0 .66667em .66667em 0}.exam_skin_wood .layout_FillColor .FillColor_txt{height:30em;padding:.33333em 2.25em;overflow-y:auto;overflow-x:hidden}.exam_skin_wood .layout_FillColor .FillColor_txt .txt{line-height:1.8;display:inline-block;vertical-align:middle;font-size:1.75em;color:#333}.exam_skin_wood .layout_FillColor .left_fillcolor_bar{z-index:13;position:absolute;top:0;left:0;width:5.66667em;height:38.33333em}.exam_skin_wood .layout_FillColor .ndui-tool-colse{position:absolute;top:35em;left:1.41667em;z-index:20;cursor:pointer}.exam_skin_wood .layout_FillColor .ndui-tool-colse .ndui-btn-pic{display:inline-block;width:2.83333em;height:3.16667em;background-image:url(resources/wood/images/nudi_btn/ndui-tool-colse.png);background-size:100% auto}.exam_skin_wood .layout_FillColor .fc_seeexm_btn{position:absolute;right:-9.83333em;bottom:.125em;margin-right:0;margin-left:0;min-width:9.41667em}.exam_skin_wood .layout_FillColor .fc_seeexm_btn .text_box{font-size:1.25em;color:#5d390d}.exam_skin_wood .layout_FillColor .show_exm{position:absolute;padding:0 .20833em;text-align:center;right:-9.16667em;bottom:.125em}.exam_skin_wood .layout_FillColor .show_exm .show_exam_text{display:block;font-size:.99958em}.exam_skin_wood .layout_FillColor .show_exm .show_exam_icon{background:#fff;margin-top:.58333em;width:7.5em;height:4.66667em;display:inline-block;box-shadow:0 3px .41667em 1px rgba(0,0,0,.2);padding:.20833em}.exam_skin_wood .layout_FillColor .show_exm .show_exam_icon img{width:100%;height:100%}.exam_skin_wood .layout_FillColor .show_exm .show_exam_icon .enlarge_icon{position:absolute;right:.58333em;bottom:.33333em;background-image:url(resources/wood/images/enlarge_icon.png);background-size:100% 100%;width:1.875em;height:1.79167em}.exam_skin_wood .fillColor_wrapper.com_wrapper_board .com_layout_container{height:38.33333em;width:72.16667em}.exam_skin_wood .com_wrapper_pad .layout_FillColor .com_layout_main_att{position:absolute;right:9.45833em;left:initial;top:50%;margin-top:-16.58333em}.exam_skin_wood .com_wrapper_pad .layout_FillColor.take_up_leftbar .com_layout_main{left:0;border-radius:0 0 .66667em .66667em}.exam_skin_wood .com_wrapper_pad .layout_FillColor.take_up_leftbar .com_layout_main_att{position:absolute;right:9.45833em;left:initial;top:50%;margin-top:-16.58333em}.exam_skin_wood .com_wrapper_pad .layout_FillColor .ndui-tool.left_fillcolor_bar .fc_toning_palette{top:-12.91667em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui-tool-box{margin:0 auto;padding:3.625em 0 .70833em;width:5.08333em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_switch_btn.ndui-switch-finger{position:absolute;top:.83333em;left:.125em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_switch_btn.ndui-switch-finger .tip-off,.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_switch_btn.ndui-switch-finger .tip-on{display:none}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui-tool-cell{width:100%;height:5.08333em;margin-bottom:0;text-align:center;cursor:pointer;position:relative}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui-tool-cell:not(:nth-child(3)){z-index:999}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui-tool-cell:nth-child(4){margin-top:11em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .nhw_write_toolbar{position:absolute;top:3.75em;right:4.58333em;bottom:0;z-index:13;padding:0 .25em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor{display:inline-block;width:100%;height:100%}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor .ndui-btn-pic{display:block;width:5.08333em;height:3.5em;margin-bottom:-.25em;background-repeat:no-repeat;background-position:center center}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor .ndui-btn-text{font-size:1em;line-height:1.16667em;color:#544f49}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.ui-btn-active,.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor:active{background:rgba(213,162,79,.4);box-shadow:0 2px 0 0 rgba(255,255,255,.294),inset 0 2px 2px 0 rgba(4,0,0,.059)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.ui-btn-active.color .ndui-btn-pic,.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor:active.color .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_color_active.png)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.ui-btn-active.clear .ndui-btn-pic,.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor:active.clear .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/icon_dustbin_s.png)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.ui-btn-active.back .ndui-btn-pic,.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor:active.back .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_back_active.png)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.clear .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/icon_dustbin.png);background-size:3.91667em auto}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.back .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_back.png);background-size:4.41667em auto;margin-bottom:-.33333em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.color .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_color.png);background-size:4.16667em auto}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.click_disabled{-webkit-filter:grayscale(100%);filter:grayscale(100%);opacity:.5}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.click_disabled.clear .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/icon_dustbin_nothing.png);background-size:3.91667em auto}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.click_disabled:active{background:0 0;box-shadow:none}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.click_disabled:active.back .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_back.png);background-size:4.41667em auto;margin-bottom:-.33333em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .ndui_btn_fillcolor.click_disabled:active.color .ndui-btn-pic{background-image:url(resources/wood/images/nudi_btn/ndui_btn_color.png);background-size:4.16667em auto}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning{pointer-events:none;background:url(resources/wood/images/bg_fctoning_take.png) center center no-repeat;background-size:9.58333em 100%;display:block;border-radius:.75em;position:absolute;left:-1.33333em;top:-.25em;width:10em;padding:1.25em .5em .66667em;overflow:hidden;z-index:999;max-height:16.5em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_set{background:url(resources/wood/images/bg_fctoning_back.png) center center no-repeat;background-size:7.08333em 100%;left:-2.5em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_set .fix_color{-webkit-transform:translateX(-200px);transform:translateX(-200px)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_set .toning_toolbox .fc_toolrow:last-child{right:2.5em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_fix_set{background:url(resources/wood/images/bg_fctoning_back.png) center center no-repeat;background-size:9.83333em 100%;left:-3.75em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_fix_set .toning_toolbox .fc_toolrow.fix_color{margin-left:3em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning.contract_fix_set .toning_toolbox .fc_toolrow:last-child{-webkit-transform:translateX(200px);transform:translateX(200px)}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .toning_toolbox{text-align:left;width:100%;padding:0;z-index:9}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .toning_toolbox .fc_toolrow{pointer-events:auto;display:inline-block;text-align:center}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .toning_toolbox .fc_toolrow.fix_color{margin-left:.58333em;width:5.66667em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .toning_toolbox .fc_toolrow:last-child{position:absolute;right:.83333em;width:2.33333em}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom{position:relative;display:inline-block;width:1.95833em;height:1.95833em;margin:0 .20833em .375em 0;border-radius:50%;background-image:url(resources/wood/images/fc_listcom_bg.png);background-size:100% 100%;border:0 solid red}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom.blue .select_color_icon,.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom.green .select_color_icon,.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom.red .select_color_icon{background:red}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom .select_color_icon{position:absolute;display:inline-block;left:50%;top:50%;margin-left:-.77083em;margin-top:-.77083em;width:1.54167em;height:1.54167em;border-radius:50%}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom.on,.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom:active{border:.125em solid #ff8f00}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning .fc_listcom.on:before{position:absolute;bottom:-.16667em;right:-.25em;z-index:1;content:"";width:.91667em;height:.91667em;background:url(resources/wood/images/nudi_btn/toolbar_tool_on.png) top right no-repeat;background-size:100% auto}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning_palette{width:19.25em;height:38.5em;background-image:url(resources/wood/images/fillc_toning_palette_bg.png);background-size:100% 100%;border-radius:0 19.25em 19.25em 0;position:absolute;left:5.33333em;top:-13.875em;overflow:hidden}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning_palette .fctp_svg_container{width:38.5em;height:38.5em;margin-left:-100%;position:relative}.exam_skin_wood .ndui-tool.left_fillcolor_bar .fc_toning_palette .fctp_svg_container .svg_inner_con{width:37.66667em;height:37.66667em;position:absolute;top:.41667em;left:.41667em}@-webkit-keyframes con_show_animate{0%{-webkit-transform:scale(.1);transform:scale(.1)}100%{-webkit-transform:scale(1);transform:scale(1)}}@keyframes con_show_animate{0%{-webkit-transform:scale(.1);transform:scale(.1)}100%{-webkit-transform:scale(1);transform:scale(1)}}.addon_FillColorBusiness .locked{position:absolute;width:100%;height:100%;z-index:999}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="app com_layout_exam_content"><svg width="0" height="0" version="1.1" xmlns="http://www.w3.org/2000/svg" style="position: absolute; z-index: 79; left: 0px"><defs><linearGradient id="grid" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:rgb(255,255,255);stop-opacity:1"></stop><stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:1"></stop></linearGradient></defs></svg><router-view></router-view></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 21);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ns = 'fillColor@';
+exports.SET_ORIGINAL_SVG_STRING = ns + 'SET_ORIGINAL_SVG_STRING';
+exports.UPDATE_PATH_FILL = ns + 'UPDATE_PATH_FILL';
+exports.PUSH_HISTORY = ns + 'PUSH_HISTORY';
+exports.POP_HISTORY = ns + 'POP_HISTORY';
+exports.RECOVER = ns + 'RECOVER';
+exports.OPEN_CLEAR_CANVAS_CONFIRM = ns + 'OPEN_CLEAR_CANVAS_CONFIRM';
+exports.CLOSE_CLEAR_CANVAS_CONFIRM = ns + 'CLOSE_CLEAR_CANVAS_CONFIRM';
+exports.OPEN_FILL_COLOR_SAMPLE = ns + 'OPEN_FILL_COLOR_SAMPLE';
+exports.CLOSE_FILL_COLOR_SAMPLE = ns + 'CLOSE_FILL_COLOR_SAMPLE';
+exports.CLEAR_CANVAS = ns + 'CLEAR_CANVAS';
+exports.OPEN_TOUCH = ns + 'OPEN_TOUCH';
+exports.CLOSE_TOUCH = ns + 'CLOSE_TOUCH';
+var Store = function () {
+    var state = {
+        paths: [],
+        fillMap: {},
+        fillMapBackup: {},
+        strokes: 0,
+        maxHistoryLength: 10,
+        history: [],
+        touchable: false,
+        showClearCanvasConfirm: false,
+        showFillColorSample: false,
+    };
+    var mutations = (_a = {},
+        _a[exports.SET_ORIGINAL_SVG_STRING] = function (state, data) {
+            var el = document.createElement('div');
+            el.innerHTML = data;
+            var subEl = el.getElementsByTagName('path');
+            var paths = [];
+            var fillMap = {};
+            for (var i = 0; i < subEl.length; i++) {
+                if (subEl[i].getAttribute('data-type') != 'base_path') {
+                    var id = '_' + i;
+                    var d = subEl[i].getAttribute('d');
+                    var fill = subEl[i].getAttribute('fill') || '';
+                    paths.push({ id: id, d: d });
+                    fillMap[id] = fill;
+                }
+            }
+            state.paths = paths;
+            state.fillMap = fillMap;
+            state.fillMapBackup = JSON.stringify(fillMap);
+        },
+        _a[exports.RECOVER] = function (state, data) {
+            state.fillMap = data.fillMap || {};
+            state.history = data.history || [];
+            state.strokes = data.strokes || 0;
+        },
+        _a[exports.UPDATE_PATH_FILL] = function (state, data) {
+            state.fillMap[data.id] = data.fill;
+        },
+        _a[exports.PUSH_HISTORY] = function (state, data) {
+            var ls = state.history.concat(data);
+            if (ls.length > state.maxHistoryLength) {
+                ls.shift();
+            }
+            state.history = ls;
+            state.strokes += 1;
+        },
+        _a[exports.POP_HISTORY] = function (state) {
+            if (state.history.length) {
+                state.fillMap = Object.assign(state.fillMap, state.history.pop());
+                state.strokes -= 1;
+            }
+        },
+        _a[exports.CLEAR_CANVAS] = function (state) {
+            state.history = [];
+            state.fillMap = JSON.parse(state.fillMapBackup);
+            state.strokes = 0;
+        },
+        _a[exports.OPEN_CLEAR_CANVAS_CONFIRM] = function (state, data) {
+            state.showClearCanvasConfirm = true;
+        },
+        _a[exports.CLOSE_CLEAR_CANVAS_CONFIRM] = function (state, data) {
+            state.showClearCanvasConfirm = false;
+        },
+        _a[exports.OPEN_FILL_COLOR_SAMPLE] = function (state, data) {
+            state.showFillColorSample = true;
+        },
+        _a[exports.CLOSE_FILL_COLOR_SAMPLE] = function (state, data) {
+            state.showFillColorSample = false;
+        },
+        _a[exports.OPEN_TOUCH] = function (state) {
+            state.touchable = true;
+        },
+        _a[exports.CLOSE_TOUCH] = function (state) {
+            state.touchable = false;
+        },
+        _a);
+    return {
+        state: state,
+        mutations: mutations
+    };
+    var _a;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+//mutation type 切换显示选色盘
+exports.TOGGLE_SHOW_COLORDISK = 'COLOR_DISK/TOGGLE_SHOW_COLORDISK';
+//mutation type 设置画笔颜色
+exports.SET_FILLCOLOR = 'COLOR_DISK/SET_FILLCOLOR';
+//mutation type 设置默认颜色
+exports.SET_DEFAULTCOLORS = 'COLOR_DISK/SET_DEFAULTCOLORS';
+//mutation type 设置用户自定义颜色
+exports.SET_CUSTOMCOLORS = 'COLOR_DISK/SET_CUSTOMCOLORS';
+//getter type 获取画笔颜色
+exports.GET_FILLCOLOR = 'COLOR_DISK/GET_FILLCOLOR';
+//getter type 获取默认颜色
+exports.GET_DEFAULT_COLORS = 'COLOR_DISK/GET_DEFAULT_COLORS';
+//getter type 获取用户自定义颜色
+exports.GET_CUSTOM_COLORS = 'COLOR_DISK/GET_CUSTOM_COLORS';
+//getter type 获取选色盘显示状态
+exports.GET_SHOW_COLORDISK = 'COLOR_DISK/GET_SHOW_COLORDISK';
+var Store = function () {
+    //默认补全色列表
+    var DEFAULT_COLORS = [
+        'rgb(252,83,0)',
+        'rgb(240,117,31)',
+        'rgb(240,239,27)',
+        'rgb(52,204,11)',
+        'rgb(29,173,190)',
+        'rgb(35,93,223)',
+        'rgb(132,24,215)',
+        'rgb(111,111,111)',
+        'rgb(35,35,35)'
+    ];
+    //默认自定义色
+    var DEFAULT_CUSTOM_COLORS = [
+        'none',
+        'none',
+        'none',
+        'none',
+        'none',
+        'none'
+    ];
+    var state = {
+        //当前画笔颜色 rgb
+        fillColor: '',
+        //是否显示调色板
+        showColorDisk: false,
+        //默认色组
+        defaultColors: DEFAULT_COLORS.slice(0),
+        //自定义色组
+        customColors: DEFAULT_CUSTOM_COLORS.slice(0)
+    };
+    var getters = (_a = {},
+        _a[exports.GET_FILLCOLOR] = function (state) {
+            return state.fillColor;
+        },
+        _a[exports.GET_DEFAULT_COLORS] = function (state) {
+            return state.defaultColors;
+        },
+        _a[exports.GET_CUSTOM_COLORS] = function (state) {
+            return state.customColors;
+        },
+        _a[exports.GET_SHOW_COLORDISK] = function (state) {
+            return state.showColorDisk;
+        },
+        _a);
+    var mutations = (_b = {},
+        _b[exports.SET_FILLCOLOR] = function (state, color) {
+            state.fillColor = color;
+        },
+        _b[exports.SET_CUSTOMCOLORS] = function (state, colors) {
+            if (colors.length > state.customColors.length) {
+                colors.splice(state.customColors.length, colors.length - state.customColors.length);
+            }
+            colors.forEach(function (color, index) {
+                Vue.set(state.customColors, index, color);
+            });
+        },
+        _b[exports.SET_DEFAULTCOLORS] = function (state, colors) {
+            var maxCount = 12;
+            //把待选色塞入默认色
+            for (var i = 0; i < state.defaultColors.length; i++) {
+                if (colors.indexOf(state.defaultColors[i]) !== -1) {
+                    colors.push(state.defaultColors[i]);
+                }
+            }
+            //设置的默认色大于12个时，删除到只剩12个
+            if (colors.length > maxCount) {
+                colors.splice(maxCount, colors.length - maxCount);
+            }
+            //设置的默认色不足12个时，随机补足
+            if (colors.length < maxCount) {
+                for (var i = 0, cl = colors.length; i < maxCount - cl; i++) {
+                    colors.push("#" + Math.floor(0x1000000 + Math.random() * 0x1000000).toString(16).slice(1));
+                }
+            }
+            state.defaultColors = colors;
+        },
+        _b[exports.TOGGLE_SHOW_COLORDISK] = function (state, action) {
+            if (typeof action == 'undefined') {
+                state.showColorDisk = !state.showColorDisk;
+            }
+            else if (action == 'show') {
+                state.showColorDisk = true;
+            }
+            else {
+                state.showColorDisk = false;
+            }
+        },
+        _b);
+    return {
+        state: state,
+        getters: getters,
+        mutations: mutations
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ns = 'storage@';
+exports.SET_REF = ns + 'SET_REF';
+exports.SET_MODEL = ns + 'SET_MODEL';
+exports.SET_ANSWER_DATA_BASE64 = ns + 'SET_ANSWER_DATA_BASE64';
+exports.SET_SCALE = ns + 'SET_SCALE';
+var State = function () {
+    var state = {
+        svgEl: null,
+        svgWrapEl: null,
+        model: null,
+        answerDataBase64: '',
+        scale: 0
+    };
+    var mutations = (_a = {},
+        _a[exports.SET_REF] = function (state, data) {
+            state.svgEl = data.svgEl;
+            state.svgWrapEl = data.svgWrapEl;
+        },
+        _a[exports.SET_MODEL] = function (state, data) {
+            state.model = data;
+        },
+        _a[exports.SET_ANSWER_DATA_BASE64] = function (state, data) {
+            state.answerDataBase64 = data;
+        },
+        _a[exports.SET_SCALE] = function (state, data) {
+            state.scale = data;
+        },
+        _a);
+    return {
+        state: state,
+        mutations: mutations
+    };
+    var _a;
+};
+exports.default = State;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var colordisk_1 = __webpack_require__(3);
+var toolbar_1 = __webpack_require__(6);
+var fillColor_1 = __webpack_require__(1);
+var storage_1 = __webpack_require__(4);
+//mutation type 设置题目标题
+exports.SET_QUESTION_TITLE = 'INDEX/SET_QUESTION_TITLE';
+//mutation type 设置显示工具栏与否
+exports.SET_SHOW_TOOLBAR = 'INDEX/SET_SHOW_TOOLBAR';
+//mutation type 操作锁屏
+exports.TOGGLE_LOCKED = 'INDEX/TOGGLE_LOCKED';
+exports.Store = function () {
+    return {
+        modules: {
+            colordisk: colordisk_1.default,
+            toolbar: toolbar_1.default,
+            fillColor: fillColor_1.default,
+            storage: storage_1.default
+        },
+        state: {
+            questionTitle: '',
+            showToolbar: true,
+            locked: false
+        },
+        mutations: (_a = {},
+            _a[exports.SET_QUESTION_TITLE] = function (state, title) {
+                state.questionTitle = title;
+            },
+            _a[exports.SET_SHOW_TOOLBAR] = function (state, show) {
+                state.showToolbar = show;
+            },
+            _a[exports.TOGGLE_LOCKED] = function (state, locked) {
+                state.locked = locked;
+            },
+            _a)
+    };
+    var _a;
+};
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var index_1 = __webpack_require__(5);
+var fillColor_1 = __webpack_require__(1);
+var colordisk_1 = __webpack_require__(3);
+//mutation type 更改toolbar配置的值
+exports.SET_TOOLBAR_MEMBERS_VALUE = 'TOOLBAR/SET_TOOLBAR_MEMBERS_VALUE';
+exports.MEMBERS_ID = {
+    finger: 'preset.switch.finger',
+    empty: 'empty',
+    toggleColorDisk: 'toggle-colordisk',
+    back: 'back',
+    close: 'preset.fold.close'
+};
+var Store = function ($services) {
+    var members = [
+        {
+            id: exports.MEMBERS_ID.finger,
+            text: ['on', 'off'],
+            actived: false,
+            style: 'ndui-switch-finger fc_switch_btn',
+            handler: function ($vue, _a) {
+                var value = _a.value;
+                var key = value ? fillColor_1.OPEN_TOUCH : fillColor_1.CLOSE_TOUCH;
+                $vue.$store.commit(key);
+                //状态同步
+                $vue.$store.commit(exports.SET_TOOLBAR_MEMBERS_VALUE, {
+                    id: exports.MEMBERS_ID.finger,
+                    key: 'actived',
+                    value: value
+                });
+            }
+        },
+        {
+            id: exports.MEMBERS_ID.empty,
+            text: $services.i18n('empty'),
+            order: 30,
+            style: 'ndui_btn_fillcolor clear',
+            disabled: true,
+            disabledStyle: 'click_disabled',
+            handler: function ($vue) {
+                $vue.$store.commit(fillColor_1.OPEN_CLEAR_CANVAS_CONFIRM);
+                $vue.$store.commit(colordisk_1.TOGGLE_SHOW_COLORDISK, 'hide');
+            }
+        },
+        {
+            id: exports.MEMBERS_ID.toggleColorDisk,
+            text: $services.i18n('color_disk'),
+            order: 40,
+            style: 'ndui_btn_fillcolor color',
+            actived: false,
+            activedStyle: 'ui-btn-active',
+            handler: function ($vue, _a) {
+                var value = _a.value;
+                $vue.$store.commit(colordisk_1.TOGGLE_SHOW_COLORDISK, value ? 'show' : 'hide');
+            }
+        },
+        {
+            id: exports.MEMBERS_ID.back,
+            text: $services.i18n('last_step'),
+            order: 60,
+            style: 'ndui_btn_fillcolor back',
+            disabled: true,
+            disabledStyle: 'click_disabled',
+            handler: function ($vue) {
+                $vue.$store.commit(fillColor_1.POP_HISTORY);
+                $vue.$store.commit(colordisk_1.TOGGLE_SHOW_COLORDISK, 'hide');
+            }
+        },
+        {
+            id: exports.MEMBERS_ID.close,
+            order: 70,
+            style: 'ndui-tool-colse',
+            actived: false,
+            handler: function ($vue, _a) {
+                var value = _a.value;
+                $vue.$store.commit(index_1.SET_SHOW_TOOLBAR, !value);
+            }
+        }
+    ];
+    return {
+        state: {
+            members: members
+        },
+        getters: (_a = {},
+            _a[__ModuleComponent.ToolbarGetters.Members] = function (state) {
+                return state.members;
+            },
+            _a),
+        mutations: (_b = {},
+            //更改members配置的值
+            _b[exports.SET_TOOLBAR_MEMBERS_VALUE] = function (state, _a) {
+                var id = _a.id, key = _a.key, value = _a.value;
+                state.members.forEach(function (member) {
+                    if (member.id == id && member.hasOwnProperty(key)) {
+                        Vue.set(member, key, value);
+                    }
+                });
+            },
+            _b)
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+//mixins: i18n
+exports.i18n = {
+    beforeCreate: function () {
+        //root component
+        if (this !== this.$root) {
+            (this.$options.methods || (this.$options.methods = {}))['$i18n'] = function () {
+                return this.$root.$i18n.apply(this.$root, arguments);
+            };
+        }
+    }
+};
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = VueServiceDecorator;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var index_1 = __webpack_require__(28);
+exports.routes = [
+    {
+        path: "*",
+        name: 'Index',
+        component: index_1.default
+    }
+];
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var FillColorInterface = (function () {
+    function FillColorInterface(parent) {
+        this.parent = parent;
+        this.parent = parent;
+    }
+    /**
+     * 【生生互评组件实现-1】
+     * @param data
+     */
+    FillColorInterface.prototype.startCommentDataParse = function (data) {
+        this.parent.logger.debug('startCommentDataParse start');
+        var background = {
+            type: 3,
+            url: '',
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: 800,
+            height: 600,
+            writer_width: 0,
+            writer_height: 0
+        };
+        // 互评数据
+        var studentCommentData = JSON.parse(data.data);
+        Object.assign(studentCommentData.data[0], { extra: { background: background } });
+        // 学生本机答案
+        var answerData = [
+            {
+                type: 'image',
+                data_type: 'image',
+                value: this.parent.store.state.storage.answerDataBase64 || '',
+                extra: {
+                    answer_index: 0,
+                    background: background
+                }
+            }
+        ];
+        var id = this.parent.model.id = ClassroomUtils.uuid();
+        //生生互评数据配置
+        var requireConfig = {
+            presenterId: 'StudentComment',
+            name: 'StudentComment',
+            layout: {
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%'
+            },
+            properties: [
+                { name: 'startTimestamp', type: 'int', value: data.startTimestamp },
+                { name: 'targetUserId', type: 'string', value: data.targetUserId },
+                { name: 'targetUserName', type: 'string', value: data.targetUserName },
+                { name: 'isAnonymous', type: 'string', value: data.isAnonymous.toString() },
+                { name: 'id', type: 'string', value: id },
+                { name: 'originalPageNum', type: 'int', value: 1 },
+                { name: 'data', type: 'json', value: studentCommentData, text: JSON.stringify(studentCommentData) },
+                { name: 'answerData', type: 'json', value: answerData, text: JSON.stringify(answerData) }
+            ]
+        };
+        //启动生生互评
+        this.parent.playerController.require(requireConfig);
+    };
+    /**
+     * 【生生互评组件实现-2】
+     */
+    FillColorInterface.prototype.startCommentSuccess = function () { };
+    /**
+     * 【生生互评组件实现-3】
+     */
+    FillColorInterface.prototype.startCommentFail = function () { };
+    return FillColorInterface;
+}());
+exports.default = FillColorInterface;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var colordisk_1 = __webpack_require__(3);
+var toolbar_1 = __webpack_require__(6);
+var fillColor_1 = __webpack_require__(1);
+var index_1 = __webpack_require__(5);
+var storage_1 = __webpack_require__(4);
+var FillColorService = (function () {
+    function FillColorService(parent) {
+        this.parent = parent;
+        this.parent = parent;
+    }
+    /**
+     * 【实现状态恢复-1】 获取状态恢复时需要保存的数据
+     * @returns {string}
+     */
+    FillColorService.prototype.getState = function () {
+        this.parent.logger.debug('FillColor Business getState');
+        var state = {
+            // 自定义颜色数据
+            customColors: this.parent.store.getters[colordisk_1.GET_CUSTOM_COLORS],
+            // 填色数据
+            fill: {
+                fillMap: this.parent.store.state.fillColor.fillMap,
+                history: this.parent.store.state.fillColor.history,
+                strokes: this.parent.store.state.fillColor.strokes
+            }
+        };
+        return JSON.stringify(state);
+    };
+    /**
+     * 【实现状态恢复-2】 状态恢复
+     * @param state
+     */
+    FillColorService.prototype.setState = function (state) {
+        this.parent.logger.debug('FillColor Business setState');
+        try {
+            var data = JSON.parse(state);
+            // 恢复自定义色
+            this.parent.store.commit(colordisk_1.SET_CUSTOMCOLORS, data.customColors);
+            // 恢复填色数据
+            this.parent.store.commit(fillColor_1.RECOVER, data.fill);
+        }
+        catch (e) {
+            this.parent.logger.error('FillColor Business setState error');
+        }
+    };
+    /**
+     * 【实现互动题型接口-1】 填色游戏信息
+     * @returns {{id: string, type_code: string, type_name: string, url: string, subjective: boolean}}
+     */
+    FillColorService.prototype.getQuestionInfo = function () {
+        return {
+            id: this.parent.model.questionId,
+            type_code: 'fillcolor',
+            type_name: '填色游戏',
+            url: '',
+            subjective: true
+        };
+    };
+    /**
+     * 【实现互动题型接口-2】 获取题目的作答结果
+     * @returns {{questionId: string, questionType: string, answerState: string, answer: {answer_result: boolean, correct_response: Array, user_response: [Promise<T>]}}}
+     */
+    FillColorService.prototype.getResult = function () {
+        this.parent.logger.debug('FillColor Business getResult');
+        var that = this;
+        var questionId = this.parent.store.state.storage.model.questionId;
+        var svgEl = this.parent.store.state.storage.svgEl;
+        var svgWrapEl = this.parent.store.state.storage.svgWrapEl;
+        var fillMap = this.parent.store.state.fillColor.fillMap;
+        var promise = new Promise(function (resolve, reject) {
+            try {
+                var width = svgWrapEl.clientWidth;
+                var height = svgWrapEl.clientHeight;
+                svgEl.setAttribute("width", width);
+                svgEl.setAttribute("height", height);
+                var svgString = new XMLSerializer().serializeToString(svgEl);
+                var svg = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                var url = URL.createObjectURL(svg);
+                var canvas_1 = document.createElement('canvas');
+                canvas_1.width = width;
+                canvas_1.height = height;
+                var img_1 = new Image();
+                img_1.onload = function () {
+                    var ctx = canvas_1.getContext('2d');
+                    ctx.drawImage(img_1, 0, 0);
+                    var imageSrc = canvas_1.toDataURL('image/webp').replace('data:image/webp;base64,', '');
+                    var answer = {
+                        type: 'image',
+                        data_type: 'image',
+                        value: imageSrc,
+                        extra: {
+                            subType: "webp",
+                            raw: JSON.stringify(fillMap)
+                        }
+                    };
+                    resolve([answer]);
+                    that.parent.store.commit(storage_1.SET_ANSWER_DATA_BASE64, imageSrc);
+                };
+                img_1.crossOrigin = 'Anonymous';
+                img_1.src = url;
+            }
+            catch (e) {
+                reject({});
+            }
+        });
+        return {
+            questionId: questionId,
+            questionType: 'fillcolor',
+            answerState: 'COMPLETE',
+            answer: {
+                answer_result: true,
+                correct_response: [],
+                user_response: [promise]
+            }
+        };
+    };
+    /**
+     * 【实现互动题型接口-3】 锁屏幕
+     */
+    FillColorService.prototype.lockQuestion = function () {
+        this.parent.logger.debug('Lock question');
+        //屏幕不可点
+        this.parent.store.commit(index_1.TOGGLE_LOCKED, true);
+        //收起选色转盘
+        this.parent.store.commit(colordisk_1.TOGGLE_SHOW_COLORDISK, 'hide');
+        this.parent.store.commit(toolbar_1.SET_TOOLBAR_MEMBERS_VALUE, {
+            id: toolbar_1.MEMBERS_ID.toggleColorDisk,
+            key: 'actived',
+            value: false
+        });
+    };
+    /**
+     * 【实现互动题型接口-4】 解锁屏幕
+     */
+    FillColorService.prototype.unlockQuestion = function () {
+        this.parent.logger.debug('Unlock question');
+        this.parent.store.commit(index_1.TOGGLE_LOCKED, false);
+    };
+    /**
+     * 【实现互动题型接口-5】 重置题目
+     */
+    FillColorService.prototype.resetQuestion = function () {
+        this.parent.logger.debug('Reset question');
+        var state = this.parent.stateStorage;
+        //锁屏单独处理
+        state.locked = true;
+        //状态重置
+        this.parent.store.replaceState(state);
+    };
+    /**
+     * 【实现互动题型接口-6-8】
+     */
+    FillColorService.prototype.showAnswer = function () { };
+    FillColorService.prototype.finishQuestion = function () { };
+    FillColorService.prototype.showResultHint = function () { };
+    /**
+     * 【实现完成提交答案接口-1】 获取questionid
+     * @returns {string}
+     */
+    FillColorService.prototype.getInterceptId = function () {
+        return this.parent.store.state.storage.model.questionId;
+    };
+    /**
+     * 【实现完成提交答案接口-2】
+     * @param data
+     * @returns {any}
+     */
+    FillColorService.prototype.beforeSendAnswer = function (data) {
+        if (!!data.answer && data.answer.user_response.length > 0) {
+            data.answer.data = data.answer.user_response[0];
+            delete data.answer.user_response;
+        }
+        return data;
+    };
+    /**
+     * 【实现完成提交答案接口-3】
+     */
+    FillColorService.prototype.afterSendAnswer = function () { };
+    /**
+     * 【实现国际化服务】
+     * @param data
+     */
+    FillColorService.prototype.setLocationProperties = function (data) {
+        this.parent.$translator.setData(data);
+    };
+    return FillColorService;
+}());
+exports.default = FillColorService;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = VueRouter;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = _;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"comui_big_pop pop_nobg ui_pop_sccess\" v-if=show><div class=comui_pop_notebook_bg><div class=comui_pop_notebook_bg_papper><div class=comui_pop_papper_main><div class=comui_pop_papper_txt>{{$i18n('empty_fill_color_tip')}}</div><div class=comui_pop_btn_item><a class=com_btn_round2 href=javascript:; @click=cancel><span class=text_box>{{$i18n('cancel')}}</span></a> <a class=\"com_btn_round2 right\" href=javascript:; @click=confirm><span class=text_box>{{$i18n('confirm')}}</span></a></div></div></div></div></div>"
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = "<div><div class=fc_toning :class=\"{contract_set: showColorDisk}\"><div class=fc_toningpop><div class=toning_toolbox><p class=\"fc_toolrow clearfix fix_color\"><a href=javascript:; class=fc_listcom v-for=\"color in defaultColors\" :class=\"{on: color == fillColor}\" @click.stop=setFillColor(color)><span class=select_color_icon :style=\"{background: color}\"></span></a></p><p class=\"fc_toolrow clearfix\"><a href=javascript:; class=fc_listcom v-for=\"color in customColors\" :class=\"{on: color == fillColor}\" @click.stop=setFillColor(color)><span class=select_color_icon :style=\"{background: color}\"></span></a></p></div></div></div><div class=fc_toning_palette v-show=showColorDisk @click.stop><div class=fctp_svg_container><div class=svg_inner_con><svg width=100% height=100% version=1.1 xmlns=http://www.w3.org/2000/svg :view-box.camel=\"'0 0 640 640'\"><g><circle @click=ringColor($event) cx=320 cy=320 r=112 fill=transparent stroke-width=40 stroke=url(#grid)></circle></g><g><circle cx=320 cy=320 r=66 :fill=fillColor stroke-width=0 stroke=#000000></circle></g></svg></div><div class=svg_inner_con ref=disk :style=\"{transform:'rotateZ('+ diskRollAngle +'deg) translateZ(0)'}\"><svg width=100% height=100% version=1.1 xmlns=http://www.w3.org/2000/svg :view-box.camel=\"'0 0 640 640'\"><g style=\"transform-origin: 320px 320px;\" @touchstart.stop=diskTouchStart($event) @touchmove.stop=diskRoll($event) @touchend.stop=diskStopRoll() @mousedown.stop=handleMouseDown($event)><circle cx=320 cy=320 r=240 fill=transparent stroke-width=160 stroke=#fff></circle><path v-for=\"diskPath in diskPaths\" @click=setAndRememberFillColor(diskPath.color) :d=diskPath.path :fill=diskPath.color stroke=#fff stroke-width=2></path></g><g><circle @click=ringColor($event) cx=320 cy=320 r=112 fill=transparent stroke-width=40 stroke=transparent></circle></g><g><circle cx=320 cy=320 r=90 fill=transparent></circle></g></svg></div></div></div></div>"
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = "<div ref=wrap style=width:100%;height:100%;><resizable-draggable><svg ref=svg style=margin:0;padding:0;background-color:#fff; width=100% height=100% preserveaspectratio=\"xMidYMid meet\" :view-box.camel=\"'0 0 1920.000000 1200.000000'\" @touchstart.prevent=handleStart @touchmove.prevent=handleMove @touchend.prevent=handleEnd @mousedown.prevent=handleStart @mousemove=handleMove @mouseup=handleEnd><g transform=\"translate(0.000000,1200.000000) scale(0.100000,-0.100000)\" fill=#ffffff><path fill=#000000 d=\"M0 0 L19200.000000 0 19200.000000 12000.000000 0 12000.000000z\" data-type=base_path></path><path v-for=\"(item, index) in paths\" :key=item.id :data-id=item.id :d=item.d :fill=fillMap[item.id]></path></g></svg></resizable-draggable></div>"
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = "<div v-show=!isStudent><div style=position:absolute;left:0;right:0;top:0;bottom:0; v-show=show><div class=inner><img :src=model.fillColorData.expectedImage><div class=inner_show_txt>{{$i18n('fill_color_sample')}}</div></div></div><a class=\"com_btn_round2 fc_seeexm_btn\" v-if=model.fillColorData.isDemoHidden @click=toggleDemo><span class=text_box v-if=!show>{{$i18n('show_fill_color_sample')}}</span> <span class=text_box v-else>{{$i18n('hide_fill_color_sample')}}</span></a><div class=show_exm v-else><span class=show_exam_text v-if=!show>{{$i18n('fill_color_sample')}}</span> <span class=show_exam_text v-else>{{$i18n('go_back_fill_color')}}</span> <a class=show_exam_icon @click=toggleDemo><img :src=model.fillColorData.expectedImage v-if=!show><svg v-else ref=svg style=margin:0;padding:0; width=100% height=100% preserveaspectratio=\"xMidYMid meet\" :view-box.camel=\"'0 0 1920.000000 1200.000000'\"><g transform=\"translate(0.000000,1200.000000) scale(0.100000,-0.100000)\" fill=#ffffff><path fill=#000000 d=\"M0 0 L19200.000000 0 19200.000000 12000.000000 0 12000.000000z\" data-type=base_path></path><path v-for=\"(item, index) in paths\" :key=item.id :data-id=item.id :d=item.d :fill=fillMap[item.id]></path></g></svg><span class=enlarge_icon></span></a></div></div>"
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = "<div style=position:relative;width:100%;height:100%;overflow:hidden;><div ref=rnd :style=\"{ position: 'absolute', width: '100%', height: '100%', transform: getTransform, transition: getTransition }\" @touchstart.stop.prevent=handleStart @touchmove.stop.prevent=handleMove @touchend.stop.prevent=handleEnd @mousedown.stop.prevent=handleStart @mousemove.prevent=handleMove @mouseup.prevent=handleEnd @mouseleave.prevent=handleEnd @mousewheel.prevent=handleMouseWheel><slot></slot></div></div>"
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=layout_FillColor :class=\"{take_up_leftbar: !showToolbar}\"><div><div class=FillColor_txt_wrap><div class=FillColor_txt><div class=fc_title_box><div class=txt>{{questionTitle}}</div></div></div></div><div class=com_layout_main><div class=com_layout_main_att><div class=layout_att_inner><fill-color></fill-color><fill-example></fill-example></div></div></div><toolbar class=left_fillcolor_bar :panel-index=2><template slot=panel><color-disk></color-disk></template></toolbar></div><div class=locked v-show=locked></div><clear-canvas-confirm></clear-canvas-confirm></div>"
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var Vuex = __webpack_require__(7);
+var VueRouter = __webpack_require__(13);
+var _ = __webpack_require__(14);
+var store_1 = __webpack_require__(5);
+var router_1 = __webpack_require__(10);
+var index_1 = __webpack_require__(5);
+var colordisk_1 = __webpack_require__(3);
+var storage_1 = __webpack_require__(4);
+var fillColor_1 = __webpack_require__(1);
+var FillColorService_1 = __webpack_require__(12);
+var FillColorInterface_1 = __webpack_require__(11);
+var FillColorBusiness;
+(function (FillColorBusiness) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this) || this;
+            _this.metaInfo = {
+                name: 'FillColorBusiness',
+                type: PresenterType.PRESENTER_COMPONENT
+            };
+            _this.logger = Logger.get(_this.metaInfo.name);
+            _this.logger.appendHandler(_this.$defaultLoggerHandle, { level: Logger.DEBUG });
+            return _this;
+        }
+        Presenter.prototype.getService = function () {
+            if (!!this._service_) {
+                return this._service_;
+            }
+            return this._service_ = new FillColorService_1.default(this);
+        };
+        /**
+         * 状态恢复
+         * @param store
+         * @param model
+         */
+        Presenter.restore = function (store, model) {
+            store.commit(storage_1.SET_MODEL, model);
+            // 初始化原图
+            store.commit(fillColor_1.SET_ORIGINAL_SVG_STRING, model.fillColorData.origineSVGString || '');
+            // 初始化色板默认色
+            store.commit(colordisk_1.SET_DEFAULTCOLORS, model.fillColorData.defaultColor || []);
+            // 初始化当前画笔颜色
+            store.commit(colordisk_1.SET_FILLCOLOR, model.fillColorData.defaultColor[0]);
+            // 初始化标题
+            store.commit(index_1.SET_QUESTION_TITLE, model.fillColorData.title);
+        };
+        Presenter.prototype.run = function (view, model) {
+            this.logger.debug(model);
+            this.model = model;
+            this.__interface = new FillColorInterface_1.default(this);
+            var storeService = {
+                // 注入国际化服务
+                i18n: this.$translator.translate.bind(this.$translator)
+            };
+            this.store = new Vuex.Store(store_1.Store, storeService);
+            // 状态恢复
+            Presenter.restore(this.store, model);
+            //保存初始化状态，用于resetQuestion方法使用
+            // this.stateString = Object.assign({}, this.store.state);
+            this.stateStorage = _.defaultsDeep({}, this.store.state);
+            // 实例化vue
+            this.$vueRoot = new Vue({
+                el: ".app",
+                store: this.store,
+                presenter: this,
+                methods: {
+                    // 国际化方法
+                    $i18n: this.$translator.translate.bind(this.$translator)
+                },
+                router: new VueRouter({
+                    routes: router_1.routes
+                })
+            });
+        };
+        Presenter.prototype.destroy = function () {
+            // 触发根组件的销毁事件
+            this.$vueRoot.$destroy();
+        };
+        return Presenter;
+    }(BasicPresenter));
+    FillColorBusiness.Presenter = Presenter;
+})(FillColorBusiness || (FillColorBusiness = {}));
+window['AddonFillColorBusiness_create'] = function () {
+    return new FillColorBusiness.Presenter();
+};
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var mixins_1 = __webpack_require__(8);
+var fillColor_1 = __webpack_require__(1);
+var ClearCanvasConfirm = (function (_super) {
+    __extends(ClearCanvasConfirm, _super);
+    function ClearCanvasConfirm() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ClearCanvasConfirm.prototype, "show", {
+        get: function () {
+            return this.$store.state.fillColor.showClearCanvasConfirm;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClearCanvasConfirm.prototype.confirm = function () {
+        this.$store.commit(fillColor_1.CLOSE_CLEAR_CANVAS_CONFIRM);
+        this.$store.commit(fillColor_1.CLEAR_CANVAS);
+    };
+    ClearCanvasConfirm.prototype.cancel = function () {
+        this.$store.commit(fillColor_1.CLOSE_CLEAR_CANVAS_CONFIRM);
+    };
+    return ClearCanvasConfirm;
+}(Vue));
+ClearCanvasConfirm = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(15),
+        mixins: [mixins_1.i18n]
+    })
+], ClearCanvasConfirm);
+exports.default = ClearCanvasConfirm;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var vuex_1 = __webpack_require__(7);
+var colordisk_1 = __webpack_require__(3);
+var toolbar_1 = __webpack_require__(6);
+var utils_1 = __webpack_require__(27);
+//转盘颜色数组
+var COLORS = ["rgb(146,210,245)", "rgb(122,204,242)", "rgb(173,220,236)", "rgb(170,219,236)", "rgb(135,205,230)", "rgb(128,204,222)", "rgb(202,231,238)", "rgb(169,218,223)", "rgb(143,208,214)", "rgb(145,208,208)", "rgb(141,206,202)", "rgb(195,227,224)", "rgb(162,212,206)", "rgb(162,212,200)", "rgb(181,220,201)", "rgb(178,219,201)", "rgb(170,212,162)", "rgb(209,228,182)", "rgb(225,235,183)", "rgb(238,238,142)", "rgb(246,240,142)", "rgb(252,245,157)", "rgb(255,245,131)", "rgb(255,245,130)", "rgb(254,243,96)", "rgb(255,239,94)", "rgb(255,236,124)", "rgb(254,242,184)", "rgb(255,238,132)", "rgb(254,228,131)", "rgb(252,222,150)", "rgb(252,217,114)", "rgb(251,219,158)", "rgb(247,186,123)", "rgb(253,231,184)", "rgb(248,202,166)", "rgb(249,208,176)", "rgb(244,175,144)", "rgb(247,198,184)", "rgb(245,189,188)", "rgb(242,170,181)", "rgb(246,195,202)", "rgb(245,198,208)", "rgb(243,179,196)", "rgb(247,204,221)", "rgb(250,213,221)", "rgb(245,187,211)", "rgb(242,169,196)", "rgb(246,198,220)", "rgb(240,155,194)", "rgb(242,179,206)", "rgb(240,186,212)", "rgb(242,200,220)", "rgb(239,197,221)", "rgb(235,203,224)", "rgb(231,212,231)", "rgb(207,180,213)", "rgb(202,170,207)", "rgb(188,163,205)", "rgb(227,218,235)", "rgb(196,189,222)", "rgb(183,186,221)", "rgb(167,172,214)", "rgb(208,221,240)", "rgb(208,229,246)", "rgb(191,215,238)", "rgb(181,217,243)", "rgb(159,205,238)", "rgb(202,231,249)", "rgb(85,185,234)", "rgb(29,183,237)", "rgb(86,194,233)", "rgb(103,197,231)", "rgb(38,185,218)", "rgb(35,184,214)", "rgb(158,214,227)", "rgb(118,199,203)", "rgb(118,199,202)", "rgb(116,197,198)", "rgb(83,189,185)", "rgb(180,221,217)", "rgb(136,203,194)", "rgb(122,197,176)", "rgb(154,209,186)", "rgb(171,216,195)", "rgb(160,208,156)", "rgb(193,221,162)", "rgb(214,230,168)", "rgb(228,230,95)", "rgb(240,234,94)", "rgb(254,242,111)", "rgb(255,243,89)", "rgb(255,243,99)", "rgb(253,240,65)", "rgb(255,235,74)", "rgb(255,231,97)", "rgb(255,235,152)", "rgb(255,233,101)", "rgb(251,209,81)", "rgb(252,208,121)", "rgb(250,200,75)", "rgb(249,210,143)", "rgb(243,162,83)", "rgb(250,205,139)", "rgb(245,178,126)", "rgb(244,175,136)", "rgb(242,160,120)", "rgb(240,153,126)", "rgb(239,136,129)", "rgb(241,155,164)", "rgb(235,114,133)", "rgb(241,162,176)", "rgb(239,136,162)", "rgb(241,165,191)", "rgb(241,167,184)", "rgb(237,135,174)", "rgb(236,130,170)", "rgb(234,128,174)", "rgb(229,106,163)", "rgb(234,137,182)", "rgb(230,152,191)", "rgb(211,124,175)", "rgb(224,165,201)", "rgb(215,168,204)", "rgb(210,179,211)", "rgb(186,140,189)", "rgb(172,137,188)", "rgb(157,132,189)", "rgb(194,184,219)", "rgb(170,158,205)", "rgb(145,148,201)", "rgb(126,132,191)", "rgb(158,173,216)", "rgb(177,208,236)", "rgb(86,136,199)", "rgb(149,194,233)", "rgb(107,175,224)", "rgb(170,217,245)", "rgb(0,148,215)", "rgb(0,161,226)", "rgb(0,168,233)", "rgb(0,170,221)", "rgb(0,163,216)", "rgb(0,167,203)", "rgb(85,191,205)", "rgb(0,167,171)", "rgb(0,174,183)", "rgb(0,176,173)", "rgb(1,164,149)", "rgb(111,196,190)", "rgb(0,167,142)", "rgb(3,176,146)", "rgb(115,194,165)", "rgb(146,206,180)", "rgb(101,184,94)", "rgb(175,212,134)", "rgb(199,222,140)", "rgb(212,221,42)", "rgb(231,231,83)", "rgb(244,237,71)", "rgb(253,237,1)", "rgb(255,239,1)", "rgb(255,233,0)", "rgb(255,232,64)", "rgb(254,220,63)", "rgb(253,216,99)", "rgb(254,226,92)", "rgb(250,194,35)", "rgb(248,186,75)", "rgb(248,187,38)", "rgb(247,183,86)", "rgb(241,147,57)", "rgb(243,165,80)", "rgb(242,151,64)", "rgb(240,142,67)", "rgb(240,140,91)", "rgb(238,128,74)", "rgb(233,99,88)", "rgb(233,86,94)", "rgb(232,80,89)", "rgb(233,95,121)", "rgb(233,84,114)", "rgb(232,90,132)", "rgb(230,78,109)", "rgb(231,74,130)", "rgb(232,88,145)", "rgb(227,35,134)", "rgb(224,45,139)", "rgb(225,110,165)", "rgb(210,94,157)", "rgb(191,65,146)", "rgb(206,134,182)", "rgb(182,108,169)", "rgb(143,77,154)", "rgb(144,82,157)", "rgb(149,94,162)", "rgb(111,76,156)", "rgb(130,109,175)", "rgb(136,120,182)", "rgb(119,124,187)", "rgb(83,85,160)", "rgb(55,80,160)", "rgb(58,129,195)", "rgb(0,84,165)", "rgb(72,142,204)", "rgb(0,110,185)", "rgb(102,183,230)", "rgb(1,102,180)", "rgb(1,114,190)", "rgb(0,130,206)", "rgb(0,144,218)", "rgb(1,156,212)", "rgb(0,156,199)", "rgb(0,157,184)", "rgb(0,143,138)", "rgb(0,157,162)", "rgb(0,161,156)", "rgb(1,156,134)", "rgb(1,159,136)", "rgb(1,154,110)", "rgb(0,161,113)", "rgb(0,156,85)", "rgb(1,160,80)", "rgb(30,171,56)", "rgb(100,182,54)", "rgb(150,199,48)", "rgb(199,216,32)", "rgb(211,222,65)", "rgb(236,233,12)", "rgb(248,235,0)", "rgb(254,239,2)", "rgb(254,225,0)", "rgb(255,221,0)", "rgb(252,207,26)", "rgb(249,190,0)", "rgb(248,190,0)", "rgb(246,174,1)", "rgb(245,161,1)", "rgb(241,146,0)", "rgb(240,140,2)", "rgb(236,111,1)", "rgb(238,122,9)", "rgb(238,126,0)", "rgb(237,113,1)", "rgb(236,113,30)", "rgb(236,104,31)", "rgb(233,68,48)", "rgb(231,62,48)", "rgb(233,53,75)", "rgb(231,48,52)", "rgb(229,18,69)", "rgb(229,2,84)", "rgb(229,1,62)", "rgb(228,1,83)", "rgb(229,40,120)", "rgb(224,0,112)", "rgb(226,0,126)", "rgb(216,58,142)", "rgb(204,78,151)", "rgb(183,23,133)", "rgb(176,47,139)", "rgb(158,47,140)", "rgb(106,20,129)", "rgb(123,53,142)", "rgb(112,47,140)", "rgb(88,39,136)", "rgb(75,52,143)", "rgb(107,91,164)", "rgb(26,26,124)", "rgb(22,39,137)", "rgb(17,45,142)", "rgb(1,56,143)", "rgb(1,57,146)", "rgb(0,60,148)", "rgb(0,74,159)", "rgb(0,78,160)", "rgb(0,94,167)", "rgb(1,96,161)", "rgb(0,112,172)", "rgb(1,125,185)", "rgb(1,139,185)", "rgb(0,134,170)", "rgb(0,145,168)", "rgb(2,127,123)", "rgb(1,147,147)", "rgb(0,156,149)", "rgb(1,140,124)", "rgb(0,154,130)", "rgb(1,126,96)", "rgb(0,128,93)", "rgb(0,134,77)", "rgb(1,155,69)", "rgb(0,158,58)", "rgb(80,174,52)", "rgb(132,192,45)", "rgb(179,191,19)", "rgb(198,209,0)", "rgb(215,209,1)", "rgb(208,189,1)", "rgb(222,200,0)", "rgb(238,191,2)", "rgb(224,183,1)", "rgb(249,194,0)", "rgb(215,163,0)", "rgb(234,171,0)", "rgb(241,150,0)", "rgb(230,131,1)", "rgb(227,128,0)", "rgb(238,126,1)", "rgb(222,91,0)", "rgb(224,95,1)", "rgb(231,102,0)", "rgb(235,99,0)", "rgb(233,94,0)", "rgb(233,85,22)", "rgb(231,62,43)", "rgb(226,30,32)", "rgb(221,15,36)", "rgb(223,1,50)", "rgb(209,0,62)", "rgb(220,0,74)", "rgb(209,0,57)", "rgb(188,0,71)", "rgb(223,0,105)", "rgb(187,0,93)", "rgb(189,0,107)", "rgb(210,0,127)", "rgb(197,46,139)", "rgb(167,0,129)", "rgb(168,1,130)", "rgb(153,46,139)", "rgb(94,6,106)", "rgb(110,21,131)", "rgb(99,28,132)", "rgb(72,27,131)", "rgb(68,38,138)", "rgb(52,34,135)", "rgb(21,18,109)", "rgb(19,34,128)", "rgb(5,46,137)", "rgb(0,50,131)", "rgb(10,44,131)", "rgb(0,58,132)", "rgb(0,69,147)", "rgb(0,64,128)", "rgb(1,63,113)", "rgb(1,64,105)", "rgb(0,84,122)", "rgb(0,96,139)", "rgb(0,115,147)", "rgb(1,112,139)", "rgb(0,123,138)", "rgb(0,109,104)", "rgb(0,95,95)", "rgb(0,131,125)", "rgb(0,111,95)", "rgb(0,133,118)", "rgb(0,107,85)", "rgb(0,102,78)", "rgb(1,104,61)", "rgb(0,124,61)", "rgb(0,139,50)", "rgb(81,149,38)", "rgb(118,161,29)", "rgb(155,161,1)", "rgb(167,169,0)", "rgb(195,187,0)", "rgb(168,150,0)", "rgb(196,173,2)", "rgb(191,164,1)", "rgb(195,160,0)", "rgb(204,159,0)", "rgb(186,146,0)", "rgb(182,136,0)", "rgb(203,135,0)", "rgb(168,107,0)", "rgb(175,103,1)", "rgb(210,114,0)", "rgb(158,64,0)", "rgb(176,80,1)", "rgb(174,77,0)", "rgb(208,81,4)", "rgb(186,64,1)", "rgb(167,50,2)", "rgb(210,43,35)", "rgb(192,23,42)", "rgb(171,26,47)", "rgb(188,1,46)", "rgb(165,1,54)", "rgb(185,0,67)", "rgb(171,0,45)", "rgb(149,0,64)", "rgb(187,0,89)", "rgb(165,0,80)", "rgb(145,0,85)", "rgb(178,0,112)", "rgb(175,0,129)", "rgb(160,0,125)", "rgb(156,1,131)", "rgb(141,28,136)", "rgb(83,0,86)", "rgb(104,21,129)", "rgb(90,25,126)", "rgb(68,23,125)", "rgb(64,24,127)", "rgb(50,28,129)", "rgb(14,9,92)", "rgb(20,25,116)", "rgb(5,34,118)", "rgb(0,45,115)", "rgb(6,32,110)", "rgb(1,48,128)", "rgb(0,57,129)", "rgb(1,44,98)", "rgb(0,32,66)", "rgb(0,33,61)", "rgb(0,58,82)", "rgb(0,48,71)", "rgb(1,64,84)", "rgb(1,84,102)", "rgb(0,99,112)", "rgb(0,76,79)", "rgb(1,73,72)", "rgb(2,72,68)", "rgb(0,55,49)", "rgb(1,103,89)", "rgb(1,83,69)", "rgb(1,60,42)", "rgb(0,63,42)", "rgb(0,83,55)", "rgb(38,120,44)", "rgb(74,102,28)", "rgb(82,98,0)", "rgb(119,116,1)", "rgb(138,134,1)", "rgb(172,161,1)", "rgb(106,88,1)", "rgb(140,124,14)", "rgb(169,146,1)", "rgb(147,128,0)", "rgb(173,139,2)", "rgb(146,117,0)", "rgb(117,92,0)", "rgb(127,90,0)", "rgb(107,67,0)", "rgb(104,76,7)", "rgb(170,86,0)", "rgb(76,18,0)", "rgb(96,41,0)", "rgb(135,56,0)", "rgb(117,36,0)", "rgb(140,45,1)", "rgb(119,41,29)", "rgb(130,14,11)", "rgb(127,0,16)", "rgb(93,16,32)", "rgb(128,0,37)", "rgb(122,21,52)", "rgb(156,0,59)", "rgb(139,0,39)", "rgb(114,0,51)", "rgb(134,0,65)", "rgb(113,0,56)", "rgb(105,0,57)", "rgb(143,0,88)", "rgb(125,0,83)", "rgb(133,1,103)", "rgb(125,12,102)", "rgb(114,17,110)", "rgb(76,5,75)", "rgb(78,21,90)", "rgb(80,11,107)", "rgb(58,14,103)", "rgb(63,19,108)", "rgb(36,4,87)", "rgb(0,1,58)", "rgb(12,6,96)", "rgb(1,20,89)", "rgb(0,21,73)", "rgb(0,10,72)", "rgb(0,18,74)", "rgb(0,23,74)", "rgb(0,3,38)"];
+//转盘颜色最大行数
+var COLOR_ROWS_MAX = 16;
+//转盘颜色行数
+var ROWS = 7;
+//转盘颜色列数
+var COLUMNS = 69;
+//转盘半径
+var RADIUS = 320;
+//自定义颜色最大数量
+var CUSTOM_COLORS_MAX = 6;
+var ColorDisk = (function (_super) {
+    __extends(ColorDisk, _super);
+    function ColorDisk() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.diskPaths = utils_1.getDiskPaths(ROWS, COLUMNS, COLOR_ROWS_MAX, RADIUS, COLORS);
+        _this.diskRollAngle = 0;
+        _this.touchStartX = 0;
+        _this.touchStartY = 0;
+        _this.fromAngle = 0;
+        _this.colorChooseLocked = false;
+        return _this;
+        // created(): void {
+        //     window.addEventListener('click', this.rootClick.bind(this), false);
+        // }
+        // destroyed(): void {
+        //     window.removeEventListener('click', this.rootClick.bind(this));
+        // }
+    }
+    /**
+     * 获取svg节点相对于文档的位置
+     */
+    ColorDisk.prototype.setSvgPosition = function () {
+        if (typeof this.svgX == 'undefined') {
+            var position = utils_1.getPosition(this.$refs.disk);
+            this.svgX = position.left;
+            this.svgY = position.top;
+            this.radius = position.radius;
+        }
+    };
+    ColorDisk.prototype.diskTouchStart = function (e) {
+        this.colorChooseLocked = false;
+        this.touchStartX = e.clientX || e.touches[0].pageX;
+        this.touchStartY = e.clientY || e.touches[0].pageY;
+        this.setSvgPosition();
+    };
+    ColorDisk.prototype.diskRoll = function (e) {
+        this.colorChooseLocked = true;
+        var touchMoveX = e.clientX || e.touches[0].pageX;
+        var touchMoveY = e.clientY || e.touches[0].pageY;
+        var angle1 = utils_1.getAngle(this.touchStartX, this.touchStartY, this.svgX, this.svgY, this.radius);
+        var angle2 = utils_1.getAngle(touchMoveX, touchMoveY, this.svgX, this.svgY, this.radius);
+        this.diskRollAngle = (this.fromAngle + angle2 - angle1) % 360;
+    };
+    ColorDisk.prototype.diskStopRoll = function () {
+        this.fromAngle = this.diskRollAngle;
+    };
+    ColorDisk.prototype.handleMouseDown = function (e) {
+        this.diskTouchStart(e);
+        window.addEventListener('mousemove', this.diskRoll);
+        window.addEventListener('mouseup', this.handleMouseUp);
+    };
+    ColorDisk.prototype.handleMouseUp = function () {
+        this.diskStopRoll();
+        this.unbindEventListeners();
+    };
+    ColorDisk.prototype.unbindEventListeners = function () {
+        window.removeEventListener('mousemove', this.diskRoll);
+        window.removeEventListener('mouseup', this.handleMouseUp);
+    };
+    /**
+     * 切换选色盘的显示与隐藏
+     * @param action
+     */
+    ColorDisk.prototype.toggleShowColorDisk = function (action) {
+        this.$store.commit(colordisk_1.TOGGLE_SHOW_COLORDISK, action);
+        //切换工具栏色轮当前状态
+        this.$store.commit(toolbar_1.SET_TOOLBAR_MEMBERS_VALUE, {
+            id: toolbar_1.MEMBERS_ID.toggleColorDisk,
+            key: 'actived',
+            value: action === 'show'
+        });
+    };
+    /**
+     * 色盘选色
+     * @param color
+     */
+    ColorDisk.prototype.setFillColor = function (color) {
+        if (color == 'none') {
+            this.toggleShowColorDisk('show');
+        }
+        else {
+            this.$store.commit(colordisk_1.SET_FILLCOLOR, color);
+            this.toggleShowColorDisk('hide');
+        }
+    };
+    ColorDisk.prototype.setAndRememberFillColor = function (color) {
+        if (this.colorChooseLocked) {
+            return;
+        }
+        if (this.fillColor == color) {
+            this.toggleShowColorDisk('hide');
+            return;
+        }
+        this.setFillColor(color);
+        if (this.customColors.indexOf(color) == -1 && this.defaultColors.indexOf(color) == -1) {
+            this.customColors.splice(0, 0, color);
+            if (this.customColors.length > CUSTOM_COLORS_MAX)
+                this.customColors.pop();
+            this.$root.$options.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+        }
+    };
+    ColorDisk.prototype.ringColor = function (e) {
+        this.setSvgPosition();
+        var touchX = e.clientX || e.pageX;
+        var touchY = e.clientY || e.pageY;
+        var cx = this.radius + this.svgX;
+        var cy = this.radius + this.svgY;
+        // const colorRingRadius = Math.ceil(this.radius / 5) * 9 /4
+        var colorRingRadius = 132 / 320 * this.radius;
+        var d = Math.sqrt(Math.pow(touchX - cx, 2) + Math.pow(touchY - cy, 2));
+        var _angle = utils_1.getAngle(touchX, touchY, this.svgX, this.svgY, this.radius);
+        var _d = colorRingRadius + d * Math.sin(_angle / 180 * Math.PI);
+        var value = 255 - Math.floor(255 * _d / (colorRingRadius * 2));
+        var color = "rgb(" + value + "," + value + "," + value + ")";
+        this.colorChooseLocked = false;
+        this.setAndRememberFillColor(color);
+    };
+    ColorDisk.prototype.rootClick = function () {
+        this.toggleShowColorDisk('hide');
+    };
+    return ColorDisk;
+}(Vue));
+ColorDisk = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(16),
+        name: 'ColorDisk',
+        computed: vuex_1.mapGetters({
+            fillColor: colordisk_1.GET_FILLCOLOR,
+            defaultColors: colordisk_1.GET_DEFAULT_COLORS,
+            customColors: colordisk_1.GET_CUSTOM_COLORS,
+            showColorDisk: colordisk_1.GET_SHOW_COLORDISK
+        })
+    })
+], ColorDisk);
+exports.default = ColorDisk;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var vue_presenter_decorator_1 = __webpack_require__(9);
+var fillColor_1 = __webpack_require__(1);
+var storage_1 = __webpack_require__(4);
+var toolbar_1 = __webpack_require__(6);
+var resizable_draggable_1 = __webpack_require__(26);
+var FillColor = (function (_super) {
+    __extends(FillColor, _super);
+    function FillColor() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.temp = {}; // 缓存变量 
+        _this.haveNotified = false;
+        return _this;
+    }
+    Object.defineProperty(FillColor.prototype, "currentColor", {
+        get: function () {
+            return this.$store.state.colordisk.fillColor;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "paths", {
+        get: function () {
+            return this.$store.state.fillColor.paths;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "fillMap", {
+        get: function () {
+            return this.$store.state.fillColor.fillMap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "touchable", {
+        get: function () {
+            return this.$store.state.fillColor.touchable;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "strokes", {
+        get: function () {
+            return this.$store.state.fillColor.strokes;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "history", {
+        get: function () {
+            return this.$store.state.fillColor.history;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillColor.prototype, "isStudent", {
+        get: function () {
+            return this.$root.$options.presenter.isStudent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    FillColor.prototype.onChangeStrokes = function (curr, prev) {
+        if (curr === 0 || prev === 0) {
+            this.$store.commit(toolbar_1.SET_TOOLBAR_MEMBERS_VALUE, {
+                id: toolbar_1.MEMBERS_ID.empty,
+                key: 'disabled',
+                value: !curr
+            });
+        }
+    };
+    FillColor.prototype.onChangeHistory = function (curr, prev) {
+        if (curr.length === 0 || prev.length === 0) {
+            this.$store.commit(toolbar_1.SET_TOOLBAR_MEMBERS_VALUE, {
+                id: toolbar_1.MEMBERS_ID.back,
+                key: 'disabled',
+                value: !curr.length
+            });
+        }
+        // 通知状态保存
+        this.$root.$options.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+    };
+    FillColor.prototype.beforeMount = function () {
+        this.initTemp();
+    };
+    FillColor.prototype.mounted = function () {
+        this.$store.commit(storage_1.SET_REF, {
+            svgEl: this.$refs.svg,
+            svgWrapEl: this.$refs.wrap
+        });
+    };
+    FillColor.prototype.initTemp = function () {
+        this.temp = {
+            x1: null,
+            y1: null,
+            x2: null,
+            y2: null,
+            isTouching: false,
+            eventType: '',
+            last: 0,
+            fills: {} // 填色操作
+        };
+    };
+    FillColor.prototype.informSubmitBtn = function () {
+        // 通知提交按钮
+        this.$root.$options.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+    };
+    FillColor.prototype.fillColor = function (e, el) {
+        var id = el.getAttribute('data-id');
+        var fill = this.currentColor;
+        var oldFill = el.getAttribute('fill') || '';
+        if (!id || oldFill === fill)
+            return;
+        this.$store.commit(fillColor_1.UPDATE_PATH_FILL, { id: id, fill: fill });
+        this.temp.fills[id] = oldFill;
+    };
+    FillColor.prototype.getEventType = function (e) {
+        var type = e.type.slice(0, 5);
+        if (this.isStudent) {
+            type = 'touch';
+        }
+        var data = this.$root.$options.presenter.$dispatchEvent("getIsStylusInput", PresenterEventType.NATIVE_EVENT, {});
+        if (data && data.result) {
+            type = 'pen';
+        }
+        return type;
+    };
+    FillColor.prototype.handleStart = function (e) {
+        var touches = e.touches;
+        var x = e.clientX;
+        var y = e.clientY;
+        if (touches) {
+            x = touches[0].pageX;
+            y = touches[0].pageY;
+        }
+        this.temp.x1 = x;
+        this.temp.y1 = y;
+        this.temp.isTouching = true;
+        this.temp.eventType = this.getEventType(e);
+        this.temp.last = Date.now();
+    };
+    FillColor.prototype.handleMove = function (e) {
+        if (!this.temp.isTouching)
+            return;
+        var touches = e.touches;
+        var x = e.clientX;
+        var y = e.clientY;
+        if (touches) {
+            x = touches[0].pageX;
+            y = touches[0].pageY;
+            if (touches.length === 1 && !this.touchable && this.temp.eventType === 'pen') {
+                this.fillColor(e, window.document.elementFromPoint(x, y));
+                e.stopPropagation();
+            }
+        }
+        this.temp.x2 = x;
+        this.temp.y2 = y;
+    };
+    FillColor.prototype.handleEnd = function (e) {
+        var t = this.temp;
+        var deltaX = t.x2 ? Math.abs(t.x1 - t.x2) : 0;
+        var deltaY = t.y2 ? Math.abs(t.y1 - t.y2) : 0;
+        var delta = Date.now() - t.last;
+        if (deltaX < 30 && deltaY < 30 && delta < 750) {
+            if (this.isStudent) {
+                if (this.touchable && this.temp.eventType !== 'pen') {
+                    this.fillColor(e, e.target);
+                }
+                if (!this.touchable && this.temp.eventType === 'pen') {
+                    this.fillColor(e, e.target);
+                }
+            }
+            else {
+                this.fillColor(e, e.target);
+            }
+        }
+        if (Object.keys(t.fills).length) {
+            this.$store.commit(fillColor_1.PUSH_HISTORY, this.temp.fills);
+            this.informSubmitBtn();
+        }
+        this.initTemp();
+    };
+    return FillColor;
+}(Vue));
+__decorate([
+    vue_presenter_decorator_1.watch('strokes')
+], FillColor.prototype, "onChangeStrokes", null);
+__decorate([
+    vue_presenter_decorator_1.watch('history')
+], FillColor.prototype, "onChangeHistory", null);
+FillColor = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(17),
+        components: {
+            ResizableDraggable: resizable_draggable_1.default
+        }
+    })
+], FillColor);
+exports.default = FillColor;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var mixins_1 = __webpack_require__(8);
+var fillColor_1 = __webpack_require__(1);
+var FillExample = (function (_super) {
+    __extends(FillExample, _super);
+    function FillExample() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(FillExample.prototype, "show", {
+        get: function () {
+            return this.$store.state.fillColor.showFillColorSample;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillExample.prototype, "model", {
+        get: function () {
+            return this.$store.state.storage.model;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillExample.prototype, "paths", {
+        get: function () {
+            return this.$store.state.fillColor.paths;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillExample.prototype, "fillMap", {
+        get: function () {
+            return this.$store.state.fillColor.fillMap;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FillExample.prototype, "isStudent", {
+        get: function () {
+            return this.$root.$options.presenter.isStudent;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    FillExample.prototype.toggleDemo = function () {
+        this.$store.commit(this.show ? fillColor_1.CLOSE_FILL_COLOR_SAMPLE : fillColor_1.OPEN_FILL_COLOR_SAMPLE);
+    };
+    return FillExample;
+}(Vue));
+FillExample = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(18),
+        mixins: [mixins_1.i18n]
+    })
+], FillExample);
+exports.default = FillExample;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var vue_presenter_decorator_1 = __webpack_require__(9);
+var storage_1 = __webpack_require__(4);
+var Index = (function (_super) {
+    __extends(Index, _super);
+    function Index() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.MAXSCALE = 15;
+        _this.MINSCALE = 1;
+        _this.scale = 1; // 元素缩放比例
+        _this.offX = 0; // 水平位移
+        _this.offY = 0; // 垂直位移
+        _this.isTouching = false;
+        _this.evtTemp = {};
+        return _this;
+    }
+    Object.defineProperty(Index.prototype, "getTransform", {
+        get: function () {
+            return "scale(" + this.scale + ") translate3d(" + this.offX + "px, " + this.offY + "px, 0px)";
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Index.prototype, "getTransition", {
+        get: function () {
+            return this.isTouching ? 'initial' : 'transform 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms';
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Index.prototype.onChangeStrokes = function (curr, prev) {
+        this.$store.commit(storage_1.SET_SCALE, curr);
+    };
+    Object.defineProperty(Index.prototype, "scale1", {
+        get: function () {
+            return this.$store.state.storage.scale;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Index.prototype.onChangeScale1 = function (curr, prev) {
+        if (curr === 0) {
+            this.scale = 1;
+            this.offX = 0;
+            this.offY = 0;
+        }
+    };
+    Index.prototype.beforeMount = function () {
+        this.initTemp();
+    };
+    Index.prototype.initTemp = function () {
+        this.evtTemp = {
+            gapLength: 0,
+            position: {
+                x: null,
+                y: null
+            },
+            mouseWheelTimeout: 0
+        };
+    };
+    Index.prototype.getGapLength = function (touches) {
+        if (touches.length < 2) {
+            return 0;
+        }
+        var x = touches[1].pageX - touches[0].pageX;
+        var y = touches[1].pageY - touches[0].pageY;
+        return Math.sqrt(x * x + y * y);
+    };
+    Index.prototype.handleStart = function (e) {
+        this.isTouching = true;
+        this.evtTemp.type = e.type.slice(0, 5); // mouse touch
+        var touches = e.touches;
+        var x = e.clientX;
+        var y = e.clientY;
+        if (touches) {
+            x = touches[0].pageX;
+            y = touches[0].pageY;
+            if (touches.length > 1) {
+                this.evtTemp.gapLength = this.getGapLength(touches);
+            }
+        }
+        this.evtTemp.position = { x: x, y: y };
+    };
+    Index.prototype.handleMove = function (e) {
+        if (!this.isTouching)
+            return;
+        if (e.type.slice(0, 5) !== this.evtTemp.type)
+            return;
+        var touches = e.touches;
+        var x = e.clientX;
+        var y = e.clientY;
+        if (touches) {
+            x = touches[0].pageX;
+            y = touches[0].pageY;
+            if (touches.length > 1) {
+                var preGapLength = this.evtTemp.gapLength;
+                if (preGapLength > 0) {
+                    var gapLength = this.getGapLength(touches);
+                    var scale = gapLength / preGapLength;
+                    this.evtTemp.gapLength = gapLength;
+                    this.scale *= scale;
+                }
+            }
+        }
+        var prePosition = this.evtTemp.position;
+        if (prePosition) {
+            var deltaX = x - prePosition.x;
+            var deltaY = y - prePosition.y;
+            this.offX += deltaX / this.scale; // important
+            this.offY += deltaY / this.scale; // important
+        }
+        this.evtTemp.position = { x: x, y: y };
+    };
+    Index.prototype.handleEnd = function (e) {
+        this.isTouching = false;
+        // restore
+        this.initTemp();
+        this.correctScale();
+        this.correctTranslate();
+    };
+    Index.prototype.handleMouseWheel = function (e) {
+        var _this = this;
+        var delta = e.wheelDelta || e.detail;
+        var s = this.scale;
+        s *= delta > 0 ? 1.1 : 0.9;
+        this.scale = s;
+        this.correctScale();
+        clearTimeout(this.evtTemp.mouseWheelTimeout);
+        this.evtTemp.mouseWheelTimeout = setTimeout(function () {
+            _this.correctTranslate();
+        }, 200);
+    };
+    Index.prototype.correctScale = function () {
+        var s = this.scale;
+        if (s < this.MINSCALE)
+            this.scale = this.MINSCALE;
+        if (s > this.MAXSCALE)
+            this.scale = this.MAXSCALE;
+    };
+    Index.prototype.correctTranslate = function () {
+        var s = this.scale;
+        var offX = this.offX;
+        var offY = this.offY;
+        var rnd = this.$refs.rnd;
+        var width = rnd.clientWidth;
+        var height = rnd.clientHeight;
+        var maxX = width * 0.5 * (s - 1) / s;
+        var maxY = height * 0.5 * (s - 1) / s;
+        if (offX > maxX)
+            this.offX = maxX;
+        if (offX < -maxX)
+            this.offX = -maxX;
+        if (offY > maxY)
+            this.offY = maxY;
+        if (offY < -maxY)
+            this.offY = -maxY;
+    };
+    return Index;
+}(Vue));
+__decorate([
+    vue_presenter_decorator_1.watch('scale')
+], Index.prototype, "onChangeStrokes", null);
+__decorate([
+    vue_presenter_decorator_1.watch('scale1')
+], Index.prototype, "onChangeScale1", null);
+Index = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(19)
+    })
+], Index);
+exports.default = Index;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * 获取色盘path以及颜色值
+ * @param rows
+ * @param columns
+ * @param columnsMax
+ * @param radius
+ * @param colors
+ * @returns {Array<any>}
+ */
+function getDiskPaths(rows, columns, columnsMax, radius, colors) {
+    var d = Math.ceil(radius / columnsMax);
+    var angle = Math.PI * 2 / columns;
+    var r = radius;
+    var diskPaths = [];
+    var colorIndex = 0;
+    for (var i = 0, j = 0; i < columns && j < rows; i++) {
+        var _angle = angle * i;
+        var _r = r - d;
+        var sin = Math.sin(_angle);
+        var cos = Math.cos(_angle);
+        var _sin = Math.sin(_angle + angle);
+        var _cos = Math.cos(_angle + angle);
+        var x1 = cos * _r + radius;
+        var y1 = sin * _r + radius;
+        var x2 = cos * r + radius;
+        var y2 = sin * r + radius;
+        var x3 = _cos * r + radius;
+        var y3 = _sin * r + radius;
+        var x4 = _cos * _r + radius;
+        var y4 = _sin * _r + radius;
+        diskPaths.push({
+            path: "M" + x1 + ", " + y1 + " L" + x2 + ", " + y2 + " A" + r + ", " + r + " " + _angle + " 0, 1 " + x3 + " " + y3 + " L" + x4 + ", " + y4 + " A" + _r + ", " + _r + " " + _angle + " 0, 0 " + x1 + ", " + y1 + " z",
+            color: colors[colorIndex++] || ''
+        });
+        if (i == columns - 1) {
+            i = -1;
+            r -= d + 4;
+            j++;
+        }
+    }
+    return diskPaths;
+}
+exports.getDiskPaths = getDiskPaths;
+/**
+ * 获取旋转角度
+ * @param x
+ * @param y
+ * @param offsetX
+ * @param offsetY
+ * @param radius
+ * @returns {number}
+ */
+function getAngle(x, y, offsetX, offsetY, radius) {
+    var cx = radius + offsetX;
+    var cy = radius + offsetY;
+    var _x = x - cx;
+    var _y = y - cy;
+    var radian = Math.atan((_y) / (_x));
+    if (_x > 0 && _y < 0) {
+        radian = 2 * Math.PI - Math.abs(radian);
+    }
+    else if (_x < 0 && _y < 0) {
+        radian = Math.PI + Math.abs(radian);
+    }
+    else if (_x < 0 && _y > 0) {
+        radian = Math.PI - Math.abs(radian);
+    }
+    return radian / Math.PI * 180;
+}
+exports.getAngle = getAngle;
+/**
+ * 获取节点相对于document的坐标
+ * @param element
+ * @returns {{left: number, top: number, radius: number}}
+ */
+function getPosition(element) {
+    var actualLeft = element.offsetLeft;
+    var actualTop = element.offsetTop;
+    var currentElement = element.offsetParent;
+    while (currentElement !== null) {
+        actualLeft += currentElement.offsetLeft;
+        actualTop += currentElement.offsetTop;
+        currentElement = currentElement.offsetParent;
+    }
+    return {
+        left: actualLeft,
+        top: actualTop,
+        radius: element.offsetHeight / 2
+    };
+}
+exports.getPosition = getPosition;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vue_class_component_1 = __webpack_require__(2);
+var color_disk_1 = __webpack_require__(23);
+var fill_color_1 = __webpack_require__(24);
+var fill_example_1 = __webpack_require__(25);
+var clear_canvas_confirm_1 = __webpack_require__(22);
+var Index = (function (_super) {
+    __extends(Index, _super);
+    function Index() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(Index.prototype, "questionTitle", {
+        get: function () {
+            return this.$store.state.questionTitle;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Index.prototype, "showToolbar", {
+        get: function () {
+            return this.$store.state.showToolbar;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(Index.prototype, "locked", {
+        get: function () {
+            return this.$store.state.locked;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Index;
+}(Vue));
+Index = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(20),
+        components: {
+            toolbar: __ModuleComponent.Toolbar,
+            ColorDisk: color_disk_1.default,
+            FillColor: fill_color_1.default,
+            FillExample: fill_example_1.default,
+            ClearCanvasConfirm: clear_canvas_confirm_1.default
+        }
+    })
+], Index);
+exports.default = Index;
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/bg_com_hd_write.png' />
+<file src='./resources/wood/images/bg_fctoning_back.png' />
+<file src='./resources/wood/images/bg_fctoning_take.png' />
+<file src='./resources/wood/images/enlarge_icon.png' />
+<file src='./resources/wood/images/fc_listcom_bg.png' />
+<file src='./resources/wood/images/fillc_toning_palette_bg.png' />
+<file src='./resources/wood/images/icon_arrow.png' />
+<file src='./resources/wood/images/icon_hand_off.png' />
+<file src='./resources/wood/images/icon_hand_on.png' />
+<file src='./resources/wood/images/icon_hand_write_off.png' />
+<file src='./resources/wood/images/icon_hand_write_on.png' />
+<file src='./resources/wood/images/icon_slide.png' />
+<file src='./resources/wood/images/icon_slide2.png' />
+<file src='./resources/wood/images/inner_border.png' />
+<file src='./resources/wood/images/nudi_btn/icon_dustbin.png' />
+<file src='./resources/wood/images/nudi_btn/icon_dustbin_nothing.png' />
+<file src='./resources/wood/images/nudi_btn/icon_dustbin_s.png' />
+<file src='./resources/wood/images/nudi_btn/ndui-tool-colse.png' />
+<file src='./resources/wood/images/nudi_btn/ndui_btn_back.png' />
+<file src='./resources/wood/images/nudi_btn/ndui_btn_back_active.png' />
+<file src='./resources/wood/images/nudi_btn/ndui_btn_color.png' />
+<file src='./resources/wood/images/nudi_btn/ndui_btn_color_active.png' />
+<file src='./resources/wood/images/nudi_btn/toolbar_tool_on.png' />
+<file src='./resources/wood/images/pop/bg_pop_square.png' />
+<file src='./resources/wood/images/pop/icon_close_squ_active.png' />
+<file src='./resources/wood/images/pop/icon_close_squ_ci.png' />
+<file src='./resources/wood/images/pop/icon_close_squ_nor.png' />
+<file src='./resources/wood/images/show_exm_icon.png' />
+
+
+</resources>
+
+</addon>

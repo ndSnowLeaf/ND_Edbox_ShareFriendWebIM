@@ -1,0 +1,944 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="AlamedaRequire" version="0.3.2"/><javaScript name="knockout" version="3.3.0"/><javaScript name="snap_svg" version="1.0.0"/><javaScript name="tools_common" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .mechanicalwave{width:100%;height:100%;background:#bfd3e2;position:relative}.exam_skin_wood .mechanicalwave .mw_svg_wrapper{width:100%;height:100%;padding:2.91667em 4.16667em 5.83333em;position:relative}.exam_skin_wood .mechanicalwave .mw_svg_wrapper .mw_svg_rightbg{width:58.33333em;height:31.25em;position:absolute;right:0;bottom:0;background:url(resources/wood/images/mechanicalwave_bg.png) center center no-repeat;background-size:100% auto}.exam_skin_wood .mechanicalwave .mw_svg_wrapper .mw_svg_content{width:66.66667em;height:31.25em;position:relative;top:50%;left:50%;margin:-16.66667em 0 0 -33.33333em}.exam_skin_wood .mechanicalwave .mw_svg{width:66.66667em;height:31.25em;position:relative}.exam_skin_wood .mechanicalwave .mw_tool_btns{position:absolute;left:0;bottom:0;width:100%;height:5.83333em;padding:0 4.16667em;background:#cfdee9;z-index:9}.exam_skin_wood .mechanicalwave .tool_btns_main{height:100%;position:relative;text-align:center;padding-top:1.25em}.exam_skin_wood .mechanicalwave .tool_btns_number{width:100%;position:absolute;left:0;bottom:6.66667em;text-align:center;z-index:9}.exam_skin_wood .mechanicalwave .tool_btns_number .com_btns{min-width:5em;height:2.83333em;line-height:2.83333em;padding:0 .83333em;margin:0 .41667em}.exam_skin_wood .mechanicalwave .tool_btns_number .btns-primary-txt{font-size:1.16667em}.exam_skin_wood .mechanicalwave .mw_tool_btns .com_btns{height:3.08333em;line-height:3.08333em;min-width:8.625em}.exam_skin_wood .mechanicalwave .mw_tool_btns .btns-primary-txt{font-size:1.5em}.exam_skin_wood .mechanicalwave .btn_reset{position:absolute;right:2.333333em;bottom:6.66667em}]]></css><view><![CDATA[<div class="exam_skin_wood" id="layout"><div class="mechanicalwave"><div class="mw_svg_wrapper"><div class="mw_svg_content"><div class="mw_svg_rightbg"></div></div><div class="tool_btns_number clearfix _btn_detail_step_demonstration hide_dom"><a class="com_btns btns-primary" href="javascript:;" data-index="0"><span class="btns-primary-txt">t=0</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="1"><span class="btns-primary-txt">t=1/8T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="2"><span class="btns-primary-txt">t=1/4T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="3"><span class="btns-primary-txt">t=3/8T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="4"><span class="btns-primary-txt">t=1/2T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="5"><span class="btns-primary-txt">t=5/8T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="6"><span class="btns-primary-txt">t=3/4T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="7"><span class="btns-primary-txt">t=7/8T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="8"><span class="btns-primary-txt">t=T</span> </a><a class="com_btns btns-primary" href="javascript:;" data-index="9"><span class="btns-primary-txt">t=9/8T</span></a></div></div><div class="mw_tool_btns"><div class="tool_btns_main clearfix"><a class="com_btns btns-primary _whole_btns _btn_full_demonstration" href="javascript:;"><span class="btns-primary-txt" data-bind="text:mechanical_wave_full_demonstration"></span> </a><a class="com_btns btns-primary _btn_step_demonstration" href="javascript:;"><span class="btns-primary-txt" data-bind="text:mechanical_wave_step_demonstration"></span> </a><a class="com_btns btns-primary btn_reset _btn_reset hide_dom" href="javascript:;"><span class="btns-primary-txt" data-bind="text:mechanical_wave_reset"></span></a></div></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+(function () {
+    var helper = {
+        //整个机械波长度
+        MECHANICAL_WAVE_WIDTH: 1225,
+        //整个机械波点个数
+        MECHANICAL_WAVE_COUNT: 28,
+        //一个单元的机械波点个数
+        ONE_UNIT_POINTS: 3,
+        //机械波点的半径
+        POINT_RADIUS: 20,
+        //机械波两个关键点之间的间距
+        KEY_POINT_DISTANCE: 1225 / 9,
+        //左边圆的半径
+        CIRCLE_RADIUS: 108,
+        //动画默认播放时间
+        ANI_PLAY_TIME: 1000,
+        //完整演示按钮的状态，用于推送记录
+        fullState: {
+            active: false
+        },
+        //分步演示按钮的状态，用于推送记录
+        stepState: {
+            active: false,
+            index: null,
+            stepAniState: false //用来记录当前分布演示动画的动画状态，默认false,动画已暂停
+        },
+        domObj: {}
+    };
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'MechanicalWave',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: ''
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function $init() {
+            var self = this;
+            self._super();
+            //定义日志
+            self.logger.appendHandler(function (message, context) {
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, { level: Logger.DEBUG });
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function constructor(parent) {
+                this.parent = parent;
+            },
+            setLocationProperties: function setLocationProperties(properties) {
+                helper.i18n = properties;
+            },
+            getExtendData: function getExtendData() {
+                var options = {
+                    fullState: helper.fullState,
+                    stepState: helper.stepState
+                };
+                console.log(options);
+                return options;
+            },
+            getQuestionInfo: function getQuestionInfo() {
+                return {
+                    id: helper.model.ID,
+                    type_code: 'MechanicalWave',
+                    type_name: helper.i18n['mechanical_wave'],
+                    url: '',
+                    item: 'MechanicalWave',
+                    statistics_type: 'no_need',
+                    dispatchOnly: true,
+                    notExistStatistics: true,
+                    noNeedQuizProgress: true
+                };
+            }
+        },
+        getService: function getService() {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function run(view, model) {
+            var self = this;
+            helper.model = model;
+            helper.$view = $(view);
+            self.mechanicalWaveController = null;
+            var $deferred = $.Deferred();
+            require(['MechanicalWaveController'], function (MechanicalWaveController) {
+                self.mechanicalWaveController = new MechanicalWaveController({ helper: helper });
+            }).then(function () {
+                self.logger.log('加载[MechanicalWaveController]模块完成');
+                $deferred.resolve();
+            }).catch(function () {
+                self.logger.error('加载模块[MechanicalWaveController]失败');
+                $deferred.reject();
+            });
+            return $deferred.promise();
+        },
+        pageShow: function pageShow(view, model) {
+            var self = this;
+            ko.applyBindings(helper.i18n, view);
+            self._initComponent();
+            self._bindEvent();
+            //初始化机械波
+            self.mechanicalWaveController.init();
+
+            //工具窗口是否有推送数据,因为要用到trigger，所以需要先执行_bindEvent()
+            var extendData = helper.model['__ExtendModel'];
+            if (!$.isEmptyObject(extendData)) {
+                //是否激活完整演示
+                if (extendData.fullState.active) {
+                    helper.domObj.$btnFullDemonstration.trigger('click');
+                    helper.domObj.$btnFullDemonstration.addClass('ui_btn_active');
+                }
+                //是否激活分步演示
+                if (extendData.stepState.active) {
+                    helper.domObj.$btnStepDemonstration.trigger('click');
+                    helper.domObj.$btnStepDemonstration.addClass('ui_btn_active');
+                }
+                //是否激活分步演示的详细按钮
+                if (extendData.stepState.index !== null && !isNaN(extendData.stepState.index)) {
+                    var $btnDetail = helper.domObj.$btnDetailStepDemonstration.filter('a[data-index="' + extendData.stepState.index + '"]');
+                    //当前是在分步演示时才触发详细的分步演示动画
+                    if (extendData.stepState.active) {
+                        if (!extendData.stepState.stepAniState) {
+                            helper.ANI_PLAY_TIME = 0;
+                            $btnDetail.trigger('click');
+                            /*setTimeout(function () {
+                                helper.arrow.attr({
+                                    transform: 'translate(' + (helper.KEY_POINT_DISTANCE * extendData.stepState.index - 16) + ' -72)'
+                                });
+                            },1000);*/
+                        } else {
+                            $btnDetail.trigger('click');
+                        }
+                    } else {
+                        self.mechanicalWaveController.setCurrentStep(extendData.stepState.index);
+                    }
+                    $btnDetail.addClass('ui_btn_active');
+                    helper.ANI_PLAY_TIME = 1000; //动画执行时间恢复为1秒
+                }
+            }
+        },
+        pageLeave: function pageLeave() {
+            this._unbindEvent();
+            this._stop();
+            this.mechanicalWaveController.reset();
+        },
+        destroy: function destroy() {},
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function getState() {},
+        setState: function setState(state, options) {},
+        /****以下开始为Presenter的私有方法*****/
+        _initComponent: function _initComponent() {
+            //详细分步演示按钮的容器
+            helper.domObj.$btnDetailStepDemonstrationContainer = helper.$view.find('._btn_detail_step_demonstration');
+            //详细分步演示的各个小按钮
+            helper.domObj.$btnDetailStepDemonstration = helper.$view.find('._btn_detail_step_demonstration a');
+            //分步演示按钮
+            helper.domObj.$btnStepDemonstration = helper.$view.find('._btn_step_demonstration');
+            //完整演示按钮
+            helper.domObj.$btnFullDemonstration = helper.$view.find('._btn_full_demonstration');
+            //复位按钮
+            helper.domObj.$btnReset = helper.$view.find('._btn_reset');
+        },
+        _bindEvent: function _bindEvent() {
+            var self = this;
+            //点击详细分步演示
+            helper.domObj.$btnDetailStepDemonstration.on('click', function (e) {
+                if (helper.stepState.stepAniState) {
+                    return;
+                }
+                var $this = $(this);
+                var index = $this.data('index');
+                $this.addClass('ui_btn_active').siblings().removeClass('ui_btn_active');
+                self.mechanicalWaveController.setCurrentStep(index);
+                self.mechanicalWaveController.detailStepDemonstration(index);
+
+                //记录按钮状态，用于推送
+                helper.stepState.index = index;
+                helper.stepState.stepAniState = true; //设置动画开始播放
+                !!self.stepAniStateAnimatedTimeoutId && clearTimeout(self.stepAniStateAnimatedTimeoutId);
+                self.stepAniStateAnimatedTimeoutId = setTimeout(function () {
+                    helper.stepState.stepAniState = false;
+                }, helper.ANI_PLAY_TIME); // 一秒后设置动画开始播放为false
+            });
+            //点击分步演示
+            helper.domObj.$btnStepDemonstration.on('click', function (e) {
+                var $this = $(this);
+                if ($this.hasClass('ui_btn_active')) {
+                    return;
+                }
+                helper.domObj.$btnDetailStepDemonstrationContainer.removeClass('hide_dom');
+                $this.addClass('ui_btn_active').siblings().removeClass('ui_btn_active');
+                helper.domObj.$btnReset.addClass('hide_dom');
+                self.mechanicalWaveController.stepDemonstration();
+
+                //记录按钮状态，用于推送
+                helper.fullState.active = false;
+                helper.stepState.active = true;
+            });
+            //点击完整演示
+            helper.domObj.$btnFullDemonstration.on('click', function (e) {
+                var $this = $(this);
+                if ($this.hasClass('ui_btn_active')) {
+                    return;
+                }
+                helper.domObj.$btnDetailStepDemonstrationContainer.addClass('hide_dom');
+                $this.addClass('ui_btn_active').siblings().removeClass('ui_btn_active');
+                helper.domObj.$btnReset.removeClass('hide_dom');
+                self.mechanicalWaveController.fullDemonstration();
+
+                //记录按钮状态，用于推送
+                helper.fullState.active = true;
+                helper.stepState.active = false;
+            });
+            //点击复位
+            helper.domObj.$btnReset.on('click', function (e) {
+                helper.domObj.$btnReset.addClass('hide_dom');
+                helper.domObj.$btnFullDemonstration.removeClass('ui_btn_active');
+                helper.domObj.$btnStepDemonstration.removeClass('ui_btn_active');
+                self.mechanicalWaveController.reset();
+
+                //记录按钮状态，用于推送
+                helper.fullState.active = false;
+            });
+        },
+        _unbindEvent: function _unbindEvent() {
+            helper.domObj.$btnDetailStepDemonstration.off('click');
+            helper.domObj.$btnStepDemonstration.off('click');
+            helper.domObj.$btnFullDemonstration.off('click');
+            helper.domObj.$btnReset.off('click');
+        },
+        _stop: function _stop() {
+            var self = this;
+            !!self.stepAniStateAnimatedTimeoutId && clearTimeout(self.stepAniStateAnimatedTimeoutId);
+        }
+    });
+
+    window.AddonMechanicalWave_create = function () {
+        return new Presenter('MechanicalWave');
+    };
+})();
+'use strict';
+
+/**
+ * 箭头
+ */
+define('Arrow', function () {
+    var Arrow = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            this.init();
+        },
+        init: function init() {
+            var self = this;
+            self.helper.arrow = self.helper.svg.paper.path(' M 16.35 0.00 L 16.68 0.00 C 19.40 9.53 24.83 18.27 31.63 25.46 C 27.14 24.74 22.86 23.13 18.98 20.75 C 19.02 31.50 18.9' + '9 42.25 19.00 53.00 L 13.00 53.00 C 13.01 42.34 12.98 31.67 13.01 21.01 C 9.24 23.25 5.12 24.86 0.77 25.48 C 8.08 18.46 ' + '12.24 9.07 16.35 0.00 Z').attr({ fill: '#c83f24', opacity: 1, transform: 'translate(-16 -72)' }).addClass('_starArrow hide_dom');
+        },
+        getArrow: function getArrow() {
+            var self = this;
+            return self.helper.arrow;
+        },
+        animate: function animate(index) {
+            var self = this;
+            var distance = self.helper.KEY_POINT_DISTANCE;
+            if (index <= 10) {
+                var starArrow = self.getArrow();
+                if (index !== 0) {
+                    starArrow.addClass('hide_dom');
+                    starArrow.attr({
+                        transform: 'translate(' + (distance * (index - 1) - 16) + ' -72)'
+                    });
+                    starArrow.removeClass('hide_dom');
+                    var now = mina.time();
+                    self.starArrowMina && self.starArrowMina.stop();
+                    if (self.helper.ANI_PLAY_TIME !== 0) {
+                        self.starArrowMina = mina(-72, -99.972, now, now + self.helper.ANI_PLAY_TIME / 3, mina.time, function (val) {
+                            starArrow.attr({
+                                transform: 'translate(' + (distance * (index - 1) - 16) + ' ' + val + ')'
+                            });
+                        });
+                    }
+                    self.starArrowHideTimeoutId && clearTimeout(self.starArrowHideTimeoutId);
+                    self.starArrowHideTimeoutId = setTimeout(function () {
+                        starArrow.addClass('hide_dom');
+                    }, self.helper.ANI_PLAY_TIME / 3);
+                    if (index <= 9) {
+                        self.starArrowShowTimeoutId && clearTimeout(self.starArrowShowTimeoutId);
+                        self.starArrowShowTimeoutId = setTimeout(function () {
+                            starArrow.attr({
+                                transform: 'translate(' + (distance * index - 16) + '-72)'
+                            });
+                            starArrow.removeClass('hide_dom');
+                        }, self.helper.ANI_PLAY_TIME);
+                    }
+                } else if (index === 0) {
+                    starArrow.addClass('hide_dom');
+                    starArrow.attr({ transform: 'translate(-16 -72)' });
+                    starArrow.removeClass('hide_dom');
+                }
+            }
+        },
+        reset: function reset() {
+            var self = this;
+            self.getArrow().attr({ transform: 'translate(-16 -72)' }).addClass('hide_dom');
+        },
+        stop: function stop() {
+            var self = this;
+            if (!!self.starArrowMina) {
+                self.starArrowMina.start = 0;
+                self.starArrowMina.end = 0;
+                self.starArrowMina.stop();
+            }
+
+            self.starArrowHideTimeoutId && clearTimeout(self.starArrowHideTimeoutId);
+            self.starArrowShowTimeoutId && clearTimeout(self.starArrowShowTimeoutId);
+        }
+    });
+    return Arrow;
+});
+'use strict';
+
+/**
+ * 机械波的圆
+ */
+define('Circle', function () {
+    var Circle = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            this.helper = this.opt.helper;
+            this.leftGroup = null;
+            /* 上面一个半圆弧*/
+            this.topPathString = 'M0,0';
+            /* 下面一个半圆弧*/
+            this.bottomPathString = 'M0,0';
+            /*左边圆的半径*/
+            this.r = this.helper.CIRCLE_RADIUS;
+        },
+        render: function render() {
+            var self = this;
+            /*svg 左边圆部分*/
+            self.leftGroup = self.helper.svg.paper.g().attr({ transform: 'translate(110 424)' });
+            /*白色的静态圆*/
+            self.bigCircle = self.helper.svg.paper.circle(0, 0, self.r).attr({ fill: '#fff', stroke: '#4d4d4d', strokeWidth: 4 });
+            self.leftGroup.add(self.bigCircle);
+            /*绘制静态图形，绘制动态图形*/
+            self._drawFilledSector();
+            /*透明的静态圆，为了防止扇形重绘时覆盖圆的边框*/
+            self.transparentCircle = self.helper.svg.paper.circle(0, 0, self.r).attr({ fill: 'transparent', stroke: '#4d4d4d', strokeWidth: 4 });
+            self.leftGroup.add(self.transparentCircle);
+            self._drawRadiusLine();
+            self._drawAuxiliaryLine();
+            self._radiusLineAnimate();
+            self._auxiliaryLineAnimate();
+        },
+        //完整演示
+        fullDemonstration: function fullDemonstration() {
+            var self = this;
+            var index = 1;
+            //setInterval没有马上执行
+            if (index === 1) {
+                self.detailStepDemonstration(index);
+                index++;
+            }
+            self.fullDemonstrationIntervalId && clearInterval(self.fullDemonstrationIntervalId);
+            self.fullDemonstrationIntervalId = setInterval(function () {
+                self.detailStepDemonstration(index);
+                index++;
+            }, self.helper.ANI_PLAY_TIME);
+        },
+        //分步演示
+        detailStepDemonstration: function detailStepDemonstration(index) {
+            var self = this;
+            var deg1 = (index - 1) * 45,
+                deg2 = index * 45;
+            if (index === 0) {
+                self.topPathString = 'M0,0';
+                self.bottomPathString = 'M0,0';
+                self.topFanShaped.attr({ d: self.topPathString });
+                self.bottomFanShaped.attr({ d: self.bottomPathString });
+                self.radiusLineRotate.attr({ transform: 'rotate(0)' });
+                self.auxiliaryLineRotate.attr({ x2: self.r, y2: 0, y1: 0 });
+            } else if (index % 8 < 5 && index % 8 > 0) {
+                self.bottomPathString = 'M0,0';
+                self.bottomFanShaped.attr({ d: self.bottomPathString });
+                var now = mina.time();
+                self.topMina && self.topMina.stop();
+                self.topMina = mina(deg1, deg2, now, now + self.helper.ANI_PLAY_TIME, mina.time, function (val) {
+                    if (index % 8 === 1) {
+                        self.bottomPathString = 'M0,0';
+                        self.bottomFanShaped.attr({ d: self.bottomPathString });
+                    }
+                    var topPoint = self._circlePoint(val);
+                    self.topPathString = 'M0,0L108,0A108,108,0,0,0,' + topPoint.x + ',' + topPoint.y + 'z';
+                    self.topFanShaped.attr({ d: self.topPathString });
+                    self.radiusLineRotate.attr({
+                        transform: 'rotate(' + -val + ')'
+                    });
+                    if (topPoint.y === 0) {
+                        self.auxiliaryLineRotate.addClass('hide_dom');
+                    } else {
+                        self.auxiliaryLineRotate.removeClass('hide_dom');
+                        self.auxiliaryLineRotate.attr({ x2: topPoint.x, y2: topPoint.y, y1: topPoint.y });
+                    }
+                });
+            } else {
+                var topPoint = self._circlePoint(180);
+                self.topPathString = 'M0,0L108,0A108,108,0,0,0,' + topPoint.x + ',' + topPoint.y + 'z';
+                self.topFanShaped.attr({ d: self.topPathString });
+                self.bottomMina && self.bottomMina.stop();
+                var now = mina.time();
+                self.bottomMina = mina(deg1, deg2, now, now + self.helper.ANI_PLAY_TIME, mina.time, function (val) {
+                    var bottomPoint = self._circlePoint(val);
+                    self.bottomPathString = 'M0,0L-108,0A108,108,1,0,0,' + bottomPoint.x + ',' + bottomPoint.y + 'z';
+                    self.bottomFanShaped.attr({ d: self.bottomPathString });
+                    self.radiusLineRotate.attr({
+                        transform: 'rotate(' + -val + ')'
+                    });
+                    if (bottomPoint.y === 0) {
+                        self.auxiliaryLineRotate.addClass('hide_dom');
+                    } else {
+                        self.auxiliaryLineRotate.removeClass('hide_dom');
+                        self.auxiliaryLineRotate.attr({ x2: bottomPoint.x, y2: bottomPoint.y, y1: bottomPoint.y });
+                    }
+                });
+            }
+            self._showLeftLine(index);
+        },
+        stop: function stop() {
+            var self = this;
+            if (!!self.topMina) {
+                self.topMina.start = 0;
+                self.topMina.end = 0;
+                self.topMina.stop();
+            }
+            if (!!self.bottomMina) {
+                self.bottomMina.start = 0;
+                self.bottomMina.end = 0;
+            }
+            self.fullDemonstrationIntervalId && clearTimeout(self.fullDemonstrationIntervalId);
+        },
+        reset: function reset() {
+            var self = this;
+            self.detailStepDemonstration(0);
+        },
+        /*获取圆上移动点的位置*/
+        _circlePoint: function _circlePoint(deg) {
+            var self = this;
+            var point = {};
+            var d = deg / 180 * Math.PI;
+            point.x = self.r * Math.cos(d).toFixed(3);
+            point.y = -self.r * Math.sin(d).toFixed(3);
+            return point;
+        },
+        /*显示虚线和分割线*/
+        _showLeftLine: function _showLeftLine(index) {
+            var self = this;
+            var radiusLine = self.leftGroup.selectAll('._radiusLine');
+            var auxiliaryLine = self.leftGroup.selectAll('._auxiliaryLine');
+            for (var i = 1; i < 8; i++) {
+                if (i < index - 1) {
+                    radiusLine[i].removeClass('hide_dom');
+                    auxiliaryLine[i].removeClass('hide_dom');
+                } else {
+                    radiusLine[i].addClass('hide_dom');
+                    auxiliaryLine[i].addClass('hide_dom');
+                }
+            }
+            if (index < 9 && index > 1) {
+                radiusLine[index - 1].removeClass('hide_dom');
+                auxiliaryLine[index - 1].removeClass('hide_dom');
+            }
+        },
+        //辅助线沿着圆做轨迹动画
+        _auxiliaryLineAnimate: function _auxiliaryLineAnimate() {
+            var self = this;
+            /*旋转的虚线*/
+            self.auxiliaryLineRotate = self.helper.svg.paper.line(1437, 0, self.r, 0).attr({ strokeDasharray: '18,9', stroke: '#4d4d4d', strokeWidth: 4 }).addClass('_auxiliaryLineRotate');
+            self.leftGroup.add(self.auxiliaryLineRotate);
+        },
+        /*绘制旋转的半径线*/
+        _radiusLineAnimate: function _radiusLineAnimate() {
+            var self = this;
+            /*旋转的半径线*/
+            self.radiusLineRotate = self.helper.svg.paper.line(0, 0, self.r, 0).attr({ stroke: '#4d4d4d', strokeWidth: 4 }).addClass('_radiusLineRotate');
+            self.leftGroup.add(self.radiusLineRotate);
+        },
+        /*绘制填充的扇形面积*/
+        _drawFilledSector: function _drawFilledSector() {
+            var self = this;
+            /* 绘制旋转的填充扇形*/
+            self.topFanShaped = self.helper.svg.paper.path().attr({ fill: '#2383cc', d: self.topPathString });
+            self.bottomFanShaped = self.helper.svg.paper.path().attr({ fill: '#2383cc', d: self.bottomPathString });
+            self.leftGroup.add(self.topFanShaped, self.bottomFanShaped);
+        },
+        /*绘制静止半径线*/
+        _drawRadiusLine: function _drawRadiusLine() {
+            var self = this;
+            for (var y = 0; y < 8; y++) {
+                var deg = -y * 45;
+                self.radiusLine = self.helper.svg.paper.line(0, 0, self.r, 0).attr({
+                    stroke: '#4d4d4d',
+                    strokeWidth: 4,
+                    transform: 'rotate(' + deg + ')'
+                });
+                if (y === 0) {
+                    self.radiusLine.addClass('_radiusLine');
+                } else {
+                    self.radiusLine.addClass('_radiusLine hide_dom');
+                }
+                self.leftGroup.add(self.radiusLine);
+            }
+        },
+        //画静止的辅助线
+        _drawAuxiliaryLine: function _drawAuxiliaryLine() {
+            var self = this;
+            /*静态的虚线 初始化状态下隐藏*/
+            var pointArr = ['168 0 108 0', '1437 -76.356 76.356 -76.356', '1437 -108 0 -108', '86.5 -76.356 -76.356 -76.356', '0 0 0 0', '1437 76.356 -76.356 76.356', '1437 108 0 108', '0 0 0 0'];
+            for (var z = 0; z < 8; z++) {
+                var pointValue = pointArr[z].split(' ');
+                self.auxiliaryLine = self.helper.svg.paper.line(pointValue[0], pointValue[1], pointValue[2], pointValue[3]).attr({ strokeDasharray: '18,9', stroke: '#4d4d4d', strokeWidth: 4 });
+                if (z === 0) {
+                    self.auxiliaryLine.addClass('_auxiliaryLine');
+                } else {
+                    self.auxiliaryLine.addClass('_auxiliaryLine hide_dom');
+                }
+                self.leftGroup.add(self.auxiliaryLine);
+            }
+        }
+    });
+
+    return Circle;
+});
+'use strict';
+
+/**
+ * 机械波中的关键质点，红色的质点
+ */
+define('KeyPoint', ['Point'], function (Point) {
+    var KeyPoint = Point.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            this.circle = null;
+            this.redLine = null;
+            this.isDrawedRedLine = false;
+            this.init();
+        },
+        init: function init() {
+            var self = this;
+            //红色圆点
+            self.circle = self.helper.svg.paper.circle(self.opt.cx, self.opt.cy, self.helper.POINT_RADIUS).addClass('_wave');
+            self.circle.attr({ fill: self.opt.gradient, stroke: '#5b0c19', strokeWidth: '1.5' });
+            //红线
+            self.redLine = self.helper.svg.paper.line(self.opt.cx, self.opt.cy, self.opt.cx, self.opt.cy).addClass('_waveLine');
+            self.redLine.attr({ stroke: '#c83f24', strokeWidth: '6' });
+        },
+        getRedLine: function getRedLine() {
+            return this.redLine;
+        },
+        //点在上下动画运动时，需要在运动轨迹上画一条红条
+        drawRedLine: function drawRedLine(startDeg, endDeg) {
+            var self = this;
+            var radius = self.helper.CIRCLE_RADIUS;
+            var now = mina.time();
+            if (self.getDrawedRedLine()) {
+                return;
+            }
+            /*首先为负数移动方向向上*/
+            var startY = -radius * Math.sin(startDeg).toFixed(3);
+            var endY = -radius * Math.sin(endDeg).toFixed(3);
+            if (startY > endY && startY <= 0) {
+                //上部向上移动
+                self.lineUpMina && self.lineUpMina.stop();
+                self.lineUpMina = mina(startDeg, endDeg, now, now + self.helper.ANI_PLAY_TIME, mina.time, function (val) {
+                    self.getRedLine().attr({
+                        y1: -3,
+                        y2: -radius * Math.sin(val).toFixed(3)
+                    });
+                });
+            } else if (startY < endY && endY <= 0) {
+                //上部向下移动
+                self.getRedLine().attr({
+                    y1: -radius,
+                    y2: 0
+                });
+            } else if (startY < endY && startY >= 0) {
+                //下部向下移动
+                self.lineDownMina && self.lineDownMina.stop();
+                self.lineDownMina = mina(startDeg, endDeg, now, now + self.helper.ANI_PLAY_TIME, mina.time, function (val) {
+                    self.getRedLine().attr({
+                        y1: -radius,
+                        y2: -radius * Math.sin(val).toFixed(3)
+                    });
+                });
+            } else if (startY > endY && endY >= 0) {
+                //下部向上移动
+                self.setDrawedRedLine(true);
+                self.getRedLine().attr({
+                    y1: -radius,
+                    y2: radius
+                });
+            }
+        },
+        stop: function stop() {
+            var self = this;
+            self._super();
+            if (!!self.lineUpMina) {
+                self.lineUpMina.start = 0;
+                self.lineUpMina.end = 0;
+                self.lineUpMina.stop();
+            }
+            if (!!self.lineDownMina) {
+                self.lineDownMina.start = 0;
+                self.lineDownMina.end = 0;
+                self.lineDownMina.stop();
+            }
+        },
+        reset: function reset() {
+            var self = this;
+            self._super();
+            self.getRedLine().attr({ y1: 0, y2: 0 });
+            self.setDrawedRedLine(false);
+        },
+        getDrawedRedLine: function getDrawedRedLine() {
+            return this.isDrawedRedLine;
+        },
+        setDrawedRedLine: function setDrawedRedLine(drawed) {
+            this.isDrawedRedLine = drawed;
+        }
+    });
+
+    return KeyPoint;
+});
+'use strict';
+
+/**
+ * 机械波
+ */
+define('MechanicalWave', ['Point', 'KeyPoint', 'Arrow'], function (Point, KeyPoint, Arrow) {
+    var MechanicalWave = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            this.points = [];
+            this.rightGroup = null;
+        },
+        render: function render() {
+            var self = this;
+            /*svg 右边机械波部分*/
+            self.rightGroup = self.helper.svg.paper.g().attr({
+                transform: 'translate(278 424)'
+            });
+            /*添加机械波点，1225为第一个点到最后一个点的间距，28为点的个数，20为点的半径*/
+            var x = self.helper.MECHANICAL_WAVE_WIDTH / (self.helper.MECHANICAL_WAVE_COUNT - 1);
+            /* 灰球的镜像渐变*/
+            var grayGradient = self.helper.svg.paper.gradient('r(0.6554063,0.24375, 0.685,0.6554063,0.24375)#f7f7f7:0-#d3c3bf:45-#9c9898:75-#696969:100');
+            /* 红球的镜像渐变*/
+            var redGradient = self.helper.svg.paper.gradient('r(0.6554063,0.24375, 0.755,0.6554063,0.24375)#ffe2c0:0-#d14f32:45-#a41215:85-#76101d:100');
+            for (var i = 0; i < self.helper.MECHANICAL_WAVE_COUNT; i++) {
+                var cx = i * x;
+                var opt = {
+                    cx: cx,
+                    cy: 0,
+                    helper: self.helper,
+                    gradient: undefined
+                };
+                var point = null;
+                if (i % self.helper.ONE_UNIT_POINTS === 0) {
+                    opt.gradient = redGradient;
+                    point = new KeyPoint(opt);
+                    self.rightGroup.add(point.getRedLine());
+                } else {
+                    opt.gradient = grayGradient;
+                    point = new Point(opt);
+                }
+                self.points.push(point);
+                self.rightGroup.add(point.getCircle());
+            }
+            /*添加第一个箭头*/
+            self.arrow = new Arrow({ helper: self.helper });
+            self.rightGroup.add(self.arrow.getArrow());
+        },
+        //完整演示
+        fullDemonstration: function fullDemonstration() {
+            var self = this;
+            var index = 1;
+            //setInterval没有马上执行
+            if (index === 1) {
+                self._waveAnimate(index);
+                self.arrow.animate(index);
+                index++;
+            }
+            self.fullDemonstrationIntervalId && clearInterval(self.fullDemonstrationIntervalId);
+            self.fullDemonstrationIntervalId = setInterval(function () {
+                self._waveAnimate(index);
+                self.arrow.animate(index);
+                index++;
+            }, self.helper.ANI_PLAY_TIME);
+        },
+        //分步演示
+        detailStepDemonstration: function detailStepDemonstration(index) {
+            var self = this;
+            self.points.forEach(function (point) {
+                point.reset();
+            });
+            self._waveAnimate(index);
+            self.arrow.animate(index);
+        },
+        //进入机械波分布演示动画的最后一帧
+        // detailGotoNowState : function (index) {
+        //     var self = this;
+        //
+        // },
+        stop: function stop() {
+            var self = this;
+            self.points.forEach(function (point) {
+                point.stop();
+            });
+            self.arrow.stop();
+            self.fullDemonstrationIntervalId && clearInterval(self.fullDemonstrationIntervalId);
+        },
+        reset: function reset() {
+            var self = this;
+            self.points.forEach(function (point) {
+                point.reset();
+            });
+            self.arrow.reset();
+        },
+        /*机械波的动画,包括机械点的移动和画线*/
+        _waveAnimate: function _waveAnimate(index) {
+            var self = this;
+            var n = self.helper.ONE_UNIT_POINTS;
+            if (index !== 0) {
+                var startDegVals = self._arrange(n, index - 1);
+                var endDegVals = self._arrange(n, index);
+                self.points.forEach(function (point, num) {
+                    point.animate(startDegVals[num], endDegVals[num]);
+                    //XXX 这边代码给写死判断第9个，也就是下一个周期。需要优化
+                    if (point instanceof KeyPoint) {
+                        if (index === 9 && num === 0) {
+                            point.drawRedLine((270 / 180 * Math.PI).toFixed(3), 0);
+                        } else {
+                            point.drawRedLine(startDegVals[num], endDegVals[num]);
+                        }
+                    }
+                });
+            } else {
+                self.points.forEach(function (point) {
+                    point.reset();
+                });
+            }
+        },
+        /*arrange函数计算元素纵轴坐标的所有弧度值，以数组保存
+         *  n代表一个单元内点的个数
+         *  index代表选择的周期种类，一共10种情况，0~9
+         * */
+        _arrange: function _arrange(n, index) {
+            var d = [];
+            /*为数组赋初值为0*/
+            for (var i = 0; i < 29; i++) {
+                d[i] = 0;
+            }
+            var deg = 0;
+            var maxDeg = 45 * index;
+            var len = maxDeg / 45 * n + 1;
+            for (var i = len - 1; i >= 0; --i) {
+                d[i] = deg / 180 * Math.PI;
+                deg += 45 / n;
+            }
+            return d;
+        }
+    });
+
+    return MechanicalWave;
+});
+'use strict';
+
+/**
+ * 控制器
+ */
+define('MechanicalWaveController', ['Circle', 'MechanicalWave'], function (Circle, MechanicalWave) {
+    var MechanicalWaveController = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            //记录当前步骤标记，默认没有按钮选中
+            this.currentStep = undefined;
+            //分步演示动画完成
+            this.detailAnimated = true;
+            this.detailAnimatedTimeoutId = undefined;
+            //保存上一次点击的按钮索引，用于防止用户暴力点击
+            this.lastIndex = undefined;
+            this.circle = new Circle({ helper: this.helper });
+            this.mechanicalWave = new MechanicalWave({ helper: this.helper });
+        },
+        init: function init() {
+            var self = this;
+            self.helper.svg = Snap().attr({ viewBox: '0 0 1600 750' }).addClass('mw_svg');
+            self.helper.$view.find('.mw_svg_content')[0].appendChild(self.helper.svg.node);
+            self._renderAxis();
+            self.circle.render();
+            self.mechanicalWave.render();
+        },
+        //完整演示
+        fullDemonstration: function fullDemonstration() {
+            var self = this;
+            self.reset();
+            self.detailAnimated = true;
+            self.circle.fullDemonstration();
+            self.mechanicalWave.fullDemonstration();
+        },
+        //分步演示
+        stepDemonstration: function stepDemonstration() {
+            var self = this;
+            self.reset();
+            var savaStep = self.getCurrentStep();
+            savaStep !== undefined && self.detailStepDemonstration(savaStep);
+        },
+        // //进入分布演示动画的最后一帧 gotoNowState:function () {     var self = this;     var savaStep = self.getCurrentStep();
+        // self.circle.detailGotoNowState(savaStep);     self.mechanicalWave.detailGotoNowState(savaStep); },
+        // 详细分步演示，就是点击每个特定时间点的演示
+        detailStepDemonstration: function detailStepDemonstration(index) {
+            var self = this;
+            if (!self.detailAnimated && self.lastIndex === index) {
+                return;
+            }
+            self.detailAnimated = index === 0;
+            self.lastIndex = index;
+            self.reset();
+            self.setCurrentStep(index);
+            self.circle.detailStepDemonstration(index);
+            self.mechanicalWave.detailStepDemonstration(index);
+            !!self.detailAnimatedTimeoutId && clearTimeout(self.detailAnimatedTimeoutId);
+            self.detailAnimatedTimeoutId = setTimeout(function () {
+                self.detailAnimated = true;
+            }, self.helper.ANI_PLAY_TIME);
+        },
+        //复位
+        reset: function reset() {
+            var self = this;
+            self.circle.stop();
+            self.mechanicalWave.stop();
+
+            self.circle.reset();
+            self.mechanicalWave.reset();
+        },
+        getCurrentStep: function getCurrentStep() {
+            return this.currentStep;
+        },
+        setCurrentStep: function setCurrentStep(step) {
+            this.currentStep = step;
+        },
+        _renderAxis: function _renderAxis() {
+            var self = this;
+            self.axisGroup = self.helper.svg.paper.g().attr({ transform: 'translate(262 115)' });
+            var yAxis = self.helper.svg.paper.path('M 16.15 0.71 C 18.74 5.54 20.75 10.68 23.72 15.32 C 25.85 18.84 28.58 21.94 31.03 25.24 C 26.77 24.67 22.86 22.84 19.01 ' + '21.03 C 18.99 215.68 19.01 410.34 19.00 605.00 L 13.00 605.00 C 12.99 410.41 13.02 215.81 12.98 21.22 C 9.36 22.93 5.68 ' + '24.62 1.69 25.26 C 3.85 21.94 6.52 18.98 8.56 15.58 C 11.52 10.85 13.55 5.63 16.15 0.71 Z').attr({ fill: '#4d4d4d', opacity: 1 });
+            self.axisGroup.add(yAxis);
+            for (var i = 0; i < 9; i++) {
+                self.axisGroup.add(self.helper.svg.paper.line().attr({
+                    x1: self.helper.KEY_POINT_DISTANCE * (i + 1) + 16.15,
+                    y1: 20,
+                    x2: self.helper.KEY_POINT_DISTANCE * (i + 1) + 16.15,
+                    y2: 600,
+                    strokeDasharray: '18,9',
+                    stroke: '#4d4d4d',
+                    strokeWidth: 4
+                }));
+            }
+        }
+    });
+
+    return MechanicalWaveController;
+});
+'use strict';
+
+/**
+ * 机械波的点
+ */
+define('Point', function () {
+    var Point = Class.extend({
+        $init: function $init(opt) {
+            this.opt = $.extend({}, opt);
+            this.helper = this.opt.helper;
+            this.circle = null;
+            this.init();
+        },
+        init: function init() {
+            var self = this;
+            //灰色圆点
+            self.circle = self.helper.svg.paper.circle(self.opt.cx, self.opt.cy, self.helper.POINT_RADIUS).addClass('_wave');
+            self.circle.attr({ fill: self.opt.gradient, stroke: '#605b5c', strokeWidth: '1.5' });
+        },
+        animate: function animate(startDeg, endDeg) {
+            var self = this;
+            self.pointMina && self.pointMina.stop();
+            var now = mina.time();
+            self.pointMina = mina(startDeg, endDeg, now, now + self.helper.ANI_PLAY_TIME, mina.time, function (val) {
+                self.getCircle().attr({
+                    cy: -self.helper.CIRCLE_RADIUS * Math.sin(val).toFixed(3)
+                });
+            });
+        },
+        getCircle: function getCircle() {
+            return this.circle;
+        },
+        stop: function stop() {
+            var self = this;
+            if (!!self.pointMina) {
+                self.pointMina.start = 0;
+                self.pointMina.end = 0;
+                self.pointMina.stop();
+            }
+        },
+        reset: function reset() {
+            this.getCircle().attr({ cy: 0 });
+        }
+    });
+    return Point;
+});]]></presenter><resources><file src="./resources/wood/images/mechanicalwave_bg.png"/></resources></addon>

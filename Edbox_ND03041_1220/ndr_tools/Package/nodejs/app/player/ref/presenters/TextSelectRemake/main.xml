@@ -1,0 +1,422 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TextSelectRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" />
+                <property name="question_url" type="jsonFile" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .com_btn_remind.pad_initial{left:3.33333em;top:4.83333em}.exam_skin_wood .textselect_box{position:relative;height:100%;z-index:333}.exam_skin_wood .textselect_box .com_layout_main{margin:2em 1.5em;overflow-y:auto;-webkit-overflow-scrolling:touch;-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}.exam_skin_wood .textselect_box .textselect_container{color:#5d390d;height:100%;font-size:1.91667em;padding:0 .5em;border-radius:.33333em;line-height:2;word-break:break-all;word-wrap:break-word}.exam_skin_wood .textselect_box .textselect_container .textselect_option{background:#b18745;color:#fff;border:1px solid #806031;border-bottom-width:.125em;position:relative;cursor:pointer;border-radius:.20833em;padding:.125em .25em;display:inline-block;line-height:1.5}.exam_skin_wood .textselect_box .textselect_container .textselect_selected{background:#76c1ea;color:#fff;border:1px solid #4b8aad;border-bottom-width:.125em}.exam_skin_wood .textselect_box .textselect_container .textselect_error{background:#d62727;color:#fff;border:1px solid #861010;border-bottom-width:.125em}.exam_skin_wood .textselect_box .textselect_container .textselect_correct{background:#268b52;color:#fff;border:1px solid #14c061;border-bottom-width:.125em}.exam_skin_wood .textselect_result{float:left;margin:.83333em 0 0 35%;color:#5e390c;font-size:1em}.exam_skin_wood .textselect_result span{color:#fd9000;font-size:1.66667em}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content textselect_box"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit" data-bind="html:title"></h2></div><div class="com_layout_main scrollbar_style_simple _scrollbar_container"><div class="textselect_container _textselect_container" data-bind="html:content"></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var helper = {};
+    var Presenter = BasicPresenter.extend({
+        //Presenter的元数据
+        metaInfo: {
+            name: "TextSelectRemake",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        $init: function() {
+            this._super();
+            this.viewModel = {
+                view: null,
+                question: {
+                    title: "",
+                    content: ""
+                }
+            };
+            this.model = null;
+            this.$view = null;
+            this.correctAnswer = [];
+            //定义日志 this.logger.appendHandler(function (message, context) {     console.log(message); }, {level: Logger.DEBUG});
+        },
+        getService: function() {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        run: function(view, model) {
+            this.$view = $(view);
+            this.viewModel.view = view;
+            this.model = model;
+            this._presenterInit();
+            ko.applyBindings(this.viewModel.question, view);
+        },
+        pageShow: function() {
+            this._bindEvent();
+        },
+        pageLeave: function() {
+            this._unbindEvent();
+        },
+        destroy: function() {
+            ko.cleanNode(this.viewModel.view);
+            this.viewModel = null;
+        },
+        /**
+         * 以下是私有方法
+         */
+        _service_: {
+            constructor: function(parent) {
+                this.parent = parent;
+                this.status = {};
+            },
+            /**********作为题型Presenter需要实现的方法***************/
+            //获取题目的信息
+            getQuestionInfo: function() {
+                return {
+                    id: this.parent.model.questionId,
+                    type_code: "textselect",
+                    type_name: helper.i18n['textSelect'],
+                    item: "textselect",
+                    url: "'" + JSON.stringify(this.parent.model.questionData) + "'",
+                    dispatchOnly: true
+                };
+            },
+            //显示答案
+            showAnswer: function(answerType, answer) {
+                var self = this.parent;
+                var answers = this.parent.$view.find("._textselect_container span.textselect_option");
+                switch (answerType) {
+                    case 'user':
+                        answers = this.parent.$view.find(
+                            "._textselect_container span.textselect_selected");
+                    case 'correct':
+                    default:
+                        //公布答题，要锁屏
+                        this.lockQuestion();
+                        answers.each(function(index, value) {
+                            var num = $(value).data('num');
+                            var isCorrect = false;
+                            for (var i = 0, iLen = self.correctAnswer.length; i < iLen; i++) {
+                                if (self.correctAnswer[i].num == num) {
+                                    isCorrect = true;
+                                    break;
+                                }
+                            }
+                            if (isCorrect) {
+                                $(value).addClass('textselect_correct');
+                            } else {
+                                $(value).addClass('textselect_error');
+                            }
+                        });
+                }
+            },
+            //获取作答结果
+            getResult: function() {
+                var answerState = 'NO_ANSWER';
+                var correctResponse = this.parent.correctAnswer;
+                var userResponse = this.parent._getUserAnswer();
+                var correct = true;
+                if (userResponse.length > 0) {
+                    answerState = 'NO_COMPLETE';
+                }
+                if (correctResponse.length === userResponse.length) {
+                    answerState = 'COMPLETE';
+                }
+                if (correctResponse.length != userResponse.length) {
+                    correct = false;
+                }
+                for (var i = 0; i < correctResponse.length; i++) {
+                    if (correctResponse[i].value.replace(/&nbsp;/g, '').replace(/&/g, '&') !=
+                        userResponse[i]) {
+                        correct = false;
+                        break;
+                    }
+                }
+
+                return {
+                    questionId: this.parent.model.questionId,
+                    answerState: answerState,
+                    answer: {
+                        answer_result: correct,
+                        correct_response: correctResponse,
+                        user_response: userResponse
+                    }
+                }
+            },
+            //将题目设置为不可作答状态
+            lockQuestion: function() {
+                //this.parent.$view.siblings('._mask_Panel').show(); 状态恢复
+                if (this.parent.isLock) {
+                    return;
+                }
+                this.parent.isLock = true;
+                this.parent._unbindEvent();
+            },
+            //将题目设置为可作答状态
+            unlockQuestion: function() {
+                //this.parent.$view.siblings('._mask_Panel').hide(); 状态恢复
+                if (!this.parent.isLock) {
+                    return;
+                }
+                this.parent.isLock = false;
+                this.parent._bindEvent();
+            },
+            //将题目设置为结束作答状态,点击“退出本题”按钮时会调用
+            finishQuestion: function() {},
+            //重置题目
+            resetQuestion: function() {
+                this.parent.$view.siblings('._mask_Panel').hide();
+                this.parent.$view.find("._textselect_container span.textselect_option").removeClass(
+                    'textselect_selected textselect_correct textselect_error');
+
+                //通知状态变化
+                this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+            },
+            //获取题型所属的统计类别
+            getStatisticClass: function() {
+                return 'C';
+            },
+            //统计数据转换
+            convertDataForStatistics: function(oriData) {
+                var value = oriData.value;
+                var convertedData = {};
+                //题目类型
+                convertedData.questionType = value.questionType;
+                //用时
+                convertedData.elapsedTime = value.elapsedTime;
+                //已作答人数
+                convertedData.finishedNum = value.finishedNum;
+                //未作答人数
+                convertedData.unfinishedNum = value.unfinishedNum;
+                //总人数
+                convertedData.totalNum = value.unfinishedNum + value.finishedNum;
+
+                convertedData.unfinishedUsers = value.unfinishedUserIds;
+                convertedData.correctUsers = [];
+                convertedData.wrongUsers = [];
+
+                if (value.answers && value.answers[0].length > 0) {
+                    for (var index = 0; index < value.answers[0].length; index++) {
+                        var object = value.answers[0][index];
+                        if (object && object.userIds) {
+                            var data = JSON.parse(object.answer);
+                            if (value.questionType && value.questionType == "textselect") {
+                                if (data && data.answer_result) {
+                                    convertedData.correctUsers = convertedData.correctUsers.concat(
+                                        object.userIds);
+                                } else {
+                                    if (data && data.correct_response && data.user_response) {
+                                        var is_same = (data.correct_response.length == data.user_response
+                                            .length) && data.correct_response.every(function(
+                                            element, index) {
+                                            return element === data.user_response[index];
+                                        });
+                                        if (is_same) {
+                                            convertedData.correctUsers = convertedData.correctUsers.concat(
+                                                object.userIds);
+                                        } else {
+                                            convertedData.wrongUsers = convertedData.wrongUsers.concat(
+                                                object.userIds);
+                                        }
+                                    } else {
+                                        convertedData.wrongUsers = convertedData.wrongUsers.concat(
+                                            object.userIds);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                convertedData.allrightStu = [];
+                convertedData.allrightStu = convertedData.allrightStu.concat(convertedData.correctUsers);
+                convertedData.spend_time = value ? value.elapsedTime ? value.elapsedTime : 0 : 0;
+                convertedData.submit_count = value ? value.finishedNum + value.unfinishedNum : 0;
+                convertedData.correctNum = convertedData.correctUsers.length;
+                convertedData.wrongNum = convertedData.wrongUsers.length;
+                value["convertedData"] = convertedData;
+            },
+            //进入统计
+            startStatistics: function() {
+                //TODO:C类统计没有交互，暂时不处理
+            },
+            //显示互动题型结果提示
+            showResultHint: function(options) {
+                var result = this.getResult();
+                var tip;
+
+                if (result.answer.answer_result) {
+                    tip = helper.i18n['message_box_correct'];
+                } else {
+                    tip = helper.i18n['message_box_wrong'];
+                }
+
+                this.parent.$dispatchEvent($PresenterEvent['ObjectiveInteractionLayout'].NOTICE_TIP,
+                    PresenterEventType.IC_PLAYER_EVENT, {
+                        value: {
+                            type: 'show',
+                            text: tip,
+                            autoDismiss: true
+                        }
+                    });
+            },
+            _getState: function() {
+                var answerSelected = {};
+                this.parent.$view.find('._textselect_container span.textselect_option').each(function(
+                    index, value) {
+                    if ($(value).hasClass('textselect_selected')) {
+                        var i = $(value).data('num');
+                        answerSelected[i] = true;
+                    }
+                });
+                var state = {
+                    answerSelected: answerSelected,
+                    isLock: this.parent.isLock,
+                    scrollTop: this.parent.$view.find('._scrollbar_container').scrollTop()
+                };
+                return JSON.stringify(state);
+            },
+            /******实现状态恢复的两个方法*******/
+            getState: function() {
+                this.parent.playerController.startFlow('css_classroom_status_changed', { presenterCode: this
+                        .parent.metaInfo.name });
+                return this._getState();
+            },
+            setState: function(state) {
+                var stateObj = JSON.parse(state);
+                if (stateObj) {
+                    this.parent.$view.find('._textselect_container span.textselect_option').each(
+                        function(index, value) {
+                            var num = $(value).data('num');
+                            if (stateObj.answerSelected[num]) {
+                                $(value).addClass('textselect_selected');
+                            }
+                        });
+                    //恢复滚动条位置
+                    stateObj.scrollTop && this.parent.$view.find('._scrollbar_container').scrollTop(
+                        stateObj.scrollTop);
+
+                    //是否锁屏
+                    if (stateObj.isLock) {
+                        this.lockQuestion();
+                    } else {
+                        this.unlockQuestion();
+                    }
+                }
+            },
+            getClassroomStatus: function() {
+                return this._getState();
+            },
+            setClassroomStatus: function(status) {
+                this.status = status;
+                !!this.status && this.setState(status);
+                this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: this
+                        .parent.metaInfo.name });
+            },
+            clearClassroomStatus: function() {
+                this.setClassroomStatus(null);
+            },
+            setLocationProperties: function(properties) {
+                helper.i18n = properties;
+            }
+        },
+        _presenterInit: function() {
+            var questionData = this.model.questionData;
+            var content = questionData.prompt.content,
+                candidates = questionData.prompt.candidates,
+                correctCount = 0;
+            var self = this;
+
+            if (questionData.title && questionData.title.length > 38) {
+                this.$view.find(".tit").addClass("s_tit");
+            }
+
+            $.each(candidates, function(index, item) {
+                item.value = item.value.replace(/&nbsp;/g, '').replace(/&amp;/g, '&');
+                if (item.correct) {
+                    content = content.replace('{' + item.num + '}',
+                        '<span class="textselect_option" data-num="' + item.num + '">' +
+                        item.value + '</span>');
+                    self.correctAnswer[correctCount] = item;
+                    correctCount++;
+                } else {
+                    content = content.replace('{' + item.num + '}',
+                        '<span class="textselect_option" data-num="' + item.num + '">' +
+                        item.value + '</span>');
+                }
+            });
+            this.model.correctCount = correctCount;
+            this.viewModel.question.title = questionData.title;
+            this.viewModel.question.content = content;
+        },
+        _bindEvent: function() {
+            var self = this;
+            this.$view.find('._scrollbar_container').on('scroll', function() {
+                //发出状态发生变化的事件
+                self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+            });
+
+            this.$view.find("._textselect_container span.textselect_option").on('mousedown touchstart',
+                function(event) {
+                    event.preventDefault();
+                    var $target = $(event.currentTarget),
+                        num = $target.data('num');
+                    if (self.model.correctCount == 1) {
+                        self.$view.find("._textselect_container span.textselect_option").removeClass(
+                            "textselect_selected");
+                    }
+                    $target.removeClass('textselect_correct textselect_error').toggleClass(
+                        'textselect_selected');
+
+                    //发出按钮状态的事件
+                    self.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT, {
+                            canSubmit: (self._getUserAnswer().length > 0)
+                        });
+                    //发出状态发生变化的事件
+                    self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                });
+        },
+        _unbindEvent: function() {
+            this.$view.find("._textselect_container span.textselect_option").off('mousedown touchstart');
+        },
+        //获取用户的作答记录
+        _getUserAnswer: function() {
+            var userResponse = [];
+            this.$view.find("._textselect_container span.textselect_option").each(function(index, value) {
+                if ($(value).hasClass('textselect_selected')) {
+                    userResponse.push($(value).text());
+                }
+            });
+            return userResponse;
+        }
+
+    });
+
+    window.AddonTextSelectRemake_create = function() {
+        return new Presenter();
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

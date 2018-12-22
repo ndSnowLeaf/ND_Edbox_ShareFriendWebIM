@@ -1,0 +1,361 @@
+<div class="ed_composition">
+    <!-- 全屏弹窗，参考范例，隐藏加 hide_dom。加class: motai 可以操作底下的内容-->
+    <div ng-class="{'hide_dom':!isShowTabUpLimitPrompt}" class="ndui-pop pop-prompt">
+        <div class="ndui-pop-mask"></div>
+        <div class="ndui-pop-square">
+            <!-- 参考范例 -->
+            <div class="ndui-pop-wrap">
+                <!-- 关闭按钮 -->
+                <a href="javascript:;" class="ndui-pop-close" ng-click="isShowTabUpLimitPrompt=false">
+                    <em></em>
+                    <span class="preload-btn-close-pic1"></span>
+                    <span class="preload-btn-close-pic2"></span>
+                </a>
+                <!-- 外部注入DOM -->
+                <!--目前最多支持20条素材-->
+                <div class="ndui-prompt">
+                    <div class="ndui-prompt-title" i18n-render i18n-key="NDPrompt.title">
+                        <!--提示消息-->
+                    </div>
+                    <div class="ndui-prompt-content">
+                        <div class="ndui-prompt-txtwrap">
+                            <span class="txt" i18n-render i18n-key="NDPrompt.msgContent">
+                                <!--目前最多支持20条素材-->
+                            </span>
+                        </div>
+                        <div class="ndui-prompt-btnwrap">
+                            <!--<a href="javascript:;" class="ndui-btn-func confirm">-->
+                            <!--<em class="ndui-btn-txt">确认</em>-->
+                            <!--</a>-->
+                            <a href="javascript:;" class="ndui-btn-func close" ng-click="isShowTabUpLimitPrompt=false">
+                                <em class="ndui-btn-txt" i18n-render i18n-key="NDPrompt.close">
+                                    <!--关闭-->
+                                </em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /外部注入 -->
+            </div>
+            <!-- /参考范例 -->
+        </div>
+    </div>
+    <div ng-class="{'hide_dom':!isShowDeleteTabPrompt}" class="ndui-pop pop-prompt">
+        <div class="ndui-pop-mask"></div>
+        <div class="ndui-pop-square">
+            <!-- 参考范例 -->
+            <div class="ndui-pop-wrap">
+                <!-- 关闭按钮 -->
+                <a href="javascript:;" class="ndui-pop-close" ng-click="isShowDeleteTabPrompt=false">
+                    <em></em>
+                    <span class="preload-btn-close-pic1"></span>
+                    <span class="preload-btn-close-pic2"></span>
+                </a>
+                <!-- 外部注入DOM -->
+                <!--你确定要删除素材 “素材1” 吗？-->
+                <div class="ndui-prompt">
+                    <div class="ndui-prompt-title" i18n-render i18n-key="NDPrompt.title">
+                        <!--提示消息-->
+                    </div>
+                    <div class="ndui-prompt-content">
+                        <div class="ndui-prompt-txtwrap">
+                            <span class="txt">
+                                <span i18n-render i18n-key="NDPrompt.msg.prefix">
+                                    <!--你确定要删除素材 “-->
+                                </span>
+                                <span ng-bind="waitDeleteTabName"></span>
+                                <span i18n-render i18n-key="NDPrompt.msg.suffix">
+                                    <!--” 吗？-->
+                                </span>
+                            </span>
+                        </div>
+                        <div class="ndui-prompt-btnwrap">
+                            <a href="javascript:;" class="ndui-btn-func confirm"
+                               ng-click="assetsHandler.confirmDeleteTab()">
+                                <em class="ndui-btn-txt" i18n-render i18n-key="NDPrompt.confirm">
+                                    <!--确认-->
+                                </em>
+                            </a>
+                            <a href="javascript:;" class="ndui-btn-func close" ng-click="isShowDeleteTabPrompt=false">
+                                <em class="ndui-btn-txt" i18n-render i18n-key="NDPrompt.cancel">
+                                    <!--关闭-->
+                                </em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- /外部注入 -->
+            </div>
+            <!-- /参考范例 -->
+        </div>
+    </div>
+    <!--全屏弹窗——素材名字不可重复-->
+    <div ng-class="{'hide_dom':!isShowTabNameDuplicationPrompt}" class="ndui-pop pop-prompt">
+        <div class="ndui-pop-mask"></div>
+        <div class="ndui-pop-square">
+            <div class="ndui-pop-wrap">
+                <!-- 关闭按钮 -->
+                <a href="javascript:;" class="ndui-pop-close" ng-click="tabNameDuplicationCb();">
+                    <em></em>
+                    <span class="preload-btn-close-pic1"></span>
+                    <span class="preload-btn-close-pic2"></span>
+                </a>
+                <div class="ndui-prompt">
+                    <div class="ndui-prompt-title" i18n-render i18n-key="NDPrompt.title">
+                        <!--提示消息-->
+                    </div>
+                    <div class="ndui-prompt-content">
+                        <div class="ndui-prompt-txtwrap">
+                            <span class="txt" i18n-render i18n-key="NDPrompt.msgTabNameDuplication">
+                                <!--素材标题不能重复-->
+                            </span>
+                        </div>
+                        <div class="ndui-prompt-btnwrap">
+                            <a href="javascript:;" class="ndui-btn-func close" ng-click="tabNameDuplicationCb();">
+                                <em class="ndui-btn-txt" i18n-render i18n-key="NDPrompt.confirm">
+                                    <!--关闭-->
+                                </em>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 标题 -->
+    <div class="ed_composition_fieldset first_line">
+        <!-- 标题与单选框 -->
+        <div class="ed_composition_field_legend clearfix noempty">
+            <p class="title" i18n-render i18n-key="composition_title">
+                <!-- 作文标题： -->
+            </p>
+            <!-- 以下是单选框，选中加 class:ui_btn_select-->
+            <div ng-click="questionContent.titleType=1"
+                 ng-class="{'ui_btn_select':questionContent.titleType==1}"
+                 class="ed_composition_radio">
+                <i class="icon"></i>
+                <span class="txt" i18n-render i18n-key="named_composition">
+                    <!-- 命题作文 -->
+                </span>
+            </div>
+            <div ng-click="questionContent.titleType=2"
+                 ng-class="{'ui_btn_select':questionContent.titleType==2}"
+                 class="ed_composition_radio">
+                <i class="icon"></i>
+                <span class="txt" i18n-render i18n-key="generated_title">
+                    <!-- 自拟题目 -->
+                </span>
+            </div>
+        </div>
+        <!-- 编辑区域，如果编辑区在第一行，class:ed_composition_field_content 加 class: first_line-->
+        <div ng-show="questionContent.titleType==1"
+             class="ed_composition_field_content">
+            <div ng-model="questionContent.title"
+                 slides-html-editor="promptHtmlEditor"
+                 disable-command="image,video,audio,background,mathjax,table"
+                 i18n-placeholder
+                 i18n-key="material_placeholder"
+                 text-maxlength="12"
+                 paste-type="plain-text"
+                 oneline="true"
+                 class="ed_composition_field_input"
+                 required
+                 ng-form
+                 name="userTitleForm"
+                 ng-class="{'_title_invalid':userTitleForm.$invalid&&userTitleForm.$dirty&&!userTitleForm.$error.required}"
+                 contenteditable="true">
+            </div>
+            <a href="#" ng-cloak class="button" ng-click="exec()" ng-show="textentryCount()<2" i18n-render
+               i18n-key="insert_gap_filling_hr">
+                <!--插入填空横线-->
+            </a>
+        </div>
+    </div>
+    <!-- /标题 -->
+    <!-- 要求 -->
+    <div class="ed_composition_fieldset">
+        <!-- 标题与单选框 -->
+        <div class="ed_composition_field_legend clearfix noempty">
+            <p class="title" i18n-render i18n-key="composition_require">
+                <!-- 要求： -->
+            </p>
+        </div>
+        <!-- 编辑区域 -->
+        <div class="ed_composition_field_content">
+            <div class="ed_composition_text_area">
+                <div i18n-placeholder
+                     i18n-key="require_placeholder"
+                     class="textarea"
+                     required
+                     ng-form
+                     name="userRequirementForm"
+                     ng-class="{'_requirement_invalid_border':userRequirementForm.$error.required}"
+                     contenteditable="true"
+                     ng-model="questionContent.requirements"
+                     slides-html-editor>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /要求 -->
+    <!-- 参考素材 -->
+    <div class="ed_composition_fieldset">
+        <!-- 标题与单选框 -->
+        <div class="ed_composition_field_legend clearfix">
+            <p class="title" i18n-render i18n-key="reference_material">
+                <!-- 参考素材： -->
+            </p>
+        </div>
+        <!-- 参考素材tab指令 -->
+        <reference-clubtunes is-show-delete-tab-prompt="isShowDeleteTabPrompt"
+                             is-show-tab-up-limit-prompt="isShowTabUpLimitPrompt"
+                             is-show-tab-name-duplication-prompt="isShowTabNameDuplicationPrompt"
+                             assets='assets'>
+        </reference-clubtunes>
+    </div>
+    <!-- /参考素材 -->
+    <!-- 作文文体 -->
+    <div class="ed_composition_fieldset zwtype">
+        <!-- 标题与单选框 -->
+        <div class="ed_composition_field_legend clearfix">
+            <p class="title" i18n-render i18n-key="composition_form">
+                <!-- 作文文体： -->
+            </p>
+            <!-- 以下是单选框，选中加 class:ui_btn_select-->
+            <div ng-click="toggleCompositionStyle($event)"
+                 _mark="radio_region_narration"
+                 ng-class="{'ui_btn_select':questionContent.compositionStyle==1}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_narration" class="icon"></i>
+                <span _mark="radio_region_narration"
+                      class="txt"
+                      i18n-render
+                      i18n-key="narration">
+                    <!-- 记叙文 -->
+                </span>
+            </div>
+            <div ng-click="toggleCompositionStyle($event)"
+                 _mark="radio_region_argumentation"
+                 ng-class="{'ui_btn_select':questionContent.compositionStyle==2}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_argumentation" class="icon"></i>
+                <span _mark="radio_region_argumentation" class="txt"
+                      i18n-render
+                      i18n-key="argumentation">
+                    <!-- 议论文 -->
+                </span>
+            </div>
+            <div ng-click="toggleCompositionStyle($event)"
+                 _mark="radio_region_expositoryWriting"
+                 ng-class="{'ui_btn_select':questionContent.compositionStyle==3}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_expositoryWriting" class="icon"></i>
+                <span _mark="radio_region_expositoryWriting" class="txt"
+                      i18n-render
+                      i18n-key="expository_writing">
+                    <!-- 说明文 -->
+                </span>
+            </div>
+            <div ng-click="toggleCompositionStyle($event)"
+                 _mark="radio_region_no_limits"
+                 ng-class="{'ui_btn_select':questionContent.compositionStyle==0}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_no_limits" class="icon"></i>
+                <span _mark="radio_region_no_limits" class="txt"
+                      i18n-render
+                      i18n-key="form_no_limit">
+                    <!-- 文体不限 -->
+                </span>
+                <span _mark="radio_region_no_limits" class="legend_tips"
+                      i18n-render
+                      i18n-key="no_limit_placeholder">
+                    <!-- （文体不同，对应的填写指导、参考范例不同） -->
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- /作文文体 -->
+    <!-- 提纲详略 -->
+    <div class="ed_composition_fieldset">
+        <!-- 标题与单选框 -->
+        <div class="ed_composition_field_legend clearfix">
+            <p class="title"
+               i18n-render
+               i18n-key="outline_concise">
+                <!-- 提纲详略： -->
+            </p>
+            <!-- 以下是单选框，选中加 class:ui_btn_select-->
+            <div ng-click="toggleOutlineLevel($event)"
+                 _mark="radio_region_level1_outline"
+                 ng-class="{'ui_btn_select':questionContent.outlineLevel==1}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_level1_outline" class="icon"></i>
+                <span _mark="radio_region_level1_outline" class="txt"
+                      i18n-render
+                      i18n-key="outline_level_1">
+                    <!-- 一级提纲 -->
+                </span>
+            </div>
+            <div ng-click="toggleOutlineLevel($event)"
+                 _mark="radio_region_level2_outline"
+                 ng-class="{'ui_btn_select':questionContent.outlineLevel==2}"
+                 class="ed_composition_radio">
+                <i _mark="radio_region_level2_outline" class="icon"></i>
+                <span _mark="radio_region_level2_outline" class="txt"
+                      i18n-render
+                      i18n-key="outline_level_2">
+                    <!-- 二级提纲 -->
+                </span>
+            </div>
+        </div>
+        <!-- 编辑区域 -->
+        <div class="ed_composition_field_content">
+            <div class="ed_composition_outline">
+                <ul style="-webkit-user-select:none;z-index: 999;" class="ed_composition_outline_handle">
+                    <li class="ed_composition_btn" ng-class="{'ui_btn_select':isShowReferenceExample}"
+                        _mark="toggleReferenceExampleBtn" ng-click="toggleCheckList($event)">
+                        <span class="mindbtn_txt" _mark="toggleReferenceExampleBtn"
+                              i18n-render
+                              i18n-key="reference_example">
+                            <!-- 参考范例 -->
+                        </span>
+                    </li>
+                    <li class="ed_composition_btn" ng-class="{'ui_btn_select':isShowCheckList}"
+                        _mark="toggleCheckListBtn" ng-click="toggleCheckList($event)">
+                        <span class="mindbtn_txt" _mark="toggleCheckListBtn"
+                              i18n-render
+                              i18n-key="check_list">
+                            <!-- 检查清单 -->
+                        </span>
+                    </li>
+                </ul>
+                <!-- 参考范例 -->
+                <reference-example composition-style="questionContent.compositionStyle"
+                                   is-show-reference-example="isShowReferenceExample"
+                                   outline-level="questionContent.outlineLevel"
+                                   is-show-outline-case="isShowOutlineCase"
+                                   is-show-composition-case="isShowCompositionCase"
+                                   is-show-spinner="isShowSpinner"
+                                   ng-show="isShowReferenceExample">
+                </reference-example>
+                <!-- /参考范例 -->
+                <!-- 检查清单 -->
+                <check-list check-list-items="checkList"
+                            reserve-check-list-items="reserveCheckList"
+                            ng-show="isShowCheckList">
+                </check-list>
+                <!-- /检查清单 -->
+                <!-- 备用检查清单 -->
+                <reserve-check-list reserve-check-list-items="reserveCheckList"
+                                    ng-show="isShowCheckList && isShowReserveCheckList && reserveCheckList.length>0">
+                </reserve-check-list>
+                <!-- /备用检查清单 -->
+                <!-- 思维导图指令 -->
+                <minder-map composition-style="questionContent.compositionStyle"
+                            outline-level="questionContent.outlineLevel">
+                </minder-map>
+            </div>
+        </div>
+    </div>
+    <!-- /提纲详略 -->
+</div>

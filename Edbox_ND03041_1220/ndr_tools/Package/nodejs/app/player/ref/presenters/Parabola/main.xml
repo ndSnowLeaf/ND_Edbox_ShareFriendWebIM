@@ -1,0 +1,1577 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="knockout" version="3.3.0"/><javaScript name="snap_svg" version="1.0.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .parabola_wrapper{width:100%;height:100%;background:#bfd3e2;position:relative}.exam_skin_wood .parabola_wrapper .parabola_svg_wrapper{width:100%;height:100%;padding:2.91667em 4.16667em 5.83333em;position:relative}.exam_skin_wood .parabola_wrapper .parabola_svg_wrapper .parabola_svg_content{width:66.66667em;height:32.33333em;position:relative;top:50%;left:50%;margin:-16.16667em 0 0 -33.33333em;background-color:#aabdcb;border-radius:.33333em}.exam_skin_wood .parabola_wrapper .parabola_svg{width:66.66667em;height:32.33333em;position:relative}.exam_skin_wood .parabola_wrapper .parabola_svg text{font-family:Times New Roman,Times,serif;font-style:italic}.exam_skin_wood .parabola_wrapper .parabola_tool_btns{position:absolute;left:0;bottom:0;width:100%;height:5.83333em;padding:0 4.16667em;background:#cfdee9;z-index:9}.exam_skin_wood .parabola_wrapper .tool_btns_main{height:100%;position:relative;text-align:center}.exam_skin_wood .parabola_wrapper .parabola_tool_btns .com_btns{min-width:10.25em;height:3.08333em;line-height:2.60333em;margin:0 1em}.exam_skin_wood .parabola_wrapper .parabola_tool_btns .btns-primary-txt{font-size:1.5em}.exam_skin_wood .parabola_wrapper .tool_btns_main_box{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:nowrap;flex-wrap:nowrap}.exam_skin_wood .parabola_wrapper .tool_btns_main_box_left,.exam_skin_wood .parabola_wrapper .tool_btns_main_box_right{height:5.83333em;padding-top:1.25em}.exam_skin_wood .parabola_wrapper .tool_btns_main_box_left{width:50%;border-right:1px solid #e1eef7}.exam_skin_wood .parabola_wrapper .tool_btns_main_box_right{width:50%;border-left:1px solid #bac8d2}.typefaces_long .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns{overflow:hidden;max-width:40%}.typefaces_long .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_long .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns .btns-primary-txt{display:inline-block;overflow:hidden;width:98%;max-height:100%;line-height:1.2;font-size:1.16667em;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns{overflow:hidden;max-width:40%}.typefaces_ru_RU .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .parabola_wrapper .tool_btns_main_box .com_btns .btns-primary-txt{display:inline-block;overflow:hidden;width:98%;max-height:100%;line-height:1.2;font-size:1.16667em;vertical-align:middle}]]></css><view><![CDATA[<div class="exam_skin_wood" id="layout"><div class="parabola_wrapper"><div class="parabola_svg_wrapper"><div class="parabola_svg_content"></div></div><div class="parabola_tool_btns _btns_parabola_tool"><div class="tool_btns_main clearfix"><div class="tool_btns_main_box _btn_draw_m_point_box"><div class="tool_btns_main_box_left"><a class="com_btns btns-primary _btn_draw_step_pre" href="javascript:;" data-type="pre"><span class="btns-primary-txt" data-bind="text:parabola_draw_step_pre"></span> </a><a class="com_btns btns-primary _btn_draw_step_next" href="javascript:;" data-type="next"><span class="btns-primary-txt" data-bind="text:parabola_draw_step_next"></span></a></div><div class="tool_btns_main_box_right"><a class="com_btns btns-primary _btn_draw_all" href="javascript:;" data-type="all"><span class="btns-primary-txt" data-bind="text:parabola_draw_all"></span> </a><a class="com_btns btns-primary _btn_draw_parabola" href="javascript:;" data-type="parabola"><span class="btns-primary-txt" data-bind="text:parabola_draw_parabola"></span></a></div></div><div class="tool_btns_main_box _btn_draw_parabola_box hide_dom"><div class="tool_btns_main_box_left"><a class="com_btns btns-primary _btn_draw_m_point" href="javascript:;" data-type="point"><span class="btns-primary-txt" data-bind="text:parabola_draw_m_point"></span> </a><a class="com_btns btns-primary _btn_show_parabola" href="javascript:;" data-type="show"><span class="btns-primary-txt" data-bind="text:parabola_show_parabola"></span></a></div><div class="tool_btns_main_box_right"><a class="com_btns btns-primary _btn_clean_path" href="javascript:;" data-type="clean"><span class="btns-primary-txt" data-bind="text:parabola_clean_path"></span> </a><a class="com_btns btns-primary _btn_reset" href="javascript:;" data-type="reset"><span class="btns-primary-txt" data-bind="text:parabola_reset"></span></a></div></div></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(3);
+	__webpack_require__(2);
+	module.exports = __webpack_require__(4);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _ParabolaController = __webpack_require__(2);
+
+	var _ParabolaController2 = _interopRequireDefault(_ParabolaController);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var helper = {
+	    domObj: {},
+	    /* svg所有点的半径*/
+	    SVGPOINTRADIU: 14,
+	    /* svg所有点的边框宽度*/
+	    SVGPOINTBORDERWIDTH: 6,
+	    /* svg所有点的边框默认颜色*/
+	    SVGPOINTBORDERCOLOR: '#c9b379',
+	    /* svg所有线的宽度*/
+	    SVGLINEWIDTH: 6,
+	    /* svg所有字的大小*/
+	    SVGFONTSIZE: 90,
+	    /* svg标准颜色值*/
+	    SVGCOLOR: {
+	      RED: '#cb1f1f',
+	      GRAY: '#4d4d4d',
+	      BLUE: '#005798',
+	      PURPLE: '#8300de',
+	      ORANGE: '#e06313',
+	      YELLOW: '#ffe013'
+	    },
+	    /* 默认H点的坐标*/
+	    /* 默认H点的坐标*/
+	    POINTHPOSX: -380,
+	    POINTHPOSY: 0,
+	    /* 默认F点的坐标*/
+	    POINTFPOSX: 0,
+	    POINTFPOSY: -214,
+	    // 推送学生端的数据记录
+	    pushStudentRecord: {
+	      studentStep: 0, // 用于记录学生端推送时的步数
+	      parabolaBtnsBox: false, // 是否显示绘制抛物线的四个按钮
+	      pointHMoved: false, /* H点和F点是否被拖动过*/
+	      pointFMoved: false,
+	      pointHNowPosX: -380, /* H点X坐标*/
+	      pointFNowPosY: -214, /* F点Y坐标*/
+	      pointMNowPos: {}, /* M点坐标*/
+	      showParabolaBtnState: false, /* 选中抛物线按钮是否为选中状态*/
+	      btnCleanPathClicked: false, /* 清除轨迹按钮刚被点击*/
+	      parabolaPath: '' /* 抛物线的路劲字符串数据*/
+	    }
+	  };
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'Parabola',
+	      type: PresenterType.PRESENTER_COMPONENT,
+	      subtype: ''
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      var self = this;
+	      self._super();
+	      // 定义日志
+	      self.logger.appendHandler(function (message, context) {
+	        switch (context.level.name) {
+	          case 'DEBUG':
+	            console.debug(message);
+	            break;
+	          case 'INFO':
+	            console.info(message);
+	            break;
+	          case 'WARN':
+	            console.warn(message);
+	            break;
+	          case 'ERROR':
+	            console.error(message);
+	            break;
+	          default:
+	            console.log(message);
+	            break;
+	        }
+	      }, {
+	        level: Logger.DEBUG
+	      });
+	    },
+	    /**
+	     * Presenter对外暴露的方法
+	     */
+	    _service_: {
+	      constructor: function constructor(parent) {
+	        this.parent = parent;
+	      },
+	      setLocationProperties: function setLocationProperties(properties) {
+	        helper.i18n = properties;
+	      },
+	      getExtendData: function getExtendData() {
+	        var options = {
+	          MPointContainerHtml: helper.$view.find('._m_points_group').html().toString(), // M点形成的轨迹线的组合
+	          parabolaPath: helper.pushStudentRecord.parabolaPath, // 抛物线的path路径
+	          parabolaBtnsBox: helper.pushStudentRecord.parabolaBtnsBox, // 是在抛物线绘制还是在绘制M点模块
+	          step: helper.pushStudentRecord.studentStep, // 教师端现在的M点绘制分步数
+	          pointHMoved: helper.pushStudentRecord.pointHMoved, // H点是否刚移动过
+	          pointFMoved: helper.pushStudentRecord.pointFMoved, // F点是否刚移动过
+	          pointHNowPosX: helper.pushStudentRecord.pointHNowPosX, /* H点X坐标*/
+	          pointFNowPosY: helper.pushStudentRecord.pointFNowPosY, /* F点Y坐标*/
+	          pointMNowPos: helper.pushStudentRecord.pointMNowPos, /* M点坐标*/
+	          showParabolaBtnState: helper.pushStudentRecord.showParabolaBtnState, // 显示抛物线按钮是否已选中
+	          btnCleanPathClicked: helper.pushStudentRecord.btnCleanPathClicked // 清除轨迹按钮刚点击
+	        };
+	        return options;
+	      },
+	      getQuestionInfo: function getQuestionInfo() {
+	        return {
+	          id: helper.model.ID,
+	          type_code: 'Parabola',
+	          type_name: helper.i18n['parabola_definition'],
+	          url: '',
+	          item: 'Parabola',
+	          statistics_type: 'no_need',
+	          dispatchOnly: true,
+	          notExistStatistics: true,
+	          noNeedQuizProgress: true
+	        };
+	      }
+	    },
+	    getService: function getService() {
+	      this._service_.constructor(this);
+	      return this._service_;
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      var self = this;
+	      helper.model = model;
+	      helper.$view = self.$view = $(view);
+	      helper.isStudent = this.isStudent;
+	      /* 绘制M点的步数*/
+	      helper.drawMPointStepNum = 0;
+
+	      self.parabolaController = new _ParabolaController2.default({ helper: helper });
+	    },
+	    pageShow: function pageShow(view, model) {
+	      var self = this;
+	      ko.applyBindings(helper.i18n, view);
+	      self._initComponent();
+	      self._bindEvent();
+	      // 初始化抛物线
+	      self.parabolaController.init();
+	      helper.domObj.$btnDrawStepPre.addClass('click_disabled');
+	      helper.domObj.$btnDrawParabola.addClass('click_disabled');
+	      /* 学生端推送教师实时状态*/
+	      self._studentStateRecovery();
+	    },
+	    /* 学生端推送教师实时状态*/
+	    _studentStateRecovery: function _studentStateRecovery() {
+	      var self = this;
+	      var extendData = helper.model['__ExtendModel'];
+	      if (!$.isEmptyObject(extendData)) {
+	        // 绘制抛物线按钮打开
+	        if (extendData.parabolaBtnsBox) {
+	          self.parabolaController.drawParabola();
+	          // 绘制抛物线按钮显示
+	          helper.domObj.$btnDrawParabolaBox.removeClass('hide_dom');
+	          helper.domObj.$btnDrawMPointBox.addClass('hide_dom');
+	          // 跳到抛物线的时候，上一步按钮默认已经可点了，预防从绘制M点跳回去的时候上一步按钮默认不可点
+	          helper.domObj.$btnDrawStepPre.removeClass('click_disabled');
+	          /* 显示抛物线、清除轨迹按钮默认不可点*/
+	          helper.domObj.$btnShowParabola.addClass('click_disabled');
+	          helper.domObj.$btnCleanPath.addClass('click_disabled');
+	          // 抛物线的path路径
+	          helper.parabolaPath.attr({
+	            points: extendData.parabolaPath
+	          });
+	          // 重置H点、F点和M点的现有位置
+	          helper.parabolaHGroup.removeClass('hide_dom');
+	          helper.parabolaMPointTextGroup.attr({
+	            transform: 'translate(' + extendData.pointMNowPos.x + '' + extendData.pointMNowPos.y + ' )'
+	          });
+	          if (extendData.pointHNowPosX) {
+	            helper.parabolaHGroup.attr({
+	              transform: 'translate(' + extendData.pointHNowPosX + ' ' + helper.POINTHPOSY + ' )'
+	            });
+	            helper.lineMH.attr({
+	              x1: extendData.pointMNowPos.x,
+	              y1: extendData.pointMNowPos.y,
+	              x2: extendData.pointHNowPosX,
+	              y2: helper.POINTHPOSY
+	            });
+	            helper.pointHPos.x = extendData.pointHNowPosX;
+	            // 重新控制M点的文字和F点的文字的位置显示
+	            if (extendData.pointHNowPosX > 0) {
+	              helper.pointMText.attr({
+	                x: 20
+	              });
+	              helper.pointFText.attr({
+	                x: -90
+	              });
+	            }
+	          } else {
+	            helper.lineMH.attr({
+	              x1: extendData.pointMNowPos.x,
+	              y1: extendData.pointMNowPos.y,
+	              x2: helper.POINTHPOSX,
+	              y2: helper.POINTHPOSY
+	            });
+	          }
+	          if (extendData.pointFNowPosY) {
+	            helper.parabolaFGroup.attr({
+	              transform: 'translate(' + helper.POINTFPOSX + ' ' + extendData.pointFNowPosY + ' )'
+	            });
+	            helper.lineMF.attr({
+	              x1: extendData.pointMNowPos.x,
+	              y1: extendData.pointMNowPos.y,
+	              x2: helper.POINTFPOSX,
+	              y2: extendData.pointFNowPosY
+	            });
+	            helper.pointFPos.y = extendData.pointFNowPosY;
+	            if (extendData.pointFNowPosY < -540) {
+	              helper.pointFText.attr({
+	                y: 85
+	              });
+	            }
+	          } else {
+	            helper.lineMF.attr({
+	              x1: extendData.pointMNowPos.x,
+	              y1: extendData.pointMNowPos.y,
+	              x2: helper.POINTFPOSX,
+	              y2: helper.POINTFPOSY
+	            });
+	          }
+	          // H点移动过 显示抛物线按钮可点击
+	          if (extendData.pointHMoved) {
+	            // M点形成的轨迹线的组合
+	            helper.$view.find('._m_points_group').html(extendData.MPointContainerHtml);
+	            helper.domObj.$btnShowParabola.removeClass('click_disabled');
+	            helper.parabolaPath.addClass('hide_dom');
+	            // 显示抛物线按钮已点击 加上选中态
+	            if (extendData.showParabolaBtnState) {
+	              helper.domObj.$btnShowParabola.addClass('ui_btn_active');
+	              helper.parabolaPath.removeClass('hide_dom');
+	            }
+	            // 清除轨迹按钮可点击
+	            helper.domObj.$btnCleanPath.removeClass('click_disabled');
+	          }
+	          // F点移动过
+	          if (extendData.pointFMoved) {
+	            // 清除轨迹按钮可点击
+	            helper.domObj.$btnCleanPath.removeClass('click_disabled');
+	            helper.parabolaPath.removeClass('hide_dom');
+	          }
+	          // 清除轨迹刚点击过
+	          if (extendData.btnCleanPathClicked) {
+	            helper.parabolaPath.addClass('hide_dom');
+	          }
+	        } else {
+	          // 绘制M点按钮打开
+	          // 绘制M点按钮显示
+	          helper.drawMPointStepNum = extendData.step;
+	          self.parabolaController.drawMPointSteps(extendData.step);
+	          helper.domObj.$btnDrawParabolaBox.addClass('hide_dom');
+	          helper.domObj.$btnDrawMPointBox.removeClass('hide_dom');
+	          // 根据步数 控制 上一步、下一步、一键完成和抛物线的显示
+	          if (extendData.step !== 0) {
+	            // 不是第0步，上一步按钮可点击
+	            helper.domObj.$btnDrawStepPre.removeClass('click_disabled');
+	            if (extendData.step == 4) {
+	              // 第4步，下一步、一键完成按钮不可点击
+	              helper.domObj.$btnDrawStepNext.addClass('click_disabled');
+	              helper.domObj.$btnDrawAll.addClass('click_disabled');
+	              // 第4步，抛物线按钮可点击
+	              helper.domObj.$btnDrawParabola.removeClass('click_disabled');
+	            }
+	          }
+	        }
+	      }
+	    },
+	    pageLeave: function pageLeave() {
+	      this._unbindEvent();
+	    },
+	    destroy: function destroy() {
+	      this._unbindEvent();
+	    },
+	    /** 如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	    getState: function getState() {},
+	    setState: function setState(state, options) {},
+	    /** **以下开始为Presenter的私有方法*****/
+	    _initComponent: function _initComponent() {
+	      /* svg外部容器*/
+	      helper.domObj.$parabolaSvgContent = helper.$view.find('.parabola_svg_content')[0];
+
+	      /* 抛物线工具按钮栏*/
+	      helper.domObj.$btnsParabolaTool = helper.$view.find('._btns_parabola_tool a');
+
+	      /* 上一步*/
+	      helper.domObj.$btnDrawStepPre = helper.$view.find('._btn_draw_step_pre');
+	      /* 下一步*/
+	      helper.domObj.$btnDrawStepNext = helper.$view.find('._btn_draw_step_next');
+	      /* 一键完成*/
+	      helper.domObj.$btnDrawAll = helper.$view.find('._btn_draw_all');
+	      /* 绘制抛物线开关按钮*/
+	      helper.domObj.$btnDrawParabola = helper.$view.find('._btn_draw_parabola');
+	      /* 绘制M点的按钮容器*/
+	      helper.domObj.$btnDrawMPointBox = helper.$view.find('._btn_draw_m_point_box');
+
+	      /* 绘制M点开关按钮*/
+	      helper.domObj.$btnDrawMPoint = helper.$view.find('._btn_draw_m_point');
+	      /* 显示抛物线*/
+	      helper.domObj.$btnShowParabola = helper.$view.find('._btn_show_parabola');
+	      /* 清除轨迹*/
+	      helper.domObj.$btnCleanPath = helper.$view.find('._btn_clean_path');
+	      /* 重置按钮*/
+	      helper.domObj.$btnReset = helper.$view.find('._btn_reset');
+	      /* 绘制抛物线的按钮容器*/
+	      helper.domObj.$btnDrawParabolaBox = helper.$view.find('._btn_draw_parabola_box');
+	    },
+	    _bindEvent: function _bindEvent() {
+	      var self = this;
+	      helper.domObj.$btnsParabolaTool.on('click', function (e) {
+	        var $this = $(this);
+	        if ($this.hasClass('click_disabled')) {
+	          return;
+	        }
+	        var type = $this.data('type');
+	        switch (type) {
+	          case 'pre':
+	            /* 上一步*/
+	            self._gotoPreStep(e);
+	            break;
+	          case 'next':
+	            /* 下一步*/
+	            self._gotoNextStep(e);
+	            break;
+	          case 'all':
+	            /* 一键完成*/
+	            self._drawAllSteps();
+	            break;
+	          case 'parabola':
+	            /* 绘制抛物线开关按钮*/
+	            self._drawParabolaOn();
+	            break;
+	          case 'point':
+	            /* 绘制M点开关按钮*/
+	            self._showMPointOn();
+	            break;
+	          case 'show':
+	            /* 显示抛物线按钮点击*/
+	            self._showParabola();
+	            break;
+	          case 'clean':
+	            /* 清除轨迹按钮点击*/
+	            self._cleanPath();
+	            break;
+	          case 'reset':
+	            /* 重置按钮点击*/
+	            self._parabolaReset();
+	            break;
+	        }
+	        helper.pushStudentRecord.studentStep = helper.drawMPointStepNum;
+	        e.stopPropagation();
+	      });
+	    },
+	    /* 上一步*/
+	    _gotoPreStep: function _gotoPreStep() {
+	      var self = this;
+	      if (helper.drawMPointStepNum !== 0) {
+	        helper.drawMPointStepNum--;
+	        if (helper.drawMPointStepNum == 0) {
+	          helper.domObj.$btnDrawStepPre.addClass('click_disabled');
+	        }
+	        if (helper.domObj.$btnDrawStepNext.hasClass('click_disabled')) {
+	          helper.domObj.$btnDrawStepNext.removeClass('click_disabled');
+	        }
+	        if (helper.domObj.$btnDrawAll.hasClass('click_disabled')) {
+	          helper.domObj.$btnDrawAll.removeClass('click_disabled');
+	        }
+	        if (!helper.domObj.$btnDrawParabola.hasClass('click_disabled')) {
+	          helper.domObj.$btnDrawParabola.addClass('click_disabled');
+	        }
+	        self.parabolaController.drawMPointSteps(helper.drawMPointStepNum);
+	      }
+	    },
+	    /* 下一步*/
+	    _gotoNextStep: function _gotoNextStep() {
+	      var self = this;
+	      if (helper.drawMPointStepNum !== 4) {
+	        helper.drawMPointStepNum++;
+	        if (helper.drawMPointStepNum == 1) {
+	          helper.domObj.$btnDrawStepPre.removeClass('click_disabled');
+	        }
+	        if (helper.drawMPointStepNum == 4) {
+	          helper.domObj.$btnDrawStepNext.addClass('click_disabled');
+	          helper.domObj.$btnDrawAll.addClass('click_disabled');
+	          helper.domObj.$btnDrawParabola.removeClass('click_disabled');
+	        }
+	        self.parabolaController.drawMPointSteps(helper.drawMPointStepNum);
+	      }
+	    },
+	    /* 一键完成*/
+	    _drawAllSteps: function _drawAllSteps() {
+	      var self = this;
+	      if (helper.drawMPointStepNum !== 4) {
+	        helper.drawMPointStepNum = 4;
+	        helper.domObj.$btnDrawStepNext.addClass('click_disabled');
+	        helper.domObj.$btnDrawAll.addClass('click_disabled');
+	        self.parabolaController.drawMPointSteps(helper.drawMPointStepNum);
+	        helper.domObj.$btnDrawStepPre.removeClass('click_disabled');
+	        helper.domObj.$btnDrawParabola.removeClass('click_disabled');
+	      }
+	    },
+	    /* 绘制抛物线开关按钮*/
+	    _drawParabolaOn: function _drawParabolaOn() {
+	      var self = this;
+	      if (helper.drawMPointStepNum == 4) {
+	        helper.domObj.$btnDrawMPointBox.addClass('hide_dom');
+	        helper.domObj.$btnDrawParabolaBox.removeClass('hide_dom');
+	        helper.domObj.$btnShowParabola.addClass('click_disabled');
+	        helper.domObj.$btnCleanPath.addClass('click_disabled');
+	      }
+	      self.parabolaController.drawParabola();
+
+	      // 推送学生端的数据记录
+	      helper.pushStudentRecord.parabolaBtnsBox = true;
+	      helper.pushStudentRecord.btnCleanPathClicked = false;
+	    },
+	    /* 绘制M点开关按钮*/
+	    _showMPointOn: function _showMPointOn() {
+	      var self = this;
+	      helper.drawMPointStepNum = 1;
+	      self.parabolaController.drawMPointSteps(helper.drawMPointStepNum);
+	      helper.domObj.$btnDrawMPointBox.removeClass('hide_dom');
+	      helper.domObj.$btnDrawParabolaBox.addClass('hide_dom');
+	      helper.domObj.$btnDrawStepNext.removeClass('click_disabled');
+	      helper.domObj.$btnDrawAll.removeClass('click_disabled');
+	      helper.domObj.$btnDrawParabola.addClass('click_disabled');
+	      helper.domObj.$btnShowParabola.removeClass('ui_btn_active');
+
+	      // 推送学生端的数据记录
+	      helper.pushStudentRecord.parabolaBtnsBox = false;
+	    },
+	    /* 显示抛物线按钮点击*/
+	    _showParabola: function _showParabola() {
+	      var self = this;
+	      self.parabolaController.showParabola();
+	      helper.domObj.$btnShowParabola.addClass('ui_btn_active');
+
+	      // 推送学生端的数据记录
+	      helper.pushStudentRecord.showParabolaBtnState = true;
+	    },
+	    /* 清除轨迹按钮点击*/
+	    _cleanPath: function _cleanPath() {
+	      var self = this;
+	      self.parabolaController.cleanParabolaPath();
+	      helper.domObj.$btnCleanPath.addClass('click_disabled');
+	      helper.domObj.$btnShowParabola.addClass('click_disabled').removeClass('ui_btn_active');
+
+	      // 推送学生端的数据记录
+	      helper.pushStudentRecord.showParabolaBtnState = false;
+	      helper.pushStudentRecord.btnCleanPathClicked = false;
+	    },
+	    /* 重置按钮点击*/
+	    _parabolaReset: function _parabolaReset() {
+	      var self = this;
+	      self.parabolaController.reset();
+	      helper.drawMPointStepNum = 0;
+	      helper.domObj.$btnDrawMPointBox.removeClass('hide_dom');
+	      helper.domObj.$btnDrawParabolaBox.addClass('hide_dom');
+	      helper.domObj.$btnDrawStepPre.addClass('click_disabled');
+	      helper.domObj.$btnDrawParabola.addClass('click_disabled');
+	      helper.domObj.$btnShowParabola.addClass('click_disabled');
+	      helper.domObj.$btnDrawStepNext.removeClass('click_disabled');
+	      helper.domObj.$btnDrawAll.removeClass('click_disabled');
+	      helper.domObj.$btnShowParabola.removeClass('ui_btn_active');
+
+	      // 推送学生端的数据记录
+	      helper.pushStudentRecord.showParabolaBtnState = false;
+	      helper.pushStudentRecord.parabolaBtnsBox = false;
+	      helper.pushStudentRecord.btnCleanPathClicked = false;
+	    },
+	    _unbindEvent: function _unbindEvent() {
+	      helper.domObj.$btnsParabolaTool.off('click');
+	      helper.$view.off('mousedown mousemove mouseup touchstart touchmove touchend mouseleave');
+	      helper.$view.find('._parabola_h_point') && helper.$view.find('._parabola_h_point').unbind('mouseenter').unbind('mouseleave');
+	      helper.$view.find('._parabola_f_point') && helper.$view.find('._parabola_f_point').unbind('mouseenter').unbind('mouseleave');
+	    }
+	  });
+
+	  window.AddonParabola_create = function () {
+	    return new Presenter('Parabola');
+	  };
+	})();
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _DrawParabola = __webpack_require__(3);
+
+	var _DrawParabola2 = _interopRequireDefault(_DrawParabola);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ParabolaController = Class.extend({
+	  $init: function $init(opt) {
+	    this.opt = $.extend({}, opt);
+	    this.helper = this.opt.helper;
+	    /* 抛物线*/
+	    this.parabola = new _DrawParabola2.default({ helper: this.helper });
+	  },
+	  init: function init() {
+	    var self = this;
+	    // 在dom节点中渲染Svg
+	    self.helper.svg = Snap().attr({
+	      viewBox: '0 0 1600 776'
+	    }).addClass('parabola_svg');
+	    self.helper.domObj.$parabolaSvgContent.appendChild(self.helper.svg.node);
+	    // 在SVG外部容器的DOM节点，用来绑定鼠标事件
+	    self.helper.$svgDom = self.helper.$view.find('.parabola_svg');
+	    // 添加l线及l文本
+	    var lineLGroup = self.helper.svg.group().addClass('_l_line_box').attr({
+	      transform: 'translate(800 632)'
+	    });
+	    var lineL = self.helper.svg.line(-550, 0, 550, 0).addClass('_l_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.RED
+	    });
+	    var lineLText = self.helper.svg.text(570, 35, 'l').attr({
+	      fontSize: self.helper.SVGFONTSIZE,
+	      fill: self.helper.SVGCOLOR.GRAY
+	    });
+	    lineLGroup.add(lineL, lineLText);
+	    /* 绘制M点的容器*/
+	    self.helper.mPointGroupBox = self.helper.svg.group().addClass('_m_point_group_box').attr({
+	      transform: 'translate(800 632)'
+	    });
+	    /* 绘制抛物线的容器*/
+	    self.helper.parabolaGroupBox = self.helper.svg.group().addClass('_parabola_group_box').attr({
+	      transform: 'translate(800 632)'
+	    }).addClass('hide_dom');
+	    self.parabola.render();
+	    // 绘制H点的容器
+	    var pointHAllGroupWrapper = self.helper.svg.group().addClass('_h_points_group_box').attr({
+	      transform: 'translate(800 632)'
+	    });
+	    /* 绘制H点*/
+	    self.parabola.addHPoints(); // 静止的Ｈ点
+	    self.parabola.addMoveHPoints(); // 移动的Ｈ点
+	    pointHAllGroupWrapper.add(self.helper.parabolaHGroupNotMove, self.helper.parabolaHGroup);
+
+	    self.parabola.bindEvent();
+	  },
+	  /* 绘制M点*/
+	  drawMPointSteps: function drawMPointSteps(stepNum) {
+	    var self = this;
+	    if (self.helper.pushStudentRecord.parabolaBtnsBox) {
+	      self.helper.mPointGroupBox.removeClass('hide_dom');
+	      self.helper.parabolaGroupBox.addClass('hide_dom');
+	    }
+	    self.parabola.drawMPointSteps(stepNum);
+	  },
+	  /* 绘制抛物线的初始化状态*/
+	  drawParabola: function drawParabola() {
+	    var self = this;
+	    self.parabola.drawParabola();
+	    self.helper.mPointGroupBox.addClass('hide_dom');
+	    self.helper.parabolaGroupBox.removeClass('hide_dom');
+	  },
+	  /* 显示抛物线*/
+	  showParabola: function showParabola() {
+	    var self = this;
+	    self.parabola.showParabola();
+	  },
+	  cleanParabolaPath: function cleanParabolaPath() {
+	    var self = this;
+	    self.parabola.cleanParabolaPath();
+	  },
+	  // 复位
+	  reset: function reset() {
+	    var self = this;
+	    self.parabola.reset();
+	    self.helper.mPointGroupBox.removeClass('hide_dom');
+	    self.helper.parabolaGroupBox.addClass('hide_dom');
+	  }
+	}); /**
+	     * 控制器
+	     */
+	exports.default = ParabolaController;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _SolveEquationsGetMPoint = __webpack_require__(4);
+
+	var _SolveEquationsGetMPoint2 = _interopRequireDefault(_SolveEquationsGetMPoint);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DrawParabola = Class.extend({
+	  $init: function $init(opt) {
+	    this.opt = $.extend({}, opt);
+	    this.helper = this.opt.helper;
+	    this.forceRedrawWrap = this.throttle(this.forceRedraw, 20);
+	  },
+	  render: function render() {
+	    var self = this;
+	    /* 默认的H点和F点的位置*/
+	    self.pointHPos = {
+	      x: self.helper.POINTHPOSX,
+	      y: self.helper.POINTHPOSY
+	    };
+	    self.pointFPos = {
+	      x: self.helper.POINTFPOSX,
+	      y: self.helper.POINTFPOSY
+	      /* H点和F点的实时位置*/
+	    };self.helper.pointHPos = {
+	      x: self.helper.POINTHPOSX,
+	      y: self.helper.POINTHPOSY
+	    };
+	    self.helper.pointFPos = {
+	      x: self.helper.POINTFPOSX,
+	      y: self.helper.POINTFPOSY
+	      /* SVG缩放值*/
+	    };self.helper.scale = {
+	      x: self.helper.svg.node.getBoundingClientRect().width / self.helper.svg.node.viewBox.animVal.width,
+	      y: self.helper.svg.node.getBoundingClientRect().height / self.helper.svg.node.viewBox.animVal.height
+	      /* H点和F点是否被拖动过*/
+	    };self.helper.pointHWhetherMove = false;
+	    self.helper.pointFWhetherMove = false;
+	    /* H点和F点是否具有hover态*/
+	    self.helper.pointHCanHover = true;
+	    self.helper.pointFCanHover = true;
+	    /* 鼠标在页面中拖动开始的位置*/
+	    self.helper.evPosStart = {};
+	    self.setPointHPosX(self.helper.POINTHPOSX);
+	    /* 鼠标在SVG中横向移动的位移*/
+	    self.helper.moveX = undefined;
+	    self.setPointFPosY(self.helper.POINTFPOSY);
+	    /* 鼠标在SVG中纵向移动的位移*/
+	    self.helper.moveY = undefined;
+
+	    self._drawParabola();
+	    self.helper.parabolaGroupBox.add(self.helper.parabolaMoveMPointsGroup, self.helper.parabolaPath, self.helper.parabolaMGroup, self.helper.parabolaFGroup);
+
+	    self._drawFrame();
+	    self.helper.mPointGroupBox.add(self.helper.mLineGroup, self.helper.hflineGroup, self.helper.mnLineGroup, self.helper.FGroup);
+
+	    self.pointFBindEvent();
+	  },
+	  pointFBindEvent: function pointFBindEvent() {
+	    var self = this;
+	    self.helper.pointF.hover(function () {
+	      if (self.helper.pointFCanHover) {
+	        self._pointFArrowStateChange();
+	      }
+	    }, function () {
+	      self.helper.pointFArrowTopGroup.addClass('hide_dom');
+	      self.helper.pointFArrowBottomGroup.addClass('hide_dom');
+	      self.helper.pointF.attr({
+	        fill: self.helper.SVGCOLOR.YELLOW
+	      });
+	    });
+	  },
+	  drawParabola: function drawParabola() {
+	    var self = this;
+	    self.helper.pointHText.attr({
+	      x: -45,
+	      y: 100
+	    });
+	    // 推送学生端的数据记录
+	    self.helper.pushStudentRecord.pointHMoved = false;
+	    self.helper.pushStudentRecord.pointFMoved = false;
+	  },
+	  showParabola: function showParabola() {
+	    var self = this;
+	    self.helper.parabolaPath.removeClass('hide_dom');
+	  },
+	  cleanParabolaPath: function cleanParabolaPath() {
+	    var self = this;
+	    self.helper.parabolaMoveMPointsGroup.clear();
+	    self.helper.parabolaPath.addClass('hide_dom');
+	    self.helper.domObj.$btnCleanPath.addClass('click_disabled');
+
+	    // 推送学生端的数据记录
+	    self.helper.pushStudentRecord.pointHMoved = false;
+	    self.helper.pushStudentRecord.pointFMoved = false;
+	  },
+	  reset: function reset() {
+	    var self = this;
+	    self.helper.parabolaGroupBox.clear();
+	    self.helper.mPointGroupBox.clear();
+	    self.render();
+	    /* H点回归原位*/
+	    self.helper.parabolaHGroup.attr({
+	      transform: 'translate(' + self.helper.pointHPos.x + ' ' + self.helper.pointHPos.y + ' )'
+	    }).addClass('hide_dom');
+	    self.helper.pointHText.attr({
+	      x: -110,
+	      y: 85
+	    });
+	  },
+	  /* 设置H点的x坐标值*/
+	  setPointHPosX: function setPointHPosX(x) {
+	    this.helper.pointHPos.x = x || this.helper.pointHPos.x;
+	  },
+	  getPointHPosX: function getPointHPosX() {
+	    return this.helper.pointHPos.x;
+	  },
+	  /* 设置F点的y坐标值*/
+	  setPointFPosY: function setPointFPosY(y) {
+	    this.helper.pointFPos.y = y || this.helper.pointFPos.y;
+	  },
+	  getPointFPosY: function getPointFPosY() {
+	    return this.helper.pointFPos.y;
+	  },
+	  bindEvent: function bindEvent() {
+	    var self = this;
+	    self.helper.$view.on('mousedown mousemove mouseup touchstart touchmove touchend', function (e) {
+	      self._movePoint(e);
+	    });
+	    self.helper.$view.on('mouseleave', function () {
+	      self.helper.$view.trigger('mouseup');
+	    });
+	    self.helper.pointH.hover(function () {
+	      if (self.helper.pointHCanHover) {
+	        self._pointHArrowStateChange();
+	      }
+	    }, function () {
+	      self.helper.pointHArrowLeftGroup.addClass('hide_dom');
+	      self.helper.pointHArrowRightGroup.addClass('hide_dom');
+	      self.helper.pointH.attr({
+	        fill: self.helper.SVGCOLOR.YELLOW
+	      });
+	    });
+	  },
+	  _pointHArrowStateChange: function _pointHArrowStateChange() {
+	    var self = this;
+	    self.helper.pointHArrowLeftGroup.removeClass('hide_dom');
+	    self.helper.pointHArrowRightGroup.removeClass('hide_dom');
+	    self.helper.pointH.attr({
+	      fill: self.helper.SVGCOLOR.ORANGE
+	    });
+	    if (self.helper.moveX == 550) {
+	      self.helper.pointHArrowRightGroup.addClass('hide_dom');
+	    }
+	    if (self.helper.moveX == -550) {
+	      self.helper.pointHArrowLeftGroup.addClass('hide_dom');
+	    }
+	  },
+	  _pointFArrowStateChange: function _pointFArrowStateChange() {
+	    var self = this;
+	    self.helper.pointFArrowTopGroup.removeClass('hide_dom');
+	    self.helper.pointFArrowBottomGroup.removeClass('hide_dom');
+	    self.helper.pointF.attr({
+	      fill: self.helper.SVGCOLOR.ORANGE
+	    });
+	    if (self.helper.moveY == -613) {
+	      self.helper.pointFArrowTopGroup.addClass('hide_dom');
+	    }
+	    if (self.helper.moveY == -175) {
+	      self.helper.pointFArrowBottomGroup.addClass('hide_dom');
+	    }
+	  },
+	  unbindEvent: function unbindEvent() {
+	    var self = this;
+	    self.helper.$view.off('mousedown mousemove mouseup touchstart touchmove touchend mouseleave');
+	    self.helper.$view.find('._parabola_h_point').unbind('mouseenter').unbind('mouseleave');
+	    self.helper.$view.find('._parabola_f_point').unbind('mouseenter').unbind('mouseleave');
+	  },
+	  _movePoint: function _movePoint(e) {
+	    var self = this;
+	    var eventType = self._eventMapping(e);
+	    var pointHNowPos = self.getPointHPosX();
+	    var pointFNowPos = self.getPointFPosY();
+	    var scale = self.helper.scale,
+	        evPosEnd = {};
+	    switch (eventType) {
+	      case 'start':
+	        if ($(e.target).context.classList[0] == '_parabola_h_point') {
+	          console.log(self.helper.pushStudentRecord.parabolaBtnsBox);
+	          // svg转换到抛物线部分
+	          self.helper.mPointGroupBox.addClass('hide_dom');
+	          self.helper.parabolaGroupBox.removeClass('hide_dom');
+	          self.helper.domObj.$btnDrawMPointBox.addClass('hide_dom');
+	          self.helper.domObj.$btnDrawParabolaBox.removeClass('hide_dom');
+	          // 如果拖拽H点的话跳转抛物线
+	          if (!self.helper.pushStudentRecord.parabolaBtnsBox) {
+	            // 按钮状态切换
+	            self.helper.domObj.$btnDrawMPointBox.addClass('hide_dom');
+	            self.helper.domObj.$btnDrawParabolaBox.removeClass('hide_dom');
+	            self.helper.domObj.$btnShowParabola.addClass('click_disabled');
+	            self.helper.domObj.$btnCleanPath.addClass('click_disabled');
+	            self.drawParabola();
+	            // 推送学生端的数据记录
+	            self.helper.pushStudentRecord.parabolaBtnsBox = true;
+	            self.helper.pushStudentRecord.btnCleanPathClicked = false;
+	          }
+	          self.helper.evPosStart.x = self._getPagePos(e).x;
+	          self.helper.pointHWhetherMove = true;
+	          if (self.helper.parabolaPath.hasClass('_f_change_parabola')) {
+	            self.helper.parabolaPath.addClass('hide_dom').removeClass('_f_change_parabola');
+	          }
+	          self._pointHArrowStateChange();
+	          self.helper.pointFCanHover = false;
+	          // 推送学生端的数据记录
+	          self.helper.pushStudentRecord.pointFMoved = false;
+	        }
+	        if ($(e.target).context.classList[0] == '_parabola_f_point') {
+	          self.helper.evPosStart.y = self._getPagePos(e).y;
+	          self.helper.pointFWhetherMove = true;
+	          self.helper.parabolaMoveMPointsGroup.clear();
+	          self.helper.parabolaPath.removeClass('hide_dom');
+	          self._pointFArrowStateChange();
+	          self.helper.pointHCanHover = false;
+	          self.helper.domObj.$btnShowParabola.addClass('click_disabled');
+	          self.helper.domObj.$btnCleanPath.removeClass('click_disabled');
+	          self.helper.domObj.$btnShowParabola.removeClass('ui_btn_active');
+	          self.helper.parabolaPath.addClass('_f_change_parabola');
+	          // 推送学生端的数据记录
+	          self.helper.pushStudentRecord.pointFMoved = true;
+	        }
+	        break;
+	      case 'move':
+	        if (self.helper.pointHWhetherMove) {
+	          self.forceRedrawWrap();
+	          evPosEnd.x = self._getPagePos(e).x;
+	          self.helper.evPosStart.x === undefined && (self.helper.evPosStart.x = self._getPagePos(e).x);
+	          var moveX = pointHNowPos + (evPosEnd.x - self.helper.evPosStart.x) / scale.x;
+
+	          if (Math.abs(moveX) <= 550) {
+	            self.helper.moveX = moveX;
+	            self._moveHPoint();
+	            if (self.helper.moveX > 0) {
+	              self.helper.pointMText.attr({
+	                x: 20
+	              });
+	              self.helper.pointFText.attr({
+	                x: -90
+	              });
+	            } else {
+	              self.helper.pointMText.attr({
+	                x: -110
+	              });
+	              self.helper.pointFText.attr({
+	                x: 20
+	              });
+	            }
+	          }
+	          if (moveX > 550) {
+	            self.helper.moveX = 550;
+	            self._moveHPoint();
+	            self.helper.pointHArrowRightGroup.addClass('hide_dom');
+	          } else {
+	            self.helper.pointHArrowRightGroup.removeClass('hide_dom');
+	          }
+	          if (moveX < -550) {
+	            self.helper.moveX = -550;
+	            self._moveHPoint();
+	            self.helper.pointHArrowLeftGroup.addClass('hide_dom');
+	          } else {
+	            self.helper.pointHArrowLeftGroup.removeClass('hide_dom');
+	          }
+	          self.helper.pointH.attr({
+	            fill: self.helper.SVGCOLOR.ORANGE
+	          });
+	          self.helper.domObj.$btnShowParabola.removeClass('click_disabled');
+	          self.helper.domObj.$btnCleanPath.removeClass('click_disabled');
+	          self.helper.pointFCanHover = false;
+	          // 推送学生端的数据记录
+	          self.helper.pushStudentRecord.pointHMoved = true;
+	        }
+	        if (self.helper.pointFWhetherMove) {
+	          self.forceRedrawWrap();
+	          evPosEnd.y = self._getPagePos(e).y;
+	          var moveY = pointFNowPos + (evPosEnd.y - self.helper.evPosStart.y) / scale.y.toFixed(3);
+	          if (moveY <= -175 && moveY >= -613) {
+	            self.helper.moveY = moveY;
+	            self._moveFPoint();
+	            if (self.helper.moveY < -540) {
+	              self.helper.pointFText.attr({
+	                y: 85
+	              });
+	            } else {
+	              self.helper.pointFText.attr({
+	                y: -25
+	              });
+	            }
+	          }
+	          if (moveY < -613) {
+	            self.helper.moveY = -613;
+	            self._moveFPoint();
+	            self.helper.pointFArrowTopGroup.addClass('hide_dom');
+	          } else {
+	            self.helper.pointFArrowTopGroup.removeClass('hide_dom');
+	          }
+	          if (moveY > -175) {
+	            self.helper.moveY = -175;
+	            self._moveFPoint();
+	            self.helper.pointFArrowBottomGroup.addClass('hide_dom');
+	          } else {
+	            self.helper.pointFArrowBottomGroup.removeClass('hide_dom');
+	          }
+	          self.helper.pointF.attr({
+	            fill: self.helper.SVGCOLOR.ORANGE
+	          });
+	          self.helper.pointHCanHover = false;
+	          // 推送学生端的数据记录
+	          self.helper.pushStudentRecord.pointHMoved = false;
+	          self.helper.pushStudentRecord.showParabolaBtnState = false;
+	        }
+	        break;
+	      case 'end':
+	        self.forceRedrawWrap();
+	        self.helper.pointHWhetherMove = false;
+	        self.helper.pointFWhetherMove = false;
+	        self.helper.pointH.attr({
+	          fill: self.helper.SVGCOLOR.YELLOW
+	        });
+	        self.helper.pointF.attr({
+	          fill: self.helper.SVGCOLOR.YELLOW
+	        });
+	        self.helper.pointHArrowLeftGroup.addClass('hide_dom');
+	        self.helper.pointHArrowRightGroup.addClass('hide_dom');
+	        self.helper.pointFArrowTopGroup.addClass('hide_dom');
+	        self.helper.pointFArrowBottomGroup.addClass('hide_dom');
+	        self.helper.moveX && self.setPointHPosX(self.helper.moveX);
+	        self.helper.moveY && self.setPointFPosY(self.helper.moveY);
+	        self.helper.pointHCanHover = true;
+	        self.helper.pointFCanHover = true;
+	        // 推送学生端的数据记录
+	        self.helper.pushStudentRecord.pointHNowPosX = self.helper.moveX ? self.helper.moveX : self.helper.POINTHPOSX;
+	        self.helper.pushStudentRecord.pointFNowPosY = self.helper.moveY ? self.helper.moveY : self.helper.POINTFPOSY;
+	        break;
+	    }
+	  },
+	  _moveHPoint: function _moveHPoint() {
+	    var self = this;
+	    self.helper.parabolaHGroup.attr({
+	      transform: 'translate(' + self.helper.moveX + ' ' + self.helper.pointHPos.y + ' )'
+	    });
+	    self._moveMGroup();
+	    self._creatMoveMPoints();
+	  },
+	  _moveFPoint: function _moveFPoint() {
+	    var self = this;
+	    self.helper.parabolaFGroup.attr({
+	      transform: 'translate(' + self.helper.pointFPos.x + ' ' + self.helper.moveY + ' )'
+	    });
+	    self._moveMGroup();
+	    self._redrawParabolaPath();
+	  },
+	  _redrawParabolaPath: function _redrawParabolaPath() {
+	    var self = this;
+	    var points = self._parabolicPathCounting(self.helper.moveY);
+	    self.helper.parabolaPath.attr({
+	      points: points
+	    });
+	    // 推送学生端的数据记录
+	    self.helper.pushStudentRecord.parabolaPath = points;
+	  },
+	  _creatMoveMPoints: function _creatMoveMPoints() {
+	    var self = this;
+	    var pointH = {},
+	        pointF = {};
+	    pointH.x = self._moveXChange();
+	    pointH.y = self.helper.pointHPos.y;
+	    pointF.x = self.helper.pointFPos.x;
+	    pointF.y = self.helper.moveY ? self.helper.moveY : self.helper.pointFPos.y;
+	    var solveEquationsGetMPoint = new _SolveEquationsGetMPoint2.default();
+	    var mPoint = solveEquationsGetMPoint.getMPoint(pointH.x, pointH.y, pointF.x, pointF.y);
+	    if (mPoint.y >= -632) {
+	      var mPointCicle = self.helper.svg.circle(mPoint.x, mPoint.y, self.helper.SVGPOINTRADIU - 6).attr({
+	        fill: self.helper.SVGCOLOR.YELLOW
+	      });
+	      self.helper.parabolaMoveMPointsGroup.add(mPointCicle);
+	    }
+	  },
+	  _moveMGroup: function _moveMGroup() {
+	    var self = this;
+	    var pointH = {},
+	        pointF = {};
+	    pointH.x = self._moveXChange();
+	    pointH.y = self.helper.pointHPos.y;
+	    pointF.x = self.helper.pointFPos.x;
+	    pointF.y = self.helper.moveY ? self.helper.moveY : self.helper.pointFPos.y;
+	    var solveEquationsGetMPoint = new _SolveEquationsGetMPoint2.default();
+	    var mPoint = solveEquationsGetMPoint.getMPoint(pointH.x, pointH.y, pointF.x, pointF.y);
+	    self.helper.parabolaMPointTextGroup.attr({
+	      transform: 'translate(' + mPoint.x + '' + mPoint.y + ' )'
+	    });
+	    self.helper.lineMH.attr({
+	      x1: mPoint.x,
+	      y1: mPoint.y,
+	      x2: pointH.x,
+	      y2: pointH.y
+	    });
+	    self.helper.lineMF.attr({
+	      x1: mPoint.x,
+	      y1: mPoint.y,
+	      x2: pointF.x,
+	      y2: pointF.y
+	    });
+	    // 推送学生端的数据记录
+	    self.helper.pushStudentRecord.pointMNowPos = mPoint;
+	  },
+	  _moveXChange: function _moveXChange() {
+	    var self = this;
+	    var moveX = void 0;
+	    if (self.helper.moveX !== 0) {
+	      moveX = self.helper.moveX ? self.helper.moveX : self.helper.pointHPos.x;
+	    } else {
+	      moveX = 0;
+	    }
+	    return moveX;
+	  },
+	  _eventMapping: function _eventMapping(e) {
+	    var self = this;
+	    var eventType = e.type;
+	    var type = void 0;
+	    switch (eventType) {
+	      case 'touchstart':
+	      // 阻止默认事件，不发射mouseEvent
+	      // e.preventDefault();
+	      case 'mousedown':
+	        type = 'start';
+	        break;
+	      case 'mousemove':
+	      case 'touchmove':
+	        type = 'move';
+	        // e.preventDefault();
+	        break;
+	      case 'mouseup':
+	      case 'touchend':
+	        type = 'end';
+	        break;
+	    }
+	    return type;
+	  },
+	  _getPagePos: function _getPagePos(ev) {
+	    var ev = ev.originalEvent ? ev.originalEvent : ev;
+	    var mousePointPagePos = {};
+	    switch (ev.type) {
+	      case 'touchstart':
+	      case 'touchmove':
+	      case 'touchend':
+	        /* 移动端适配*/
+	        mousePointPagePos.x = ev.changedTouches[0].pageX;
+	        mousePointPagePos.y = ev.changedTouches[0].pageY;
+	        return mousePointPagePos;
+	      default:
+	        mousePointPagePos.x = ev.pageX;
+	        mousePointPagePos.y = ev.pageY;
+	        return mousePointPagePos;
+	    }
+	  },
+	  _drawParabola: function _drawParabola() {
+	    var self = this;
+	    var arrowString = 'M 25.46 0.00 L 26.00 0.00 L 26.00 2.38 C 23.81 7.47 20.47 11.92 17.85 16.78 C 16.56 18.58 17.82 20.59 18.76 22.21 C 21.27 26.29 23.96 30.27 26.00 34.63 L 26.00 37.00 L 25.46 37.00 C 19.15 28.74 9.81 23.72 0.96 18.67 C 9.46 12.98 19.40 8.67 25.46 0.00 Z';
+	    /* F点及文字*/
+	    self.helper.parabolaFGroup = self.helper.svg.group().addClass('_parabola_f_point_box').attr({
+	      transform: 'translate(' + self.helper.pointFPos.x + ' ' + self.helper.pointFPos.y + ' )'
+	    });
+	    self.helper.pointFDrag = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU * 2.5).attr({
+	      fill: 'transparent'
+	    }).addClass('_parabola_f_point');
+	    self.helper.pointF = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU + 3).attr({
+	      fill: self.helper.SVGCOLOR.YELLOW,
+	      strokeWidth: self.helper.SVGPOINTBORDERWIDTH,
+	      stroke: self.helper.SVGPOINTBORDERCOLOR
+	    }).addClass('_parabola_f_point');
+	    self.helper.pointFText = self.helper.svg.text(20, -25, 'F').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    /* 上边箭头*/
+	    self.helper.pointFArrowTopGroup = self.helper.svg.group().attr({
+	      transform: 'rorate(90) translate(-70,-18)'
+	    }).addClass('hide_dom');
+	    var pointFArrowTop01 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '1.00'
+	    });
+	    var pointFArrowTop02 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '0.3',
+	      transform: 'translate(-20,0)'
+	    });
+	    self.helper.pointFArrowTopGroup.add(pointFArrowTop01, pointFArrowTop02);
+	    /* 下面箭头*/
+	    self.helper.pointFArrowBottomGroup = self.helper.svg.group().attr({
+	      transform: 'rorate(270) translate(-70,-18)'
+	    }).addClass('hide_dom');
+	    var pointFArrowBottom01 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '1.00'
+	    });
+	    var pointFArrowBottom02 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '0.3',
+	      transform: 'translate(-20,0)'
+	    });
+	    self.helper.pointFArrowBottomGroup.add(pointFArrowBottom01, pointFArrowBottom02);
+	    self.helper.parabolaFGroup.add(self.helper.pointFText, self.helper.pointFDrag, self.helper.pointF, self.helper.pointFArrowTopGroup, self.helper.pointFArrowBottomGroup);
+	    /* M点及MH和MF线*/
+	    self.helper.parabolaMGroup = self.helper.svg.group().addClass('_parabola_mn_line_box');
+	    var solveEquationsGetMPoint = new _SolveEquationsGetMPoint2.default();
+	    var mPoint = solveEquationsGetMPoint.getMPoint(self.helper.pointHPos.x, self.helper.pointHPos.y, self.helper.pointFPos.x, self.helper.pointFPos.y);
+	    self.helper.parabolaMPointTextGroup = self.helper.svg.group().attr({
+	      transform: 'translate(' + mPoint.x + ' ' + mPoint.y + ' )'
+	    });
+	    var pointM = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU).attr({
+	      fill: self.helper.SVGCOLOR.ORANGE
+	    });
+	    self.helper.pointMText = self.helper.svg.text(-110, 70, 'M').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    self.helper.parabolaMPointTextGroup.add(pointM, self.helper.pointMText);
+	    self.helper.lineMH = self.helper.svg.line(mPoint.x, mPoint.y, self.helper.pointHPos.x, self.helper.pointHPos.y).addClass('_parabola_mh_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.GRAY
+	    });
+	    self.helper.lineMF = self.helper.svg.line(mPoint.x, mPoint.y, self.helper.pointFPos.x, self.helper.pointFPos.y).addClass('_parabola_mf_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.GRAY
+	    });
+	    self.helper.parabolaMGroup.add(self.helper.lineMH, self.helper.lineMF, self.helper.parabolaMPointTextGroup);
+	    /* M点集合的组*/
+	    self.helper.parabolaMoveMPointsGroup = self.helper.svg.group().addClass('_m_points_group');
+	    /* HF点构成的抛物线*/
+	    var parabolaPathString = self._parabolicPathCounting(self.getPointFPosY());
+	    self.helper.parabolaPath = self.helper.svg.polyline(parabolaPathString).attr({
+	      fill: 'transparent',
+	      stroke: self.helper.SVGCOLOR.ORANGE,
+	      strokeWidth: self.helper.SVGLINEWIDTH
+	    }).addClass('hide_dom');
+
+	    // 推送学生端的数据记录
+	    self.helper.pushStudentRecord.pointMNowPos = mPoint;
+	    self.helper.pushStudentRecord.parabolaPath = parabolaPathString;
+	  },
+	  _parabolicPathCounting: function _parabolicPathCounting(y) {
+	    var self = this;
+	    var dString = '';
+	    var startXPos = -650;
+	    var endXPos = 650;
+	    var gap = (endXPos - startXPos) / 150;
+	    for (var i = startXPos; i <= endXPos; i += gap) {
+	      var solveEquationsGetMPoint = new _SolveEquationsGetMPoint2.default();
+	      var mPoint = solveEquationsGetMPoint.getMPoint(i, self.helper.pointHPos.y, self.helper.pointFPos.x, y);
+	      var pointString = mPoint.x + ' ' + mPoint.y + ' ';
+	      dString = dString + pointString;
+	    }
+	    return dString;
+	  },
+	  drawMPointSteps: function drawMPointSteps(stepNum) {
+	    var self = this;
+	    self.reset();
+	    switch (stepNum) {
+	      case 0:
+	        self.helper.parabolaHGroupNotMove.addClass('hide_dom');
+	        self.helper.parabolaHGroup.addClass('hide_dom');
+	        self.helper.mLineGroup.addClass('hide_dom');
+	        self.helper.hflineGroup.addClass('hide_dom');
+	        self.helper.mnLineGroup.addClass('hide_dom');
+	        break;
+	      case 1:
+	        self.helper.parabolaHGroupNotMove.removeClass('hide_dom');
+	        self.helper.parabolaHGroup.addClass('hide_dom');
+	        self.helper.mLineGroup.addClass('hide_dom');
+	        self.helper.hflineGroup.addClass('hide_dom');
+	        self.helper.mnLineGroup.addClass('hide_dom');
+	        break;
+	      case 2:
+	        self.helper.parabolaHGroupNotMove.removeClass('hide_dom');
+	        self.helper.parabolaHGroup.addClass('hide_dom');
+	        self.helper.mLineGroup.removeClass('hide_dom');
+	        self.helper.hflineGroup.addClass('hide_dom');
+	        self.helper.mnLineGroup.addClass('hide_dom');
+	        break;
+	      case 3:
+	        self.helper.parabolaHGroupNotMove.removeClass('hide_dom');
+	        self.helper.parabolaHGroup.addClass('hide_dom');
+	        self.helper.mLineGroup.removeClass('hide_dom');
+	        self.helper.hflineGroup.removeClass('hide_dom');
+	        self.helper.mnLineGroup.addClass('hide_dom');
+	        break;
+	      case 4:
+	        self.helper.parabolaHGroupNotMove.addClass('hide_dom');
+	        self.helper.parabolaHGroup.removeClass('hide_dom');
+	        self.helper.mLineGroup.removeClass('hide_dom');
+	        self.helper.hflineGroup.removeClass('hide_dom');
+	        self.helper.mnLineGroup.removeClass('hide_dom');
+	        break;
+	    }
+	  },
+	  _drawFrame: function _drawFrame() {
+	    var self = this;
+	    self._drawFGroup(); // 绘制F点
+	    self._drawMLineGroup(); // 绘制M线
+	    self._drawHFlineGroup(); // 绘制HF线
+	    self._drawMNLineGroup(); // 绘制MN线
+	  },
+	  // 绘制F点
+	  _drawFGroup: function _drawFGroup() {
+	    var self = this;
+	    self.helper.FGroup = self.helper.svg.group().addClass('_f_point_box').attr({
+	      transform: 'translate(' + self.pointFPos.x + ' ' + self.pointFPos.y + ' )'
+	    });
+	    var pointF = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU).attr({
+	      fill: self.helper.SVGCOLOR.YELLOW
+	    });
+	    var pointFText = self.helper.svg.text(20, -25, 'F').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    self.helper.FGroup.add(pointF, pointFText);
+	  },
+	  // 绘制M线
+	  _drawMLineGroup: function _drawMLineGroup() {
+	    var self = this;
+	    self.helper.mLineGroup = self.helper.svg.group().addClass('_m_line_box').attr({
+	      transform: 'translate(' + self.pointHPos.x + ' ' + self.pointHPos.y + ' )'
+	    });
+	    var lineM = self.helper.svg.line(0, 130, 0, -512).addClass('_m_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.BLUE
+	    });
+	    var lineMText = self.helper.svg.text(33, 130, 'm').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE,
+	      fontStyle: 'italic'
+	    });
+	    var cornerLine = self.helper.svg.polyline(3, -39, 39, -39, 39, -3).attr({
+	      fill: 'transparent',
+	      stroke: self.helper.SVGCOLOR.PURPLE,
+	      strokeWidth: self.helper.SVGLINEWIDTH
+	    });
+	    self.helper.mLineGroup.add(lineM, lineMText, cornerLine).addClass('hide_dom');
+	  },
+	  // 绘制HF线
+	  _drawHFlineGroup: function _drawHFlineGroup() {
+	    var self = this;
+	    self.helper.hflineGroup = self.helper.svg.group().addClass('_hf_line_box');
+	    var lineHF = self.helper.svg.line(self.pointHPos.x, self.pointHPos.y, self.pointFPos.x, self.pointFPos.y).addClass('_hf_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.GRAY
+	    });
+	    self.helper.hflineGroup.add(lineHF).addClass('hide_dom');
+	  },
+	  // 绘制MN线
+	  _drawMNLineGroup: function _drawMNLineGroup() {
+	    var self = this;
+	    self.helper.mnLineGroup = self.helper.svg.group().addClass('_mn_line_box');
+	    var solveEquationsGetMPoint = new _SolveEquationsGetMPoint2.default();
+	    var mPoint = solveEquationsGetMPoint.getMPoint(self.pointHPos.x, self.pointHPos.y, self.pointFPos.x, self.pointFPos.y),
+	        mnLineStart = solveEquationsGetMPoint.getMPoint(self.pointHPos.x - 50, self.pointHPos.y, self.pointFPos.x, self.pointFPos.y),
+	        mnLineEnd = solveEquationsGetMPoint.getNPoint(self.pointHPos.x, self.pointHPos.y + 50, self.pointFPos.x, self.pointFPos.y),
+	        nPoint = solveEquationsGetMPoint.getNPoint(self.pointHPos.x, self.pointHPos.y, self.pointFPos.x, self.pointFPos.y);
+	    var HFMiddlePoint = {};
+	    HFMiddlePoint.x = (self.pointHPos.x + self.pointFPos.x) / 2;
+	    HFMiddlePoint.y = (self.pointHPos.y + self.pointFPos.y) / 2;
+	    var deg = -self._countDeg(mnLineStart, mnLineEnd);
+	    var mnLine = self.helper.svg.line(mnLineStart.x, mnLineStart.y + 6, mnLineEnd.x, mnLineEnd.y + 6).addClass('_mn_line').attr({
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      stroke: self.helper.SVGCOLOR.GRAY
+	    });
+	    var pointM = self.helper.svg.circle(mPoint.x, mPoint.y, self.helper.SVGPOINTRADIU).attr({
+	      fill: self.helper.SVGCOLOR.ORANGE
+	    });
+	    var pointMText = self.helper.svg.text(mPoint.x - 110, mPoint.y + 70, 'M').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    var pointNText = self.helper.svg.text(nPoint.x + 20, nPoint.y - 30, 'n').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    var cornerLine = self.helper.svg.polyline(-11, -46, 25, -46, 25, -10).attr({
+	      fill: 'transparent',
+	      stroke: self.helper.SVGCOLOR.PURPLE,
+	      strokeWidth: self.helper.SVGLINEWIDTH,
+	      transform: 'translate(' + HFMiddlePoint.x + ' ' + HFMiddlePoint.y + ')' + ' ' + 'rorate(' + deg + ')'
+	    });
+	    self.helper.mnLineGroup.add(mnLine, pointM, pointMText, pointNText, cornerLine).addClass('hide_dom');
+	  },
+	  _countDeg: function _countDeg(point0, point1) {
+	    var x = Math.abs(point1.x - point0.x);
+	    var y = Math.abs(point1.y - point0.y);
+	    var deg = void 0,
+	        atanA = void 0;
+	    if (point1.x > point0.x) {
+	      if (point1.y <= point0.y) {
+	        // 得到弧度
+	        atanA = Math.atan(y / x);
+	        // 弧度转角度
+	        // 1弧度=180/π度
+	        // 1度=π/180弧度
+	        deg = parseFloat(atanA * (180 / Math.PI)) + 90;
+	      } else {
+	        atanA = Math.atan(x / y);
+	        deg = parseFloat(atanA * (180 / Math.PI));
+	      }
+	    } else if (point1.x < point0.x) {
+	      if (point1.y <= point0.y) {
+	        atanA = Math.atan(y / x);
+	        deg = -parseFloat(atanA * (180 / Math.PI)) - 90;
+	      } else {
+	        atanA = Math.atan(x / y);
+	        deg = -parseFloat(atanA * (180 / Math.PI));
+	      }
+	    } else {
+	      if (point1.y < point0.y) {
+	        deg = 180;
+	      } else {
+	        deg = 0;
+	      }
+	    }
+	    return deg;
+	  },
+	  addHPoints: function addHPoints() {
+	    var self = this;
+	    self.helper.parabolaHGroupNotMove = self.helper.svg.group().addClass('_parabola_h_point_notmove_box').attr({
+	      transform: 'translate(' + self.helper.pointHPos.x + ' ' + self.helper.pointHPos.y + ' )'
+	    });
+	    var pointHNotMove = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU).attr({
+	      fill: self.helper.SVGCOLOR.YELLOW
+	    });
+	    var pointHTextNotMove = self.helper.svg.text(-110, 85, 'H').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    self.helper.parabolaHGroupNotMove.add(pointHNotMove, pointHTextNotMove).addClass('hide_dom');
+	  },
+	  addMoveHPoints: function addMoveHPoints() {
+	    var self = this;
+	    var arrowString = 'M 25.46 0.00 L 26.00 0.00 L 26.00 2.38 C 23.81 7.47 20.47 11.92 17.85 16.78 C 16.56 18.58 17.82 20.59 18.76 22.21 C 21.27 26.29 23.96 30.27 26.00 34.63 L 26.00 37.00 L 25.46 37.00 C 19.15 28.74 9.81 23.72 0.96 18.67 C 9.46 12.98 19.40 8.67 25.46 0.00 Z';
+	    /* H点及文字*/
+	    self.helper.parabolaHGroup = self.helper.svg.group().addClass('_parabola_h_point_box').attr({
+	      transform: 'translate(' + self.helper.pointHPos.x + ' ' + self.helper.pointHPos.y + ' )'
+	    });
+	    self.helper.pointHDrag = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU * 2.5).attr({
+	      fill: 'transparent'
+	    }).addClass('_parabola_h_point');
+	    self.helper.pointH = self.helper.svg.circle(0, 0, self.helper.SVGPOINTRADIU + 3).attr({
+	      fill: self.helper.SVGCOLOR.YELLOW,
+	      strokeWidth: self.helper.SVGPOINTBORDERWIDTH,
+	      stroke: self.helper.SVGPOINTBORDERCOLOR
+	    }).addClass('_parabola_h_point');
+	    self.helper.pointHText = self.helper.svg.text(-110, 85, 'H').attr({
+	      fill: self.helper.SVGCOLOR.GRAY,
+	      fontSize: self.helper.SVGFONTSIZE
+	    });
+	    /* 左边箭头*/
+	    self.helper.pointHArrowLeftGroup = self.helper.svg.group().attr({
+	      transform: 'translate(-70,-18)'
+	    }).addClass('hide_dom');
+	    var pointHArrowLeft01 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '1.00'
+	    });
+	    var pointHArrowLeft02 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '0.3',
+	      transform: 'translate(-20,0)'
+	    });
+	    self.helper.pointHArrowLeftGroup.add(pointHArrowLeft01, pointHArrowLeft02);
+	    /* 右边箭头*/
+	    self.helper.pointHArrowRightGroup = self.helper.svg.group().attr({
+	      transform: 'rorate(180) translate(-70,-18)'
+	    }).addClass('hide_dom');
+	    var pointHArrowRight01 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '1.00'
+	    });
+	    var pointHArrowRight02 = self.helper.svg.path(arrowString).attr({
+	      fill: self.helper.SVGCOLOR.BLUE,
+	      opacity: '0.3',
+	      transform: 'translate(-20,0)'
+	    });
+	    self.helper.pointHArrowRightGroup.add(pointHArrowRight01, pointHArrowRight02);
+	    self.helper.parabolaHGroup.add(self.helper.pointHText, self.helper.pointHDrag, self.helper.pointH, self.helper.pointHArrowLeftGroup, self.helper.pointHArrowRightGroup).addClass('hide_dom');
+	  },
+	  forceRedraw: function forceRedraw() {
+	    if (!this.$svg) {
+	      this.$svg = this.helper.$view.find('.parabola_svg_content svg');
+	    }
+	    Math.abs(parseFloat(this.$svg.css('opacity')) - 0.99) < 0.0001 ? this.$svg.css('opacity', 1) : this.$svg.css('opacity', 0.99);
+	  },
+	  throttle: function throttle(fn, delay, immediate, debounce) {
+	    var curr = +new Date(),
+	        // 当前事件
+	    last_call = 0,
+	        last_exec = 0,
+	        timer = null,
+	        diff = void 0,
+	        // 时间差
+	    context = void 0,
+	        // 上下文
+	    args = void 0,
+	        exec = function exec() {
+	      last_exec = curr;
+	      fn.apply(context, args);
+	    };
+	    return function () {
+	      curr = +new Date();
+	      context = this, args = arguments, diff = curr - (debounce ? last_call : last_exec) - delay;
+	      clearTimeout(timer);
+	      if (debounce) {
+	        if (immediate) {
+	          timer = setTimeout(exec, delay);
+	        } else if (diff >= 0) {
+	          exec();
+	        }
+	      } else {
+	        if (diff >= 0) {
+	          exec();
+	        } else if (immediate) {
+	          timer = setTimeout(exec, -diff);
+	        }
+	      }
+	      last_call = curr;
+	    };
+	  }
+	}); /**
+	     * 抛物线演示
+	     */
+	exports.default = DrawParabola;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * 解方程
+	 */
+	var SolveEquationsGetMPoint = Class.extend({
+	  $init: function $init(opt) {
+	    this.opt = $.extend({}, opt);
+	    this.helper = this.opt.helper;
+	  },
+	  getMPoint: function getMPoint(HX, HY, FX, FY) {
+	    var self = this;
+	    var pointH = {},
+	        pointF = {},
+	        point = {};
+	    pointH.x = HX;
+	    pointH.y = HY;
+	    pointF.x = FX;
+	    pointF.y = FY;
+	    if (pointF.x !== pointH.x) {
+	      point.x = pointH.x;
+	      var obj = self._solveEquations(pointH.x, pointH.y, pointF.x, pointF.y);
+	      point.y = obj.k * point.x + obj.b;
+	    } else {
+	      point.x = pointH.x;
+	      point.y = (pointF.y + pointH.y) / 2;
+	    }
+	    return point;
+	  },
+	  getNPoint: function getNPoint(HX, HY, FX, FY) {
+	    var self = this;
+	    var pointH = {},
+	        pointF = {},
+	        point = {};
+	    pointH.x = HX;
+	    pointH.y = HY;
+	    pointF.x = FX;
+	    pointF.y = FY;
+	    if (pointF.x !== pointH.x) {
+	      point.y = pointH.y;
+	      var obj = self._solveEquations(pointH.x, pointH.y, pointF.x, pointF.y);
+	      point.x = (point.y - obj.b) / obj.k;
+	    } else {
+	      point.x = pointH.x;
+	      point.y = (pointF.y + pointH.y) / 2;
+	    }
+	    return point;
+	  },
+	  /* 求解mn线的一次二元方程*/
+	  _solveEquations: function _solveEquations(HX, HY, FX, FY) {
+	    var pointH = {},
+	        pointF = {},
+	        obj = {};
+	    pointH.x = HX;
+	    pointH.y = HY;
+	    pointF.x = FX;
+	    pointF.y = FY;
+	    // 求垂直于HF的重锤线
+	    obj.k = (pointF.y - pointH.y) / (pointF.x - pointH.x);
+	    obj.k = -(1 / obj.k);
+	    var HFMiddlePoint = {
+	      x: (pointF.x + pointH.x) / 2,
+	      y: (pointF.y + pointH.y) / 2
+	    };
+	    obj.b = HFMiddlePoint.y - obj.k * HFMiddlePoint.x;
+	    return obj;
+	  }
+	});
+	exports.default = SolveEquationsGetMPoint;
+
+/***/ })
+/******/ ]);]]></presenter><resources/></addon>

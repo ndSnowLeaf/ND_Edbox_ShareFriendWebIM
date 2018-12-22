@@ -1,0 +1,2898 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="undefined"/><property name="question_url" displayName="undefined" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="snap_svg" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[@charset "UTF-8";.addon_CircumferentialAngle .exam_skin_wood{height:100%}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_wrapper{width:100%;height:100%;position:relative;padding:4.79167em 7.5em 3.54167em;background:#bfd3e2}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_inner{position:relative;width:100%;height:100%;overflow:hidden;padding-right:8.33333em}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main{background:#b8cdde;border-radius:.41667em;width:100%;height:100%}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .circle_svg{width:100%;height:100%}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .letter_txt{font-size:95px;fill:#4d4d4d;font-weight:700;font-style:italic;font-family:"Times New Roman",Helvetica,Arial,sans-serif}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .angle_txt{fill:#cb2627;font-weight:700;font-size:95px;font-family:'Times New Roman',Helvetica,Arial,sans-serif}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .circle_arc{stroke-width:5px}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .circle_arc.hover{stroke:#ff914b;stroke-width:7px}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .circle_arc.active{stroke:#e06313;stroke-width:7px}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .spot:hover,.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main circle.hover{stroke:#ff4242;fill:#fff}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .spot:active,.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main circle.active{stroke:#fff;fill:#cb2627}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .movable{cursor:pointer}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_main .unmovable{cursor:crosshair}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside{position:absolute;right:0;bottom:0;width:5.83333em;background:#b0c9dc;border-radius:.41667em}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li{width:100%;height:7.08333em;padding:0;margin:0;position:relative}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li a{display:block;width:100%;height:100%;overflow:hidden;position:relative}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li a:active{background:#95b7d1}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li b{width:75%;height:1px;background:#96abbb;position:absolute;left:50%;margin-left:-37.5%;bottom:0}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li .pic{width:4.5em;height:4.5em;overflow:hidden;background-size:99% 99%;background-repeat:no-repeat;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li:first-child a{border-radius:.41667em .41667em 0 0}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li:last-child a{border-radius:0 0 .41667em .41667em}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li.active a{background:#95b7d1}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li.item_1 .pic{background:url(resources/wood/images/aside_icon.png) top center no-repeat;background-size:100% auto}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li.item_2 .pic{background:url(resources/wood/images/aside_icon.png) center center no-repeat;background-size:100% auto}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li.item_3 .pic{background:url(resources/wood/images/aside_icon.png) bottom center no-repeat;background-size:100% auto}.addon_CircumferentialAngle .exam_skin_wood .yuanzhoujiao_aside ul li.item_3 .line{display:none}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="yuanzhoujiao_wrapper"><div class="yuanzhoujiao_inner"><div class="yuanzhoujiao_main"><svg class="circle_svg"></svg></div><div class="yuanzhoujiao_aside"><ul><li class="item_1"><a href="javascript:;"><span class="pic"></span> </a><b class="line"></b></li><li class="item_2"><a href="javascript:;"><span class="pic"></span> </a><b class="line"></b></li><li class="item_3"><a href="javascript:;"><span class="pic"></span> </a><b class="line"></b></li></ul></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(3);
+	__webpack_require__(2);
+	module.exports = __webpack_require__(6);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _controller = __webpack_require__(2);
+
+	var _controller2 = _interopRequireDefault(_controller);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'CircumferentialAngle',
+	      type: '',
+	      subtype: ''
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	    },
+	    /**
+	     * Presenter对外暴露的方法
+	     */
+	    _service_: {
+	      constructor: function constructor(parent) {
+	        this.parent = parent;
+	      },
+	      getQuestionInfo: function getQuestionInfo() {
+	        return {
+	          id: '',
+	          type_code: 'circumferentialangle',
+	          type_name: '圆周角定理',
+	          url: '',
+	          notExistStatistics: true,
+	          noNeedQuizProgress: true
+	        };
+	      },
+	      setLocationProperties: function setLocationProperties(data) {},
+	      getExtendData: function getExtendData() {
+	        return _controller2.default.getPushData();
+	      }
+	    },
+	    getService: function getService() {
+	      this._service_.constructor(this);
+	      return this._service_;
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      this.$view = $(view);
+	      this.model = model;
+	      _controller2.default.init(this.$view, this.model, this.isStudent);
+	      if (this.model.__ExtendModel && !$.isEmptyObject(this.model.__ExtendModel)) {
+	        _controller2.default.initView(this.model.__ExtendModel[0], this.model.__ExtendModel);
+	      } else {
+	        _controller2.default.initView(0, [0, 120, 60, 270]);
+	      }
+	    },
+	    pageShow: function pageShow() {
+	      this._bindEvent();
+	    },
+	    pageLeave: function pageLeave() {
+	      this._unbindEvent();
+	    },
+	    destroy: function destroy() {},
+	    /** 如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	    getState: function getState() {},
+	    setState: function setState(state, options) {},
+	    /** **以下开始为Presenter的私有方法*****/
+	    _bindEvent: function _bindEvent() {},
+	    _unbindEvent: function _unbindEvent() {}
+	  });
+
+	  window.AddonCircumferentialAngle_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _PatternA = __webpack_require__(4);
+
+	var _PatternA2 = _interopRequireDefault(_PatternA);
+
+	var _PatternB = __webpack_require__(7);
+
+	var _PatternB2 = _interopRequireDefault(_PatternB);
+
+	var _PatternC = __webpack_require__(8);
+
+	var _PatternC2 = _interopRequireDefault(_PatternC);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Created by Administrator on 2017/7/4 0004.
+	 */
+	var CIRCLE_X = _config2.default.svgWidth / 2;
+	var CIRCLE_Y = _config2.default.svgHeight / 2;
+	var CIRCLE_RADIUS = _config2.default.circleRadius;
+	var POINT_RADIUS = _config2.default.pointRadius;
+	var defalutPoint = _config2.default.defalutPoint;
+	var CIRCLE_ATTR = _config2.default.CIRCLE_ATTR;
+	var CENTER_POINT_ATTR = _config2.default.CENTER_POINT_ATTR;
+	var POINT_ATTR = _config2.default.POINT_ATTR;
+	var POINT_DIS_ATTR = _config2.default.POINT_DIS_ATTR;
+
+	var controller = {
+	  init: function init($view, model, isStudent) {
+	    this.$view = $view;
+	    this.model = model;
+	    this.isStudent = isStudent;
+	    this.$svg = this.$view.find('.circle_svg');
+	    this.$svg.css('opacity', 1);
+	    this.panel = Snap(this.$view.find('.yuanzhoujiao_wrapper')[0]);
+	    this.paper = Snap(this.$svg[0]);
+	    this.paper.attr('viewBox', '0 0 ' + _config2.default.svgWidth + ' ' + _config2.default.svgHeight);
+	    this.bindDom();
+	  },
+	  initView: function initView(presetNum, initData) {
+	    this.paper.clear();
+	    this.pushData = [];
+	    this.currentPattern = null;
+	    this.paper.circle(CIRCLE_X, CIRCLE_Y, CIRCLE_RADIUS).attr(CIRCLE_ATTR);
+	    var center = this.paper.circle(CIRCLE_X, CIRCLE_Y, POINT_RADIUS).attr(CENTER_POINT_ATTR);
+	    var deg1 = void 0,
+	        deg2 = void 0,
+	        deg3 = void 0,
+	        deg4 = void 0,
+	        deg5 = void 0,
+	        deg6 = void 0,
+	        top = void 0,
+	        top1 = void 0,
+	        top2 = void 0,
+	        p1 = void 0,
+	        p2 = void 0,
+	        p3 = void 0,
+	        p4 = void 0;
+	    if (presetNum == 0) {
+	      this.list.eq(0).addClass('active');
+	      if (initData) {
+	        var _ref = [initData[1], initData[2], initData[3]];
+	        deg1 = _ref[0];
+	        deg2 = _ref[1];
+	        deg3 = _ref[2];
+	      } else {
+	        var _ref2 = [defalutPoint.defaultA[0], defalutPoint.defaultA[1], defalutPoint.defaultA[2]];
+	        deg1 = _ref2[0];
+	        deg2 = _ref2[1];
+	        deg3 = _ref2[2];
+	      }
+	      p1 = _createPoint(this.paper, deg1, POINT_ATTR, 'movable');
+	      p2 = _createPoint(this.paper, deg2, POINT_ATTR, 'movable');
+	      top = _createPoint(this.paper, deg3, POINT_ATTR, 'movable');
+	      this.currentPattern = new _PatternA2.default(p1, p2, top, center, this.panel, this.isStudent);
+	      this.pushData.push(0, p1, p2, top);
+	      this.currentPattern.init(this.$view, this.model);
+	      this.currentPattern.initView();
+	    } else if (presetNum == 1) {
+	      this.list.eq(1).addClass('active');
+	      if (initData) {
+	        var _ref3 = [initData[1], initData[2]];
+	        deg1 = _ref3[0];
+	        deg2 = _ref3[1];
+	      } else {
+	        var _ref4 = [defalutPoint.defaultB[0], defalutPoint.defaultB[1]];
+	        deg1 = _ref4[0];
+	        deg2 = _ref4[1];
+	      }
+	      var _ref5 = [defalutPoint.defaultB[2], defalutPoint.defaultB[3]];
+	      deg3 = _ref5[0];
+	      deg4 = _ref5[1];
+
+	      p1 = _createPoint(this.paper, deg1, POINT_ATTR, 'movable');
+	      p2 = _createPoint(this.paper, deg2, POINT_ATTR, 'movable');
+	      top1 = _createPoint(this.paper, deg3, POINT_DIS_ATTR, 'unmovable');
+	      top2 = _createPoint(this.paper, deg4, POINT_DIS_ATTR, 'unmovable');
+	      this.pushData.push(1, p1, p2);
+	      this.currentPattern = new _PatternB2.default(p1, p2, top1, top2, center, this.panel);
+	      this.currentPattern.init(this.$view, this.model);
+	      this.currentPattern.initView();
+	    } else if (presetNum == 2) {
+	      this.list.eq(2).addClass('active');
+	      if (initData) {
+	        var _ref6 = [initData[1], initData[2], initData[3], initData[4]];
+	        deg1 = _ref6[0];
+	        deg2 = _ref6[1];
+	        deg3 = _ref6[2];
+	        deg4 = _ref6[3];
+	      } else {
+	        var _ref7 = [defalutPoint.defaultC[0], defalutPoint.defaultC[1], defalutPoint.defaultC[2], defalutPoint.defaultC[3]];
+	        deg1 = _ref7[0];
+	        deg2 = _ref7[1];
+	        deg3 = _ref7[2];
+	        deg4 = _ref7[3];
+	      }
+	      var _ref8 = [defalutPoint.defaultC[4], defalutPoint.defaultC[5]];
+	      deg5 = _ref8[0];
+	      deg6 = _ref8[1];
+
+	      p1 = _createPoint(this.paper, deg1, POINT_ATTR, 'movable');
+	      p2 = _createPoint(this.paper, deg2, POINT_ATTR, 'movable');
+	      p3 = _createPoint(this.paper, deg3, POINT_ATTR, 'movable');
+	      p4 = _createPoint(this.paper, deg4, POINT_ATTR, 'movable');
+	      top1 = _createPoint(this.paper, deg5, POINT_DIS_ATTR, 'unmovable');
+	      top2 = _createPoint(this.paper, deg6, POINT_DIS_ATTR, 'unmovable');
+	      this.pushData.push(2, p1, p2, p3, p4);
+	      this.currentPattern = new _PatternC2.default(p1, p2, top1, p3, p4, top2, center, this.panel);
+	      this.currentPattern.init(this.$view, this.model);
+	      this.currentPattern.initView();
+	    }
+	  },
+	  bindDom: function bindDom() {
+	    var that = this;
+	    this.list = this.$view.find('.yuanzhoujiao_aside li');
+	    this.list.click(function () {
+	      var $this = $(this);
+	      if (that.currentPattern && that.currentPattern.paper) {
+	        that.currentPattern.paper.clear();
+	      }
+	      that.list.removeClass('active');
+	      $this.addClass('active');
+	      that.initView($this.index());
+	      // 强制重新渲染
+	      Math.abs(parseFloat(that.$svg.css('opacity')) - 0.99) < 0.0001 ? that.$svg.css('opacity', 1) : that.$svg.css('opacity', 0.99);
+	    });
+	  },
+	  getPushData: function getPushData() {
+	    var arr = [this.pushData[0]];
+	    for (var i = 1; i < this.pushData.length; i++) {
+	      arr.push(Snap.angle(this.pushData[i].attr('cx'), this.pushData[i].attr('cy'), CIRCLE_X, CIRCLE_Y));
+	    }
+	    return arr;
+	  }
+	};
+
+	function _createPoint(paper, deg, attrs, className) {
+	  var point = paper.circle(Math.cos(Snap.rad(deg)) * CIRCLE_RADIUS + CIRCLE_X, Math.sin(Snap.rad(deg)) * CIRCLE_RADIUS + CIRCLE_Y, POINT_RADIUS);
+	  point.attr(attrs).addClass(className);
+	  return point;
+	}
+
+	exports.default = controller;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Created by Administrator on 2017/7/3 0003.
+	 */
+	exports.default = {
+	  svgWidth: 1380,
+	  svgHeight: 880,
+	  circleRadius: 322,
+	  pointRadius: 15,
+	  defalutPoint: {
+	    defaultA: [120, 60, 270],
+	    defaultB: [120, 60, 247.5, 292.5],
+	    defaultC: [160, 100, 80, 20, 247.5, 292.5]
+	  },
+	  // 扇形样式 默认蓝色
+	  DEG_ARC_ATTR: {
+	    fill: 'rgba(35,131,204,0.35)',
+	    stroke: '#2383cc',
+	    strokeWidth: '2px'
+	  },
+	  // 扇形样式 绿色
+	  DEG_ARC_ATTR_GREEN: {
+	    fill: 'rgba(60,143,65,0.35)',
+	    stroke: '#3c8f41',
+	    strokeWidth: '2px'
+	  },
+	  TEXT_MIDDLE_ATTR: {
+	    'text-anchor': 'middle',
+	    'dominant-baseline': 'central'
+	  },
+	  CIRCLE_ARC_ATTR: {
+	    fill: 'none',
+	    stroke: 'rgba(255,255,255,0)'
+	  },
+	  WRAP_CIRCLE_ARC_ATTR: {
+	    fill: 'none',
+	    stroke: 'rgba(255,255,255,0)',
+	    'stroke-width': '60px',
+	    cursor: 'pointer'
+	  },
+	  RANGE_ARC_ATTR: {
+	    fill: 'none',
+	    stroke: '#ac9181',
+	    strokeWidth: '7px'
+	  },
+	  LINE_ATTR: {
+	    stroke: '#2383cc',
+	    strokeWidth: '7px'
+	  },
+	  LINE_ATTR_GREEN: {
+	    stroke: '#3c8f41',
+	    strokeWidth: '7px'
+	  },
+	  CIRCLE_ATTR: {
+	    fill: 'none',
+	    stroke: '#4d4d4d',
+	    strokeWidth: '5px'
+	  },
+	  CENTER_POINT_ATTR: {
+	    fill: '#4d4d4d', r: '9px'
+	  },
+	  POINT_ATTR: {
+	    r: '15px',
+	    fill: '#FFF',
+	    'stroke-width': '5px',
+	    stroke: '#cb2627'
+	  },
+	  POINT_DIS_ATTR: {
+	    r: '15px',
+	    fill: '#FFF',
+	    'stroke-width': '5px',
+	    stroke: '#4d4d4d'
+	  }
+	};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _BaseAngle2 = __webpack_require__(5);
+
+	var _BaseAngle3 = _interopRequireDefault(_BaseAngle2);
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _utils = __webpack_require__(6);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Administrator on 2017/7/3 0003.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var CIRCLE_X = _config2.default.svgWidth / 2;
+	var CIRCLE_Y = _config2.default.svgHeight / 2;
+	var CIRCLE_RADIUS = _config2.default.circleRadius;
+	var POINT_RADIUS = _config2.default.pointRadius;
+	var DEG_ARC_ATTR = _config2.default.DEG_ARC_ATTR;
+	var TEXT_MIDDLE_ATTR = _config2.default.TEXT_MIDDLE_ATTR;
+	var CIRCLE_ARC_ATTR = _config2.default.CIRCLE_ARC_ATTR;
+	var WRAP_CIRCLE_ARC_ATTR = _config2.default.WRAP_CIRCLE_ARC_ATTR;
+	var RANGE_ARC_ATTR = _config2.default.RANGE_ARC_ATTR;
+	var LINE_ATTR = _config2.default.LINE_ATTR;
+
+	var PatternA = function (_BaseAngle) {
+	  _inherits(PatternA, _BaseAngle);
+
+	  function PatternA(pointA, pointB, pointC, centralPoint, panel, isStudent) {
+	    _classCallCheck(this, PatternA);
+
+	    var _this = _possibleConstructorReturn(this, (PatternA.__proto__ || Object.getPrototypeOf(PatternA)).call(this));
+
+	    _this.pointA = pointA;
+	    _this.pointB = pointB;
+	    _this.pointC = pointC;
+	    _this.centralPoint = centralPoint;
+	    _this.panel = panel;
+	    _this.isStudent = isStudent;
+	    return _this;
+	  }
+
+	  _createClass(PatternA, [{
+	    key: 'init',
+	    value: function init($view, model) {
+	      this.$view = $view;
+	      this.model = model;
+	      this.svgDom = this.$view.find('svg')[0];
+	      this.svg = Snap(this.svgDom);
+	      this.paper = this.svg.paper;
+	      this.range = [0, 360];
+	      this.decimal = 0;
+	      if (this.isStudent) {
+	        this.decimal = 1;
+	      }
+	      this.pointA.data('name', 'A');
+	      this.pointB.data('name', 'B');
+	      this.pointC.data('name', 'C');
+	      this.panel.unmouseup();
+	      this.panel.untouchend();
+	      this.$svg = this.$view.find('.circle_svg');
+	      this.forceRedrawWrap = _utils2.default.throttle(this.forceRedraw, 20);
+	    }
+	  }, {
+	    key: 'initView',
+	    value: function initView() {
+	      this.outerDegArc = this.paper.path().attr(DEG_ARC_ATTR);
+	      this.innerDegArc = this.paper.path().attr(DEG_ARC_ATTR);
+	      this.circleArc = this.paper.path().attr(CIRCLE_ARC_ATTR).addClass('circle_arc');
+	      this.wrapCircleArc = this.paper.path().attr(WRAP_CIRCLE_ARC_ATTR).addClass('wrap_circle_arc');
+	      this.textA = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'A' }).addClass('letter_txt');
+	      this.textB = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'B' }).addClass('letter_txt');
+	      this.textC = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'C' }).addClass('letter_txt');
+	      this.rangeArc = this.paper.circle(CIRCLE_X, CIRCLE_Y, CIRCLE_RADIUS).attr(RANGE_ARC_ATTR);
+	      this.rangeArc.node.style.display = 'none';
+	      this.lineCA = this.drawLine(this.pointC, this.pointA).attr(LINE_ATTR);
+	      this.lineCB = this.drawLine(this.pointC, this.pointB).attr(LINE_ATTR);
+	      this.lineOA = this.drawLine(this.centralPoint, this.pointA).attr(LINE_ATTR);
+	      this.lineOB = this.drawLine(this.centralPoint, this.pointB).attr(LINE_ATTR);
+	      this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({
+	        text: 'O',
+	        x: CIRCLE_X + CIRCLE_RADIUS * 0.14,
+	        y: CIRCLE_Y - CIRCLE_RADIUS * 0.09
+	      }).addClass('letter_txt');
+	      this.pointsText = [this.textA, this.textB, this.textC];
+	      this.outerDegText = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.innerDegText = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.judgeArcDirection();
+	      this.drawCircleArc();
+	      this.drawDegArc(this.pointA, this.pointB, this.pointC);
+	      this.drawDegArc(this.pointA, this.pointB, this.centralPoint, true);
+	      this.drawPointText(['A', 'B', 'C']);
+	      this.bindDom();
+	      this.sortLayout();
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC]);
+	      this.keepDis();
+	    }
+	  }, {
+	    key: 'sortLayout',
+	    value: function sortLayout() {
+	      this.svg.append(this.centralPoint);
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	    }
+	  }, {
+	    key: 'bindDom',
+	    value: function bindDom() {
+	      var that = this;
+	      var pointArr = [that.pointA, that.pointB, that.pointC];
+	      pointArr.forEach(function (elem) {
+	        elem.mousedown(function (e) {
+	          that.pointMousedown(e, this);
+	        });
+	        elem.touchstart(function (e) {
+	          e.preventDefault();
+	          resetHover();
+	          that.panel.untouchmove();
+	          that.pointMousedown(e.touches[0], this);
+	        });
+	        elem.mouseover(function () {
+	          this.addClass('hover');
+	        });
+	        elem.mouseout(function () {
+	          this.removeClass('hover');
+	        });
+	      });
+	      this.wrapCircleArc.mousedown(function (e) {
+	        that.arcMouseDown(e);
+	      });
+	      this.wrapCircleArc.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.panel.untouchmove();
+	        that.arcMouseDown(e.touches[0]);
+	      });
+	      this.wrapCircleArc.mouseover(function () {
+	        that.circleArc.addClass('hover');
+	      });
+	      this.wrapCircleArc.mouseout(function () {
+	        that.circleArc.removeClass('hover');
+	      });
+	      this.panel.mouseup(function () {
+	        that.mouseUp();
+	      });
+	      this.panel.touchend(function () {
+	        that.mouseUp();
+	      });
+
+	      function resetHover() {
+	        pointArr.forEach(function (elem) {
+	          elem.removeClass('hover');
+	        });
+	        that.circleArc.removeClass('hover');
+	      }
+	    }
+	  }, {
+	    key: 'pointMousedown',
+	    value: function pointMousedown(e, followPoint) {
+	      var that = this;
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var startX = point.x;
+	      var startY = point.y;
+	      var startX2 = parseFloat(this.getX(followPoint));
+	      var startY2 = parseFloat(this.getY(followPoint));
+	      followPoint.addClass('active');
+	      that.rangeArc.node.style.display = 'block';
+	      if (followPoint.data('name') === 'C') {
+	        that.svg.append(that.pointC);
+	        that.pointsText = [that.textA, that.textB, that.textC];
+	        that.resetPointText();
+	        that.pointsText = [that.textA, that.textB];
+	        that.preventCoincide([that.pointA, that.pointB]);
+	      } else if (followPoint.data('name') === 'A') {
+	        that.decimal = 1;
+	        that.svg.append(that.pointA);
+	        that.pointsText = [that.textA, that.textB, that.textC];
+	        that.resetPointText();
+	        that.pointsText = [that.textB, that.textC];
+	        that.preventCoincide([that.pointB, that.pointC]);
+	      } else {
+	        that.decimal = 1;
+	        that.svg.append(that.pointB);
+	        that.pointsText = [that.textA, that.textB, that.textC];
+	        that.resetPointText();
+	        that.pointsText = [that.textA, that.textC];
+	        that.preventCoincide([that.pointA, that.pointC]);
+	      }
+
+	      this.panel.mousemove(function (e) {
+	        pointMousemove(e);
+	      });
+	      this.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        pointMousemove(touch);
+	      });
+
+	      function pointMousemove(e) {
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        var x = x2 - startX + startX2;
+	        var y = y2 - startY + startY2;
+	        if (x < 0 || x > _config2.default.svgWidth || y < 0 || y > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        if (followPoint.data('name') === 'C') {
+	          that.setPosition(that.pointC, axisX, axisY);
+	          that.followPointC();
+	        } else if (followPoint.data('name') === 'A') {
+	          that.setPosition(that.pointA, axisX, axisY);
+	          that.followPointAB(that.pointA, that.lineCA, that.lineOA);
+	        } else if (followPoint.data('name') === 'B') {
+	          that.setPosition(that.pointB, axisX, axisY);
+	          that.followPointAB(that.pointB, that.lineCB, that.lineOB);
+	        }
+	        that.judgeArcDirection();
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC);
+	        that.drawDegArc(that.pointA, that.pointB, that.centralPoint, true);
+	        that.drawPointText([followPoint.data('name')], angle);
+	      }
+	    }
+	  }, {
+	    key: 'arcMouseDown',
+	    value: function arcMouseDown(e) {
+	      var that = this;
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var x1 = point.x;
+	      var y1 = point.y;
+	      var startX2 = parseFloat(that.getX(that.pointA));
+	      var startY2 = parseFloat(that.getY(that.pointA));
+	      var startX3 = parseFloat(that.getX(that.pointB));
+	      var startY3 = parseFloat(that.getY(that.pointB));
+	      this.pointsText = [this.textA, this.textB, this.textC];
+	      this.resetPointText();
+	      that.rangeArc.insertBefore(that.circleArc);
+	      that.circleArc.addClass('active');
+	      that.rangeArc.node.style.display = 'block';
+	      that.panel.mousemove(function (e) {
+	        arcMousemove(e);
+	      });
+	      that.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        arcMousemove(touch);
+	      });
+
+	      function arcMousemove(e) {
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        if (x2 < 0 || x2 > _config2.default.svgWidth || y2 < 0 || y2 > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x2, y2, x1, y1, CIRCLE_X, CIRCLE_Y);
+	        var angle1 = Snap.angle(startX2, startY2, CIRCLE_X, CIRCLE_Y);
+	        var angle2 = Snap.angle(startX3, startY3, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        var axisX2 = Math.cos(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY2 = Math.sin(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        that.setPosition(that.pointA, axisX, axisY);
+	        that.setPosition(that.pointB, axisX2, axisY2);
+	        that.followPointAB(that.pointA, that.lineCA, that.lineOA);
+	        that.followPointAB(that.pointB, that.lineCB, that.lineOB);
+	        that.judgeArcDirection();
+	        that.drawCircleArc();
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC);
+	        that.drawDegArc(that.pointA, that.pointB, that.centralPoint, true);
+	        that.drawPointText(['A', 'B']);
+	      }
+	    }
+	  }, {
+	    key: 'mouseUp',
+	    value: function mouseUp() {
+	      this.forceRedrawWrap();
+	      this.drawCircleArc();
+	      this.pointA.removeClass('active');
+	      this.pointB.removeClass('active');
+	      this.pointC.removeClass('active');
+	      this.circleArc.removeClass('active');
+	      this.rangeArc.node.style.display = 'none';
+	      this.circleArc.insertBefore(this.rangeArc);
+	      this.panel.unmousemove();
+	      this.panel.untouchmove();
+	      this.pointsText = [this.textA, this.textB, this.textC];
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC]);
+	      this.keepDis();
+	    }
+	  }, {
+	    key: 'followPointAB',
+	    value: function followPointAB(p, l, l2) {
+	      var px = this.getX(p);
+	      var py = this.getY(p);
+	      var deg = this.getDeg(this.pointA, this.pointB, this.pointC);
+	      var newDeg = Snap.snapTo([30, 45, 60, 90], deg, 2.04999);
+	      // 吸附操作
+	      if (deg !== newDeg) {
+	        var pDeg = Snap.angle(px, py, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(pDeg + (newDeg - deg) * 2)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(pDeg + (newDeg - deg) * 2)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        var judgeDeg = this.getDeg({
+	          x: axisX,
+	          y: axisY
+	        }, this.pointB, this.pointC, true);
+	        if (judgeDeg < 10) {
+	          judgeDeg = this.getDeg(this.pointA, {
+	            x: axisX,
+	            y: axisY
+	          }, this.pointC, true);
+	        }
+	        judgeDeg = Snap.snapTo([30, 45, 60, 90], judgeDeg, 0.1);
+	        if (judgeDeg != 30 && judgeDeg != 45 && judgeDeg != 60 && judgeDeg != 90) {
+	          axisX = Math.cos(Snap.rad(pDeg - (newDeg - deg) * 2)) * CIRCLE_RADIUS + CIRCLE_X;
+	          axisY = Math.sin(Snap.rad(pDeg - (newDeg - deg) * 2)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        }
+	        this.setPosition(p, axisX, axisY);
+	      }
+	      px = this.getX(p);
+	      py = this.getY(p);
+	      this.setLinePosition(l, 'x2', 'y2', px, py);
+	      this.setLinePosition(l2, 'x2', 'y2', px, py);
+	    }
+	  }, {
+	    key: 'followPointC',
+	    value: function followPointC() {
+	      var cx = this.getX(this.pointC);
+	      var cy = this.getY(this.pointC);
+	      this.setLinePosition(this.lineCA, 'x1', 'y1', cx, cy);
+	      this.setLinePosition(this.lineCB, 'x1', 'y1', cx, cy);
+	    }
+	  }, {
+	    key: 'drawCircleArc',
+	    value: function drawCircleArc() {
+	      var circleArcPath = 'M{x1} {y1}A{r} {r} 0 {l} {c} {x2} {y2}';
+	      circleArcPath = Snap.format(circleArcPath, {
+	        x1: this.getX(this.pointA),
+	        y1: this.getY(this.pointA),
+	        r: CIRCLE_RADIUS,
+	        x2: this.getX(this.pointB),
+	        y2: this.getY(this.pointB)
+	      });
+	      if (!this.flag) {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 1 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 1 });
+	        }
+	      } else {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 0 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 0 });
+	        }
+	      }
+	      this.setArcPath(this.circleArc, circleArcPath);
+	      this.setArcPath(this.wrapCircleArc, circleArcPath);
+	    }
+	  }, {
+	    key: 'drawDegArc',
+	    value: function drawDegArc(a, b, c, isCentralArc) {
+	      var ax = parseFloat(this.getX(a));
+	      var ay = parseFloat(this.getY(a));
+	      var bx = parseFloat(this.getX(b));
+	      var by = parseFloat(this.getY(b));
+	      var cx = parseFloat(this.getX(c));
+	      var cy = parseFloat(this.getY(c));
+	      var LenAC = this.getDistance(ax, ay, cx, cy);
+	      var LenBC = this.getDistance(bx, by, cx, cy);
+	      var subLenAC = LenAC * 0.2;
+	      var subLenBC = LenBC * 0.2;
+	      if (subLenAC <= 0.2 || subLenBC <= 0.2) {
+	        this.setArcPath(this.outerDegArc, '');
+	        this.setText(this.outerDegText, '');
+	        this.outerDegText.node.innerHTML = '';
+	      } else {
+	        if (Math.min(subLenAC, subLenBC) < POINT_RADIUS * 1.15) {
+	          subLenAC = POINT_RADIUS * 1.15;
+	          subLenBC = POINT_RADIUS * 1.15;
+	          LenAC = subLenAC / 0.2;
+	          LenBC = subLenBC / 0.2;
+	        } else if (Math.min(subLenAC, subLenBC) < POINT_RADIUS * 1.3) {
+	          subLenAC = POINT_RADIUS * 1.3;
+	          subLenBC = POINT_RADIUS * 1.3;
+	          LenAC = subLenAC / 0.2;
+	          LenBC = subLenBC / 0.2;
+	        }
+	        var p1 = this.getPointAtLen(cx, cy, ax, ay, LenAC, 0.2);
+	        var p2 = this.getPointAtLen(cx, cy, bx, by, LenBC, 0.2);
+	        var arcPath = 'M{cx} {cy}L{x1} {y1}A {dis} {dis} 0 {l} 0 {x2} {y2}Z';
+	        if (subLenAC < subLenBC) {
+	          p2 = this.getPointAtLen(cx, cy, bx, by, LenAC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          }
+	        } else {
+	          p1 = this.getPointAtLen(cx, cy, ax, ay, LenBC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          }
+	        }
+	        var deg = this.getDeg(this.pointA, this.pointB, this.pointC);
+	        var text = void 0,
+	            arc = void 0;
+	        if (isCentralArc) {
+	          text = this.innerDegText;
+	          arc = this.innerDegArc;
+	          arcPath = deg > 90 ? Snap.format(arcPath, { l: 1 }) : Snap.format(arcPath, { l: 0 });
+	          if (this.outerDegText.node.innerHTML !== '') {
+	            deg = (parseFloat(this.outerDegText.node.innerHTML) * 2).toFixed(this.decimal);
+	          } else {
+	            deg = (deg * 2).toFixed(this.decimal);
+	          }
+	        } else {
+	          text = this.outerDegText;
+	          arc = this.outerDegArc;
+	          arcPath = Snap.format(arcPath, {
+	            l: 0
+	          });
+	          deg = deg.toFixed(this.decimal);
+	        }
+	        var textPos = this.getPointAtLen(p1.x, p1.y, p2.x, p2.y, this.getDistance(p1.x, p1.y, p2.x, p2.y), 0.5);
+	        if (deg >= 180) {
+	          textPos = Snap.path.getPointAtLength(arcPath, Snap.path.getTotalLength(arcPath) / 2);
+	        }
+	        var angle = Snap.angle(textPos.x, textPos.y, cx, cy);
+	        if (deg >= 180) {
+	          textPos.x += Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS / 7.5;
+	          textPos.y += Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS / 7.5;
+	        } else {
+	          textPos.x += Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS / 5;
+	          textPos.y += Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS / 5;
+	        }
+	        this.setText(text, deg + '°', textPos.x, textPos.y);
+	        text.node.innerHTML = deg + '°';
+	        if (deg == 90) {
+	          var x = void 0,
+	              y = void 0;
+	          if (isCentralArc) {
+	            x = p1.x + p2.x - CIRCLE_X;
+	            y = p1.y + p2.y - CIRCLE_Y;
+	            arcPath = 'M' + p1.x + ' ' + p1.y + 'L' + x + ' ' + y + 'L' + p2.x + ' ' + p2.y + 'L' + CIRCLE_X + ' ' + CIRCLE_Y + 'Z';
+	          } else {
+	            var tempcx = this.getX(this.pointC);
+	            var tempcy = this.getY(this.pointC);
+	            x = p1.x + p2.x - tempcx;
+	            y = p1.y + p2.y - tempcy;
+	            arcPath = 'M' + p1.x + ' ' + p1.y + 'L' + x + ' ' + y + 'L' + p2.x + ' ' + p2.y + 'L' + tempcx + ' ' + tempcy + 'Z';
+	          }
+	        }
+	        this.setArcPath(arc, arcPath);
+	      }
+	    }
+	  }, {
+	    key: 'drawPointText',
+	    value: function drawPointText(changePoint) {
+	      var text = void 0,
+	          textx = void 0,
+	          texty = void 0,
+	          x = void 0,
+	          y = void 0,
+	          angle = void 0,
+	          point = void 0;
+	      for (var i = 0; i < changePoint.length; i++) {
+	        if (changePoint[i] == 'A') {
+	          point = this.pointA;
+	          text = this.textA;
+	        } else if (changePoint[i] == 'B') {
+	          point = this.pointB;
+	          text = this.textB;
+	        } else if (changePoint[i] == 'C') {
+	          point = this.pointC;
+	          text = this.textC;
+	        }
+	        x = parseFloat(this.getX(point));
+	        y = parseFloat(this.getY(point));
+	        angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        textx = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS * 1.20 + CIRCLE_X;
+	        texty = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS * 1.20 + CIRCLE_Y;
+	        this.setText(text, changePoint[i], textx, texty);
+	      }
+	    }
+	  }, {
+	    key: 'resetPointText',
+	    value: function resetPointText() {
+	      for (var i = 0; i < this.pointsText.length; i++) {
+	        if (i == 0) {
+	          this.pointsText[i].node.innerHTML = 'A';
+	        } else if (i == 1) {
+	          this.pointsText[i].node.innerHTML = 'B';
+	        } else {
+	          this.pointsText[i].node.innerHTML = 'C';
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'keepDis',
+	    value: function keepDis() {
+	      if (this.textA.node.innerHTML.length == 3 || this.textB.node.innerHTML.length == 3 || this.textC.node.innerHTML.length == 3) {
+	        var x = this.getX(this.pointA);
+	        var y = this.getY(this.pointA);
+	        var angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        var textx = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS * 1.21 + CIRCLE_X;
+	        var texty = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS * 1.21 + CIRCLE_Y;
+	        this.setText(this.textA, 'A', textx, texty);
+	        this.setText(this.textB, 'B', textx, texty);
+	        this.setText(this.textC, 'C', textx, texty);
+	      }
+	    }
+	  }, {
+	    key: 'forceRedraw',
+	    value: function forceRedraw() {
+	      Math.abs(parseFloat(this.$svg.css('opacity')) - 0.99) < 0.0001 ? this.$svg.css('opacity', 1) : this.$svg.css('opacity', 0.99);
+	    }
+	  }]);
+
+	  return PatternA;
+	}(_BaseAngle3.default);
+
+	exports.default = PatternA;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var CIRCLE_X = _config2.default.svgWidth / 2;
+	var CIRCLE_Y = _config2.default.svgHeight / 2;
+
+	var BaseAngle = function () {
+	  function BaseAngle() {
+	    _classCallCheck(this, BaseAngle);
+	  }
+
+	  _createClass(BaseAngle, [{
+	    key: 'drawLine',
+	    value: function drawLine(p1, p2) {
+	      return this.paper.line(this.getX(p1), this.getY(p1), this.getX(p2), this.getY(p2));
+	    }
+
+	    /**
+	     * 判断画圆弧的方向
+	     */
+
+	  }, {
+	    key: 'judgeArcDirection',
+	    value: function judgeArcDirection() {
+	      var angleA = Snap.angle(this.getX(this.pointA), this.getY(this.pointA), CIRCLE_X, CIRCLE_Y);
+	      var angleC = Snap.angle(this.getX(this.pointC), this.getY(this.pointC), CIRCLE_X, CIRCLE_Y);
+	      var angleB = Snap.angle(this.getX(this.pointB), this.getY(this.pointB), CIRCLE_X, CIRCLE_Y);
+	      if (angleB <= angleC) {
+	        this.flag = angleA > angleB && angleA <= angleC;
+	      } else {
+	        this.flag = !(angleA > angleC && angleA < angleB);
+	      }
+	    }
+	  }, {
+	    key: 'beforeMove',
+	    value: function beforeMove(x1, y1, point) {
+	      var deg = Snap.angle(x1, y1, CIRCLE_X, CIRCLE_Y);
+	      // 判断是否在范围内标志
+	      var flag1 = void 0;
+	      if (this.range.length == 4) {
+	        flag1 = !(deg > this.range[1] && deg < this.range[2]);
+	      } else {
+	        flag1 = deg >= this.range[0] && deg <= this.range[1];
+	      }
+	      if (!flag1) {
+	        this.preventJump = true;
+	      }
+	      if (this.preventJump) {
+	        var x2 = parseFloat(this.getX(point));
+	        var y2 = parseFloat(this.getY(point));
+	        var dis = this.getDistance(x1, y1, x2, y2);
+	        return flag1 && dis < this.judgeDis / 1.2;
+	      } else {
+	        return flag1;
+	      }
+	    }
+	  }, {
+	    key: 'getDeg',
+	    value: function getDeg(p1, p2, top_p, isSimul) {
+	      var angle = void 0;
+	      if (isSimul) {
+	        if (p1.x) {
+	          angle = Snap.angle(p1.x, p1.y, this.getX(p2), this.getY(p2), this.getX(top_p), this.getY(top_p));
+	        } else {
+	          angle = Snap.angle(this.getX(p1), this.getY(p1), p2.x, p2.y, this.getX(top_p), this.getY(top_p));
+	        }
+	      } else {
+	        angle = Snap.angle(this.getX(p1), this.getY(p1), this.getX(p2), this.getY(p2), this.getX(top_p), this.getY(top_p));
+	      }
+	      if (Math.abs(angle) > 180) {
+	        angle = 360 - Math.abs(angle);
+	      }
+	      return Math.abs(angle);
+	    }
+	  }, {
+	    key: 'getDistance',
+	    value: function getDistance(x1, y1, x2, y2) {
+	      return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	    }
+	    // 距离x1,y1 len距离
+
+	  }, {
+	    key: 'getPointAtLen',
+	    value: function getPointAtLen(x1, y1, x2, y2, len, radio) {
+	      var length = this.getDistance(x1, y1, x2, y2);
+	      var x = x1 - (x1 - x2) / length * len * radio;
+	      var y = y1 - (y1 - y2) / length * len * radio;
+	      return {
+	        x: x,
+	        y: y
+	      };
+	    }
+	  }, {
+	    key: 'getX',
+	    value: function getX(elem) {
+	      return elem.node.getAttribute('cx');
+	    }
+	  }, {
+	    key: 'getY',
+	    value: function getY(elem) {
+	      return elem.node.getAttribute('cy');
+	    }
+	  }, {
+	    key: 'setPosition',
+	    value: function setPosition(elem, x, y) {
+	      elem.node.setAttribute('cx', x);
+	      elem.node.setAttribute('cy', y);
+	    }
+	  }, {
+	    key: 'setLinePosition',
+	    value: function setLinePosition(elem, x, y, vx, vy) {
+	      elem.node.setAttribute(x, vx);
+	      elem.node.setAttribute(y, vy);
+	    }
+	  }, {
+	    key: 'setArcPath',
+	    value: function setArcPath(elem, path) {
+	      elem.node.setAttribute('d', path);
+	    }
+	  }, {
+	    key: 'setText',
+	    value: function setText(elem, text, x, y) {
+	      elem.node.setAttribute('text', text);
+	      if (!x) return;
+	      elem.node.setAttribute('x', x);
+	      elem.node.setAttribute('y', y);
+	    }
+	  }, {
+	    key: 'preventCoincide',
+	    value: function preventCoincide(pointArr) {
+	      var degArr = [];
+	      var degDelta = 4.5;
+	      for (var k = 0; k < pointArr.length; k++) {
+	        degArr.push(Snap.angle(this.getX(pointArr[k]), this.getY(pointArr[k]), CIRCLE_X, CIRCLE_Y));
+	      }
+	      for (var i = degArr.length - 1; i >= 0; i--) {
+	        for (var j = i - 1; j >= 0; j--) {
+	          var delta = degArr[i] - degArr[j];
+	          var delta2 = 360 - Math.abs(degArr[i] - degArr[j]);
+	          if (Math.abs(delta) < degDelta || delta2 < degDelta) {
+	            if (degArr[i] < 180) {
+	              if (delta > 0) {
+	                this.pointsText[i].node.innerHTML += this.pointsText[j].node.innerHTML;
+	                this.pointsText[j].node.innerHTML = '';
+	              } else {
+	                this.pointsText[i].node.innerHTML = this.pointsText[j].node.innerHTML + this.pointsText[i].node.innerHTML;
+	                this.pointsText[j].node.innerHTML = '';
+	              }
+	            } else {
+	              if (delta < 0) {
+	                this.pointsText[i].node.innerHTML += this.pointsText[j].node.innerHTML;
+	                this.pointsText[j].node.innerHTML = '';
+	              } else {
+	                this.pointsText[i].node.innerHTML = this.pointsText[j].node.innerHTML + this.pointsText[i].node.innerHTML;
+	                this.pointsText[j].node.innerHTML = '';
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+	  }]);
+
+	  return BaseAngle;
+	}();
+
+	exports.default = BaseAngle;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Created by Administrator on 2017/7/3 0003.
+	 */
+
+	var utils = function () {
+	  function utils() {
+	    _classCallCheck(this, utils);
+	  }
+
+	  _createClass(utils, null, [{
+	    key: "reportMouseCoordinates",
+
+	    /* 屏幕坐标转为svg坐标*/
+	    value: function reportMouseCoordinates(svgElement, pageX, pageY, svgChild) {
+	      var point = svgElement.createSVGPoint();
+	      point.x = pageX;
+	      point.y = pageY;
+	      point = _coordinateTransform(point, svgChild);
+	      return point;
+	    }
+	  }, {
+	    key: "throttle",
+	    value: function throttle(fn, delay, immediate, debounce) {
+	      var curr = +new Date(),
+	          //当前事件
+	      last_call = 0,
+	          last_exec = 0,
+	          timer = null,
+	          diff,
+	          //时间差
+	      context,
+	          //上下文
+	      args,
+	          exec = function exec() {
+	        last_exec = curr;
+	        fn.apply(context, args);
+	      };
+	      return function () {
+	        curr = +new Date();
+	        context = this, args = arguments, diff = curr - (debounce ? last_call : last_exec) - delay;
+	        clearTimeout(timer);
+	        if (debounce) {
+	          if (immediate) {
+	            timer = setTimeout(exec, delay);
+	          } else if (diff >= 0) {
+	            exec();
+	          }
+	        } else {
+	          if (diff >= 0) {
+	            exec();
+	          } else if (immediate) {
+	            timer = setTimeout(exec, -diff);
+	          }
+	        }
+	        last_call = curr;
+	      };
+	    }
+	  }]);
+
+	  return utils;
+	}();
+
+	/* 获取svg对象的转化矩阵并求其逆矩阵*/
+
+
+	exports.default = utils;
+	function _coordinateTransform(screenPoint, someSvgObject) {
+	  var CTM = someSvgObject.getScreenCTM();
+	  return screenPoint.matrixTransform(CTM.inverse());
+	}
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _BaseAngle2 = __webpack_require__(5);
+
+	var _BaseAngle3 = _interopRequireDefault(_BaseAngle2);
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _utils = __webpack_require__(6);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Administrator on 2017/7/3 0003.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var CIRCLE_X = _config2.default.svgWidth / 2;
+	var CIRCLE_Y = _config2.default.svgHeight / 2;
+	var CIRCLE_RADIUS = _config2.default.circleRadius;
+	var POINT_RADIUS = _config2.default.pointRadius;
+	var DEG_ARC_ATTR = _config2.default.DEG_ARC_ATTR;
+	var DEG_ARC_ATTR_GREEN = _config2.default.DEG_ARC_ATTR_GREEN;
+	var TEXT_MIDDLE_ATTR = _config2.default.TEXT_MIDDLE_ATTR;
+	var CIRCLE_ARC_ATTR = _config2.default.CIRCLE_ARC_ATTR;
+	var WRAP_CIRCLE_ARC_ATTR = _config2.default.WRAP_CIRCLE_ARC_ATTR;
+	var RANGE_ARC_ATTR = _config2.default.RANGE_ARC_ATTR;
+	var LINE_ATTR = _config2.default.LINE_ATTR;
+	var LINE_ATTR_GREEN = _config2.default.LINE_ATTR_GREEN;
+
+	var PatternB = function (_BaseAngle) {
+	  _inherits(PatternB, _BaseAngle);
+
+	  function PatternB(pointA, pointB, pointC, pointC2, centralPoint, panel) {
+	    _classCallCheck(this, PatternB);
+
+	    var _this = _possibleConstructorReturn(this, (PatternB.__proto__ || Object.getPrototypeOf(PatternB)).call(this));
+
+	    _this.pointA = pointA;
+	    _this.pointB = pointB;
+	    _this.pointC = pointC;
+	    _this.pointC2 = pointC2;
+	    _this.centralPoint = centralPoint;
+	    _this.panel = panel;
+	    return _this;
+	  }
+
+	  _createClass(PatternB, [{
+	    key: 'init',
+	    value: function init($view, model) {
+	      this.$view = $view;
+	      this.model = model;
+	      this.svgDom = this.$view.find('svg')[0];
+	      this.svg = Snap(this.svgDom);
+	      this.paper = this.svg.paper;
+	      this.decimal = 0;
+	      this.pointA.data('name', 'A');
+	      this.pointB.data('name', 'B');
+	      this.pointC.data('name', 'C');
+	      this.pointC2.data('name', 'C2');
+	      var deg1 = Snap.angle(this.getX(this.pointC), this.getY(this.pointC), CIRCLE_X, CIRCLE_Y);
+	      var deg2 = Snap.angle(this.getX(this.pointC2), this.getY(this.pointC2), CIRCLE_X, CIRCLE_Y);
+	      this.range = [0, deg1, deg2, 360];
+	      this.panel.unmouseup();
+	      this.panel.untouchend();
+	      this.$svg = this.$view.find('.circle_svg');
+	      this.judgeDis = this.getDistance(this.getX(this.pointC), this.getY(this.pointC), this.getX(this.pointC2), this.getY(this.pointC2));
+	      this.forceRedrawWrap = _utils2.default.throttle(this.forceRedraw, 20);
+	    }
+	  }, {
+	    key: 'initView',
+	    value: function initView() {
+	      this.outerDegArc = this.paper.path().attr(DEG_ARC_ATTR).attr(DEG_ARC_ATTR_GREEN);
+	      this.outerDegArc2 = this.paper.path().attr(DEG_ARC_ATTR);
+	      this.circleArc = this.paper.path().attr(CIRCLE_ARC_ATTR).addClass('circle_arc');
+	      this.wrapCircleArc = this.paper.path().attr(WRAP_CIRCLE_ARC_ATTR).addClass('wrap_circle_arc');
+	      this.textA = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'A' }).addClass('letter_txt');
+	      this.textB = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'B' }).addClass('letter_txt');
+	      this.textC = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'D' }).addClass('letter_txt');
+	      this.textC2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'C' }).addClass('letter_txt');
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textC2];
+	      var x1 = this.getX(this.pointC);
+	      var y1 = this.getY(this.pointC);
+	      var x2 = this.getX(this.pointC2);
+	      var y2 = this.getY(this.pointC2);
+	      var path = 'M{x1} {y1}A{r} {r} 0 1 0 {x2} {y2}';
+	      this.rangeArc = this.paper.path(Snap.format(path, {
+	        x1: x1, y1: y1, x2: x2, y2: y2, r: CIRCLE_RADIUS
+	      })).attr(RANGE_ARC_ATTR);
+	      this.rangeArc.node.style.display = 'none';
+	      this.lineCA = this.drawLine(this.pointC, this.pointA).attr(LINE_ATTR_GREEN);
+	      this.lineC2A = this.drawLine(this.pointC2, this.pointA).attr(LINE_ATTR);
+	      this.lineCB = this.drawLine(this.pointC, this.pointB).attr(LINE_ATTR_GREEN);
+	      this.lineC2B = this.drawLine(this.pointC2, this.pointB).attr(LINE_ATTR);
+	      this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({
+	        text: 'O',
+	        x: CIRCLE_X + CIRCLE_RADIUS * 0.14,
+	        y: CIRCLE_Y - CIRCLE_RADIUS * 0.09
+	      }).addClass('letter_txt');
+	      this.outerDegText = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.outerDegText2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.judgeArcDirection();
+	      this.drawCircleArc();
+	      this.drawDegArc(this.pointA, this.pointB, this.pointC);
+	      this.drawDegArc(this.pointA, this.pointB, this.pointC2);
+	      this.drawPointText(['A', 'B', 'C', 'C2']);
+	      this.bindDom();
+	      this.sortLayout();
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointC2]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointC2]);
+	    }
+	  }, {
+	    key: 'sortLayout',
+	    value: function sortLayout() {
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.outerDegText2);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointC2);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	    }
+	  }, {
+	    key: 'bindDom',
+	    value: function bindDom() {
+	      var that = this;
+	      var pointArr = [that.pointA, that.pointB];
+	      pointArr.forEach(function (elem) {
+	        elem.mousedown(function (e) {
+	          that.pointMousedown(e, this);
+	        });
+	        elem.touchstart(function (e) {
+	          e.preventDefault();
+	          resetHover();
+	          that.panel.untouchmove();
+	          that.pointMousedown(e.touches[0], this);
+	        });
+	        elem.mouseover(function () {
+	          this.addClass('hover');
+	        });
+	        elem.mouseout(function () {
+	          this.removeClass('hover');
+	        });
+	      });
+	      this.wrapCircleArc.mousedown(function (e) {
+	        that.arcMouseDown(e);
+	      });
+	      this.wrapCircleArc.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.panel.untouchmove();
+	        that.arcMouseDown(e.touches[0]);
+	      });
+	      this.wrapCircleArc.mouseover(function () {
+	        that.circleArc.addClass('hover');
+	      });
+	      this.wrapCircleArc.mouseout(function () {
+	        that.circleArc.removeClass('hover');
+	      });
+	      this.panel.mouseup(function () {
+	        that.mouseUp();
+	      });
+	      this.panel.touchend(function () {
+	        that.mouseUp();
+	      });
+
+	      function resetHover() {
+	        pointArr.forEach(function (elem) {
+	          elem.removeClass('hover');
+	        });
+	        that.circleArc.removeClass('hover');
+	      }
+	    }
+	  }, {
+	    key: 'pointMousedown',
+	    value: function pointMousedown(e, followPoint) {
+	      var that = this;
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var startX = point.x;
+	      var startY = point.y;
+	      var startX2 = parseFloat(this.getX(followPoint));
+	      var startY2 = parseFloat(this.getY(followPoint));
+	      if (followPoint.data('name') === 'A') {
+	        that.svg.append(that.pointA);
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textC2];
+	        that.resetPointText();
+	        that.pointsText = [that.textB, that.textC, that.textC2];
+	        that.preventCoincide([that.pointB, that.pointC, that.pointC2]);
+	      } else {
+	        that.svg.append(that.pointB);
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textC2];
+	        that.resetPointText();
+	        that.pointsText = [that.textA, that.textC, that.textC2];
+	        that.preventCoincide([that.pointA, that.pointC, that.pointC2]);
+	      }
+	      followPoint.addClass('active');
+	      this.rangeArc.node.style.display = 'block';
+	      this.panel.mousemove(function (e) {
+	        pointMousemove(e);
+	      });
+	      this.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        pointMousemove(touch);
+	      });
+
+	      function pointMousemove(e) {
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        var x = x2 - startX + startX2;
+	        var y = y2 - startY + startY2;
+	        if (x < 0 || x > _config2.default.svgWidth || y < 0 || y > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        if (that.beforeMove(axisX, axisY, followPoint)) {
+	          that.preventJump = false;
+	          if (followPoint.data('name') === 'A') {
+	            that.setPosition(that.pointA, axisX, axisY);
+	            that.followPointAB(that.pointA, that.lineCA);
+	            that.followPointAB(that.pointA, that.lineC2A);
+	          } else if (followPoint.data('name') === 'B') {
+	            that.setPosition(that.pointB, axisX, axisY);
+	            that.followPointAB(that.pointB, that.lineCB);
+	            that.followPointAB(that.pointB, that.lineC2B);
+	          }
+	        } else {
+	          if (that.range.length == 4) {
+	            var deg = Snap.angle(that.getX(followPoint), that.getY(followPoint), CIRCLE_X, CIRCLE_Y);
+	            var delta1 = Math.abs(deg - that.range[1]);
+	            var delta2 = Math.abs(deg - that.range[2]);
+	            if (delta1 < delta2) {
+	              that.setPosition(followPoint, Math.cos(Snap.rad(that.range[1] - 0.1)) * CIRCLE_RADIUS + CIRCLE_X, Math.sin(Snap.rad(that.range[1] - 0.1)) * CIRCLE_RADIUS + CIRCLE_Y);
+	            } else {
+	              that.setPosition(followPoint, Math.cos(Snap.rad(that.range[2] + 0.1)) * CIRCLE_RADIUS + CIRCLE_X, Math.sin(Snap.rad(that.range[2] + 0.1)) * CIRCLE_RADIUS + CIRCLE_Y);
+	            }
+	          }
+	          if (followPoint.data('name') === 'A') {
+	            that.followPointAB(that.pointA, that.lineCA);
+	            that.followPointAB(that.pointA, that.lineC2A);
+	          } else if (followPoint.data('name') === 'B') {
+	            that.followPointAB(that.pointB, that.lineCB);
+	            that.followPointAB(that.pointB, that.lineC2B);
+	          }
+	        }
+	        that.judgeArcDirection();
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC);
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC2);
+	        that.drawPointText([followPoint.data('name')]);
+	      }
+	    }
+	  }, {
+	    key: 'arcMouseDown',
+	    value: function arcMouseDown(e) {
+	      var that = this;
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var x1 = point.x;
+	      var y1 = point.y;
+	      var startX2 = parseFloat(that.getX(that.pointA));
+	      var startY2 = parseFloat(that.getY(that.pointA));
+	      var startX3 = parseFloat(that.getX(that.pointB));
+	      var startY3 = parseFloat(that.getY(that.pointB));
+	      that.pointsText = [that.textA, that.textB, that.textC, that.textC2];
+	      that.resetPointText();
+	      that.circleArc.addClass('active');
+	      that.rangeArc.insertBefore(that.circleArc);
+	      that.rangeArc.node.style.display = 'block';
+	      that.panel.mousemove(function (e) {
+	        arcMousemove(e);
+	      });
+	      that.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        arcMousemove(touch);
+	      });
+
+	      function arcMousemove(e) {
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        if (x2 < 0 || x2 > _config2.default.svgWidth || y2 < 0 || y2 > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x2, y2, x1, y1, CIRCLE_X, CIRCLE_Y);
+	        var angle1 = Snap.angle(startX2, startY2, CIRCLE_X, CIRCLE_Y);
+	        var angle2 = Snap.angle(startX3, startY3, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        var axisX2 = Math.cos(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY2 = Math.sin(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        if (that.beforeMove(axisX, axisY, that.pointA) && that.beforeMove(axisX2, axisY2, that.pointB)) {
+	          that.preventJump = false;
+	          that.setPosition(that.pointA, axisX, axisY);
+	          that.setPosition(that.pointB, axisX2, axisY2);
+	        } else {
+	          if (that.range.length == 4) {
+	            var degA = Snap.angle(that.getX(that.pointA), that.getY(that.pointA), CIRCLE_X, CIRCLE_Y);
+	            var degB = Snap.angle(that.getX(that.pointB), that.getY(that.pointB), CIRCLE_X, CIRCLE_Y);
+	            var degC1 = that.range[1];
+	            var degC2 = that.range[2];
+	            var delta1 = Math.abs(degC1 - degA);
+	            var delta2 = Math.abs(degC1 - degB);
+	            var delta3 = Math.abs(degC2 - degA);
+	            var delta4 = Math.abs(degC2 - degB);
+	            var min = Math.min(delta1, delta2, delta3, delta4);
+	            var ax = void 0,
+	                ay = void 0,
+	                bx = void 0,
+	                by = void 0,
+	                deg1 = void 0,
+	                deg2 = void 0;
+	            if (min == delta1) {
+	              deg1 = degC1 - 0.1;
+	              deg2 = degB + degC1 - degA - 0.1;
+	            } else if (min == delta2) {
+	              deg1 = degA + degC1 - degB - 0.1;
+	              deg2 = degC1 - 0.1;
+	            } else if (min == delta3) {
+	              deg1 = degC2 + 0.1;
+	              deg2 = degB + degC2 - degA + 0.1;
+	            } else {
+	              deg1 = degA + degC2 - degB + 0.1;
+	              deg2 = degC2 + 0.1;
+	            }
+	            ax = Math.cos(Snap.rad(deg1)) * CIRCLE_RADIUS + CIRCLE_X;
+	            ay = Math.sin(Snap.rad(deg1)) * CIRCLE_RADIUS + CIRCLE_Y;
+	            bx = Math.cos(Snap.rad(deg2)) * CIRCLE_RADIUS + CIRCLE_X;
+	            by = Math.sin(Snap.rad(deg2)) * CIRCLE_RADIUS + CIRCLE_Y;
+	            that.setPosition(that.pointA, ax, ay);
+	            that.setPosition(that.pointB, bx, by);
+	          } else {
+	            return;
+	          }
+	        }
+	        that.followPointAB(that.pointA, that.lineCA);
+	        that.followPointAB(that.pointA, that.lineC2A);
+	        that.followPointAB(that.pointB, that.lineCB);
+	        that.followPointAB(that.pointB, that.lineC2B);
+	        that.judgeArcDirection();
+	        that.drawCircleArc();
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC);
+	        that.drawDegArc(that.pointA, that.pointB, that.pointC2);
+	        that.drawPointText(['A', 'B']);
+	      }
+	    }
+	  }, {
+	    key: 'mouseUp',
+	    value: function mouseUp() {
+	      this.forceRedrawWrap();
+	      this.drawCircleArc();
+	      this.pointA.removeClass('active');
+	      this.pointB.removeClass('active');
+	      this.circleArc.insertBefore(this.rangeArc);
+	      this.rangeArc.node.style.display = 'none';
+	      this.circleArc.removeClass('active');
+	      this.panel.untouchmove();
+	      this.panel.unmousemove();
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textC2];
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointC2]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointC2]);
+	    }
+	  }, {
+	    key: 'followPointAB',
+	    value: function followPointAB(p, l) {
+	      var px = this.getX(p);
+	      var py = this.getY(p);
+	      this.setLinePosition(l, 'x2', 'y2', px, py);
+	    }
+	  }, {
+	    key: 'drawCircleArc',
+	    value: function drawCircleArc() {
+	      var circleArcPath = 'M{x1} {y1}A{r} {r} 0 {l} {c} {x2} {y2}';
+	      circleArcPath = Snap.format(circleArcPath, {
+	        x1: this.getX(this.pointA),
+	        y1: this.getY(this.pointA),
+	        r: CIRCLE_RADIUS,
+	        x2: this.getX(this.pointB),
+	        y2: this.getY(this.pointB)
+	      });
+	      if (!this.flag) {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 1 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 1 });
+	        }
+	      } else {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 0 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 0 });
+	        }
+	      }
+	      this.setArcPath(this.circleArc, circleArcPath);
+	      this.setArcPath(this.wrapCircleArc, circleArcPath);
+	    }
+	  }, {
+	    key: 'drawDegArc',
+	    value: function drawDegArc(a, b, c) {
+	      var ax = parseFloat(this.getX(a));
+	      var ay = parseFloat(this.getY(a));
+	      var bx = parseFloat(this.getX(b));
+	      var by = parseFloat(this.getY(b));
+	      var cx = parseFloat(this.getX(c));
+	      var cy = parseFloat(this.getY(c));
+	      var LenAC = this.getDistance(ax, ay, cx, cy);
+	      var LenBC = this.getDistance(bx, by, cx, cy);
+	      var subLenAC = LenAC * 0.2;
+	      var subLenBC = LenBC * 0.2;
+	      if (subLenAC <= 0.2 || subLenBC <= 0.2) {
+	        if (c.data('name') == 'C') {
+	          this.setArcPath(this.outerDegArc, '');
+	          this.setText(this.outerDegText, '');
+	          this.outerDegText.node.innerHTML = '';
+	        } else {
+	          this.setArcPath(this.outerDegArc2, '');
+	          this.setText(this.outerDegText2, '');
+	          this.outerDegText2.node.innerHTML = '';
+	        }
+	      } else {
+	        if (Math.min(subLenAC, subLenBC) < POINT_RADIUS * 1.3) {
+	          subLenAC = POINT_RADIUS * 1.3;
+	          subLenBC = POINT_RADIUS * 1.3;
+	          LenAC = subLenAC / 0.2;
+	          LenBC = subLenBC / 0.2;
+	        }
+	        var p1 = this.getPointAtLen(cx, cy, ax, ay, LenAC, 0.2);
+	        var p2 = this.getPointAtLen(cx, cy, bx, by, LenBC, 0.2);
+	        var arcPath = 'M{cx} {cy}L{x1} {y1}A {dis} {dis} 0 0 0 {x2} {y2}';
+	        if (subLenAC < subLenBC) {
+	          p2 = this.getPointAtLen(cx, cy, bx, by, LenAC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          }
+	        } else {
+	          p1 = this.getPointAtLen(cx, cy, ax, ay, LenBC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          }
+	        }
+	        var deg = this.getDeg(this.pointA, this.pointB, c);
+	        var text = void 0;
+	        var arc = void 0;
+	        var isAngle1 = true;
+	        if (c.data('name') == 'C') {
+	          text = this.outerDegText;
+	          arc = this.outerDegArc;
+	        } else {
+	          text = this.outerDegText2;
+	          arc = this.outerDegArc2;
+	          isAngle1 = false;
+	        }
+	        deg = deg.toFixed(this.decimal);
+	        var textPos = this.getPointAtLen(p1.x, p1.y, p2.x, p2.y, this.getDistance(p1.x, p1.y, p2.x, p2.y), 0.5);
+	        var angle = Snap.angle(textPos.x, textPos.y, cx, cy);
+	        textPos.x += Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS / 7.2;
+	        textPos.y += Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS / 7.2;
+	        if (this.getDistance(textPos.x, textPos.y, ax, ay) < POINT_RADIUS * 2) {
+	          if (isAngle1) {
+	            textPos.x = ax + POINT_RADIUS * 1.9;
+	          } else {
+	            textPos.x = ax - POINT_RADIUS * 1.9;
+	          }
+	          textPos.y += POINT_RADIUS * 1.55;
+	        }
+	        if (this.getDistance(textPos.x, textPos.y, bx, by) < POINT_RADIUS * 2) {
+	          if (isAngle1) {
+	            textPos.x = bx + POINT_RADIUS * 1.9;
+	          } else {
+	            textPos.x = bx - POINT_RADIUS * 1.9;
+	          }
+	          textPos.y += POINT_RADIUS * 1.55;
+	        }
+	        this.setText(text, deg + '°', textPos.x, textPos.y);
+	        text.node.innerHTML = deg + '°';
+	        if (deg == 90) {
+	          var x = p1.x + p2.x - cx;
+	          var y = p1.y + p2.y - cy;
+	          arcPath = 'M' + p1.x + ' ' + p1.y + 'L' + x + ' ' + y + 'L' + p2.x + ' ' + p2.y + 'L' + cx + ' ' + cy + 'Z';
+	        }
+	        this.setArcPath(arc, arcPath);
+	      }
+	    }
+	  }, {
+	    key: 'drawPointText',
+	    value: function drawPointText(changePoint) {
+	      var text = void 0,
+	          textx = void 0,
+	          texty = void 0,
+	          x = void 0,
+	          y = void 0,
+	          angle = void 0,
+	          point = void 0;
+	      for (var i = 0; i < changePoint.length; i++) {
+	        if (changePoint[i] == 'A') {
+	          point = this.pointA;
+	          text = this.textA;
+	        } else if (changePoint[i] == 'B') {
+	          point = this.pointB;
+	          text = this.textB;
+	        } else if (changePoint[i] == 'C') {
+	          point = this.pointC;
+	          text = this.textC;
+	        } else if (changePoint[i] == 'C2') {
+	          point = this.pointC2;
+	          text = this.textC2;
+	        }
+	        x = parseFloat(this.getX(point));
+	        y = parseFloat(this.getY(point));
+	        angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        textx = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS * 1.19 + CIRCLE_X;
+	        texty = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS * 1.19 + CIRCLE_Y;
+	        this.setText(text, changePoint[i], textx, texty);
+	      }
+	    }
+	  }, {
+	    key: 'resetPointText',
+	    value: function resetPointText() {
+	      for (var i = 0; i < this.pointsText.length; i++) {
+	        if (i == 0) {
+	          this.pointsText[i].node.innerHTML = 'A';
+	        } else if (i == 1) {
+	          this.pointsText[i].node.innerHTML = 'B';
+	        } else if (i == 2) {
+	          this.pointsText[i].node.innerHTML = 'D';
+	        } else {
+	          this.pointsText[i].node.innerHTML = 'C';
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'forceRedraw',
+	    value: function forceRedraw() {
+	      Math.abs(parseFloat(this.$svg.css('opacity')) - 0.99) < 0.0001 ? this.$svg.css('opacity', 1) : this.$svg.css('opacity', 0.99);
+	    }
+	  }]);
+
+	  return PatternB;
+	}(_BaseAngle3.default);
+
+	exports.default = PatternB;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _BaseAngle2 = __webpack_require__(5);
+
+	var _BaseAngle3 = _interopRequireDefault(_BaseAngle2);
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _utils = __webpack_require__(6);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by Administrator on 2017/7/3 0003.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+
+	var CIRCLE_X = _config2.default.svgWidth / 2;
+	var CIRCLE_Y = _config2.default.svgHeight / 2;
+	var CIRCLE_RADIUS = _config2.default.circleRadius;
+	var POINT_RADIUS = _config2.default.pointRadius;
+	var DEG_ARC_ATTR = _config2.default.DEG_ARC_ATTR;
+	var DEG_ARC_ATTR_GREEN = _config2.default.DEG_ARC_ATTR_GREEN;
+	var TEXT_MIDDLE_ATTR = _config2.default.TEXT_MIDDLE_ATTR;
+	var CIRCLE_ARC_ATTR = _config2.default.CIRCLE_ARC_ATTR;
+	var WRAP_CIRCLE_ARC_ATTR = _config2.default.WRAP_CIRCLE_ARC_ATTR;
+	var RANGE_ARC_ATTR = _config2.default.RANGE_ARC_ATTR;
+	var LINE_ATTR = _config2.default.LINE_ATTR;
+	var LINE_ATTR_GREEN = _config2.default.LINE_ATTR_GREEN;
+
+	var PatternC = function (_BaseAngle) {
+	  _inherits(PatternC, _BaseAngle);
+
+	  function PatternC(pointA, pointB, pointC, pointA2, pointB2, pointC2, centralPoint, panel) {
+	    _classCallCheck(this, PatternC);
+
+	    var _this = _possibleConstructorReturn(this, (PatternC.__proto__ || Object.getPrototypeOf(PatternC)).call(this));
+
+	    _this.pointA = pointA;
+	    _this.pointB = pointB;
+	    _this.pointC = pointC;
+	    _this.pointA2 = pointA2;
+	    _this.pointB2 = pointB2;
+	    _this.pointC2 = pointC2;
+	    _this.centralPoint = centralPoint;
+	    _this.panel = panel;
+	    return _this;
+	  }
+
+	  _createClass(PatternC, [{
+	    key: 'init',
+	    value: function init($view, model) {
+	      this.$view = $view;
+	      this.model = model;
+	      this.svgDom = this.$view.find('svg')[0];
+	      this.svg = Snap(this.svgDom);
+	      this.paper = this.svg.paper;
+	      this.decimal = 0;
+	      this.pointA.data('name', 'A');
+	      this.pointB.data('name', 'B');
+	      this.pointC.data('name', 'C');
+	      this.pointA2.data('name', 'A2');
+	      this.pointB2.data('name', 'B2');
+	      this.pointC2.data('name', 'C2');
+	      var deg1 = Snap.angle(this.getX(this.pointC), this.getY(this.pointC), CIRCLE_X, CIRCLE_Y);
+	      var deg2 = Snap.angle(this.getX(this.pointC2), this.getY(this.pointC2), CIRCLE_X, CIRCLE_Y);
+	      this.initRange = [0, deg1, deg2, 360];
+	      this.range = [0, deg1, deg2, 360];
+	      this.relateRange = [0, 360];
+	      this.originalPoint = this.pointC2;
+	      this.degC1 = deg1;
+	      this.degC2 = deg2;
+	      this.panel.unmouseup();
+	      this.panel.untouchend();
+	      this.$svg = this.$view.find('.circle_svg');
+	      this.judgeDis = this.getDistance(this.getX(this.pointC), this.getY(this.pointC), this.getX(this.pointC2), this.getY(this.pointC2));
+	      this.isMouseDown = false;
+	      this.isArcMousedown = false;
+	      this.operateArcNum = 1;
+	      this.forceRedrawWrap = _utils2.default.throttle(this.forceRedraw, 20);
+	    }
+	  }, {
+	    key: 'initView',
+	    value: function initView() {
+	      this.outerDegArc = this.paper.path().attr(DEG_ARC_ATTR);
+	      this.outerDegArc2 = this.paper.path().attr(DEG_ARC_ATTR_GREEN);
+	      this.circleArc = this.paper.path().attr(CIRCLE_ARC_ATTR).addClass('circle_arc');
+	      this.wrapCircleArc = this.paper.path().attr(WRAP_CIRCLE_ARC_ATTR).addClass('wrap_circle_arc');
+	      this.circleArc2 = this.paper.path().attr(CIRCLE_ARC_ATTR).addClass('circle_arc');
+	      this.wrapCircleArc2 = this.paper.path().attr(WRAP_CIRCLE_ARC_ATTR).addClass('wrap_circle_arc');
+	      this.textA = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'A' }).addClass('letter_txt');
+	      this.textB = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'B' }).addClass('letter_txt');
+	      this.textC = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': 'C' }).addClass('letter_txt');
+	      this.textA2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': "A'" }).addClass('letter_txt');
+	      this.textB2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': "B'" }).addClass('letter_txt');
+	      this.textC2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({ 'text': "C'" }).addClass('letter_txt');
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textA2, this.textB2, this.textC2];
+	      this.rangeArc = this.paper.path().attr(RANGE_ARC_ATTR);
+	      this.lineCA = this.drawLine(this.pointC, this.pointA).attr(LINE_ATTR);
+	      this.lineCB = this.drawLine(this.pointC, this.pointB).attr(LINE_ATTR);
+	      this.lineC2A2 = this.drawLine(this.pointC2, this.pointA2).attr(LINE_ATTR_GREEN);
+	      this.lineC2B2 = this.drawLine(this.pointC2, this.pointB2).attr(LINE_ATTR_GREEN);
+	      this.paper.text().attr(TEXT_MIDDLE_ATTR).attr({
+	        text: 'O',
+	        x: CIRCLE_X + CIRCLE_RADIUS * 0.14,
+	        y: CIRCLE_Y - CIRCLE_RADIUS * 0.09
+	      }).addClass('letter_txt');
+	      this.outerDegText = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.outerDegText2 = this.paper.text().attr(TEXT_MIDDLE_ATTR).addClass('angle_txt');
+	      this.judgeArcDirection();
+	      this.drawCircleArc(1);
+	      this.drawCircleArc(2);
+	      this.drawDegArc(1);
+	      this.drawDegArc(2);
+	      this.drawPointText(['A', 'B', 'C', 'A2', 'B2', 'C2']);
+	      this.bindDom();
+	      this.svg.append(this.centralPoint);
+	      this.sortLayout();
+	      this.sortLayout2();
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointA2, this.pointB2, this.pointC2]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointA2, this.pointB2, this.pointC2]);
+	    }
+	  }, {
+	    key: 'sortLayout',
+	    value: function sortLayout() {
+	      this.svg.append(this.circleArc2);
+	      this.svg.append(this.wrapCircleArc2);
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.outerDegText2);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.pointC2);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointA2);
+	      this.svg.append(this.pointB2);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	    }
+	  }, {
+	    key: 'sortLayout2',
+	    value: function sortLayout2() {
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.circleArc2);
+	      this.svg.append(this.wrapCircleArc2);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.outerDegText2);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointC2);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	      this.svg.append(this.pointA2);
+	      this.svg.append(this.pointB2);
+	    }
+	  }, {
+	    key: 'arcDownSortLayout1',
+	    value: function arcDownSortLayout1() {
+	      this.svg.append(this.circleArc2);
+	      this.svg.append(this.wrapCircleArc2);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.outerDegText2);
+	      this.svg.append(this.pointC2);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointA2);
+	      this.svg.append(this.pointB2);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	    }
+	  }, {
+	    key: 'arcDownSortLayout2',
+	    value: function arcDownSortLayout2() {
+	      this.svg.append(this.circleArc);
+	      this.svg.append(this.wrapCircleArc);
+	      this.svg.append(this.rangeArc);
+	      this.svg.append(this.circleArc2);
+	      this.svg.append(this.wrapCircleArc2);
+	      this.svg.append(this.outerDegText);
+	      this.svg.append(this.outerDegText2);
+	      this.svg.append(this.pointC);
+	      this.svg.append(this.pointC2);
+	      this.svg.append(this.pointA);
+	      this.svg.append(this.pointB);
+	      this.svg.append(this.pointA2);
+	      this.svg.append(this.pointB2);
+	    }
+	  }, {
+	    key: 'bindDom',
+	    value: function bindDom() {
+	      var that = this;
+	      var pointArr = Snap([that.pointA, that.pointB, that.pointA2, that.pointB2]);
+	      this.pointA.mousedown(function (e) {
+	        that.sortLayout();
+	        that.range = that.setRange();
+	        that.relateRange = that.setRange2();
+	        that.pointMousedown(e, this);
+	      });
+	      this.pointA.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.sortLayout();
+	        that.range = that.setRange();
+	        that.relateRange = that.setRange2();
+	        that.panel.untouchmove();
+	        that.pointMousedown(e.touches[0], this);
+	      });
+	      this.pointB.mousedown(function (e) {
+	        that.sortLayout();
+	        that.range = that.setRange();
+	        that.relateRange = that.setRange2();
+	        that.pointMousedown(e, this);
+	      });
+	      this.pointB.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.sortLayout();
+	        that.range = that.setRange();
+	        that.relateRange = that.setRange2();
+	        that.panel.untouchmove();
+	        that.pointMousedown(e.touches[0], this);
+	      });
+	      this.wrapCircleArc.mousedown(function (e) {
+	        that.arcDownSortLayout1();
+	        that.range = that.initRange;
+	        that.arcMouseDown(e, 1);
+	      });
+	      this.wrapCircleArc.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.arcDownSortLayout1();
+	        that.range = that.initRange;
+	        that.panel.untouchmove();
+	        that.arcMouseDown(e.touches[0], 1);
+	      });
+	      this.pointA2.mousedown(function (e) {
+	        that.sortLayout2();
+	        that.range = that.setRange2();
+	        that.relateRange = that.setRange();
+	        that.pointMousedown(e, this);
+	      });
+	      this.pointA2.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.sortLayout2();
+	        that.range = that.setRange2();
+	        that.relateRange = that.setRange();
+	        that.panel.untouchmove();
+	        that.pointMousedown(e.touches[0], this);
+	      });
+	      this.pointB2.mousedown(function (e) {
+	        that.sortLayout2();
+	        that.range = that.setRange2();
+	        that.relateRange = that.setRange();
+	        that.pointMousedown(e, this);
+	      });
+	      this.pointB2.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.sortLayout2();
+	        that.range = that.setRange2();
+	        that.relateRange = that.setRange();
+	        that.panel.untouchmove();
+	        that.pointMousedown(e.touches[0], this);
+	      });
+	      pointArr.forEach(function (elem) {
+	        elem.mouseover(function () {
+	          this.addClass('hover');
+	        });
+	      });
+	      pointArr.forEach(function (elem) {
+	        elem.mouseout(function () {
+	          this.removeClass('hover');
+	        });
+	      });
+	      this.wrapCircleArc.mouseover(function () {
+	        if (!that.isMouseDown) {
+	          that.circleArc.addClass('hover');
+	        }
+	      });
+	      this.wrapCircleArc.mouseout(function () {
+	        that.circleArc.removeClass('hover');
+	      });
+	      this.wrapCircleArc2.mousedown(function (e) {
+	        that.arcDownSortLayout2();
+	        that.range = that.initRange;
+	        that.arcMouseDown(e, 2);
+	      });
+	      this.wrapCircleArc2.touchstart(function (e) {
+	        e.preventDefault();
+	        resetHover();
+	        that.arcDownSortLayout2();
+	        that.range = that.initRange;
+	        that.panel.untouchmove();
+	        that.arcMouseDown(e.touches[0], 2);
+	      });
+	      this.wrapCircleArc2.mouseover(function () {
+	        if (!that.isMouseDown) {
+	          that.circleArc2.addClass('hover');
+	        }
+	      });
+	      this.wrapCircleArc2.mouseout(function () {
+	        that.circleArc2.removeClass('hover');
+	      });
+	      this.panel.mouseup(function () {
+	        that.mouseUp();
+	      });
+	      this.panel.touchend(function () {
+	        that.mouseUp();
+	      });
+
+	      function resetHover() {
+	        pointArr.forEach(function (elem) {
+	          elem.removeClass('hover');
+	        });
+	        that.circleArc.removeClass('hover');
+	        that.circleArc2.removeClass('hover');
+	      }
+	    }
+	  }, {
+	    key: 'showRange',
+	    value: function showRange() {
+	      var l = void 0,
+	          x1 = void 0,
+	          y1 = void 0,
+	          x2 = void 0,
+	          y2 = void 0,
+	          path = void 0;
+	      if (this.range.length == 2) {
+	        if (this.range[1] - this.range[0] > 180) {
+	          l = 1;
+	        } else {
+	          l = 0;
+	        }
+	        x1 = Math.cos(Snap.rad(this.range[0])) * CIRCLE_RADIUS + CIRCLE_X;
+	        y1 = Math.sin(Snap.rad(this.range[0])) * CIRCLE_RADIUS + CIRCLE_Y;
+	        x2 = Math.cos(Snap.rad(this.range[1])) * CIRCLE_RADIUS + CIRCLE_X;
+	        y2 = Math.sin(Snap.rad(this.range[1])) * CIRCLE_RADIUS + CIRCLE_Y;
+	        path = 'M{x1} {y1}A{r} {r} 0 {l} 1 {x2} {y2}';
+	        path = Snap.format(path, { x1: x1, y1: y1, x2: x2, y2: y2, r: CIRCLE_RADIUS, l: l });
+	        this.setArcPath(this.rangeArc, path);
+	      } else {
+	        if (this.range[2] - this.range[1] > 180) {
+	          l = 0;
+	        } else {
+	          l = 1;
+	        }
+	        x1 = Math.cos(Snap.rad(this.range[2])) * CIRCLE_RADIUS + CIRCLE_X;
+	        y1 = Math.sin(Snap.rad(this.range[2])) * CIRCLE_RADIUS + CIRCLE_Y;
+	        x2 = Math.cos(Snap.rad(this.range[1])) * CIRCLE_RADIUS + CIRCLE_X;
+	        y2 = Math.sin(Snap.rad(this.range[1])) * CIRCLE_RADIUS + CIRCLE_Y;
+	        path = 'M{x1} {y1}A{r} {r} 0 {l} 1 {x2} {y2}';
+	        path = Snap.format(path, { x1: x1, y1: y1, x2: x2, y2: y2, r: CIRCLE_RADIUS, l: l });
+	        this.setArcPath(this.rangeArc, path);
+	      }
+	      this.rangeArc.node.style.display = 'block';
+	    }
+	  }, {
+	    key: 'pointMousedown',
+	    value: function pointMousedown(e, followPoint) {
+	      var that = this;
+	      followPoint.addClass('active');
+	      that.showRange();
+	      this.isMouseDown = true;
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var startX = point.x;
+	      var startY = point.y;
+	      var startX2 = parseFloat(this.getX(followPoint));
+	      var startY2 = parseFloat(this.getY(followPoint));
+	      var relatePoint = void 0,
+	          relateNum = void 0,
+	          relateText = void 0;
+	      if (followPoint.data('name') == 'A') {
+	        that.operateArcNum = 1;
+	        relateNum = 2;
+	        relateText = 'A2';
+	        relatePoint = that.pointA2;
+	        that.svg.append(that.pointA);
+	        handlerCoincideA();
+	      } else if (followPoint.data('name') == 'B') {
+	        that.operateArcNum = 1;
+	        relateNum = 2;
+	        relateText = 'B2';
+	        relatePoint = that.pointB2;
+	        that.svg.append(that.pointB);
+	        handlerCoincideB();
+	      } else if (followPoint.data('name') == 'A2') {
+	        that.operateArcNum = 2;
+	        relateNum = 1;
+	        relateText = 'A';
+	        relatePoint = that.pointA;
+	        that.svg.append(that.pointA2);
+	        handlerCoincideA();
+	      } else if (followPoint.data('name') == 'B2') {
+	        that.operateArcNum = 2;
+	        relateNum = 1;
+	        relateText = 'B';
+	        relatePoint = that.pointB;
+	        that.svg.append(that.pointB2);
+	        handlerCoincideB();
+	      }
+	      var relateAngle = Snap.angle(that.getX(relatePoint), that.getY(relatePoint), CIRCLE_X, CIRCLE_Y);
+	      this.panel.mousemove(function (e) {
+	        pointMousemove(e);
+	      });
+	      this.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        pointMousemove(touch);
+	      });
+
+	      function pointMousemove(e) {
+	        // 强制重新渲染，处理学生端字母引号问题
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        var x = x2 - startX + startX2;
+	        var y = y2 - startY + startY2;
+	        if (x < 0 || x > _config2.default.svgWidth || y < 0 || y > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        // 判断能否继续移动，能则移动，不能就处理边界问题
+	        if (that.beforeMove(axisX, axisY, followPoint)) {
+	          that.preventJump = false;
+	          var relateAngleDelta = Snap.angle(x, y, startX2, startY2, CIRCLE_X, CIRCLE_Y);
+	          var relateX = Math.cos(Snap.rad(relateAngle + relateAngleDelta)) * CIRCLE_RADIUS + CIRCLE_X;
+	          var relateY = Math.sin(Snap.rad(relateAngle + relateAngleDelta)) * CIRCLE_RADIUS + CIRCLE_Y;
+	          that.setPosition(relatePoint, relateX, relateY);
+	          that.judgeArcDirection();
+	          that.drawCircleArc(relateNum);
+	          that.drawDegArc(relateNum);
+	          if (followPoint.data('name') == 'A') {
+	            that.setPosition(that.pointA, axisX, axisY);
+	            that.followPointAB(that.pointA, that.lineCA);
+	            that.followPointAB(that.pointA2, that.lineC2A2);
+	          } else if (followPoint.data('name') === 'B') {
+	            that.setPosition(that.pointB, axisX, axisY);
+	            that.followPointAB(that.pointB, that.lineCB);
+	            that.followPointAB(that.pointB2, that.lineC2B2);
+	          } else if (followPoint.data('name') === 'A2') {
+	            that.setPosition(that.pointA2, axisX, axisY);
+	            that.followPointAB(that.pointA2, that.lineC2A2);
+	            that.followPointAB(that.pointA, that.lineCA);
+	          } else if (followPoint.data('name') === 'B2') {
+	            that.setPosition(that.pointB2, axisX, axisY);
+	            that.followPointAB(that.pointB2, that.lineC2B2);
+	            that.followPointAB(that.pointB, that.lineCB);
+	          }
+	        } else {
+	          // followPoint边界处理
+	          var deg = void 0,
+	              delta1 = void 0,
+	              delta2 = void 0,
+	              followDeg = void 0;
+	          deg = Snap.angle(that.getX(followPoint), that.getY(followPoint), CIRCLE_X, CIRCLE_Y);
+	          if (that.range.length == 4) {
+	            deg = deg > 270 ? deg - 360 : deg;
+	            delta1 = Math.abs(deg - that.range[1]);
+	            delta2 = Math.abs(deg - that.range[2] + 360);
+	            followDeg = delta1 < delta2 ? that.range[1] - 0.1 : that.range[2] + 0.1;
+	          } else {
+	            delta1 = Math.abs(deg - that.range[0]);
+	            delta2 = Math.abs(deg - that.range[1]);
+	            followDeg = delta1 < delta2 ? that.range[0] + 0.1 : that.range[1] - 0.1;
+	          }
+	          that.setPosition(followPoint, Math.cos(Snap.rad(followDeg)) * CIRCLE_RADIUS + CIRCLE_X, Math.sin(Snap.rad(followDeg)) * CIRCLE_RADIUS + CIRCLE_Y);
+	          // relatePoint边界处理
+	          var range1 = void 0,
+	              range2 = void 0,
+	              realetDeg = void 0;
+	          deg = Snap.angle(that.getX(relatePoint), that.getY(relatePoint), CIRCLE_X, CIRCLE_Y);
+	          deg = deg >= 270 ? deg - 360 : deg;
+	          if (that.relateRange.length == 4) {
+	            range1 = that.relateRange[1];
+	            range2 = that.relateRange[2];
+	            range1 = range1 >= that.degC2 ? range1 - 360 : range1;
+	            range2 = range2 >= that.degC2 ? range2 - 360 : range2;
+	            realetDeg = Math.abs(deg - range1) > Math.abs(deg - range2) ? that.relateRange[2] + 0.1 : that.relateRange[1] - 0.1;
+	          } else {
+	            range1 = that.relateRange[0];
+	            range2 = that.relateRange[1];
+	            range1 = range1 >= that.degC2 ? range1 - 360 : range1;
+	            range2 = range2 >= that.degC2 ? range2 - 360 : range2;
+	            realetDeg = Math.abs(deg - range1) > Math.abs(deg - range2) ? that.relateRange[1] - 0.1 : that.relateRange[0] + 0.1;
+	          }
+	          that.setPosition(relatePoint, Math.cos(Snap.rad(realetDeg)) * CIRCLE_RADIUS + CIRCLE_X, Math.sin(Snap.rad(realetDeg)) * CIRCLE_RADIUS + CIRCLE_Y);
+
+	          if (followPoint.data('name') === 'A') {
+	            that.followPointAB(that.pointA, that.lineCA);
+	            that.followPointAB(that.pointA2, that.lineC2A2);
+	          } else if (followPoint.data('name') === 'B') {
+	            that.followPointAB(that.pointB, that.lineCB);
+	            that.followPointAB(that.pointB2, that.lineC2B2);
+	          } else if (followPoint.data('name') === 'A2') {
+	            that.followPointAB(that.pointA2, that.lineC2A2);
+	            that.followPointAB(that.pointA, that.lineCA);
+	          } else if (followPoint.data('name') === 'B2') {
+	            that.followPointAB(that.pointB2, that.lineC2B2);
+	            that.followPointAB(that.pointB, that.lineCB);
+	          }
+	          that.drawCircleArc(relateNum);
+	          that.drawDegArc(relateNum);
+	        }
+	        that.judgeArcDirection();
+	        that.drawDegArc(that.operateArcNum);
+	        that.drawPointText([followPoint.data('name')]);
+	        that.drawPointText([relateText]);
+	        // 保证两个圆周角相等
+	        if (that.outerDegText.node.innerHTML && that.outerDegText2.node.innerHTML) {
+	          if (parseInt(that.outerDegText.node.innerHTML) != parseInt(that.outerDegText2.node.innerHTML)) {
+	            that.outerDegText.node.innerHTML = that.outerDegText2.node.innerHTML;
+	          }
+	        }
+	      }
+
+	      function handlerCoincideA() {
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textA2, that.textB2, that.textC2];
+	        that.resetPointText();
+	        if (that.textA2.node.innerHTML == "AA'") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	        } else if (that.textC2.node.innerHTML == "C'AA'" || that.textC2.node.innerHTML == "C'A'A") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textC2.node.innerHTML = "C'";
+	          that.textA2.node.innerHTML = "AA'";
+	        } else if (that.textA2.node.innerHTML == "AA'C" || that.textC2.node.innerHTML == "A'AC") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textC.node.innerHTML = "C'";
+	          that.textA.node.innerHTML = '';
+	          that.textA2.node.innerHTML = "AA'";
+	        } else if (that.textB2.node.innerHTML == "AA'BB'" || that.textB2.node.innerHTML == "BB'AA'") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textB2.node.innerHTML = "BB'";
+	          that.textA2.node.innerHTML = "AA'";
+	        } else {
+	          that.pointsText = [that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	        }
+	      }
+
+	      function handlerCoincideB() {
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textA2, that.textB2, that.textC2];
+	        that.resetPointText();
+	        if (that.textB2.node.innerHTML == "BB'") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	        } else if (that.textC2.node.innerHTML == "C'BB'" || that.textC2.node.innerHTML == "C'B'B") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textC2.node.innerHTML = "C'";
+	          that.textB2.node.innerHTML = "BB'";
+	        } else if (that.textB2.node.innerHTML == "BB'C" || that.textB2.node.innerHTML == "B'BC") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textC.node.innerHTML = "C'";
+	          that.textB.node.innerHTML = '';
+	          that.textB2.node.innerHTML = "BB'";
+	        } else if (that.textB2.node.innerHTML == "AA'BB'" || that.textB2.node.innerHTML == "BB'AA'") {
+	          that.pointsText = [that.textA, that.textA2, that.textB, that.textB2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointB, that.pointB2, that.pointC, that.pointC2]);
+	          that.textB2.node.innerHTML = "BB'";
+	          that.textA2.node.innerHTML = "AA'";
+	        } else {
+	          that.pointsText = [that.textA, that.textA2, that.textC, that.textC2];
+	          that.preventCoincide([that.pointA, that.pointA2, that.pointC, that.pointC2]);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'arcMouseDown',
+	    value: function arcMouseDown(e, num) {
+	      var that = this;
+	      that.showRange();
+	      this.isArcMousedown = true;
+	      var pointA = void 0,
+	          pointB = void 0,
+	          line1 = void 0,
+	          line2 = void 0,
+	          texts = void 0;
+	      that.operateArcNum = num;
+	      if (num == 1) {
+	        pointA = that.pointA;
+	        pointB = that.pointB;
+	        line1 = that.lineCA;
+	        line2 = that.lineCB;
+	        texts = ['A', 'B'];
+	        that.circleArc.addClass('active');
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textA2, that.textB2, that.textC2];
+	        that.resetPointText();
+	        that.pointsText = [that.textA2, that.textB2, that.textC, that.textC2];
+	        that.preventCoincide([that.pointA2, that.pointB2, that.pointC, that.pointC2]);
+	      } else {
+	        pointA = that.pointA2;
+	        pointB = that.pointB2;
+	        line1 = that.lineC2A2;
+	        line2 = that.lineC2B2;
+	        texts = ['A2', 'B2'];
+	        that.circleArc2.addClass('active');
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textA2, that.textB2, that.textC2];
+	        that.resetPointText();
+	        that.pointsText = [that.textA, that.textB, that.textC, that.textC2];
+	        that.preventCoincide([that.pointA, that.pointB, that.pointC, that.pointC2]);
+	      }
+	      var point = _utils2.default.reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var x1 = point.x;
+	      var y1 = point.y;
+	      var startX2 = parseFloat(that.getX(pointA));
+	      var startY2 = parseFloat(that.getY(pointA));
+	      var startX3 = parseFloat(that.getX(pointB));
+	      var startY3 = parseFloat(that.getY(pointB));
+	      that.panel.mousemove(function (e) {
+	        arcMousemove(e);
+	      });
+	      that.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        var touch = e.touches[0];
+	        arcMousemove(touch);
+	      });
+
+	      function arcMousemove(e) {
+	        // 强制重新渲染，处理学生端字母引号问题
+	        that.forceRedrawWrap();
+	        var point = _utils2.default.reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        if (x2 < 0 || x2 > _config2.default.svgWidth || y2 < 0 || y2 > _config2.default.svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        var angle = Snap.angle(x2, y2, x1, y1, CIRCLE_X, CIRCLE_Y);
+	        var angle1 = Snap.angle(startX2, startY2, CIRCLE_X, CIRCLE_Y);
+	        var angle2 = Snap.angle(startX3, startY3, CIRCLE_X, CIRCLE_Y);
+	        var axisX = Math.cos(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY = Math.sin(Snap.rad(angle1 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        var axisX2 = Math.cos(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_X;
+	        var axisY2 = Math.sin(Snap.rad(angle2 + angle)) * CIRCLE_RADIUS + CIRCLE_Y;
+	        // 判断能否继续移动，能则移动，不能就处理边界问题
+	        if (that.beforeMove(axisX, axisY, pointA) && that.beforeMove(axisX2, axisY2, pointB)) {
+	          that.preventJump = false;
+	          that.setPosition(pointA, axisX, axisY);
+	          that.setPosition(pointB, axisX2, axisY2);
+	        } else {
+	          if (that.range.length == 4) {
+	            var degA = Snap.angle(that.getX(pointA), that.getY(pointA), CIRCLE_X, CIRCLE_Y);
+	            var degB = Snap.angle(that.getX(pointB), that.getY(pointB), CIRCLE_X, CIRCLE_Y);
+	            var degC1 = that.range[1];
+	            var degC2 = that.range[2];
+	            var delta1 = Math.abs(degC1 - degA);
+	            var delta2 = Math.abs(degC1 - degB);
+	            var delta3 = Math.abs(degC2 - degA);
+	            var delta4 = Math.abs(degC2 - degB);
+	            var min = Math.min(delta1, delta2, delta3, delta4);
+	            var ax = void 0,
+	                ay = void 0,
+	                bx = void 0,
+	                by = void 0,
+	                deg1 = void 0,
+	                deg2 = void 0;
+	            if (min == delta1) {
+	              deg1 = degC1 - 0.1;
+	              deg2 = degB + degC1 - degA - 0.1;
+	            } else if (min == delta2) {
+	              deg1 = degA + degC1 - degB - 0.1;
+	              deg2 = degC1 - 0.1;
+	            } else if (min == delta3) {
+	              deg1 = degC2 + 0.1;
+	              deg2 = degB + degC2 - degA + 0.1;
+	            } else {
+	              deg1 = degA + degC2 - degB + 0.1;
+	              deg2 = degC2 + 0.1;
+	            }
+	            ax = Math.cos(Snap.rad(deg1)) * CIRCLE_RADIUS + CIRCLE_X;
+	            ay = Math.sin(Snap.rad(deg1)) * CIRCLE_RADIUS + CIRCLE_Y;
+	            bx = Math.cos(Snap.rad(deg2)) * CIRCLE_RADIUS + CIRCLE_X;
+	            by = Math.sin(Snap.rad(deg2)) * CIRCLE_RADIUS + CIRCLE_Y;
+	            that.setPosition(pointA, ax, ay);
+	            that.setPosition(pointB, bx, by);
+	          } else {
+	            return;
+	          }
+	        }
+	        that.followPointAB(pointA, line1);
+	        that.followPointAB(pointB, line2);
+	        that.judgeArcDirection();
+	        that.drawCircleArc(num);
+	        that.drawDegArc(num);
+	        that.drawPointText(texts);
+	        // 保证两个圆周角相等
+	        if (that.outerDegText.node.innerHTML && that.outerDegText2.node.innerHTML) {
+	          if (parseInt(that.outerDegText.node.innerHTML) != parseInt(that.outerDegText2.node.innerHTML)) {
+	            that.outerDegText.node.innerHTML = that.outerDegText2.node.innerHTML;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'mouseUp',
+	    value: function mouseUp() {
+	      this.forceRedrawWrap();
+	      this.drawCircleArc(this.operateArcNum);
+	      this.pointA.removeClass('active');
+	      this.pointB.removeClass('active');
+	      this.pointA2.removeClass('active');
+	      this.pointB2.removeClass('active');
+	      this.rangeArc.node.style.display = 'none';
+	      this.circleArc.removeClass('active');
+	      this.circleArc2.removeClass('active');
+	      this.panel.untouchmove();
+	      this.panel.unmousemove();
+	      this.arcSnap();
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textA2, this.textB2, this.textC2];
+	      this.isMouseDown = false;
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointA2, this.pointB2, this.pointC2]);
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointA2, this.pointB2, this.pointC2]);
+	      this.isArcMousedown = false;
+	    }
+	  }, {
+	    key: 'arcSnap',
+	    value: function arcSnap() {
+	      if (this.isArcMousedown) {
+	        var orix = this.getX(this.originalPoint);
+	        var oriy = this.getY(this.originalPoint);
+	        var ax = this.getX(this.pointA);
+	        var ay = this.getY(this.pointA);
+	        var a2x = this.getX(this.pointA2);
+	        var a2y = this.getY(this.pointA2);
+	        var degA = Snap.angle(ax, ay, orix, oriy);
+	        var degA2 = Snap.angle(a2x, a2y, orix, oriy);
+	        if (Math.abs(degA - degA2) < 2) {
+	          if (this.operateArcNum == 1) {
+	            this.setArcPath(this.circleArc, this.circleArc2.attr('path'));
+	            this.setArcPath(this.wrapCircleArc, this.wrapCircleArc2.attr('path'));
+	            this.setPosition(this.pointA, a2x, a2y);
+	            this.setPosition(this.pointB, this.getX(this.pointB2), this.getY(this.pointB2));
+	            this.followPointAB(this.pointA, this.lineCA);
+	            this.followPointAB(this.pointB, this.lineCB);
+	            this.drawDegArc(this.operateArcNum);
+	          } else {
+	            this.setArcPath(this.circleArc2, this.circleArc.attr('path'));
+	            this.setArcPath(this.wrapCircleArc2, this.wrapCircleArc.attr('path'));
+	            this.setPosition(this.pointA2, ax, ay);
+	            this.setPosition(this.pointB2, this.getX(this.pointB), this.getY(this.pointB));
+	            this.followPointAB(this.pointA2, this.lineC2A2);
+	            this.followPointAB(this.pointB2, this.lineC2B2);
+	            this.drawDegArc(this.operateArcNum);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'followPointAB',
+	    value: function followPointAB(p, l) {
+	      var px = this.getX(p);
+	      var py = this.getY(p);
+	      this.setLinePosition(l, 'x2', 'y2', px, py);
+	    }
+	  }, {
+	    key: 'drawCircleArc',
+	    value: function drawCircleArc(n) {
+	      var a = void 0,
+	          b = void 0;
+	      if (n == 1) {
+	        a = this.pointA;
+	        b = this.pointB;
+	      } else {
+	        a = this.pointA2;
+	        b = this.pointB2;
+	      }
+	      var circleArcPath = 'M{x1} {y1}A{r} {r} 0 {l} {c} {x2} {y2}';
+	      circleArcPath = Snap.format(circleArcPath, {
+	        x1: this.getX(a),
+	        y1: this.getY(a),
+	        r: CIRCLE_RADIUS,
+	        x2: this.getX(b),
+	        y2: this.getY(b)
+	      });
+	      if (!this.flag) {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 1 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 1 });
+	        }
+	      } else {
+	        if (this.getDeg(this.pointA, this.pointB, this.pointC) > 90) {
+	          circleArcPath = Snap.format(circleArcPath, { l: 1, c: 0 });
+	        } else {
+	          circleArcPath = Snap.format(circleArcPath, { l: 0, c: 0 });
+	        }
+	      }
+	      if (a.data('name') == 'A') {
+	        this.setArcPath(this.circleArc, circleArcPath);
+	        this.setArcPath(this.wrapCircleArc, circleArcPath);
+	      } else {
+	        this.setArcPath(this.circleArc2, circleArcPath);
+	        this.setArcPath(this.wrapCircleArc2, circleArcPath);
+	      }
+	    }
+	  }, {
+	    key: 'drawDegArc',
+	    value: function drawDegArc(n) {
+	      var a = void 0,
+	          b = void 0,
+	          c = void 0;
+	      if (n == 1) {
+	        a = this.pointA;
+	        b = this.pointB;
+	        c = this.pointC;
+	      } else {
+	        a = this.pointA2;
+	        b = this.pointB2;
+	        c = this.pointC2;
+	      }
+	      var ax = parseFloat(this.getX(a));
+	      var ay = parseFloat(this.getY(a));
+	      var bx = parseFloat(this.getX(b));
+	      var by = parseFloat(this.getY(b));
+	      var cx = parseFloat(this.getX(c));
+	      var cy = parseFloat(this.getY(c));
+	      var LenAC = this.getDistance(ax, ay, cx, cy);
+	      var LenBC = this.getDistance(bx, by, cx, cy);
+	      var subLenAC = LenAC * 0.2;
+	      var subLenBC = LenBC * 0.2;
+	      if (subLenAC <= 0.2 || subLenBC <= 0.2) {
+	        if (c.data('name') == 'C') {
+	          this.setArcPath(this.outerDegArc, '');
+	          this.setText(this.outerDegText, '');
+	          this.outerDegText.node.innerHTML = '';
+	        } else {
+	          this.setArcPath(this.outerDegArc2, '');
+	          this.setText(this.outerDegText2, '');
+	          this.outerDegText2.node.innerHTML = '';
+	        }
+	      } else {
+	        if (Math.min(subLenAC, subLenBC) < POINT_RADIUS * 1.3) {
+	          subLenAC = POINT_RADIUS * 1.3;
+	          subLenBC = POINT_RADIUS * 1.3;
+	          LenAC = subLenAC / 0.2;
+	          LenBC = subLenBC / 0.2;
+	        }
+	        var p1 = this.getPointAtLen(cx, cy, ax, ay, LenAC, 0.2);
+	        var p2 = this.getPointAtLen(cx, cy, bx, by, LenBC, 0.2);
+	        var arcPath = 'M{cx} {cy}L{x1} {y1}A {dis} {dis} 0 0 0 {x2} {y2}';
+	        if (subLenAC < subLenBC) {
+	          p2 = this.getPointAtLen(cx, cy, bx, by, LenAC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenAC, cx: cx, cy: cy
+	            });
+	          }
+	        } else {
+	          p1 = this.getPointAtLen(cx, cy, ax, ay, LenBC, 0.2);
+	          if (this.flag) {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          } else {
+	            arcPath = Snap.format(arcPath, {
+	              x1: p2.x, y1: p2.y, x2: p1.x, y2: p1.y, dis: subLenBC, cx: cx, cy: cy
+	            });
+	          }
+	        }
+	        var deg = this.getDeg(this.pointA, this.pointB, c);
+	        var text = void 0;
+	        var arc = void 0;
+	        var isAngle1 = true;
+	        if (c.data('name') == 'C') {
+	          text = this.outerDegText;
+	          arc = this.outerDegArc;
+	        } else {
+	          text = this.outerDegText2;
+	          arc = this.outerDegArc2;
+	          isAngle1 = false;
+	        }
+	        deg = deg.toFixed(this.decimal);
+	        var textPos = this.getPointAtLen(p1.x, p1.y, p2.x, p2.y, this.getDistance(p1.x, p1.y, p2.x, p2.y), 0.5);
+	        var angle = Snap.angle(textPos.x, textPos.y, cx, cy);
+	        textPos.x += Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS / 7.2;
+	        textPos.y += Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS / 7.2;
+	        if (this.getDistance(textPos.x, textPos.y, ax, ay) < POINT_RADIUS * 2) {
+	          if (isAngle1) {
+	            textPos.x = ax + POINT_RADIUS * 1.9;
+	          } else {
+	            textPos.x = ax - POINT_RADIUS * 1.9;
+	          }
+	          textPos.y += POINT_RADIUS * 1.55;
+	        }
+	        if (this.getDistance(textPos.x, textPos.y, bx, by) < POINT_RADIUS * 2) {
+	          if (isAngle1) {
+	            textPos.x = bx + POINT_RADIUS * 1.9;
+	          } else {
+	            textPos.x = bx - POINT_RADIUS * 1.9;
+	          }
+	          textPos.y += POINT_RADIUS * 1.55;
+	        }
+	        this.setText(text, deg + '°', textPos.x, textPos.y);
+	        text.node.innerHTML = deg + '°';
+	        if (deg == 90) {
+	          var x = p1.x + p2.x - cx;
+	          var y = p1.y + p2.y - cy;
+	          arcPath = 'M' + p1.x + ' ' + p1.y + 'L' + x + ' ' + y + 'L' + p2.x + ' ' + p2.y + 'L' + cx + ' ' + cy + 'Z';
+	        }
+	        this.setArcPath(arc, arcPath);
+	      }
+	    }
+	  }, {
+	    key: 'setRange',
+	    value: function setRange() {
+	      var range = void 0,
+	          originalDeg = void 0;
+	      var ax = this.getX(this.pointA);
+	      var ay = this.getY(this.pointA);
+	      var a2x = this.getX(this.pointA2);
+	      var a2y = this.getY(this.pointA2);
+	      var orix = this.getX(this.originalPoint);
+	      var oriy = this.getY(this.originalPoint);
+	      var degAC1 = Snap.angle(ax, ay, orix, oriy);
+	      var degAC2 = Snap.angle(a2x, a2y, orix, oriy);
+	      var degA1 = Snap.angle(ax, ay, CIRCLE_X, CIRCLE_Y);
+	      var degA2 = Snap.angle(a2x, a2y, CIRCLE_X, CIRCLE_Y);
+	      degA1 = degA1 > this.degC2 ? degA1 - 360 : degA1;
+	      degA2 = degA2 > this.degC2 ? degA2 - 360 : degA2;
+	      if (degAC1 > degAC2) {
+	        originalDeg = degA1 - (degA2 - this.degC2 + 360);
+	        if (originalDeg < 0) {
+	          range = [0, this.degC1, originalDeg + 360, 360];
+	        } else {
+	          range = [originalDeg, this.degC1];
+	        }
+	      } else {
+	        originalDeg = this.degC1 - degA2 + degA1;
+	        if (originalDeg < 0) {
+	          range = [this.degC2, 360 + originalDeg];
+	        } else {
+	          range = [0, this.degC1 - degA2 + degA1, this.degC2, 360];
+	        }
+	      }
+	      return range;
+	    }
+	  }, {
+	    key: 'setRange2',
+	    value: function setRange2() {
+	      var range = void 0,
+	          originalDeg = void 0;
+	      var ax = this.getX(this.pointA);
+	      var ay = this.getY(this.pointA);
+	      var a2x = this.getX(this.pointA2);
+	      var a2y = this.getY(this.pointA2);
+	      var orix = this.getX(this.originalPoint);
+	      var oriy = this.getY(this.originalPoint);
+	      var degAC1 = Snap.angle(ax, ay, orix, oriy);
+	      var degAC2 = Snap.angle(a2x, a2y, orix, oriy);
+	      var degA1 = Snap.angle(ax, ay, CIRCLE_X, CIRCLE_Y);
+	      var degA2 = Snap.angle(a2x, a2y, CIRCLE_X, CIRCLE_Y);
+	      degA1 = degA1 > this.degC2 ? degA1 - 360 : degA1;
+	      degA2 = degA2 > this.degC2 ? degA2 - 360 : degA2;
+	      if (degAC1 > degAC2) {
+	        originalDeg = this.degC1 - degA1 + degA2;
+	        if (originalDeg < 0) {
+	          range = [this.degC2, 360 + originalDeg];
+	        } else {
+	          range = [0, this.degC1 - degA1 + degA2, this.degC2, 360];
+	        }
+	      } else {
+	        originalDeg = degA2 - (degA1 - this.degC2 + 360);
+	        if (originalDeg < 0) {
+	          range = [0, this.degC1, originalDeg + 360, 360];
+	        } else {
+	          range = [originalDeg, this.degC1];
+	        }
+	      }
+	      return range;
+	    }
+	  }, {
+	    key: 'drawPointText',
+	    value: function drawPointText(changePoint) {
+	      var text = void 0,
+	          textx = void 0,
+	          texty = void 0,
+	          x = void 0,
+	          y = void 0,
+	          angle = void 0,
+	          point = void 0;
+	      for (var i = 0; i < changePoint.length; i++) {
+	        if (changePoint[i] == 'A') {
+	          point = this.pointA;
+	          text = this.textA;
+	        } else if (changePoint[i] == 'B') {
+	          point = this.pointB;
+	          text = this.textB;
+	        } else if (changePoint[i] == 'C') {
+	          point = this.pointC;
+	          text = this.textC;
+	        } else if (changePoint[i] == 'A2') {
+	          point = this.pointA2;
+	          text = this.textA2;
+	        } else if (changePoint[i] == 'B2') {
+	          point = this.pointB2;
+	          text = this.textB2;
+	        } else if (changePoint[i] == 'C2') {
+	          point = this.pointC2;
+	          text = this.textC2;
+	        }
+	        x = parseFloat(this.getX(point));
+	        y = parseFloat(this.getY(point));
+	        angle = Snap.angle(x, y, CIRCLE_X, CIRCLE_Y);
+	        var ratio = 1.17;
+	        if (angle >= 135 && angle <= 230) {
+	          ratio = 1.21;
+	        }
+	        if (angle > 300 && angle < 360) {
+	          ratio = 1.19;
+	        }
+	        textx = Math.cos(Snap.rad(angle)) * CIRCLE_RADIUS * ratio + CIRCLE_X;
+	        texty = Math.sin(Snap.rad(angle)) * CIRCLE_RADIUS * ratio + CIRCLE_Y;
+	        this.setText(text, changePoint[i], textx, texty);
+	      }
+	    }
+	  }, {
+	    key: 'resetPointText',
+	    value: function resetPointText() {
+	      for (var i = 0; i < this.pointsText.length; i++) {
+	        if (i == 0) {
+	          this.pointsText[i].node.innerHTML = 'A';
+	        } else if (i == 1) {
+	          this.pointsText[i].node.innerHTML = 'B';
+	        } else if (i == 2) {
+	          this.pointsText[i].node.innerHTML = 'C';
+	        } else if (i == 3) {
+	          this.pointsText[i].node.innerHTML = "A'";
+	        } else if (i == 4) {
+	          this.pointsText[i].node.innerHTML = "B'";
+	        } else {
+	          this.pointsText[i].node.innerHTML = "C'";
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'forceRedraw',
+	    value: function forceRedraw() {
+	      Math.abs(parseFloat(this.$svg.css('opacity')) - 0.99) < 0.0001 ? this.$svg.css('opacity', 1) : this.$svg.css('opacity', 0.99);
+	    }
+	  }]);
+
+	  return PatternC;
+	}(_BaseAngle3.default);
+
+	exports.default = PatternC;
+
+/***/ })
+/******/ ]);]]></presenter><resources><file src="./resources/CircumferentialAngle.json"/><file src="./resources/wood/images/aside_icon.png"/></resources></addon>

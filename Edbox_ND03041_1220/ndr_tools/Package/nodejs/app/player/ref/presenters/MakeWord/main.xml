@@ -1,0 +1,222 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MakeWord'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonMakeWord_create = function () {
+        return new BasicLauncher({
+            "defaultConfig": 'simple',
+            "dataParse": function (model, pageModels) {
+                var self = this;
+                var data = model.question_url || {};
+                data.questionType = 'makeword';
+                var currentStudent = ClassroomUtils.getCurrentUserInfo();
+                if (!currentStudent) {
+                    currentStudent = {
+                        studentId: ''
+                    }
+                }
+                data.initData = {
+                    'userID': currentStudent.studentId,
+                    'lessonId': self._getExamId(),
+                    'nativeId': 'makeword_pad',
+                    'isWhole': true,
+                    'isSinglePage': 1,
+                    'autoSaveState': true,
+                    'questionType': data.questionType,
+                    'background': data.writer_background || {},
+                    'limitPage': 1,
+                    'wordsNum': 0
+                };
+                // 设置倒计时
+                var timer = data.timer || {};
+                data['timer_type'] = timer.timer_type;
+                data['time_limit'] = Number((timer.time_minute || 0) * 60) + Number((timer.time_second || 0));
+                return data;
+            },
+            'presenterParserMapping': {
+                'answerFlowController': function (config, model) {
+                    config.value.linkQuestionId = model.id;
+                }
+            },
+            'getEnvironment': function () {
+                var envName;
+                var sys = this._getQueryString('sys');
+
+                if (this.isPPTShell || (sys != null && sys.toLowerCase() === 'icrstatisticsplatform')) {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.PPTShell;
+                } else {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.Pad;
+                }
+                return envName;
+            },
+            'getComponent': function (model) {
+                return [
+                    { presenter: 'MakeWordPanel', autowired: ['title', 'content'], renderTo: 'panel' },
+                    { presenter: 'InteractionTimer', value: { 'view_type': 'new_timer' }, renderTo: 'timer' },
+                    { presenter: 'InteractionSubmitButton', value: { 'can_modify': 'true', 'linkQuestionType': 'write', 'linkQuestionId': model.id, 'view_type': 'new_em_button' }, renderTo: 'submit', applyTo: ['pad'] }
+                ];
+            },
+            'getController': function (model) {
+                return [
+                    { presenter: 'MakeWordController', autowired: ['id', 'questionType', 'initData'] },
+                    //手写题启动器 require d类统计
+                    { presenter: "AnswerClassStatis", applyTo: ['ppt'] },
+                    //课堂数据数据保存控制器
+                    {
+                        presenter: 'ClassroomStatusController',
+                        value: {
+                            'questionId': model.id
+                        }
+                    }
+                ]
+            },
+            'getLayout': function (model) {
+                return { presenter: 'WriteLayout', value: { 'questionType': 'makeword' } };
+            },
+            '_getExamId': function () {
+                var examId = '';
+                this.$addEventListener('TaskInfoCallback', PresenterEventType.IC_PLAYER_EVENT, function (eventData) {
+                    if (eventData && eventData.value) {
+                        examId = eventData.value.examId;
+                    }
+                });
+                this.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, { 'item': 'exam', 'type': 'query' });
+                return examId;
+            },
+            '_getQueryString': function (name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            },
+            'presenterParserMapping': {
+                'interactionStateRecoverFilter': function (module) {
+                    module.applyTo = ['pad'];
+                },
+                'objectiveStatController': function (module) {
+                    module.applyTo = []
+                }
+            }
+        });
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/bg_com_hand_write.png' />
+<file src='./resources/bg_com_hd_write.png' />
+<file src='./resources/bot_border_bg3.png' />
+<file src='./resources/btn_ove_normal.png' />
+<file src='./resources/btn_ove_press.png' />
+<file src='./resources/btn_wb_hover.png' />
+<file src='./resources/btn_wb_normal.png' />
+<file src='./resources/btn_wb_press.png' />
+<file src='./resources/compop_dec1.png' />
+<file src='./resources/compop_dec2.png' />
+<file src='./resources/icon_clear_s.png' />
+<file src='./resources/icon_clear_s_p.png' />
+<file src='./resources/icon_hand_off.png' />
+<file src='./resources/icon_hand_on.png' />
+<file src='./resources/icon_hand_write_off.png' />
+<file src='./resources/icon_hand_write_on.png' />
+<file src='./resources/icon_pen_s.png' />
+<file src='./resources/icon_pen_s_p.png' />
+<file src='./resources/icon_phr_title.png' />
+<file src='./resources/pen_brushwork/pen1_bold_black.png' />
+<file src='./resources/pen_brushwork/pen1_bold_grey.png' />
+<file src='./resources/pen_brushwork/pen1_bold_red.png' />
+<file src='./resources/pen_brushwork/pen1_nor_black.png' />
+<file src='./resources/pen_brushwork/pen1_nor_grey.png' />
+<file src='./resources/pen_brushwork/pen1_nor_red.png' />
+<file src='./resources/pen_brushwork/pen1_thin_black.png' />
+<file src='./resources/pen_brushwork/pen1_thin_grey.png' />
+<file src='./resources/pen_brushwork/pen1_thin_red.png' />
+<file src='./resources/pen_brushwork/pen2_bold_black.png' />
+<file src='./resources/pen_brushwork/pen2_bold_grey.png' />
+<file src='./resources/pen_brushwork/pen2_bold_red.png' />
+<file src='./resources/pen_brushwork/pen2_nor_black.png' />
+<file src='./resources/pen_brushwork/pen2_nor_grey.png' />
+<file src='./resources/pen_brushwork/pen2_nor_red.png' />
+<file src='./resources/pen_brushwork/pen2_thin_black.png' />
+<file src='./resources/pen_brushwork/pen2_thin_grey.png' />
+<file src='./resources/pen_brushwork/pen2_thin_red.png' />
+<file src='./resources/pen_brushwork/pen3_bold_black.png' />
+<file src='./resources/pen_brushwork/pen3_bold_grey.png' />
+<file src='./resources/pen_brushwork/pen3_bold_red.png' />
+<file src='./resources/pen_brushwork/pen3_nor_black.png' />
+<file src='./resources/pen_brushwork/pen3_nor_grey.png' />
+<file src='./resources/pen_brushwork/pen3_nor_red.png' />
+<file src='./resources/pen_brushwork/pen3_thin_black.png' />
+<file src='./resources/pen_brushwork/pen3_thin_grey.png' />
+<file src='./resources/pen_brushwork/pen3_thin_red.png' />
+<file src='./resources/phrase_bot.png' />
+<file src='./resources/phrase_btnbg.jpg' />
+<file src='./resources/phrase_btnbg_press.jpg' />
+<file src='./resources/phrase_main.png' />
+<file src='./resources/phrase_time.png' />
+<file src='./resources/phrase_top.png' />
+<file src='./resources/phrase_toptool.jpg' />
+<file src='./resources/phrase_toptool_after.png' />
+<file src='./resources/phrase_toptool_hover.jpg' />
+<file src='./resources/phrase_toptool_press.jpg' />
+<file src='./resources/popup/btn_normal.png' />
+<file src='./resources/popup/btn_press.png' />
+<file src='./resources/popup/icon_right.png' />
+<file src='./resources/popup/icon_wrong.png' />
+<file src='./resources/popup/pop_bg.png' />
+<file src='./resources/popup/pop_dec1.png' />
+<file src='./resources/popup/pop_dec2.png' />
+<file src='./resources/scroll_bg.png' />
+<file src='./resources/scroll_thumb_bg.png' />
+<file src='./resources/scroll_thumb_t.png' />
+<file src='./resources/toolbar_pen3_p_bg.png' />
+<file src='./resources/toolbar_pen_1.png' />
+<file src='./resources/toolbar_pen_1_press.png' />
+<file src='./resources/toolbar_pen_2.png' />
+<file src='./resources/toolbar_pen_2_press.png' />
+<file src='./resources/toolbar_pen_3.png' />
+<file src='./resources/toolbar_pen_3_press.png' />
+<file src='./resources/toolbar_rubber_1.png' />
+<file src='./resources/toolbar_rubber_1_off.png' />
+<file src='./resources/toolbar_rubber_2.png' />
+<file src='./resources/toolbar_rubber_2_off.png' />
+<file src='./resources/toolbar_tool_on.png' />
+<file src='./resources/toolbar_weight_m.png' />
+<file src='./resources/toolbar_weight_s.png' />
+<file src='./resources/toolbar_weight_w.png' />
+<file src='./resources/tool_bar_bg_rb.png' />
+<file src='./resources/tool_s_r_on.png' />
+<file src='./resources/tuikai.png' />
+
+
+</resources>
+
+</addon>

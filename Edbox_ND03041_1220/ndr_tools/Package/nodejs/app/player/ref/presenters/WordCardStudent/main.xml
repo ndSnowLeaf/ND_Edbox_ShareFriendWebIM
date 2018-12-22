@@ -1,0 +1,959 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WordCardStudent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="AlamedaRequire" version="0.3.2" />
+    <javaScript  name="ChineseWordTracing" version="1.0.3" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="wordcard_practice"><div class="bh_exercise"><div class="simutate"><div class="pinyinwrap"><p class="pinyin"><em class="word" data-bind="text:pinyin"></em></p></div><div class="wordwrap_large"></div></div><div class="write"><ul class="clearfix"><li class="wordwrap_mid"><canvas width="13.20833em" height="13.20833em" data-index="first" class="free_board">您的浏览器不支持canvas</canvas></li><li class="wordwrap_mid"><canvas width="13.20833em" height="13.20833em" data-index="second" class="free_board">您的浏览器不支持canvas</canvas></li><li class="wordwrap_mid"><canvas width="13.20833em" height="13.20833em" data-index="third" class="free_board">您的浏览器不支持canvas</canvas></li><li class="wordwrap_mid"><canvas width="13.20833em" height="13.20833em" data-index="fourth" class="free_board">您的浏览器不支持canvas</canvas></li></ul></div></div><div class="wordcard_btmtool clearfix"><ul class="write_tool_list clearfix"><li class="write_tool brush on"><i class="write_tool_icon icon_hb"></i> <i class="uedc_preload_img_wordcard_01"></i> <em class="word">画笔</em></li><li class="write_tool eraser"><i class="write_tool_icon icon_xpc"></i> <i class="uedc_preload_img_wordcard_02"></i> <em class="word">橡皮擦</em></li></ul><ul class="simutate_tool_list"><li class="btn_common btn_guide"><em class="word">关闭引导</em></li><li class="btn_common btn_redo"><em class="word">重写一遍</em></li></ul></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+
+    /**
+     *
+     * @type 以下是学生端功能部分
+     */
+
+    var CONST_NAME = {
+            SHOW_GUIDE:'显示引导',
+            CLOSE_GUIDE:'关闭引导'
+    };
+
+    /**
+     * presenter
+     */
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "WordCardStudent",
+            type: "presenterComponent",
+            subtype: "interactionQuestion"
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        service: Class.extend({
+            $init: function (parent) {
+                this.parent = parent;
+            },
+            changeCard:function(data){
+                var $def = $.Deferred(),
+                    self = this,
+                    parent = self.parent,
+                    wordData = $.extend(true,{},data);
+
+                //$.getJSON('presenters/WordCardSolution/WordCardStudent/resources/word.json',function(data){
+                //    console.log(data);
+                //    self.parent.setLeftWord(data);
+                //    $def.resolve();
+                //});
+
+                //重置
+                parent._reset();
+
+                parent.identify = wordData.identify;
+                parent._setLeftWord(wordData.cardData);
+
+                //解绑事件
+                parent._unbindEvent();
+                //绑定事件
+                parent._bindEvent();
+                //unlock,变为可操作状态
+                this.unlockQuestion();
+
+                $def.resolve();
+
+                return $def;
+            },
+            setPosition:function(){
+
+            },
+            //作答态接口
+            //获取生字卡的唯一标识
+            getIdentify:function(){
+                return this.parent.identify;
+            },
+            //获取作答结果
+            getResult:function(){
+                var self = this,
+                    $deferred = $.Deferred(),
+                    traceProgress = this.parent.ChineseWord.getTraceProgress(),
+                    freeWords = this.parent.util.freeBoardsCtr.freeWords,
+                    hasDrawed = this.parent.util.hasDrawed || this.parent.ChineseWord.hasDrawed(),
+                    hasDrawPath = false,
+                    curStep = traceProgress.curStep,
+                    totalSteps = traceProgress.totalSteps,
+                    result = {
+                        "questionId":self.parent.identify,
+                        "answerState":'NO_ANSWER',
+                        "answer":{
+                            "answer_result":true,
+                            "correct_response":[],
+                            "user_response":[]
+                        }
+                    },
+                    $practice = this.parent.$view.find('.wordcard_practice');
+                    screenshotParam = {
+                        "left":$practice.offset().left,
+                        "top":$practice.offset().top,
+                        "width":$practice.outerWidth(),
+                        "height":$practice.find('.wordcard_btmtool').offset().top - $practice.offset().top,
+                        "outputWidth":0,
+                        "outputHeight":250
+                    };
+
+
+                //判断自由书写部分是否有轨迹保存
+                //for(var key in freeWords){
+                //    if(freeWords[key].length !== 0){
+                //        hasDrawPath = true;
+                //        break;
+                //    }
+                //}
+
+                if(hasDrawed){
+                    result.answerState = curStep >= totalSteps ? 'COMPLETE' : 'NO_COMPLETE';
+                    result.answer['answer_result'] = curStep >= totalSteps ? true : false;
+                }
+
+                //调用截图
+                if(typeof ClassroomUtils !== 'undefined' && typeof  ClassroomUtils.screenShot === 'function'){
+                    ClassroomUtils.screenShot({
+                                "left":screenshotParam.left,
+                                 "top":screenshotParam.top,
+                               "width":screenshotParam.width,
+                              "height":screenshotParam.height,
+                         "outputWidth":parseInt(screenshotParam.width * (screenshotParam.outputHeight / screenshotParam.height)),
+                        "outputHeight":screenshotParam.outputHeight
+                    }).done(function(url){
+                        console.log('截图url:',url);
+
+                        //截图完成
+                        if(url !== null){
+                            result.answer['user_response'][0] = url;
+                            $deferred.resolve(result);
+                        }
+                    }).fail(function(reason){
+                        console.log("errorMsg:" + reason);
+                    });
+                }else{
+                    $deferred.resolve(result);
+                }
+
+                return $deferred;
+            },
+            //获取详细作答结果
+            getResultDetail:function(){
+                var leftImage = this.parent.ChineseWord.getBase64Image(),
+                    rightImages = this.parent._getBase64Images();
+
+                return leftImage.concat(rightImages);
+            },
+            //不允许操作
+            lockQuestion:function(){
+                var ChineseWord = this.parent.ChineseWord;
+
+                this.parent.util.isLock = true;
+                ChineseWord && ChineseWord.allowDraw(false);
+            },
+            //允许操作
+            unlockQuestion: function () {
+                var ChineseWord = this.parent.ChineseWord;
+
+                this.parent.util.isLock = false;
+                ChineseWord && ChineseWord.allowDraw(true);
+            },
+            //退出本题时调用
+            finishQuestion:function(){
+                //this.parent._exitQuestion();
+            },
+            //重置本题
+            resetQuestion:function(param){
+                if(param.trigger === 'ExitQuestion'){
+                    this.parent._reset();
+                }else if(param.trigger === 'ReAnswer'){
+                    this.parent._reAnswer();
+                }
+            },
+            //判断点击的点是否在自己的view里
+            isPointInDom:function(event){
+                var parent = this.parent,
+                    dom = parent.$view[0];
+
+                return isInDom(dom,event);
+            }
+        }),
+        getService: function() {
+            var self = this;
+
+            //return require(['WordCardStuService'],function(service){
+            //    self._service_ = new service(self);
+            //});
+
+            if(!self['_service_']){
+                self['_service_'] = new self.service(self);
+            }
+
+            return self['_service_'];
+
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var self = this;
+
+            self._initPresenter(view,model);
+
+
+            //var $deferred = $.Deferred(),
+            //    self = this;
+            //
+            //self._getDomClickUtil().then(function(){
+            //    //保证引入domClickUtil后再初始化
+            //    self._initPresenter(view,model);
+            //    self._bindEvent();
+            //    $deferred.resolve();
+            //});
+            //
+            //return $deferred;
+        },
+        pageShow: function() {
+            this._bindEvent();
+        },
+        pageLeave: function() {
+            this._unbindEvent();
+        },
+        destroy: function() {
+            this._exitQuestion();
+        },
+        /****以下开始为Presenter的私有方法*****/
+        //初始化presenter
+        _initPresenter:function(view,model){
+            var self = this,
+                data = {
+                    "pinyin":''
+                },
+                util = {};
+
+            //当前生字对象
+            self.ChineseWord = null;
+            //一些dom元素的保存
+            self.$view = $(view);
+            //渲染生字的容器
+            util = {
+                hasDrawed: false,//判断是否操作过
+                isLock:false,//是否允许操作，true 不允许 false允许
+                elements:{
+                    $wordContainer:self.$view.find('.wordwrap_large'),//左侧生字容器
+                    $guideBtn:self.$view.find('.btn_guide'),//左侧生字容器
+                    $redoBtn:self.$view.find('.btn_redo'),//重写一遍按钮
+                    $freeBoards:self.$view.find('.free_board'),
+                    $eraser:self.$view.find('.eraser'),//橡皮擦
+                    $brush:self.$view.find('.brush')
+                },
+                freeBoardsCtr:{
+                    mouseDown:false,
+                    curCanvas:'',
+                    curIndex:'',
+                    freeWords:{
+                        'first':[],
+                        'second':[],
+                        'third':[],
+                        'fourth':[]
+                    },
+                    tempPath:[],//记录写字路径
+                    checkDistance:6.5,//擦除检测长度阀值
+                    last:null,
+                    lineWidth:13,
+                    clearRule:'last',//笔画清除规则，last表示清除最后一笔，其他默认清除点击到的笔画
+                    strokeStyle:'rgb(51,51,51)',
+                    isEraser:false,
+                    globalCompositeOperation:'source-over'
+                },
+                longPressCtr:{
+                    isLongPress:false,//是否长按
+                    pressDuration:1000,//长按时长,毫秒
+                    pressedTime:0,//已经按下的时间
+                    radius:3,//检测长按的半径
+                    timer:null,//长按计时器
+                    pos:{}//第一次按下时的坐标
+                }
+            };
+
+            //把util合并到self.util
+            $.extend(true,self.util,util);
+
+            self.util.elements.$freeBoards.each(function(){
+                $(this).attr('width',$(this).parent().width());
+                $(this).attr('height',$(this).parent().height());
+            });
+            //数据绑定
+            this.viewModel = this._vmRender(data,view);
+        },
+        //require domClickUtil.js
+        _getDomClickUtil:function(){
+            var self = this;
+
+            return require(['domClickUtil'],function(util){
+                self._domClickUtil = util;
+            });
+        },
+        //退出本题
+        _exitQuestion:function(){
+            this.ChineseWord = null;
+            this.$view = null;
+            this.util = null;
+            this.viewModel = null;
+        },
+        //事件绑定
+        _bindEvent: function() {
+            var self = this,
+                util = self.util,
+                elements = util.elements,
+                freeWordCtr = self.util.freeBoardsCtr,
+                freeWords = freeWordCtr.freeWords,
+                canSubmit = false,
+                ChineseWord;
+
+            //整个view上有操作，判断是否可提交
+           self.$view.on('mouseup touchend',function(){
+
+               if(util.isLock) return;
+
+               freeWordCtr.mouseDown = false;
+
+                for(var key in freeWords){
+                    if(freeWords[key].length !== 0){
+                        canSubmit = true;
+                        break;
+                    }
+                }
+
+               if(self.ChineseWord.getTraceProgress().curStep > 0){
+                   canSubmit = true;
+               }
+
+                //题目作答状态改变，按钮变为可提交
+                self.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {canSubmit: canSubmit});
+            });
+
+
+            //开启和关闭引导按钮事件绑定
+            elements.$guideBtn.on('click',function(e){
+
+                if(util.isLock) return;
+
+                ChineseWord = self.ChineseWord;
+
+                if(typeof ChineseWord.showGuideState !== 'boolean') return;
+
+                var state = !ChineseWord.showGuideState;
+
+                ChineseWord.showGuideState = state;
+                ChineseWord.showGuide(state);
+                elements.$guideBtn.find('.word').text(state === true ? CONST_NAME.CLOSE_GUIDE : CONST_NAME.SHOW_GUIDE);
+            });
+
+            //重写一遍
+            elements.$redoBtn.on('click',function(e){
+                if(util.isLock) return;
+
+                //self.ChineseWord.getBase64Image();//测试base64
+                //console.log('freeBoards:',self._getBase64Images());
+                self.ChineseWord.reset();
+                self.ChineseWord.allowDraw(true);
+            });
+
+            //自由书写canvas事件绑定
+            elements.$freeBoards.on('mousedown touchstart',function(e){
+
+                if(util.isLock) return;
+
+                util.hasDrawed = true;
+
+                self._startEvent(e,self);
+            });
+            elements.$freeBoards.on('mousemove touchmove',function(e){
+
+                if(util.isLock) return;
+
+                self._moveEvent(e,self);
+            });
+            elements.$freeBoards.on('mouseup touchend mouseleave touchleave',function(e){
+
+                if(util.isLock) return;
+
+                self._endEvent(e,self);
+            });
+
+            //画笔点击
+            elements.$brush.on('click',function(){
+                if(util.isLock) return;
+
+                freeWordCtr.isEraser = false;
+                $(this).addClass('on');
+                elements.$eraser.removeClass('on');
+            });
+
+            //橡皮擦点击
+            elements.$eraser.on('click',function(){
+                if(util.isLock) return;
+
+                freeWordCtr.isEraser = true;
+                $(this).addClass('on');
+                elements.$brush.removeClass('on');
+            });
+        },
+        //事件解绑
+        _unbindEvent: function() {
+            var self = this,
+                util = self.util,
+                elements = util.elements;
+
+            //开启和关闭引导按钮事件绑定
+            elements.$guideBtn.off('click');
+
+            //重写一遍
+            elements.$redoBtn.off('click');
+
+            //自由书写canvas事件绑定
+            elements.$freeBoards.off('mousedown touchstart mousemove touchmove mouseup touchend');
+
+            //画笔点击
+            elements.$brush.off('click');
+
+            //橡皮擦点击
+            elements.$eraser.off('click');
+        },
+        //左侧生字显示
+        _setLeftWord:function(word){
+            this.word = word;
+
+            //显示拼音
+            this.viewModel.pinyin(word.pinyin);
+
+            //清空容器
+            this.util.elements.$wordContainer.empty();
+
+            //新增实例
+            this.ChineseWord = new ChineseWordTracing({
+                'mode':'draw',
+                'word':word,
+                'renderTo':this.util.elements.$wordContainer[0]
+            });
+        },
+        //右侧自由书写事件,开始书写
+        _startEvent:function(e,parent){
+            if(e.type === 'touchstart'){
+                e.preventDefault();
+            }
+
+            var self = parent,
+                canvas = e.target,
+                ctx = canvas.getContext('2d'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                freeWords = freeBoardsCtr.freeWords,
+                longPressCtr = self.util.longPressCtr,
+                index = e.target.getAttribute('data-index'),//当前点击到的canvas序号
+                p,p1;
+
+            freeBoardsCtr.mouseDown = true;
+            freeBoardsCtr.curIndex = index;
+            freeBoardsCtr.curCanvas = e.target;
+
+            p1 = {
+                "x": e.type === 'mousedown' ? e.pageX : e.originalEvent.touches[0].pageX,
+                "y": e.type === 'mousedown' ? e.pageY : e.originalEvent.touches[0].pageY
+            };
+
+            p = self._windowToCanvas(freeBoardsCtr.curCanvas,p1.x,p1.y);
+
+            if(freeBoardsCtr.isEraser == true){
+                if(self._eraser(canvas,p)){
+                    self._reDraw(canvas);
+                }
+
+                //长按计时器
+                longPressCtr.timer = setTimeout(function (){
+                    longPressCtr.isLongPress = true;
+                    ctx.clearRect(0,0,canvas.width,canvas.height);
+                    freeWords[index] = [];
+                },longPressCtr.pressDuration);
+            }else{
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.lineTo(p.x,p.y);
+                freeBoardsCtr.last = p;
+            }
+        },
+        //移动过程
+        _moveEvent:function(e,parent){
+
+            var self = parent,
+                canvas = e.target,
+                ctx = canvas.getContext('2d'),
+                index = canvas.getAttribute('data-index'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                p,p1;
+
+            if(!freeBoardsCtr.mouseDown || index != freeBoardsCtr.curIndex) return;
+
+            p1 = {
+                "x": e.type === 'mousemove' ? e.pageX : e.originalEvent.touches[0].pageX,
+                "y": e.type === 'mousemove' ? e.pageY : e.originalEvent.touches[0].pageY
+            };
+
+            p = self._windowToCanvas(freeBoardsCtr.curCanvas,p1.x,p1.y);
+
+
+            if(freeBoardsCtr.last != null){
+                if(freeBoardsCtr.isEraser == false){
+                    freeBoardsCtr.tempPath.push( freeBoardsCtr.last);
+                    ctx.lineWidth = freeBoardsCtr.lineWidth;
+                    ctx.strokeStyle = freeBoardsCtr.strokeStyle;
+                    ctx.lineTo(p.x,p.y);
+                    ctx.stroke();
+                    freeBoardsCtr.tempPath.push({x:p.x,y:p.y});
+                }
+            }
+
+            freeBoardsCtr.last = p;
+        },
+        //结束
+        _endEvent:function(e,parent){
+            var self = parent,
+                canvas = e.target,
+                board = canvas.getContext('2d'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                freeWords = freeBoardsCtr.freeWords,
+                longPressCtr = self.util.longPressCtr;
+
+            if(freeBoardsCtr.isEraser == true){
+                if(longPressCtr.timer){
+                    clearTimeout(longPressCtr.timer);
+                }
+                longPressCtr.isLongPress = false;
+            }else{
+                if(freeBoardsCtr.tempPath.length > 0){
+                    freeWords[freeBoardsCtr.curIndex].push({points:freeBoardsCtr.tempPath});
+                }
+
+            }
+
+            self._reDraw(canvas,board);
+            freeBoardsCtr.tempPath = [];
+            freeBoardsCtr.mouseDown = false;
+            freeBoardsCtr.last = null;
+            freeBoardsCtr.curIndex = '';
+        },
+        _windowToCanvas:function(canvas, x, y) {
+            var bbox = canvas.getBoundingClientRect();
+            return {
+                x: x - bbox.left * (canvas.width / bbox.width),
+                y: y - bbox.top * (canvas.height / bbox.height)
+            };
+        },
+        //判断是否是可擦除的笔迹，p为坐标点
+        _eraser:function(canvas,p){
+            var index = canvas.getAttribute('data-index'),
+                freeBoardsCtr = this.util.freeBoardsCtr,
+                freeWords = freeBoardsCtr.freeWords,
+                curWord = freeWords[index],
+                pointsLen = 0,
+                d = freeBoardsCtr.checkDistance * 2,//点到线段的距离,初始为判定距离的两倍
+                isIn = false,
+                p1 = {x:0,y:0},
+                p2 = {x:0,y:0};
+
+            if(curWord.length != 0){
+                if(freeBoardsCtr.clearRule === 'last'){//清除最后一笔
+                    freeWords[index].splice(curWord.length -1,1);
+                }else{
+                    outerloop:
+                        for(var i = curWord.length;i > 0;i--){
+                            pointsLen = curWord[i-1].points.length;
+                            for(var m = 0,n = pointsLen;m < n - 1;m++){
+                                //某个笔画上的路径
+                                p1.x = curWord[i-1].points[m].x;
+                                p1.y = curWord[i-1].points[m].y;
+                                p2.x = curWord[i-1].points[m+1].x;
+                                p2.y = curWord[i-1].points[m+1].y;
+                                //判断规则
+                                if((p.x > p1.x && p.x < p2.x) || (p.x > p2.x && p.x < p1.x) ||
+                                    (p.y > p1.y && p.y < p2.y) || (p.y > p2.y && p.y < p1.y)){
+                                    d = verticalLine(p,p1,p2);
+                                    if(d < freeBoardsCtr.checkDistance){
+                                        console.log('识别到第 ' + i + ' 笔，第' + m + '个点，距离是 ' + d);
+                                        isIn = true;
+                                        freeWords[index].splice(i-1,1);
+                                        break outerloop;
+                                    }else {
+                                        console.log('没有识别到，距离是 ' + d);
+                                    }
+
+                                    console.log('p:',p);
+                                    console.log('p1:',p1);
+                                    console.log('p2:',p2);
+                                }
+
+
+                            }
+                        }
+                }
+
+            }
+
+            return isIn;
+        },
+        //擦除笔迹，重绘
+        _reDraw:function(canvas){
+            var index = canvas.getAttribute('data-index'),
+                context = canvas.getContext('2d'),
+                curWord = this.util.freeBoardsCtr.freeWords[index],
+                pointsLen = 0;
+
+            context.clearRect(0,0,canvas.width,canvas.height);
+
+            context.beginPath();
+            for(var i = 0,j = curWord.length;i < j;i++){
+                pointsLen = curWord[i].points.length;
+                context.moveTo(curWord[i].points[0].x,curWord[i].points[0].y);
+                for(var m = 0,n = pointsLen;m < n;m++){
+                    context.lineTo(curWord[i].points[m].x,curWord[i].points[m].y);
+                }
+            }
+            context.stroke();
+        },
+        //获取四个自由书写面板的base64 data
+        _getBase64Images:function(){
+            var self = this,
+                $freeBoards = self.util.elements.$freeBoards,
+                imageDatas = [],
+                imageData = '',
+                temp = {};
+
+            $freeBoards.each(function(index,ele){
+                imageData = ele.toDataURL().replace('data:image/png;base64,','');
+
+                temp = {
+                    key:'writeData_' + index,
+                    value:imageData
+                };
+
+                imageDatas.push(temp);
+            });
+
+            return imageDatas;
+        },
+        //重置到初始状态,左侧dom清空
+        _reset:function(){
+            this.util.isLock = false;
+            this.util.hasDrawed = false;
+            this._resetLeftBoard();
+            this._resetRightBoards();
+            //解绑事件
+            this._unbindEvent();
+        },
+        //重新练习，清空作答数据
+        _reAnswer:function(){
+            this.ChineseWord.reset();
+            this._resetRightBoards();
+        },
+        //重置左侧画板,直接清空，不是重写一遍
+        _resetLeftBoard:function(){
+            this.ChineseWord = {};
+            //清空容器
+            this.util.elements.$wordContainer.empty();
+        },
+        //重置右侧画板
+        _resetRightBoards:function(){
+            var self = this,
+                util = self.util,
+                elements = util.elements,
+                freeBoardsCtr = util.freeBoardsCtr,
+                $freeBoards = elements.$freeBoards,
+                freeWords = freeBoardsCtr.freeWords,
+                ctx;
+
+            //将保存右侧书写数据的数组清空
+            freeWords.first = [];
+            freeWords.second = [];
+            freeWords.third = [];
+            freeWords.fourth = [];
+
+            //清空画板
+            $freeBoards.each(function(){
+                ctx = $(this)[0].getContext('2d');
+                ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
+            });
+
+            //画笔和橡皮擦按钮恢复
+            freeBoardsCtr.isEraser = false;
+            elements.$eraser.removeClass('on');
+            elements.$brush.addClass('on');
+
+        },
+        //数据绑定
+        _vmRender:function(data,view){
+            var vm  = new this.util.viewModel(data);
+
+            ko.applyBindings(vm,view);
+
+            return vm;
+        },
+        util:{
+            viewModel:function(data){//ko绑定的数据模型
+                this.pinyin = ko.observable(data.pinyin);
+            }
+        }
+    }, 'WordCardStudent');
+
+
+    //锐角三角形某个点作垂线段的长度,p到p1p2的垂线段
+    function verticalLine(p,p1,p2){
+        var x = Math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y)),
+            y = Math.sqrt((p.x - p2.x)*(p.x - p2.x) + (p.y - p2.y)*(p.y - p2.y)),
+            z = Math.sqrt((p.x - p1.x)*(p.x - p1.x) + (p.y - p1.y)*(p.y - p1.y)),
+            d = 0;
+
+        d = Math.sqrt(z*z - ((y*y -x*x -z*z))/(2*x) * ((y*y -x*x -z*z))/(2*x));
+
+        return d;
+    }
+
+    //点到线段（不是直线）的距离
+    function pointToSeg(p,p1,p2){
+        var cross = (p2.x - p1.x) * (p.x - p1.x) + (p2.y - p1.y) * (p.y - p1.y);
+        if (cross <= 0) return Math.sqrt((p.x - p1.x) * (p.x - p1.x) + (p.y - p1.y) * (p.y - p1.y));
+
+        var d2 = (p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y);
+        if (cross >= d2) return Math.sqrt((p.x - p2.x) * (p.x - p2.x) + (p.y - p2.y) * (p.y - p2.y));
+
+        var r = cross / d2;
+        var px = p1.x + (p2.x - p1.x) * r;
+        var py = p1.y + (p2.y - p1.y) * r;
+        return Math.sqrt((p.x - px) * (p.x - px) + (py - p1.y) * (py - p1.y));
+    }
+
+    /**
+     *为了解决穿透问题增加的函数
+     * 本来是放在libs，但是require的时候出错，src会指向根目录
+     */
+    function findOffset(obj) {
+        var curX = 0,
+            curY = 0;
+        if (obj.offsetParent) {
+            do {
+                curX += obj.offsetLeft;
+                curY += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+            return {
+                x: curX,
+                y: curY
+            };
+        } else
+            return {
+                "x": 0,
+                "y": 0
+            };
+    }
+
+    var rotate = {
+        //获取元素的旋转的角度
+        getRotateDeg: function(dom) {
+            var me = $(dom), angle;
+            var matrix = me.css("-webkit-transform") ||
+                me.css("-moz-transform") ||
+                me.css("-ms-transform") ||
+                me.css("-o-transform") ||
+                me.css("transform");
+            if (typeof matrix === 'string' && matrix !== 'none'&&matrix!=='') {
+                var values = matrix.split('(')[1].split(')')[0].split(',');
+                var a = values[0];
+                var b = values[1];
+                angle = (Math.atan2(b, a) * (180 / Math.PI)).toFixed(3);
+            } else {
+                angle = 0;
+            }
+            return angle;
+        },
+        getRotateOriginXY: function(dom) {
+            var str = $(dom).css('transform-origin');
+            return str ? {
+                x: parseFloat(str.split(' ')[0], 10),
+                y: parseFloat(str.split(' ')[1], 10)
+            } : {
+                x: 0,
+                y: 0
+            };
+        },
+        getRotateXY: function(x, y, angle, dom) {
+            var p = findOffset(dom);
+            var t = this.getRotateOriginXY(dom);
+
+            x = x - parseInt(p.x) - t.x;
+            y = y - parseInt(p.y) - t.y;
+            if (angle < 0) {
+                angle = 360 + angle % 360; //3个限项 0-90 90-180 180-270 270-360
+            } else {
+                angle = angle % 360; //3个限项 0-90 90-180 180-270 270-360
+            }
+            var goalX = x * Math.cos(angle * Math.PI / 180) + y * Math.sin(angle * Math.PI / 180);
+            var goalY = y * Math.cos(angle * Math.PI / 180) - x * Math.sin(angle * Math.PI / 180);
+            return {
+                x: goalX + t.x,
+                y: goalY + t.y
+            };
+        }
+    };
+
+    var isInDom = function(dom, event) {
+        var _w = $(dom).width(),
+            _h = $(dom).height();
+        var _A = rotate.getRotateDeg($(dom)[0]); //这里取返就是为了算相对位置直接取旋转前的X,Y，
+        var finalXY = rotate.getRotateXY(event.pageX, event.pageY, _A, $(dom)[0]);
+        var _finalX = finalXY.x,
+            _finalY = finalXY.y;
+        if(_finalX >= 0 && _finalX <= _w && _finalY >= 0 && _finalY <= _h) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    window.AddonWordCardStudent_create = function() {
+        return new Presenter();
+    }
+})();
+define('domClickUtil',function(){
+    function findOffset(obj) {
+        var curX = 0,
+            curY = 0;
+        if (obj.offsetParent) {
+            do {
+                curX += obj.offsetLeft;
+                curY += obj.offsetTop;
+            } while (obj = obj.offsetParent);
+            return {
+                x: curX,
+                y: curY
+            };
+        } else
+            return {
+                "x": 0,
+                "y": 0
+            };
+    }
+
+    var rotate = {
+        //获取元素的旋转的角度
+        getRotateDeg: function(dom) {
+            var me = $(dom), angle;
+            var matrix = me.css("-webkit-transform") ||
+                me.css("-moz-transform") ||
+                me.css("-ms-transform") ||
+                me.css("-o-transform") ||
+                me.css("transform");
+            if (typeof matrix === 'string' && matrix !== 'none'&&matrix!=='') {
+                var values = matrix.split('(')[1].split(')')[0].split(',');
+                var a = values[0];
+                var b = values[1];
+                angle = (Math.atan2(b, a) * (180 / Math.PI)).toFixed(3);
+            } else {
+                angle = 0;
+            }
+            return angle;
+        },
+        getRotateOriginXY: function(dom) {
+            var str = $(dom).css('transform-origin');
+            return str ? {
+                x: parseFloat(str.split(' ')[0], 10),
+                y: parseFloat(str.split(' ')[1], 10)
+            } : {
+                x: 0,
+                y: 0
+            };
+        },
+        getRotateXY: function(x, y, angle, dom) {
+            var p = findOffset(dom);
+            var t = this.getRotateOriginXY(dom);
+
+            x = x - parseInt(p.x) - t.x;
+            y = y - parseInt(p.y) - t.y;
+            if (angle < 0) {
+                angle = 360 + angle % 360; //3个限项 0-90 90-180 180-270 270-360
+            } else {
+                angle = angle % 360; //3个限项 0-90 90-180 180-270 270-360
+            }
+            var goalX = x * Math.cos(angle * Math.PI / 180) + y * Math.sin(angle * Math.PI / 180);
+            var goalY = y * Math.cos(angle * Math.PI / 180) - x * Math.sin(angle * Math.PI / 180);
+            return {
+                x: goalX + t.x,
+                y: goalY + t.y
+            };
+        }
+    };
+
+    var isInDom = function(dom, event) {
+        var _w = $(dom).width(),
+            _h = $(dom).height();
+        var _A = rotate.getRotateDeg($(dom)[0]); //这里取返就是为了算相对位置直接取旋转前的X,Y，
+        var finalXY = rotate.getRotateXY(event.pageX, event.pageY, _A, $(dom)[0]);
+        var _finalX = finalXY.x,
+            _finalY = finalXY.y;
+        if (_finalX >= 0 && _finalX <= _w && _finalY >= 0 && _finalY <= _h) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    return isInDom;
+
+});]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/word.json' />
+
+
+</resources>
+
+</addon>

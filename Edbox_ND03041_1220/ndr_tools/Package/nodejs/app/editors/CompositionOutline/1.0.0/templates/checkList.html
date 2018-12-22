@@ -1,0 +1,61 @@
+<div style="z-index: 999" class="ed_composition_pop pop_checklist with_arrow">
+    <div class="ed_composition_cl_box">
+        <div class="ed_composition_cl_header">
+            <p class="title" i18n-render i18n-key="check_list">
+              <!-- 检查清单 -->
+            </p>
+            <p class="remark" i18n-render i18n-key="checklist_tip">
+              <!-- （检查后才可提交） -->
+            </p>
+            <div class="btn_spare" 
+                 _mark="reserveBtn"
+                 ng-show="reserveCheckListItems.length > 0" 
+                 i18n-render 
+                 i18n-key="reserve_btn">
+              <!-- 备用 -->
+            </div>
+        </div>
+        <div class="ed_composition_cl_content _region_draggable">
+            <!-- move -->
+            <div class="drag_cl_cell _float_thumbnail" style="top:90px;">
+              <div class="drag_cl_txt _thumbnail_text">
+              <!-- 这是排序时，可拖动的块。拖动时，加Class：move 。改变style：top的值，改变style：top的值 -->
+              </div>
+            </div>
+            <ul class="ed_composition_cl_list scrollbar_style_brown">
+                <li drag-sort class="cl_cell" 
+                    ng-class="{'edit':item.isUnderEditable}" 
+                    _itemIdx="{{$index}}"
+                    ng-repeat="item in checkListItems">
+                    <p _mark="listItem_show"
+                       _itemIdx="{{$index}}"
+                       class="cl_cell_stxt"
+                       ng-bind="item.text">
+                    </p>
+                    <input type="text"
+                           lose-focus
+                           maxlength = "100"
+                           i18n-placeholder
+                           i18n-key="material_placeholder"
+                           class="cl_cell_input" 
+                           value="{{item.text}}"
+                           _mark="listItem_edit"
+                           _itemIdx="{{$index}}"/>
+                    <i class="icon_pan _edit_pen" 
+                       _mark="editItemBtn"
+                       _itemIdx="{{$index}}"></i>
+                    <i class="icon_delete_s _delete_btn"
+                       _mark="deleteItemBtn"
+                       _itemIdx="{{$index}}"></i>
+                </li>
+            </ul>
+        </div>
+        <div class="ed_composition_cl_footer">
+            <div class="ed_composition_cl_addbtn" _mark="addItemBtn">
+                <span class="txt" _mark="addItemBtn" i18n-render i18n-key="add_new_checklist">
+                  <!-- 新增 -->
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

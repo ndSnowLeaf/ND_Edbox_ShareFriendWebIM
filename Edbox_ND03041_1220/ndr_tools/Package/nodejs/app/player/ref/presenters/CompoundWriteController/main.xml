@@ -1,0 +1,571 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompoundWriteController'>
+<properties>
+
+                <property name="id" displayName="题目ID" type="string" />
+                <property name="examId" displayName="课堂ID" type="string" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+                <property name="questionType" displayName="题型" type="string" />
+                <property name="writer_background" displayName="手写板背景" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="BasicWriteController" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Background = __webpack_require__(1);
+var self = null;
+
+var Presenter = BasicWriteController.extend({
+    metaInfo: {
+        name: 'CompoundWriteController',
+        type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        this._super(view, model);
+        // 不需要通知状态改变可提交，复合题中需要发送特殊事件
+        this.noJudgeSubmitState = false;
+        // 是否加载过手写板
+        this.writer = null;
+        // 是否处于手写小题
+        this.isHandWriter = false;
+        this.model = model;
+        // 手写板加载promise
+        this.$requireWriterPromise = null;
+        self = this;
+    },
+    pageShow: function () {
+        this._super();
+    },
+    //重写此方法
+    getService() {
+        if (!this._service_) {
+            //重写getResult方法
+            var ServiceClass = this.getServiceClass().extend(overrideService);
+            this._service_ = new ServiceClass(this);
+        }
+        return this._service_;
+    },
+    _bindEvent: function () {
+        this._super();
+        this.$addEventListener('SwitchQuestionComplete', PresenterEventType.IC_PLAYER_EVENT, this._onSwitchQuestionComplete);
+        this.$addEventListener('ensureCleanWriter', PresenterEventType.NATIVE_EVENT, this._startWriteHandler.bind(this));
+        this.$addEventListener('HandWriteDisplayChange', PresenterEventType.IC_PLAYER_EVENT, this._setDisplayStatus);
+    },
+    /**
+     * model数据初始化
+     * 复合题loadQuestion时处理Model
+     * 复合题的model数据结构不符合HandWriter的要求，需要二次加工
+     */
+    _initModel: function (model, options) {
+        var newModel = {};
+        //需要渲染手写板的位置参数
+        var layout = options.layout;
+
+        newModel.examId = model.examId;
+        newModel.isWhole = (this.model.isWhole || model.isWhole) ? true : false;
+        newModel.isAutoGetState = model.isAutoGetState ? 1 : 0;
+        newModel.isSinglePage = true;
+        newModel.writer_background = model.background;
+        newModel.questionType = this.model.questionType || model.questionType;
+        newModel.renderPosition = layout ? {
+            minTop: layout.stemHigh,
+            top: layout.questionOffset.top,
+            left: layout.questionOffset.left,
+            width: layout.questionSize.width,
+            height: layout.questionSize.height,
+            maxTop: layout.containerHigh, //最大高度
+            initTop: layout.questionSize.realHeight //初始的位置
+        } : {};
+
+        return newModel;
+    },
+    // 播放多媒体时处理原生手写板
+    _fullScreenEventHandler: function () {
+        this._super();
+        if (this.isHandWriter) {
+            this.services.writerService.show(this.screenfull.isFullscreen ? false : true);
+        }
+    },
+    _setDisplayStatus: function (eventData) {
+        var value = eventData.isFull;
+        this.services.writerService.show(value ? false : true);
+    },
+    // 手写板操作后，提交按钮点亮
+    _startWriteHandler: function () {
+        this._super();
+        //复合题手写发出可提交事件
+        if (this.noJudgeSubmitState) {
+            this.$dispatchEvent('embeddedQuestionStateChange', PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+        }
+        //通知课堂状态更新
+        if (this.isPPTShell) {
+            this.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: 'CompoundWriteController' // 当前模块代码,也就是metaInfo.name
+            });
+        }
+    },
+    // 加载手写板
+    _requireHandWriter: function (examId) {
+        if(!this.$requireWriterPromise){
+            var that = this;
+            var initData = {
+                'examId': examId,
+                'nativeId': (this.model.nativeId || 'multiple') + '_pad',
+                'isWhole': this.model.isWhole,
+                'isAutoGetState': 1,
+                'isSinglePage': 1,
+                'writer_background': this.model.writer_background,
+                'questionType': this.model.questionType,
+                'title': this.model.title || '',
+                '__containerSelector': this.containerSelector,
+                'position': this.model.renderPosition,
+                'limitPage': 1,
+                'wordsNum': 0
+            };
+            var config = {
+                addonId: 'HandWriter',
+                renderTo: that.containerSelector,
+                layout: {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0
+                },
+                properties: [
+                    { 'name': 'examId', 'type': 'string', 'value': examId },
+                    { 'name': 'isWhole', 'type': 'int', 'value': this.model.isWhole },
+                    { 'name': 'isAutoGetState', 'type': 'int', 'value': 1 },
+                    { 'name': 'isSinglePage', 'type': 'int', 'value': 1 },
+                    {
+                        'name': 'writer_background',
+                        'type': 'json',
+                        'value': this.model.writer_background == undefined ? {} : this.model.writer_background,
+                        'text': this.model.writer_background == undefined ? "{}" : JSON.stringify(this.model.writer_background)
+                    },
+                    { 'name': 'questionType', 'type': 'string', 'value': this.model.questionType },
+                    { 'name': 'title', 'type': 'string', 'value': this.model.title || '' },
+                    { 'name': '__containerSelector', 'type': 'string', 'value': this.containerSelector },
+                    { 'name': 'renderPosition', 'type': 'json', 'value': this.model.renderPosition || {} },
+                    { 'name': 'initData', 'type': 'json', 'value': initData }
+                ],
+                callback: function (addon) {
+                    that.writer = addon;
+                }
+            };
+            this.$requireWriterPromise = this.playerController.require(config);
+        }
+        return this.$requireWriterPromise;
+    },
+    /**
+     * 2016/8/9 付君春 添加复合题小题切换事件的监听
+     * @param questionInfo {question_id:切换到的小题id,question_type:切换到的小题类型}
+     */
+    _onSwitchQuestionComplete: function (questionInfo) {
+        var model = this.model;
+        var questionId = questionInfo.question_id;
+        var writerService = this.services.writerService;
+        var top; //手写板top值
+
+        //不是复合题加载的，直接返回
+        if (!model.lazyLoad) {
+            return;
+        }
+
+        //切换到其他小题,且不是切换到当前手写题
+        if (model.id && model.id != questionId) {
+            // 隐藏手写板
+            writerService.show(false);
+            // 隐藏侧边工具栏
+            writerService.closePopWin();
+            // 隐藏mask this.services.layoutService.showMask(false);
+            // 为了处理视频全屏播放的问题，告知HandWriter当前不是手写题
+            this.isHandWriter = false;
+        }
+
+        //切换到的是手写题
+        if (model.id && model.id == questionId) {
+            //显示手写板
+            writerService.show(true);
+
+            if (this.questionList[model.id]) {
+                var currentQuestionState = this.questionList[model.id]
+
+                //将保存的作答状态设置回来,修复99704
+                this.startWrite = currentQuestionState.startWrite || false;
+                this.currentStatus = currentQuestionState.currentStatus || this.WRITE_STATUS.incomplete;
+
+                top = currentQuestionState.top;
+                //设置top,true 表示使用保存过的值
+                (top > 0) && writerService.setTop(top, true);
+
+                //将手写板状态重置
+                writerService.resetWritingFlag();
+            } else {
+                this.startWrite = false;
+                this.currentStatus = this.WRITE_STATUS.incomplete;
+                writerService.setTop(model.renderPosition.initTop, false);
+            }
+
+            //遮罩处理 this.services.layoutService.showMask(this.isLock);
+            //为了处理视频全屏播放的问题，告知HandWriter当前是手写题
+            this.isHandWriter = true;
+        }
+    }
+});
+
+/**
+ * 重写Service类
+ */
+var overrideService = {
+    loadQuestion: function (question, answer, options) {
+        var $deferOutside = $.Deferred();
+        var $deferGetTop = $.Deferred();
+        var promise, $deferInside;
+        var that = this;
+        var questionData = question.data.question_data;
+
+        var extraData = {
+            layout: options.layout || {}
+        };
+
+        if (!this.parent.questionList) {
+            this.parent.questionList = {};
+            this.parent.questionList[question.id] = {};
+            $deferGetTop.resolve();
+        } else {
+            if (!this.parent.questionList[this.parent.model.id]) {
+                this.parent.questionList[this.parent.model.id] = {};
+            }
+
+            //保存当前小题的手写状态
+            this.parent.questionList[this.parent.model.id].startWrite = this.parent.startWrite;
+            this.parent.questionList[this.parent.model.id].currentStatus = this.parent.currentStatus;
+
+            //保存当前小题手写板的top值
+            if (this.parent.services && this.parent.services.writerService && typeof this.parent.services.writerService.getTop === 'function') {
+                var getTopResult = this.parent.services.writerService.getTop();
+                if (getTopResult.done) {
+                    this.parent.services.writerService.getTop().done(function (top) {
+                        that.parent.questionList[that.parent.model.id].top = top;
+                        $deferGetTop.resolve();
+                    });
+                } else {
+                    $deferGetTop.resolve();
+                }
+            } else {
+                $deferGetTop.resolve();
+            }
+        }
+
+        $deferGetTop.promise().done(function () {
+            //切换小题的时候，依据id判断native手写板是否需要隐藏
+            that.parent.model.id = question.id;
+            if (!that.parent.questionList[that.parent.model.id]) {
+                that.parent.questionList[that.parent.model.id] = {};
+            }
+
+            //是否已作答
+            if (!!answer) {
+                that.parent.questionList[that.parent.model.id].currentStatus = that.parent.WRITE_STATUS.completed;
+            }
+
+            //判断是否加载过HandWriter
+            if (!that.parent.writer) {
+                that.parent.model = $.extend(that.parent.model, that.parent._initModel(questionData, options));
+                promise = that.parent._requireHandWriter(questionData.examId);
+            } else {
+                $deferInside = $.Deferred();
+                $deferInside.resolve();
+                promise = $deferInside.promise();
+            }
+
+            promise.done(function () {
+                //加载题目，设置背景图片，设置轨迹
+                that.parent.services.writerService.loadNewQuestion(questionData.background, answer, extraData);
+
+                var background = Background.build(questionData.background);
+                background.extra = {
+                    subExamId: question.id,
+                    subExamType: 'newhandwrite'
+                };
+                that.parent.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+                    type: "examBackground",
+                    instanceId: options.questionType || 'Compound',
+                    data: background
+                });
+
+                //不需要判断是否可提交
+                if (options.noJudgeSubmitState) {
+                    that.parent.noJudgeSubmitState = true;
+                }
+
+                if (options.isLock) {
+                    that.lockQuestion();
+                }
+
+                //完成题目加载后resolve返回出去的延迟对象
+                $deferOutside.resolve(question);
+            });
+        });
+
+        return $deferOutside.promise();
+    },
+    getResult: function (options) {
+        //从native获取到轨迹，拼凑好答案格式再resolve
+        var $deferred = $.Deferred();
+        var strokePromise = this.parent.services.writerService.getStrokeData(options || {});
+
+        // HandWrite的getStrokeData方法在Pad端返回Promise，在PC端返回String
+        if (typeof strokePromise === "object") {
+            strokePromise.done(function (strokeData) {
+                $deferred.resolve(constructUserAnswer(strokeData));
+            });
+        }
+
+        var state = (this.parent.currentStatus !== this.parent.WRITE_STATUS.incomplete ? 'COMPLETE' : 'NO_ANSWER');
+        var result = {
+            answer: {
+                answer_result: true,
+                correct_response: null,
+                user_response: [
+                    // HandWrite的getStrokeData方法在Pad端返回Promise，在PC端返回String
+                    (typeof strokePromise === "object") ? $deferred.promise() : strokePromise
+                ]
+            },
+            questionId: this.parent.model.id,
+            answerState: state
+        };
+
+        return result;
+    },
+    sendBackground: function (question) {
+        var background = Background.build(question.data.question_data.background);
+        background.extra = {
+            subExamId: question.id,
+            subExamType: 'newhandwrite'
+        };
+        this.parent.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            type: "examBackground",
+            instanceId: this.parent.model.questionType || 'Compound',
+            data: background
+        });
+    },
+    getClassroomStatus: function () {
+        return Object.assign({
+            presenterCode: 'CompoundWriteController'
+        }, this.getState());
+    },
+    setClassroomStatus: function (state) {
+        if (!state) return;
+        if (state.presenterCode === 'CompoundWriteController') {
+            this.setState(state);
+        } else if (this.parent.services.writerService && typeof this.parent.services.writerService.setClassroomStatus === 'function') {
+            // 复合题恢复手写数据
+            this.parent.services.writerService.setClassroomStatus(state);
+        }
+    },
+    clearClassroomStatus: function () { }
+};
+
+function constructUserAnswer(strokeData) {
+    if (typeof strokeData !== "object") {
+        throw new Error("stroke data must be an object");
+    }
+
+    var result = { data: [] };
+
+    if (strokeData.background !== undefined) {
+        var background = strokeData.background;
+
+        //截图做题的时候，type强制改为2,以便pc端使用
+        if (background.type === 3) {
+            background.type = 2
+        } else {
+            background.bottom = background.writer_height - background.bottom;
+            background.right = background.writer_width - background.right;
+        }
+    }
+
+    for (var key in strokeData.data) {
+        var item = {
+            type: 'write',
+            data_type: 'write',
+            value: strokeData.data[key],
+            extra: {
+                page: key,
+                md5: strokeData.dataMD5[key],
+                background: strokeData.background
+            }
+        };
+        if (strokeData.extra) {
+            $.extend(item.extra, JSON.parse(strokeData.extra));
+        }
+        result.data.push(item);
+    }
+
+    return result;
+}
+
+module.exports = Presenter;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+var Background = {
+    build: function (originalBackground) {
+        var bg = {};
+
+        for(var key in originalBackground){
+            bg[key] = originalBackground[key];
+        }
+
+        bg.writer_height = 1350;
+        bg.writer_width = originalBackground.type === 3 ? 1620 : 1541;
+
+        if (originalBackground.type === 3) {
+            bg.width = parseInt(bg.width);
+            bg.height = parseInt(bg.height);
+            bg.type = 2;
+            if (bg.width < bg.writer_width) {
+                bg.left = (bg.writer_width - bg.width) / 2;
+                bg.right = bg.left + bg.width;
+                bg.bottom = bg.height;
+                bg.top = 0;
+            } else {
+                bg.width = bg.right = bg.writer_width;
+                bg.height = bg.bottom = bg.writer_height;
+                bg.left = bg.top = 0;
+            }
+        } else {
+            bg.right = bg.writer_width - bg.right;
+            bg.right = bg.right < 0 ? bg.writer_width : bg.right;
+            bg.width = bg.right - bg.left;
+            bg.height = parseInt((originalBackground.height * 1.0) / originalBackground.width * bg.width);
+            bg.bottom = bg.top + bg.height;
+        }
+        
+        return bg;
+    }
+};
+
+module.exports = Background;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Presenter = __webpack_require__(0);
+
+window.AddonCompoundWriteController_create = function(){
+    return new Presenter();
+};
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

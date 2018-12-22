@@ -1,0 +1,1597 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompositionPanel'>
+<properties>
+
+                <property name="titleType" displayName="标题类型" type="string" />
+                <property name="title" displayName="标题" type="html" />
+                <property name="text" displayName="文本" type="html" />
+                <property name="asset" displayName="素材" type="json" />
+                <property name="assetTitle" displayName="素材标题" type="json" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="jquery-ui" version="1.10.4" />
+    <javaScript  name="jquery-ui-touch-punch" version="0.2.3.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_CompositionPanel .hide_page{position:absolute;z-index:-9999}.addon_CompositionPanel .hide_overflow-y{overflow-y:hidden!important}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="nqti-base-composition-tit"><span class="txt lang_Composition_Question" style="float:left"></span><div class="nqti-base-composition-aftertit-wrap"></div><ul class="nqti-base-composition-btn-item"><li class="current"><span class="txt lang_Check_Question"></span></li><li><span class="txt lang_Check_Material"></span></li><li><span class="txt lang_Enter_Writing"></span></li></ul></div><div class="nqti-base-composition-bd" style="overflow: hidden"><div class="composition-subject baseMod-scrollbar-style-gray" style="height: 100%;overflow: auto"><div class="txt"><div class="label_text lang_Semi_Topic_Title"></div></div><div class="txt"><div class="label_text lang_Request"></div></div></div><div class="composition-source hide_page"><a href="#" class="composition-subtabs-left"></a> <a href="#" class="composition-subtabs-right"></a><ul class="composition-subtabs"></ul><ul class="composition-sub-contents"></ul></div><div class="composition-write hide_page"></div></div><div class="js_message_container"></div><div class="nqti-base_record js_audio_record hide_dom" style="left: 0em;top: 34.3em"><span class="record_close js_record_close"></span><div class="record_control js_record_control"><span class="control_btn control_s control_stop"><em class="control_icon"></em></span><span class="control_btn control_m control_record control--disabled"><em class="control_icon"></em></span><span class="control_btn control_s control_save"><em class="control_icon"></em></span></div><div class="record_con"><div class="record_con_top"><p class="record_con_name"><em class="text lang_Pop_audio_title">录音</em></p><div class="record_con_audio"><ul class="audio_list"><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li><li class="item_audio"></li></ul></div></div><div class="record_con_bot"><div class="record_progress"><div class="progress_wrap" style="width: 0%"><span class="progress_load" style="width: 100%"><em class="progress_btn"></em></span></div></div><p class="progress_time"><em class="text"><span class="js_record_time_minute">05&nbsp;:</span><span class="js_record_time_second cur">36</span> / 10:00</em></p></div></div></div><div class="js_player_container"></div><div class="comui_big_pop js_dialog_edit hide_dom"><div class="comui_pop_notebook_bg"><div class="comui_pop_notebook_bg_papper"><div class="comui_pop_papper_main"><div class="pop_confirm_text lang_Dialog_record_title">保存录音</div><div class="pop_confirm_txt"><input type="text" class="confirm_txt" maxlength="15"></div></div><div class="pop_footer_btns"><a class="com_btn_round2 js_btn_left" href="javascript:;"><span class="text_box lang_Dialog_record_cancel">取 消</span> </a><a class="com_btn_round2 right js_btn_right" href="javascript:;"><span class="text_box lang_Dialog_record_save">保 存</span></a></div></div></div></div><div class="comui_big_pop js_dialog_single hide_dom"><div class="comui_pop_notebook_bg"><div class="comui_pop_notebook_bg_papper"><div class="comui_pop_papper_main"><div class="pop_confirm_text lang_Dialog_record_undetected">未检测到录音设备，请接入录音设备并调试!</div></div><div class="pop_footer_btns"><a class="com_btn_round2" href="javascript:;"><span class="text_box lang_Dialog_record_know">我知道了</span></a></div></div></div></div><div class="comui_big_pop js_dialog_normal hide_dom"><div class="comui_pop_notebook_bg"><div class="comui_pop_notebook_bg_papper"><div class="comui_pop_papper_main"><div class="pop_confirm_text">退出将删除当前录音，是否确认退出？</div></div><div class="pop_footer_btns"><a class="com_btn_round2 js_btn_left" href="javascript:;"><span class="text_box lang_Dialog_record_cancel">取 消</span> </a><a class="com_btn_round2 right js_btn_right" href="javascript:;"><span class="text_box lang_Dialog_record_ensure">确 定</span></a></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+
+(function () {
+    var self = null;
+    var Presenter = BasicPresenter.extend({
+        //元数据信息
+        metaInfo: {
+            name: 'CompositionPanel',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            self = this;
+            this._super();
+            this.i18nModel = {};
+            //用于国际化的语言设置deferred
+            this.$translateDeferred = $.Deferred();
+            this.pageNum = 1;
+            this.currentPage = 0;
+            this.onscroll = false;
+            this.edit = true;
+            this.mediaplayer = null;
+            this.writer = null;
+            //课堂状态
+            this.status = {
+                media: {},
+                tabIndex: 0,
+                sourceTab: {
+                    index: 0,
+                    left: ""
+                },
+                subjectScrollTop: 0,
+                sourceScrollTop: {}
+            };
+            //手写板加载promise
+            this.$handwriterRequiredDef = $.Deferred();
+
+            this.isApp = false;//true:PAD或者白板,false:web端
+            this.isTeacher = false;//true:PAD端老师
+            this.isTeacherPc = false;//true:白板端老师
+            this.isStudent = false;//true:学生端
+            this.isPPTshell = false; //101教育PPT
+            this.isWeb = false; //Web端
+            this.cssStyleName = "composition"; //样式库名称
+            this.bissType = "Composition"; //题型，调用PC端录用功能需要
+            this.MAX_TIME = 10 * 100 * 60; // 录音最大时间10分钟(微妙)
+
+            var currentRuntime = player.getPlayerServices().getRuntime();
+            this.isApp = (currentRuntime != icCreatePlayer.RUNTIME.WEB);
+            if (currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                this.isStudent = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_MOBILE) {
+                this.isTeacher = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_PC) {
+                this.isTeacherPc = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                this.isWeb = true;
+            }
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            // 设置多语言
+            setLocationProperties: function (location) {
+                this.parent.i18nModel = location;
+                self.$translateDeferred.resolve();
+            },
+            getAutowiredPanel: function () {
+                return self.$view.find('.composition-write');
+            },
+            /**
+             * 设置组件
+             * @param config 启动组件所需配置
+             */
+            setComponent: function (config) {
+                self._requireComponent(config);
+            },
+            /**
+             * 设置题型标题
+             * @param title 题型标题
+             */
+            setQuestionTitle: function (title) {
+                self.$view.find(".nqti-base-composition-tit span:first").text(title);
+            },
+            /**
+             * 设置tab标题
+             * @param tabTitle Tab标题
+             */
+            setTabTitle: function (tabTitle) {
+                self.$view.find(".nqti-base-composition-btn-item>li:eq(2) .txt").text(tabTitle);
+            },
+            /**
+             * 标题旁边注入dom
+             * @param dom
+             */
+            setDom: function (dom) {
+                if (dom) {
+                    self.$view.find('.nqti-base-composition-aftertit-wrap').append(dom);
+                }
+            },
+            /**
+             * 停止播放多媒体
+             */
+            stopMediaPlay: function () {
+                //暂停全部
+                this.parent.playerController.getCommands().mediaPause();
+                QtiPlayer.resetMedia();
+            },
+            /**
+             * 获取课堂状态
+             */
+            getClassroomStatus: function () {
+                var $defer = $.Deferred();
+                var _status = $.extend(true, {}, this.parent.status);
+                $defer.resolve(_status);
+                return $defer.promise();
+            },
+            /**
+             * 设置课堂状态 
+             */
+            setClassroomStatus: function (status) {
+                this.parent.status = status;
+                // 多媒体进度恢复
+                if (status.media) {
+                    for (var key in status.media) {
+                        if (status.media.hasOwnProperty(key)) {
+                            var _media = status.media[key];
+                            var _currentTime = _media.currentTime - 1 < 0 ? 0 : _media.currentTime - 1;
+                            NDMediaPlayer.mediaSkip(_media.mediaType, _media.index, _currentTime);
+                        }
+                    }
+                }
+                // 切换TAB
+                this.parent.$handwriterRequiredDef.done(function () {
+                    var $tabs = this.parent.$view.find('.nqti-base-composition-btn-item>li');
+                    $tabs.removeClass('current');
+                    $tabs.eq(status.tabIndex).addClass('current');
+                    this.parent._changeViewContent(status.tabIndex);
+                    this.parent.$dispatchEvent('CompositionChangeViewContent', PresenterEventType.IC_PLAYER_EVENT, {
+                        index: status.tabIndex
+                    });
+                }.bind(this));
+                // 恢复题目页面滚动条
+                self.$subject.scrollTop(status.subjectScrollTop);
+                // 切换素材tab
+                var $sourceTabs = this.parent.$view.find('.composition-subtabs>li').removeClass();
+                $sourceTabs.eq(status.sourceTab.index).addClass('current');
+                $sourceTabs.parent().css("left", status.sourceTab.left);
+                var $sourcePages = this.parent.$view.find('.composition-sub-contents>li');
+                $sourcePages.addClass('hide_page');
+                $sourcePages.eq(status.sourceTab.index).removeClass('hide_page');
+                // 恢复素材页面滚动条
+                for (var key in status.sourceScrollTop) {
+                    if (status.sourceScrollTop.hasOwnProperty(key)) {
+                        $sourcePages.eq(key).scrollTop(status.sourceScrollTop[key]);
+                    }
+                }
+                //通知数据恢复完成
+                this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: this.parent.metaInfo.name });
+            },
+            /**
+             * 清除课堂状态
+             */
+            clearClassroomStatus: function () {
+
+            },
+            /**
+             * 暂停录音
+             */
+            pauseRecord: function () {
+
+            },
+            // 强制关闭录音
+            releaseRecord: function () {
+                self._releaseRecord();
+            },
+            // 暂停播放多媒体
+            pauseMediaPlay: function () {
+                this.parent.playerController.getCommands().mediaPause();
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            // 加载样式库
+            if (window['Midware'].styleManager) {
+                var urlParams = this.urlParams || {};
+                Midware.styleManager.loadStyle(
+                    self.cssStyleName,         // 样式库名称
+                    urlParams['sys'] || 'pptshell', // 应用名称，默认pptshell
+                    'wood',                 // 皮肤名称，默认wood
+                    urlParams['_lang_']     // 语言code
+                );
+            }
+
+            self.$view = $(view);
+            self.model = model;
+            try {
+                self.model.asset = JSON.parse(self.model.asset);
+            } catch (err) {
+                console.log("asset转JSON对象错误，原字符串为" + self.model.asset);
+                self.model.asset = {};
+            }
+            try {
+                self.model.assetTitle = JSON.parse(self.model.assetTitle);
+            } catch (err) {
+                console.log("assetTitle转JSON对象错误，原字符串为" + self.model.assetTitle);
+                self.model.assetTitle = {};
+            }
+            self.$subject = self.$view.find('.composition-subject');
+            self.$source = self.$view.find('.composition-source');
+            self.$recordMinute = self.$view.find('.js_record_time_minute');
+            self.$recordSecond = self.$view.find('.js_record_time_second');
+            // 录音进度
+            self.$recordProgress = self.$view.find('.js_audio_record .progress_wrap');
+            // 播放进度
+            self.$audioProgress = self.$view.find('.js_audio_record .progress_load');
+            // 录音弹窗中的播放器
+            self.recordAudio = null;
+            // 是否在录音机状态下的播放状态
+            this.isPlayer = false;
+            // 媒体状态
+            this.mediaStatus = {
+                // 预备
+                ready: 'ready',
+                // 开始
+                start: 'start',
+                // 暂停
+                pause: 'pause',
+                // 停止
+                stop: 'stop'
+            };
+            // 首次会准备状态
+            this.recordStatu = this.mediaStatus.ready;
+            // 录音事件名
+            this.recordEvent = {
+                // 开始录音
+                RECORD_VOICE: 'recordVoice',
+                // 启动录音回调
+                START_RECORD_VOICE_CALLBACK: 'startRecordVoiceCallback',
+                // 录音完成回调
+                RECORD_VOICE_CALLBACK: 'recordVoiceCallback',
+                // 停止录音
+                STOP_RECORD: 'stopRecord',
+                //暂停录音
+                PAUSE_RECORD: 'pauseRecord',
+                //恢复录音
+                RESUM_RECORD: 'resumeRecord'
+            };
+            this.voiceId = '0';
+            this.voiceUrl;
+            this.curentVoiceUrl;
+            this.voiceName;
+            this.currentRecordTime = 0;
+            this.timer;
+            this.closeId = "";
+            this.isShowEditBox = false;
+            this.isColseRecord = false;
+            this.isWillShowPlayer = false;
+            this.btnEnable = true;
+            // 是否可以拖动录音滚动
+            this.isProgressCanDrag = false;
+            this.progressLeftX = 0;
+            this.progressRightX = 0;
+            this.isDraggingProgress = false;
+            // 发送给老师端录音通知超时时间
+            this.sendReocdMsgTimeOut;
+            this.isRecordEnd = false;
+        },
+        pageShow: function () {
+            this._render();
+            this._bindEvent();
+            this._initI18N();
+            this._initPlayer();
+            this._initRecord();
+        },
+        destroy: function () {
+            NDMediaPlayer.destroy();
+            self.mediaplayer = null;
+            this.writer = null;
+
+            if (window['Midware'].styleManager) {
+                Midware.styleManager.releaseStyle(this.cssStyleName);
+            }
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _render: function () {
+            var option = {
+                autoAdaptSize: true,
+                returnInstances: true,
+                lang: icCreatePlayer.lang,
+                img: {
+                    render: true,
+                    modal: true
+                },
+                video: {
+                    supportFullscreen: false,
+                    showFullscreenBtn: true
+                },
+                containerId: 'composition-panel',
+                onFullScreenChange: function (isFull) {
+                    self.$dispatchEvent('HandWriteDisplayChange', PresenterEventType.IC_PLAYER_EVENT, {
+                        'isFull': isFull
+                    });
+                }
+            };
+
+            // 题目
+            var div = self.$subject.find('div');
+            if (self.model.titleType === '1') {
+                div.first().html('<div class="label_text">' + self.i18nModel['Composition_Title'] + '</div><div class="txt_edit">' + self.model.title.replace(/<textEntry\/>/gi, '______') + '</div>');
+            } else {
+                div.first().html('<div class="label_text">' + self.i18nModel['Customed_Title'] + '</div>');
+            }
+            div.eq(2).html('<div class="label_text">' + self.i18nModel['Request'] + '</div><div class="txt_edit">' + self.model.text + '</div>');
+
+            // 素材
+            var ul = self.$source.find('.composition-subtabs');
+            var ul1 = self.$source.find('.composition-sub-contents');
+            for (var i = 0, len = self.model.asset.length; i < len; i++) {
+                var li = $('<li></li>');
+                var li1 = $('<li></li>');
+                if (i == 0) {
+                    li.addClass('current');
+                } else {
+                    li1.addClass('hide_page');
+                }
+                var title = self.model.assetTitle[i];
+                if (title === '' || title === undefined) {
+                    title = self.i18nModel['Material'] + (i + 1);
+                }
+                li.html('<span class="txt">' + title + '</span>');
+                ul.append(li);
+
+
+                li1.addClass('baseMod-scrollbar-style-gray');
+                li1.html('<div class="txt">' + self.model.asset[i] + '</div>');
+                ul1.append(li1);
+            }
+
+            //显示公式
+            if (typeof MathJax !== 'undefined') {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            }
+            //PC端和PPTShell不支持全屏
+            if (self.isTeacherPc || self.isPPTshell) {
+                option.video.showFullscreenBtn = false;
+            }
+
+            // 添加点击播放事件 修复BUG：161752 正在播放语音，点击播放题目中的视频或音频，语音未暂停播放
+            NDMediaPlayer.mediaOnStart(function () {
+                console.log("NDMediaPlayer OnStart");
+                // 老师端
+                if (self.audioPlayer && (self.isTeacherPc || self.isPPTshell)) {
+                    self.audioPlayer.played = false;
+                    if (self.recordAudio && self.recordAudio.duration && !self.recordAudio.paused) {
+                        self.recordAudio.pause();
+                    }
+                    if (self.recordStatu === self.mediaStatus.start) {
+                        self._pauseRecordAction();
+                    }
+                } else {
+                    self.$dispatchEvent('NDMediaPlayerStarted', PresenterEventType.IC_PLAYER_EVENT, "{}");
+                }
+            });
+            self.mediaplayer = NDMediaPlayer.render(self.$view, option);
+        },
+        //绑定事件
+        _bindEvent: function () {
+            this.$addEventListener('ResetTabs', PresenterEventType.IC_PLAYER_EVENT, this._resetTabs);
+            this.$addEventListener('writeLockQuestion', PresenterEventType.IC_PLAYER_EVENT, this._edit);
+            this.$attachDelegateEvent('mouseup', ['.nqti-base-composition-btn-item>li'], this._changeViewContentEvent);
+            this.$attachDelegateEvent('mouseup', ['.composition-subtabs>li'], this._changeAsset);
+
+            this.$attachDelegateEvent('mousedown', ['.composition-subtabs-left'], this._scrollMouseDown);
+            this.$attachDelegateEvent('mousedown', ['.composition-subtabs-right'], this._scrollMouseDown);
+            this.$attachDelegateEvent('mouseup', ['.composition-subtabs-left'], this._scroll);
+            this.$attachDelegateEvent('mouseup', ['.composition-subtabs-right'], this._scroll);
+            // 课堂状态监控
+            this._watchStatus();
+            // 手写板加载完毕
+            this.$addEventListener('HandWriterRequiredOver', PresenterEventType.IC_PLAYER_EVENT, this._handWriterRequiredOver);
+
+            this.$addEventListener("ShowRecordPop", PresenterEventType.IC_PLAYER_EVENT, this._showRecordPop);
+            this.$addEventListener("CompositionDelRecord", PresenterEventType.IC_PLAYER_EVENT, this._delRecord);
+
+            this.$addEventListener(self.recordEvent.RECORD_VOICE_CALLBACK, PresenterEventType.NATIVE_EVENT, self._recordVoiceCallback);
+            //this.$addEventListener('writeLockQuestion', PresenterEventType.IC_PLAYER_EVENT, this._edit);
+
+            this.$attachDelegateEvent('mouseup', ['.js_record_close'], this._closeRecordPop);
+        },
+        _unbindEvent: function () {
+            this.$removeEventListener();
+        },
+        /**
+         * 退出习题时候，重置作文题导航
+         * @param eventData
+         * @private
+         */
+        _resetTabs: function (eventData) {
+            self._changeViewContent(0);
+            //元素
+            var lis = self.$view.find('.composition-subtabs>li').removeClass();
+            lis.eq(0).addClass('current');
+            lis = self.$view.find('.composition-sub-contents>li');
+            lis.addClass('hide_page');
+            lis.eq(0).removeClass('hide_page');
+            //滚动条
+            self.$source.find('.composition-subtabs').css('left', '0px');
+        },
+        _changeViewContentEvent: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            while (!tar.is('li')) {
+                tar = tar.parent();
+            }
+            var index = self.$view.find('.nqti-base-composition-btn-item>li').index(tar);
+            this.$view.find('.nqti-base-composition-btn-item>li').removeClass('current');
+            tar.addClass('current');
+            this._changeViewContent(index);
+            this.$dispatchEvent('CompositionChangeViewContent', PresenterEventType.IC_PLAYER_EVENT, {
+                index: index
+            });
+        },
+        // 切换视图
+        _changeViewContent: function (index) {
+            this.status.tabIndex = index;
+            this._commitStatusUpdate();
+            //self.$view.find('.nqti-base-composition-bd').scrollTop(0);
+            if (index == 0) { //切到题干启用overflow-y样式
+                self.$view.find('.nqti-base-composition-bd').removeClass('hide_overflow-y');
+                if (!self.isPlayer && self.recordStatu === self.mediaStatus.start) {
+                    self._pauseRecordAction();
+                }
+            } else if (index == 1) {
+                self.$view.find('.nqti-base-composition-bd').addClass('hide_overflow-y');
+                if (!self.isPlayer && self.recordStatu === self.mediaStatus.start) {
+                    self._pauseRecordAction();
+                }
+            } else {
+                self.$view.find('.nqti-base-composition-bd').addClass('hide_overflow-y');
+            }
+            self.$view.find('.nqti-base-composition-bd').children().addClass('hide_page');
+            self.$view.find('.nqti-base-composition-bd').children().eq(index).removeClass('hide_page');
+            // 停止播放
+            NDMediaPlayer.mediaPauseAll();
+            // 显示隐藏手写板
+            var v = self.$view.find('.composition-write');
+            this.$dispatchEvent('CompositionHandWriteShowed', PresenterEventType.IC_PLAYER_EVENT, {
+                index: index
+                // width: v.width() - 38,
+                // height: v.height() - 20
+            });
+        },
+        // 切换素材Tab
+        _changeAsset: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            while (!tar.is('li')) {
+                tar = tar.parent();
+            }
+            var i = self.$view.find('.composition-subtabs>li').removeClass().index(tar);
+            tar.addClass('current');
+            var lis = self.$view.find('.composition-sub-contents>li');
+            lis.addClass('hide_page');
+            lis.eq(i).removeClass('hide_page');
+            // 停止播放
+            NDMediaPlayer.mediaPauseAll();
+            this.status.sourceTab.index = i;
+            this.status.sourceTab.left = self.$view.find('.composition-subtabs').css("left");
+            this._commitStatusUpdate();
+        },
+        _scrollMouseDown: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            tar.addClass('ui_btn_active');
+        },
+        // 素材左右移动
+        _scroll: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            tar.removeClass('ui_btn_active');
+            var direction = tar.hasClass('composition-subtabs-right') ? -1 : 1;
+            var ul = self.$source.find('.composition-subtabs');
+            var curleft = parseInt(ul.css('left').replace('px', '')) || 0;
+            var max = ul.width() - self.$source.width();
+            if (max < 0) max = 0;
+
+            if (direction == -1) {
+                curleft = curleft - 50;
+                if (curleft < -max - 90) curleft = -max - 90;
+            } else {
+                curleft = curleft + 50;
+                if (curleft > 0) curleft = 0;
+            }
+            ul.css('left', curleft + 'px');
+        },
+        _edit: function (eventData) {
+            if (eventData && eventData.lock !== undefined) {
+                // 停止播放
+                NDMediaPlayer.mediaPauseAll();
+            }
+        },
+        _syncTimer: function () {
+            if (self.isStudent) {
+                var data = {
+                    item: 'exam',
+                    type: 'query'
+                };
+                presenter.eventBus.sendEvent('TaskInfo', data);
+            }
+        },
+        _initI18N: function () {
+            this.$translateDeferred.done(function () {
+                self.$view.find('.lang_Composition_Question').html(self.i18nModel['Composition_Question']);
+                self.$view.find('.lang_Check_Question').html(self.i18nModel['Check_Question']);
+                self.$view.find('.lang_Check_Material').html(self.i18nModel['Check_Material']);
+                self.$view.find('.lang_Enter_Writing').html(self.i18nModel['Enter_Writing']);
+                self.$view.find('.lang_Semi_Topic_Title').html(self.i18nModel['Semi_Topic_Title']);
+                self.$view.find('.lang_Request').html(self.i18nModel['Request']);
+
+                // 录音相关
+                self.$view.find('.lang_Pop_audio_title').html(self.i18nModel['Pop_audio_title']);
+                self.$view.find('.lang_Dialog_record_cancel').html(self.i18nModel['Dialog_record_cancel']);
+                self.$view.find('.lang_Dialog_record_title').html(self.i18nModel['Dialog_record_title']);
+                self.$view.find('.lang_Dialog_record_save').html(self.i18nModel['Dialog_record_save']);
+                self.$view.find('.lang_Dialog_record_undetected').html(self.i18nModel['Dialog_record_undetected']);
+                self.$view.find('.lang_Dialog_record_know').html(self.i18nModel['Dialog_record_know']);
+                self.$view.find('.lang_Dialog_record_ensure').html(self.i18nModel['Dialog_record_ensure']);
+                self.defaultAudioName = self.i18nModel['Default_Audio_Name'];
+            });
+        },
+        _delRecord: function () {
+            var isRestart = false;
+            if (!self.isPlayer && self.recordStatu === self.mediaStatus.start) {
+                isRestart = true;
+                self._pauseRecordAction();
+            } else if ((self.isPlayer && self.recordAudio && !self.recordAudio.paused)) {
+                isRestart = true;
+                self.recordAudio.pause();
+            } else if (self.audioPlayer.played) {
+                isRestart = true;
+                self.audioPlayer.played = false;
+            }
+            self._showCommentMessageBox(self.i18nModel['Dialog_record_del'],
+                function () {
+                    if (isRestart) {
+                        if (!self.isPlayer && self.recordStatu === self.mediaStatus.pause) {
+                            self._resumeRecordAction();
+                        } else if (self.isPlayer && self.recordAudio && self.recordAudio.paused) {
+                            self.recordAudio.play();
+                        } else if (!self.audioPlayer.played) {
+                            self.audioPlayer.played = true;
+                        }
+                    }
+                }, function () {
+                    self._showPlayer(false);
+                    self.voicId = "";
+                    self.voicUrl = "";
+                    self.voiceName = "";
+                    var option = {
+                        name: self.voiceName,
+                        show: false
+                    };
+                    self._showAudioBtn(option);
+                });
+
+            event.stopPropagation(); //阻止冒泡
+            console.log("_delRecord");
+        },
+        /**
+         * 显示录音、播放录音弹窗
+         * @param eventData
+         * @private
+        */
+        _showRecordPop: function (eventData) {
+            var option = {
+                mode: "wood",
+                type: "toast",
+                text: "",
+                hidetime: 1200
+            };
+            if(self.recordStatu && (self.recordStatu == "start" || self.recordStatu == "pause") && self.$view.find('.js_audio_record').hasClass("hide_dom") == false) {                        
+                option.text = self.i18nModel['Message_Recording']; // "正在录音";
+                MessageBoxRemake.showPop($(".js_message_container")[0], option);
+                var removeMenuIndex = 3;                
+                var toggleMenuIndex = 2;
+                self._setMenuStyle(removeMenuIndex, toggleMenuIndex);
+                return;
+            };
+
+            if(self.audioPlayer.played){
+                option.text = self.i18nModel['Message_Record_Playing']; //"正在播放录音";
+                MessageBoxRemake.showPop($(".js_message_container")[0], option);
+                var removeMenuIndex = 2;                
+                var toggleMenuIndex = 3;
+                self._setMenuStyle(removeMenuIndex, toggleMenuIndex);
+
+                return;
+            }
+
+            if(eventData.type == 4 && self.audioPlayer.shown) {
+                option.text = self.i18nModel['Message_Record_File_Ready']; //"录音文件已打开";
+                MessageBoxRemake.showPop($(".js_message_container")[0], option);
+                var removeMenuIndex = 2;                
+                var toggleMenuIndex = 3;
+                self._setMenuStyle(removeMenuIndex, toggleMenuIndex);
+                return;                
+            }            
+
+            if (eventData.type == 3) {
+                var recordPop = self.$view.find('.js_audio_record');
+                if (self.voiceName
+                    && recordPop.hasClass('hide_dom')
+                    && eventData.show
+                    && self.recordStatu != self.mediaStatus.starts
+                    && self.recordStatu != self.mediaStatus.pause
+                ) {
+                    self._showAgainMessageBox();
+                } else {
+                    self._showPlayer(false);
+                    self._showRecord(eventData.show);
+                }
+                //this._updateRecordStatus(self.mediaStatus.ready);
+            }
+            if (eventData.type == 4) {
+                self._showPlayer(eventData.show);
+                self._showRecord(false);
+                if (self.curentVoiceUrl)
+                    self.audioPlayer.src = self.curentVoiceUrl;
+            }
+        },
+        _showPlayer: function (isShow) {
+            if (isShow && (self.recordStatu === self.mediaStatus.start || self.recordStatu === self.mediaStatus.pause || self.isRecordEnd)) {
+                isShow = false;
+                self.isWillShowPlayer = true;
+            }
+            self.audioPlayer.shown = isShow;
+            self.audioPlayer.name = self.voiceName;
+            self.audioPlayer.played = false;
+            // self.audioPlayer.time = 0;
+            // isShow ? self.$view.find(".js_player_container").removeClass("hide_dom") : self.$view.find(".js_player_container").addClass("hide_dom")
+        },
+        _showRecord: function (isSHow) {
+            var audioPop = self.$view.find(".js_audio_record");
+            if (!isSHow) {
+                self._pauseRecordAction();
+                self._closeRecordPop();
+            } else {
+                if (audioPop.hasClass('hide_dom')) {
+                    self._updateRecordStatus(this.mediaStatus.ready);
+                    audioPop.removeClass("hide_dom")
+                }
+
+            }
+        }
+        ,
+        _initPlayer: function () {
+            var context = this;
+            if (window['Midware']) {
+                Midware.componentRequire(['Common:AudioPlayer']).then(function (Components) {
+                    context.audioPlayer = new Vue({
+                        template: '<audio-player class="nqti-base_record audio_play" :src="src" :time.sync = "time" :name="name" :shown.sync="shown" :played.sync="played" :options="options" @close="close"></audio-player>',
+                        components: {
+                            'audio-player': Components['Common:AudioPlayer']
+                        },
+                        data: {
+                            src: '',
+                            name: '',
+                            time: 0,
+                            shown: false,
+                            played: false,
+                            options: {
+                                closable: true,
+                                step: 3
+                            }
+                        },
+                        watch: {
+                            played: function (next, curr) {
+                                console.log('AudioPlayer isPlayed：' + next);
+                                // 停止题目中播放器播放
+                                if (next) {
+                                    for (var key in self.mediaplayer) {
+                                        self.mediaplayer[key].mediaPause();
+                                    }
+                                }
+                            }
+                        },
+                        methods: {
+                            close: function () {
+                                //TODO
+                                self.$dispatchEvent("close_record_pop", PresenterEventType.IC_PLAYER_EVENT, { id: 3 });
+                                var menuIndex = 3;
+                                self._recoverMenuStyle(menuIndex);
+                            }
+                        }
+                    }).$mount();
+                    context.$view.find('.js_player_container').append(context.audioPlayer.$el);
+                    var player = context.$view.find(".audio_play");
+                    player.draggable({ containment: ".js-container", "cancel": ".record_close,.control_btn,.record_progress" });
+                    player.css({ 'left': '0em', 'top': '34.3em' });
+                });
+            }
+        },
+        _initRecord: function () {
+            this._initDragPop();
+            this._updateRecordStatus(this.mediaStatus.ready);
+            this._bindRecordClick();
+
+        }
+        ,
+        /**
+         * 录音和录音播放弹窗拖动功能
+        */
+        _initDragPop: function () {
+            self.$view.find(".js_audio_record").draggable({ containment: ".js-container", "cancel": ".record_close,.control_btn,.record_progress" });
+            //self.$view.find(".js_player_container").draggable({ containment: ".nqti-base-composition", "cancel": ".record_close,.control_btn,.record_progress" });
+        },
+
+        /**
+         * 三个按钮状态
+         */
+        _bindRecordClick: function () {
+            var btns = self.$view.find(".js_record_control").find("span");
+            // 左侧按钮事件
+            btns.eq(0).click(function () {
+                if (btns.eq(0).hasClass('control--disabled')) {
+                    return;
+                }
+                self._toggleRecordAndAudio(true);
+                if (self.recordAudio.paused) {
+                    self.recordAudio.play();
+                } else {
+                    self.recordAudio.pause();
+                }
+            });
+            // 中间按钮事件
+            btns.eq(1).click(function () {
+                if (btns.eq(1).hasClass('control--disabled')) {
+                    return;
+                }
+                self._toggleRecordAndAudio(false);
+                //self._startRecordAction();
+                self.setRecordBtnEnable(false);
+                self.isShowEditBox = false;
+                if (self.recordStatu == self.mediaStatus.ready || self.recordStatu == self.mediaStatus.stop) {
+                    self._startRecordAction();
+                } else if (self.recordStatu == self.mediaStatus.start) {
+                    self._pauseRecordAction();
+                } else if (self.recordStatu == self.mediaStatus.pause) {
+                    self._resumeRecordAction();
+                }
+                //self._startRecordTime();
+            });
+            // 右侧按钮事件
+            btns.eq(2).click(function () {
+                if (btns.eq(2).hasClass('control--disabled')) {
+                    return;
+                }
+                if (self.recordStatu == self.mediaStatus.start) {
+                    self.isShowEditBox = true;
+                    self._pauseRecordAction();
+                } else if (self.isPlayer && self.recordAudio && !self.recordAudio.paused) {
+                    self.isShowEditBox = true;
+                    self.recordAudio.pause();
+                    self._showEditMessageBox(self.voiceUrl);
+                } else {
+                    self._showEditMessageBox(self.voiceUrl);
+                }
+            });
+            var btnProgress = self.$view.find(".js_audio_record .progress_btn")
+            btnProgress.mousedown(self._progressDragSart);
+            // 增加touch事件
+            btnProgress.on('touchStart', self._progressDragSart);
+            btnProgress.on('touchmove', self._progressDragMove);
+            btnProgress.on('touchend', self._progressDragEnd);
+            btnProgress.on('touchcancel', self._progressDragEnd);
+        },
+
+        /**
+         * 录音滚动条开始拖动
+         */
+        _progressDragSart: function (event) {
+            console.log('_progressDragSart')
+            if (!self.isProgressCanDrag)
+                return;
+            var recordProgress = self.$view.find('.js_audio_record .record_progress .progress_wrap')
+            var rect = recordProgress.get(0).getBoundingClientRect();
+            self.progressLeftX = rect.left;
+            self.progressRightX = rect.left + rect.width;
+            self.isDraggingProgress = true;
+            document.addEventListener("mouseup", self._progressDragEnd);
+            document.addEventListener("mousemove", self._progressDragMove);
+            document.addEventListener("mouseleave", self._progressDragEnd);
+
+            self._pauseRecordTime();
+        },
+
+        /**
+         *拖动中
+         */
+        _progressDragMove: function (event) {
+            if (!self.isProgressCanDrag || !self.isDraggingProgress)
+                return;
+            var pointer = event;
+            // if (isTouchEvent(event)) {
+            //     pointer = event.targetTouches[0] || event.touches[0];
+            // }
+            var x = pointer.pageX;
+            var time = 0;
+            if (self.recordAudio.duration) {
+                var totalTime = self.recordAudio.duration;
+                if (x <= self.progressLeftX) {
+                    time = 0;
+                } else if (x >= self.progressRightX) {
+                    time = totalTime;
+                } else {
+                    time = totalTime * ((x - self.progressLeftX) / (self.progressRightX - self.progressLeftX));
+                }
+                console.log('time : ' + time);
+                if (time > totalTime) {
+                    time = totalTime;
+                }
+                self.currentRecordTime = time * 100;
+                self._updateTime(self.currentRecordTime);
+            }
+        },
+
+        /**
+         * 拖动完成
+         */
+        _progressDragEnd: function (event) {
+            console.log('_progressDragEnd')
+            if (!self.isProgressCanDrag || !self.isDraggingProgress)
+                return;
+            if (self.recordAudio.duration) {
+                var reStart = !self.recordAudio.paused;
+                if (self.currentRecordTime === 0 && self.recordAudio.duration > 0.01) {
+                    self.recordAudio.currentTime = 0.01;
+                } else {
+                    self.recordAudio.currentTime = self.currentRecordTime / 100;
+                }
+                if (reStart) {
+                    self._startRecordTime();
+                }
+            }
+            self.isDraggingProgress = false;
+            document.removeEventListener("mousemove", self._progressDragMove);
+            document.removeEventListener("mouseleave", self._progressDragEnd);
+            document.removeEventListener("mouseup", self._progressDragEnd);
+        },
+
+        /**
+         * 关闭录音弹窗
+         */
+        _closeRecordPop: function () {
+            var recordPop = self.$view.find('.js_audio_record');
+            if (self.recordStatu === self.mediaStatus.start || self.recordStatu === self.mediaStatus.pause || self.isRecordEnd) {
+                var isRestart = false;
+                if (self.recordStatu === self.mediaStatus.start) {
+                    isRestart = true;
+                    self._pauseRecordAction();
+                } else if ((self.isPlayer && self.recordAudio && !self.recordAudio.paused)) {
+                    isRestart = true;
+                    self.recordAudio.pause();
+                }
+
+                self._showCommentMessageBox(self.i18nModel['Dialog_record_exit'], function () {
+                    if (isRestart) {
+                        if (!self.isPlayer) {
+                            self._resumeRecordAction();
+                        } else {
+                            self.recordAudio.play();
+                        }
+                    }
+                }, function () {
+                    self._stopRecordAction();
+                    if (!recordPop.hasClass('hide_dom')) {
+                        self.isRecordEnd = false;
+                        self.$dispatchEvent("close_record_pop", PresenterEventType.IC_PLAYER_EVENT, { id: 2 });
+                        recordPop.addClass("hide_dom");
+                        var menuIndex = 2;
+                        self._recoverMenuStyle(menuIndex);
+                    }
+                    if (self.isWillShowPlayer) {
+                        self._showPlayer(true);
+                        self.isWillShowPlayer = false;
+                    }
+                })
+            } else {
+                if (!recordPop.hasClass('hide_dom')) {
+                    self.isRecordEnd = false;
+                    self.$dispatchEvent("close_record_pop", PresenterEventType.IC_PLAYER_EVENT, { id: 2 });
+                    recordPop.addClass("hide_dom");
+
+                    var menuIndex = 2;
+                    self._recoverMenuStyle(menuIndex);
+                }
+            }
+        },
+
+        _releaseRecord: function () {
+            self._stopRecordAction();
+            var recordPop = self.$view.find('.js_audio_record');
+            if (!recordPop.hasClass('hide_dom')) {
+                self.$dispatchEvent("close_record_pop", PresenterEventType.IC_PLAYER_EVENT, { id: 2 });
+                self.isRecordEnd = false;
+                recordPop.addClass("hide_dom");
+
+                var menuInex = 2;
+                self._recoverMenuStyle(menuInex);
+            }
+            self._showPlayer(false);
+            self.$view.find('.js_dialog_edit').addClass('hide_dom');
+            self.$view.find('.js_dialog_normal').addClass('hide_dom');
+            self.$view.find('.js_dialog_single').addClass('hide_dom');
+        },
+
+        /**
+         * 显示一个按钮弹窗
+         */
+        _showSingleMessageBox: function () {
+            var dialog = self.$view.find('.js_dialog_single');
+            if (dialog.hasClass('hide_dom')) {
+                dialog.removeClass('hide_dom')
+            }
+            dialog.find('.com_btn_round2').click(function () {
+                if (!dialog.hasClass('hide_dom')) {
+                    dialog.addClass('hide_dom')
+                }
+            })
+        },
+
+        _showAgainMessageBox: function () {
+            var isRestart = false;
+            if (self.audioPlayer.played) {
+                isRestart = true;
+                self.audioPlayer.played = false;
+            }
+            self._showCommentMessageBox(self.i18nModel['Dialog_record_again'], function () {
+                self.$dispatchEvent("close_record_pop", PresenterEventType.IC_PLAYER_EVENT, { id: 2 });
+                if (isRestart) {
+                    self.audioPlayer.played = true;
+                }
+                var menuIndex = 2;
+                self._recoverMenuStyle(menuIndex);
+            }, function () {
+                self._showPlayer(false)
+                self._showRecord(true);
+                //self._updateRecordStatus(self.recordStatu);
+            });
+        },
+
+        /**
+         * 显示普通弹窗
+         */
+        _showCommentMessageBox: function (message, leftCallback, rightCallback) {
+            var dialog = self.$view.find('.js_dialog_normal');
+            dialog.find('.pop_confirm_text').text(message);
+            if (dialog.hasClass('hide_dom')) {
+                dialog.removeClass('hide_dom');
+            }
+            dialog.find('.js_btn_left').off("mouseup").on('mouseup', function () {
+                leftCallback();
+                if (!dialog.hasClass('hide_dom')) {
+                    dialog.addClass('hide_dom');
+                }
+            });
+            dialog.find('.js_btn_right').off("mouseup").on('mouseup', function () {
+                rightCallback();
+                if (!dialog.hasClass('hide_dom')) {
+                    dialog.addClass('hide_dom');
+                }
+            });
+        },
+
+        /**
+         * 显示编辑弹窗
+         */
+        _showEditMessageBox: function (url) {
+            var mVoiceUrl = url;
+            var dialog = self.$view.find('.js_dialog_edit');
+            var btnRight = dialog.find('.js_btn_right');
+            var editText = dialog.find('.confirm_txt').val(self.defaultAudioName);
+            btnRight.removeClass('com_btn_disabled ');
+            editText[0].oninput = function () {
+                if (!dialog.find('.confirm_txt').val().trim()) {
+                    btnRight.addClass('com_btn_disabled ');
+                } else {
+                    btnRight.removeClass('com_btn_disabled ');
+                }
+            };
+            if (dialog.hasClass('hide_dom')) {
+                dialog.removeClass('hide_dom')
+            }
+            dialog.find('.js_btn_left').off("mouseup").on('mouseup', function () {
+                if (self.isShowEditBox) {
+                    if (self.isRecordEnd && !self.isPlayer) {
+                        // if (self.recordStatu === self.mediaStatus.pause || self.recordStatu === self.mediaStatus.start)
+                        //     self._stopRecordAction();
+                        // self.$view.find(".js_audio_record").addClass("hide_dom");
+                    } else if (!self.isPlayer) {
+                        self._resumeRecordAction();
+                    } else {
+                        self.recordAudio.play();
+                    }
+                    self.isShowEditBox = false;
+                }
+                if (!dialog.hasClass('hide_dom')) {
+                    dialog.addClass('hide_dom')
+                }
+            });
+            dialog.find('.js_btn_right').off("mouseup").on('mouseup', function () {
+                self.isRecordEnd = false;
+                self.isShowEditBox = false;
+                var name = dialog.find('.confirm_txt').val().trim();
+                console.log("voiceUrl : " + self.voiceUrl + "，voiceName : " + self.voiceName);
+                if (!name) {
+                    // self.voiceName = "语音001"
+                    return;
+                }
+                //self._updateRecordStatus(self.mediaStatus.stop);
+                self.curentVoiceUrl = mVoiceUrl;
+                self.voiceUrl = "";
+                self.voiceName = name;
+                if (!dialog.hasClass('hide_dom')) {
+                    dialog.addClass('hide_dom')
+                }
+                var option = {
+                    name: self.voiceName,
+                    show: true
+                }
+                self.$view.find(".js_audio_record").addClass("hide_dom");
+
+                var menuInex = 2;
+                self._recoverMenuStyle(menuInex);
+
+                self._showAudioBtn(option)
+                self._stopRecordAction();
+            });
+        },
+
+        /**
+         * 发出录音事件
+         */
+        _startRecordAction: function () {
+            self.isColseRecord = false;
+            self._toggleRecordAndAudio(false);
+            self.voiceId = self._getUid();
+            self.currentRecordTime = 0;
+            var data = {
+                // 字符类型, UUID 标识评测声音
+                voiceId: self.voiceId,
+                options: {
+                    bissType: this.bissType,
+                    maxDuration: self.MAX_TIME * 10, // 录音超时时间
+                    needEvaluating: false,
+                    volumeReport: false
+                }
+            }
+            //self.$view.find('.record_con_audio').addClass('audio--animate');
+            console.log("_startRecordAction = " + JSON.stringify(data));
+            self.$dispatchEvent(self.recordEvent.RECORD_VOICE, PresenterEventType.NATIVE_EVENT, data);
+            //self._updateRecordStatus(self.mediaStatus.start);
+        },
+
+        _getUid: function () {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16);
+            });
+        }
+        ,
+
+        /**
+         * 发出暂停录音事件
+         */
+        _pauseRecordAction: function () {
+            var data = {
+                voiceId: self.voiceId
+            };
+            console.log("_pauseRecordAction: ", "action-data=" + JSON.stringify(data));
+            self.$dispatchEvent(self.recordEvent.PAUSE_RECORD, PresenterEventType.NATIVE_EVENT, data);
+            //self._updateRecordStatus(self.mediaStatus.pause);
+        },
+
+        //恢复录音
+        _resumeRecordAction: function () {
+            self._toggleRecordAndAudio(false);
+            var data = {
+                voiceId: self.voiceId
+            };
+            console.log("_resumeRecordAction: ", "action-data=" + JSON.stringify(data));
+            self.$dispatchEvent(self.recordEvent.RESUM_RECORD, PresenterEventType.NATIVE_EVENT, data);
+            //self._updateRecordStatus(self.mediaStatus.start);
+        },
+
+        /**
+         * 停止录音事件
+         */
+        _stopRecordAction: function () {
+            self.isColseRecord = true;
+            var data = {
+                voiceId: self.voiceId,
+                options: {
+                    needEvaluating: false
+                }
+            }
+            console.log('_stopRecordAction', data);
+            self.$dispatchEvent(self.recordEvent.STOP_RECORD, PresenterEventType.NATIVE_EVENT, data)
+        },
+
+        /**
+         * 录音
+         */
+        _recordVoiceCallback: function (eventData) {
+
+            console.log('================recordVoiceCallback====================');
+            console.log(eventData);
+            console.log('================recordVoiceCallback====================');
+            // self._updateRecordStatus(self.mediaStatus.stop);
+            // self.$view.find('.record_con_audio').removeClass('audio--animate');
+            switch (eventData.code) {
+                case 0:
+                    if (self.sendReocdMsgTimeOut) {
+                        clearTimeout(self.sendReocdMsgTimeOut);
+                    }
+                    var status = eventData.data.status;
+                    if (status === self.mediaStatus.stop) {
+                        if (self.isColseRecord) {
+                            self._stopRecordTime();
+                            self.isColseRecord = false;
+                            self.voiceUrl = "";
+                        } else {
+                            self.isRecordEnd = true;
+                            self._pauseRecordTime();
+                            self._initRecordAudio(eventData.data.url);
+                            self.voiceUrl = eventData.data.url;
+                            self.currentRecordTime = self.MAX_TIME;
+                            self._updateTime(self.currentRecordTime);
+                            self._showEditMessageBox(eventData.data.url);
+                        }
+                        self.isColseRecord = false;
+                    } else if (status === self.mediaStatus.pause) {
+                        if (self.isShowEditBox) {
+                            self._showEditMessageBox(eventData.data.url);
+                        }
+                        self._pauseRecordTime();
+                        self._initRecordAudio(eventData.data.url);
+                        self.voiceUrl = eventData.data.url;
+                    } else if (status === self.mediaStatus.start) {
+                        self._startRecordTime();
+                        // 停止题目中的播放器
+                        for (var key in self.mediaplayer) {
+                            self.mediaplayer[key].mediaPause();
+                        }
+                    }
+
+                    self._updateRecordStatus(status);
+                    break;
+                case 2:
+                    self._interruptRecord(eventData);
+                    break;
+                case 3:
+                    self._interruptRecord(eventData);
+                    break;
+            }
+        },
+        /**
+         * 录音中断处理
+         */
+        _interruptRecord: function (eventData) {
+            if (self.sendReocdMsgTimeOut) {
+                clearTimeout(self.sendReocdMsgTimeOut);
+            }
+            self._updateRecordStatus(self.recordStatu);
+            if (self.recordStatu === self.mediaStatus.start) {
+                self._pauseRecordTime();
+                self._initRecordAudio(eventData.tmp_url);
+                self.voiceUrl = eventData.tmp_url;
+                self._updateRecordStatus(self.mediaStatus.pause);
+            } else if (self.recordStatu === self.mediaStatus.pause) {
+                self._toggleRecordAndAudio(true);
+                self.isProgressCanDrag = true;
+            }
+            if (self.isProgressCanDrag) {
+                self.recordAudio.pause();
+            }
+            self._showSingleMessageBox();
+        },
+
+        /**
+         * 设置3个按钮的可用性;发送消息的过程中和回调过程中设置不可用
+         */
+        setRecordBtnEnable: function (isEnable) {
+            if (self.sendReocdMsgTimeOut) {
+                clearTimeout(self.sendReocdMsgTimeOut);
+            }
+            if (!isEnable) {
+                self.sendReocdMsgTimeOut = setTimeout(function () {
+                    console.log("请求PC录音超时，录音没响应");
+                    self.setRecordBtnEnable(true);
+                    self.recordStatu = self.mediaStatus.ready;
+                }, 5000);
+            }
+            console.log('setRecordBtnEnable : ' + isEnable);
+            self.isEnable = isEnable;
+            var btns = self.$view.find(".js_record_control").find("span");
+            var i = 0;
+            for (i = 0; i < btns.length; i++) {
+                if (isEnable) {
+                    btns.removeClass('control--disabled')
+                } else {
+                    btns.addClass('control--disabled')
+                }
+            }
+        },
+
+        /**
+         * 更新录音状态
+         */
+        _updateRecordStatus: function (statu) {
+            self.recordStatu = statu;
+            switch (statu) {
+                case self.mediaStatus.ready:
+                    self.isRecordEnd = false;
+                    self.isColseRecord = false;
+                    this._changeRecordBtnStyle([
+                        "control_btn control_s hide_dom",
+                        "control_btn control_m control_record",
+                        "control_btn control_s hide_dom"]);
+                    self._updateTime(0);
+                    self.$view.find('.record_con_audio').removeClass('audio--animate');
+
+                    break;
+                case self.mediaStatus.start:
+                    this._changeRecordBtnStyle([
+                        "control_btn control_s control_play control--disabled",
+                        "control_btn control_m control_stop",
+                        "control_btn control_s control_save"]);
+
+                    self.$view.find('.record_con_audio').addClass('audio--animate');
+
+                    break;
+                case self.mediaStatus.pause:
+                    if (self.currentRecordTime >= self.MAX_TIME) {
+                        this._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record control--disabled",
+                            "control_btn control_s control_save"]);
+                    } else {
+                        this._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record",
+                            "control_btn control_s control_save"]);
+                    }
+                    self.$view.find('.record_con_audio').removeClass('audio--animate');
+
+                    break;
+                case self.mediaStatus.stop:
+                    if (self.currentRecordTime >= self.MAX_TIME) {
+                        this._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record control--disabled",
+                            "control_btn control_s control_save"]);
+                    } else {
+                        this._changeRecordBtnStyle([
+                            "control_btn control_s hide_dom",
+                            "control_btn control_m control_record",
+                            "control_btn control_s hide_dom"]);
+                    }
+                    self.$view.find('.record_con_audio').removeClass('audio--animate');
+                    break;
+            }
+        },
+
+        /**
+         * 三个按钮状态
+         */
+        _changeRecordBtnStyle: function (styles) {
+            var btns = self.$view.find(".js_record_control").find("span");
+            var i = 0;
+            for (i = 0; i < styles.length; i++) {
+                btns.eq(i).removeClass();
+                btns.eq(i).addClass(styles[i]);
+            }
+        },
+        /**
+         * 加载组件
+         * @private
+         */
+        _requireComponent: function (conifgData) {
+            var config = {
+                addonId: conifgData.addonId,
+                renderTo: '.com_lay_write',
+                layout: {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0
+                },
+                properties: conifgData.properties,
+                callback: conifgData.callback
+            };
+            return this.playerController.require(config);
+        },
+        // 计时器
+        _startRecordTime: function () {
+            if (self.timer) {
+                clearInterval(self.timer);
+            }
+            self.timer = setInterval(function () {
+                if (!self.isPlayer) {
+                    self.currentRecordTime++;
+                    if (self.currentRecordTime >= self.MAX_TIME) {
+                        // 十分钟后
+                        self.isRecordEnd = true;
+                        self.isShowEditBox = true;
+                        self._pauseRecordAction();
+                    }
+                } else {
+                    var time = self.recordAudio.currentTime > self.recordAudio.duration ? self.recordAudio.duration : self.recordAudio.currentTime;
+                    self.currentRecordTime = time * 100;
+                    if (self.recordAudio.currentTime >= self.recordAudio.duration) {
+                        self.recordAudio.currentTime = self.recordAudio.duration;
+                    }
+                }
+                if (!self.isDraggingProgress || !self.isPlayer) {
+                    self._updateTime(self.currentRecordTime);
+                }
+            }, 10);
+        },
+        _stopRecordTime: function () {
+            if (self.timer) {
+                clearInterval(self.timer);
+            }
+            self.timer = null;
+            self.currentRecordTime = 0;
+            self._updateTime(0);
+
+        },
+        _pauseRecordTime: function () {
+            if (self.timer) {
+                clearInterval(self.timer);
+                self.timer = null;
+            }
+        },
+        _updateTime: function (time) {
+            if (time > self.MAX_TIME) {
+                time = self.MAX_TIME;
+            }
+            var mTime = self._formatTime(time)
+            self.$recordMinute.text(mTime.minute + ' : ')
+            self.$recordSecond.text(mTime.second)
+            if (!self.isPlayer) {
+                self.$recordProgress.css('width', time / (self.MAX_TIME) * 100 + '%');
+            } else {
+                self.$audioProgress.css('width', time / self.recordAudio.duration + '%');
+            }
+        },
+        _formatTime: function (time) {
+            time = time / 100;
+            var minute = 0;
+            // 修复BUG： 161558 录音界面分、秒、百分之秒颜色显示与需求不符
+            if (time > 0) {
+                self.$recordSecond.addClass('cur');
+            } else {
+                self.$recordSecond.removeClass('cur');
+            }
+            if (time >= 60) {
+                minute = Math.floor(time / 60);
+                self.$recordMinute.addClass('cur');
+                self.$recordSecond.addClass('cur');
+            } else {
+                self.$recordMinute.removeClass('cur');
+            }
+            if (minute < 10) {
+                minute = '0' + minute;
+            }
+            var second = (time % 60);
+            if (second < 10) {
+                second = '0' + second.toFixed(2);
+            } else {
+                second = second.toFixed(2);
+            }
+            return { minute, second }
+        },
+
+        _showAudioBtn: function (option) {
+            this.$dispatchEvent('CompositionShowAudioBtn', PresenterEventType.IC_PLAYER_EVENT, option);
+        },
+
+        _recoverMenuStyle: function (menuIndex) {
+            this.$dispatchEvent('CompositionRecoverMenuStyle', PresenterEventType.IC_PLAYER_EVENT, menuIndex);
+        },
+
+        _setMenuStyle: function(removeMenuIndex, toggleMenuIndex) {
+            this.$dispatchEvent('CompositionSetMenuStyle', PresenterEventType.IC_PLAYER_EVENT, {removeMenuIndex: removeMenuIndex, toggleMenuIndex: toggleMenuIndex});
+        },
+
+        /**
+         * 录音界面中切换录音和音频播放器
+         */
+        _toggleRecordAndAudio: function (isPlayer) {
+            self.isPlayer = isPlayer;
+            if (isPlayer) {
+                self.$recordProgress.css('width', self.recordAudio.duration * 100 / self.MAX_TIME * 100 + '%');
+            } else {
+                if (self.isProgressCanDrag) {
+                    self.isProgressCanDrag = false;
+                    if (self.recordAudio.duration) {
+                        self.currentRecordTime = self.recordAudio.duration * 100;
+                    }
+                }
+                self.$audioProgress.css('width', '100%');
+            }
+        },
+        _initRecordAudio: function (src) {
+            if (!self.recordAudio) {
+                self.recordAudio = new Audio(src);
+                self.recordAudio.addEventListener('playing', function () {
+                    console.log("playing");
+                    self._changeRecordBtnStyle([
+                        "control_btn control_s control_stop",
+                        "control_btn control_m control_record control--disabled",
+                        "control_btn control_s control_save"]);
+                    self._startRecordTime();
+                    self.$view.find('.record_con_audio').addClass('audio--animate');
+                    // 停止题目中的播放器
+                    for (var key in self.mediaplayer) {
+                        self.mediaplayer[key].mediaPause();
+                    }
+                });
+                self.recordAudio.addEventListener('pause', function () {
+                    console.log("pause");
+                    self._pauseRecordTime();
+                    self.currentRecordTime = self.recordAudio.duration * 100;
+                    if (!self.isRecordEnd) {
+                        self._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record",
+                            "control_btn control_s control_save"]);
+                    } else {
+                        self._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record control--disabled",
+                            "control_btn control_s control_save"]);
+                    }
+                    self.$view.find('.record_con_audio').removeClass('audio--animate');
+                });
+                self.recordAudio.onended = function () {
+                    console.log("end");
+                    self._pauseRecordTime();
+                    self.currentRecordTime = self.recordAudio.duration * 100;
+                    self._updateTime(self.currentRecordTime);
+                    if (!self.isRecordEnd) {
+                        self._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record",
+                            "control_btn control_s control_save"]);
+                    } else {
+                        self._changeRecordBtnStyle([
+                            "control_btn control_s control_play",
+                            "control_btn control_m control_record control--disabled",
+                            "control_btn control_s control_save"]);
+                    }
+                    self.$view.find('.record_con_audio').removeClass('audio--animate');
+                };
+                // self.recordAudio.addEventListener('timeupdate', function () {
+                // var time = self.recordAudio.currentTime > self.recordAudio.duration ? self.recordAudio.duration : self.recordAudio.currentTime;
+                // self._updateTime(time * 100);
+                // });
+            }
+            self.setRecordBtnEnable(false);
+            self.recordAudio.src = src;
+
+            self.recordAudio.canplay = self._initAudioCallback();
+        },
+        _initAudioCallback: function () {
+            console.log("canPlayer")
+            self.isProgressCanDrag = true;
+            self.setRecordBtnEnable(true);
+        },
+        /**
+         * 手写板加载完毕
+         */
+        _handWriterRequiredOver: function () {
+            this.$handwriterRequiredDef.resolve();
+        },
+        /**
+         * 课堂状态监控
+         */
+        _watchStatus: function () {
+            if (!this.isTeacherPc) {
+                return;
+            }
+            // 多媒体进度监控
+            NDMediaPlayer.mediaOnTimeupdate(function (o) {
+                var key = o.mediaType + '-' + o.index;
+                self.status.media[key] = {};
+                self.status.media[key]['mediaType'] = o.mediaType;
+                self.status.media[key]['index'] = o.index;
+                self.status.media[key]['currentTime'] = o.currentTime;
+                self.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                });
+            });
+            // 素材滚动条监控
+            self.$view.find('.composition-sub-contents>li').scroll(function (e) {
+                var tar = $(e.target);
+                var index = $('.composition-sub-contents>li').index(tar);
+                self.status.sourceScrollTop[index] = $(this).scrollTop();
+                self.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                });
+            });
+            // 题目页面滚动条监控
+            self.$subject.scroll(function (e) {
+                self.status.subjectScrollTop = $(this).scrollTop();
+                self._commitStatusUpdate();
+            });
+        },
+        /**
+         * 状态变更通知
+         */
+        _commitStatusUpdate: function () {
+            if (!this.isTeacherPc) {
+                return;
+            }
+            this.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+            });
+        }
+    });
+
+    window.AddonCompositionPanel_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

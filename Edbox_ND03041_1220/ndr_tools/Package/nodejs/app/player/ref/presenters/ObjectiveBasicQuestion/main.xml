@@ -1,0 +1,1696 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ObjectiveBasicQuestion'>
+<properties>
+
+                <property name="id" displayName="题目id" type="string" isLocalized="false" />
+                <property name="type_code" displayName="题目类型编码" type="string" isLocalized="false" />
+                <property name="type_name" displayName="题目的类型名称" type="string" isLocalized="false" />
+                <property name="url" displayName="题目xml地址" type="question" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="objective-statistics-remake" version="1.2.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="baseMod-com-layout-title"><p class="baseMod-tit js_qti_question_title"></p></div><div class="baseMod-com-layout-body baseMod-scrollbar-style-gray js_objective_qti_player"></div><div class="ndui-pop ndui__pop--skin-wood hide_dom js_analysis_panel"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="javascript:;" class="ndui-pop-close left"></a> <a href="javascript:;" class="ndui-pop-close right"></a><div class="ndui__box--wood"><div class="ndui__box-wood--wrap"><div class="analysis_wrap"><div class="analysis_content"><h2 class="analysis_title">解析</h2><div class="analysis_text"></div></div></div></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+function ObjectiveBasicQuestionService(presenter) {
+  this.presenter = presenter;
+  //是否处于锁定状态
+  this.lockState = false;
+  //是否处于显示答案状态
+  this.showAnswerState = {
+    hasShow: false
+  };
+}
+
+ObjectiveBasicQuestionService.prototype = {
+  /*****************作答流程接口實現****************/
+  /**
+   * 作答流程预处理接口
+   * @returns {*}
+   */
+  getPreProcess: function() {
+    if (!this.presenter.isStudent) {
+      return null
+    }
+    // 完型填空
+    if ('cloze' === this.presenter.model.type_code) {
+      var result = this.presenter._getQTIPlayerResult()
+
+      var noAnswers = []
+      if (typeof result['RESPONSE_1-1'] != 'undefined') {
+        var answer = result['RESPONSE_1-1']
+        var answerLength = answer.value.length
+        for (var i = 0; i < answerLength; i++) {
+          if ('' == answer.value[i]) {
+            noAnswers.push(answer.value[i])
+          }
+        }
+        // 有未作答时,弹出提示
+        if (noAnswers.length > 0) {
+          return {
+            type: 'tip',
+            data: {
+              msg: this.presenter.$translator.translate('submit_tip', [answerLength - noAnswers.length, noAnswers.length])
+            }
+          }
+        }
+      } else {
+        return null
+      }
+
+
+    }
+
+    return null
+  },
+  getQuestionInfo: function() {
+    return this.presenter._getQuestionInfo();
+  },
+
+  /** region:【TQD69330】智慧课堂-在PC端放映时的习题展示题页增加查看答案功能 新增接口 **/
+  //是否有解析
+  hasAnalysis: function() {
+    return this.presenter._hasAnalysis();
+  },
+  //显示\隐藏解析
+  setAnalysisVisible: function(visible) {
+    this.presenter._setAnalysisVisible(visible);
+  },
+  /** #endregion **/
+
+  showAnswer: function(answerType, specialAnswer) {
+    var self = this;
+    var options = this.presenter._getQTIRenderOption();
+
+    if (answerType === 'user') {
+      if (specialAnswer != undefined && specialAnswer.answer.user_response.length == 1) {
+        this.presenter.qtiPlayer.setAnswer(specialAnswer.answer.user_response[0]);
+      }
+      //如果是PPTShell的场景, 显示答案的同时进行作答判断
+      if (this.presenter.isPPTShell || this.presenter.isPC) {
+        this.presenter.qtiPlayer.showCheckedAnswer({
+          showSubSequence: true
+        });
+      } else {
+        //显示用户的作答结果
+        this.presenter.qtiPlayer.showAnswer();
+      }
+    } else if (answerType === 'correct') {
+      //显示正确的作答结果
+      //点击公布结果，老师端正确答案没有被显示，因为该if条件永远返回false
+      if (options.hideAnswerArea == undefined) {
+        this.presenter.qtiPlayer.showCorrectAnswer({
+          showSubSequence: true
+        });
+      }
+    } else {
+      //没有参数是显示正确答案
+      //点击公布结果，老师端正确答案没有被显示，因为该if条件永远返回false
+      if (options.hideAnswerArea == undefined) {
+        this.presenter.qtiPlayer.showCorrectAnswer({
+          showSubSequence: true
+        });
+      }
+    }
+    this.presenter.qtiPlayer.setLock(this.lockState, this.lockState);
+    // if (options.showCheckedAnswer == true) {
+    //     options.showAnswer = false;
+    // }
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {
+    //     self.presenter.qtiHasRender = true;
+    //     //记录显示作答结果的状态
+    //     self.showAnswerState = {
+    //         hasShow: true, answerType: answerType == undefined ? 'correct' : 'user',
+    //         specialAnswer: specialAnswer
+    //     };
+    // });
+    self.presenter.qtiHasRender = true;
+    //记录显示作答结果的状态
+    self.showAnswerState = {
+      hasShow: true,
+      answerType: answerType == undefined ? 'correct' : 'user',
+      specialAnswer: specialAnswer
+    };
+  },
+  /**
+   * 获取作答结果
+   */
+  getResult: function() {
+    this.presenter.logger.debug('开始获作答结果');
+    var answerResult = {
+      questionId: this.presenter.model.id,
+      answerState: 'NO_ANSWER',
+      answer: {
+        answer_result: false,
+        correct_response: [],
+        user_response: []
+      }
+    };
+    var result = this.presenter._getQTIPlayerResult();
+    var correctResult = this.presenter._getQTIPlayerCorrectResult();
+    //是否作答正确
+    var isCorrect = this.presenter._checkResult(result);
+    //判断作答状态是否为未完成
+    var isNoAnswer = (this.presenter.qtiPlayer.getAnswerState().completionStatus === 'INCOMPLETE');
+    if (isCorrect === true) {
+      //如果作答正确
+      answerResult.answerState = 'COMPLETE';
+    } else if (isCorrect === false && isNoAnswer === false) {
+      //如果做错,但有做过
+      answerResult.answerState = 'NO_COMPLETE';
+    } else if (isNoAnswer === true) {
+      //如果没有做过
+      answerResult.answerState = 'NO_ANSWER';
+    }
+
+    answerResult.answer.answer_result = isCorrect;
+    answerResult.answer.correct_response.push(correctResult);
+    answerResult.answer.user_response.push(result);
+
+    return answerResult;
+  },
+  /**
+   * 显示作答结果提示
+   * @param options
+   */
+  showResultHint: function(options) {
+    //TODO:基础题似乎不需要实现该方法
+  },
+  /**
+   * 锁定当前题目,使其不可作答
+   */
+  lockQuestion: function() {
+    this.setAnalysisVisible(false); //发题后，关闭解析弹窗
+
+    //如果当前已经是LOCK状态, 不处理
+    if (this.lockState === true) {
+      return;
+    }
+    if (this.presenter.qtiPlayer === null) {
+      this.presenter.logger.error('Null Reference of QTI Player!');
+      return;
+    }
+    //获取通用的渲染配置
+    var self = this;
+    var options = this.presenter._getQTIRenderOption();
+    this.presenter.qtiPlayer.setLock(true, true);
+    // options.showAnswer = true;
+    this.presenter.qtiPlayer.showAnswer();
+    if (this.presenter.lazyLoad === true) {
+      // options.showQuestionName = true;//add by wth,修复bug#94899
+      this.presenter.qtiPlayer.setQuestionNameVisible(true); //add by wth,修复bug#94899
+    }
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {
+    //     self.presenter.qtiHasRender = true;
+    //     self.lockState = true;
+    // });
+    self.presenter.qtiHasRender = true;
+    self.lockState = true;
+    this.presenter._closeKeyBoard();
+  //避免QTI内容异步渲染导致回调时机偏慢
+  // if (this.lockState === false) {
+  //     this.lockState = true;
+  // }
+  },
+  unlockQuestion: function() {
+    if (this.lockState === false) {
+      return;
+    }
+    if (this.presenter.qtiPlayer === null) {
+      this.presenter.logger.error('Null Reference of QTI Player!');
+      return;
+    }
+    //获取通用的渲染配置
+    var self = this;
+    var options = this.presenter._getQTIRenderOption();
+    this.presenter.qtiPlayer.setLock(false, false);
+    // options.showAnswer = true;
+    this.presenter.qtiPlayer.showAnswer();
+    if (this.presenter.lazyLoad === true) {
+      // options.showQuestionName = true;//add by wth,修复bug#94899
+      this.presenter.qtiPlayer.setQuestionNameVisible(true); //add by wth,修复bug#94899
+    }
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {
+    //     self.presenter.qtiHasRender = true;
+    //     self.lockState = false;
+    //     //发送状态保存事件  修复PMS-70708
+    //     self.presenter.$dispatchEvent('interaction_presenter_state_change', PresenterEventType.IC_PLAYER_EVENT);
+    // });
+    self.presenter.qtiHasRender = true;
+    self.lockState = false;
+    //发送状态保存事件  修复PMS-70708
+    self.presenter.$dispatchEvent('interaction_presenter_state_change', PresenterEventType.IC_PLAYER_EVENT);
+  //避免QTI内容异步渲染导致回调时机偏慢
+  // if (this.lockState === true) {
+  //     this.lockState = false;
+  // }
+  },
+  resetQuestion: function() {
+    var renderOption = this.presenter._getQTIRenderOption();
+    var self = this;
+    this.presenter.qtiPlayer.reset();
+    if (this.presenter.initAnswer != null) {
+      this.presenter.qtiPlayer.setAnswer(this.presenter.initAnswer);
+    }
+    // renderOption.showLock = this.lockState;
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, renderOption, function () {
+    //     self.presenter.hasRender = true;
+    //     self.presenter._closeKeyBoard();
+    // });
+    this.presenter.qtiPlayer.setLock(this.lockState);
+    self.presenter.hasRender = true;
+    self.presenter._closeKeyBoard();
+
+    if (this.presenter.isPPTShell || this.presenter.isPC) {
+      if (this.presenter.model.type_code === 'order') {
+        this.presenter.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT,
+          {
+            canSubmit: true
+          });
+      }
+      //退出统计状态
+      if (this.presenter.objectiveQuestionInteraction != null) {
+        this.presenter.objectiveQuestionInteraction.exitStatistics(this.lockState);
+      }
+    }
+  },
+  finishQuestion: function() {},
+  /*************習題統計接口實現********************/
+  convertDataForStatistics: function(oriData) {
+    //统计库
+    var questionClass = this.getStatisticClass();
+    if (questionClass == "A") {
+      //A类的统计
+      if (window.__questionStatObjects && window.__questionStatObjects.choiceStatistics) {
+        //A类统计要将QTI哪里的数据放进去
+        oriData.QtiAssessmentModel = this.presenter.qtiPlayer.getAssessmentModel();
+        window.__questionStatObjects.choiceStatistics.init(oriData);
+        oriData.value["convertedData"] = window.__questionStatObjects.choiceStatistics.statisticsData;
+        return oriData;
+      }
+    } else if (questionClass == "C") {
+      //C类的统计
+      if (window.__questionStatObjects && window.__questionStatObjects.judgeStatistics) {
+        window.__questionStatObjects.judgeStatistics.init(oriData);
+        oriData.value["convertedData"] = window.__questionStatObjects.judgeStatistics.convertedData;
+        return oriData;
+      }
+    } else if (this.presenter.model.type_code == 'textentry') {
+      //B类统计的填空题
+      return this._textEntryHandle(oriData);
+    } else if (this.presenter.model.type_code == 'textentrymultiple' || this.presenter.model.type_code == 'cloze') {
+      //复合题的填空题
+      return this._textEntryMultipleHandle(oriData);
+    } else if (this.presenter.model.type_code == 'match') {
+      //B类统计的连线题
+      return this._matchHandle(oriData);
+    }
+  },
+  getStatisticClass: function() {
+    //返回ABCD类统计
+    var type = this.presenter.model.type_code;
+    switch (type) {
+      case 'choice':
+      case 'multiplechoice':
+      case 'vote':
+      case 'judge':
+        return 'A';
+      case 'textentry':
+      case 'match':
+      case 'textentrymultiple':
+      case 'cloze':
+        return 'B';
+      case 'order':
+        return 'C';
+    }
+  },
+  startStatistics: function() {
+    //进入统计时调用
+    if (this.presenter.objectiveQuestionInteraction != null) {
+      this.presenter.objectiveQuestionInteraction.enterStatistics();
+    }
+  },
+  /*************狀態恢復接口實現********************/
+  getState: function() {
+    return {
+      qti: this.presenter.currentQtiState,
+      component: {
+        lock: this.lockState, //题目的锁定状态
+        showAnswer: this.showAnswerState //作答的状态
+      }
+    }
+  },
+  setState: function(state) {
+    //状态为空则不恢复
+    if (state == undefined) {
+      return;
+    }
+    var options = this.presenter._getQTIRenderOption();
+    //检查题目是否处于锁定状态
+    this.lockState = state.component.lock || false;
+    if (state.component.lock == true) {
+      this.presenter.qtiPlayer.setLock(true, true);
+    }
+    //优先使用显示作答后的答案
+    if (state.component.showAnswer.hasShow == true) {
+      if (state.component.showAnswer.answerType == 'correct') {
+        //显示正确答案
+        this.presenter.qtiPlayer.showCorrectAnswer();
+      } else {
+        //设置当前为状态恢复过程
+        this.presenter.inRecover = true;
+        //如果需要显示特殊答案
+        if (state.component.showAnswer.specialAnswer != undefined) {
+          this.presenter.qtiPlayer.setAnswer(state.component.showAnswer.specialAnswer.answer.user_response[0]);
+        } else {
+          this.presenter.qtiPlayer.setAnswer(state.qti);
+        }
+        this.presenter.qtiPlayer.showAnswer();
+      }
+    } else {
+      //如果还没有执行过显示答案的方法, 且存在作答过程状态
+      if (state.qti != null) {
+        //设置当前为状态恢复过程
+        this.presenter.inRecover = true;
+        //需要显示的过程作答情况
+        this.presenter.qtiPlayer.setAnswer(state.qti);
+        this.presenter.qtiPlayer.showAnswer();
+      }
+    }
+  },
+  /**
+   * 获取课堂状态
+   */
+  getClassroomStatus: function() {
+    var $defer = $.Deferred();
+    var status = {
+      qti: this.presenter.currentQtiState,
+      media: this.presenter.status.media,
+      scrollTop: this.presenter.status.scrollTop
+    };
+    var _status = $.extend(true, {}, status);
+    $defer.resolve(_status);
+    return $defer.promise();
+  },
+  /**
+   * 设置课堂状态 
+   */
+  setClassroomStatus: function(status) {
+    //状态为空则不恢复
+    if (!status) {
+      return;
+    }
+    var options = this.presenter._getQTIRenderOption();
+    if (status.qti) {
+      //设置当前为状态恢复过程
+      this.presenter.inRecover = true;
+      //需要显示的过程作答情况
+      this.presenter.qtiPlayer.setAnswer(status.qti);
+      this.presenter.qtiPlayer.showAnswer();
+    }
+    //多媒体状态恢复
+    this.presenter.status.media = status.media;
+    for (var key in status.media) {
+      if (status.media.hasOwnProperty(key)) {
+        var _media = status.media[key];
+        var _currentTime = _media.currentTime - 1 < 0 ? 0 : _media.currentTime - 1;
+        this.presenter.qtiPlayer.mediaSkip(_media.mediaType, _media.index, _currentTime);
+      }
+    }
+    // 题干滚动条恢复
+    this.presenter.status.scrollTop = status.scrollTop;
+    this.presenter.$view.find('.js_objective_qti_player').scrollTop(status.scrollTop);
+    //通知数据恢复完成
+    this.presenter.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+      presenterCode: this.presenter.metaInfo.name
+    });
+  },
+  /**
+   * 清除课堂状态
+   */
+  clearClassroomStatus: function() {},
+  /*************多國語言適配********************/
+  setLocationProperties: function(properties) {
+    this.presenter.$translator.setData(properties);
+  },
+  /**************复合题加载的接口******************/
+  /**
+   * 通过传入的题目数据,作答结果和选项; 进行题目数据的加载
+   * @param data 题目数据
+   * @param answer 作答结果
+   * @param option 加载选项
+   */
+  loadQuestion: function(data, answer, option) {
+    var deferred = $.Deferred();
+    if (data == undefined) {
+      this.presenter.logger.error('question data is null!');
+      deferred.resolve();
+    }
+    //创建手写板,如果是手写题
+    // if (data.type === 'textentrymultiple' && this.presenter.isApp && !this.presenter.nativeHandWriteLoaded) {
+    //     this.presenter.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+    //         presenterId: 'hwr',
+    //         instanceId: this.presenter._CLASS_ID_,
+    //         containerName: 'ENHANCE',
+    //         initData: {
+    //             instanceId: this.presenter._CLASS_ID_,
+    //             type: "handwrite",
+    //             action: "create",
+    //             msg: ""
+    //         }
+    //     });
+    //     this.presenter.nativeHandWriteLoaded = true;
+    //     this.presenter.$addEventListener('HandWritingMsg', PresenterEventType.NATIVE_EVENT,
+    //         this.presenter._onHwrFromNativeMsg);
+    // }
+    var initQtiOption = {};
+    if (option) {
+      if (option.noJudgeSubmitState != undefined) {
+        initQtiOption.noJudgeSubmitState = option.noJudgeSubmitState;
+      }
+      if (option.index != undefined) {
+        initQtiOption.questionIndex = option.index;
+      }
+      this.lockState = option.isLock;
+      this.showAnswerState.hasShow = option.isShowAnswer;
+    }
+    var self = this;
+    this.presenter.model.id = data.id;
+    this.presenter.model.type_code = data.type;
+    this.presenter.model.type_name = data.type;
+    this.presenter.model.url = data.data.question_data.QuestionUrl;
+    if (this.presenter.qtiPlayer == undefined) {
+      //初始QTIPlayer
+      this.presenter._initQTIPlayer(data.data.question_data.QuestionUrl, initQtiOption).done(function() {
+        //如果answer不为空
+        self._afterLoadQuestion(answer, option);
+        self.presenter.$view.show();
+        deferred.resolve(data);
+      });
+    } else {
+      //QTIPlayer已经初始化过
+      this.presenter.qtiPlayer.load(data.data.question_data.QuestionUrl, function() {
+        self.presenter._onQTIPlayerLoadSuccess(initQtiOption);
+        self._afterLoadQuestion(answer, option);
+        self.presenter.$view.show();
+        deferred.resolve(data);
+      });
+    }
+    return deferred.promise();
+  },
+  formatResultInfo: function(type, answer) {
+    var assessment = this.presenter.qtiPlayer.getAssessmentModel();
+    var correctResult = assessment.correctAnswer;
+    var result = {
+      correct: "",
+      response: "",
+      answerFeedback: "",
+      hintFeedback: ""
+    };
+    result.answerFeedback = assessment.answerFeedback["RESPONSE_1-1"] ? assessment.answerFeedback["RESPONSE_1-1"].content : "";
+    result.hintFeedback = assessment.hintFeedback["RESPONSE_1-1"] ? assessment.hintFeedback["RESPONSE_1-1"].content : "";
+    switch (type) {
+      //单选, 多选, 判断
+      case "choice":
+      case "multiplechoice":
+      case "cloze":
+      case "judge":
+        if (answer != undefined && answer["RESPONSE_1-1"] != undefined) {
+          _.each(answer["RESPONSE_1-1"].value, function(o) {
+            result.response += (o + ' ');
+          });
+        }
+        if (correctResult["RESPONSE_1-1"]) {
+          _.each(correctResult["RESPONSE_1-1"].value, function(o) {
+            result.correct += (o + ' ');
+          });
+        }
+    }
+    return result;
+  },
+  //对外提供获取QTI数据模型的接口
+  getAssessmentModel: function() {
+    if (this.presenter.qtiPlayer) {
+      return this.presenter.qtiPlayer.getAssessmentModel();
+    }
+    return null;
+  },
+  _afterLoadQuestion: function(answer, option) {
+    //如果answer不为空
+    if (answer) {
+      this.presenter.qtiPlayer.setAnswer(answer);
+      if (option.isShowAnswer == true) {
+        this.presenter.qtiPlayer.showCheckedAnswer();
+      } else {
+        //ShowAnswer不会锁定,要额外处理一下锁定
+        this.presenter.qtiPlayer.showAnswer();
+        this.presenter.qtiPlayer.setLock(option.isLock);
+      }
+    } else {
+      if (option.isShowAnswer == true) {
+        this.presenter.qtiPlayer.showCorrectAnswer();
+      } else {
+        this.presenter.currentQtiState = answer;
+      }
+      this.presenter.qtiPlayer.setLock(option.isLock);
+    }
+  },
+  /******************以下是与统计有关的代码***************************/
+  /**
+   * 填空题相关的数据统计函数
+   * @param oriData 原始数据
+   * @private
+   */
+  _textEntryHandle: function(oriData) {
+    var value = oriData.value;
+    var onlineNum = 0;
+    var correctAnswer = [],
+      item_key = [],
+      percent = [],
+      stuAnswerStat = [];
+    var convertedData = {};
+    convertedData["allrightStu"] = [];
+    //保存填空项的索引值
+    convertedData["itemIndexs"] = [];
+    var model = this.presenter.qtiPlayer.getAssessmentModel();
+    var ii = 0;
+    $.each(model.correctAnswer, function(key, item) {
+      correctAnswer.push(item.value[0]);
+      if (!stuAnswerStat[ii]) {
+        stuAnswerStat[ii] = {
+          right_userIds: [],
+          wrong_userIds: [],
+          unfinished_userIds: value.unfinishedUserIds,
+          ref_key: (ii + 1)
+        };
+        item_key.push(ii + 1);
+        convertedData['itemIndexs'].push({
+          key: key,
+          value: ii
+        });
+        ii++;
+      }
+    });
+
+    if (value.answers) {
+      $.each(value.answers, function(index, item) {
+        $.each(item, function(innerIndex, innerItem) {
+          //是否全对
+          var isAllCorrect = true;
+          var answerObj = {};
+          try {
+            answerObj = JSON.parse(innerItem.answer);
+          } catch (e) {
+            self.presenter.logger.error(e);
+          }
+          if (answerObj.user_response && answerObj.user_response.length > 0) {
+            var index = 0;
+            $.each(answerObj.user_response[0], function(name, value) {
+              if (name.indexOf("RESPONSE_") >= 0) {
+                if (value.state == 'PASSED') {
+                  stuAnswerStat[index].right_userIds = stuAnswerStat[index].right_userIds
+                    .concat(innerItem.userIds);
+                } else {
+                  stuAnswerStat[index].wrong_userIds = stuAnswerStat[index].wrong_userIds
+                    .concat(innerItem.userIds);
+                  isAllCorrect = false;
+                }
+                index++;
+              }
+            });
+          }
+          if (isAllCorrect) {
+            convertedData["allrightStu"] = convertedData["allrightStu"].concat(innerItem.userIds);
+          }
+        });
+      });
+
+    }
+    $.each(stuAnswerStat, function(k, item) {
+      item.rightNum = item.right_userIds.length;
+    });
+    onlineNum = value.finishedNum + value.unfinishedNum;
+    /**计算正确率**/
+    for (var i = 0; i < stuAnswerStat.length; i++) {
+      percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+    }
+
+    convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+    convertedData["submit_count"] = onlineNum;
+    convertedData["answers"] = value.answers;
+    convertedData["item_key"] = item_key;
+    convertedData["percent"] = percent;
+    convertedData["unfinishedNum"] = value.unfinishedNum;
+    convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+    convertedData["stuAnswerStat"] = stuAnswerStat;
+
+    value["convertedData"] = convertedData;
+    return oriData;
+  },
+  _textEntryMultipleHandle: function(oriData) {
+    var value = oriData.value;
+    var onlineNum = 0;
+    var correctAnswer = [],
+      item_key = [],
+      percent = [],
+      stuAnswerStat = [];
+    var convertedData = {};
+    convertedData["allrightStu"] = [];
+    //保存填空项的索引值
+    convertedData["itemIndexs"] = [];
+    var model = this.presenter.qtiPlayer.getAssessmentModel();
+    var ii = 0;
+    var response = model.correctAnswer["RESPONSE_1-1"];
+    for (var i = 0, len = response.value.length; i < len; i++) {
+      correctAnswer.push(response.value[i]);
+      if (!stuAnswerStat[i]) {
+        stuAnswerStat[i] = {
+          right_userIds: [],
+          wrong_userIds: [],
+          unfinished_userIds: value.unfinishedUserIds,
+          ref_key: (i + 1)
+        };
+        item_key.push(i + 1);
+        convertedData['itemIndexs'].push({
+          key: i,
+          value: i
+        });
+      }
+    }
+
+    if (value.answers) {
+      $.each(value.answers, function(index, item) {
+        $.each(item, function(innerIndex, innerItem) {
+          //是否全对
+          var isAllCorrect = true;
+          var answerObj = {};
+          try {
+            answerObj = JSON.parse(innerItem.answer);
+          } catch (e) {
+            self.presenter.logger.error(e);
+          }
+          var userIds = innerItem.userIds;
+          if (answerObj.user_response && answerObj.user_response.length > 0) {
+            var response = answerObj.user_response[0]["RESPONSE_1-1"];
+            if (response && response.value) {
+              var ca;
+              for (var index = 0, len = response.value.length; index < len; index++) {
+                ca = correctAnswer[index].split("|");
+                if ($.isArray(ca) && $.inArray(response.value[index], ca) >= 0) {
+                  stuAnswerStat[index].right_userIds = stuAnswerStat[index].right_userIds
+                    .concat(userIds);
+                } else {
+                  stuAnswerStat[index].wrong_userIds = stuAnswerStat[index].wrong_userIds
+                    .concat(userIds);
+                  isAllCorrect = false;
+                }
+              }
+            }
+          }
+          if (isAllCorrect) {
+            convertedData["allrightStu"] = convertedData["allrightStu"].concat(innerItem.userIds);
+          }
+        });
+      });
+
+    }
+    $.each(stuAnswerStat, function(k, item) {
+      item.rightNum = item.right_userIds.length;
+    });
+    onlineNum = value.finishedNum + value.unfinishedNum;
+    /**计算正确率**/
+    for (var i = 0; i < stuAnswerStat.length; i++) {
+      percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+    }
+
+    convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+    convertedData["submit_count"] = onlineNum;
+    convertedData["answers"] = value.answers;
+    convertedData["item_key"] = item_key;
+    convertedData["percent"] = percent;
+    convertedData["unfinishedNum"] = value.unfinishedNum;
+    convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+    convertedData["stuAnswerStat"] = stuAnswerStat;
+
+    value["convertedData"] = convertedData;
+    return oriData;
+  },
+  /**
+   * 连线题相关的数据统计函数
+   * @param oriData 原始数据
+   * @private
+   */
+  _matchHandle: function(oriData) {
+    var value = oriData.value;
+    var onlineNum = 0;
+    var correctAnswer,
+      item_key = [],
+      percent = [],
+      stuAnswerStat = [];
+    var convertedData = {};
+    convertedData["allrightStu"] = [];
+    var model = this.presenter.qtiPlayer.getAssessmentModel();
+    correctAnswer = model.correctAnswer['RESPONSE_1-1'].value;
+    //检测连线题的排序
+    var answerSerail = [];
+    var simpleMatchSet1 = model.modelMap['RESPONSE_1-1'].simpleMatchSet[0];
+    var simpleMatchSet2 = model.modelMap['RESPONSE_1-1'].simpleMatchSet[1];
+    var randomSeed = [].concat(this.presenter.originalRandomSeed);
+    convertedData["randomSeed"] = [].concat(randomSeed);
+
+    for (var j = 0, jLen = randomSeed.length; j < jLen; j++) {
+      if (randomSeed[j] < correctAnswer.length) {
+        answerSerail.push(randomSeed.splice(j, 1)[0]);
+        --j;
+        jLen = randomSeed.length;
+      }
+    }
+
+    $.each(correctAnswer, function(index) {
+      if (!stuAnswerStat[index]) {
+        stuAnswerStat[index] = {
+          right_userIds: [],
+          wrong_userIds: [],
+          unfinished_userIds: value.unfinishedUserIds,
+          ref_key: (index + 1)
+        };
+        item_key.push(index + 1);
+      }
+    });
+    if (value.answers) {
+      $.each(value.answers, function(index, item) {
+        $.each(item, function(innerIndex, innerItem) {
+          //是否全对
+          var isAllCorrect = true,
+            isNoAnswer = false;
+          $.each(correctAnswer, function(cIndex, cItem) {
+            var teaKey = cItem;
+            // simpleMatchSet1[answerSerail[cIndex]].identifier + ' ' +
+            // simpleMatchSet2[answerSerail[cIndex]].identifier;
+            var isCorrect = false;
+            var answerObject = JSON.parse(value.answers[index][innerIndex].answer);
+            //如果学生没有作答
+            if (answerObject.user_response[0]['RESPONSE_1-1'] == undefined) {
+              isCorrect = false;
+              isNoAnswer = true;
+            } else {
+              $.each(answerObject.user_response[0]['RESPONSE_1-1'].value, function(aIndex, aItem) {
+                if (teaKey == aItem) {
+                  isCorrect = true;
+                  return false;
+                }
+              });
+            }
+            if (isCorrect) {
+              stuAnswerStat[cIndex].right_userIds = stuAnswerStat[cIndex].right_userIds
+                .concat(innerItem.userIds);
+            } else {
+              if (!isNoAnswer) {
+                stuAnswerStat[cIndex].wrong_userIds = stuAnswerStat[cIndex].wrong_userIds
+                  .concat(innerItem.userIds);
+              }
+              isAllCorrect = false;
+            }
+          });
+          if (isAllCorrect) {
+            convertedData["allrightStu"] = convertedData["allrightStu"].concat(innerItem.userIds);
+          }
+        });
+      });
+    }
+    $.each(stuAnswerStat, function(k, item) {
+      item.rightNum = item.right_userIds.length;
+    });
+    onlineNum = value.finishedNum + value.unfinishedNum;
+    /**计算正确率**/
+    for (var i = 0; i < stuAnswerStat.length; i++) {
+      percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+    }
+    convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+    convertedData["submit_count"] = onlineNum;
+    convertedData["answers"] = value.answers;
+    convertedData["item_key"] = item_key;
+    convertedData["percent"] = percent;
+    convertedData["unfinishedNum"] = value.unfinishedNum;
+    convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+    convertedData["stuAnswerStat"] = stuAnswerStat;
+
+    value["convertedData"] = convertedData;
+    return oriData;
+  }
+};
+/* harmony default export */ __webpack_exports__["a"] = (ObjectiveBasicQuestionService);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+/**
+ * 定义题型的交互库
+ * @param presenter
+ * @constructor
+ */
+function ObjectiveQuestionInteraction(presenter) {
+  this.model = presenter.model;
+  this.presenter = presenter;
+  //题目类型
+  this.questionType = this.model.type_code;
+  //标记当前已经进入答题统计的状态
+  this.inStatistics = false;
+}
+
+ObjectiveQuestionInteraction.prototype = {
+  /**
+   * 进入统计
+   */
+  enterStatistics: function() {
+    this.inStatistics = true;
+    //获取数据模型
+    var qtiModel = this.presenter.qtiPlayer.getAssessmentModel();
+    var questionAnalysis = '';
+    if (qtiModel.answerFeedback['RESPONSE_1-1']) {
+      questionAnalysis = qtiModel.answerFeedback['RESPONSE_1-1'].content;
+    } else if (qtiModel.answerFeedback['FEEDBACK']) {
+      questionAnalysis = qtiModel.answerFeedback['FEEDBACK'].content;
+    }
+    //如果存在解析内容
+    if (questionAnalysis != '') {
+      //发出需要显示作答解析的数据
+      this.presenter.$dispatchEvent('statistics_call', PresenterEventType.IC_PLAYER_EVENT, {
+        service: 'statistic',
+        method: 'questionAnalysis',
+        args: [{
+          content: questionAnalysis
+        }]
+      });
+    }
+    //如果是填空, 排序
+    var type = this.presenter.model.type_code;
+    var options = this.presenter._getQTIRenderOption();
+    if (type == 'textentry') {
+      //重新渲染QTIPlayer, 以显示统计时的效果
+      //显示答案提示
+      this.presenter.qtiPlayer.showStatisAnswer();
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {});
+    }
+    //如果是工具的场景
+    if (this.presenter.model.is_tool) {
+      if (type == 'choice' || type == 'judge') {
+        //重新渲染QTIPlayer, 以隐藏答题区
+        // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {});
+      }
+    }
+  },
+  /**
+   * 离开统计
+   */
+  exitStatistics: function(lockState) {
+    this.inStatistics = false;
+    //如果是填空, 排序
+    var type = this.presenter.model.type_code;
+    if (type == 'textentry' || type == 'order') {
+      //重新渲染QTIPlayer, 以隐藏统计时的效果
+      var options = this.presenter._getQTIRenderOption();
+      //显示答案提示
+      this.presenter.qtiPlayer.setLock(lockState);
+      this.presenter.qtiPlayer.showAnswer();
+    // this.presenter.qtiPlayer.render(this.presenter.qtiContainer, options, function () {});
+    }
+  },
+  /**
+   * 当QTIPlayer的作答项目被点击时
+   */
+  onQTIPlayerAnswerClick: function(item) {
+    //如果目前处于答题统计状态
+    if (this.inStatistics == true) {
+      var statisticClass = this._getStatisticClass();
+      //B类统计
+      if (statisticClass == 'B') {
+        var itemIndex = item.index;
+        if (this.questionType === 'textentry') { //填空题，传入的item.index永远是0，所以不能根据item.index判断是哪个填空项
+          var textEntryAnswers = this.presenter.qtiPlayer.getAnswer();
+
+          itemIndex = 0;
+          for (var key in textEntryAnswers) {
+            if (textEntryAnswers.hasOwnProperty(key)) {
+              if (key === item.identifier) break;
+
+              itemIndex++;
+            }
+          }
+        }
+
+        //发出项目被点击的事件,通知统计
+        this.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+          service: "statistic",
+          method: "clickItem",
+          args: [itemIndex, this._getStatisticClass()]
+        });
+      }
+    }
+  },
+  _getStatisticClass: function() {
+    //返回ABCD类统计
+    var type = this.presenter.model.type_code;
+    switch (type) {
+      case 'choice':
+      case 'multiplechoice':
+      case 'vote':
+      case 'judge':
+        return 'A';
+      case 'textentry':
+      case 'cloze':
+      case 'match':
+        return 'B';
+      case 'order':
+        return 'C';
+      default:
+        return 'NA';
+    }
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (ObjectiveQuestionInteraction);
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_objectiveBasicQuestionService_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__libs_objectiveQuestionInteraction_js__ = __webpack_require__(1);
+
+
+
+(function () {
+    function isFunction(obj) {
+        return Object.prototype.toString.call(obj) === '[object Function]';
+    }
+
+    var Constants = {
+        "SubjectiveEnum": { //主观类题型
+            "handwrite": "手写题",
+            "vote": "投票题",
+            "extendedtext": "问答题"
+        },
+        ObjectiveEnum: { //客观类题型
+            "choice": "单选题",
+            "multiplechoice": "多选题",
+            "judge": "判断题",
+            "order": "排序题",
+            "match": "连线题",
+            "graphicgapmatch": "拼图题",
+            "textentry": "填空题",
+            "cloze": "完形填空"
+        }
+    };
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'ObjectiveBasicQuestion',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法 1.0.9
+         * @private
+         */
+        $init: function () {
+            this._super();
+            //定义QTIPlayer对象
+            this.qtiPlayer = undefined;
+            //QTIPlayer的容器
+            this.qtiContainer = undefined;
+            //标记QTIPlayer是否完成渲染
+            this.qtiHasRender = false;
+            //当前QTIPlayer的状态
+            this.currentQtiState = null;
+            //互动课堂统计场景的交互库
+            this.objectiveQuestionInteraction = null;
+            //QTI题目的初始答案
+            this.initAnswer = null;
+            //原始的随机种子
+            this.originalRandomSeed = null;
+            //当前为状态恢复过程
+            this.inRecover = false;
+            //当前是否为LazyLoad
+            this.lazyLoad = false;
+            //原生手写板是否已经加载过
+            this.nativeHandWriteLoaded = false;
+
+            /**【TQD69330】智慧课堂-在PC端放映时的习题展示题页增加查看答案功能 新增promise **/
+            this.isSubjective = false;       //是否为主观类题型
+            this.analysisComponent = null;
+            this.hasAnalysisPromise = $.Deferred();
+            //状态（数据保存与恢复时候用）
+            this.status = {
+                media: {},
+                scrollTop: 0
+            };
+
+            //定义__interface接口
+            this.__interface = {
+                // 参考wiki: 互动课堂/Flow/学科工具发送随堂练习
+                getExerciseData: this._createDelegate(this._getExerciseData, [], true, this)
+            };
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, { level: Logger.DEBUG });
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        getService: function () {
+            if (!this._service_) { 
+                this._service_ = new __WEBPACK_IMPORTED_MODULE_0__libs_objectiveBasicQuestionService_js__["a" /* default */](this);
+            }
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            var self = this;
+            var deferred = $.Deferred();
+            this.$view = $(view);
+            this.model = model;
+            this.isSubjective = Constants.SubjectiveEnum.hasOwnProperty(this.model.type_code);
+
+            //获取QTI的容器
+            this.qtiContainer = this.$view.find('.js_objective_qti_player');
+            this.qtiTitleContainer = this.$view.find('.js_qti_question_title');
+            //設置題目類型
+            //this.qtiTitleContainer.text(this.model.type_name);
+            this.$translatorDeferred.done(function () {
+                this.qtiTitleContainer.text(this.$translator.translate('question_type_' + this.model.type_code));
+            }.bind(this));
+            this.originalRandomSeed = this._createRandomSeed(30);
+            if (this.model.lazyLoad === undefined) {
+                //非延迟加载
+                //設置題目類型
+                // this.qtiTitleContainer.text(this.model.type_name);
+                //初始化QTIPlayer
+                // 如果是完型填空，传数据难对象
+                this._initQTIPlayer(this.model.type_code == 'cloze' ? this.model.question_content : this.model.url)
+                    .done(function () {
+                        //QTIPlayer确认全部加载完成后
+                        if (self.isPPTShell) {
+                            //判断是否拥有解析内容
+                            self._CreateAnalysisComponent();
+
+                            //如果是PPTShell场景,加载统计交互库
+                            self.objectiveQuestionInteraction = new __WEBPACK_IMPORTED_MODULE_1__libs_objectiveQuestionInteraction_js__["a" /* default */](self);
+                            deferred.resolve();
+                        } else {
+                            deferred.resolve();
+                        }
+                    });
+            } else {
+                this.lazyLoad = true;
+                //延迟加载题目内容
+                //先将整个视图都隐藏掉,避免闪烁
+                this.$view.hide();
+                this.qtiContainer = this.$view;
+                this.qtiTitleContainer.hide();
+                //加载统计交互库
+                if (this.isPPTShell) {
+                    self.objectiveQuestionInteraction = new __WEBPACK_IMPORTED_MODULE_1__libs_objectiveQuestionInteraction_js__["a" /* default */](self);
+                            deferred.resolve();
+                } else {
+                    deferred.resolve();
+                }
+            }
+            //如果是填空题, 且在学生端的场景
+            // if (this.model.type_code === 'textentry' && this.isApp) {
+            //     this.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+            //         presenterId: 'hwr',
+            //         instanceId: this._CLASS_ID_,
+            //         containerName: 'ENHANCE',
+            //         initData: {
+            //             instanceId: this._CLASS_ID_,
+            //             type: "handwrite",
+            //             action: "create",
+            //             msg: ""
+            //         }
+            //     });
+            //     this.nativeHandWriteLoaded = true;
+            // }
+            return deferred;
+        },
+        pageShow: function () {
+            //如果是填空题, 且在学生端的场景
+            if (this.nativeHandWriteLoaded) {
+                this.$addEventListener('HandWritingMsg', PresenterEventType.NATIVE_EVENT, this._onHwrFromNativeMsg);
+            }
+        },
+        destroy: function () {
+            delete this.hasAnalysisPromise;
+            if (this.analysisComponent) {
+                this.analysisComponent.destroy();
+                delete this.analysisComponent;
+            }
+
+            this._resetQTIPlayer();
+            this.$removeEventListener();
+            if (window.NDMediaPlayer && window.NDMediaPlayer.destroy) {
+                window.NDMediaPlayer.destroy(this.$view);
+            }
+            //如果是填空题
+            if (this.nativeHandWriteLoaded) {
+                this.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+                    instanceId: this._CLASS_ID_
+                });
+            }
+        },
+        /****以下开始为Presenter的私有方法*****/
+        /********私有的方法**********/
+        _getQuestionInfo: function () {
+            var model = this.model || {};
+            return {
+                id: model.id,
+                type_code: model.type_code,
+                type_code_alias: 'basicquestion',
+                type_name: model.type_name,
+                item: model.type_code,
+                url: model.url,
+                dispatchOnly: true,
+                dynamic: model.is_tool !== undefined,
+                subjective: this.isSubjective //是否为主观类题型 【TQD69330】智慧课堂-在PC端放映时的习题展示题页增加查看答案功能 新增属性
+            };
+        },
+        _getExerciseData: function (data) {
+            if (data.questionInfo === undefined) {
+                data.questionInfo = this._getQuestionInfo();
+            }
+        },
+        /**
+         * 检查作答结果是否正确
+         * @private
+         */
+        _checkResult: function (result) {
+            var isCorrect = true;
+            var hasQuestion = false;//修复bug#102470
+            $.each(result, function (key, value) {
+                hasQuestion = true;
+                if (value.state !== 'PASSED') {
+                    isCorrect = false;
+                }
+            });
+            return hasQuestion ? isCorrect : false;
+        },
+        /**
+         * 用于判断当前题型是否完成并允许提交的方法
+         * @param  {[Array]}  answer [每个小题的作答情况]
+         * @private
+         */
+        _allowSubmit: function (answer) {
+            if (this.qtiPlayer === undefined) {
+                return false;
+            }
+            //判断是否允许提交
+            var assessmentModel = this.qtiPlayer.getAssessmentModel();
+            var modelMap = assessmentModel.modelMap;
+            var modelAnswer, modelType;
+            var allCanSubmit = false;
+            for (var id in answer) {
+                if (allCanSubmit === true) {
+                    break;
+                }
+                modelAnswer = answer[id].value;
+                modelType = modelMap[id].modelType;
+                //根据不同的模型类型进行判断
+                switch (modelType) {
+                    case 'textEntryMultipleInteraction':
+                        for (var i = 0; i < modelAnswer.length; i++) {
+                            if (modelAnswer[i] !== '') {
+                                //填空题任意答案不为''，可以提交
+                                allCanSubmit = true;
+                            }
+                        }
+                        break;
+                    case 'textEntryInteraction':
+                        //填空题任意答案不为''，可以提交
+                        if (modelAnswer.length > 0) {
+                            for (var j = 0; j < modelAnswer.length; j++) {
+                                if (modelAnswer[j] !== '') {
+                                    allCanSubmit = true;
+                                }
+                            }
+                        }
+                        break;
+                    case 'choiceInteraction':
+                    case 'choiceInteraction_vote':
+                    case 'graphicGapMatchInteraction':
+                        //多选、单选、判断题
+                        //拼图题，至少移动一个拼图到作答区域
+                        allCanSubmit = modelAnswer.length > 0;
+                        break;
+                    case 'matchInteraction':
+                        //连线题,必须全部连线,当前和正确答案的数量一致
+                        allCanSubmit = (modelAnswer.length === assessmentModel.correctAnswer[id].value.length);
+                        break;
+                    case 'orderInteraction':
+                        //拖动排序题,直接可以提交
+                        allCanSubmit = true;
+                        break;
+                    default:
+                        //其他题型可以直接提交
+                        allCanSubmit = true;
+                        break;
+                }
+            }
+            return allCanSubmit;
+        },
+        _closeKeyBoard: function () {
+            this.$view.find('textarea').blur();
+            this.$view.find('input').blur();
+            if (window.QtiPlayer && isFunction(window.QtiPlayer.closeCustomKeyBoard)) {
+                window.QtiPlayer.closeCustomKeyBoard();
+            }
+        },
+        _onHwrFromNativeMsg: function (eventData) {
+            if (eventData.type === 'handwriting_recognition' && eventData.action === 'hwr_native_msg') {
+                if (this.qtiPlayer !== undefined) {
+                    this.qtiPlayer.hwSetNativeData(eventData.msg);
+                }
+            }
+        },
+        /********私有的方法结束**********/
+        /*********QTIPlayer相关的方法************/
+        /**
+         * 获取QTI播放器渲染条件
+         * @returns {{showTitleArea: boolean, showHint: boolean, theme: string, containerId: (null|*)}}
+         * @private
+         */
+        _getQTIRenderOption: function () {
+            var renderOption = {
+                showTitleArea: true,
+                showHint: this.model.type_code == 'cloze' ? true : false,
+                theme: 'wood',
+                containerId: this.qtiContainer,
+                graphicGapMatchImageLoaderEnable: false,
+                lang: this.currentLanguage
+            };
+            //如果是PPTShell,PC或Web的场景
+            if (this.isPPTShell || this.isPC || this.isWeb) {
+                renderOption.platForm = 'pptshell';
+                //如果是工具方式启动
+                if (this.model.is_tool !== undefined) {
+                    renderOption.hideAnswerArea = true;
+                }
+            }
+            if (this.model.type_code === 'data') {
+                renderOption.showNum = true;
+            }
+            if (!(this.isStudent && this.model.type_code === 'order')) {
+                renderOption.randomSeed = 0;
+            }
+            //如果是学生端Pad,且是作文题
+            if (this.nativeHandWriteLoaded) {
+                renderOption.hwEnable = true;
+                renderOption.scrollDom = this.qtiContainer;
+                renderOption.hwSendDataCallback = this._onHwSendDataCallback.bind(this);
+            }
+            if (this.model.is_tool !== undefined) {
+                renderOption.screenshotLayout = true;
+                renderOption.thumbnailEnable = false;
+            }
+            if (this.originalRandomSeed !== null) {
+                renderOption.randomSeed = this.originalRandomSeed;
+            } else {
+                renderOption.randomSeed = this._createRandomSeed(30);
+            }
+            return renderOption;
+        },
+        /**
+         * 初始化QTIPlayer
+         * @param questionUrl 题目Url
+         * @private
+         */
+        _initQTIPlayer: function (questionUrl, option) {
+            var deferred = $.Deferred();
+            if (!window.QtiPlayer) {
+                throw Error('can not load QTIPlayer!!!');
+            }
+            var refPathArr = icCreatePlayer.ref_path.split('/')
+            refPathArr.pop()
+            var qtiOptions = {
+                refPath: icCreatePlayer.ref_path,
+                refBase: refPathArr.join('/')
+            };
+            this.qtiPlayer = window.QtiPlayer.createPlayer(qtiOptions);
+            if (this.qtiPlayer === null) {
+                throw Error('occur some error when create instance of qtiplayer');
+            }
+            //绑定QTIPlayer的事件
+            this.qtiPlayer.answerOnChange(function (answer) {
+                this._onQTIPlayerAnswerChange(answer, option);
+            }.bind(this));
+            this.qtiPlayer.answerOnClick(function (item) {
+                this._onQTIPlayerAnswerClick(item);
+            }.bind(this));
+            this.qtiPlayer.loadOnError();
+            this.qtiPlayer.load(questionUrl, function () {
+                this._onQTIPlayerLoadSuccess(option);
+                deferred.resolve();
+            }.bind(this));
+            return deferred.promise();
+        },
+        _onQTIPlayerLoadSuccess: function (option) {
+            this.logger.debug('QTI player load success!');
+            var self = this;
+            var options = this._getQTIRenderOption();
+            options.showAnswerArea = true;
+            if (option !== undefined && option.questionIndex !== undefined) {
+                this.qtiPlayer.setTitleExtras({ 'RESPONSE_1-1': { 'prefix': option.questionIndex + '、' } });
+                options.showQuestionName = true;
+                options.showTitleExtras = true;
+            }
+            //多媒体进度保存
+            if (player.getPlayerServices().getRuntime() === icCreatePlayer.RUNTIME.TEACHER_PC) {
+                // 多媒体进度监控
+                this.qtiPlayer.mediaOnTimeupdate(function (o) {
+                    var key = o.mediaType + '-' + o.index;
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = o.currentTime;
+                    self.playerController.startFlow('css_classroom_status_changed', {
+                        presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                    });
+                });
+                //题干滚动条监控
+                this.$view.find('.js_objective_qti_player').scroll(function (e) {
+                    self.status.scrollTop = $(this).scrollTop();
+                    self.playerController.startFlow('css_classroom_status_changed', {
+                        presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                    });
+                });
+            }
+            this.qtiPlayer.render(this.qtiContainer, options, function () {
+                self._closeKeyBoard();
+                self._onQTIPlayerRenderSuccess();
+                //在init题目后,马上获取题目答案
+                self.initAnswer = self.qtiPlayer.getAnswer();
+            });
+        },
+        _onQTIPlayerRenderSuccess: function () {
+            this.logger.debug('QTI player render success!');
+        },
+        /**
+         * 当QTIPlayer
+         * @param state 变化后的QTIPlayer状态
+         * @private
+         */
+        _onQTIPlayerAnswerChange: function (state, option) {
+            var canSubmit = this._allowSubmit(state);
+            //记录当前的状态
+            this.currentQtiState = state;
+            //如果是状态恢复流程中设置答案,就不做发送处理
+            if (this.inRecover === true) {
+                this.inRecover = false;
+                return;
+            }
+            //如果不需要判断SubmitState的话
+            if (option && option.noJudgeSubmitState === true) {
+                this.$dispatchEvent('embeddedQuestionStateChange', PresenterEventType.IC_PLAYER_EVENT, { canSubmit: canSubmit });
+                //课堂数据保存
+                this.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                });
+                return;
+            }
+            //发送是否可提交的事件给作答流程
+            this.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, { canSubmit: canSubmit });
+            //发送状态保存事件
+            this.$dispatchEvent('interaction_presenter_state_change', PresenterEventType.IC_PLAYER_EVENT);
+            //课堂数据保存
+            this.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+            });
+        },
+        /**
+         * QTIPlayer作答项目被点击事件
+         * @private
+         */
+        _onQTIPlayerAnswerClick: function (item) {
+            //作答项目点击主要用于统计交互过程
+            if (this.objectiveQuestionInteraction !== null) {
+                this.objectiveQuestionInteraction.onQTIPlayerAnswerClick(item);
+            }
+        },
+        _getQTIPlayerResult: function () {
+            var result;
+            if (this.qtiPlayer !== undefined) {
+                result = this.qtiPlayer.getAnswer();
+            }
+            return result;
+        },
+        /**
+         * 获取正确的作答结果
+         * @private
+         */
+        _getQTIPlayerCorrectResult: function () {
+            var correctResult = null;
+            if (this.qtiPlayer !== undefined) {
+                correctResult = this.qtiPlayer.getAssessmentModel().correctAnswer;
+            }
+            return correctResult;
+        },
+        /**
+         * 重置QTIPlayer
+         * @private
+         */
+        _resetQTIPlayer: function () {
+            //将Player对象设置为空
+            if (this.qtiPlayer !== undefined && this.qtiPlayer.destroy) {
+                this.qtiPlayer.destroy();
+                this.qtiPlayer = null;
+            }
+            //清空QTIPlayer的容器
+            if (this.qtiContainer !== undefined) {
+                this.qtiContainer.empty();
+            }
+        },
+        /**
+        * 填空题对接手写功能后的回调函数
+        */
+        _onHwSendDataCallback: function (data) {
+            if (this.nativeHandWriteLoaded) {
+                this.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+                    instanceId: this._CLASS_ID_,
+                    type: 'hwr_presenter_msg',
+                    data: data
+                });
+            }
+        },
+        /*********QTIPlayer相关的方法结束************/
+        _createRandomSeed: function (seedAmount) {
+            var order = [];
+            var random = [];
+            for (var i = 0; i < seedAmount; i++) {
+                order[i] = i;
+            }
+            while (order.length) {
+                var seed = Math.random();
+                random.push(order.splice(Math.floor(seed * order.length), 1)[0]);
+            }
+            if (this.isPPTShell || this.isPC) {
+                return [19, 14, 17, 2, 24, 16, 4, 21, 20, 5, 22, 11, 18, 13, 15, 7, 8, 28, 1, 0, 29, 10, 23, 12, 26, 25, 27, 3, 6, 9];
+            }
+            return random;
+        },
+
+        /** region:【TQD69330】智慧课堂-在PC端放映时的习题展示题页增加查看答案功能 **/
+        _hasAnalysis: function () {
+            var promise = $.Deferred();
+            this.hasAnalysisPromise.then(function (hasAnalysis) {
+                promise.resolve(hasAnalysis);
+            });
+
+            return promise;
+        },
+        _setAnalysisVisible: function (visible) {
+            var analysisComponent = this.analysisComponent;
+            if (analysisComponent) {
+                if (visible) {
+                    analysisComponent.open();
+                } else {
+                    analysisComponent.close();
+                }
+            }
+        },
+        //判断是否含有解析
+        _CreateAnalysisComponent: function () {
+            var hasAnalysis = false,
+                that = this,
+                model = this.qtiPlayer.getAssessmentModel();
+            if (model && model.answerFeedback) {
+                var answerFeedback = model.answerFeedback;
+                for (var key in answerFeedback) {
+                    if (answerFeedback.hasOwnProperty(key)) {
+                        var value = answerFeedback[key];
+                        if (typeof value === 'object' && value.hasOwnProperty('content')) {
+                            var content = value['content'].trim();
+                            if (!!content) {
+                                hasAnalysis = true;
+
+                                this.analysisComponent = {
+                                    init: function (presenter, content) {
+                                        this.$analysisPanel = presenter.$view.find('.js_analysis_panel');
+
+                                        //绑定关闭按钮事件
+                                        this.$analysisPanel.find('.ndui-pop-close').on('click', function () {
+                                            this.$analysisPanel.addClass('hide_dom');
+                                        }.bind(this));
+
+                                        //注入标签和解析内容
+                                        presenter.$translatorDeferred.done(function () {
+                                            this.$analysisPanel.find('.analysis_title').text(presenter.$translator.translate('label_analysis'));
+                                        }.bind(this));
+                                        this.$analysisPanel.find('.analysis_text').html(content);
+                                        NDMediaPlayer.render(this.$analysisPanel, {
+                                            img: {
+                                                render: true
+                                            },
+                                            lang: that.currentLanguage
+                                        });
+                                    },
+                                    open: function () {
+                                        this.$analysisPanel.removeClass('hide_dom');
+                                    },
+                                    close: function () {
+                                        this.$analysisPanel.addClass('hide_dom');
+                                    },
+                                    destroy: function () {
+                                        this.$analysisPanel.find('.ndui-pop-close').off('click');
+
+                                        delete this.$analysisPanel;
+                                    }
+                                };
+                                this.analysisComponent.init(this, content);
+                            }
+                        }
+                    }
+                }
+            }
+
+            this.hasAnalysisPromise.resolve(hasAnalysis);
+        }
+    }, 'ObjectiveBasicQuestion');
+
+    window.AddonObjectiveBasicQuestion_create = function () {
+        return new Presenter('ObjectiveBasicQuestion');
+    };
+})();
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

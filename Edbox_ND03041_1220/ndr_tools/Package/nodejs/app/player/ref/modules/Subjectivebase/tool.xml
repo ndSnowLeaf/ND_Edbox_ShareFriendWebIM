@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool type="resizable" height="100%" width="100%">
+    <presenters> <!-- 描述对 module的引用，其中href为可选，若填写时为私有presenter -->
+        <presenter id="Subjectivity" />
+    </presenters>
+    <properties> 
+        <!-- independent:是否presenter自主处理,如：常用工具，生字卡 这两类为true -->
+        <property name="independent" type="boolean" value="true"/>  
+          <!-- singleton:是否单例。 -->
+        <property name="singleton" type="boolean" value="true"/>
+          <!-- execute:执行的接口，如果有配置value执行value里的方法，没有配置执行execute方法 -->
+        <property name="execute" type="method" value="execute"/>
+        <property name="icon" type="image" value="resource/images/icon.png" />
+        <property name="push" type="boolean" value="false" />
+        <property name="toolName" type="string" value="主观题" />
+		    <property name="toolKey" type="string" value="Subjectivity"/>
+    </properties>
+<!-- main:指定一个tool的主presenter -->
+    <modules main="main">
+         <!-- module下面的节点的schema与page下的module一样，用途也是一样 -->
+        <Module id="main" presenterId="Subjectivity" height="100%" width="100%" left="0" top="0">
+            <properties> <!-- 内容模块 key/value 属性 -->
+				<property name="is_tool" type="boolean" value="true"/>
+            </properties>
+            <events> <!-- 事件绑定 -->
+            </events>
+        </Module>
+    </modules>
+</tool>

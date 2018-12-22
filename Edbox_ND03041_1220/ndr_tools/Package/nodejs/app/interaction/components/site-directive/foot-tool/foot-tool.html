@@ -1,0 +1,23 @@
+<interaction-hint ng-if="showInteractionHint"></interaction-hint><confirm-popup title="" text="{{confirmPopupMessage}}" ng-show="shouldShowConfirmTitlePopup" confirm-text="{{'app.rename' | translate}}" cancel-text="{{'app.save' | translate}}" on-confirm="renameTitle();" on-cancel="continueAction();" on-close="shouldShowConfirmTitlePopup=false;"></confirm-popup><div class="global_success_tip" style="display: none" translate="app.success.saved"></div><div class="com_lay_foottool"><ul class="clearfix left_ul" style="display:inline-block" ng-show="!isSimpleMode"><!-- 暂时屏蔽换肤按钮
+        <li class="skin" ng-if="!arrHide[0]">
+            <a href="javascript:;" draggable="false">
+                <ins></ins>
+                <span translate="app.skin.change"></span>
+            </a>
+
+            <div class="toolpop">
+                <span class="skin_bg_left"></span>
+
+                <div class="skinwrap">
+                    <ul class="skinlist clearfix">
+                        <li ng-repeat="skin in list" ng-click="selectSkin(skin)">
+                            <a href="javascript:;" draggable="false"><img ng-src="{{skin.cover_url}}"
+                                                                          alt="{{skin.name}}"
+                                                                          title="{{skin.name}}"/></a>
+                        </li>
+                    </ul>
+                </div>
+                <span class="skin_bg_right"></span>
+            </div>
+        </li>
+        --><li class="disprtion" id="descriptionTemplate" ng-if="!arrHide[1]"></li><foot-tool-time ng-if="!arrHide[2]" timer="model.timer"></foot-tool-time></ul><new-save-buttons ul-class="clearfix" post-data="model" encode-data="encodeData" decode-data="decodeData" valid-data="validData" version="{{apiVersion}}"></new-save-buttons></div>

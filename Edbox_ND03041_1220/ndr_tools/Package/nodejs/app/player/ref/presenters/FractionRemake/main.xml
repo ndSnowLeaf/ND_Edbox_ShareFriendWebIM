@@ -1,0 +1,910 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='FractionRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .fraction_container{padding:0 .83333em}.exam_skin_wood .fraction_body{margin-top:5em;position:relative;display:inline-block;vertical-align:middle;max-width:100%}.exam_skin_wood .fraction_inline{display:inline-block}.exam_skin_wood .com_wrapper_pad .fraction_body{margin-top:5em}.exam_skin_wood .fraction_box{position:relative;height:100%;z-index:333;text-align:center}.exam_skin_wood .fraction_box .remind{margin-bottom:.83333em;font-size:1.5em;line-height:1.08333em;color:#333;text-align:center}.exam_skin_wood .fraction_box .fraction_single{margin:.625em 0 1.25em;display:inline-block;vertical-align:middle}.exam_skin_wood .fraction_box .fraction_single p{padding:0 .16667em;height:3.33333em;line-height:2.70833em;vertical-align:top}.exam_skin_wood .fraction_box .fraction_single span{display:inline-block;min-width:4.16667em;padding:.20833em .41667em;background:url(resources/wood/images/btn2_normal.jpg) 0 repeat-x;background-size:auto 100%;border-radius:.16667em;border:1px solid #c0811c}.exam_skin_wood .fraction_box .fraction_single span.fraction_symbol{background:0 0;border:none;min-width:0}.exam_skin_wood .fraction_box .fraction_single em{font-size:2.5em;color:#824f06;line-height:1;vertical-align:middle}.exam_skin_wood .fraction_box .fraction_single .fraction_edit{padding:0;position:relative;display:inline-block;height:3.33333em;background:#c69856;vertical-align:middle}.exam_skin_wood .fraction_box .fraction_single .fraction_edit.on{border:.08333em solid #a6ff47}.exam_skin_wood .fraction_box .fraction_single .fraction_edit.res_right{border:.08333em solid #b2c253}.exam_skin_wood .fraction_box .fraction_single .fraction_edit.res_right:after{content:"";position:absolute;bottom:-.29167em;right:-.41667em;display:inline-block;width:1em;height:1em;border-radius:50%;background:url(resources/wood/images/icon_right.png) no-repeat #b2c253;background-size:100% auto}.exam_skin_wood .fraction_box .fraction_single .fraction_edit.res_err{border:.08333em solid #db4f36;vertical-align:middle}.exam_skin_wood .fraction_box .fraction_single .fraction_edit.res_err:after{content:"";position:absolute;bottom:-.29167em;right:-.41667em;display:inline-block;width:1em;height:1em;border-radius:50%;background:url(resources/wood/images/icon_wrong.png) no-repeat #db4f36;background-size:100% auto}.exam_skin_wood .fraction_box .fraction_single .fraction_edit input{padding:0 .29167em;display:block;height:100%;background:#c69856;border-radius:.16667em;font-size:2.5em;color:#fff;text-align:center}.exam_skin_wood .fraction_box .fraction_single .fraction_edit input:disabled{-webkit-text-fill-color:#fff;-webkit-opacity:1;opacity:1}.exam_skin_wood .fraction_box .fraction_single .fraction_line{margin:.41667em 0;padding:0;height:.08333em;background:#8d5d11}.exam_skin_wood .fraction_symbol{padding:0 .29167em;display:inline-block;font-size:1em;color:#824f06;line-height:.29167em;vertical-align:middle;font-weight:700}.exam_skin_wood .fraction_symbol>em{font-size:2.5em}.exam_skin_wood .keyboard{margin:.41667em auto 0;width:100%;letter-spacing:-.29167em}.exam_skin_wood .keyboard .sidel{display:inline-block;width:20.625em;vertical-align:middle;letter-spacing:-.29167em}.exam_skin_wood .keyboard .com_u_btn2{margin:.33333em .33333em 0 0;padding:0 .29167em;width:auto;min-width:3.75em;height:2.91667em;line-height:2.91667em;background:url(resources/wood/images/btn2_normal.jpg) 0 repeat-x;background-size:auto 100%;outline:0;border-radius:.16667em;font-size:1em;font-weight:400;color:#8a5d1b;letter-spacing:normal}.exam_skin_wood .keyboard .com_u_btn2 em{font-size:2.5em}.exam_skin_wood .keyboard .com_u_btn2:active{background:url(resources/wood/images/btn2_press.png) no-repeat;background-size:100% 100%}.exam_skin_wood .keyboard .com_u_btn3{margin:.41667em 0 0;width:3.75em;height:6.33333em;background:url(resources/wood/images/btn3_normal.jpg) 0 repeat-x;background-size:auto 100%;border-radius:.16667em;border:1px solid #f5bfbb;text-align:center;outline:0;font-size:1em;letter-spacing:normal;white-space:nowrap}.exam_skin_wood .keyboard .com_u_btn3 .icon{display:inline-block;width:2.83333em;height:1.83333em;background:url(resources/wood/images/icon_del.png) no-repeat;background-size:100% auto;vertical-align:middle}.exam_skin_wood .keyboard .com_u_btn3:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .keyboard .com_u_btn3:active{background:url(resources/wood/images/btn3_press.png) no-repeat;background-size:100% 100%}.exam_skin_wood .respondRes_tip{margin:.83333em 0 -.83333em;padding:0 .83333em;font-size:2.5em;text-align:center}.exam_skin_wood .respondRes_tip.respond_right{color:#258d52}.exam_skin_wood .respondRes_tip.respond_error{color:#ea0707}._teacherQuestion,._userProcedure,._userResult{display:inline-block}.zhezhao{position:absolute;z-index:9999;width:100%;left:0;top:0;background:0 0;display:none}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content fraction_box _fraction"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _tit"></h2></div><div class="com_layout_main scrollbar_style_simple"><p class="respondRes_tip _respondRes_tip"></p><div class="fraction_container _fraction_container"><div class="fraction_body _fraction_body"><p class="remind _localLan _languageDom" data-language="markTip"></p><div class="_teacherQuestion"></div><span class="fraction_symbol"><em>=</em></span><div class="_userProcedure"></div><span class="fraction_symbol"><em>=</em></span><div class="_userResult"></div><div class="keyboard _keyboard"><div class="sidel"><button class="com_u_btn2"><em>1</em></button> <button class="com_u_btn2"><em>2</em></button> <button class="com_u_btn2"><em>3</em></button> <button class="com_u_btn2"><em>4</em></button> <button class="com_u_btn2"><em>5</em></button> <button class="com_u_btn2"><em>6</em></button> <button class="com_u_btn2"><em>7</em></button> <button class="com_u_btn2"><em>8</em></button> <button class="com_u_btn2"><em>9</em></button> <button class="com_u_btn2"><em>0</em></button></div><button class="com_u_btn3"><i class="icon"></i></button></div></div><div class="zhezhao _zhezhao"></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+    var Fraction = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        this.$main = null;
+        //标题
+        this.title = '';
+        //正确答案
+        this.correctAnswer = {
+            /*键值对形式*/
+            //            p1: 'p2'
+        };
+        this.userAnswer = {};
+        /*键值对形式*/
+        this.showResult = false;
+
+        //题型独有的变量
+
+        this.quesMap = {};
+        this.procMap = {};
+        this.resuMap = {};
+        this.corrRes = {};
+
+        this.fraction_body = null;
+        this.keyboard = null;
+        this.allow_lcm = null;
+        this.allow_sample_result = null;
+        this.lcm = null;
+        this.frac_procedure = null;
+        this.frac_result = null;
+        this.frac_operator = '';
+        this.teacherQuestion = null;
+        this.userProcedure = null;
+        this.userResult = null;
+        this.respondRes_tip = null;
+        this.fraction_edit = null;
+        this.inputDom = null;
+        this.keyboardBtn = null;
+
+        this._fraction_container = null;
+        this.zhezhao = null;
+        this.currInput = null;
+
+        this.i18Model = {};
+    }
+    Fraction.prototype = {
+        init: function(view, model, presenter) {
+            this.questionId = model.question_id;
+            var question_url = model.question_url;
+            this.title = question_url.title;
+            this.allow_lcm = question_url.prompt.allow_lcm;
+            this.allow_sample_result = question_url.prompt.allow_sample_result;
+            this.lcm = question_url.prompt.lcm;
+            this.frac_operator = question_url.prompt.operator;
+            this.frac_procedure = question_url.prompt.procedure;
+            this.frac_result = question_url.prompt.result;
+            this.quesMap = {
+                'nume0': question_url.prompt.first.numerator,
+                'deno0': question_url.prompt.first.denominator,
+                'nume1': question_url.prompt.second.numerator,
+                'deno1': question_url.prompt.second.denominator
+            };
+            this.corrRes = {
+                'nume': question_url.prompt.result.numerator.num,
+                'deno': question_url.prompt.result.denominator.num
+            };
+            this.presenter = presenter;
+            this.$view = $(view);
+        },
+        initView: function() {
+            var that = this;
+            //国际化语言
+            var _languageDoms = that.$view.find("._languageDom");
+            var lan = 0,
+                dataLan = "";
+            for (var lan = 0; lan < _languageDoms.length; lan++) {
+                dataLan = _languageDoms.eq(lan).attr("data-language");
+                _languageDoms.eq(lan).html(that.i18Model[dataLan]);
+            }
+
+            that.$main = that.$view.find('._fraction');
+            that.fraction_body = that.$view.find("._fraction_body");
+            that.keyboard = that.$view.find("._keyboard");
+            that.teacherQuestion = that.$view.find("._teacherQuestion");
+            that.userProcedure = that.$view.find("._userProcedure");
+            that.userResult = that.$view.find("._userResult");
+            that.respondRes_tip = that.$view.find("._respondRes_tip");
+            that.zhezhao = that.$view.find("._zhezhao");
+            that._fraction_container = that.$view.find("._fraction_container");
+
+            //头部标题
+            var $title = that.$view.find('._tit');
+            if (that.title.length > 35) {
+                $title.addClass('s_tit');
+            } else {
+                $title.removeClass('s_tit');
+            }
+            //$title.html(that.title);
+            $title.text(that.title);
+            //分式 问题分式
+            that.teacherQuestion.append('<div class="fraction_single"><p><span><em>' + that.quesMap.nume0 +
+                '</em></span></p><p class="fraction_line"></p><p><span><em>' + that.quesMap.deno0 +
+                '</em></span></p></div><span class="fraction_symbol"><em>' + that.frac_operator +
+                '</em></span><div class="fraction_single"><p><span><em>' + that.quesMap.nume1 +
+                '</em></span></p><p class="fraction_line"></p><p><span><em>' + that.quesMap.deno1 +
+                '</em></span></p></div>');
+            //过程分式
+            var i = 0,
+                j = 0,
+                proCeil = null;
+            var numerator_fir = '',
+                numerator_sec = '',
+                denominator_fir = '',
+                denominator_sec = '',
+                result_numerator = '',
+                result_denominator = '';
+            var corrIndex = 0;
+            var proc = [],
+                res = [];;
+            for (i = 0; i < that.frac_procedure.length; i++) {
+                proCeil = that.frac_procedure[i];
+
+                if (proCeil.numerator.first.hide) {
+                    numerator_fir =
+                        '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="nume' +
+                        i + '_1" size="1" /></span>';
+                    that.correctAnswer[corrIndex++] = proCeil.numerator.first.num;
+                } else {
+                    numerator_fir = '<span><em class="nume' + i + '_1">' + proCeil.numerator.first.num +
+                        '</em></span>';
+                }
+                if (proCeil.numerator.second.hide) {
+                    numerator_sec =
+                        '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="nume' +
+                        i + '_2" size="1" /></span>';
+                    that.correctAnswer[corrIndex++] = proCeil.numerator.second.num;
+                } else {
+                    numerator_sec = '<span><em class="nume' + i + '_2">' + proCeil.numerator.second.num +
+                        '</em></span>';
+                }
+                if (proCeil.denominator.first.hide) {
+                    denominator_fir =
+                        '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="deno' +
+                        i + '_1" size="1" /></span>';
+                    that.correctAnswer[corrIndex++] = proCeil.denominator.first.num;
+                } else {
+                    denominator_fir = '<span><em class="deno' + i + '_1">' + proCeil.denominator.first.num +
+                        '</em></span>';
+                }
+                if (proCeil.denominator.second.hide) {
+                    denominator_sec =
+                        '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="deno' +
+                        i + '_2" size="1" /></span>';
+                    that.correctAnswer[corrIndex++] = proCeil.denominator.second.num;
+                } else {
+                    denominator_sec = '<span><em class="deno' + i + '_2">' + proCeil.denominator.second.num +
+                        '</em></span>';
+                }
+
+                proc.push('<div class="fraction_single _fraction_single"><p>' + numerator_fir +
+                    '<span class="fraction_symbol"><em>x</em></span>' + numerator_sec +
+                    '</p><p class="fraction_line"></p><p>' + denominator_fir +
+                    '<span class="fraction_symbol"><em>x</em></span>' + denominator_sec + '</p></div>');
+                if (i < that.frac_procedure.length - 1) {
+                    proc.push('<span class="fraction_symbol"><em>' + that.frac_operator + '</em></span>');
+                }
+            }
+            that.userProcedure.append(proc.join(''));
+
+            //结果分式
+            if (that.frac_result.symbol == '-') {
+                res.push('<span class="fraction_symbol"><em>-</em></span>');
+            }
+            if (that.frac_result.numerator.hide) {
+                result_numerator =
+                    '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="resuNume" size="1" /></span' +
+                    '>';
+                that.correctAnswer[corrIndex++] = that.frac_result.numerator.num;
+            } else {
+                result_numerator = '<span><em class="resuNume">' + that.frac_result.numerator.num +
+                    '</em></span>';
+            }
+            if (that.frac_result.denominator.hide) {
+                result_denominator =
+                    '<span class="fraction_edit _fraction_edit"><input type="text" value="" maxLength="12" class="resuDeno" size="1" /></span' +
+                    '>';
+                that.correctAnswer[corrIndex++] = that.frac_result.denominator.num;
+            } else {
+                result_denominator = '<span><em class="resuDeno">' + that.frac_result.denominator.num +
+                    '</em></span>';
+            }
+            res.push('<div class="fraction_single _fraction_single"><p>' + result_numerator +
+                '</p><p class="fraction_line"></p><p>' + result_denominator + '</p></div></div>');
+            that.userResult.append(res.join(''));
+
+            that.fraction_edit = that.$main.find("._fraction_edit");
+            that.inputDom = that.$main.find("input[type='text']");
+            that.keyboardBtn = that.$main.find('button');
+
+        },
+        //判断是否可提交
+        canSubEvent: function() {
+            var that = this;
+            var currInputText = that.currInput.value;
+            var size = currInputText.length > 0 ? currInputText.length : 1;
+            $(that.currInput).attr('size', size);
+            var i = 0,
+                canSub = true;
+            for (i = 0; i < that.inputDom.length; i++) {
+                that.userAnswer[i] = that.inputDom.eq(i).val();
+                if (!that.inputDom.eq(i).val()) {
+                    canSub = false;
+                }
+            }
+            if (canSub) {
+                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+            } else {
+                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, { canSubmit: false });
+            }
+
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        //光标后面插入文字
+        insertText: function(obj, str) {
+            var that = this;
+            if (str) {
+                if (that.presenter.isStudent) { //学生端只从尾部添加
+                    if (obj.value.length < 12) {
+                        obj.value += str;
+                    }
+                } else {
+                    obj.focus();
+                    if (document.selection) {
+                        var sel = document.selection.createRange();
+                        sel.text = str;
+                    } else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
+                        var startPos = obj.selectionStart,
+                            endPos = obj.selectionEnd,
+                            cursorPos = startPos,
+                            tmpStr = obj.value;
+                        if (obj.value.length < 12) {
+                            obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos,
+                                tmpStr.length);
+                            cursorPos += str.length;
+                            obj.selectionStart = obj.selectionEnd = cursorPos;
+                        }
+                    } else {
+                        if (obj.value.length < 12) {
+                            obj.value += str;
+                        }
+                    }
+                }
+                that.canSubEvent();
+            }
+        },
+        deleteText: function(obj) {
+            var that = this;
+            if (that.presenter.isStudent) { //学生端只从尾部删除
+                var str = obj.value;
+                if (str.length > 0) {
+                    obj.value = str.substring(0, str.length - 1);
+                }
+            } else {
+                obj.focus();
+                if (document.selection) {
+                    var sel = document.selection.createRange();
+                    sel.text = str;
+                } else if (typeof obj.selectionStart == 'number' && typeof obj.selectionEnd == 'number') {
+                    var startPos = obj.selectionStart,
+                        endPos = obj.selectionEnd,
+                        cursorPos = startPos,
+                        tmpStr = obj.value;
+                    // obj.value = tmpStr.substring(0, startPos) + str + tmpStr.substring(endPos, tmpStr.length);
+
+                    obj.value = tmpStr.substring(0, startPos - 1) + tmpStr.substring(endPos, tmpStr.length);
+                    cursorPos = cursorPos - 1 < 0 ? 0 : cursorPos - 1;
+                    obj.selectionStart = obj.selectionEnd = cursorPos;
+                } else {
+                    var str = obj.value;
+                    if (str.length > 0) {
+                        obj.value = str.substring(0, str.length - 1);
+                    }
+                }
+            }
+            that.canSubEvent();
+        },
+        getText: function(obj) {
+            if ($(obj).get(0).tagName.toLowerCase() != 'input') {
+                return $(obj).text();
+            } else {
+                return $(obj).val();
+            }
+        },
+        btnEvent: function(obj, currInput) {
+            var that = this;
+            if (!$(obj).hasClass('com_u_btn3')) {
+                var text = $(obj).find('em').text();
+                if (currInput) {
+                    that.insertText(currInput, text);
+                }
+            } else {
+                if (currInput) {
+                    that.deleteText(currInput);
+                }
+            }
+        },
+        bindEv: function() {
+            var that = this;
+            //输入框事件
+
+            if (that.presenter.isStudent) {
+                that.inputDom.attr('disabled', 'true');
+                that.fraction_edit.bind('click', function() {
+                    var self = $(this);
+                    that.fraction_edit.removeClass('on');
+                    self.addClass('on');
+                    that.currInput = self.find('input[type="text"]').get(0);
+                    return false;
+                });
+            }
+            that.fraction_edit.eq(0).addClass('on');
+            that.currInput = that.inputDom.eq(0).get(0);
+            that.inputDom.eq(0).focus();
+            that.inputDom.focus(function(event) {
+                var self = this;
+                $(that.$view.find('input')).parent('span').removeClass('on');
+                $(self).parent('span').addClass('on');
+                that.currInput = self;
+            }).bind('input propertychange', function(event) {
+                var self2 = this;
+                if (self2.value.length > 12) {
+                    return false;
+                }
+                that.canSubEvent();
+            });
+            /*.blur(function (event) {
+                //判断是否可以提交
+                var i = 0, canSub = true;
+                for (i = 0; i < that.$view.find('input').length; i++) {
+                    that.userAnswer[i] = that.$view.find('input')[i].value;
+                    if (!that.$view.find('input')[i].value) {
+                        canSub = false;
+                        break;
+                    }
+                }
+                if (canSub) {
+                    that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT, {canSubmit: true});
+                } else {
+                    that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT, {canSubmit: false});
+                }
+
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+            });*/
+
+            //外部键盘事件
+            that.inputDom.keydown(function(event) {
+                var eventObj = event || e;
+                var keyCode = eventObj.keyCode || eventObj.which;
+                if ((keyCode >= 96 && keyCode <= 105) || (keyCode >= 48 && keyCode <= 57) ||
+                    keyCode == 8 || keyCode == 46 || keyCode == 13 || (keyCode >= 37 && keyCode <=
+                        40)) {
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }).focus(function() {
+                //禁用输入法
+                this.style.imeMode = 'disabled';
+            }).bind("paste", function() {
+                //获取剪切板的内容
+                var clipboard = window.clipboardData.getData("Text");
+                if (/^\d+$/.test(clipboard)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+            //底部按钮事件
+            that.keyboardBtn.bind('click', function() {
+                var self2 = this;
+                that.btnEvent(self2, that.currInput);
+            });
+            //底部按钮触屏事件
+            that.keyboardBtn.bind('touchstart', function(event) {
+                var self2 = this;
+                that.btnEvent(self2, that.currInput);
+                return false;
+            });
+        },
+        minNum: function(num1, num2) {
+            return num1 < num2 ? num1 : num2;
+        },
+        maxNum: function(num1, num2) {
+            return num1 > num2 ? num1 : num2;
+        },
+        getResult: function() {
+            var that = this;
+            var j = 0;
+
+            for (j = 0; j < that.inputDom.length; j++) {
+                that.userAnswer[j] = that.inputDom.eq(j).val();
+            }
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: $.extend(true, {}, this.userAnswer),
+                answer_result: true
+            };
+            var answerState = 'NO_ANSWER';
+            var i,
+                userAnsCount = 0,
+                corrAnsCount;
+            for (i in that.correctAnswer) {
+                if (answer.user_response[i]) {
+                    userAnsCount++;
+                }
+                corrAnsCount = i;
+            }
+            if (userAnsCount == 0) {
+                answerState = 'NO_ANSWER';
+            } else if (userAnsCount == (corrAnsCount + 1)) {
+                answerState = 'COMPLETE';
+            } else {
+                answerState = 'NO_COMPLETE';
+            }
+
+            that.procMap = {
+                'nume0': [
+                    that.getText('.nume0_1'), that.getText('.nume0_2')
+                ],
+                'deno0': [
+                    that.getText('.deno0_1'), that.getText('.deno0_2')
+                ],
+                'nume1': [
+                    that.getText('.nume1_1'), that.getText('.nume1_2')
+                ],
+                'deno1': [that.getText('.deno1_1'), that.getText('.deno1_2')]
+            };
+            that.resuMap = {
+                'nume': that.getText('.resuNume'),
+                'deno': that.getText('.resuDeno'),
+                'resuSym': that.frac_result.symbol
+            };
+
+            //取出不是问题分式的部分或者答案错，那么一定是错的
+            var anotherNume0,
+                anotherDeno0,
+                anotherNume1,
+                anotherDeno1;
+
+            anotherNume0 = that.procMap.nume0[0] == that.quesMap.nume0 ? that.procMap.nume0[1] : that.procMap
+                .nume0[1] == that.quesMap.nume0 ? that.procMap.nume0[0] : null;
+            anotherDeno0 = that.procMap.deno0[0] == that.quesMap.deno0 ? that.procMap.deno0[1] : that.procMap
+                .deno0[1] == that.quesMap.deno0 ? that.procMap.deno0[0] : null;
+            anotherNume1 = that.procMap.nume1[0] == that.quesMap.nume1 ? that.procMap.nume1[1] : that.procMap
+                .nume1[1] == that.quesMap.nume1 ? that.procMap.nume1[0] : null;
+            anotherDeno1 = that.procMap.deno1[0] == that.quesMap.deno1 ? that.procMap.deno1[1] : that.procMap
+                .deno1[1] == that.quesMap.deno1 ? that.procMap.deno1[0] : null;
+
+            if (!anotherNume0 || !anotherDeno0 || !anotherNume1 || !anotherDeno1 || anotherDeno0 * that.quesMap
+                .deno0 != anotherDeno1 * that.quesMap.deno1 || anotherNume0 != anotherDeno0 || anotherNume1 !=
+                anotherDeno1) { //首先通分后的分母要相等,分式中分子分母要乘以相同的倍数
+                answer.answer_result = false;
+            } else {
+                var multi1 = that.maxNum(that.resuMap.nume, that.corrRes.nume) / that.minNum(that.resuMap.nume,
+                        that.corrRes.nume),
+                    multi2 = that.maxNum(that.resuMap.deno, that.corrRes.deno) / that.minNum(that.resuMap.deno,
+                        that.corrRes.deno),
+                    mol1 = that.maxNum(that.resuMap.nume, that.corrRes.nume) % that.minNum(that.resuMap.nume,
+                        that.corrRes.nume),
+                    mol2 = that.maxNum(that.resuMap.deno, that.corrRes.deno) % that.minNum(that.resuMap.deno,
+                        that.corrRes.deno);
+
+                if (!that.allow_lcm && !that.allow_sample_result) { //没有勾选了最小公倍数，结果不进行约分
+                    //只要判断结果
+                    if (multi1 == multi2 && mol1 == mol2 && mol2 == 0) {
+                        answer.answer_result = true;
+                    } else {
+                        answer.answer_result = false;
+                    }
+                } else if (that.allow_lcm && !that.allow_sample_result) { //勾选了最小公倍数，结果不进行约分
+                    //分母有要求，结果无要求
+                    if (multi1 == multi2 && mol1 == mol2 && mol2 == 0) {
+                        if (anotherDeno0 == (that.lcm / that.quesMap.deno0) && anotherDeno1 == (that.lcm /
+                                that.quesMap.deno1)) { //勾选了最小公倍数答案是唯一的,也就是如果不是乘以（最小公倍数除以原有的分母），就是错的
+                            answer.answer_result = true;
+                        } else {
+                            answer.answer_result = false;
+                        }
+                    } else {
+                        answer.answer_result = false;
+                    }
+                } else if (!that.allow_lcm && that.allow_sample_result) { //没有勾选了最小公倍数，结果约分
+                    //过程无要求，结果有要求
+                    if (that.resuMap.nume == that.corrRes.nume && that.resuMap.deno == that.corrRes.deno) {
+                        answer.answer_result = true;
+                    } else {
+                        answer.answer_result = false;
+                    }
+                } else { //勾选了最小公倍数，结果约分
+                    //分母唯一，结果唯一
+                    if (anotherDeno0 == (that.lcm / that.quesMap.deno0) && anotherDeno1 == (that.lcm / that
+                            .quesMap.deno1) && that.resuMap.nume == that.corrRes.nume && that.resuMap.deno ==
+                        that.corrRes.deno) {
+                        answer.answer_result = true;
+                    } else {
+                        answer.answer_result = false;
+                    }
+                }
+            }
+            var result = {
+                questionId: this.questionId, //输入参数的question_id
+                answer: answer, //生成输出结果
+                answerState: answerState
+            };
+            return result;
+        },
+
+        showAnswer: function(showAnswerType, commitedAnswer) {
+            var that = this;
+            if (commitedAnswer) {
+                that.userAnswer = commitedAnswer.answer.user_response;
+                var i = 0;
+                for (i = 0; i < that.$view.find('input').length; i++) {
+                    that.$view.find('input')[i].value = that.userAnswer[i];
+                }
+            }
+            if (showAnswerType === 'user') {
+                that.showResult = true;
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    /*先通知状态变化再修改dom结构*/
+                    PresenterEventType.IC_PLAYER_EVENT);
+                //答题显示正误
+                if (that.getResult().answer.answer_result) {
+                    $(that.respondRes_tip).removeClass('respond_error').addClass('respond_right').html(that
+                        .i18Model.correctTip).show();
+                } else {
+                    $(that.respondRes_tip).removeClass('respond_right').addClass('respond_error').html(that
+                        .i18Model.errorTip).show();
+                }
+            } else {
+                that.resetQuestion();
+                var i = 0,
+                    size = 1;
+                for (i = 0; i < that.inputDom.length; i++) {
+                    //$(that.$view.find('input')[i]).attr('size',that.correctAnswer[i].length);
+                    that.inputDom.eq(i).val(that.correctAnswer[i]);
+                    size = that.inputDom.eq(i).val().length > 0 ? that.inputDom.eq(i).val().length : 1;
+                    that.inputDom.eq(i).attr('size', size);
+                }
+                that.fraction_edit.removeClass('on');
+                that.inputDom.blur();
+                that.currInput = null;
+                $(that.zhezhao).height(that._fraction_container.get(0).scrollHeight + 100).show();
+            }
+            that.lockQuestion();
+        },
+        getState: function() {
+            var state = {
+                userAnswer: this.userAnswer,
+                showResult: this.showResult,
+                isLock: this.locked
+            };
+            return state;
+        },
+        setState: function(state) {
+            var that = this;
+            that.resetQuestion();
+            that.showResult = state.showResult;
+            that.userAnswer = state.userAnswer;
+            that.locked = state.isLock;
+
+            var i = 0,
+                size = 1;
+            for (i = 0; i < that.inputDom.length; i++) {
+                that.inputDom.eq(i).val(that.userAnswer[i]);
+                size = that.inputDom.eq(i).val().length > 0 ? that.inputDom.eq(i).val().length : 1;
+                that.inputDom.eq(i).attr('size', size);
+            }
+            if (that.showResult) {
+                //答题显示正误
+                if (that.getResult().answer.answer_result) {
+                    that.respondRes_tip.removeClass('respond_error').addClass('respond_right').html(that.i18Model
+                        .correctTip).show();
+                } else {
+                    that.respondRes_tip.removeClass('respond_right').addClass('respond_error').html(that.i18Model
+                        .errorTip).show();
+                }
+            }
+            if (that.locked) {
+                $(that.zhezhao).height(that._fraction_container.get(0).scrollHeight + 100).show();
+                that.fraction_edit.removeClass('on');
+                that.inputDom.blur();
+                that.currInput = null;
+            } else {
+                that.zhezhao.hide();
+                that.fraction_edit.removeClass('on');
+                that.fraction_edit.eq(0).addClass('on');
+                that.inputDom.eq(0).focus();
+                that.currInput = that.inputDom.eq(0).get(0);
+            }
+        },
+        resetQuestion: function() {
+            var that = this;
+            //  that.locked = false;  that.zhezhao.hide();  that.fraction_edit.removeClass('on');
+            // that.fraction_edit.eq(0).addClass('on');  that.inputDom.eq(0).focus();  that.currInput = that.inputDom.eq(0).get(0);
+            // that.$view.find('input[type=text]').eq(0).focus();
+
+            that.procMap = {};
+            that.resuMap = {};
+            that.inputDom.val('');
+            that.inputDom.attr('size', '1');
+            that.respondRes_tip.hide();
+            that.userAnswer = {};
+            that.showResult = false;
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        lockQuestion: function() {
+            var that = this;
+            that.locked = true;
+            that.fraction_edit.removeClass('on');
+            that.inputDom.blur();
+            that.currInput = null;
+            // $(that.$view.find('input')).attr('disabled', 'disabled'); $(that.keyboard.find('button')).attr('disabled',
+            // 'disabled');
+            $(that.zhezhao).height(that._fraction_container.get(0).scrollHeight + 100).show();
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+
+        },
+        unlockQuestion: function() {
+            var that = this;
+            that.locked = false;
+            //$(that.$view.find('input')).removeAttr('disabled'); $(that.keyboard.find('button')).removeAttr('disabled');
+            that.zhezhao.hide();
+            that.fraction_edit.removeClass('on');
+            that.fraction_edit.eq(0).addClass('on');
+            that.inputDom.eq(0).focus();
+            that.currInput = that.inputDom.eq(0).get(0);
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        startStatistics: function() { /*结束答题开始统计数据*/
+            // this.resetQuestion(); this.lockQuestion();
+            this.$main.addClass('show_number');
+            /*统计要加标号*/
+        },
+        convertDataForStatistics: function(oriData) {
+            var that = this;
+            var i,
+                j,
+                k,
+                m;
+            var value = oriData.value;
+
+            var convertedData = {};
+            //题目类型
+            convertedData.questionType = value.questionType;
+            //用时
+            convertedData.elapsedTime = value.elapsedTime;
+            //已作答人数
+            convertedData.finishedNum = value.finishedNum;
+            //未作答人数
+            convertedData.unfinishedNum = value.unfinishedNum;
+            //总人数
+            convertedData.totalNum = value.unfinishedNum + value.finishedNum;
+
+            convertedData.unfinishedUsers = value.unfinishedUserIds;
+            convertedData.correctUsers = [];
+            convertedData.wrongUsers = [];
+            var answer;
+            if (value.answers) {
+                for (i = 0; i < value.answers.length; i++) {
+                    if (!$.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length > 0) {
+                        for (j = 0; j < value.answers[i].length; j++) {
+                            answer = value.answers[i][j].answer;
+                            if (answer && (typeof answer) == "string") {
+                                answer = JSON.parse(answer);
+                                if (answer && answer.answer_result) {
+                                    convertedData.correctUsers = convertedData.correctUsers.concat(value.answers[
+                                        i][j].userIds);
+                                } else {
+                                    convertedData.wrongUsers = convertedData.wrongUsers.concat(value.answers[
+                                        i][j].userIds);
+                                }
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            convertedData.allrightStu = [];
+            convertedData.allrightStu = convertedData.allrightStu.concat(convertedData.correctUsers);
+            convertedData.spend_time = value ? value.elapsedTime ? value.elapsedTime : 0 : 0;
+            convertedData.submit_count = value ? value.finishedNum + value.unfinishedNum : 0;
+            convertedData.correctNum = convertedData.correctUsers.length;
+            convertedData.wrongNum = convertedData.wrongUsers.length;
+            value["convertedData"] = convertedData;
+            return oriData;
+
+        },
+        destroy: function() {
+            this.$view = null;
+            this.$main = null;
+
+            //this.quesMap = {}; this.procMap = {}; this.resuMap = {}; this.corrRes = {};
+            //
+            // this.fraction_body = null; this.keyboard = null; this.allow_lcm = null; this.allow_sample_result = null; this.lcm =
+            // null; this.frac_procedure = null; this.frac_result = null; this.frac_operator = null;
+        },
+        showResultHint: function() {}
+    };
+    //对外提供服务
+    var Service = function(_Fraction) {
+        this.questionId = null;
+        this._Fraction = _Fraction;
+        this.status = {};
+    };
+    Service.prototype = {
+        init: function(model, Fraction) {
+            this.questionId = model.question_id;
+            this._Fraction = Fraction;
+            this.parent = this._Fraction.presenter;
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: 'fraction',
+                type_name: '分式加减题',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._Fraction.getResult();
+        },
+        _getState: function() {
+            var state = this._Fraction.getState();
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent
+                    .metaInfo.name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._Fraction.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this.parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*老师端和学生端调用的都是这个函数*/
+            return this._Fraction.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) { /*只有学生端调用的*/
+            this._Fraction.showResultHint();
+        },
+        resetQuestion: function() {
+            this._Fraction.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._Fraction.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._Fraction.unlockQuestion();
+        },
+        finishQuestion: function() {},
+        getStatisticClass: function() { /*统计类型*/
+            return 'C';
+        },
+        startStatistics: function() { /*结束答题时调用*/
+            this._Fraction.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) { /*转化统计数据*/
+            return this._Fraction.convertDataForStatistics(oriData);
+        },
+        //实现国际化
+        setLocationProperties: function(properties) {
+            this._Fraction.i18Model = properties;
+        }
+    };
+
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'FractionRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._Fraction = new Fraction();
+            this._service_ = new Service(this._Fraction);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据 that._Fraction = new Fraction();
+            that._Fraction.init(view, model, this);
+            that._Fraction.initView();
+            that._Fraction.bindEv();
+            that._Fraction.resetQuestion();
+            //初始化服务
+            that._service_.init(model, that._Fraction);
+        },
+        destroy: function() {
+            if (this._Fraction) {
+                this._Fraction.destroy();
+            }
+        },
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        }
+
+    });
+    //实现icplayer入口调用函数
+    window.AddonFractionRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/btn2_normal.jpg' />
+<file src='./resources/wood/images/btn2_press.png' />
+<file src='./resources/wood/images/btn3_normal.jpg' />
+<file src='./resources/wood/images/btn3_press.png' />
+<file src='./resources/wood/images/icon_del.png' />
+<file src='./resources/wood/images/icon_right.png' />
+<file src='./resources/wood/images/icon_wrong.png' />
+
+
+</resources>
+
+</addon>

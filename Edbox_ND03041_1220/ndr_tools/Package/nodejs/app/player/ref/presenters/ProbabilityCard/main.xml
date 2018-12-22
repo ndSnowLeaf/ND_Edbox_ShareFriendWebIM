@@ -1,0 +1,1697 @@
+<?xml version='1.0' encoding='UTF-8'?><addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/><property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="knockout" version="3.3.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .extractCard{position:relative;width:100%;height:100%;overflow:hidden;text-align:center;background:url(resources/wood/images/extractCard_bg.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_content{height:0;position:relative;top:50%;left:0;z-index:100}.exam_skin_wood .extractCard .preload_wrap{height:0;width:0}.exam_skin_wood .extractCard .preload_img_01{background:url(resources/wood/images/three-dimensional_foundation-selected.png)}.exam_skin_wood .extractCard .preload_img_02{background:url(resources/wood/images/three-dimensional_foundation.png)}.exam_skin_wood .extractCard .preload_img_03{background:url(resources/wood/images/turn-back_selected.png)}.exam_skin_wood .extractCard .extractCard_seat_group{display:inline-block;position:absolute;width:70.83333em;height:35em;top:-1.375em;left:50%;-webkit-transform-origin:center center;transform-origin:center center;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.exam_skin_wood .extractCard .extractCard_seat_group .extractCard_seat_cell{position:absolute;left:50%;top:50%;width:20.25em;height:27.33333em;margin-left:-10.125em;margin-top:-13.66667em}.exam_skin_wood .extractCard .extractCard_seat_group .extractCard_seat_cell:before{content:"";position:absolute;display:inline-block;left:50%;bottom:-3.04167em;width:23.41667em;height:22.25em;margin-left:-11.70833em;background:url(resources/wood/images/three-dimensional_foundation.png) bottom no-repeat;background-size:100% auto}.exam_skin_wood .extractCard .extractCard_seat_group .extractCard_seat_cell.center-item:before{background:url(resources/wood/images/three-dimensional_foundation-selected.png) bottom no-repeat;background-size:100% auto}.exam_skin_wood .extractCard .extractCard_list{display:inline-block;width:70.83333em;height:35em;position:absolute;top:-1.375em;left:50%;-webkit-transform-origin:center center;transform-origin:center center;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.exam_skin_wood .extractCard .extractCard_whole{pointer-events:none;position:absolute;left:50%;top:50%;padding:2em 2.08333em;width:20.25em;height:27.33333em;margin-left:-10.125em;margin-top:-13.66667em;opacity:1;-webkit-transition:all .2s ease 0s;transition:all .2s ease 0s}.exam_skin_wood .extractCard .extractCard_whole.animate_wash1{-webkit-animation:card1_wash .6s linear .4s;animation:card1_wash .6s linear .4s;-webkit-animation-iteration-count:2;animation-iteration-count:2}.exam_skin_wood .extractCard .extractCard_whole.animate_wash1,.exam_skin_wood .extractCard .extractCard_whole.animate_wash2{-webkit-transform:perspective(1200px) translateZ(0) scale(1)!important;transform:perspective(1200px) translateZ(0) scale(1)!important}.exam_skin_wood .extractCard .extractCard_whole.animate_wash2{-webkit-animation:card2_wash .6s linear .4s;animation:card2_wash .6s linear .4s;-webkit-animation-iteration-count:2;animation-iteration-count:2}.exam_skin_wood .extractCard .extractCard_whole.scale_hide{opacity:0;-webkit-transform:perspective(1200px) translateZ(0) scale(1)!important;transform:perspective(1200px) translateZ(0) scale(1)!important}@-webkit-keyframes card1_wash{0%,to{z-index:1;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}25%{z-index:1;-webkit-transform:perspective(1200px) translate3d(-10em,0,0) scale(1);transform:perspective(1200px) translate3d(-10em,0,0) scale(1)}26%{z-index:2}50%{z-index:2;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}75%{z-index:2;-webkit-transform:perspective(1200px) translate3d(10em,0,0) scale(1);transform:perspective(1200px) translate3d(10em,0,0) scale(1)}76%{z-index:1}}@keyframes card1_wash{0%,to{z-index:1;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}25%{z-index:1;-webkit-transform:perspective(1200px) translate3d(-10em,0,0) scale(1);transform:perspective(1200px) translate3d(-10em,0,0) scale(1)}26%{z-index:2}50%{z-index:2;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}75%{z-index:2;-webkit-transform:perspective(1200px) translate3d(10em,0,0) scale(1);transform:perspective(1200px) translate3d(10em,0,0) scale(1)}76%{z-index:1}}@-webkit-keyframes card2_wash{0%,to{z-index:2;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}25%{z-index:2;-webkit-transform:perspective(1200px) translate3d(10em,0,0) scale(1);transform:perspective(1200px) translate3d(10em,0,0) scale(1)}26%{z-index:1}50%{z-index:1;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}75%{z-index:1;-webkit-transform:perspective(1200px) translate3d(-10em,0,0) scale(1);transform:perspective(1200px) translate3d(-10em,0,0) scale(1)}76%{z-index:2}}@keyframes card2_wash{0%,to{z-index:2;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}25%{z-index:2;-webkit-transform:perspective(1200px) translate3d(10em,0,0) scale(1);transform:perspective(1200px) translate3d(10em,0,0) scale(1)}26%{z-index:1}50%{z-index:1;-webkit-transform:perspective(1200px) translateZ(0) scale(1);transform:perspective(1200px) translateZ(0) scale(1)}75%{z-index:1;-webkit-transform:perspective(1200px) translate3d(-10em,0,0) scale(1);transform:perspective(1200px) translate3d(-10em,0,0) scale(1)}76%{z-index:2}}.exam_skin_wood .extractCard .extractCard_cell{pointer-events:auto;position:relative;z-index:1;width:100%;height:100%;background-size:cover;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transition:-webkit-transform .4s linear;transition:-webkit-transform .4s linear;transition:transform .4s linear;transition:transform .4s linear,-webkit-transform .4s linear;cursor:pointer}.exam_skin_wood .extractCard .extractCard_cell:before{pointer-events:none;-webkit-backface-visibility:hidden;backface-visibility:hidden;content:"";position:absolute;left:50%;bottom:-2.29167em;width:20.29167em;height:5.16667em;margin-left:-9.375em;background:url(resources/wood/images/bg_card_shadow.png) 50% no-repeat;background-size:cover;-webkit-transform:perspective(1200px) translateZ(-15px);transform:perspective(1200px) translateZ(-15px)}.exam_skin_wood .extractCard .extractCard_cell.turn_back{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}.exam_skin_wood .extractCard .extractCard_cell.turn_back:before{opacity:0}.exam_skin_wood .extractCard .extractCard_cell.back_selected .extractCard_cell_backface{background:url(resources/wood/images/turn-back_selected.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_cell.edit_selected .extractCard_cell_bd:after{content:"";z-index:3;display:block;position:absolute;left:-1.66667em;right:-1.66667em;top:-.66667em;bottom:-.66667em;background:url(resources/wood/images/editor.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_backface{z-index:1;pointer-events:none;-webkit-backface-visibility:hidden;backface-visibility:hidden;position:absolute;left:-2.5em;top:-2.41667em;right:-2.5em;bottom:-2.41667em;background:url(resources/wood/images/extractCard_card-bg.png) 50% no-repeat;background-size:100% 100%;-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_backface .light_border{display:none;position:absolute;left:50%;top:50%;margin-top:.04167em;-webkit-transform:translate(-50%,-50%) scale(.73,.75);transform:translate(-50%,-50%) scale(.73,.75);width:440px;height:606px;background:url(resources/wood/images/light_arround.png) no-repeat;background-size:auto 100%;-webkit-animation:light_run 1s steps(23) infinite 0s;animation:light_run 1s steps(23) infinite 0s}@-webkit-keyframes light_run{0%{background-position:0 0}to{background-position:-10120px 0}}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_backface .extractCard_cell_backface_logo{position:absolute;left:50%;top:50%;width:7.91667em;height:11.16667em;background:url(resources/wood/images/backface_logo.png) 50% no-repeat;background-size:100% 100%;-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0);-webkit-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-duration:.2s;animation-duration:.2s;-webkit-animation-timing-function:ease;animation-timing-function:ease;-webkit-animation-delay:0s;animation-delay:0s}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_backface.animate .extractCard_cell_backface_logo{-webkit-animation-name:logoscale;animation-name:logoscale}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_backface.animate .light_border{display:block}@-webkit-keyframes logoscale{0%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}to{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}}@keyframes logoscale{0%{-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0)}to{-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_01 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_01.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_02 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_02.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_03 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_03.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_04 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_04.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_05 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_05.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_06 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_06.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_07 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_07.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_08 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_08.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_09 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_09.png) 50% no-repeat;background-size:98% 98%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_10 .extractCard_cell_bd{background:url(resources/wood/images/skin/card_skin_10.png) 50% no-repeat;background-size:96% 96%}.exam_skin_wood .extractCard .extractCard_cell.extractCard_skin_10 .extractCard_cell_bd:before{background-image:url(resources/wood/images/card_skin-box.png)}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd{padding:.5em .6em .5em 0;z-index:2;position:relative;width:100%;height:100%;border-radius:.83333em;-webkit-backface-visibility:hidden;backface-visibility:hidden;word-break:break-all;word-wrap:break-word}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd .extractCard_input,.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd .txt{max-width:4.6em;max-height:6.7em;font-size:3.33333em;padding:0 0 0 .29167em;font-weight:700;line-height:1.1;min-width:1.2em;min-height:1.2em}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd:before{content:"";width:100%;height:100%;position:absolute;top:0;left:0;display:block;background-image:url(resources/wood/images/card_skin-box.png);background-repeat:no-repeat;background-position:50%;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=red],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=red] textarea{color:#cb1f1f}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=blue],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=blue] textarea{color:#005797}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=orange],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=orange] textarea{color:#e06313}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=green],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=green] textarea{color:#03740a}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=purple],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=purple] textarea{color:#8300de}.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=black],.exam_skin_wood .extractCard .extractCard_cell .extractCard_cell_bd[data-color=black] textarea{color:#000}.exam_skin_wood .extractCard .extractCard_cell .extractCard_input{position:absolute;top:50%;left:50%;-webkit-transform:translate(-52%,-50%);transform:translate(-52%,-50%);z-index:10;background:0 0;overflow-x:hidden;overflow-y:auto}.exam_skin_wood .extractCard .extractCard_cell .extractCard_input::-webkit-scrollbar{width:0;height:0;background:0 0;border-radius:.16667em}.exam_skin_wood .extractCard .extractCard_cell .extractCard_input::-webkit-scrollbar-thumb{border-radius:.16667em;background:rgba(0,0,0,.5)}.exam_skin_wood .extractCard .extractCard_cell .extractCard_views{z-index:10;position:relative;height:100%;border-radius:.83333em;text-align:center;overflow-x:hidden;overflow-y:auto}.exam_skin_wood .extractCard .extractCard_cell .extractCard_views::-webkit-scrollbar{width:0;height:0;background:0 0;border-radius:.16667em}.exam_skin_wood .extractCard .extractCard_cell .extractCard_views::-webkit-scrollbar-thumb{border-radius:.16667em;background:rgba(0,0,0,.5)}.exam_skin_wood .extractCard .extractCard_cell .extractCard_views:after{content:"";display:inline-block;width:0;height:98%;vertical-align:middle}.exam_skin_wood .extractCard .extractCard_cell .extractCard_views .txt{margin-top:.05em;display:inline-block;vertical-align:middle;text-align:left;word-wrap:break-word;word-break:break-all}.exam_skin_wood .extractCard .extractCard_btn_turn_item{position:absolute;width:100%;height:6.08333em;padding-top:1.45833em;bottom:1em;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%);background:url(resources/wood/images/btn-bg_shadow.png) 50% no-repeat;background-size:auto 6.08333em;z-index:99}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn{display:inline-block;min-width:8.5em;height:2.91667em;border:.08333em solid #0c2b7c;border-radius:.66667em;background-color:#fff5d0;box-shadow:1px 1px 0 0 rgba(0,0,0,.27);margin:0 2.91667em;position:relative;padding:.16667em}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn .text{font-size:1.5em;color:#fffbb4}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn .btn_bg{display:inline-block;min-width:100%;height:100%;line-height:2.25em;padding:0 .33333em;border:1px solid #0b7fc2;border-radius:.5em;background:url(resources/wood/images/btn/btn_shadow_normal.png) bottom no-repeat #31a9ce;box-shadow:inset -1px -1px 1px 0 rgba(157,245,255,.8);background-size:100% 2.25em;position:relative}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn .btn_bg:before{content:"";display:inline-block;width:.875em;height:.75em;position:absolute;left:0;top:0;background:url(resources/wood/images/btn/btn_embellish.png) no-repeat;background-size:.875em auto}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.ui_btn_active,.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn:active{background-color:#fff8e1}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.ui_btn_active .btn_bg,.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn:active .btn_bg{background:url(resources/wood/images/btn/btn_shadow_active.png) bottom no-repeat #3181ce;background-size:100% 2.25em;box-shadow:inset -1px -1px 1px 0 #7cc5f8}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.ui_btn_active .text,.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn:active .text{color:#f0ffb4}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.click_disabled{background-color:#faf6ee}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.click_disabled .btn_bg{background:url(resources/wood/images/btn/btn_shadow_gray.png) bottom no-repeat #7c9bab;background-size:100% 2.25em;box-shadow:inset -1px -1px 1px 0 #b8d7dd}.exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn.click_disabled .text{color:#f8f8e3}.exam_skin_wood .extractCard .extractCard_skin-choose_pop{position:absolute;width:55.58333em;height:31.95833em;top:50%;left:50%;z-index:999;opacity:0;-webkit-transform:translate(-50%,-50%) scale(0);transform:translate(-50%,-50%) scale(0);-webkit-transform-origin:24em 24em;transform-origin:24em 24em;-webkit-transition:all .4s ease;transition:all .4s ease}.exam_skin_wood .extractCard .extractCard_skin-choose_pop.show_skin{opacity:1;-webkit-transform:translate(-50%,-50%) scale(1);transform:translate(-50%,-50%) scale(1)}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list{width:100%;height:100%;position:relative;background:url(resources/wood/images/skin_pop_bg.png) 50% no-repeat;background-size:100% auto;border-radius:.79167em;text-align:center;padding:.625em 1.33333em 0}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell{float:left;width:auto;height:auto;margin:1.04167em .625em 0;padding:0;position:relative;-webkit-transition:none;transition:none}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell .extractCard_cell_bd{position:relative;top:0;width:9.25em;height:13.5em}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell.selected:after{z-index:3;content:"";width:10.33333em;height:14.45833em;position:absolute;top:-.5em;left:-.54167em;background:url(resources/wood/images/selected.png) 50% no-repeat;background-size:10.33333em auto}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell.turn_back{-webkit-transform:none;transform:none}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell:before{content:"";background:0 0}.exam_skin_wood .extractCard .extractCard_skin-choose_pop .extractCard_skin_list .extractCard_cell:after{content:"";background:0 0;-webkit-transform:none;transform:none}.exam_skin_wood .extractCard .extractCard_userguider_pop{min-width:58em;min-height:36em;padding-bottom:.5em;position:absolute;background-color:rgba(231,247,255,.9);border-radius:.79167em;text-align:center;white-space:nowrap;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:999}.exam_skin_wood .extractCard .extractCard_userguider_pop .com_btns{min-width:10em;margin-top:0}.exam_skin_wood .extractCard .extractCard_text{color:#333;font-size:1.5em;white-space:normal}.exam_skin_wood .extractCard .userguider_content{padding-top:2.75em;padding-bottom:.41667em}.exam_skin_wood .extractCard .userguider_box{display:inline-block;width:16.66667em;vertical-align:top;text-align:center;margin:0 2.5em}.exam_skin_wood .extractCard .userguider_box .box_icon{display:block;width:100%;height:23.5em;position:relative}.exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_translate{background:url(resources/wood/images/card-bg_noshadow.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_translate:after{content:"";display:inline-block;width:5em;height:7.29167em;position:absolute;bottom:1.45833em;right:-.41667em;background:url(resources/wood/images/pop_hand_01.png) 50% no-repeat;background-size:5em auto}.exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_edit{background:url(resources/wood/images/extractCard_pop_02.png) 50% no-repeat;background-size:16.25em auto}.exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_edit .icon_text{font-size:3.33333em;color:#005797;position:absolute;top:50%;left:50%;display:inline-block;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);font-weight:700}.typefaces_long .exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_edit .icon_text,.typefaces_ru_RU .exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_edit .icon_text{font-size:2.66667em}.exam_skin_wood .extractCard .userguider_box .box_icon.box_icon_edit:after{content:"";display:inline-block;width:5em;height:7.29167em;position:absolute;bottom:1.45833em;right:-.41667em;background:url(resources/wood/images/pop_hand_02.png) 50% no-repeat;background-size:5em auto}.exam_skin_wood .extractCard .userguider_box .userguider_text{display:inline-block;padding:.83333em 0;width:120%;margin-left:-10%}.exam_skin_wood .extractCard .extractCard_tool-btns_box{pointer-events:auto;display:none;width:10.41667em;height:5em;position:absolute;bottom:-4.16667em;left:50%;margin-left:-5.20833em;-webkit-transform-origin:center -2.08333em;transform-origin:center -2.08333em;-webkit-animation-fill-mode:both;animation-fill-mode:both;-webkit-animation-duration:.4s;animation-duration:.4s;-webkit-animation-timing-function:ease-in;animation-timing-function:ease-in;-webkit-animation-delay:0s;animation-delay:0s}.exam_skin_wood .extractCard .extractCard_tool-btns_box.show_box{display:block;-webkit-animation-name:show_box;animation-name:show_box}@-webkit-keyframes show_box{0%{-webkit-transform:rotate(-180deg);transform:rotate(-180deg);opacity:0}to{-webkit-transform:rotate(0);transform:rotate(0);opacity:1}}@keyframes show_box{0%{-webkit-transform:rotate(-180deg);transform:rotate(-180deg);opacity:0}to{-webkit-transform:rotate(0);transform:rotate(0);opacity:1}}.exam_skin_wood .extractCard .extractCard_tool-btns_box.hide_box{display:block;-webkit-animation-name:hide_box;animation-name:hide_box}@-webkit-keyframes hide_box{0%{-webkit-transform:rotate(0);transform:rotate(0);opacity:1}to{-webkit-transform:rotate(180deg);transform:rotate(180deg);opacity:0}}@keyframes hide_box{0%{-webkit-transform:rotate(0);transform:rotate(0);opacity:1}to{-webkit-transform:rotate(180deg);transform:rotate(180deg);opacity:0}}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns{display:block;width:2.95833em;height:2.91667em;border-radius:50%;box-shadow:0 3px 8px 0 rgba(0,0,0,.35)}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-skin{position:absolute;left:0;top:0}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-skin.tool-btns{background:url(resources/wood/images/btn/tool-btns_change-skin_normal.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-skin.tool-btns.active,.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-skin.tool-btns:active{background:url(resources/wood/images/btn/tool-btns_change-skin_active.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-skin.tool-btns.click_disabled{background:url(resources/wood/images/btn/tool-btns_change-skin_gray.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-color{position:absolute;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%);top:20%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-color.tool-btns{background:url(resources/wood/images/btn/tool-btns_change-color_normal.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-color.tool-btns.active,.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-color.tool-btns:active{background:url(resources/wood/images/btn/tool-btns_change-color_active.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_change-color.tool-btns.click_disabled{background:url(resources/wood/images/btn/tool-btns_change-color_gray.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_delete{position:absolute;right:0;top:0}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_delete.tool-btns{background:url(resources/wood/images/btn/tool-btns_delete_normal.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_delete.tool-btns.active,.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_delete.tool-btns:active{background:url(resources/wood/images/btn/tool-btns_delete_active.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .tool-btns.tool-btns_delete.tool-btns.click_disabled{background:url(resources/wood/images/btn/tool-btns_delete_gray.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop{width:23.58333em;height:4.25em;position:absolute;top:100%;left:50%;background-color:#cff2ff;border-radius:.5em;padding-top:.83333em;-webkit-transform-origin:center top;transform-origin:center top;-webkit-transition:all .4s ease;transition:all .4s ease;-webkit-transform:translate(-50%) scale(0);transform:translate(-50%) scale(0);opacity:0}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop:before{content:"";width:0;height:0;position:absolute;top:-.75em;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%);border-left:.41667em solid transparent;border-right:.41667em solid transparent;border-bottom:.83333em solid #cff2ff}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop.show_color{opacity:1;-webkit-transform:translate(-50%) scale(1);transform:translate(-50%) scale(1)}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item{display:inline-block;width:2.5em;height:2.5em;border-radius:50%;margin:0 .41667em;cursor:pointer}.typefaces_long .exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn,.typefaces_ru_RU .exam_skin_wood .extractCard .extractCard_btn_turn_item .extractCard_btn_turn{margin:0 1.66667em}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.selected{border:.16667em solid #fff;box-shadow:0 .25em .5em .16667em rgba(0,0,0,.4)}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-red{background-color:#cb1f1f}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-blue{background-color:#005797}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-orange{background-color:#e06313}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-green{background-color:#03740a}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-purple{background-color:#8300de}.exam_skin_wood .extractCard .extractCard_tool-btns_box .color_choose_pop .color-item.color-black{background-color:#000}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="extractCard" data-bind="click:outSideEvent"><div class="extractCard_content"><div class="preload_wrap"><div class="preload_img_01 hide_dom"></div><div class="preload_img_02 hide_dom"></div><div class="preload_img_03 hide_dom"></div></div><ul class="clearfix extractCard_seat_group hide_dom" data-bind="foreach:card.cardList,css:{'hide_dom':!card.showCardSeat()}"><li class="extractCard_seat_cell" data-bind="style:{'opacity':seatOpacity(),'transform':seatTransform(),'z-index':seatZIndex(),'transition':seatTransition()},css:{'center-item':isCenter()}"></li></ul><ul class="clearfix extractCard_list extractCard_five" data-bind="foreach:card.cardList,event:{mousedown:event.eventStart,touchstart:event.eventStart,mousemove:event.eventMove,touchmove:event.eventMove,mouseup:event.eventEnd,touchEnd:event.eventEnd}"><li class="extractCard_whole" data-bind="style:{'transform':transformStyle(),'z-index':zIndex()},css:{'animate_wash1':washAni1(),'animate_wash2':washAni2(),'scale_hide':scaleHide()}"><div class="extractCard_cell" style="z-index: 3" data-bind="css:{'turn_back':isTurnBack(),
+                         'back_selected':backSelect(),
+                         'edit_selected':editSelect(),
+                         'extractCard_skin_01':skinType() == '1',
+                         'extractCard_skin_02':skinType() == '2',
+                         'extractCard_skin_03':skinType() == '3',
+                         'extractCard_skin_04':skinType() == '4',
+                         'extractCard_skin_05':skinType() == '5',
+                         'extractCard_skin_06':skinType() == '6',
+                         'extractCard_skin_07':skinType() == '7',
+                         'extractCard_skin_08':skinType() == '8',
+                         'extractCard_skin_09':skinType() == '9',
+                         'extractCard_skin_10':skinType() == '10'},
+                         click:{single:onClick.bind($data,$parent.card.singleClickPre,$parent.presenter),double:onDoubleClick.bind($data,$parent.card.doubleClickPre,$parent.presenter)},
+                         event:{touchend:onTouchEnd.bind($data,$parent.card.singleClickPre,$parent.card.doubleClickPre,$parent.presenter)}"><div class="extractCard_cell_bd" data-color="blue" data-bind="attr:{'data-color':textColor()}"><textarea class="extractCard_input js_probability_input" data-bind="textInput:text,attr:{'id':cardID()},css:{'hide_dom':!isEdit()}" data-minheight="50px" data-minwidth="50px"></textarea><div class="extractCard_views" data-bind='css:{"hide_dom":isEdit()}'><span class="txt" data-bind="html:textShow()"></span></div></div><div class="extractCard_cell_backface" data-bind="css:{'animate':isSelect()&&!isEdit()}"><div class="light_border" data-bind="style:{'transform':$parent.lightStyle()}"></div><div class="extractCard_cell_backface_logo"></div></div></div><div class="extractCard_tool-btns_box" data-bind="css:{'show_box':showBox(),'hide_box':hideBox()}"><a href="javascript:;" class="tool-btns tool-btns_change-skin" data-bind="click:$parent.button.buttonEvent.bind($data,$parent.presenter,'showSkinBox',{presenter:$parent.presenter})"></a> <a href="javascript:;" class="tool-btns tool-btns_change-color" data-bind="click:onShowTextColorBox.bind($data,$parent.presenter,$parent.presenter)"></a> <a href="javascript:;" class="tool-btns tool-btns_delete" data-bind="click:$parent.button.buttonEvent.bind($data,$parent.presenter,'deleteCard',{presenter:$parent.presenter,index:$index}),css:{'click_disabled':!$parent.button.canDelete()}"></a><div class="color_choose_pop" data-bind="css:{'show_color':showTextColorBox()},click:clickInside"><ul><li class="color-item color-red" data-bind="css:{'selected': textColor() == 'red'},
+                                    click:setTextColor.bind($data,'red')"></li><li class="color-item color-blue" data-bind="css:{'selected': textColor() == 'blue'},
+                                    click:setTextColor.bind($data,'blue')"></li><li class="color-item color-orange" data-bind="css:{'selected': textColor() == 'orange'},
+                                    click:setTextColor.bind($data,'orange')"></li><li class="color-item color-green" data-bind="css:{'selected': textColor() == 'green'},
+                                    click:setTextColor.bind($data,'green')"></li><li class="color-item color-purple" data-bind="css:{'selected': textColor() == 'purple'},
+                                    click:setTextColor.bind($data,'purple')"></li><li class="color-item color-black" data-bind="css:{'selected': textColor() == 'black'},
+                                    click:setTextColor.bind($data,'black')"></li></ul></div></div></li></ul></div><div class="extractCard_btn_turn_item"><a href="javascript:;" class="extractCard_btn_turn add-card-btn" data-bind="css:{'hide_dom':isStudent() || !button.showAdd(),'click_disabled':button.disableAdd()},click:button.buttonEvent.bind($data,presenter,'addCard')"><span class="btn_bg"><span class="text" data-bind="text:i18nText.addCard()"></span> </span></a><a href="javascript:;" class="extractCard_btn_turn edit-card-btn" data-bind="css:{'hide_dom':isStudent() || !button.showEdit(),'click_disabled':button.disableEdit()},click:button.buttonEvent.bind($data,presenter,'editCard')"><span class="btn_bg"><span class="text" data-bind="text:i18nText.editCard"></span> </span></a><a href="javascript:;" class="extractCard_btn_turn remove-card-btn click_disabled" data-bind="css:{'hide_dom':!button.showShuffle(),'click_disabled':button.disableShuffle()},click:button.buttonEvent.bind($data,presenter,'shuffleCard')"><span class="btn_bg"><span class="text" data-bind="text:i18nText.shuffleCard()"></span></span></a></div><div class="extractCard_userguider_pop" data-bind="css:{'hide_dom':!showGuide()}"><div class="userguider_content"><div class="userguider_box"><i class="box_icon box_icon_translate"></i> <span class="userguider_text extractCard_text" data-bind="text:i18nText.doubleOpen()"></span></div><div class="userguider_box"><i class="box_icon box_icon_edit"><span class="icon_text" data-bind="text:i18nText.dance()"></span> </i><span class="userguider_text extractCard_text" data-bind="text:i18nText.doubleEdit()"></span></div></div><a class="com_btns btns-primary" href="javascript:;" data-bind="click:button.buttonEvent.bind($data,presenter,'closeGuide')"><span class="btns-primary-txt" data-bind="text:i18nText.guideClose()"></span></a></div><div class="extractCard_skin-choose_pop" data-bind="css:{'show_skin':skin.skinShowBox()},click:skin.clickInside"><ul class="clearfix extractCard_skin_list"><li class="extractCard_cell extractCard_skin_01" data-bind="css:{'selected':skin.skinSelect() == 1},click:skin.skinEvent.bind($data,presenter,'1')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_02" data-bind="css:{'selected':skin.skinSelect() == 2},click:skin.skinEvent.bind($data,presenter,'2')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_03" data-bind="css:{'selected':skin.skinSelect() == 3},click:skin.skinEvent.bind($data,presenter,'3')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_04" data-bind="css:{'selected':skin.skinSelect() == 4},click:skin.skinEvent.bind($data,presenter,'4')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_05" data-bind="css:{'selected':skin.skinSelect() == 5},click:skin.skinEvent.bind($data,presenter,'5')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_06" data-bind="css:{'selected':skin.skinSelect() == 6},click:skin.skinEvent.bind($data,presenter,'6')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_07" data-bind="css:{'selected':skin.skinSelect() == 7},click:skin.skinEvent.bind($data,presenter,'7')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_08" data-bind="css:{'selected':skin.skinSelect() == 8},click:skin.skinEvent.bind($data,presenter,'8')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_09" data-bind="css:{'selected':skin.skinSelect() == 9},click:skin.skinEvent.bind($data,presenter,'9')"><div class="extractCard_cell_bd"></div></li><li class="extractCard_cell extractCard_skin_10" data-bind="css:{'selected':skin.skinSelect() == 10},click:skin.skinEvent.bind($data,presenter,'10')"><div class="extractCard_cell_bd"></div></li></ul></div></div><div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _KOHandler = __webpack_require__(1);
+
+	var _KOHandler2 = _interopRequireDefault(_KOHandler);
+
+	var _ViewController = __webpack_require__(2);
+
+	var _StateController = __webpack_require__(5);
+
+	var _Service = __webpack_require__(9);
+
+	var _Service2 = _interopRequireDefault(_Service);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'ProbabilityCard',
+	      type: PresenterType.PRESENTER_COMPONENT
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	      (0, _KOHandler2.default)();
+	      (0, _StateController.initEnvironment)(this);
+	    },
+	    __interface: {
+	      resizeScreen: function resizeScreen(data) {
+	        console.log(data);
+	        (0, _ViewController._adjustLightBorder)(this);
+	      }
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      var screenShotDef = $.Deferred();
+	      var me = this;
+	      me.$view = $(view);
+	      me.model = model;
+	      me.viewModel.isStudent(me.isStudent);
+	      (0, _ViewController._adjustLightBorder)(me);
+	      // preview or student
+	      if (me.model.__ExtendModel && !$.isEmptyObject(me.model.__ExtendModel)) {
+	        (0, _StateController.recoverState)(me, screenShotDef);
+	      } else {
+	        (0, _ViewController._initView)(me);
+	        (0, _ViewController._initI18n)(me);
+	        (0, _ViewController._initTextArea)(me);
+	        ko.applyBindings(me.viewModel, me.$view[0]);
+	        screenShotDef.resolve();
+	      }
+	      return screenShotDef.promise();
+	    },
+	    getService: function getService() {
+	      return new _Service2.default(this);
+	    }
+	  }, 'ProbabilityCard');
+
+	  window.AddonProbabilityCard_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ },
+/* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	exports.default = function () {
+	  ko.bindingHandlers.click = {
+	    init: function init(element, valueAccessor, allBindingsAccessor, viewModel, context) {
+	      var accessor = valueAccessor();
+	      var clicks = 0;
+	      var timeout = 200;
+
+	      $(element).click(function (event) {
+	        if ((typeof accessor === 'undefined' ? 'undefined' : _typeof(accessor)) === 'object') {
+	          (function () {
+	            var single = accessor.single;
+	            var double = accessor.double;
+	            clicks++;
+	            if (clicks === 1) {
+	              setTimeout(function () {
+	                if (clicks === 1) {
+	                  single.call(viewModel, context.$data, event);
+	                } else {
+	                  double.call(viewModel, context.$data, event);
+	                }
+	                clicks = 0;
+	              }, timeout);
+	            }
+	          })();
+	        } else {
+	          accessor.call(viewModel, context.$data, event);
+	        }
+	      });
+	    }
+	  };
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports._initView = _initView;
+	exports._initI18n = _initI18n;
+	exports._singleClickPre = _singleClickPre;
+	exports._doubleClickPre = _doubleClickPre;
+	exports._rotateCards = _rotateCards;
+	exports._updateCardsView = _updateCardsView;
+	exports._skinEvent = _skinEvent;
+	exports._outSideEvent = _outSideEvent;
+	exports._eventStart = _eventStart;
+	exports._eventMove = _eventMove;
+	exports._rotateOperate = _rotateOperate;
+	exports._eventEnd = _eventEnd;
+	exports._initTextArea = _initTextArea;
+	exports._saveStartCardState = _saveStartCardState;
+	exports._disableButton = _disableButton;
+	exports._enableButton = _enableButton;
+	exports._adjustLightBorder = _adjustLightBorder;
+
+	var _Card = __webpack_require__(3);
+
+	var _Card2 = _interopRequireDefault(_Card);
+
+	var _Utils = __webpack_require__(4);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _initView(context) {
+	  var me = context;
+	  var cardList = me.viewModel.card.cardList;
+	  cardList.push(new _Card2.default(me.i18nModel['sing'], 'blue', false, false, false, '1'));
+	  cardList.push(new _Card2.default(me.i18nModel['dance'], 'blue', false, false, false, '2'));
+	  cardList.push(new _Card2.default(me.i18nModel['recite'], 'blue', false, false, false, '4'));
+	  var length = cardList().length;
+	  $.each(cardList(), function (k, v) {
+	    v.setCardStyle(me.initData.editCardPosition[length][k]);
+	  });
+	}
+	function _initI18n(context) {
+	  var me = context;
+	  $.each(me.viewModel.i18nText, function (k, v) {
+	    v(me.i18nModel[k]);
+	  });
+	}
+	function _singleClickPre(presenter, selectCard) {
+	  if (presenter.currentAni !== 0) {
+	    return;
+	  }
+	  presenter.selectCard = selectCard;
+	  var list = presenter.viewModel.card.cardList();
+	  $.each(list, function (k, v) {
+	    if (selectCard === v) {
+	      presenter.selectCardIndex = k;
+	    } else {
+	      v.isSelect(false);
+	      v.editSelect(false);
+	      v.backSelect(false);
+	    }
+	  });
+	  // click to select
+	  if (selectCard.isTurnBack()) {
+	    // show select card to front
+	    if (list.length > 4) {
+	      var def = $.Deferred();
+	      selectCard.backSelect(true);
+	      presenter.currentAni = 3;
+	      _disableButton(presenter);
+	      _saveStartCardState(presenter);
+	      _rotateCards(presenter, selectCard, false, '', def);
+	      def.then(function () {
+	        selectCard.isSelect(true);
+	        presenter.currentAni = 0;
+	        _enableButton(presenter);
+	      });
+	    } else {
+	      // back
+	      selectCard.backSelect(true);
+	      selectCard.isSelect(true);
+	    }
+	  } else {
+	    // front
+	    selectCard.editSelect(true);
+
+	    if (!presenter.operateMode && list.length > 4) {
+	      var _def = $.Deferred();
+	      presenter.currentAni = 4;
+	      _disableButton(presenter);
+	      _saveStartCardState(presenter);
+	      _rotateCards(presenter, selectCard, true, '', _def);
+	      _def.then(function () {
+	        presenter.currentAni = 0;
+	        _enableButton(presenter);
+	      });
+	    }
+	  }
+	}
+	function _doubleClickPre(presenter, selectCard) {
+	  presenter.selectCard = selectCard;
+	  var list = presenter.viewModel.card.cardList();
+	  $.each(list, function (k, v) {
+	    v.isEdit(false);
+	    if (v.zIndex() === 100) {
+	      v.zIndex('');
+	    }
+	    if (selectCard === v) {
+	      presenter.selectCardIndex = k;
+	    }
+	  });
+	  // double click open card
+	  if (selectCard.isTurnBack()) {
+	    if (list.length > 4) {
+	      $.each(list, function (k, v) {
+	        v.isSelect(false);
+	        v.editSelect(false);
+	        v.backSelect(false);
+	      });
+	      var def = $.Deferred();
+	      presenter.currentAni = 5;
+	      _disableButton(presenter);
+	      _saveStartCardState(presenter);
+	      _rotateCards(presenter, selectCard, false, '', def);
+	      def.then(function () {
+	        selectCard.isTurnBack(false);
+	        presenter.currentAni = 0;
+	        _enableButton(presenter);
+	      });
+	    } else {
+	      selectCard.isTurnBack(false);
+	    }
+	  }
+	}
+	function _rotateCards(context, selectCard, revert, pIndex, def) {
+	  var me = context;
+	  var list = me.viewModel.card.cardList;
+	  var length = list().length;
+	  var index = 0;
+	  if (selectCard) {
+	    index = selectCard.pIndex;
+	    if (index > Math.floor(length / 2)) {
+	      revert = false;
+	      index = length - index;
+	    } else {
+	      revert = true;
+	    }
+	  } else if (pIndex) {
+	    index = pIndex;
+	  } else {
+	    index = Math.floor(length / 2) + Math.floor(Math.random() * length / 2);
+	    me.rotateRandomIndex = index;
+	  }
+	  var count = 0;
+	  if (index === 0) {
+	    if (def) {
+	      def.resolve();
+	    }
+	    return;
+	  }
+	  var id = setInterval(function () {
+	    count++;
+	    $.each(list(), function (k, v) {
+	      if (revert) {
+	        v.setCardStyle(me.initData.showCardPosition[length][v.pIndex - count >= 0 ? v.pIndex - count : length + v.pIndex - count]);
+	      } else {
+	        v.setCardStyle(me.initData.showCardPosition[length][v.pIndex + count < length ? v.pIndex + count : v.pIndex + count - length]);
+	      }
+	    });
+	    if (count === length) {
+	      count = 0;
+	      index = index - length;
+	    }
+	    if (count === index) {
+	      if (revert) {
+	        (function () {
+	          var t = count % length;
+	          $.each(list(), function (k, v) {
+	            if (v.pIndex >= 0 && v.pIndex < t) {
+	              v.pIndex = length - (t - v.pIndex);
+	            } else {
+	              v.pIndex = v.pIndex - t;
+	            }
+	          });
+	        })();
+	      } else {
+	        (function () {
+	          var t = count % length;
+	          $.each(list(), function (k, v) {
+	            if (v.pIndex >= length - t && v.pIndex < length) {
+	              v.pIndex = v.pIndex + t - length;
+	            } else {
+	              v.pIndex = v.pIndex + t;
+	            }
+	          });
+	        })();
+	      }
+	      clearInterval(id);
+	      if (def) {
+	        def.resolve();
+	      }
+	    }
+	  }, 150);
+	}
+	var _rotateCardsSlowTL = _.throttle(function (context, startPosition, endPosition) {
+	  _rotateCardsSlow(context, startPosition, endPosition);
+	}, 50, { 'leading': true, 'trailing': true });
+
+	function _rotateCardsSlow(context, startPosition, endPosition) {
+	  var direction = startPosition - endPosition < 0;
+	  var me = context.presenter || context;
+	  var list = me.viewModel.card.cardList;
+	  var length = list().length;
+	  var currentPosition = me.initData.showCardPosition[length];
+	  var cardDis = Math.abs(currentPosition[0].x - currentPosition[1].x) * me.fontSize;
+	  var percent = Math.abs(startPosition - endPosition) * 2 / cardDis;
+	  var end = Math.ceil(percent);
+	  var start = Math.floor(percent);
+	  var decimals = percent - start;
+	  $.each(list(), function (k, v) {
+	    if (direction) {
+	      v.setCardStyle(calMidPosition(currentPosition[v.pIndex - start >= 0 ? v.pIndex - start : length + v.pIndex - start], currentPosition[v.pIndex - end >= 0 ? v.pIndex - end : length + v.pIndex - end], decimals, me.fontSize, direction));
+	    } else {
+	      v.setCardStyle(calMidPosition(currentPosition[v.pIndex + start < length ? v.pIndex + start : v.pIndex + start - length], currentPosition[v.pIndex + end < length ? v.pIndex + end : v.pIndex + end - length], decimals, me.fontSize, direction));
+	    }
+	  });
+	  var switchPos = decimals <= 0.5 ? start : end;
+	  var isEnoughFast = new Date().getTime() - me.slideData.startTime < 300;
+	  if (endPosition - startPosition > 300 && isEnoughFast) {
+	    releasePositionTL(me, direction, end);
+	    _rotateOperate(me, true);
+	    moveEndFn(me);
+	  } else if (endPosition - startPosition < -300 && isEnoughFast) {
+	    releasePositionTL(me, direction, end);
+	    _rotateOperate(me, false);
+	    moveEndFn(me);
+	  } else if (Math.abs(endPosition - startPosition) > 10) {
+	    // prevent double tap shudder
+	    _disableButton(me);
+	    moveEndFn(me, direction, switchPos);
+	  }
+	}
+	var moveEndFn = _.debounce(function (context, direction, end) {
+	  if (direction !== undefined && end !== undefined) {
+	    var def = $.Deferred();
+	    releasePositionTL(context, direction, end, def);
+	    def.done(function () {
+	      _rotateDone(context);
+	      context.slideData.hasStart = false;
+	      // context.slideData.isMoving = false
+	    });
+	  } else {
+	    context.slideData.hasStart = false;
+	    // context.slideData.isMoving = false
+	  }
+	}, 400);
+
+	function calMidPosition(start, end, percent, fontSize, dir) {
+	  return { x: start.x + (end.x - start.x) * percent,
+	    y: start.y + (end.y - start.y) * percent, z: 0,
+	    s: start.s + (end.s - start.s) * percent, zin: dir ? start.zin : end.zin };
+	}
+	var releasePositionTL = _.debounce(function (context, revert, count, def) {
+	  var me = context;
+	  var list = me.viewModel.card.cardList();
+	  var length = list.length;
+	  if (revert) {
+	    (function () {
+	      var t = count % length;
+	      $.each(list, function (k, v) {
+	        if (v.pIndex >= 0 && v.pIndex < t) {
+	          v.pIndex = length - (t - v.pIndex);
+	        } else {
+	          v.pIndex = v.pIndex - t;
+	        }
+	        v.setCardStyle(me.initData.showCardPosition[length][v.pIndex]);
+	      });
+	    })();
+	  } else {
+	    (function () {
+	      var t = count % length;
+	      $.each(list, function (k, v) {
+	        if (v.pIndex >= length - t && v.pIndex < length) {
+	          v.pIndex = v.pIndex + t - length;
+	        } else {
+	          v.pIndex = v.pIndex + t;
+	        }
+	        v.setCardStyle(me.initData.showCardPosition[length][v.pIndex]);
+	      });
+	    })();
+	  }
+	  if (def) {
+	    def.resolve();
+	  }
+	}, 100);
+
+	function _updateCardsView(context) {
+	  var me = context;
+	  var list = me.viewModel.card.cardList();
+	  var length = list.length;
+	  if (me.viewModel.button.showAdd()) {
+	    var lastCard = list[length - 1];
+	    var startP = { x: 50, y: 0, z: 0, s: 1 };
+	    switch (length) {
+	      case 3:
+	      case 4:
+	        {
+	          startP = { x: 50, y: 0, z: 0, s: 1 };
+	          break;
+	        }
+	      case 6:
+	      case 8:
+	      case 10:
+	        {
+	          startP = { x: 50, y: -212 / 24, z: 0, s: 1 };
+	          break;
+	        }
+	      case 5:
+	      case 7:
+	      case 9:
+	        {
+	          startP = { x: 50, y: 193 / 24, z: 0, s: 1 };
+	          break;
+	        }
+	    }
+	    lastCard.setCardStyle(startP);
+	    _.delay(function () {
+	      $.each(list, function (k, v) {
+	        v.setCardStyle(me.initData.editCardPosition[length][k]);
+	        v.pIndex = k;
+	      });
+	    }, 10);
+	    _initTextArea(me);
+	  }
+	}
+	function _skinEvent(context, type) {
+	  event.stopPropagation();
+	  var me = context;
+	  if (me.selectCard) {
+	    me.selectCard.setSkinType(type);
+	    me.viewModel.skin.skinShowBox(false);
+	  }
+	}
+	function _outSideEvent(context) {
+	  var me = context.presenter || context;
+	  if (!me.viewModel.skin.skinShowBox() && !(me.selectCard && me.selectCard.showTextColorBox())) {
+	    $.each(me.viewModel.card.cardList(), function (k, v) {
+	      if (v.showBox()) {
+	        v.showBox(false);
+	        v.hideBox(true);
+	        _.delay(function () {
+	          v.hideBox(false);
+	          if (v.currentIndex !== '') {
+	            if (v.currentIndex === 100) {
+	              v.zIndex('');
+	            } else {
+	              v.zIndex(v.currentIndex);
+	            }
+	            v.currentIndex = '';
+	          }
+	        }, 400);
+	      }
+	    });
+	  }
+	  if (me.viewModel.skin.skinShowBox()) {
+	    me.viewModel.skin.skinShowBox(false);
+	  }
+	  if (me.selectCard && me.selectCard.showTextColorBox()) {
+	    me.selectCard.showTextColorBox(false);
+	  }
+	}
+	function _eventStart(context) {
+	  var me = context.presenter || context;
+	  if (!me.operateMode) {
+	    me.slideData.hasStart = true;
+	    me.slideData.startTime = new Date().getTime();
+	    me.slideData.start = { x: _Utils2.default._getX(event) };
+	    me.slideData.hasClearCard = false;
+	  }
+	  return true;
+	}
+	function _eventMove(context) {
+	  var me = context.presenter || context;
+	  if (!me.operateMode && !me.slideData.sliding && me.slideData.hasStart && me.viewModel.card.cardList().length > 4) {
+	    var end = { x: _Utils2.default._getX(event) };
+	    var start = me.slideData.start;
+	    if (Math.abs(end.x - start.x) > 10) {
+	      if (!me.slideData.hasClearCard) {
+	        $.each(me.viewModel.card.cardList(), function (k, v) {
+	          v.backSelect(false);
+	          v.editSelect(false);
+	          v.isSelect(false);
+	        });
+	        me.slideData.hasClearCard = true;
+	      }
+	      // me.slideData.isMoving = true
+	      _rotateCardsSlowTL(context, start.x, end.x);
+	    }
+	  }
+	}
+	function _rotateDone(context) {
+	  var me = context;
+	  me.slideData.sliding = false;
+	  me.currentAni = 0;
+	  var list = me.viewModel.card.cardList();
+	  $.each(list, function (k, v) {
+	    if (v.pIndex === 0) {
+	      if (v.isTurnBack()) {
+	        v.isSelect(true);
+	        v.backSelect(true);
+	      }
+	    } else {
+	      v.backSelect(false);
+	      v.isSelect(false);
+	    }
+	  });
+	  _enableButton(me);
+	}
+	function _rotateOperate(context, dir) {
+	  var me = context;
+	  me.slideData.sliding = true;
+	  me.slideData.hasStart = true;
+	  me.slideData.rotateFn(dir).done(function () {
+	    _rotateDone(me);
+	  });
+	}
+	function _eventEnd(context) {
+	  var me = context.presenter || context;
+	  if (!me.operateMode && me.slideData) {
+	    me.slideData.hasStart = false;
+	  }
+	  return true;
+	}
+	function _initTextArea(context) {
+	  var me = context;
+	  _.delay(function () {
+	    $('.js_probabilitycard_shadow_div').remove();
+	    me.$view.find('.js_probability_input').autoJustify({ vertical: true, horizontal: true });
+	  }, 100);
+	}
+	function _saveStartCardState(context) {
+	  var me = context;
+	  me.startRotateCard = [];
+	  $.each(me.viewModel.card.cardList(), function (k, v) {
+	    var card = {};
+	    for (var op in v) {
+	      if ($.isFunction(v[op])) {
+	        card[op] = v[op]();
+	      } else {
+	        card[op] = v[op];
+	      }
+	    }
+	    me.startRotateCard.push(card);
+	  });
+	}
+	function _disableButton(context) {
+	  var button = context.viewModel.button;
+	  if (button.showEdit()) {
+	    button.disableEdit(true);
+	  }
+	  if (button.showShuffle()) {
+	    button.disableShuffle(true);
+	  }
+	  if (button.showAdd()) {
+	    button.disableAdd(true);
+	  }
+	}
+	function _enableButton(context) {
+	  var me = context;
+	  var button = me.viewModel.button;
+	  if (button.showAdd() && me.viewModel.card.cardList().length < 10) {
+	    button.disableAdd(false);
+	  }
+	  if (button.showEdit()) {
+	    button.disableEdit(false);
+	  }
+	  if (button.showShuffle()) {
+	    button.disableShuffle(false);
+	  }
+	}
+	function _adjustLightBorder(context) {
+	  var me = context;
+	  me.fontSize = parseFloat(getComputedStyle(me.$view[0].children[0]).fontSize);
+	  var style = 'translate(-50%, -50%) scale(' + 0.73 * me.fontSize / 18 + ', ' + 0.75 * me.fontSize / 18 + ')';
+	  me.viewModel.lightStyle(style);
+	}
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Utils = __webpack_require__(4);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Card = function () {
+	  function Card(text, textColor, isSelect, isEdit, isTurnBack, skinType) {
+	    _classCallCheck(this, Card);
+
+	    this.text = ko.observable(text);
+	    this.textColor = ko.observable(textColor);
+	    this.isSelect = ko.observable(isSelect || false);
+	    this.isEdit = ko.observable(isEdit || false);
+	    this.isTurnBack = ko.observable(isTurnBack || false);
+	    this.backSelect = ko.observable(false);
+	    this.editSelect = ko.observable(false);
+	    this.showBox = ko.observable(false);
+	    this.hideBox = ko.observable(false);
+	    this.skinType = ko.observable('');
+	    this.showTextColorBox = ko.observable(false);
+	    this.transformStyle = ko.observable();
+	    this.zIndex = ko.observable();
+	    this.washAni1 = ko.observable(false);
+	    this.washAni2 = ko.observable(false);
+	    this.scaleHide = ko.observable(false);
+	    this.lastTouch = 0;
+	    this.action = 0;
+	    this.textShow = function () {
+	      var text = this.text();
+	      if (_Utils2.default.hasIllegalChar(text)) {
+	        return text.substring(0, text.length - 1);
+	      }
+	      var result = _Utils2.default.getActualLength(text);
+	      if (result[0] > 40) {
+	        return result[1];
+	      }
+	      return text;
+	    };
+
+	    this.pIndex = 0;
+	    this.currentIndex = '';
+
+	    // seart property
+	    this.seatOpacity = ko.observable();
+	    this.seatTransform = ko.observable();
+	    this.seatZIndex = ko.observable();
+	    this.seatTransition = ko.observable();
+
+	    this.isCenter = ko.observable(false);
+
+	    this.cardID = ko.observable(_.uniqueId(['probabilitycard_']));
+
+	    if (skinType) {
+	      this.skinType(skinType);
+	    } else {
+	      this.skinType('1');
+	    }
+	  }
+
+	  _createClass(Card, [{
+	    key: 'setCardStyle',
+	    value: function setCardStyle(obj) {
+	      var style = 'perspective(1200px) translate3d(' + obj.x + 'em, ' + obj.y + 'em, ' + obj.z + 'em) scale(' + obj.s + ')';
+	      if (obj.zin) {
+	        this.zIndex(obj.zin);
+	      } else {
+	        this.zIndex('');
+	      }
+	      this.transformStyle(style);
+	    }
+	  }, {
+	    key: 'setCardSeatStyle',
+	    value: function setCardSeatStyle(obj, opacity, transition) {
+	      var style = 'perspective(1200px) translate3d(' + obj.x + 'em, ' + (transition ? obj.y : obj.y - 4) + 'em, ' + obj.z + 'em) scale(' + (transition ? obj.s : obj.s - 0.4) + ')';
+	      if (obj.zin) {
+	        this.seatZIndex(obj.zin);
+	      }
+	      if (transition) {
+	        this.seatTransition('0.2s linear');
+	      } else {
+	        this.seatTransition();
+	      }
+	      this.seatTransform(style);
+	      this.seatOpacity(opacity);
+	    }
+	  }, {
+	    key: 'setSkinType',
+	    value: function setSkinType(type) {
+	      this.skinType(type);
+	    }
+	  }, {
+	    key: 'setTextColor',
+	    value: function setTextColor(color) {
+	      this.textColor(color);
+	      this.showTextColorBox(false);
+	    }
+	  }, {
+	    key: 'onShowTextColorBox',
+	    value: function onShowTextColorBox(presenter) {
+	      event.stopPropagation();
+	      presenter.viewModel.skin.skinShowBox(false);
+	      this.showTextColorBox(true);
+	    }
+	  }, {
+	    key: 'clickInside',
+	    value: function clickInside() {
+	      event.stopPropagation();
+	    }
+	  }, {
+	    key: 'onClick',
+	    value: function onClick(cb, presenter) {
+	      if (presenter.viewModel.button.disableShuffle()) {
+	        return;
+	      }
+	      cb(presenter, this);
+	    }
+	  }, {
+	    key: 'onTouchEnd',
+	    value: function onTouchEnd(cb1, cb2, presenter) {
+	      var _this = this;
+
+	      var now = new Date().getTime();
+	      var lastTouch = this.lastTouch || now + 1;
+	      var delta = now - lastTouch;
+	      clearTimeout(this.action);
+	      if (delta < 200 && delta > 0) {
+	        // 双击事件
+	        console.log('dbclick');
+	        this.onDoubleClick(cb2, presenter);
+	        event.preventDefault();
+	      } else {
+	        (function () {
+	          _this.lastTouch = now;
+	          var me = _this;
+	          _this.action = setTimeout(function (e) {
+	            clearTimeout(me.action);
+	            me.onClick(cb1, presenter);
+	          }, 500, [event]);
+	        })();
+	      }
+	      this.lastTouch = now;
+	    }
+	  }, {
+	    key: 'onDoubleClick',
+	    value: function onDoubleClick(cb, presenter) {
+	      if (presenter.viewModel.button.disableShuffle()) {
+	        return;
+	      }
+	      cb(presenter, this);
+	      // double click on edit mode to edit card
+	      if (presenter.operateMode && !presenter.viewModel.isStudent()) {
+	        // switch span to textarea
+	        this.isEdit(true);
+	        this.currentIndex = this.zIndex();
+	        this.zIndex(100);
+	        // to focus textarea
+	        if (this.text() === '') {
+	          presenter.$view.find('#' + this.cardID()).text('test');
+	          presenter.$view.find('#' + this.cardID()).focus();
+	          presenter.$view.find('#' + this.cardID()).text('');
+	        } else {
+	          presenter.$view.find('#' + this.cardID()).focus();
+	        }
+	        // show the edit button on the bottom
+	        if (!this.showBox()) {
+	          this.showBox(true);
+	          if (this.hideBox()) {
+	            this.hideBox(false);
+	          }
+	        }
+	      }
+	    }
+	  }]);
+
+	  return Card;
+	}();
+
+	exports.default = Card;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  'hasIllegalChar': function hasIllegalChar(str) {
+	    // 支持数字  字母 * - + / . =  空格汉字 俄文 德文和法文 日文等符号
+	    var pat = new RegExp(/[^0-9A-Za-z*\-+/.=\s\u4E00-\u9FA5\u0400-\u052F\u00C0-\u00FF\u32F0-\u32FF].*/);
+	    return pat.test(str);
+	  },
+	  'getActualLength': function getActualLength(str) {
+	    if (str) {
+	      var tempStr = '';
+	      var len = 0;
+	      var l = str.length;
+	      for (var i = 0; i < l; i++) {
+	        if ((str.charCodeAt(i) & 0xff00) !== 0) {
+	          len++;
+	        }
+	        len++;
+	        if (len <= 40) {
+	          tempStr += str[i];
+	        }
+	      }
+	      return [len, tempStr];
+	    } else {
+	      return [0, str];
+	    }
+	  },
+	  '_getX': function _getX(e) {
+	    if (e.type.indexOf('mouse') !== 0) {
+	      return e.changedTouches[0].clientX || e.originalEvent.touches[0].clientX;
+	    } else {
+	      return e.clientX;
+	    }
+	  },
+	  '_getY': function _getY(e) {
+	    if (e.type.indexOf('mouse') !== 0) {
+	      return e.changedTouches[0].clientY || e.originalEvent.touches[0].clientY;
+	    } else {
+	      return e.clientY;
+	    }
+	  }
+	};
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.recoverState = recoverState;
+	exports.initEnvironment = initEnvironment;
+
+	var _Data = __webpack_require__(6);
+
+	var _Data2 = _interopRequireDefault(_Data);
+
+	var _Card = __webpack_require__(3);
+
+	var _Card2 = _interopRequireDefault(_Card);
+
+	var _AutoJustify = __webpack_require__(7);
+
+	var _AutoJustify2 = _interopRequireDefault(_AutoJustify);
+
+	var _ActionController = __webpack_require__(8);
+
+	var _ActionController2 = _interopRequireDefault(_ActionController);
+
+	var _Utils = __webpack_require__(4);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	var _ViewController = __webpack_require__(2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function recoverState(context, def) {
+	  var me = context;
+	  (0, _ViewController._initI18n)(me);
+	  (0, _ViewController._initTextArea)(me);
+	  ko.applyBindings(me.viewModel, me.$view[0]);
+	  // to compatible with 1.0 version
+	  if (!$.isEmptyObject(context.model.__ExtendModel.cardList)) {
+	    (function () {
+	      var list = me.viewModel.card.cardList;
+	      $.each(context.model.__ExtendModel.cardList, function (k, v) {
+	        var result = _Utils2.default.getActualLength(v.text);
+	        list.push(new _Card2.default(result[0] <= 40 ? v.text : result[1], v.textColor, v.isSelect, v.isEdit, v.isClose, '10'));
+	      });
+	      var length = list().length;
+	      $.each(list(), function (k, v) {
+	        v.setCardStyle(me.initData.editCardPosition[length][k]);
+	      });
+	    })();
+	  } else {
+	    (function () {
+	      var state = context.model.__ExtendModel.state;
+	      var list = me.viewModel.card.cardList;
+	      if (state.currentAni === 0) {
+	        $.each(state.cardList, function (k, v) {
+	          var card = new _Card2.default();
+	          list.push(card);
+	          for (var op in v) {
+	            if ($.isFunction(card[op])) {
+	              card[op](v[op]);
+	            } else {
+	              card[op] = v[op];
+	            }
+	          }
+	        });
+	      } else {
+	        $.each(state.startCardList, function (k, v) {
+	          var card = new _Card2.default();
+	          list.push(card);
+	          for (var op in v) {
+	            if ($.isFunction(card[op])) {
+	              card[op](v[op]);
+	            } else {
+	              card[op] = v[op];
+	            }
+	          }
+	        });
+	      }
+	      me.operateMode = state.operateMode;
+	      me.viewModel.showGuide(state.showGuide);
+	      if (state.selectCardIndex >= 0) {
+	        me.selectCard = list()[state.selectCardIndex];
+	      }
+	      me.viewModel.card.showCardSeat(state.showCardSeat);
+	      $.each(state.button, function (k, v) {
+	        me.viewModel.button[k](v);
+	      });
+	      $.each(state.skin, function (k, v) {
+	        me.viewModel.skin[k](v);
+	      });
+	      var button = me.viewModel.button;
+	      if (me.isStudent) {
+	        $.each(list(), function (k, v) {
+	          v.showBox(false);
+	          v.hideBox(false);
+	          v.isEdit(false);
+	        });
+	        switch (state.currentAni) {
+	          case 1:
+	            {
+	              button.disableShuffle(false);
+	              (0, _ActionController2.default)(me, 'shuffleCard');
+	              break;
+	            }
+	          case 2:
+	            {
+	              me.slideData.rotateFn(state.rotateDir, state.rotateRandomIndex).done(function () {
+	                (0, _ViewController._enableButton)(me);
+	                $.each(me.viewModel.card.cardList(), function (k, v) {
+	                  if (v.pIndex === 0) {
+	                    if (v.isTurnBack()) {
+	                      v.isSelect(true);
+	                      v.backSelect(true);
+	                    }
+	                  } else {
+	                    v.backSelect(false);
+	                    v.isSelect(false);
+	                  }
+	                });
+	              });
+	              break;
+	            }
+	          case 3:
+	            {
+	              var _def = $.Deferred();
+	              (0, _ViewController._rotateCards)(me, me.selectCard, true, '', _def);
+	              _def.then(function () {
+	                me.selectCard.isSelect(true);
+	                me.currentAni = 0;
+	                (0, _ViewController._enableButton)(me);
+	              });
+	              break;
+	            }
+	          case 4:
+	            {
+	              var _def2 = $.Deferred();
+	              (0, _ViewController._rotateCards)(me, me.selectCard, true, '', _def2);
+	              _def2.then(function () {
+	                me.currentAni = 0;
+	                (0, _ViewController._enableButton)(me);
+	              });
+	              break;
+	            }
+	          case 5:
+	            {
+	              var _def3 = $.Deferred();
+	              (0, _ViewController._rotateCards)(me, me.selectCard, true, '', _def3);
+	              _def3.then(function () {
+	                me.selectCard.isTurnBack(false);
+	                me.currentAni = 0;
+	                (0, _ViewController._enableButton)(me);
+	              });
+	              break;
+	            }
+	        }
+	      } else if (state.currentAni !== 0) {
+	        (0, _ViewController._enableButton)(me);
+	      }
+	    })();
+	  }
+	  def.resolve();
+	};
+
+	function initEnvironment(context) {
+	  var me = context;
+	  me.operateMode = true; // edit is true shuffle is false;
+	  /**
+	   * 0 no animation
+	   * 1 shuffle card
+	   * 2 rotate card radom
+	   * 3 rotate select back card
+	   * 4 rotate select front card
+	   */
+	  me.currentAni = 0;
+	  me.viewModel = {
+	    presenter: me,
+	    showGuide: ko.observable(true),
+	    isStudent: ko.observable(true),
+	    outSideEvent: _ViewController._outSideEvent,
+	    doubleOutSideEvent: function doubleOutSideEvent() {
+	      return console.log('double');
+	    },
+	    lightStyle: ko.observable(''),
+	    event: {
+	      eventStart: _ViewController._eventStart,
+	      eventEnd: _ViewController._eventEnd,
+	      eventMove: _ViewController._eventMove
+	    },
+	    card: {
+	      cardList: ko.observableArray([]),
+	      singleClickPre: _ViewController._singleClickPre,
+	      doubleClickPre: _ViewController._doubleClickPre,
+	      showCardSeat: ko.observable(false)
+	    },
+	    skin: {
+	      skinSelect: ko.observable(),
+	      skinShowBox: ko.observable(false),
+	      clickInside: function clickInside() {
+	        event.stopPropagation();
+	      },
+	      skinEvent: _ViewController._skinEvent
+	    },
+	    button: {
+	      canDelete: ko.observable(false),
+	      showAdd: ko.observable(true),
+	      disableAdd: ko.observable(false),
+	      showShuffle: ko.observable(true),
+	      disableShuffle: ko.observable(false),
+	      showEdit: ko.observable(false),
+	      disableEdit: ko.observable(false),
+	      buttonEvent: _ActionController2.default
+	    },
+	    i18nText: {
+	      doubleOpen: ko.observable(),
+	      doubleEdit: ko.observable(),
+	      guideClose: ko.observable(),
+	      openCard: ko.observable(),
+	      shuffleCard: ko.observable(),
+	      editCard: ko.observable(),
+	      saveCard: ko.observable(),
+	      addCard: ko.observable(),
+	      enterName: ko.observable(),
+	      sing: ko.observable(),
+	      dance: ko.observable(),
+	      recite: ko.observable()
+	    }
+	  };
+	  me.i18nModel = {
+	    'doubleOpen': '双击卡牌，进行翻牌。',
+	    'doubleEdit': '双击卡牌，进行编辑。',
+	    'guideClose': 'OK',
+	    'openCard': '翻牌',
+	    'shuffleCard': '洗牌',
+	    'editCard': '编辑卡牌',
+	    'saveCard': '保存',
+	    'addCard': '添加卡牌',
+	    'enterName': '输入名称',
+	    'sing': '唱歌',
+	    'dance': '跳舞',
+	    'recite': '朗诵'
+	  };
+	  me.initData = _Data2.default;
+	  _AutoJustify2.default.call(me);
+	  me.slideData = {
+	    hasStart: false,
+	    isMoving: false,
+	    sliding: false,
+	    rotateFn: _.debounce(function (revert, index) {
+	      var def = $.Deferred();
+	      me.currentAni = 2;
+	      (0, _ViewController._disableButton)(me);
+	      (0, _ViewController._saveStartCardState)(me);
+	      me.rotateDir = revert;
+	      (0, _ViewController._rotateCards)(me, null, revert, index, def);
+	      return def.promise();
+	    }, 150, { leading: true, trailing: false })
+	  };
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = {
+	    editCardPosition: {
+	        3: [{ x: -19.875, y: 0, z: 0, s: 1 }, { x: 0, y: 0, z: 0, s: 1 }, { x: 19.875, y: 0, z: 0, s: 1 }],
+	        4: [{ x: -24.875, y: 0, z: 0, s: 514 / 560 }, { x: -8.292, y: 0, z: 0, s: 514 / 560 }, { x: 8.292, y: 0, z: 0, s: 514 / 560 }, { x: 24.875, y: 0, z: 0, s: 514 / 560 }],
+	        5: [{ x: -27.708, y: 0, z: 0, s: 448 / 560 }, { x: -13.792, y: 0, z: 0, s: 448 / 560 }, { x: 0, y: 0, z: 0, s: 448 / 560 }, { x: 13.792, y: 0, z: 0, s: 448 / 560 }, { x: 27.708, y: 0, z: 0, s: 448 / 560 }],
+	        6: [{ x: -14.375, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 0, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 14.375, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -14.375, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 0, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 14.375, y: 193 / 24, z: 0, s: 371 / 560 }],
+	        7: [{ x: -21.583, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -7.167, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 7.167, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -14.375, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 0, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 14.375, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 21.583, y: -212 / 24, z: 0, s: 371 / 560 }],
+	        8: [{ x: -21.583, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -7.167, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 7.167, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -21.583, y: 193 / 24, z: 0, s: 371 / 560 }, { x: -7.167, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 7.167, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 21.583, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 21.583, y: 193 / 24, z: 0, s: 371 / 560 }],
+	        9: [{ x: -26.042, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -12.958, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 0, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -21.583, y: 193 / 24, z: 0, s: 371 / 560 }, { x: -7.167, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 7.167, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 12.958, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 21.583, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 26.042, y: -212 / 24, z: 0, s: 371 / 560 }],
+	        10: [{ x: -26.042, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -12.958, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 0, y: -212 / 24, z: 0, s: 371 / 560 }, { x: -26.042, y: 193 / 24, z: 0, s: 371 / 560 }, { x: -12.958, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 0, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 12.958, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 12.958, y: 193 / 24, z: 0, s: 371 / 560 }, { x: 26.042, y: -212 / 24, z: 0, s: 371 / 560 }, { x: 26.042, y: 193 / 24, z: 0, s: 371 / 560 }]
+	    },
+	    showCardPosition: {
+	        3: [{ x: -19.875, y: 0, z: 0, s: 1 }, { x: 0, y: 0, z: 0, s: 1 }, { x: 19.875, y: 0, z: 0, s: 1 }],
+	        4: [{ x: -24.875, y: 0, z: 0, s: 514 / 560 }, { x: -8.292, y: 0, z: 0, s: 514 / 560 }, { x: 8.292, y: 0, z: 0, s: 514 / 560 }, { x: 24.875, y: 0, z: 0, s: 514 / 560 }],
+	        5: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -615 / 24, y: 4.083 - 75 / 24, z: 0, s: 387 / 560, zin: 9 }, { x: -300 / 24, y: -2.375 - 75 / 24, z: 0, s: 313 / 560, zin: 8 }, { x: 300 / 24, y: -2.375 - 75 / 24, z: 0, s: 313 / 560, zin: 7 }, { x: 615 / 24, y: 4.083 - 75 / 24, z: 0, s: 387 / 560, zin: 6 }],
+	        6: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -587 / 24, y: 5.833 - 75 / 24, z: 0, s: 388 / 560, zin: 9 }, { x: -420 / 24, y: -2 - 75 / 24, z: 0, s: 314 / 560, zin: 8 }, { x: 0, y: -5.875 - 75 / 24, z: 0, s: 276 / 560, zin: 7 }, { x: 420 / 24, y: -2 - 75 / 24, z: 0, s: 314 / 560, zin: 8 }, { x: 587 / 24, y: 5.833 - 75 / 24, z: 0, s: 388 / 560, zin: 9 }],
+	        7: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -552 / 24, y: 122 / 24 - 75 / 24, z: 0, s: 406 / 560, zin: 9 }, { x: -616 / 24, y: -9 / 24 - 75 / 24, z: 0, s: 317 / 560, zin: 8 }, { x: -199 / 24, y: -102 / 24 - 75 / 24, z: 0, s: 289 / 560, zin: 7 }, { x: 199 / 24, y: -102 / 24 - 75 / 24, z: 0, s: 289 / 560, zin: 7 }, { x: 616 / 24, y: -9 / 24 - 75 / 24, z: 0, s: 317 / 560, zin: 8 }, { x: 552 / 24, y: 122 / 24 - 75 / 24, z: 0, s: 406 / 560, zin: 9 }],
+	        8: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -476 / 24, y: 138 / 24 - 75 / 24, z: 0, s: 401 / 560, zin: 9 }, { x: -661 / 24, y: 26 / 24 - 75 / 24, z: 0, s: 332 / 560, zin: 8 }, { x: -365 / 24, y: -78 / 24 - 75 / 24, z: 0, s: 291 / 560, zin: 7 }, { x: 0, y: -142 / 24 - 75 / 24, z: 0, s: 270 / 560, zin: 6 }, { x: 365 / 24, y: -78 / 24 - 75 / 24, z: 0, s: 291 / 560, zin: 7 }, { x: 661 / 24, y: 26 / 24 - 75 / 24, z: 0, s: 332 / 560, zin: 8 }, { x: 476 / 24, y: 138 / 24 - 75 / 24, z: 0, s: 401 / 560, zin: 9 }],
+	        9: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -385 / 24, y: 141 / 24 - 75 / 24, z: 0, s: 387 / 560, zin: 9 }, { x: -644 / 24, y: 57 / 24 - 75 / 24, z: 0, s: 308 / 560, zin: 8 }, { x: -483 / 24, y: -42 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 7 }, { x: -197 / 24, y: -108 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 6 }, { x: 197 / 24, y: -108 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 6 }, { x: 483 / 24, y: -42 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 7 }, { x: 644 / 24, y: 57 / 24 - 75 / 24, z: 0, s: 308 / 560, zin: 8 }, { x: 385 / 24, y: 141 / 24 - 75 / 24, z: 0, s: 387 / 560, zin: 9 }],
+	        10: [{ x: 0, y: 6.083 - 75 / 24, z: 0, s: 470 / 560, zin: 10 }, { x: -363 / 24, y: 140 / 24 - 75 / 24, z: 0, s: 387 / 560, zin: 9 }, { x: -644 / 24, y: 77 / 24 - 75 / 24, z: 0, s: 314 / 560, zin: 8 }, { x: -535 / 24, y: -42 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 7 }, { x: -264 / 24, y: -107 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 6 }, { x: 0, y: -142 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 5 }, { x: 264 / 24, y: -107 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 6 }, { x: 535 / 24, y: -42 / 24 - 75 / 24, z: 0, s: 274 / 560, zin: 7 }, { x: 644 / 24, y: 77 / 24 - 75 / 24, z: 0, s: 314 / 560, zin: 8 }, { x: 363 / 24, y: 140 / 24 - 75 / 24, z: 0, s: 387 / 560, zin: 9 }]
+	    }
+	};
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  (function ($, window) {
+	    $.fn.autoJustify = function (options) {
+	      if (options == null) {
+	        options = {};
+	      }
+	      if (options.horizontal == null) {
+	        options.horizontal = true;
+	      }
+	      if (options.vertical == null) {
+	        options.vertical = true;
+	      }
+	      if (options.debugx == null) {
+	        options.debugx = -10000;
+	      }
+	      if (options.debugy == null) {
+	        options.debugy = -10000;
+	      }
+	      if (options.debugcolor == null) {
+	        options.debugcolor = 'yellow';
+	      }
+	      if (options.flickering == null) {
+	        options.flickering = true;
+	      }
+	      if (options.postGrowCallback == null) {
+	        options.postGrowCallback = function () {};
+	      }
+	      if (options.verticalScrollbarWidth == null) {
+	        options.verticalScrollbarWidth = getVerticalScrollbarWidth();
+	      }
+	      if (options.horizontal === false && options.vertical === false) {
+	        return;
+	      }
+	      options.class = options.class || 'autogrow-shadow';
+	      return this.filter('textarea,input').each(function () {
+	        var minHeight = void 0,
+	            minWidth = void 0,
+	            maxWidth = void 0,
+	            oriVal = void 0;
+	        var $e = $(this);
+	        if ($e.data('autogrow-enabled')) {
+	          return;
+	        }
+	        oriVal = $e[0].value;
+	        minHeight = parseInt($e.attr('data-minHeight')) || $e.height();
+	        minWidth = parseInt($e.attr('data-minWidth')) || $e.width();
+	        var heightPadding = $e.css('lineHeight') * 1 || 0;
+	        $e.hasVerticalScrollBar = function () {
+	          return $e[0].clientHeight < $e[0].scrollHeight;
+	        };
+	        var cssMaxWidth = maxWidth = parseInt($e.css('max-width'));
+	        var $shadow = $('<div class="' + options.class + ' js_probabilitycard_shadow_div"></div>').css({
+	          position: 'absolute',
+	          display: 'inline-block',
+	          'background-color': options.debugcolor,
+	          top: options.debugy,
+	          left: options.debugx,
+	          'max-width': $e.css('max-width'),
+	          'padding': $e.css('padding'),
+	          fontSize: $e.css('fontSize'),
+	          fontFamily: $e.css('fontFamily'),
+	          fontWeight: $e.css('fontWeight'),
+	          lineHeight: $e.css('lineHeight'),
+	          //  'padding-right':'0.166667em',
+	          resize: 'none',
+	          'word-wrap': 'break-word',
+	          'word-break': 'break-all',
+	          'box-sizing': 'border-box'
+	        }).appendTo(options.body || document.body);
+	        if (options.horizontal === false) {
+	          $shadow.css({
+	            'width': $e.width()
+	          });
+	        }
+	        var update = function (_this) {
+	          return function (event) {
+	            var height = void 0,
+	                width = void 0;
+	            if (_Utils2.default.hasIllegalChar(_this.value)) {
+	              _this.value = oriVal;
+	            } else {
+	              if (_Utils2.default.getActualLength(_this.value)[0] > 40) {
+	                _this.value = oriVal;
+	              } else {
+	                oriVal = _this.value;
+	              }
+	            }
+	            $shadow.html(_this.value);
+	            maxWidth = parseInt($e.attr('data-maxwidth'));
+	            var scale = parseFloat($e.attr('data-scale'));
+	            $shadow.css('transform', 'scale(' + scale + ')');
+	            if (maxWidth) {
+	              $shadow.css('maxWidth', maxWidth);
+	            } else {
+	              $shadow.css('maxWidth', cssMaxWidth);
+	            }
+	            if (options.vertical === true) {
+	              minHeight = parseInt($e.attr('data-minheight')) || $e.height();
+	              height = Math.max($shadow.height() + heightPadding, minHeight);
+	              $e.height(height + 10);
+	            }
+	            if (options.horizontal === true) {
+	              minWidth = parseInt($e.attr('data-minwidth')) || $e.width();
+	              width = Math.max($shadow.outerWidth(), minWidth);
+	              if (maxWidth > 0 && maxWidth < width) {
+	                $e.width(maxWidth);
+	              } else {
+	                $e.width(width);
+	              }
+	            }
+	            return options.postGrowCallback($e);
+	          };
+	        }(this);
+	        $e.on('input', update);
+	        $(window).resize(update);
+	        return update();
+	      });
+	    };
+	    return $.fn.autoJustify;
+	  })(window.jQuery, window);
+
+	  var getVerticalScrollbarWidth = function getVerticalScrollbarWidth() {
+	    var w2 = void 0;
+	    var inner = document.createElement('p');
+	    inner.style.width = '100%';
+	    inner.style.height = '200px';
+	    var outer = document.createElement('div');
+	    outer.style.position = 'absolute';
+	    outer.style.top = '0px';
+	    outer.style.left = '0px';
+	    outer.style.visibility = 'hidden';
+	    outer.style.width = '200px';
+	    outer.style.height = '150px';
+	    outer.style.overflow = 'hidden';
+	    outer.appendChild(inner);
+	    document.body.appendChild(outer);
+	    var w1 = inner.offsetWidth;
+	    outer.style.overflow = 'scroll';
+	    w2 = inner.offsetWidth;
+	    if (w1 === w2) {
+	      w2 = outer.clientWidth;
+	    }
+	    document.body.removeChild(outer);
+	    return w1 - w2;
+	  };
+	};
+
+	var _Utils = __webpack_require__(4);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = buttonEvent;
+
+	var _Card = __webpack_require__(3);
+
+	var _Card2 = _interopRequireDefault(_Card);
+
+	var _ViewController = __webpack_require__(2);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function buttonEvent(context, action, param) {
+	  var me = context;
+	  switch (action) {
+	    case 'closeGuide':
+	      {
+	        me.viewModel.showGuide(false);
+	        break;
+	      }
+	    case 'showSkinBox':
+	      {
+	        event.stopPropagation();
+	        param.presenter.viewModel.skin.skinShowBox(true);
+	        param.presenter.viewModel.skin.skinSelect(this.skinType());
+	        $.each(param.presenter.viewModel.card.cardList(), function (k, v) {
+	          v.showTextColorBox(false);
+	        });
+	        break;
+	      }
+	    case 'deleteCard':
+	      {
+	        var pt = param.presenter;
+	        if (!pt.viewModel.button.canDelete()) {
+	          event.stopPropagation();
+	          break;
+	        }
+	        var list = pt.viewModel.card.cardList;
+	        list.splice(param.index(), 1);
+	        if (list().length <= 3) {
+	          pt.viewModel.button.canDelete(false);
+	        }
+	        if (pt.viewModel.button.showAdd()) {
+	          pt.viewModel.button.disableAdd(false);
+	        }
+	        (0, _ViewController._updateCardsView)(pt);
+	        break;
+	      }
+	    case 'addCard':
+	      {
+	        if (me.viewModel.button.disableAdd()) {
+	          break;
+	        }
+	        me.operateMode = true;
+	        var _list = me.viewModel.card.cardList;
+	        _list.push(new _Card2.default('', 'black', false, false, false, '10'));
+	        if (_list().length === 10) {
+	          me.viewModel.button.disableAdd(true);
+	        }
+	        if (_list().length > 3) {
+	          me.viewModel.button.canDelete(true);
+	        }
+	        (0, _ViewController._updateCardsView)(me);
+	        break;
+	      }
+	    case 'editCard':
+	      {
+	        var _ret = function () {
+	          if (me.viewModel.button.disableEdit()) {
+	            return 'break';
+	          }
+	          me.operateMode = true;
+	          var list = me.viewModel.card.cardList();
+	          me.viewModel.button.showAdd(true);
+	          me.viewModel.card.showCardSeat(false);
+	          var length = list.length;
+	          if (length === 10) {
+	            me.viewModel.button.disableAdd(true);
+	          } else {
+	            me.viewModel.button.disableAdd(false);
+	          }
+	          me.viewModel.button.showEdit(false);
+	          me.viewModel.button.disableEdit(true);
+	          $.each(list, function (k, v) {
+	            v.isSelect(false);
+	            v.isTurnBack(false);
+	            v.backSelect(false);
+	            v.editSelect(false);
+	            v.setCardStyle(me.initData.editCardPosition[length][k]);
+	          });
+	          return 'break';
+	        }();
+
+	        if (_ret === 'break') break;
+	      }
+	    case 'shuffleCard':
+	      {
+	        var _ret2 = function () {
+	          if (me.viewModel.button.disableShuffle()) {
+	            return 'break';
+	          }
+	          me.operateMode = false;
+	          me.currentAni = 1;
+	          (0, _ViewController._saveStartCardState)(me);
+	          me.viewModel.button.showAdd(false);
+	          me.viewModel.button.disableAdd(true);
+	          me.viewModel.button.showEdit(true);
+	          me.viewModel.button.disableEdit(true);
+	          me.viewModel.button.disableShuffle(true);
+	          me.viewModel.card.showCardSeat(false);
+	          var list = me.viewModel.card.cardList;
+	          list.sort(function () {
+	            return Math.random() > 0.5;
+	          });
+	          var length = list().length;
+	          var turnTime = 0;
+	          var turnStop = 100;
+	          var washTime = 2 * 600 + 400;
+	          $.each(list(), function (k, v) {
+	            if (!v.isTurnBack()) {
+	              turnTime = 400;
+	              _.delay(function () {
+	                v.isTurnBack(true);
+	              }, k * 10);
+	              v.isEdit(false);
+	            }
+	            v.backSelect(false);
+	            v.isSelect(false);
+	            v.isCenter(false);
+	          });
+	          _.delay(function () {
+	            $.each(list(), function (k, v) {
+	              switch (k) {
+	                case 0:
+	                  v.washAni1(true);
+	                  v.washAni2(false);
+	                  v.scaleHide(false);
+	                  break;
+	                case 1:
+	                  v.washAni1(false);
+	                  v.washAni2(true);
+	                  v.scaleHide(false);
+	                  break;
+	                default:
+	                  v.washAni1(false);
+	                  v.washAni2(false);
+	                  v.scaleHide(true);
+	                  break;
+	              }
+	            });
+	          }, turnTime + turnStop);
+	          _.delay(function () {
+	            if (length > 4) {
+	              me.viewModel.card.showCardSeat(true);
+	              _.delay(function () {
+	                $.each(list(), function (k, v) {
+	                  me.currentAni = 0;
+	                  if (k === 0) {
+	                    v.isCenter(true);
+	                  } else {
+	                    v.isCenter(false);
+	                  }
+	                });
+	              }, 600);
+	            } else {
+	              me.currentAni = 0;
+	            }
+	            $.each(list(), function (k, v) {
+	              v.setCardStyle(me.initData.showCardPosition[length][k]);
+	              v.washAni1(false);
+	              v.washAni2(false);
+	              v.scaleHide(false);
+	            });
+	            me.viewModel.button.disableShuffle(false);
+	            if (me.viewModel.button.showAdd()) {
+	              if (length === 10) {
+	                me.viewModel.button.disableAdd(true);
+	              } else {
+	                me.viewModel.button.disableAdd(false);
+	              }
+	            }
+	            if (me.viewModel.button.showEdit()) {
+	              me.viewModel.button.disableEdit(false);
+	            }
+	          }, turnTime + washTime + turnStop + 100);
+	          if (length > 4) {
+	            _.delay(function () {
+	              $.each(list(), function (k, v) {
+	                v.setCardSeatStyle(me.initData.showCardPosition[length][k], '0');
+	              });
+	              _.delay(function () {
+	                $.each(list(), function (k, v) {
+	                  v.setCardSeatStyle(me.initData.showCardPosition[length][k], '1', true);
+	                  v.pIndex = k;
+	                  if (v.pIndex === 0) {
+	                    v.isSelect(true);
+	                    v.backSelect(true);
+	                  }
+	                });
+	              }, 200);
+	            }, turnTime + washTime + turnStop - 100);
+	          }
+	          return 'break';
+	        }();
+
+	        if (_ret2 === 'break') break;
+	      }
+	  }
+	};
+
+/***/ },
+/* 9 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Service = function () {
+	  function Service(parent) {
+	    _classCallCheck(this, Service);
+
+	    this.parent = parent;
+	  }
+	  // 获取需要同步给学生端的信息，如需编辑推送功能必须实现该接口
+
+
+	  _createClass(Service, [{
+	    key: 'getExtendData',
+	    value: function getExtendData() {
+	      var me = this.parent;
+	      var state = {};
+	      state.cardList = [];
+	      if (me.currentAni === 0) {
+	        var list = me.viewModel.card.cardList;
+	        $.each(list(), function (k, v) {
+	          var card = {};
+	          for (var op in v) {
+	            if ($.isFunction(v[op])) {
+	              card[op] = v[op]();
+	            } else {
+	              card[op] = v[op];
+	            }
+	          }
+	          state.cardList.push(card);
+	        });
+	      } else {
+	        state.startCardList = me.startRotateCard;
+	      }
+	      state.currentAni = me.currentAni;
+	      state.rotateRandomIndex = me.rotateRandomIndex;
+	      state.rotateDir = me.rotateDir;
+	      state.operateMode = me.operateMode;
+	      if (me.selectCard && me.selectCardIndex) {
+	        state.selectCardIndex = me.selectCardIndex;
+	      } else {
+	        me.selectCardIndex = -1;
+	      }
+	      state.showGuide = me.viewModel.showGuide();
+	      state.showCardSeat = me.viewModel.card.showCardSeat();
+
+	      state.skin = {
+	        skinShowBox: me.viewModel.skin.skinShowBox(),
+	        skinSelect: me.viewModel.skin.skinSelect()
+	      };
+
+	      var button = me.viewModel.button;
+	      state.button = {
+	        canDelete: button.canDelete(),
+	        disableAdd: button.disableAdd(),
+	        disableEdit: button.disableEdit(),
+	        disableShuffle: button.disableShuffle(),
+	        showAdd: button.showAdd(),
+	        showEdit: button.showEdit(),
+	        showShuffle: button.showShuffle()
+	      };
+	      return {
+	        state: state
+	      };
+	    }
+	    // 获取题目信息，及对应配置
+
+	  }, {
+	    key: 'getQuestionInfo',
+	    value: function getQuestionInfo() {
+	      return {
+	        id: this.parent.model.question_id || '',
+	        type_code: 'probabilitycard',
+	        type_name: '抽卡牌',
+	        statistics_type: 'no_need',
+	        notExistStatistics: true,
+	        noNeedQuizProgress: true
+	      };
+	    }
+	  }, {
+	    key: 'setLocationProperties',
+	    value: function setLocationProperties(location) {
+	      if (location && !$.isEmptyObject(location)) {
+	        this.parent.i18nModel = location;
+	      }
+	    }
+	  }]);
+
+	  return Service;
+	}();
+
+	exports.default = Service;
+
+/***/ }
+/******/ ]);]]></presenter><resources><file src="./resources/wood/images/backface_logo.png"/><file src="./resources/wood/images/bg_card_shadow.png"/><file src="./resources/wood/images/btn-bg_shadow.png"/><file src="./resources/wood/images/btn/btn_embellish.png"/><file src="./resources/wood/images/btn/btn_shadow_active.png"/><file src="./resources/wood/images/btn/btn_shadow_gray.png"/><file src="./resources/wood/images/btn/btn_shadow_normal.png"/><file src="./resources/wood/images/btn/tool-btns_change-color_active.png"/><file src="./resources/wood/images/btn/tool-btns_change-color_gray.png"/><file src="./resources/wood/images/btn/tool-btns_change-color_normal.png"/><file src="./resources/wood/images/btn/tool-btns_change-skin_active.png"/><file src="./resources/wood/images/btn/tool-btns_change-skin_gray.png"/><file src="./resources/wood/images/btn/tool-btns_change-skin_normal.png"/><file src="./resources/wood/images/btn/tool-btns_delete_active.png"/><file src="./resources/wood/images/btn/tool-btns_delete_gray.png"/><file src="./resources/wood/images/btn/tool-btns_delete_normal.png"/><file src="./resources/wood/images/card_skin_mask.png"/><file src="./resources/wood/images/card_skin_mask2.png"/><file src="./resources/wood/images/card_skin-box.png"/><file src="./resources/wood/images/card-bg_noshadow.png"/><file src="./resources/wood/images/current.png"/><file src="./resources/wood/images/editor.png"/><file src="./resources/wood/images/extractCard_bg.png"/><file src="./resources/wood/images/extractCard_card-bg.png"/><file src="./resources/wood/images/extractCard_pop_02.png"/><file src="./resources/wood/images/light_arround.png"/><file src="./resources/wood/images/light.gif"/><file src="./resources/wood/images/pop_hand_01.png"/><file src="./resources/wood/images/pop_hand_02.png"/><file src="./resources/wood/images/selected.png"/><file src="./resources/wood/images/skin_pop_bg.png"/><file src="./resources/wood/images/skin/card_skin_01.png"/><file src="./resources/wood/images/skin/card_skin_02.png"/><file src="./resources/wood/images/skin/card_skin_03.png"/><file src="./resources/wood/images/skin/card_skin_04.png"/><file src="./resources/wood/images/skin/card_skin_05.png"/><file src="./resources/wood/images/skin/card_skin_06.png"/><file src="./resources/wood/images/skin/card_skin_07.png"/><file src="./resources/wood/images/skin/card_skin_08.png"/><file src="./resources/wood/images/skin/card_skin_09.png"/><file src="./resources/wood/images/skin/card_skin_10.png"/><file src="./resources/wood/images/three-dimensional_foundation-selected.png"/><file src="./resources/wood/images/three-dimensional_foundation.png"/><file src="./resources/wood/images/turn-back_selected.png"/></resources></addon>

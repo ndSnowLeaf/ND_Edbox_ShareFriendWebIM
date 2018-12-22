@@ -1,0 +1,1394 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='QuizProgress'>
+<properties>
+
+                <property name="questionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="questionType" displayName="题目类型" type="string" isLocalized="false" />
+                <property name="questionTitle" displayName="题目标题" type="string" isLocalized="false" />
+                <property name="timerType" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="timeLimit" displayName="限制时长" type="string" isLocalized="false" />
+                <property name="questionContent" displayName="题目内容" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="vue-libs" version="2.1.10" />
+    <javaScript  name="ModuleComponent" version="1.1.1" />
+    <javaScript  name="common_css" version="1.2.0" />
+    <javaScript  name="common_stat_css" version="2.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<router-view></router-view>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 20);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.INIT_STATE = 'INIT_STATE';
+exports.RECEIVE_STUDENTS = 'RECEIVE_STUDENTS';
+exports.RECEIVE_QUIZ_STATUS_STAT = 'RECEIVE_QUIZ_STATUS_STAT';
+exports.NEED_STATISTICS = 'NEED_STATISTICS';
+exports.SHOW_HIDE_QUIZ_PROGRESS = 'SHOW_HIDE_QUIZ_PROGRESS';
+exports.SHOW_HIDE_WAITING = 'SHOW_HIDE_WAITING';
+exports.SWITCH_VIEW_QUIZ_PROGRESS = 'SWITCH_VIEW_QUIZ_PROGRESS';
+exports.ACTION_QUIZ_PROGRESS_HIDE = 'ACTION_QUIZ_PROGRESS_HIDE';
+exports.ACTION_VIEW_PROCESS_HANDLER = 'ACTION_VIEW_PROCESS_HANDLER';
+exports.ACTION_CLOSE_PROCESS_HANDLER = 'ACTION_CLOSE_PROCESS_HANDLER';
+exports.ACTION_STOP_EXAM_HANDLER = 'ACTION_STOP_EXAM_HANDLER';
+exports.ACTION_FORCE_STOP_HANDLER = 'ACTION_FORCE_STOP_HANDLER';
+exports.ACTION_EXIT_EXAM_HANDLER = 'ACTION_EXIT_EXAM_HANDLER';
+exports.RECEIVE_IS_SHOW_QUIZCONTAINER = "RECEIVE_IS_SHOW_QUIZCONTAINER";
+exports.RECEIVE_IS_STOP_EXAM_BUTTON_CLICKED = "RECEIVE_IS_STOP_EXAM_BUTTON_CLICKED";
+exports.RECEIVE_IS_FORCE_BUTTON_CLICKED = "RECEIVE_IS_FORCE_BUTTON_CLICKED";
+exports.RECEIVE_CURRENT_STATE = 'RECEIVE_CURRENT_STATE';
+exports.RECEIVE_IS_STOP = 'RECEIVE_IS_STOP';
+exports.RECEIVE_ALL_SUBMIT_TIP = 'RECEIVE_ALL_SUBMIT_TIP';
+exports.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE = 'RECEIVE_QUIZ_PROGRESS_SHOW_HIDE';
+exports.RECEIVE_IS_ASSESSMENT = 'RECEIVE_IS_ASSESSMENT';
+exports.RECEIVE_ASSESSMENT_ANSWERSTATUS = 'RECEIVE_ASSESSMENT_ANSWERSTATUS';
+exports.RECEIVE_ASSESSMENT_ONGOING = 'RECEIVE_ASSESSMENT_ONGOING';
+exports.RECEIVE_STUDENTS_PAGE_INDEX = "RECEIVE_STUDENTS_PAGE_INDEX";
+exports.RECEIVE_QUESTION_MODE = "RECEIVE_QUESTION_MODE";
+exports.ACTION_GET_QUIZ_PROGRESS_DETAIL = 'ACTION_GET_QUIZ_PROGRESS_DETAIL';
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.examState = {
+    EXAM_STARTED: 0,
+    EXAM_STOPED: 1,
+    EXAM_SHOW_RESULT: 2,
+    EXAM_STOPING: 3
+};
+exports.viewProgressState = {
+    SHOW: 'show',
+    HIDE: 'hide'
+};
+exports.mode = {
+    COMMON: 'common',
+    TEMPORARY_QUESTION: 'TemporaryQuestion'
+};
+exports.PAGE_SIZE = 40;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = __ModuleComponent;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(4);
+var vuex_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var EndQuizPopup = (function (_super) {
+    __extends(EndQuizPopup, _super);
+    function EndQuizPopup() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(EndQuizPopup.prototype, "totalStudentsNum", {
+        get: function () {
+            var finishedNum = this.quizStatusStat.finishedNum || 0;
+            var unfinishedNum = this.quizStatusStat.unfinishedNum || 0;
+            return finishedNum + unfinishedNum;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    EndQuizPopup.prototype.forceStopHandler = function () {
+        this.$store.dispatch(types.ACTION_FORCE_STOP_HANDLER);
+    };
+    return EndQuizPopup;
+}(Vue));
+EndQuizPopup = __decorate([
+    vue_class_component_1.default({
+        name: 'EndQuizPopup',
+        template: __webpack_require__(13),
+        computed: __assign({}, vuex_1.mapState({
+            i18nModel: function (state) { return state.i18nModel; },
+            isWaiting: function (state) { return state.isWaiting; },
+            quizStatusStat: function (state) { return state.quizStatusStat; }
+        }))
+    })
+], EndQuizPopup);
+exports.default = EndQuizPopup;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(4);
+var vuex_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var QuizState = (function (_super) {
+    __extends(QuizState, _super);
+    function QuizState() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return QuizState;
+}(Vue));
+QuizState = __decorate([
+    vue_class_component_1.default({
+        name: 'QuizState',
+        template: __webpack_require__(14),
+        computed: __assign({}, vuex_1.mapState({
+            i18nModel: function (state) { return state.i18nModel; },
+            quizStatusStat: function (state) { return state.quizStatusStat; },
+            answerStatus: function (state) { return state.assessment.answerStatus; },
+            studentsPageIndex: function (state) { return state.studentsPageIndex; },
+            isAllSubmitTipShowed: function (state) { return state.isAllSubmitTipShowed; },
+            isStopExamButtonClicked: function (state) { return state.isStopExamButtonClicked; }
+        })),
+        watch: {
+            quizStatusStat: {
+                handler: function (newVal, oldVal) {
+                    this.$store.dispatch(types.ACTION_GET_QUIZ_PROGRESS_DETAIL, { pageIndex: this.studentsPageIndex });
+                    if (this.quizStatusStat.unfinishedNum === 0 && this.quizStatusStat.hasStudentOnline && !this.isAllSubmitTipShowed && !this.isStopExamButtonClicked) {
+                        this.$store.commit(types.RECEIVE_ALL_SUBMIT_TIP, { isAllSubmited: true });
+                    }
+                },
+                deep: true,
+                sync: true
+            }
+        }
+    })
+], QuizState);
+exports.default = QuizState;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(4);
+var vuex_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var quiz_progress_const_1 = __webpack_require__(1);
+var ModuleComponent = __webpack_require__(5);
+var StudentList = (function (_super) {
+    __extends(StudentList, _super);
+    function StudentList() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.pageSize = quiz_progress_const_1.PAGE_SIZE;
+        return _this;
+    }
+    StudentList.prototype.pageTurning = function (_a) {
+        var current = _a.current;
+        this.$store.dispatch(types.ACTION_GET_QUIZ_PROGRESS_DETAIL, { pageIndex: current });
+    };
+    Object.defineProperty(StudentList.prototype, "totalPageNum", {
+        get: function () {
+            var finishedNum = this.quizStatusStat.finishedNum || 0;
+            var unfinishedNum = this.quizStatusStat.unfinishedNum || 0;
+            var offlineNum = this.quizStatusStat.offlineNum || 0;
+            return Math.ceil((finishedNum + unfinishedNum + offlineNum) / quiz_progress_const_1.PAGE_SIZE);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return StudentList;
+}(Vue));
+StudentList = __decorate([
+    vue_class_component_1.default({
+        name: 'StudentList',
+        template: __webpack_require__(15),
+        computed: __assign({}, vuex_1.mapState({
+            students: function (state) { return state.students; },
+            pageIndex: function (state) { return state.studentsPageIndex; },
+            quizStatusStat: function (state) { return state.quizStatusStat; }
+        })),
+        components: {
+            'head-icon': ModuleComponent.HeadIcon,
+            'base-list': ModuleComponent.BaseList,
+            'pager': ModuleComponent.Pagination
+        }
+    })
+], StudentList);
+exports.default = StudentList;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vuex_1 = __webpack_require__(3);
+var vue_class_component_1 = __webpack_require__(4);
+var types = __webpack_require__(0);
+var ModuleComponent = __webpack_require__(5);
+var quiz_progress_const_1 = __webpack_require__(1);
+var Toolbar = (function (_super) {
+    __extends(Toolbar, _super);
+    function Toolbar() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Toolbar.prototype.viewProcessHandler = function () {
+        this.$store.dispatch(types.ACTION_VIEW_PROCESS_HANDLER);
+    };
+    Toolbar.prototype.stopExamHandler = function () {
+        this.$store.dispatch(types.ACTION_STOP_EXAM_HANDLER);
+    };
+    Toolbar.prototype.exitExamHandler = function () {
+        this.$store.dispatch(types.ACTION_EXIT_EXAM_HANDLER);
+    };
+    Object.defineProperty(Toolbar.prototype, "footBarConfig", {
+        get: function () {
+            var fbc = [];
+            if (!this.isQuizProgressShow) {
+                return fbc;
+            }
+            if (this.isNeedStatistics) {
+                if (this.questionMode === quiz_progress_const_1.mode.COMMON) {
+                    fbc = [
+                        {
+                            text: this.i18nModel['quiz_progress_end_answer'],
+                            style: "ndui-btn-square square_end_answer",
+                            handler: this.stopExamHandler
+                        }, {
+                            text: this.i18nModel['quiz_progress_display_progress'],
+                            style: "ndui-btn-square square_view_progress",
+                            handler: this.viewProcessHandler
+                        }
+                    ];
+                }
+                else {
+                    fbc = [
+                        {
+                            text: this.i18nModel['quiz_progress_end_answer'],
+                            style: "ndui-btn-square square_end_answer",
+                            handler: this.stopExamHandler
+                        }
+                    ];
+                }
+            }
+            else {
+                fbc = [
+                    {
+                        text: this.i18nModel['quiz_progress_end_push'],
+                        style: "ndui-btn-square square_tool_quit",
+                        handler: this.exitExamHandler
+                    }
+                ];
+            }
+            return fbc;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return Toolbar;
+}(Vue));
+Toolbar = __decorate([
+    vue_class_component_1.default({
+        name: 'Toolbar',
+        template: __webpack_require__(16),
+        computed: __assign({}, vuex_1.mapState({
+            isNeedStatistics: function (state) { return state.isNeedStatistics; },
+            i18nModel: function (state) { return state.i18nModel; },
+            questionMode: function (state) { return state.questionMode; },
+            isQuizProgressShow: function (state) { return state.isQuizProgressShow; }
+        })),
+        components: {
+            'common-toolbar': ModuleComponent.Toolbar
+        }
+    })
+], Toolbar);
+exports.default = Toolbar;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Router = __webpack_require__(26);
+var common_quiz_progress_1 = __webpack_require__(24);
+var temporary_quiz_progress_1 = __webpack_require__(25);
+var router = new Router({
+    matchMode: 'IgnoreNoMatch',
+    routes: [
+        {
+            path: "/quiz_progress",
+            component: common_quiz_progress_1.default
+        }, {
+            path: "/quiz_progress/temporary",
+            component: temporary_quiz_progress_1.default
+        }
+    ]
+});
+router.beforeEach(function (to, from, next) {
+    if (to.fullPath.indexOf('/compound_mao_analysis') > -1 || to.fullPath.indexOf('/compound_mao_hint') > -1) {
+        next(false);
+    }
+    else {
+        next();
+    }
+});
+exports.default = router;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var quiz_progress_const_1 = __webpack_require__(1);
+var AnswerAssessmentPresenter = (function () {
+    function AnswerAssessmentPresenter(presenter) {
+        this.ASSESSMENT_PARAM = {
+            isAnswerAssessment: true
+        };
+        this.parent = presenter;
+        this.isFinished = false;
+        this.showAllSubmitTipMessageFlag = false;
+        this._store = this.parent.store;
+    }
+    AnswerAssessmentPresenter.prototype.showAssessmentProgress = function () {
+        if (!this.isFinished) {
+            this._store.dispatch(types.ACTION_VIEW_PROCESS_HANDLER, this.ASSESSMENT_PARAM);
+        }
+    };
+    AnswerAssessmentPresenter.prototype.stopAssessment = function () {
+        this.showAllSubmitTipMessageFlag = true;
+    };
+    AnswerAssessmentPresenter.prototype.assessmentCallback = function (eventData) {
+        var _this = this;
+        if (!!eventData) {
+            var type = eventData.type;
+            switch (type) {
+                case 'start':
+                    if (eventData.data && eventData.data.result === true) {
+                        this._store.commit(types.INIT_STATE);
+                        this._store.commit(types.RECEIVE_IS_ASSESSMENT, { isAssessment: true });
+                        this._store.commit(types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE, { isShow: true });
+                        this._store.commit(types.RECEIVE_ASSESSMENT_ONGOING, { isOnGoing: true });
+                        this.isFinished = false;
+                        this.showAllSubmitTipMessageFlag = false;
+                        this.studentCount = null;
+                        this._store.commit(types.RECEIVE_ASSESSMENT_ANSWERSTATUS, { answerStatus: 'assessmenting' });
+                    }
+                    break;
+                case 'progress':
+                    if (!this.isFinished) {
+                        var extendParam = $.extend({
+                            value: eventData
+                        }, this.ASSESSMENT_PARAM);
+                        this.parent.dispatchEvent('sendToPresenter', ConstVariable.PresenterEventType.NATIVE_EVENT, {
+                            instanceId: 'AnswerAssessment',
+                            type: 'GetAssessmentProgressDetail',
+                            data: {
+                                startIndex: this.parent.vueRoot.$store.state.studentsPageIndex + 1,
+                                pageSize: quiz_progress_const_1.PAGE_SIZE,
+                            }
+                        });
+                        this._store.commit(types.RECEIVE_QUIZ_STATUS_STAT, { status: extendParam.value });
+                        if (!this.showAllSubmitTipMessageFlag && eventData.unfinishedNum === 0 && eventData.offlineNum === 0) {
+                            this.showAllSubmitTipMessageFlag = true;
+                            if (this._store.state.isQuizProgressShow) {
+                                this._store.commit(types.RECEIVE_ALL_SUBMIT_TIP, { isAllSubmited: true });
+                            }
+                            else {
+                                this._store.commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { isShow: true });
+                                this._store.commit(types.RECEIVE_ALL_SUBMIT_TIP, { isAllSubmited: true });
+                                setTimeout(function () {
+                                    _this._store.commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { show: true });
+                                }, 3000);
+                            }
+                        }
+                    }
+                    break;
+                case 'stop':
+                    if (eventData.data && eventData.data.result === true) {
+                        this._store.commit(types.RECEIVE_IS_ASSESSMENT, { isAssessment: false });
+                        this.isFinished = true;
+                        this.studentCount = null;
+                        this._store.commit(types.RECEIVE_ASSESSMENT_ANSWERSTATUS, { answerStatus: 'answering' });
+                        this._store.commit(types.SHOW_HIDE_WAITING, { show: false });
+                        this._store.dispatch(types.ACTION_CLOSE_PROCESS_HANDLER, this.ASSESSMENT_PARAM);
+                        this._store.commit(types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE, { isShow: false });
+                    }
+                    break;
+                default:
+            }
+        }
+    };
+    return AnswerAssessmentPresenter;
+}());
+exports.default = AnswerAssessmentPresenter;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vuex = __webpack_require__(3);
+var actions_1 = __webpack_require__(21);
+var getters_1 = __webpack_require__(22);
+var mutations_1 = __webpack_require__(23);
+var quiz_progress_const_1 = __webpack_require__(1);
+exports.default = function (presenter) {
+    return new Vuex.Store({
+        strict: false,
+        state: {
+            i18nModel: presenter.i18nModel,
+            questionMode: quiz_progress_const_1.mode.COMMON,
+            isQuizProgressShow: false,
+            isViewQuizProgressShow: false,
+            isAllSubmitTipShowed: false,
+            isFirstShow: true,
+            isForceButtonClicked: false,
+            isWaiting: false,
+            isStopExamButtonClicked: false,
+            currentState: -1,
+            isNeedStatistics: true,
+            isStop: false,
+            quizStatusStat: {
+                finishedNum: 0,
+                unfinishedNum: 0,
+                offlineNum: 0,
+                hasStudentOnline: false
+            },
+            students: [],
+            isAssessment: false,
+            assessment: {
+                isOngoing: false,
+                answerStatus: 'answering'
+            },
+            studentsPageIndex: 0
+        },
+        mutations: mutations_1.mutations,
+        getters: getters_1.getters,
+        actions: actions_1.actions(presenter)
+    });
+};
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=stat_wood v-show=isWaiting><div class=waiting_container><div class=\"compop comfim_sendpop\"><div class=pop_mask></div><div class=popmain><div class=\"staticinfo clearfix\"><span class=\"poptxt floatleft\" v-text=i18nModel.quiz_progress_stop_exam_tip></span> <span class=\"poptxt floatright\"><span style=\"color: #fa8e19;\" class=finishNum>{{quizStatusStat.finishedNum}}</span>/<span class=totalNum>{{totalStudentsNum}}</span><span class=person_tip_text v-text=\"i18nModel['quiz_progress_person_text']\"></span></span></div><div class=bar_container><div class=bar :style=\"{width: totalStudentsNum === 0? 0 : (quizStatusStat.finishedNum/totalStudentsNum * 100)+'%'}\"></div></div><p class=btnwrap><a href=javascript:; class=btn_stop_recv v-text=\"i18nModel['quiz_progress_stop_recv_text']\" @click=forceStopHandler()></a></p></div></div></div></div>"
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=ans_progress_top><span class=\"lay_top submitted_stat\"><span class=\"text commit_tip_text\" v-text=\"i18nModel['quiz_progress_commit_text']\"></span> <span class=\"num num-commited\">{{quizStatusStat.finishedNum ||0}}</span></span> <span class=\"lay_top text_typing_stat\"><span class=\"text answering_tip_text\" v-text=\"answerStatus==='answering'?i18nModel['quiz_progress_answering_text']:i18nModel['quiz_progress_assessmenting_text']\"></span> <span class=\"num num-answering\">{{quizStatusStat.unfinishedNum||0}}</span></span> <span class=\"lay_top off_line_stat\"><span class=\"text offline_tip_text\" v-text=\"i18nModel['quiz_progress_offline_text']\"></span> <span class=\"num num-offline\">{{quizStatusStat.offlineNum||0}}</span></span></div>"
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=ans_progress_main><div class=\"ans_progress_content uicom_user_list\"><base-list :data=students><template scope=props><head-icon :user-id=props.data.userId :user-name=props.data.userName :user-icon=props.data.headIcon :icon-class=\"[props.data.rank===1? 'award_first':props.data.rank===2?'award_second':props.data.rank===3?'award_third':'', props.data.status==='offline'?'off_line':props.data.status==='writing'?'text_typing':props.data.status==='committed'?'submitted':'']\"></head-icon></template></base-list><pager :data=\"{current: pageIndex, size: pageSize, count:totalPageNum}\" @flip=pageTurning></pager></div></div>"
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = "<common-toolbar class=k12-footer-tool :members=footBarConfig :side=\"'both'\"></common-toolbar>"
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=quizprocess-container v-show=isQuizProgressShow><div class=quiz_container v-show=isViewQuizProgressShow><div class=stat_wood :style=\"{fontSize:fontSize+'px'}\"><div class=\"ndui-pop com_pop stu_state com_pop_big\"><div class=ndui-pop-mask></div><div class=ndui-pop-square><div class=ndui-pop-wrap><a href=javascript:; class=\"ndui-pop-close right\" @click=closeProcessHandler></a><a href=javascript:; class=\"ndui-pop-close left\" @click=closeProcessHandler></a><div class=pop_wrap><div class=content><div class=ans_progress_wp><quiz-state></quiz-state><student-list></student-list></div></div></div></div></div></div></div></div><toast :content=\"i18nModel['quiz_progress_all_commit_tip_text']\" :show=isAllSubmitTipShowed></toast><end-quiz-popup></end-quiz-popup></div>"
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=stat_wood style=\"position: static;\" v-show=isQuizProgressShow><div class=com_layout_container><div class=\"components__stu-state temporary_ques\"><div class=content><div class=ans_progress_wp><quiz-state></quiz-state><student-list></student-list></div></div></div><toast :content=\"i18nModel['quiz_progress_all_commit_tip_text']\" :show=isAllSubmitTipShowed></toast><end-quiz-popup></end-quiz-popup></div></div>"
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var logger;
+if (Logger) {
+    (logger = Logger.get('QuizProgress')).appendHandler(function (message) { return window.console.log(message); }, { level: Logger.DEBUG });
+}
+else {
+    logger = window.console;
+}
+exports.default = logger;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var router_1 = __webpack_require__(10);
+var store_1 = __webpack_require__(12);
+var types = __webpack_require__(0);
+var answer_assessment_1 = __webpack_require__(11);
+var toolbar_1 = __webpack_require__(9);
+var quiz_progress_const_1 = __webpack_require__(1);
+var quiz_progress_const_2 = __webpack_require__(1);
+var QuizProgress;
+(function (QuizProgress) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this, 'QuizProgress') || this;
+            _this._vueRoot = null;
+            _this._toolBar = [];
+            _this._store = null;
+            _this._i18nModel = {};
+            _this._eventsConfig = null;
+            _this._presenterLoaded = function () { };
+            _this._notifyLayout = function () {
+                var option = {
+                    source: 'QuizProgress',
+                    type: 'changeStudentNum',
+                    value: {
+                        finishedNum: _this.store.state.quizStatusStat.finishedNum,
+                        count: _this.store.state.quizStatusStat.finishedNum + _this.store.state.quizStatusStat.unfinishedNum
+                    }
+                };
+                _this.dispatchEvent('QuizProgressEvent', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, option);
+            };
+            _this._temporaryQuestionEvent = function (data) {
+                if (data.type === 'launch') {
+                    router_1.default.push('/quiz_progress/temporary');
+                    _this.store.commit(types.RECEIVE_QUESTION_MODE, { mode: quiz_progress_const_2.mode.TEMPORARY_QUESTION });
+                    _this.store.commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { show: true });
+                    $(".addon_ObjectiveInteractionLayout ._center_panel").html(_this._vueRoot.$el);
+                }
+            };
+            _this._quizProgress = function (data) {
+                var type = data.type;
+                _this.Logger.debug("[QuizProgress]\u6536\u5230QuizProgress\u4E8B\u4EF6type[" + type + "],\u6570\u636E\uFF1A" + JSON.stringify(data));
+                switch (type) {
+                    case 'hide':
+                        _this.store.dispatch(types.ACTION_QUIZ_PROGRESS_HIDE);
+                        break;
+                    case 'show':
+                        _this.store.dispatch(types.ACTION_GET_QUIZ_PROGRESS_DETAIL, { pageIndex: _this.store.state.studentsPageIndex });
+                        _this.store.commit(types.RECEIVE_QUIZ_STATUS_STAT, {
+                            status: {
+                                finishedNum: data.value.finishedNum,
+                                unfinishedNum: data.value.unfinishedNum,
+                                offlineNum: data.value.offlineNum,
+                                hasStudentOnline: data.value.hasStudentOnline
+                            }
+                        });
+                        _this._notifyLayout();
+                        break;
+                    case 'switch':
+                        _this.store.dispatch(types.ACTION_VIEW_PROCESS_HANDLER);
+                        break;
+                    case 'stop':
+                        _this.store.dispatch(types.ACTION_STOP_EXAM_HANDLER);
+                        break;
+                    default:
+                        break;
+                }
+            };
+            _this._exerciseStateChange = function (data) {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230exerciseStateChange\u4E8B\u4EF6,type[" + data.type + "],\u6570\u636E\uFF1A" + JSON.stringify(data));
+                var type = data.type;
+                var result = data.value.result;
+                switch (type) {
+                    case 'start':
+                        if (result) {
+                            var $footBarPanel = $('.layout_footbar');
+                            if ($footBarPanel.length === 0) {
+                                $footBarPanel = $('.layout_footer');
+                            }
+                            $footBarPanel.css("visibility", "visible");
+                            $.each($footBarPanel, function (index, item) {
+                                $(item).html('<div class="quiz_progress_foot_bar"></div>');
+                                _this._toolBar.push(new Vue({
+                                    el: item.querySelector('.quiz_progress_foot_bar'),
+                                    store: _this.store,
+                                    render: function (h) { return h(toolbar_1.default); }
+                                }));
+                            });
+                            _this.store.commit(types.RECEIVE_IS_STOP, { isStop: false });
+                            _this.store.commit(types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE, { isShow: true });
+                            if (_this.store.state.questionMode === quiz_progress_const_2.mode.TEMPORARY_QUESTION) {
+                                _this.store.dispatch(types.ACTION_GET_QUIZ_PROGRESS_DETAIL, { pageIndex: 0 });
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            };
+            _this._examCallback = function (data) {
+                _this.Logger.debug("[QuizProgess]\u6536\u5230ExamCallback\u4E8B\u4EF6,type[" + data.type + "],\u6570\u636E\uFF1A" + JSON.stringify(data));
+                var type = data.type;
+                var result = data.value.result;
+                switch (type) {
+                    case 'start':
+                        if (result) {
+                            _this.store.commit(types.RECEIVE_CURRENT_STATE, { currentState: quiz_progress_const_1.examState.EXAM_STARTED });
+                            _this.store.commit(types.SHOW_HIDE_WAITING, { show: false });
+                        }
+                        break;
+                    case 'stop':
+                        if (result) {
+                            _this.store.commit(types.SHOW_HIDE_WAITING, { show: false });
+                            _this.store.commit(types.RECEIVE_IS_FORCE_BUTTON_CLICKED, { isClicked: false });
+                            _this.store.commit(types.RECEIVE_CURRENT_STATE, { currentState: quiz_progress_const_1.examState.EXAM_STOPED });
+                            _this.dispatchEvent('Exam', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                                source: "QuizProgress",
+                                type: "result",
+                                value: {},
+                                isApp: true
+                            });
+                        }
+                        else {
+                            _this.store.commit(types.SHOW_HIDE_WAITING, { show: false });
+                            _this.store.commit(types.RECEIVE_IS_STOP_EXAM_BUTTON_CLICKED, { isClicked: false });
+                        }
+                        break;
+                    case 'result':
+                        if (result) {
+                            _this.store.commit(types.INIT_STATE);
+                            _this.store.commit(types.RECEIVE_CURRENT_STATE, { currentState: quiz_progress_const_1.examState.EXAM_SHOW_RESULT });
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            };
+            _this._exerciseInfo = function (data) {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230ExerciseInfo\u4E8B\u4EF6,\u6570\u636E\uFF1A" + JSON.stringify(data));
+                if (data.questionInfo.noNeedQuizProgress) {
+                    return;
+                }
+                _this.store.commit(types.NEED_STATISTICS, {
+                    needStatistics: !data.questionInfo.notExistStatistics
+                });
+            };
+            _this._quizProgressDetailCallback = function (data) {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230QuizProgressDetailCallback\u4E8B\u4EF6,type[" + data.type + "],\u6570\u636E\uFF1A" + JSON.stringify(data));
+                var type = data.type;
+                if (type === 'students') {
+                    _this.store.commit(types.RECEIVE_STUDENTS, { students: data.value.users });
+                }
+            };
+            _this._continueAnswer = function () {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230ContinueAnswer\u4E8B\u4EF6");
+                _this.store.commit(types.NEED_STATISTICS, { needStatistics: true });
+                _this.store.commit(types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE, { isShow: true });
+            };
+            _this._assessmentCallback = function (data) {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230AssessmentCallback\u4E8B\u4EF6");
+                _this._answerAssessment.assessmentCallback(data);
+            };
+            _this._showAssessmentProgress = function () {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230ShowAssessmentProgress\u4E8B\u4EF6");
+                _this._answerAssessment.showAssessmentProgress();
+            };
+            _this._stopAssessment = function () {
+                _this.Logger.debug("[QuizProgress]\u6536\u5230StopAssessment\u4E8B\u4EF6");
+                _this._answerAssessment.stopAssessment();
+            };
+            _this.metaInfo.name = 'QuizProgress';
+            _this.metaInfo.type = ConstVariable.PresenterType.FUNCTIONAL;
+            _this._eventsConfig = [
+                {
+                    eventName: 'TemporaryQuestionEvent',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._temporaryQuestionEvent
+                }, {
+                    eventName: 'QuizProcess',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._quizProgress
+                }, {
+                    eventName: 'QuizProgress',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._quizProgress
+                }, {
+                    eventName: 'QuizProgress',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._quizProgress
+                }, {
+                    eventName: 'exerciseStateChange',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._exerciseStateChange
+                }, {
+                    eventName: 'ExamCallback',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._examCallback
+                }, {
+                    eventName: 'ExerciseInfo',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._exerciseInfo
+                }, {
+                    eventName: 'QuizProgressDetailCallback',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._quizProgressDetailCallback
+                }, {
+                    eventName: 'AssessmentProgressDetailCallback',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._quizProgressDetailCallback
+                }, {
+                    eventName: 'ContinueAnswer',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._continueAnswer
+                }, {
+                    eventName: 'AssessmentCallback',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._assessmentCallback
+                }, {
+                    eventName: 'ShowAssessmentProgress',
+                    eventType: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+                    eventCallback: _this._showAssessmentProgress
+                }, {
+                    eventName: 'StopAssessment',
+                    eventType: ConstVariable.PresenterEventType.NATIVE_EVENT,
+                    eventCallback: _this._stopAssessment
+                }
+            ];
+            return _this;
+        }
+        Presenter.prototype._bindEvent = function () {
+            for (var _i = 0, _a = this._eventsConfig; _i < _a.length; _i++) {
+                var ec = _a[_i];
+                this.addEventListener(ec.eventName, ec.eventType, ec.eventCallback);
+            }
+            this.addEventListener('PresenterLoaded', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, this._presenterLoaded);
+        };
+        Presenter.prototype._unbindEvent = function () {
+            this.removeEventListener();
+        };
+        Presenter.prototype.$launch = function (option) {
+            this.Logger.debug('[QuizProgress]运行$launch方法');
+            this.i18nModel = option.lang;
+            if (this.Environment.isStudent) {
+                return;
+            }
+            this._store = store_1.default(this);
+            this._vueRoot = new Vue({ el: this.View, router: router_1.default, store: this.store });
+            router_1.default.push('/quiz_progress');
+            this._bindEvent();
+            this._answerAssessment = new answer_assessment_1.default(this);
+        };
+        Presenter.prototype.$release = function () {
+            this.Logger.debug('[QuizProgress]运行$release方法');
+            this._vueRoot.$destroy();
+            this._unbindEvent();
+        };
+        Object.defineProperty(Presenter.prototype, "store", {
+            get: function () {
+                return this._store;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Presenter.prototype, "vueRoot", {
+            get: function () { return this._vueRoot; },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Presenter.prototype, "i18nModel", {
+            get: function () { return this._i18nModel; },
+            set: function (i18nModel) {
+                this._i18nModel = i18nModel;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Presenter;
+    }(CommonClass));
+    QuizProgress.Presenter = Presenter;
+})(QuizProgress || (QuizProgress = {}));
+window['AddonQuizProgress_create'] = function () {
+    return new QuizProgress.Presenter();
+};
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var quiz_progress_const_1 = __webpack_require__(1);
+var logger_1 = __webpack_require__(19);
+function actions(presenter) {
+    return _a = {},
+        _a[types.ACTION_QUIZ_PROGRESS_HIDE] = function (_a) {
+            var commit = _a.commit;
+            commit(types.INIT_STATE);
+            commit(types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE, { isShow: false });
+        },
+        _a[types.ACTION_VIEW_PROCESS_HANDLER] = function (_a, data) {
+            var state = _a.state, commit = _a.commit;
+            var isShow = state.isViewQuizProgressShow;
+            var vps = null;
+            if (isShow) {
+                commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { show: false });
+                vps = quiz_progress_const_1.viewProgressState.HIDE;
+            }
+            else {
+                if (!!data && data.isAnswerAssessment) {
+                    presenter.dispatchEvent('sendToPresenter', ConstVariable.PresenterEventType.NATIVE_EVENT, {
+                        instanceId: 'AnswerAssessment',
+                        type: 'GetAssessmentProgressDetail',
+                        data: {
+                            startIndex: 1,
+                            pageSize: quiz_progress_const_1.PAGE_SIZE,
+                        }
+                    });
+                }
+                else {
+                    presenter.dispatchEvent('GetQuizProgressDetail', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                        type: 'students',
+                        value: {
+                            startIndex: 1,
+                            pageSize: quiz_progress_const_1.PAGE_SIZE,
+                        }
+                    });
+                }
+                commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { show: true });
+                vps = quiz_progress_const_1.viewProgressState.SHOW;
+            }
+            if (!!data && data.isAnswerAssessment) {
+                return false;
+            }
+            presenter.dispatchEvent('QuizProgressEvent', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                source: 'QuizProgress',
+                type: 'state',
+                isApp: true,
+                value: {
+                    state: vps
+                }
+            });
+            return false;
+        },
+        _a[types.ACTION_CLOSE_PROCESS_HANDLER] = function (_a, data) {
+            var state = _a.state, commit = _a.commit;
+            var isShow = state.isViewQuizProgressShow;
+            var vps = null;
+            if (isShow) {
+                commit(types.SWITCH_VIEW_QUIZ_PROGRESS, { show: false });
+                vps = quiz_progress_const_1.viewProgressState.HIDE;
+                if (!!data && data.isAnswerAssessment) {
+                    return false;
+                }
+                commit(types.RECEIVE_STUDENTS_PAGE_INDEX, { pageIndex: 0 });
+                presenter.dispatchEvent('QuizProgressEvent', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                    source: 'QuizProgress',
+                    type: 'state',
+                    isApp: true,
+                    value: {
+                        state: vps
+                    }
+                });
+            }
+            return false;
+        },
+        _a[types.ACTION_STOP_EXAM_HANDLER] = function (_a) {
+            var state = _a.state, commit = _a.commit;
+            if (!state.isStopExamButtonClicked) {
+                commit(types.RECEIVE_IS_STOP_EXAM_BUTTON_CLICKED, { isClicked: true });
+                commit(types.SHOW_HIDE_WAITING, { show: true });
+                var stopTimestamp = ClassroomUtils.getMasterSystemTime() * 1000;
+                if (stopTimestamp <= 0) {
+                    stopTimestamp = new Date().getTime();
+                }
+                var option = {
+                    type: 'stop',
+                    value: {
+                        stopTimestamp: stopTimestamp
+                    },
+                    isApp: true
+                };
+                logger_1.default.debug('[QuizProgress]发送事件[Exam]类型[stop]');
+                presenter.dispatchEvent('Exam', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, option);
+                presenter.dispatchEvent('exerciseStateChange', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, {
+                    source: 'QuizProgress',
+                    type: 'mockStop',
+                    value: {
+                        result: true
+                    }
+                });
+            }
+        },
+        _a[types.ACTION_FORCE_STOP_HANDLER] = function (_a) {
+            var state = _a.state, commit = _a.commit;
+            if (!!state.assessment.isOngoing) {
+                presenter.dispatchEvent('sendToPresenter', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                    instanceId: 'AnswerAssessment',
+                    isApp: true,
+                    type: 'stop',
+                    data: {
+                        isForce: true
+                    }
+                });
+                return;
+            }
+            if (!state.isForceButtonClicked) {
+                commit(types.RECEIVE_IS_FORCE_BUTTON_CLICKED, { isClicked: true });
+                var option = {
+                    source: 'QuizProgress',
+                    type: 'forcestop',
+                    isApp: true
+                };
+                presenter.dispatchEvent('Exam', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, option);
+            }
+        },
+        _a[types.ACTION_EXIT_EXAM_HANDLER] = function (_a) {
+            var state = _a.state, commit = _a.commit;
+            presenter.dispatchEvent('Exam', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, { type: 'hide' });
+            commit(types.INIT_STATE);
+        },
+        _a[types.ACTION_GET_QUIZ_PROGRESS_DETAIL] = function (_a, _b) {
+            var state = _a.state, commit = _a.commit;
+            var pageIndex = _b.pageIndex;
+            commit(types.RECEIVE_STUDENTS_PAGE_INDEX, { pageIndex: pageIndex });
+            if (state.isAssessment) {
+                presenter.dispatchEvent('sendToPresenter', ConstVariable.PresenterEventType.NATIVE_EVENT, {
+                    instanceId: 'AnswerAssessment',
+                    type: 'GetAssessmentProgressDetail',
+                    data: {
+                        startIndex: pageIndex * quiz_progress_const_1.PAGE_SIZE + 1,
+                        pageSize: quiz_progress_const_1.PAGE_SIZE,
+                    }
+                });
+            }
+            else {
+                presenter.dispatchEvent('GetQuizProgressDetail', ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, {
+                    type: 'students',
+                    value: {
+                        startIndex: pageIndex * quiz_progress_const_1.PAGE_SIZE + 1,
+                        pageSize: quiz_progress_const_1.PAGE_SIZE,
+                    }
+                });
+            }
+        },
+        _a;
+    var _a;
+}
+exports.actions = actions;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.getters = {
+    studentCount: function (state) {
+        return state.students.length;
+    }
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var quiz_progress_const_1 = __webpack_require__(1);
+exports.mutations = (_a = {},
+    _a[types.INIT_STATE] = function (state) {
+        state.isQuizProgressShow = false;
+        state.questionMode = quiz_progress_const_1.mode.COMMON;
+        state.isViewQuizProgressShow = false;
+        state.isAllSubmitTipShowed = false;
+        state.isFirstShow = true;
+        state.isForceButtonClicked = false;
+        state.isWaiting = false;
+        state.isStopExamButtonClicked = false;
+        state.currentState = -1;
+        state.isNeedStatistics = true;
+        state.isStop = false;
+        state.quizStatusStat.finishedNum = 0;
+        state.quizStatusStat.unfinishedNum = 0;
+        state.quizStatusStat.offlineNum = 0;
+        state.quizStatusStat.hasStudentOnline = false;
+        state.students = [];
+        state.studentsPageIndex = 0;
+        state.assessment.isOngoing = false;
+        state.isAssessment = false;
+    },
+    _a[types.SHOW_HIDE_WAITING] = function (state, _a) {
+        var show = _a.show;
+        state.isWaiting = show;
+    },
+    _a[types.SWITCH_VIEW_QUIZ_PROGRESS] = function (state, _a) {
+        var show = (_a === void 0 ? {} : _a).show;
+        if (show !== undefined) {
+            state.isViewQuizProgressShow = show;
+        }
+        else {
+            state.isViewQuizProgressShow = !state.isViewQuizProgressShow;
+        }
+    },
+    _a[types.RECEIVE_STUDENTS] = function (state, _a) {
+        var students = _a.students;
+        state.students = students;
+    },
+    _a[types.RECEIVE_QUIZ_STATUS_STAT] = function (state, _a) {
+        var status = _a.status;
+        state.quizStatusStat.finishedNum = status.finishedNum;
+        state.quizStatusStat.unfinishedNum = status.unfinishedNum;
+        state.quizStatusStat.offlineNum = status.offlineNum;
+        state.quizStatusStat.hasStudentOnline = status.hasStudentOnline;
+    },
+    _a[types.NEED_STATISTICS] = function (state, _a) {
+        var needStatistics = _a.needStatistics;
+        state.isNeedStatistics = needStatistics;
+    },
+    _a[types.RECEIVE_IS_SHOW_QUIZCONTAINER] = function (state, _a) {
+        var isShow = _a.isShow;
+        state.isShowQuizContainer = isShow;
+    },
+    _a[types.RECEIVE_IS_STOP_EXAM_BUTTON_CLICKED] = function (state, _a) {
+        var isClicked = _a.isClicked;
+        state.isStopExamButtonClicked = isClicked;
+    },
+    _a[types.RECEIVE_IS_FORCE_BUTTON_CLICKED] = function (state, _a) {
+        var isClicked = _a.isClicked;
+        state.isForceButtonClicked = isClicked;
+    },
+    _a[types.RECEIVE_ALL_SUBMIT_TIP] = function (state, _a) {
+        var isAllSubmited = _a.isAllSubmited;
+        state.isAllSubmitTipShowed = isAllSubmited;
+    },
+    _a[types.RECEIVE_QUIZ_PROGRESS_SHOW_HIDE] = function (state, _a) {
+        var isShow = _a.isShow;
+        state.isQuizProgressShow = isShow;
+    },
+    _a[types.RECEIVE_CURRENT_STATE] = function (state, _a) {
+        var currentState = _a.currentState;
+        state.currentState = currentState;
+    },
+    _a[types.RECEIVE_IS_STOP] = function (state, _a) {
+        var isStop = _a.isStop;
+        state.isStop = isStop;
+    },
+    _a[types.RECEIVE_IS_ASSESSMENT] = function (state, _a) {
+        var _b = (_a === void 0 ? {} : _a).isAssessment, isAssessment = _b === void 0 ? false : _b;
+        state.isAssessment = isAssessment;
+    },
+    _a[types.RECEIVE_ASSESSMENT_ANSWERSTATUS] = function (state, _a) {
+        var answerStatus = _a.answerStatus;
+        state.assessment.answerStatus = answerStatus;
+    },
+    _a[types.RECEIVE_ASSESSMENT_ONGOING] = function (state, _a) {
+        var isOnGoing = _a.isOnGoing;
+        state.assessment.isOngoing = isOnGoing;
+    },
+    _a[types.RECEIVE_STUDENTS_PAGE_INDEX] = function (state, _a) {
+        var pageIndex = _a.pageIndex;
+        state.studentsPageIndex = pageIndex;
+    },
+    _a[types.RECEIVE_QUESTION_MODE] = function (state, _a) {
+        var mode = _a.mode;
+        state.questionMode = mode;
+    },
+    _a);
+var _a;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(4);
+var quiz_state_1 = __webpack_require__(7);
+var student_list_1 = __webpack_require__(8);
+var end_quiz_popup_1 = __webpack_require__(6);
+var vuex_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var ModuleComponent = __webpack_require__(5);
+var CommonQuizProgress = (function (_super) {
+    __extends(CommonQuizProgress, _super);
+    function CommonQuizProgress() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.fontSize = 0;
+        return _this;
+    }
+    CommonQuizProgress.prototype.closeProcessHandler = function () {
+        this.$store.dispatch(types.ACTION_CLOSE_PROCESS_HANDLER);
+    };
+    CommonQuizProgress.prototype.mounted = function () {
+        this.layoutReset();
+    };
+    CommonQuizProgress.prototype.winSize = function () {
+        var t = 0, e = 0;
+        return document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth && (t = document.documentElement.clientWidth, e = document.documentElement.clientHeight), {
+            width: t,
+            height: e
+        };
+    };
+    CommonQuizProgress.prototype.layoutReset = function () {
+        var _this = this;
+        var e = 1920, n = 1200, i = 24, o = function () {
+            var o = _this.winSize(), d = 0, h = o.width, c = o.height;
+            o.width / o.height <= e / n ? (d = o.width / e * i, h = o.width < e ? o.width : e, c = n * h / e, o.height > c) : (d = o.height / n * i, c = o.height < n ? o.height : n, h = e * c / n),
+                _this.fontSize = d;
+        };
+        o(),
+            window.onresize = function () {
+                o();
+            };
+    };
+    return CommonQuizProgress;
+}(Vue));
+CommonQuizProgress = __decorate([
+    vue_class_component_1.default({
+        name: 'CommonQuizProgress',
+        template: __webpack_require__(17),
+        computed: __assign({}, vuex_1.mapState({
+            i18nModel: function (state) { return state.i18nModel; },
+            isQuizProgressShow: function (state) { return state.isQuizProgressShow; },
+            isViewQuizProgressShow: function (state) { return state.isViewQuizProgressShow; },
+            isAllSubmitTipShowed: function (state) { return state.isAllSubmitTipShowed; }
+        })),
+        components: {
+            'quiz-state': quiz_state_1.default,
+            'student-list': student_list_1.default,
+            'end-quiz-popup': end_quiz_popup_1.default,
+            'toast': ModuleComponent.Toast
+        }
+    })
+], CommonQuizProgress);
+exports.default = CommonQuizProgress;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(4);
+var quiz_state_1 = __webpack_require__(7);
+var student_list_1 = __webpack_require__(8);
+var end_quiz_popup_1 = __webpack_require__(6);
+var vuex_1 = __webpack_require__(3);
+var ModuleComponent = __webpack_require__(5);
+var TemporaryQuizProgress = (function (_super) {
+    __extends(TemporaryQuizProgress, _super);
+    function TemporaryQuizProgress() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return TemporaryQuizProgress;
+}(Vue));
+TemporaryQuizProgress = __decorate([
+    vue_class_component_1.default({
+        name: 'TemporaryQuizProgress',
+        template: __webpack_require__(18),
+        computed: __assign({}, vuex_1.mapState({
+            i18nModel: function (state) { return state.i18nModel; },
+            isQuizProgressShow: function (state) { return state.isQuizProgressShow; },
+            isViewQuizProgressShow: function (state) { return state.isViewQuizProgressShow; },
+            isAllSubmitTipShowed: function (state) { return state.isAllSubmitTipShowed; }
+        })),
+        components: {
+            'quiz-state': quiz_state_1.default,
+            'student-list': student_list_1.default,
+            'end-quiz-popup': end_quiz_popup_1.default,
+            'toast': ModuleComponent.Toast
+        }
+    })
+], TemporaryQuizProgress);
+exports.default = TemporaryQuizProgress;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports) {
+
+module.exports = VueRouter;
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/award_first.png' />
+<file src='./resources/award_second.png' />
+<file src='./resources/award_third.png' />
+<file src='./resources/bg_pop_square.png' />
+<file src='./resources/compop_dec1.png' />
+<file src='./resources/compop_dec2.png' />
+<file src='./resources/exit-exam.png' />
+<file src='./resources/icon_close.png' />
+<file src='./resources/icon_flag.png' />
+<file src='./resources/icon_off_line.png' />
+<file src='./resources/icon_submitted.png' />
+<file src='./resources/icon_text_typing.png' />
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/es/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/ja_JP/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_HK/lang.json' />
+<file src='./resources/stop-exam.png' />
+<file src='./resources/view-process.png' />
+
+
+</resources>
+
+</addon>

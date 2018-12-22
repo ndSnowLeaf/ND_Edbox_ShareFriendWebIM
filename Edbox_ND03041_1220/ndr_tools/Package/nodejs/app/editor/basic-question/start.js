@@ -1,0 +1,59 @@
+define(['require','jquery','question-module','./init',
+        'service/$base',
+        'service/$i18n',
+        'service/$config',
+        'service/$espUserCenter',
+        'service/$espAuth',
+        'service/$qti',
+        'service/$category',
+        'service/$messenger.service',
+        'service/$materialAPI',
+        'service/$questionTemplates',
+        'asset/asset_all',  
+        'qti/qti_all',        
+        'controller/metadata-controller', 
+        'controller/asset-select-controller',
+        'controller/qti-controller',
+        'controller/import-sample-controller',
+        "css!style.css",
+        "css!decorators/theme/default/main.css",
+        "css!$i18n/i18n.css",
+        "css!lib/bootstrap/3.3.2/css/bootstrap.min.css",
+        "css!lib/angular-nd/0.1.0/ngui/style/nd-ngui-lcms.css",
+        "css!lib/angular-nd/0.1.0/ngui/style/nd-ngui-styles-0.1.0.css",
+        "css!lib/angular-nd/0.1.0/ngui/style/nd-ngui-styles-ex.css",
+        "css!lib/ztree/3.5.17/zTreeStyle/zTreeStyle.css",
+        'css!lib/fancybox/1.3.1/fancybox.css','jquery','fancybox',
+        "css!lib/nd/externals/tree/style.css",
+        "questionstore/module",'plupload'],function(require,$,module){
+	module.config(['$stateProvider','$urlRouterProvider','$locationProvider',function($stateProvider, $urlRouterProvider,$locationProvider) {
+        //configure the routing rules here
+         $stateProvider.state('questions',{
+        	 template:'<div ui-view></div>'	
+         }).state('questions.create',{
+        	 url:'/create?question_base&file_path&chapter_name&chapter_id&isSample',
+        	 controller:'metadataController',
+        	 templateUrl:'tpl/create.html'
+         }).state('questions.update',{
+        	 url:'/:id/update?question_base&chapter_name&chapter_id&isSample',
+        	 controller:'metadataController',
+        	 templateUrl:'tpl/create.html'
+         }).state('questions.edit',{
+        	 url:'/:id/edit/:question_type?question_base&file_path&chapter_name&hideSample&isSample&chapter_id',
+        	 controller:'qtiController',
+        	 templateUrl:'tpl/edit.html'
+         })    
+         .state('questions.asset_select',{
+        	 url:'/select_asset?question_base&id&is_interaction&chapter_id&chapter_name&file_path&max_size',
+        	 controller:'assetSelectController',
+        	 templateUrl:'asset/select/index.html'
+         }) .state('questions.import_sample',{
+             url:'/import_sample?question_type&last_id&last_type&template&chapter_id',
+             controller:'importSampleController',
+             templateUrl:'tpl/import_sample.html'
+         });;
+
+         $locationProvider.html5Mode(false);
+         $('#start_loading').hide();
+    }]);
+});

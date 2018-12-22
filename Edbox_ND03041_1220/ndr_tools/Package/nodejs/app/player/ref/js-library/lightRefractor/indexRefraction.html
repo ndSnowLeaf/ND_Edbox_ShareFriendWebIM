@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta content="initial-scale=1.0,user-scalable=no" name="viewport"/>
+    <!-- inject:css -->
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+
+    <script src="../lib/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="../lib/kity.js"></script>
+</head>
+<body>
+<div class="tool">
+    <input type=button value='render' onclick="api.render()">
+    <input type=button value='getData' onclick="api.getData()">
+    <input type=button value='setData' onclick="api.setData()">
+    <input id="btnReset" type=button value='reset' onclick="api.reset()">
+    <input type=button value='setSurfaceAngleVisible' onclick="api.setSurfaceAngleVisible()">
+    <input type=button value='setNormalAngleVisible' onclick="api.setNormalAngleVisible()">
+    <input type=button value='setNameVisible' onclick="api.setNameVisible()">
+    <input id="btnDrawAll" type=button value='drawAll' onclick="api.drawAll()">
+    <input id="btnDrawNext" type=button value='drawNext' onclick="api.drawNext()">
+    <br>
+    <input type=button value='show1' onclick="api.show(0)">
+    <input type=button value='show2' onclick="api.show(1)">
+    <input type=button value='show3' onclick="api.show(2)">
+    <input type=button value='show4' onclick="api.show(3)">
+    <input type=button value='show5' onclick="api.show(4)">
+</div>
+
+<div class="exam_skin_wood ">
+    <div class="reflection lightMovement">
+
+        <div id="svg" class="refraction_main"></div>
+    </div>
+
+</div>
+<!-- inject:js -->
+<script src="js/utils/amd.js"></script>
+<script src="js/base/Base.js"></script>
+<script src="js/config/color.js"></script>
+<script src="js/config/lang.js"></script>
+<script src="js/config/style.js"></script>
+<script src="js/config/eventKey.js"></script>
+<script src="js/jquery/jquery.lrtap.js"></script>
+<script src="js/reflector/BaseReflector.js"></script>
+<script src="js/reflector/domEvent.js"></script>
+<!--<script src="js/refractor/LightComplexRef.js"></script>-->
+
+<script src="js/refractor/lightComplexRef/draw.js"></script>
+<script src="js/refractor/lightComplexRef/proxyApi.js"></script>
+<script src="js/refractor/lightComplexRef/event.js"></script>
+<script src="js/refractor/lightComplexRef/main.js"></script>
+<script src="js/refractor/lightComplexRef/sector.js"></script>
+<script src="js/refractor/lightComplexRef/namePos.js"></script>
+<script src="js/refractor/LightComplexArrayRef.js"></script>
+<script src="js/refractor/refractor1.js"></script>
+<script src="js/refractor/refractor2.js"></script>
+<script src="js/refractor/refractor3.js"></script>
+<script src="js/refractor/refractor4.js"></script>
+<script src="js/refractor/refractor5.js"></script>
+<script src="js/refractor/btn.js"></script>
+
+<script src="js/refractor/refractorFactory.js"></script>
+<script src="js/refractor/refractorMain.js"></script>
+<script src="js/utils/eventBus.js"></script>
+<script src="js/utils/eventUtils.js"></script>
+<script src="js/utils/graphMath.js"></script>
+<script src="js/utils/logger.js"></script>
+<script src="js/utils/string.js"></script>
+<script src="js/utils/svg.js"></script>
+
+
+<script src="js/utils/utils.js"></script>
+<script src="js/utils/drawCommand.js"></script>
+<script src="js/utils/view.js"></script>
+<script src="js/view/BaseView.js"></script>
+<script src="js/view/LightLine.js"></script>
+<script src="js/view/sector.js"></script>
+<script src="js/view/Surface.js"></script>
+<script src="js/view/multipleText.js"></script>
+<script src="js/view/NormalLine.js"></script>
+<script src="js/view/InverseRefractionLine.js"></script>
+<script src="js/view/ForeignView.js"></script>
+<script src="js/view/NameGroup.js"></script>
+<script src="js/view/PedalLine.js"></script>
+<script src="js/view/EqualAngleName.js"></script>
+<script src="js/view/arrow.js"></script>
+
+<script src="js/mainRefraction.js"></script>
+
+<!-- endinject -->
+
+<script type="text/javascript">
+
+    var refractor = LightRefractor.create({
+        refractorType: [1, 2, 3, 4, 5],
+        nameVisible: false,
+        surfaceAngleVisible: false,
+        normalAngleVisible: true,
+        langData: {
+            'rf_incidence_line_name': '入射光线',
+            'rf_incidence_angle': '入射角',
+            'rf_incidence_point': '入射点O',
+            'rf_normal_name': '法线N',
+            'rf_refraction_line_name': '折射光线',
+            'rf_refraction_angle': '折射角',
+            'rf_refraction_surface': '折射面',
+            'rf_equal_angle_name': '折射角=入射角=0°'
+        }
+    });
+
+    LightRefractor.setLogLevel('debug');
+    refractor.on('change', function (type) {
+  //      console.log('change', type);
+//            if (refractor.hasNext() && refractor.getFirRefAngle()!="no_refract" && refractor.getFirIncidenceAngle() != 0) {
+        if (refractor.hasNext()) {
+            $('#btnDrawAll').removeAttr('disabled');
+            $('#btnDrawNext').removeAttr('disabled');
+        } else {
+            $('#btnDrawAll').attr('disabled', 'true');
+            $('#btnDrawNext').attr('disabled', 'true');
+        }
+
+        /*改变状态*/
+        if (refractor.getCurRefResetState()) {
+            $("#btnReset").removeAttr('disabled');
+        } else {
+            $('#btnReset').attr('disabled', 'true');
+        }
+    });
+
+    var api = {
+        render: function () {
+            refractor.render($('#svg'));
+        },
+        show: function (index) {
+            refractor.show(index);
+        },
+        setData: function (data) {
+            var data = {"version":"1.0.0","data":[{"type":1,"configData":{"LightComplex":[{"IncidenceLine":{"defaultAngle":224.23221826938124,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":false},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":false,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":710,"IncidencePosY":435,"Visible":true,"_curLineIndex":0}],"Surface":{"defaultAngle":0,"visible":false},"EqualAngleName":{"visible":false}},"resetState":true},{"type":2,"configData":{"LightComplex":[{"IncidenceLine":{"defaultAngle":45,"visible":true},"RefractionLine":{"visible":false},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":false},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":false,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":802,"IncidencePosY":625,"Visible":true,"_curLineIndex":1},{"IncidenceLine":{"defaultAngle":315,"visible":false},"RefractionLine":{"visible":false},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":false},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":false,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":1111,"IncidencePosY":316,"Visible":false,"_curLineIndex":0}],"Surface":{"defaultAngle":0,"visible":false},"EqualAngleName":{"visible":false}},"resetState":true},{"type":3,"configData":{"LightComplex":[{"IncidenceLine":{"defaultAngle":270,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":false},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":false,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":831,"IncidencePosY":678,"Visible":true,"_curLineIndex":2},{"IncidenceLine":{"defaultAngle":629.7454536549095,"visible":false},"RefractionLine":{"visible":false},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":false},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":false,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":828.7338634620475,"IncidencePosY":167.919192727044,"Visible":false,"_curLineIndex":0}],"Surface":{"defaultAngle":302,"visible":false},"EqualAngleName":{"visible":false}},"resetState":true},{"type":4,"configData":{"LightComplex":[{"IncidenceLine":{"defaultAngle":312,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":true},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":true,"materialObjectImagingGroup4":true,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":370,"IncidencePosY":-60,"Visible":true,"_curLineIndex":0},{"IncidenceLine":{"defaultAngle":302,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":true},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":true,"materialObjectImagingGroup4":true,"materialObjectImagingGroup5":false},"PedalLineVisible":true,"IncidencePosX":280,"IncidencePosY":-60,"Visible":true,"_curLineIndex":0}],"Surface":{"defaultAngle":0,"visible":false},"EqualAngleName":{"visible":false}},"resetState":true,"MaterialObjectVisibility":true},{"type":5,"configData":{"LightComplex":[{"IncidenceLine":{"defaultAngle":135,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":true},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":true,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":true},"PedalLineVisible":true,"IncidencePosX":550,"IncidencePosY":0,"Visible":true,"_curLineIndex":0},{"IncidenceLine":{"defaultAngle":153,"visible":true},"RefractionLine":{"visible":true},"NormalLine":{"pointNameVisible":true,"lineVisible":true},"InverseRefractionLine":{"pointNameVisible":false,"lineVisible":true},"Sector":{"sectorInVisible":false,"sectorOutVisible":false,"incidenceVisible":false,"refractionVisible":false,"hasDraw":{"1":true,"2":true,"3":true,"4":true,"5":true}},"Draw":{"hasNext":false,"incidencePoint":true,"sectorAnimateDisappear":true,"sectorRefraction":true,"refractionLine":true,"inverserefractionline":true,"materialObjectImagingGroup4":false,"materialObjectImagingGroup5":true},"PedalLineVisible":true,"IncidencePosX":450,"IncidencePosY":0,"Visible":true,"_curLineIndex":0}],"Surface":{"defaultAngle":0,"visible":false},"EqualAngleName":{"visible":false}},"resetState":true,"MaterialObjectVisibility":true}],"currentIndex":4,"option":{"nameVisible":false,"surfaceAngleVisible":false,"normalAngleVisible":false}};
+            refractor.setData(data);
+            refractor.render($('#svg'));
+        },
+        getData: function () {
+            var data = refractor.getData();
+       //     console.log(data);
+            return data;
+        },
+        setSurfaceAngleVisible: function () {
+            refractor.setSurfaceAngleVisible(!refractor.getSurfaceAngleVisible());
+        },
+        setNormalAngleVisible: function () {
+            refractor.setNormalAngleVisible(!refractor.getNormalAngleVisible());
+        },
+        setNameVisible: function () {
+            refractor.setNameVisible(!refractor.getNameVisible());
+        },
+
+        drawAll: function () {
+            refractor.drawAll();
+            $('#btnDrawAll').attr('disabled', 'true');
+            $('#btnDrawNext').attr('disabled', 'true');
+        },
+        drawNext: function () {
+            refractor.drawNext();
+            if (refractor.hasNext()) {
+                $('#btnDrawAll').removeAttr('disabled');
+                $('#btnDrawNext').removeAttr('disabled');
+            } else {
+                $('#btnDrawAll').attr('disabled', 'true');
+                $('#btnDrawNext').attr('disabled', 'true');
+            }
+        },
+        hasNext: function () {
+            refractor.drawNext();
+        },
+        reset: function () {
+            refractor.reset();
+        }
+    };
+
+    //        setTimeout(function () {
+    //            api.render();
+    //        }, 1000);
+</script>
+
+<style>
+    body {
+        font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+        background-color: rgb(57, 63, 79);
+    }
+
+    #svg {
+        border: 1px solid #ccc;
+        width: 100%;
+        height: 1000px;
+        background: #c0d3e2;
+    }
+
+    #svg > div {
+        width: 100%;
+        height: 100%;
+    }
+
+    .fm {
+        width: 100%;
+        height: 100%;
+    }
+
+    svg {
+        cursor: default;
+    }
+
+    .tool {
+        height: 50px;
+    }
+
+</style>
+</body>
+</html>

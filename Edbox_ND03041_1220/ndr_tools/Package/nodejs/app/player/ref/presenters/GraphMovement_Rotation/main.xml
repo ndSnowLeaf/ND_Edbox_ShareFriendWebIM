@@ -1,0 +1,2282 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="out_frame" version="1.0.8"/><javaScript name="tools_common" version="1.0.0"/><javaScript name="typescript-polyfill" version="1.0.0"/><javaScript name="UndoManager" version="1.0.0"/><javaScript name="vue-libs" version="2.1.10"/></jsDependency></dependencies><css><![CDATA[@charset "UTF-8";.exam_skin_wood .ui_btn_handle{display:inline-block;margin:0 .75em;padding:0 1.41667em;height:3.16667em;line-height:3.16667em;border:1px solid #397274;background:linear-gradient(to top,#e9e9e9 0,#fff 100%);text-align:center;vertical-align:middle;border-radius:.41667em;position:absolute;right:.5em;bottom:1.5em;z-index:20}.exam_skin_wood .ui_btn_handle .ui_btn_handle_text{font-size:1.5em;color:#384650}.exam_skin_wood .ui_btn_handle.active,.exam_skin_wood .ui_btn_handle:active{background:linear-gradient(to top,#76b8ba 0,#89c5c7 100%)}.exam_skin_wood .ui_btn_handle.active .ui_btn_handle_text,.exam_skin_wood .ui_btn_handle:active .ui_btn_handle_text{color:#fff}.exam_skin_wood .ui_btn_handle.disabled{background:linear-gradient(to bottom,#e9e9e9 0,#fff 100%);cursor:default}.exam_skin_wood .ui_btn_handle.disabled .ui_btn_handle_text{color:#9da7ae}.exam_skin_wood .GraphRotation_wrapper{padding:3.75em 6.25em 0;background:#bfd3e2;width:100%;height:100%;position:relative}.exam_skin_wood .GraphRotation_middle{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-54%);-ms-transform:translate(-50%,-54%);-moz-transform:translate(-50%,-54%);width:67.41667em;padding-right:11.875em}.exam_skin_wood .GraphRotation_main{width:58.5em;height:35.04167em;position:relative;background:url(resources/wood/images/main_line_bg.png) no-repeat right top;background-size:100% 100%}.exam_skin_wood .GraphRotation_main_body{width:100%;height:100%;position:absolute}.exam_skin_wood .GraphRotation_main_body .font{font-size:2.70833em;font-weight:700;position:absolute}.exam_skin_wood .GraphRotation_main_body .font.top{left:-1.29167em;top:-.33333em}.exam_skin_wood .GraphRotation_main_body .font.bottom{left:4.79167em;bottom:-.20833em}.exam_skin_wood .GraphRotation_main_body .font.origin{left:-1.29167em;bottom:-.20833em}.exam_skin_wood .GraphRotation_main_body .font.rightup{left:4.83333em;top:-.33333em}.exam_skin_wood .GraphRotation_main_body .realline{display:inline-block;background:#333;-webkit-transform-origin:0 center;-ms-transform-origin:0 center;transform-origin:0 center;height:.20833em;position:absolute;z-index:11}.exam_skin_wood .GraphRotation_main_body .realline.on{background:url(resources/wood/images/isocelestriangle_on_bottom.png);background-size:100% 100%;height:.33333em;margin-top:-.16667em;z-index:11;opacity:1!important}.exam_skin_wood .GraphRotation_main_body .realline.line_before{opacity:1!important;background:#ff6b2a}.exam_skin_wood .GraphRotation_main_body .realline.line_after{opacity:1!important;background:#b54bff}.exam_skin_wood .GraphRotation_main_body .realline.yellow_dash{visibility:visible!important;opacity:1!important;background:url(resources/wood/images/yellow_dash.png) repeat-x;background-size:1.25em 100%}.exam_skin_wood .GraphRotation_main_body .realline.red_dash{visibility:visible!important;opacity:1!important;background:url(resources/wood/images/red_dash_row.png) repeat-x;background-size:1.25em 100%}.exam_skin_wood .GraphRotation_main_body .realline.green_dash{visibility:visible!important;opacity:1!important;background:url(resources/wood/images/green_dash.png) repeat-x;background-size:1.25em 100%}.exam_skin_wood .GraphRotation_main_body .realline.yellow_solid{visibility:visible!important;opacity:1!important;background:#f6c500}.exam_skin_wood .GraphRotation_main_body .realline.green_solid{visibility:visible!important;opacity:1!important;background:#04740b}.exam_skin_wood .GraphRotation_main_body .realline.red_solid{visibility:visible!important;opacity:1!important;background:#e42222}.exam_skin_wood .GraphRotation_main_body .realline.dash_1{-webkit-transform:rotate(36.3deg);-ms-transform:rotate(36.3deg);transform:rotate(36.3deg);width:14.4em;top:0;left:0;margin-top:-.04167em;visibility:hidden}.exam_skin_wood .GraphRotation_main_body .realline.diagonal{opacity:1!important;top:0;left:0;margin-top:-.04167em}.exam_skin_wood .GraphRotation_main_body .realline.top{width:100%;top:0;left:0;margin-top:-.04167em}.exam_skin_wood .GraphRotation_main_body .realline.dash_2{visibility:hidden;-webkit-transform:rotate(-36.3deg);-ms-transform:rotate(-36.3deg);transform:rotate(-36.3deg);width:14.4em;top:100%;left:0;margin-top:-.20833em}.exam_skin_wood .GraphRotation_main_body .realline.bottom{width:100%;top:100%;left:0;margin-top:-.10417em}.exam_skin_wood .GraphRotation_main_body .realline.right{width:8.83333em;top:100%;left:100%;margin-left:-.10417em;-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);margin-top:-.04167em;margin-left:0}.exam_skin_wood .GraphRotation_main_body .realline.left{-webkit-transform:rotate(-90deg);-ms-transform:rotate(-90deg);transform:rotate(-90deg);width:8.83333em;top:100%;left:0;margin-top:-.04167em;margin-left:0}.exam_skin_wood .GraphRotation_main_body .striangle_spot{visibility:hidden;width:1.5em;height:1.5em;border:.20833em solid #e42222;border-radius:100%;position:absolute;z-index:12;background:#fff;white-space:nowrap;margin-left:-.75em;margin-top:-.75em}.exam_skin_wood .GraphRotation_main_body .striangle_spot.ui_btn_active{visibility:visible}.exam_skin_wood .GraphRotation_main_body .striangle_spot.on{visibility:visible}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_g{border-color:#04740b;background:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_g.ui_btn_active,.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_g:active{background:#04740b;border-color:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_y{border-color:#f6c500;background:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_y.ui_btn_active,.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_y:active{background:#f6c500;border-color:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_r{border-color:#e42222;background:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_r.ui_btn_active,.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_r:active{background:#e42222;border-color:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.switch{visibility:visible;display:inline-block;margin-left:-.41667em;margin-top:-.41667em;width:.83333em;height:.83333em;border:.125em solid #e42222;background:#fff;z-index:115}.exam_skin_wood .GraphRotation_main_body .striangle_spot.switch.ui_btn_active,.exam_skin_wood .GraphRotation_main_body .striangle_spot.switch:active{background:#e42222;border-color:#fff}.exam_skin_wood .GraphRotation_main_body .striangle_spot.switch.spot_top{left:0;top:0}.exam_skin_wood .GraphRotation_main_body .striangle_spot.switch.spot_bottom{right:-.41667em;bottom:-.41667em}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_original{visibility:visible;display:inline-block;margin-left:-.41667em;margin-top:-.41667em;width:.83333em;height:.83333em;border:0 none;background-color:#e42222;z-index:115}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_center{left:0;top:100%}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_top{left:0;top:0}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_bottom{left:100%;top:100%}.exam_skin_wood .GraphRotation_main_body .striangle_spot.spot_rightup{left:100%;top:0}.exam_skin_wood .GraphRotation_main_body .striangle_line_wrap{visibility:hidden;overflow:hidden;position:absolute;left:-.125em;bottom:-.125em;width:9.04167em;height:14.875em}.exam_skin_wood .GraphRotation_main_body .sep_line{position:absolute;visibility:hidden;opacity:0}.exam_skin_wood .GraphRotation_main_body .sep_line.line_row{left:.08333em;bottom:-1px;width:8.79167em;height:.25em;background:url(resources/wood/images/striangle_before1.png) no-repeat right top;background-size:100% 100%;z-index:13}.exam_skin_wood .GraphRotation_main_body .sep_line.line_row.after{background-image:url(resources/wood/images/striangle_after1.png)}.exam_skin_wood .GraphRotation_main_body .sep_line.line_row.on{background:url(resources/wood/images/isocelestriangle_on_bottom.png);background-size:100% 100%;height:.33333em;margin-bottom:-.16667em}.exam_skin_wood .GraphRotation_main_body .sep_line.line_row.yellow_dash{background:url(resources/wood/images/yellow_dash.png) repeat-x}.exam_skin_wood .GraphRotation_main_body .sep_line.line_col{left:-1px;bottom:.08333em;height:14.625em;width:.29167em;background:url(resources/wood/images/striangle_before2.png) no-repeat right top;background-size:100% 100%;z-index:15}.exam_skin_wood .GraphRotation_main_body .sep_line.line_col.after{background-image:url(resources/wood/images/striangle_after2.png)}.exam_skin_wood .GraphRotation_main_body .sep_line.line_col.on{background:url(resources/wood/images/isocelestriangle_on_left.png);background-size:100% 100%;width:.33333em;margin-left:-.16667em}.exam_skin_wood .GraphRotation_main_body .sep_line.line_col.red_dash{background:url(resources/wood/images/red_dash.png) repeat-y}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal{left:1px;top:-1px;width:8.79167em;height:14.625em;background:url(resources/wood/images/striangle_before3.png) no-repeat right top;background-size:100% 100%;z-index:13}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal.after{background-image:url(resources/wood/images/striangle_after3.png)}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal.on{background:url(resources/wood/images/isocelestriangle_on_diagonal.png);background-size:100% 100%}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal .line{display:inline-block;position:absolute;left:0;top:0;width:17em;height:.20833em;-webkit-transform:rotate(59deg);-ms-transform:rotate(59deg);transform:rotate(59deg);-webkit-transform-origin:left top;-ms-transform-origin:left top;transform-origin:left top;padding:.5em 0}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal2{left:0;bottom:0;width:6.16667em;height:3.91667em;background:url(resources/wood/images/striangle_before4.png) no-repeat right top;background-size:100% 100%}.exam_skin_wood .GraphRotation_main_body .sep_line.line_diagonal2.after{background-image:url(resources/wood/images/striangle_after4.png)}.exam_skin_wood .GraphRotation_main_body .sep_line.striangle_on{display:block}.exam_skin_wood .GraphRotation_main_body .sep_line.line-opacty{opacity:.5}.exam_skin_wood .GraphRotation_main_body .striangle_angle{visibility:hidden;position:absolute;left:-1.5em;bottom:-1.5em;width:3em;height:3em;z-index:20}.exam_skin_wood .GraphRotation_main_body .striangle_angle .angle_wrap{display:inline-block;position:relative;width:3em;height:3em;border-radius:50%}.exam_skin_wood .GraphRotation_main_body .striangle_angle .angle{position:absolute;width:3em;height:3em;clip:rect(0,1.5em,3em,0);border-radius:1.5em;border:.20833em solid #000}.exam_skin_wood .GraphRotation_main_body .striangle_angle .half_wrap{position:absolute;display:inline-block;overflow:hidden;left:1.5em;width:1.5em;height:100%}.exam_skin_wood .GraphRotation_main_body .striangle_angle .half_wrap.half_right{right:0;left:auto}.exam_skin_wood .GraphRotation_main_body .striangle_angle .half_wrap.half_right .angle{right:0}.exam_skin_wood .GraphRotation_main_body .striangle_angle .half_wrap.half_left{left:0}.exam_skin_wood .GraphRotation_main_body .striangle_angle .half_wrap.half_left .angle{left:0}.exam_skin_wood .GraphRotation_main_body .striangle_angle .angle-pointer{position:absolute;left:-.20833em;top:-.20833em;width:3.33333em;height:3.33333em;background:url(resources/wood/images/icon-point.png) no-repeat 1.08333em top;background-size:1.25em .625em;background:0 0}.exam_skin_wood .GraphRotation_main_body .striangle_angle .fontwrap{position:absolute;left:0;bottom:0;width:3em;height:3em}.exam_skin_wood .GraphRotation_main_body .striangle_angle .font{position:absolute;left:0;right:0;top:-1.08333em;text-align:center;font-size:1.58333em;font-family:Arial;font-weight:700;color:#000;text-align:center}.exam_skin_wood .GraphRotation_main_body .striangle_angle.small_angle .font{left:-.6em;top:-.6em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.striangle_angle_row .angle_wrap{-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.exam_skin_wood .GraphRotation_main_body .striangle_angle.striangle_angle_diagonal .angle_wrap{-webkit-transform:rotate(58deg);-ms-transform:rotate(58deg);transform:rotate(58deg)}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle{left:0;bottom:0;width:1.75em;height:1.75em;border-top:.20833em solid #000;border-right:.20833em solid #000}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle .font{left:1.4em;top:-.2em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle .angle_wrap{display:none}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle.striangle_angle_row{bottom:-1.6em;border-color:transparent;border-bottom:.20833em solid #000;border-right:.20833em solid #000;-webkit-transform:rotate(0);-ms-transform:rotate(0);transform:rotate(0)}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle.striangle_angle_row .font{left:1.4em;top:1.5em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle.striangle_angle_diagonal{-webkit-transform:rotate(57deg);-ms-transform:rotate(57deg);transform:rotate(57deg);-webkit-transform-origin:left bottom;-ms-transform-origin:left bottom;transform-origin:left bottom}.exam_skin_wood .GraphRotation_main_body .striangle_angle.right_angle.striangle_angle_diagonal .font{left:.6em;top:-.4em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle{left:-3.75em;bottom:-3.75em;width:7.5em;height:7.5em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle .angle_wrap{width:7.5em;height:7.5em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle .angle{width:7.5em;height:7.5em;clip:rect(0,3.75em,7.5em,0);border-radius:3.75em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle .half_wrap{width:3.75em;height:100%}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle .fontwrap{width:7.5em;height:7.5em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_middle .angle-pointer{width:7.91667em;height:7.91667em;background-position:3.75em .17em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big{left:-6em;bottom:-6em;width:12em;height:12em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big .angle_wrap{width:12em;height:12em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big .angle{width:12em;height:12em;clip:rect(0,6em,12em,0);border-radius:6em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big .half_wrap{width:6em;height:100%}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big .fontwrap{width:12em;height:12em}.exam_skin_wood .GraphRotation_main_body .striangle_angle.angle_big .angle-pointer{width:12.41667em;height:12.41667em;background-position:6.08333em top}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line .GraphRotation_before .striangle_line_wrap{display:block;background:url(resources/wood/images/striangle_on.png) no-repeat right top;background-size:100% 100%}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line .GraphRotation_before.isocelestriangle .striangle_line_wrap{width:14.875em;background-image:url(resources/wood/images/isocelestriangle_on.png)}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line .spot_original{display:block;left:0;top:100%}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line.striangle_result .GraphRotation_before .striangle_line_wrap{display:none}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line.striangle_result .striangle_angle{display:block}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line.striangle_result .line_row{height:.20833em;padding:.5em 0 .5em 0;background-size:100% .3em;background-position:0 100%}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line.striangle_result .line_col{left:-.08333em;width:.20833em;padding:0 .5em;background-size:.3em 100%;background-position:0 0}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_line.striangle_result .line_diagonal{left:0;top:-.125em}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot .GraphRotation_before .striangle_on{border-color:#fff;background-color:#ff6b2a}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot .GraphRotation_after .striangle_on{border-color:#fff;background-color:#b54bff}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot .GraphRotation_after .striangle_on.spot_overlap{border-color:transparent;background-color:transparent}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot.striangle_result .striangle_spot{display:block}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot.striangle_result .striangle_angle{display:block}.exam_skin_wood .GraphRotation_main_body.GraphRotation_striangle_spot.striangle_result .GraphRotation_after .striangle_spot_wrap{display:block}.exam_skin_wood .GraphRotation_main_body .isocelestriangle .striangle_angle.right_angle.striangle_angle_diagonal{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);-webkit-transform-origin:left bottom;-ms-transform-origin:left bottom;transform-origin:left bottom}.exam_skin_wood .GraphRotation_foot{width:100%;position:absolute;left:0;bottom:0;height:4.91667em;overflow:hidden;background:#cfdee9}.exam_skin_wood .GraphRotation_foot .foot_opertate{padding:0 15em 0 6.25em;width:100%;height:100%}.exam_skin_wood .GraphRotation_foot .item{display:inline-block;position:relative;padding:2.75em 1.25em 0;margin:0 1.25em;height:100%;line-height:1.91667em;color:#292525;background-position:center .25em;background-repeat:no-repeat;background-size:auto 2.45833em}.exam_skin_wood .GraphRotation_foot .item.click_disabled .txt{color:#b3c1cb}.exam_skin_wood .GraphRotation_foot .txt{font-size:1.16667em}.exam_skin_wood .GraphRotation_foot .item_rotate{background-image:url(resources/wood/images/icon_foot7.png);background-size:auto 2.16667em;margin:0 .41667em;padding:2.75em .5em 0;background-position:center .58333em}.exam_skin_wood .GraphRotation_foot .item_rotate.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_rotate:active{background-image:url(resources/wood/images/icon_foot7_active.png)}.exam_skin_wood .GraphRotation_foot .item_rotate.click_disabled{background-image:url(resources/wood/images/icon_foot7_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_changecenter{background-image:url(resources/wood/images/icon_foot8.png);background-size:auto 2.29167em;margin:0 .625em 0 .41667em;padding:2.75em .1em 0;background-position:center .58333em}.exam_skin_wood .GraphRotation_foot .item_changecenter.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_changecenter:active{background-image:url(resources/wood/images/icon_foot8_active.png)}.exam_skin_wood .GraphRotation_foot .item_changecenter.click_disabled{background-image:url(resources/wood/images/icon_foot8_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_contrast{background-image:url(resources/wood/images/icon_foot1.png)}.exam_skin_wood .GraphRotation_foot .item_contrast.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_contrast:active{background-image:url(resources/wood/images/icon_foot1_active.png)}.exam_skin_wood .GraphRotation_foot .item_contrast.click_disabled{background-image:url(resources/wood/images/icon_foot1_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_punctuation{background-image:url(resources/wood/images/icon_foot2.png)}.exam_skin_wood .GraphRotation_foot .item_punctuation.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_punctuation:active{background-image:url(resources/wood/images/icon_foot2_active.png)}.exam_skin_wood .GraphRotation_foot .item_punctuation.click_disabled{background-image:url(resources/wood/images/icon_foot2_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_boundary{margin-left:.83333em;margin-right:.83333em;background-image:url(resources/wood/images/icon_foot3.png)}.exam_skin_wood .GraphRotation_foot .item_boundary.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_boundary:active{background-image:url(resources/wood/images/icon_foot3_active.png)}.exam_skin_wood .GraphRotation_foot .item_boundary.click_disabled{background-image:url(resources/wood/images/icon_foot3_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_revoke{margin-left:.83333em;background-image:url(resources/wood/images/icon_foot4.png)}.exam_skin_wood .GraphRotation_foot .item_revoke.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_revoke:active{background-image:url(resources/wood/images/icon_foot4_active.png)}.exam_skin_wood .GraphRotation_foot .item_revoke.click_disabled{background-image:url(resources/wood/images/icon_foot4_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_recovery{margin-right:.83333em;background-image:url(resources/wood/images/icon_foot5.png)}.exam_skin_wood .GraphRotation_foot .item_recovery.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_recovery:active{background-image:url(resources/wood/images/icon_foot5_active.png)}.exam_skin_wood .GraphRotation_foot .item_recovery.click_disabled{background-image:url(resources/wood/images/icon_foot5_disabled.png)}.exam_skin_wood .GraphRotation_foot .item_reset{background-image:url(resources/wood/images/icon_foot6.png)}.exam_skin_wood .GraphRotation_foot .item_reset.ui_btn_active,.exam_skin_wood .GraphRotation_foot .item_reset:active{background-image:url(resources/wood/images/icon_foot6_active.png)}.exam_skin_wood .GraphRotation_foot .item_reset.click_disabled{background-image:url(resources/wood/images/icon_foot6_disabled.png)}.exam_skin_wood .GraphRotation_aside{width:11.875em;height:100%;position:absolute;right:0;bottom:0;padding-top:8.54167em}.exam_skin_wood .GraphRotation_aside .aside_mart{position:absolute;left:0;top:0;padding:1.25em 0 1.25em 1.66667em;height:8.54167em;width:100%}.exam_skin_wood .GraphRotation_aside .mark_list .item{position:relative;padding-left:2.33333em;height:3em;line-height:3em;text-align:left;color:#000}.exam_skin_wood .GraphRotation_aside .mark_list .item:before{content:'';position:absolute;left:0;top:50%;margin-top:-.125em;width:1.75em;height:.25em}.exam_skin_wood .GraphRotation_aside .mark_list .item .font{font-size:1.25em;white-space:nowrap}.exam_skin_wood .GraphRotation_aside .mark_list .item_before:before{background-color:#ff6b2a}.exam_skin_wood .GraphRotation_aside .mark_list .item_after:before{background-color:#b54bff}.exam_skin_wood .GraphRotation_aside .mark_punctuation .item_before:before{margin-top:-.83333em;width:1.5em;height:1.5em;border:.16667em solid #fff;background-color:#ff6b2a;border-radius:50%}.exam_skin_wood .GraphRotation_aside .mark_punctuation .item_after:before{margin-top:-.83333em;width:1.5em;height:1.5em;border:.16667em solid #fff;background-color:#b54bff;border-radius:50%}.exam_skin_wood .GraphRotation_aside .aside_menu{position:absolute;bottom:-.83333em;right:1.66667em;width:5.83333em;max-height:100%}.exam_skin_wood .GraphRotation_aside .aside_menu:after{content:'';display:inline-block;width:0;height:90%;vertical-align:bottom}.exam_skin_wood .GraphRotation_aside .menu_list{width:100%;vertical-align:bottom}.exam_skin_wood .GraphRotation_aside .menu_list li{width:100%;height:5.83333em;background:rgba(87,143,184,.15);white-space:nowrap}.exam_skin_wood .GraphRotation_aside .menu_list li:last-child{border-bottom-left-radius:.33333em;border-bottom-right-radius:.33333em}.exam_skin_wood .GraphRotation_aside .menu_list li:last-child .item:after{border-bottom:0 none}.exam_skin_wood .GraphRotation_aside .menu_list li:first-child{border-top-left-radius:.33333em;border-top-right-radius:.33333em}.exam_skin_wood .GraphRotation_aside .menu_list li.on{background:rgba(87,143,184,.3)}.exam_skin_wood .GraphRotation_aside .menu_list .item{display:inline-block;position:relative;width:100%;height:5.83333em}.exam_skin_wood .GraphRotation_aside .menu_list .item:after{content:'';position:absolute;left:.83333em;right:.83333em;bottom:0;height:1px;border-bottom:1px solid rgba(0,0,0,.15)}.exam_skin_wood .GraphRotation_aside .menu_list .item_striangle{background:url(resources/wood/images/striangle.png) no-repeat center center;background-size:auto 3.5em}.exam_skin_wood .GraphRotation_aside .menu_list .item_isocelestriangle{background:url(resources/wood/images/isocelestriangle.png) no-repeat center center;background-size:auto 3.5em}.exam_skin_wood .GraphRotation_aside .menu_list .item_rectangle{background:url(resources/wood/images/item_rectangle.png) no-repeat center center;background-size:auto 2.41667em}.exam_skin_wood .GraphRotation_aside .menu_list .item_line{background:url(resources/wood/images/item_line.png) no-repeat center center;background-size:auto 2.95833em}.exam_skin_wood .GraphRotation_aside .menu_list .item_point{background:url(resources/wood/images/item_point.png) no-repeat center center;background-size:auto 1.75em}.exam_skin_wood .striangle_result_point .striangle_angle .angle-pointer{display:inline-block}.exam_skin_wood .GraphRotation_point{height:8.75em;width:8.79167em;position:absolute;left:29.25em;top:8.78em;-webkit-transform-origin:-1px bottom;-ms-transform-origin:-1px bottom;transform-origin:-1px bottom}.exam_skin_wood .GraphRotation_point .striangle_spot{background:#04740b;border-color:#fff}.exam_skin_wood .GraphRotation_point .striangle_spot.on{border-color:#e42222;background:#fff}.exam_skin_wood .GraphRotation_point .striangle_spot.on.ui_btn_active,.exam_skin_wood .GraphRotation_point .striangle_spot.on:active{background:#e42222;border-color:#fff}.exam_skin_wood .GraphRotation_point.GraphRotation_before .striangle_spot{visibility:visible!important}.exam_skin_wood .GraphRotation_point.GraphRotation_after .striangle_spot{visibility:visible!important}.exam_skin_wood .GraphRotation_point .realline{visibility:hidden}.exam_skin_wood .GraphRotation_line{height:8.75em;width:11.66667em;position:absolute;left:29.25em;top:8.78em;-webkit-transform-origin:-1px bottom;-ms-transform-origin:-1px bottom;transform-origin:-1px bottom}.exam_skin_wood .GraphRotation_line.GraphRotation_before .realline{opacity:.4}.exam_skin_wood .GraphRotation_rectangle{height:8.75em;width:11.66667em;position:absolute;left:29.25em;top:8.78em;-webkit-transform-origin:-1px bottom;-ms-transform-origin:-1px bottom;transform-origin:-1px bottom}.exam_skin_wood .GraphRotation_rectangle.GraphRotation_before .realline{opacity:.4}.exam_skin_wood .GraphRotation_striangle{position:absolute;height:12.20833em;width:7.33333em;left:29.25em;top:5.33333em;-webkit-transform-origin:left bottom;-ms-transform-origin:left bottom;transform-origin:left bottom}.exam_skin_wood .GraphRotation_striangle .realline{background:0 0}.exam_skin_wood .GraphRotation_striangle .realline.left{width:100%}.exam_skin_wood .GraphRotation_striangle .font.bottom{left:3.375em}.exam_skin_wood .GraphRotation_striangle .realline.left{width:12.20833em}.exam_skin_wood .GraphRotation_striangle .realline.left.line_before{background:url(resources/wood/images/isocele_before2.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .realline.left.line_after{background:url(resources/wood/images/isocele_after2.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .realline.bottom{margin-top:-.125em}.exam_skin_wood .GraphRotation_striangle .realline.bottom.line_before{background:url(resources/wood/images/isocele_before1.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .realline.bottom.line_after{background:url(resources/wood/images/isocele_after1.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .realline.diagonal{-webkit-transform:rotate(59deg);-ms-transform:rotate(59deg);transform:rotate(59deg);width:14.33333em}.exam_skin_wood .GraphRotation_striangle .realline.diagonal.line_before{width:14.33333em;background:url(resources/wood/images/isocele_before3.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .realline.diagonal.line_after{width:14.33333em;background:url(resources/wood/images/isocele_after3.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle .striangle_wrap{height:100%;width:100%;background:url(resources/wood/images/striangle.png) no-repeat right top;background-size:100% 100%}.exam_skin_wood .GraphRotation_striangle .ui_btn_handle{position:absolute;margin:0;padding:0;width:6.66667em;height:2.5em;line-height:2.5em;z-index:16}.exam_skin_wood .GraphRotation_striangle .ui_btn_handle .ui_btn_handle_text{font-size:1em;color:#333}.exam_skin_wood .GraphRotation_striangle .ui_btn_handle:active .ui_btn_handle_text{color:#fff}.exam_skin_wood .GraphRotation_striangle.GraphRotation_before .striangle_wrap{opacity:.4}.exam_skin_wood .GraphRotation_striangle.GraphRotation_before .spot_overlap.striangle_on{background-color:#b54bff}.exam_skin_wood .GraphRotation_striangle.GraphRotation_before .spot_overlap.striangle_on:before{content:'';display:inline-block;position:absolute;top:0;left:0;width:100%;height:50%;background-color:#ff6b2a;border-top-left-radius:.625em;border-top-right-radius:.625em}.exam_skin_wood .GraphRotation_striangle.GraphRotation_after .spot_overlap{background-color:#b54bff}.exam_skin_wood .GraphRotation_striangle.GraphRotation_after .spot_overlap:before{content:'';display:inline-block;position:absolute;top:0;left:0;width:100%;height:50%;background-color:#ff6b2a;border-top-left-radius:.625em;border-top-right-radius:.625em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle{height:10.33333em;width:10.33333em;left:29.25em;top:7.2em;-webkit-transform-origin:left bottom;-ms-transform-origin:left bottom;transform-origin:left bottom}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .font.bottom{left:4.29167em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .striangle_wrap{height:100%;width:100%;background-image:url(resources/wood/images/isocelestriangle.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.left{width:100%}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.left.line_before{background:url(resources/wood/images/isocele_before2.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.left.line_after{background:url(resources/wood/images/isocele_after2.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.bottom.line_before{background:url(resources/wood/images/isocele_before1.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.bottom.line_after{background:url(resources/wood/images/isocele_after1.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.diagonal{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg);width:14.625em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.diagonal.line_before{background:url(resources/wood/images/isocele_before3.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .realline.diagonal.line_after{background:url(resources/wood/images/isocele_after3.png);background-size:100% .20833em}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_col{height:14.625em;background-image:url(resources/wood/images/isocele_before2.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_col.after{background-image:url(resources/wood/images/isocele_after2.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_diagonal{width:14.625em;background-image:url(resources/wood/images/isocele_before3.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_diagonal.after{background-image:url(resources/wood/images/isocele_after3.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_diagonal .line{width:21.16667em;-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_diagonal2{width:7.375em;height:7.41667em;background-image:url(resources/wood/images/isocele_before4.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .line_diagonal2.after{background-image:url(resources/wood/images/isocele_after4.png)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle .striangle_angle_diagonal .angle_wrap{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.exam_skin_wood .GraphRotation_striangle.isocelestriangle.right_angle.striangle_angle_diagonal{-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}.exam_skin_wood .GraphRotation_wrapper_student .GraphRotation_middle{padding:0;width:auto;-webkit-transform:translate(-50%,-46%);-ms-transform:translate(-50%,-46%);transform:translate(-50%,-46%)}.typefaces_ru_RU .exam_skin_wood .GraphRotation_wrapper{font-size:1em}.typefaces_ru_RU .exam_skin_wood .GraphRotation_main_body .font{white-space:nowrap}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .foot_opertate{padding-right:8em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .txt{font-size:1.08333em;line-height:1.1;width:auto;display:-webkit-box;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item{background-size:auto 2em;vertical-align:top;padding:2.2em 0 0;margin:0 .5em;width:11em;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_recovery,.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_reset,.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_revoke{width:4em;background-position:50% 45%}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_recovery .txt,.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_reset .txt,.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_revoke .txt{display:none}.typefaces_ru_RU .exam_skin_wood .GraphRotation_foot .item_reset{background-position:50% 50%}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="GraphRotation_wrapper"><div class="GraphRotation_middle"><div class="GraphRotation_main js_main"><a href="javascript:;" class="ui_btn_handle js_countDownBox hide_dom"><span class="ui_btn_handle_text" data-bind="text: gr_confirm"></span><span class="ui_btn_handle_text">(</span><span class="ui_btn_handle_text js_countDownTime"></span><span class="ui_btn_handle_text">s)</span></a></div><div class="GraphRotation_aside"><div class="aside_menu"><ul class="menu_list js_menuList"><li><a class="item item_point" href="javascript:;"></a></li><li><a class="item item_line" href="javascript:;"></a></li><li><a class="item item_rectangle" href="javascript:;"></a></li><li class="on"><a class="item item_isocelestriangle" href="javascript:;"></a></li><li class=""><a class="item item_striangle" href="javascript:;"></a></li></ul></div></div></div><div class="GraphRotation_foot"><ul class="foot_opertate"><li class="item item_punctuation js_markDot"><span class="txt" data-bind="text: gr_punctuation"></span></li><li class="item item_boundary js_markEdge"><span class="txt" data-bind="text: gr_boundary"></span></li><li class="item item_rotate js_toggleRotationAngle"><span class="txt js_toggleText"></span></li><li class="item item_changecenter js_changeTuringDot"><span class="txt" data-bind="text: gr_chTurningDot"></span></li><li class="item item_revoke js_undo"><span class="txt" data-bind="text: gr_revoke"></span></li><li class="item item_recovery js_redo"><span class="txt" data-bind="text: gr_recovery"></span></li><li class="item item_reset js_reset"><span class="txt" data-bind="text: gr_reset"></span></li></ul></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(3);
+	__webpack_require__(4);
+	__webpack_require__(10);
+	__webpack_require__(2);
+	module.exports = __webpack_require__(5);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _main = __webpack_require__(2);
+
+	var _eventBus = __webpack_require__(10);
+
+	var _constant = __webpack_require__(4);
+
+	var _utils = __webpack_require__(5);
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var ctrl = {};
+	var i18nData = {};
+	var Presenter = BasicPresenter.extend({
+	  metaInfo: {
+	    name: 'GraphMovement_Rotation',
+	    type: PresenterType.PRESENTER_COMPONENT,
+	    subtype: ''
+	  },
+	  /**
+	   * Presenter的初始化方法
+	   * @private
+	   */
+	  $init: function $init() {
+	    this._super();
+	  },
+	  /**
+	   * Presenter对外暴露的方法
+	   */
+	  _service_: {
+	    constructor: function constructor(parent) {
+	      this.parent = parent;
+	    },
+	    setLocationProperties: function setLocationProperties(properties) {
+	      i18nData = properties;
+	    },
+	    getExtendData: function getExtendData() {
+	      var data = {
+	        currentSceneIndex: this.parent.currentSceneIndex,
+	        graphdatas: this.parent.graphMain.getData(),
+	        stackDatas: this.parent.graphMain.getStackData(),
+	        isShowCountBox: !this.parent.helper.js_countDownBox.hasClass(_constant.style.hideDom),
+	        countDownTime: this.parent.helper.js_countDownTime.html(),
+	        markType: this.parent.markType
+	      };
+	      console.log(JSON.stringify(data));
+	      return data;
+	    },
+	    getQuestionInfo: function getQuestionInfo() {
+	      var url = '';
+	      try {
+	        url = JSON.stringify(ctrl.url);
+	      } catch (e) {
+
+	        console.log('json stringify failed');
+	      }
+	      return {
+	        'id': ctrl.questionId,
+	        'type_code': 'GraphMovement_Rotation',
+	        'type_name': i18nData['GraphMovement_Rotation'] || '图形运动-旋转',
+	        'url': '"' + url + '"',
+	        'notExistStatistics': true,
+	        'noNeedQuizProgress': true
+	      };
+	    }
+
+	  },
+	  getService: function getService() {
+	    this._service_.constructor(this);
+	    return this._service_;
+	  },
+	  /****以下开始为icPlayer的生命周期方法*****/
+	  run: function run(view, model) {
+	    var _helper;
+
+	    this.$view = $(view);
+	    this.model = model;
+
+	    ctrl.moduleId = model.ID;
+	    ctrl.questionId = model.question_id;
+	    ctrl.url = model.question_url;
+
+	    this.helper = (_helper = {
+	      'js_main': this.$view.find('.js_main'),
+	      'js_markDot': this.$view.find('.js_markDot'),
+	      'js_markEdge': this.$view.find('.js_markEdge'),
+	      'js_undo': this.$view.find('.js_undo'),
+	      'js_redo': this.$view.find('.js_redo'),
+	      'js_reset': this.$view.find('.js_reset'),
+	      'js_changeTuringDot': this.$view.find('.js_changeTuringDot'),
+	      'js_countDownBox': this.$view.find('.js_countDownBox'),
+	      'js_countDownTime': this.$view.find('.js_countDownTime'),
+	      'js_toggleRotationAngle': this.$view.find('.js_toggleRotationAngle'),
+	      'js_toggleRotationAngleText': this.$view.find('.js_toggleText'),
+	      'js_menuList': this.$view.find('.js_menuList')
+	    }, _defineProperty(_helper, 'js_undo', this.$view.find('.js_undo')), _defineProperty(_helper, 'js_redo', this.$view.find('.js_redo')), _defineProperty(_helper, 'js_reset', this.$view.find('.js_reset')), _helper);
+	    var defGraphDatas = [{
+	      'parentDom': '.js_graphParent1', /*点*/
+	      'parentStyle': 'GraphRotation_point',
+	      'initAngle': 0,
+	      'dots': {
+	        'A': {
+	          dom: '.js_dot1',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: [],
+	          adjDashedEdges: ['OA'],
+	          pos: 'left top',
+	          style: 'spot_top',
+	          fontStyle: 'top'
+	        },
+	        'O': {
+	          dom: '.js_dot2',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: [],
+	          adjDashedEdges: ['OA'],
+	          pos: 'left bottom',
+	          style: 'spot_center',
+	          fontStyle: 'origin'
+	        }
+	      },
+	      'edges': {
+	        'OA': {
+	          dom: '.js_edge1',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'left'
+	        }
+	      },
+	      'rotationAngle': 0,
+	      'currentTurningDot': 'O',
+	      'isShowRotationAngle': false,
+	      'translateDis': { x: 0, y: 0 },
+	      'colorArr': [] /*颜色队列*/
+	    }, {
+	      'parentDom': '.js_graphParent2', /*线*/
+	      'parentStyle': 'GraphRotation_line',
+	      'initAngle': 0,
+	      'dots': {
+	        'A': {
+	          dom: '.js_dot1',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA'],
+	          adjDashedEdges: ['OA'],
+	          pos: 'left top',
+	          style: 'spot_top',
+	          fontStyle: 'top'
+	        },
+	        'O': {
+	          dom: '.js_dot2',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA'],
+	          adjDashedEdges: ['OA'],
+	          pos: 'left bottom',
+	          style: 'spot_center',
+	          fontStyle: 'origin'
+	        }
+	      },
+	      'edges': {
+	        'OA': {
+	          dom: '.js_edge1',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'left'
+	        }
+	      },
+	      'rotationAngle': 0,
+	      'currentTurningDot': 'O',
+	      'isShowRotationAngle': false,
+	      'translateDis': { x: 0, y: 0 },
+	      'colorArr': [] /*颜色队列*/
+	    }, {
+	      'parentDom': '.js_graphParent3', /*矩形*/
+	      'parentStyle': 'GraphRotation_rectangle',
+	      'initAngle': 0,
+	      'dots': {
+	        'A': {
+	          dom: '.js_dot1',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'AB'],
+	          adjDashedEdges: ['OA', 'AC', 'AB'],
+	          pos: 'left top',
+	          style: 'spot_top',
+	          fontStyle: 'top'
+	        },
+	        'B': {
+	          dom: '.js_dot2',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['AB', 'BC'],
+	          adjDashedEdges: ['OB', 'BC', 'AB'],
+	          pos: 'right top',
+	          style: 'spot_rightup',
+	          fontStyle: 'rightup'
+	        },
+	        'C': {
+	          dom: '.js_dot3',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OC', 'BC'],
+	          adjDashedEdges: ['AC', 'BC', 'OC'],
+	          pos: 'right bottom',
+	          style: 'spot_bottom',
+	          fontStyle: 'bottom'
+	        },
+	        'O': {
+	          dom: '.js_dot4',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'OC'],
+	          adjDashedEdges: ['OA', 'OB', 'OC'],
+	          pos: 'left bottom',
+	          style: 'spot_center',
+	          fontStyle: 'origin'
+	        }
+	      },
+	      'edges': {
+	        'OA': {
+	          dom: '.js_edge1',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'left'
+	        },
+	        'BC': {
+	          dom: '.js_edge2',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'right'
+	        },
+	        'OB': {
+	          dom: '.js_edge3',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'dash_2'
+	        },
+	        'AC': {
+	          dom: '.js_edge4',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'dash_1'
+	        },
+	        'AB': {
+	          dom: '.js_edge5',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'top'
+	        },
+	        'OC': {
+	          dom: '.js_edge6',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'bottom'
+	        }
+	      },
+	      'rotationAngle': 0,
+	      'currentTurningDot': 'O',
+	      'isShowRotationAngle': false,
+	      'translateDis': { x: 0, y: 0 },
+	      'colorArr': ['C', 'A', 'B'] /*颜色队列*/
+	    }, {
+	      'parentDom': '.js_graphParent4', /*等腰直角三角形*/
+	      'parentStyle': 'GraphRotation_striangle isocelestriangle',
+	      'initAngle': 0,
+	      'dots': {
+	        'A': {
+	          dom: '.js_dot1',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'AB'],
+	          adjDashedEdges: ['OA', 'AB'],
+	          pos: 'left top',
+	          style: 'spot_top',
+	          fontStyle: 'top'
+	        },
+	        'B': {
+	          dom: '.js_dot2',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OB', 'AB'],
+	          adjDashedEdges: ['OB', 'AB'],
+	          pos: 'right bottom',
+	          style: 'spot_bottom',
+	          fontStyle: 'bottom'
+	        },
+	        'O': {
+	          dom: '.js_dot3',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'OB'],
+	          adjDashedEdges: ['OA', 'OB'],
+	          pos: 'left bottom',
+	          style: 'spot_center',
+	          fontStyle: 'origin'
+	        }
+	      },
+	      'edges': {
+	        'OA': {
+	          dom: '.js_edge1',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'left'
+	        },
+	        'OB': {
+	          dom: '.js_edge2',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'bottom'
+	        },
+	        'AB': {
+	          dom: '.js_edge3',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'diagonal'
+	        }
+	      },
+	      'rotationAngle': 0,
+	      'currentTurningDot': 'O',
+	      'isShowRotationAngle': false,
+	      'translateDis': { x: 0, y: 0 },
+	      'colorArr': [] /*颜色队列*/
+	    }, {
+	      'parentDom': '.js_graphParent5', /*直角三角形*/
+	      'parentStyle': 'GraphRotation_striangle',
+	      'initAngle': 0,
+	      'dots': {
+	        'A': {
+	          dom: '.js_dot1',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'AB'],
+	          adjDashedEdges: ['OA', 'AB'],
+	          pos: 'left top',
+	          style: 'spot_top',
+	          fontStyle: 'top'
+	        },
+	        'B': {
+	          dom: '.js_dot2',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OB', 'AB'],
+	          adjDashedEdges: ['OB', 'AB'],
+	          pos: 'right bottom',
+	          style: 'spot_bottom',
+	          fontStyle: 'bottom'
+	        },
+	        'O': {
+	          dom: '.js_dot3',
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isActiveChTurningDot: false,
+	          adjEdges: ['OA', 'OB'],
+	          adjDashedEdges: ['OA', 'OB'],
+	          pos: 'left bottom',
+	          style: 'spot_center',
+	          fontStyle: 'origin'
+	        }
+	      },
+	      'edges': {
+	        'OA': {
+	          dom: '.js_edge1',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'left'
+	        },
+	        'OB': {
+	          dom: '.js_edge2',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'bottom'
+	        },
+	        'AB': {
+	          dom: '.js_edge3',
+	          angleObj: null,
+	          isActive: false,
+	          isMark: false,
+	          isRotMark: false,
+	          isDashed: false,
+	          style: 'diagonal'
+	        }
+	      },
+	      'rotationAngle': 0,
+	      'currentTurningDot': 'O',
+	      'isShowRotationAngle': false,
+	      'translateDis': { x: 0, y: 0 },
+	      'colorArr': [] /*颜色队列*/
+	    }];
+
+	    this.currentSceneIndex = 3;
+	    this.eventBus = new _eventBus.EventBus();
+	    this._initComponent(defGraphDatas);
+	    ko.applyBindings(i18nData, this.$view.get(0));
+	    this._bindEvent();
+
+	    // this.model.__ExtendModel = {"currentSceneIndex":3,"graphdatas":[{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]},{"parentDom":".js_graphParent2","parentStyle":"GraphRotation_line","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]},{"parentDom":".js_graphParent3","parentStyle":"GraphRotation_rectangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AC","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["AB","BC"],"adjDashedEdges":["OB","BC","AB"],"pos":"right top","style":"spot_rightup","fontStyle":"rightup"},"C":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OC","BC"],"adjDashedEdges":["AC","BC","OC"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot4","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OC"],"adjDashedEdges":["OA","OB","OC"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"BC":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"right"},"OB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_2"},"AC":{"dom":".js_edge4","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_1"},"AB":{"dom":".js_edge5","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"top"},"OC":{"dom":".js_edge6","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["C","A","B"]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.9439805865747563 -1.1657189421854561","arrowD":"M 0.82 -1.09 L 0.82 -1.09 L 0.8244865817183057 -1.0941306487647915 Z","textXY":{"x":0.6008523466207877,"y":-1.696754683965921}},"isActive":true,"isMark":true,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 0 1 1.1657189421854564 0.9439805865747561","arrowD":"M 1.09 0.82 L 1.09 0.82 L 1.0941306487647913 0.8244865817183062 Z","textXY":{"x":1.696754683965921,"y":0.6008523466207877}},"isActive":true,"isMark":true,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":39,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["OB","OA"]},{"parentDom":".js_graphParent5","parentStyle":"GraphRotation_striangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"stackDatas":[{"dataArr":[{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":0},{"dataArr":[{"parentDom":".js_graphParent2","parentStyle":"GraphRotation_line","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":0},{"dataArr":[{"parentDom":".js_graphParent3","parentStyle":"GraphRotation_rectangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AC","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["AB","BC"],"adjDashedEdges":["OB","BC","AB"],"pos":"right top","style":"spot_rightup","fontStyle":"rightup"},"C":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OC","BC"],"adjDashedEdges":["AC","BC","OC"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot4","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OC"],"adjDashedEdges":["OA","OB","OC"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"BC":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"right"},"OB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_2"},"AC":{"dom":".js_edge4","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_1"},"AB":{"dom":".js_edge5","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"top"},"OC":{"dom":".js_edge6","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["C","A","B"]}],"position":0},{"dataArr":[{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.9439805865747563 -1.1657189421854561","arrowD":"M 0.82 -1.09 L 0.82 -1.09 L 0.8244865817183057 -1.0941306487647915 Z","textXY":{"x":0.6008523466207877,"y":-1.696754683965921}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 0 1 1.1657189421854564 0.9439805865747561","arrowD":"M 1.09 0.82 L 1.09 0.82 L 1.0941306487647913 0.8244865817183062 Z","textXY":{"x":1.696754683965921,"y":0.6008523466207877}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":39,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.9439805865747563 -1.1657189421854561","arrowD":"M 0.82 -1.09 L 0.82 -1.09 L 0.8244865817183057 -1.0941306487647915 Z","textXY":{"x":0.6008523466207877,"y":-1.696754683965921}},"isActive":true,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 0 1 1.1657189421854564 0.9439805865747561","arrowD":"M 1.09 0.82 L 1.09 0.82 L 1.0941306487647913 0.8244865817183062 Z","textXY":{"x":1.696754683965921,"y":0.6008523466207877}},"isActive":true,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":39,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":2},{"dataArr":[{"parentDom":".js_graphParent5","parentStyle":"GraphRotation_striangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":0}],"isShowCountBox":true,"countDownTime":"9","markType":"edge"};
+	    // this.model.__ExtendModel = {
+	    //     currentSceneIndex: 3,
+	    //     graphdatas: [{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":true,"isRotMark":true,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 1.132064370334158 0.9840885434857609","arrowD":"M 1.17 0.77 L 1.29 0.99 L 0.7056021626267742 1.174319201961894 Z","textXY":{"x":1.742665752680594,"y":-0.4506840072979946}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":true,"style":"left"}},"rotationAngle":151,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["A"]},{"parentDom":".js_graphParent2","parentStyle":"GraphRotation_line","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]},{"parentDom":".js_graphParent3","parentStyle":"GraphRotation_rectangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AC"],"adjDashedEdges":["OA","AC","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","BC"],"adjDashedEdges":["OB","BC","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"C":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["AC","BC"],"adjDashedEdges":["AC","BC","OC"],"pos":"right top","style":"spot_rightup","fontStyle":"rightup"},"O":{"dom":".js_dot4","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB","OC"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"BC":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"right"},"OB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AC":{"dom":".js_edge4","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"top"},"AB":{"dom":".js_edge5","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_1"},"OC":{"dom":".js_edge6","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_2"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["C","A","B"]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 1 1 0.3882285676537811 1.4488887394336025","arrowD":"M 0.54 1.29 L 0.51 1.55 L -0.07170026005283307 1.3681224626137662 Z","textXY":{"x":1.798286798847344,"y":0.0785148972576048}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 1 1 -1.4488887394336023 0.38822856765378155","arrowD":"M -1.29 0.54 L -1.55 0.51 L -1.3681224626137662 -0.07170026005283268 Z","textXY":{"x":-0.0785148972576046,"y":1.798286798847344}},"isActive":false,"isMark":true,"isRotMark":true,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":185,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["OB"]},{"parentDom":".js_graphParent5","parentStyle":"GraphRotation_striangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],
+	    //     stackDatas: [{"dataArr":[{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":true,"isRotMark":true,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.6575567201836161 -1.3481910694487507","arrowD":"M 0.44 -1.33 L 0.63 -1.51 L 0.9516819675288263 -0.9854955264639521 Z","textXY":{"x":0.7033160312806923,"y":-1.6569087362143928}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":true,"style":"left"}},"rotationAngle":46,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["A"]},{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":true,"isRotMark":true,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 1.132064370334158 0.9840885434857609","arrowD":"M 1.17 0.77 L 1.29 0.99 L 0.7056021626267742 1.174319201961894 Z","textXY":{"x":1.742665752680594,"y":-0.4506840072979946}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":true,"style":"left"}},"rotationAngle":151,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["A"]},{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":true,"isRotMark":true,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.6575567201836161 -1.3481910694487507","arrowD":"M 0.44 -1.33 L 0.63 -1.51 L 0.9516819675288263 -0.9854955264639521 Z","textXY":{"x":0.7033160312806923,"y":-1.6569087362143928}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":true,"style":"left"}},"rotationAngle":46,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["A"]},{"parentDom":".js_graphParent1","parentStyle":"GraphRotation_point","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":true,"isRotMark":true,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":[],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 0 1 0.6575567201836161 -1.3481910694487507","arrowD":"M 0.44 -1.33 L 0.63 -1.51 L 0.9516819675288263 -0.9854955264639521 Z","textXY":{"x":0.7033160312806923,"y":-1.6569087362143928}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":true,"style":"left"}},"rotationAngle":46,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["A"]}],"position":1},{"dataArr":[{"parentDom":".js_graphParent2","parentStyle":"GraphRotation_line","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left top","style":"spot_top","fontStyle":"top"},"O":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA"],"adjDashedEdges":["OA"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":0},{"dataArr":[{"parentDom":".js_graphParent3","parentStyle":"GraphRotation_rectangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AC"],"adjDashedEdges":["OA","AC","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","BC"],"adjDashedEdges":["OB","BC","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"C":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["AC","BC"],"adjDashedEdges":["AC","BC","OC"],"pos":"right top","style":"spot_rightup","fontStyle":"rightup"},"O":{"dom":".js_dot4","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB","OC"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"BC":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"right"},"OB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AC":{"dom":".js_edge4","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"top"},"AB":{"dom":".js_edge5","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_1"},"OC":{"dom":".js_edge6","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"dash_2"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["C","A","B"]}],"position":0},{"dataArr":[{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 1 1 0.3882285676537811 1.4488887394336025","arrowD":"M 0.54 1.29 L 0.51 1.55 L -0.07170026005283307 1.3681224626137662 Z","textXY":{"x":1.798286798847344,"y":0.0785148972576048}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 1 1 -1.4488887394336023 0.38822856765378155","arrowD":"M -1.29 0.54 L -1.55 0.51 L -1.3681224626137662 -0.07170026005283268 Z","textXY":{"x":-0.0785148972576046,"y":1.798286798847344}},"isActive":false,"isMark":true,"isRotMark":true,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":185,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["OB"]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 1 1 0.3882285676537811 1.4488887394336025","arrowD":"M 0.54 1.29 L 0.51 1.55 L -0.07170026005283307 1.3681224626137662 Z","textXY":{"x":1.798286798847344,"y":0.0785148972576048}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 1 1 -1.4488887394336023 0.38822856765378155","arrowD":"M -1.29 0.54 L -1.55 0.51 L -1.3681224626137662 -0.07170026005283268 Z","textXY":{"x":-0.0785148972576046,"y":1.798286798847344}},"isActive":false,"isMark":true,"isRotMark":true,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":185,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["OB"]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 1 1 0.3882285676537811 1.4488887394336025","arrowD":"M 0.54 1.29 L 0.51 1.55 L -0.07170026005283307 1.3681224626137662 Z","textXY":{"x":1.798286798847344,"y":0.0785148972576048}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 1 1 -1.4488887394336023 0.38822856765378155","arrowD":"M -1.29 0.54 L -1.55 0.51 L -1.3681224626137662 -0.07170026005283268 Z","textXY":{"x":-0.0785148972576046,"y":1.798286798847344}},"isActive":false,"isMark":true,"isRotMark":true,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":185,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":["OB"]},{"parentDom":".js_graphParent4","parentStyle":"GraphRotation_striangle isocelestriangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":{"d":"M -2.755455298081545e-16 -1.5 A 1.5 1.5 0 1 1 0.3882285676537811 1.4488887394336025","arrowD":"M 0.54 1.29 L 0.51 1.55 L -0.07170026005283307 1.3681224626137662 Z","textXY":{"x":1.798286798847344,"y":0.0785148972576048}},"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":{"d":"M 1.5 0 A 1.5 1.5 0 1 1 -1.4488887394336023 0.38822856765378155","arrowD":"M -1.29 0.54 L -1.55 0.51 L -1.3681224626137662 -0.07170026005283268 Z","textXY":{"x":-0.0785148972576046,"y":1.798286798847344}},"isActive":false,"isMark":true,"isRotMark":true,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":185,"currentTurningDot":"O","isShowRotationAngle":true,"translateDis":{"x":0,"y":0},"colorArr":["OB"]}],"position":3},{"dataArr":[{"parentDom":".js_graphParent5","parentStyle":"GraphRotation_striangle","initAngle":0,"dots":{"A":{"dom":".js_dot1","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","AB"],"adjDashedEdges":["OA","AB"],"pos":"left top","style":"spot_top","fontStyle":"top"},"B":{"dom":".js_dot2","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OB","AB"],"adjDashedEdges":["OB","AB"],"pos":"right bottom","style":"spot_bottom","fontStyle":"bottom"},"O":{"dom":".js_dot3","isActive":false,"isMark":false,"isRotMark":false,"isActiveChTurningDot":false,"adjEdges":["OA","OB"],"adjDashedEdges":["OA","OB"],"pos":"left bottom","style":"spot_center","fontStyle":"origin"}},"edges":{"OA":{"dom":".js_edge1","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"left"},"OB":{"dom":".js_edge2","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"bottom"},"AB":{"dom":".js_edge3","angleObj":null,"isActive":false,"isMark":false,"isRotMark":false,"isDashed":false,"style":"diagonal"}},"rotationAngle":0,"currentTurningDot":"O","isShowRotationAngle":false,"translateDis":{"x":0,"y":0},"colorArr":[]}],"position":0}],
+	    //     isShowCountBox: true,
+	    //     countDownTime: 3,
+	    //     markType: 'dot'
+	    // };
+	    if (this.model.__ExtendModel && !$.isEmptyObject(this.model.__ExtendModel)) {
+	      this.currentSceneIndex = this.model.__ExtendModel.currentSceneIndex || 0;
+	      var graphdatas = this.model.__ExtendModel.graphdatas || [];
+	      var stackDatas = this.model.__ExtendModel.stackDatas || [];
+	      this.graphMain.setData(graphdatas);
+	      this.graphMain.setStackData(stackDatas);
+	      this.graphMain.showScene(this.currentSceneIndex);
+	      if (this.model.__ExtendModel.isShowCountBox) {
+	        var markType = this.model.__ExtendModel.markType;
+	        this.markType = markType;
+	        this.showCountDown(markType, this.model.__ExtendModel.countDownTime);
+	      }
+	    } else {
+	      this.graphMain.showScene(this.currentSceneIndex);
+	    }
+	  },
+	  pageShow: function pageShow(view, model) {},
+	  pageLeave: function pageLeave() {
+	    this._unbindEvent();
+	  },
+	  destroy: function destroy() {},
+	  /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	  getState: function getState() {},
+	  setState: function setState(state, options) {},
+	  /****以下开始为Presenter的私有方法*****/
+	  _initComponent: function _initComponent(defGraphDatas) {
+	    this.graphMain = new _main.Main(defGraphDatas, this.eventBus, this.helper.js_main.get(0));
+	  },
+	  _bindEvent: function _bindEvent() {
+	    var _this2 = this;
+
+	    var domObj = this.helper;
+	    var interval = null;
+	    /*显示倒计时框*/
+	    this.showCountDown = function (type, time) {
+	      var _this = this;
+
+	      var timeCur = time;
+	      domObj.js_countDownTime.html(timeCur);
+	      domObj.js_countDownBox.removeClass('hide_dom');
+	      interval = setInterval(function () {
+	        timeCur--;
+	        domObj.js_countDownTime.html(timeCur);
+	        if (timeCur === 0) {
+	          clearInterval(interval);
+	          interval = null;
+	          domObj.js_countDownBox.addClass('hide_dom');
+	          // callback && callback();
+	          if (_this.markType === 'dot') {
+	            _this.graphMain.markDotCallback();
+	          } else {
+	            _this.graphMain.markEdgeCallback();
+	          }
+	        }
+	      }, 1000);
+	    };
+	    this.eventBus.on('countDown', function (type) {
+	      if (_this2.markType === type && interval !== null) {
+	        return;
+	      }
+	      _this2.markType = type;
+	      var timeCur = type === 'dot' ? _constant.countDownTime.dot : _constant.countDownTime.edge;
+	      _this2.showCountDown(type, timeCur);
+	    });
+
+	    /*按钮状态*/
+	    function chDomState(jqDom, val) {
+	      jqDom.removeClass(_constant.style.btnDisabled + ' ' + _constant.style.comBtnActive);
+	      if (val === 0) jqDom.addClass(_constant.style.btnDisabled);else if (val === 2) jqDom.addClass(_constant.style.comBtnActive);
+	    }
+
+	    this.eventBus.on('changeBtnState', function () {
+	      var state = _this2.graphMain.getDataState();
+	      chDomState(domObj.js_markDot, state.dot);
+	      chDomState(domObj.js_markEdge, state.edge);
+	      chDomState(domObj.js_changeTuringDot, state.chTurningDot);
+	      chDomState(domObj.js_toggleRotationAngle, state.toggleRotationAngle);
+
+	      var currentIndex = _this2.graphMain.getCurrentSceneIndex();
+	      domObj.js_menuList.find('li').removeClass(_constant.style.menuListOn);
+	      domObj.js_menuList.find('li').eq(currentIndex).addClass(_constant.style.menuListOn);
+
+	      if (state.canUndo) {
+	        domObj.js_undo.removeClass(_constant.style.btnDisabled);
+	      } else {
+	        domObj.js_undo.addClass(_constant.style.btnDisabled);
+	      }
+	      if (state.canRedo) {
+	        domObj.js_redo.removeClass(_constant.style.btnDisabled);
+	      } else {
+	        domObj.js_redo.addClass(_constant.style.btnDisabled);
+	      }
+
+	      /*显示隐藏旋转角文字*/
+	      if (state.isShowRotationAngle) {
+	        domObj.js_toggleRotationAngleText.text(i18nData['gr_hideRotationAngle']);
+	      } else {
+	        domObj.js_toggleRotationAngleText.text(i18nData['gr_showRotationAngle']);
+	      }
+	    });
+	    /*鼠标拖动旋转*/
+	    domObj.js_main.on('touchstart mousedown', function (event) {
+	      var mainBCR = domObj.js_main.get(0).getBoundingClientRect();
+	      var center = {
+	        x: mainBCR.left + mainBCR.width / 2,
+	        y: mainBCR.top + mainBCR.height / 2
+	      };
+	      var pointerDown = event.originalEvent.changedTouches ? event.originalEvent.changedTouches[0] : event;
+	      var downAngle = _utils.utils.getAngle(center, { x: pointerDown.pageX, y: pointerDown.pageY });
+	      var startAngle = _this2.graphMain.getAngle();
+	      domObj.js_main.on('touchmove mousemove', function (event) {
+	        var pointerMove = event.originalEvent.changedTouches ? event.originalEvent.changedTouches[0] : event;
+	        /*移动区域判断*/
+	        if (pointerMove.pageX > mainBCR.left && pointerMove.pageX < mainBCR.right && pointerMove.pageY > mainBCR.top && pointerMove.pageY < mainBCR.bottom) {
+	          var moveAngle = _utils.utils.getAngle(center, { x: pointerMove.pageX, y: pointerMove.pageY });
+	          var angleCut = (startAngle + moveAngle - downAngle) % 360;
+	          var angle = angleCut < 0 ? angleCut + 360 : angleCut;
+	          angle = Math.round(angle);
+	          _this2.graphMain.rotate(angle);
+	        } else {
+	          domObj.js_main.trigger('touchend mouseup');
+	          domObj.js_main.trigger('touchcancel mouseleave');
+	        }
+	      });
+	      domObj.js_main.on('touchend mouseup', function (event) {
+
+	        // alert(111)
+	        var angle = _this2.graphMain.getAngle();
+	        /*吸附*/
+	        if (angle >= 355 || angle <= 5) {
+	          angle = 0;
+	        } else if (angle >= 85 && angle <= 95) {
+	          angle = 90;
+	        } else if (angle >= 175 && angle <= 185) {
+	          angle = 180;
+	        } else if (angle >= 265 && angle <= 275) {
+	          angle = 270;
+	        }
+	        _this2.graphMain.rotateEnd(angle);
+
+	        domObj.js_main.off('touchmove mousemove');
+	        domObj.js_main.off('touchend mouseup');
+	        domObj.js_main.off('touchcancel mouseleave');
+	      });
+	      domObj.js_main.on('touchcancel mouseleave', function (event) {
+
+	        // alert(222)
+	        var angle = _this2.graphMain.getAngle();
+	        /*吸附*/
+	        if (angle >= 355 || angle <= 5) {
+	          angle = 0;
+	        } else if (angle >= 85 && angle <= 95) {
+	          angle = 90;
+	        } else if (angle >= 265 && angle <= 275) {
+	          angle = 270;
+	        }
+	        _this2.graphMain.rotate(angle);
+
+	        domObj.js_main.off('touchmove mousemove');
+	        domObj.js_main.off('touchend mouseup');
+	        domObj.js_main.off('touchcancel mouseleave');
+	      });
+	    });
+
+	    /*点击标点*/
+	    domObj.js_markDot.click(function () {
+	      if (domObj.js_markDot.hasClass(_constant.style.comBtnActive) || domObj.js_markDot.hasClass(_constant.style.btnDisabled)) {
+	        return;
+	      }
+	      _this2.graphMain.activeDot();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+	    /*点击标边*/
+	    domObj.js_markEdge.click(function () {
+	      if (domObj.js_markEdge.hasClass(_constant.style.comBtnActive) || domObj.js_markEdge.hasClass(_constant.style.btnDisabled)) {
+	        return;
+	      }
+	      _this2.graphMain.activeEdge();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+
+	    domObj.js_changeTuringDot.click(function () {
+	      if (domObj.js_changeTuringDot.hasClass(_constant.style.comBtnActive) || domObj.js_changeTuringDot.hasClass(_constant.style.btnDisabled)) {
+	        return;
+	      }
+	      _this2.graphMain.activeChangeTurningDot();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+
+	    /*倒计时确认按钮*/
+	    domObj.js_countDownBox.click(function () {
+	      if (!_this2.markType) {
+	        return;
+	      }
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	      domObj.js_countDownBox.addClass(_constant.style.hideDom);
+	      if (_this2.markType === 'dot') {
+	        _this2.graphMain.markDotCallback();
+	      } else {
+	        _this2.graphMain.markEdgeCallback();
+	      }
+	    });
+	    /*点击显示隐藏旋转角*/
+	    domObj.js_toggleRotationAngle.click(function () {
+	      if (domObj.js_toggleRotationAngle.hasClass(_constant.style.btnDisabled)) {
+	        return;
+	      }
+	      _this2.graphMain.toggleRotationAngle();
+	    });
+	    /*切换场景*/
+	    domObj.js_menuList.on('click', 'a', function (event) {
+	      _this2.currentSceneIndex = $(event.target).closest('li').index();
+	      _this2.graphMain.showScene(_this2.currentSceneIndex);
+	      // _switchUndoStack(this.currentSceneIndex);
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+	    domObj.js_undo.click(function () {
+	      _this2.graphMain.undo();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+	    domObj.js_redo.click(function () {
+	      _this2.graphMain.redo();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+	    domObj.js_reset.click(function () {
+	      _this2.graphMain.reset();
+	      /*如果有倒计时，倒计时停止*/
+	      if (interval !== null) {
+	        clearInterval(interval);
+	        interval = null;
+	        domObj.js_countDownBox.addClass('hide_dom');
+	      }
+	    });
+	  },
+	  _unbindEvent: function _unbindEvent() {},
+	  __interface: {
+	    resizeScreen: function resizeScreen(data) {
+	      var ratio = data.ratio;
+	      var curIndex = this.graphMain.currentSceneIndex;
+	      this.graphMain.scenes[curIndex].onResize(ratio);
+	    }
+	  }
+	}, 'GraphMovement_Rotation');
+
+	window.AddonGraphMovement_Rotation_create = function () {
+	  return new Presenter();
+	};
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.Main = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _baseGraph = __webpack_require__(3);
+
+	var _constant = __webpack_require__(4);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Main = exports.Main = function () {
+		function Main(defsceneDatas, eventBus, $el) {
+			_classCallCheck(this, Main);
+
+			// this.defsceneDatas = $.extend(true, [], defsceneDatas);
+			this.scenes = [];
+			this.eventBus = eventBus;
+			this._createScene(defsceneDatas, eventBus, $el);
+			this.currentSceneIndex = 0;
+		}
+		/*初始化创建每个场景*/
+
+
+		_createClass(Main, [{
+			key: '_createScene',
+			value: function _createScene(defsceneDatas, eventBus, $el) {
+				for (var i = 0; i < defsceneDatas.length; i++) {
+					var baseGraph = new _baseGraph.BaseGraph(defsceneDatas[i], eventBus, $el);
+					this.scenes.push(baseGraph);
+				}
+			}
+			/*获取当前场景*/
+
+		}, {
+			key: 'getCurrentSceneIndex',
+			value: function getCurrentSceneIndex() {
+				return this.currentSceneIndex;
+			}
+			//选择显示哪个场景
+
+		}, {
+			key: 'showScene',
+			value: function showScene(sceneIndex) {
+				this.currentSceneIndex = sceneIndex;
+				for (var i = 0; i < this.scenes.length; i++) {
+					if (i !== sceneIndex) {
+						$(this.scenes[i].getView()).addClass(_constant.style.hideDom);
+					} else {
+						$(this.scenes[i].getView()).removeClass(_constant.style.hideDom);
+					}
+				}
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'rotate',
+			value: function rotate(angle) {
+				this.scenes[this.currentSceneIndex].rotate(angle);
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'rotateEnd',
+			value: function rotateEnd(angle) {
+				this.scenes[this.currentSceneIndex].rotateEnd(angle);
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'activeDot',
+			value: function activeDot() {
+				this.scenes[this.currentSceneIndex].activeDot();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'activeEdge',
+			value: function activeEdge() {
+				this.scenes[this.currentSceneIndex].activeEdge();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'activeChangeTurningDot',
+			value: function activeChangeTurningDot() {
+				this.scenes[this.currentSceneIndex].activeChangeTurningDot();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'toggleRotationAngle',
+			value: function toggleRotationAngle(type) {
+				this.scenes[this.currentSceneIndex].toggleRotationAngle(type);
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'markDotCallback',
+			value: function markDotCallback() {
+				this.scenes[this.currentSceneIndex].markDotCallback();
+			}
+		}, {
+			key: 'markEdgeCallback',
+			value: function markEdgeCallback() {
+				this.scenes[this.currentSceneIndex].markEdgeCallback();
+			}
+		}, {
+			key: 'undo',
+			value: function undo() {
+				this.scenes[this.currentSceneIndex].undo();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'redo',
+			value: function redo() {
+				this.scenes[this.currentSceneIndex].redo();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'reset',
+			value: function reset() {
+				this.scenes[this.currentSceneIndex].reset();
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'getData',
+			value: function getData() {
+				var datas = [];
+				for (var i = 0; i < this.scenes.length; i++) {
+					datas[i] = this.scenes[i].getData();
+				}
+				return datas;
+			}
+		}, {
+			key: 'setData',
+			value: function setData(sceneDatas) {
+				// this.sceneDatas = $.extend(true, [], sceneDatas);
+				for (var i = 0; i < sceneDatas.length; i++) {
+					this.scenes[i].setData(sceneDatas[i]);
+				}
+				this.eventBus.trigger('changeBtnState');
+			}
+		}, {
+			key: 'getDataState',
+			value: function getDataState() {
+				return this.scenes[this.currentSceneIndex].getDataState();
+			}
+		}, {
+			key: 'getAngle',
+			value: function getAngle() {
+				return this.scenes[this.currentSceneIndex].getAngle();
+			}
+		}, {
+			key: 'getStackData',
+			value: function getStackData() {
+				var stackDatas = [];
+				for (var i = 0; i < this.scenes.length; i++) {
+					stackDatas[i] = this.scenes[i].getStackData();
+				}
+				return stackDatas;
+			}
+		}, {
+			key: 'setStackData',
+			value: function setStackData(stackDatas) {
+				for (var i = 0; i < stackDatas.length; i++) {
+					this.scenes[i].setStackData(stackDatas[i]);
+				}
+				this.eventBus.trigger('changeBtnState');
+			}
+		}]);
+
+		return Main;
+	}();
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.BaseGraph = undefined;
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _constant = __webpack_require__(4);
+
+	var _utils = __webpack_require__(5);
+
+	var _graph = __webpack_require__(6);
+
+	var _graph2 = _interopRequireDefault(_graph);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	// const defaultGraphData = {
+	// 	"parentDom": ".js_graphParent1",
+	// 	"parentStyle": "",
+	// 	"initAngle": 0,
+	// 	"dots": {
+	// 		"O": {dom: ".dot1", isActive: false, isMark: false, isRotMark: false, isActiveChTurningDot: false, adjEdges: ["OA", "OC"], adjDashedEdges: ["OA", "OC", "OB"], pos: "left bottom"},
+	// 		"A": {dom: ".dot2", isActive: false, isMark: false, isRotMark: false, isActiveChTurningDot: false, adjEdges: ["OA", "AB"], adjDashedEdges: ["OA", "AB", "AC"], pos: "left top"},
+	// 		"B": {dom: ".dot3", isActive: false, isMark: false, isRotMark: false, isActiveChTurningDot: false, adjEdges: ["OA", "AB"], adjDashedEdges: ["OB", "AB", "BC"], pos: "right top"},
+	// 		"C": {dom: ".dot4", isActive: false, isMark: false, isRotMark: false, isActiveChTurningDot: false, adjEdges: ["OA", "AB"], adjDashedEdges: ["OC", "AC", "BC"], pos: "right bottom"}
+	// 	},
+	// 	"edges": {
+	// 		"OA": {dom: ".edge1", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false},
+	// 		"OC": {dom: ".edge2", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false},
+	// 		"AB": {dom: ".edge3", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false},
+	// 		"BC": {dom: ".edge4", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false},
+	// 		"OC": {dom: ".edge5", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false},
+	// 		"AC": {dom: ".edge6", angleObj: null, isActive: false, isMark: false, isRotMark: false, isDashed: false}
+	// 	},
+	// 	"rotationAngle": 30,
+	// 	"currentTurningDot": "O",
+	// 	"isShowRotationAngle": false,
+	// 	"translateDis": {x:0, y:0},
+	// 	"colorArr": [] /*颜色队列*/
+	// };
+
+	var GraphComponent = Vue.component('graph', _graph2.default);
+
+	var BaseGraph = exports.BaseGraph = function () {
+	  function BaseGraph(initData, eventBus, outSideDom) {
+	    _classCallCheck(this, BaseGraph);
+
+	    /*事件总线和工具*/
+	    this.eventBus = eventBus;
+
+	    /*撤销恢复栈*/
+	    var undoManager = new UndoManager();
+	    this.stack = undoManager.createUndoStack(0, {
+	      provider: $.proxy(function (done) {
+	        done(this.getData());
+	      }, this),
+	      onUpdate: $.proxy(function () {
+	        this.eventBus.trigger('changeBtnState');
+	      }, this),
+	      maxLength: _constant.stackMaxLength
+	    });
+	    this.stack.initialize($.extend(true, {}, initData));
+	    this.graphdata = $.extend(true, {}, initData); //图形数据
+	    this.$vue = new GraphComponent({
+	      propsData: {
+	        graphdata: this.graphdata
+	      },
+	      methods: {
+	        dotclick: this.dotclick.bind(this),
+	        edgeclick: this.edgeclick.bind(this)
+	      }
+	    });
+	    outSideDom.appendChild(this.$vue.$mount().$el);
+	    this.view = this.$vue.$el;
+	  }
+
+	  /*旋转过程中更新角度对象*/
+
+
+	  _createClass(BaseGraph, [{
+	    key: '_updateAngle',
+	    value: function _updateAngle(angle) {
+	      //if( !this._cx || !this._cy){
+	      /*中心点位置*/
+	      var turningDotBCR = this.view.querySelector(this.graphdata.dots[this.graphdata.currentTurningDot].dom).getBoundingClientRect();
+	      var _cx = (turningDotBCR.left + turningDotBCR.width / 2).toFixed(2);
+	      var _cy = (turningDotBCR.top + turningDotBCR.height / 2).toFixed(2);
+	      //}
+	      var adjDashedEdges = this.graphdata.dots[this.graphdata.currentTurningDot].adjDashedEdges;
+	      var colorArrLen = this.graphdata.colorArr.length;
+	      // let radiusArr = $.extend(true, [], angleRadius);
+	      // radiusArr.splice(0, angleRadius.length - colorArrLen);
+	      var radiusArr = colorArrLen === 0 ? [] : colorArrLen === 1 ? [_constant.angleRadius[1]] : colorArrLen === 2 ? [_constant.angleRadius[0], _constant.angleRadius[1]] : _constant.angleRadius;
+	      for (var i = 0; i < adjDashedEdges.length; i++) {
+	        //更新弧形参数
+	        /*获取各条线初始角度，这个会变是因为中心点可以切换，所以每次获取*/
+	        var endDot = void 0,
+	            startAngle = void 0,
+	            endAngle = void 0,
+	            endPosBCR = void 0,
+	            endPos = void 0;
+	        if (adjDashedEdges[i][0] === this.graphdata.currentTurningDot) {
+	          endDot = adjDashedEdges[i][1];
+	        } else {
+	          endDot = adjDashedEdges[i][0];
+	        }
+	        endPosBCR = this.view.querySelector(this.graphdata.dots[endDot].dom).getBoundingClientRect();
+	        endPos = {
+	          x: (endPosBCR.left + endPosBCR.width / 2).toFixed(2),
+	          y: (endPosBCR.top + endPosBCR.height / 2).toFixed(2)
+	        };
+	        startAngle = _utils.utils.getAngle({ x: _cx, y: _cy }, endPos);
+	        endAngle = startAngle + angle;
+	        var dotColorIndex = this.graphdata.colorArr.indexOf(endDot),
+	            edgeColorIndex = this.graphdata.colorArr.indexOf(adjDashedEdges[i]);
+	        var radius = dotColorIndex !== -1 ? radiusArr[dotColorIndex] : edgeColorIndex !== -1 ? radiusArr[edgeColorIndex] : 1.5;
+	        // console.log(radius);
+	        this.graphdata.edges[adjDashedEdges[i]].angleObj = _utils.utils.getSvgSectorPoint(0, 0, radius, startAngle, endAngle);
+	      }
+	    }
+
+	    /*切换中心点后平移*/
+
+	  }, {
+	    key: '_translate',
+	    value: function _translate(oldTurningDot, newTurningDot) {
+	      this.view.style.transform = 'rotate(0) translate(0, 0)';
+	      // this.graphdata.translateDis = {x: 0, y: 0};
+	      /*获取两个点dom所在位置，相减，即是整个图形要平移的距离*/
+	      // if( !this._cx || !this._cy){
+	      /*中心点位置*/
+	      // let turningDotBCR =  this.view.querySelector(this.graphdata.dots[oldTurningDot].dom).getBoundingClientRect();
+	      // let _cx = (turningDotBCR.left + turningDotBCR.width/2).toFixed(2);
+	      // let _cy = (turningDotBCR.top + turningDotBCR.height/2).toFixed(2);
+	      var turningDotBCR = this.view.querySelector(this.graphdata.dots['O'].dom).getBoundingClientRect();
+	      var _cx = (turningDotBCR.left + turningDotBCR.width / 2).toFixed(2);
+	      var _cy = (turningDotBCR.top + turningDotBCR.height / 2).toFixed(2);
+	      //	}
+	      var newBCR = this.view.querySelector(this.graphdata.dots[newTurningDot].dom).getBoundingClientRect();
+	      var xDis = newBCR.left + newBCR.width / 2 - _cx,
+	          yDis = newBCR.top + newBCR.width / 2 - _cy;
+
+	      this.graphdata.translateDis = { x: xDis, y: yDis };
+
+	      /*移动后修改数据，修改旋转中心*/
+	      this.graphdata.currentTurningDot = newTurningDot;
+	      this.graphdata.rotationAngle = 0;
+	      for (var key in this.graphdata.dots) {
+	        var dot = this.graphdata.dots[key];
+	        dot.isActive = false;
+	        dot.isMark = false;
+	        dot.isRlotMark = false;
+	        dot.isActiveChTurningDot = false;
+	      }
+	      for (var _key in this.graphdata.edges) {
+	        var edge = this.graphdata.edges[_key];
+	        edge.isActive = false;
+	        edge.isMark = false;
+	        edge.isRotMark = false;
+	        edge.isDashed = false;
+	      }
+	      this.graphdata.colorArr = [];
+	    }
+	  }, {
+	    key: 'dotclick',
+	    value: function dotclick(key) {
+	      if (this.graphdata.dots[key].isActive) {
+	        var colorArrIndex = this.graphdata.colorArr.indexOf(key);
+	        if (!this.graphdata.dots[key].isMark) {
+	          this.graphdata.dots[key].isMark = true;
+	          /*颜色队列数据*/
+	          if (colorArrIndex === -1) {
+	            this.graphdata.colorArr.push(key);
+	          }
+	          /*倒计时*/
+	          this.eventBus.trigger('countDown', 'dot');
+	        } else {
+	          this.graphdata.dots[key].isMark = false;
+	          /*颜色队列数据*/
+	          if (colorArrIndex !== -1) {
+	            this.graphdata.colorArr.splice(colorArrIndex, 1);
+	          }
+	        }
+	      } else if (this.graphdata.dots[key].isActiveChTurningDot) {
+	        this._translate(this.graphdata.currentTurningDot, key);
+	      }
+	      this.eventBus.trigger('changeBtnState');
+	    }
+	  }, {
+	    key: 'edgeclick',
+	    value: function edgeclick(key) {
+	      if (this.graphdata.edges[key].isActive) {
+	        var colorArrIndex = this.graphdata.colorArr.indexOf(key);
+	        if (this.graphdata.dots[this.graphdata.currentTurningDot].adjEdges.indexOf(key) != -1) {
+	          /*去除不与中心点连接的边*/
+	          if (!this.graphdata.edges[key].isMark) {
+	            this.graphdata.edges[key].isMark = true;
+	            /*颜色队列数据*/
+	            if (colorArrIndex === -1) {
+	              this.graphdata.colorArr.push(key);
+	            }
+
+	            /*只有选中才执行*/
+	            this.eventBus.trigger('countDown', 'edge');
+	          } else {
+	            this.graphdata.edges[key].isMark = false;
+	            /*颜色队列数据*/
+	            if (colorArrIndex !== -1) {
+	              this.graphdata.colorArr.splice(colorArrIndex, 1);
+	            }
+	          }
+	        }
+	      }
+	      this.eventBus.trigger('changeBtnState');
+	    }
+
+	    /*旋转*/
+
+	  }, {
+	    key: 'rotate',
+	    value: function rotate(angle) {
+	      this.graphdata.rotationAngle = angle;
+	      this._updateAngle(angle);
+	      // this.stack.save();
+	    }
+
+	    /*旋转结束*/
+
+	  }, {
+	    key: 'rotateEnd',
+	    value: function rotateEnd(angle) {
+	      this.graphdata.rotationAngle = angle;
+	      this.stack.save();
+	    }
+
+	    /*激活点*/
+
+	  }, {
+	    key: 'activeDot',
+	    value: function activeDot() {
+	      /*边取消*/
+	      for (var key in this.graphdata.edges) {
+	        var edge = this.graphdata.edges[key];
+	        edge.isDashed = false;
+	        edge.isMark = false;
+	        edge.isRotMark = false;
+	        edge.isActive = false;
+	      }
+	      for (var _key2 in this.graphdata.dots) {
+	        var dot = this.graphdata.dots[_key2];
+	        if (this.graphdata.currentTurningDot !== _key2) {
+	          dot.isActiveChTurningDot = false;
+	          dot.isMark = false;
+	          dot.isRotMark = false;
+	          dot.isActive = true;
+	        }
+	      }
+	      this.graphdata.colorArr = [];
+	      this.stack.save();
+	    }
+
+	    /*激活边*/
+
+	  }, {
+	    key: 'activeEdge',
+	    value: function activeEdge() {
+	      /*点取消*/
+	      for (var key in this.graphdata.dots) {
+	        var dot = this.graphdata.dots[key];
+	        dot.isActiveChTurningDot = false;
+	        dot.isMark = false;
+	        dot.isRotMark = false;
+	        dot.isActive = false;
+	      }
+	      for (var _key3 in this.graphdata.edges) {
+	        var edge = this.graphdata.edges[_key3];
+	        edge.isDashed = false;
+	        edge.isMark = false;
+	        edge.isRotMark = false;
+	        edge.isActive = false;
+	        if (this.graphdata.dots[this.graphdata.currentTurningDot].adjEdges.indexOf(_key3) != -1) {
+	          /*&&后面表示不标不与中心点相邻的边*/
+	          edge.isActive = true;
+	        }
+	      }
+	      this.graphdata.colorArr = [];
+	      this.stack.save();
+	    }
+
+	    /*激活切换中心点*/
+
+	  }, {
+	    key: 'activeChangeTurningDot',
+	    value: function activeChangeTurningDot() {
+	      /*激活点*/
+	      for (var key in this.graphdata.dots) {
+	        var dot = this.graphdata.dots[key];
+	        dot.isMark = false;
+	        dot.isRotMark = false;
+	        dot.isActive = false;
+	        dot.isActiveChTurningDot = false;
+	        if (this.graphdata.currentTurningDot !== key) {
+	          dot.isActiveChTurningDot = true;
+	        }
+	      }
+	      /*边取消*/
+	      for (var _key4 in this.graphdata.edges) {
+	        var edge = this.graphdata.edges[_key4];
+	        edge.isDashed = false;
+	        edge.isMark = false;
+	        edge.isRotMark = false;
+	        edge.isActive = false;
+	      }
+	      this.graphdata.colorArr = [];
+	      this.stack.save();
+	    }
+	  }, {
+	    key: 'markDotCallback',
+	    value: function markDotCallback() {
+	      for (var key in this.graphdata.dots) {
+	        var dot = this.graphdata.dots[key];
+	        var edge = this.graphdata.edges[key + this.graphdata.currentTurningDot] || this.graphdata.edges[this.graphdata.currentTurningDot + key];
+	        dot.isActive = false;
+	        if (dot.isMark) {
+	          dot.isRotMark = true;
+	          edge && (edge.isDashed = true);
+	        }
+	      }
+	      if (this.graphdata.isShowRotationAngle) {
+	        this._updateAngle(this.graphdata.rotationAngle);
+	      }
+	      this.stack.save();
+	    }
+	  }, {
+	    key: 'markEdgeCallback',
+	    value: function markEdgeCallback() {
+	      for (var key in this.graphdata.edges) {
+	        var edge = this.graphdata.edges[key];
+	        edge.isActive = false;
+	        if (edge.isMark) {
+	          edge.isRotMark = true;
+	        }
+	      }
+	      if (this.graphdata.isShowRotationAngle) {
+	        this._updateAngle(this.graphdata.rotationAngle);
+	      }
+	      this.stack.save();
+	    }
+	  }, {
+	    key: 'toggleRotationAngle',
+	    value: function toggleRotationAngle(type) {
+	      this.graphdata.isShowRotationAngle = !this.graphdata.isShowRotationAngle;
+	      this._updateAngle(this.graphdata.rotationAngle);
+	      this.stack.save();
+	    }
+
+	    /*设置数据*/
+
+	  }, {
+	    key: 'setData',
+	    value: function setData(data1) {
+	      if (!data1 || $.isEmptyObject(data1)) {
+	        return;
+	      }
+	      var data = $.extend(true, {}, data1);
+	      // this.graphdata.rotationAngle = data.rotationAngle;
+	      // this.graphdata.currentTurningDot = data.currentTurningDot;
+	      if (this.graphdata.currentTurningDot !== data.currentTurningDot) {
+	        this._translate(this.graphdata.currentTurningDot, data.currentTurningDot);
+	      }
+	      this.graphdata.isShowRotationAngle = data.isShowRotationAngle;
+	      // this.graphdata.translateDis = data.translateDis;
+	      this.graphdata.colorArr = data.colorArr;
+	      for (var key in this.graphdata.dots) {
+	        this.graphdata.dots[key] = data.dots[key];
+	      }
+	      for (var _key5 in this.graphdata.edges) {
+	        this.graphdata.edges[_key5] = data.edges[_key5];
+	      }
+
+	      this.rotate(data.rotationAngle);
+	    }
+
+	    /*获取数据*/
+
+	  }, {
+	    key: 'getData',
+	    value: function getData() {
+	      var data = $.extend(true, {}, this.graphdata);
+	      return data;
+	    }
+	  }, {
+	    key: 'undo',
+	    value: function undo() {
+	      this.stack.undo($.proxy(this.setData, this));
+	    }
+	  }, {
+	    key: 'redo',
+	    value: function redo() {
+	      this.stack.redo($.proxy(this.setData, this));
+	    }
+	  }, {
+	    key: 'reset',
+	    value: function reset() {
+	      this.stack.reset($.proxy(this.setData, this));
+	    }
+	  }, {
+	    key: 'getDataState',
+	    value: function getDataState() {
+	      var state = {
+	        dot: 0, //0：不可点击，1：常态，2：点击态
+	        eEdge: 0,
+	        chTurningDot: 0,
+	        toggleRotationAngle: 0,
+	        isShowRotationAngle: this.graphdata.isShowRotationAngle,
+	        canUndo: this.stack.canUndo(),
+	        canRedo: this.stack.canRedo()
+	      };
+	      var dotsLen = 0,
+	          dotActives = 0,
+	          dotChTurnings = 0,
+	          edgesLen = 0,
+	          edgeActives = 0,
+	          dotMarks = 0,
+	          edgeMarks = 0;
+	      for (var key in this.graphdata.dots) {
+	        dotsLen++;
+	        if (this.graphdata.dots[key].isActive) {
+	          dotActives++;
+	        }
+	        if (this.graphdata.dots[key].isActiveChTurningDot) {
+	          dotChTurnings++;
+	        }
+	        if (this.graphdata.dots[key].isMark) {
+	          dotMarks++;
+	        }
+	      }
+	      edgesLen = this.graphdata.dots[this.graphdata.currentTurningDot].adjEdges.length;
+	      for (var _key6 in this.graphdata.edges) {
+	        if (this.graphdata.edges[_key6].isActive) {
+	          edgeActives++;
+	        }
+	        if (this.graphdata.edges[_key6].isMark) {
+	          edgeMarks++;
+	        }
+	      }
+	      if (dotsLen === 0) {
+	        state.dot = 0;
+	        state.chTurningDot = 0;
+	      } else {
+	        state.dot = dotActives === 0 ? 1 : 2;
+	        state.chTurningDot = dotChTurnings === 0 ? 1 : 2;
+	      }
+	      if (edgesLen === 0) {
+	        state.edge = 0;
+	      } else {
+	        state.edge = edgeActives === 0 ? 1 : 2;
+	      }
+	      // console.log((this.graphdata.rotationAngle - this.graphdata.initAngle), (dotMarks + edgeMarks));
+	      if (this.graphdata.rotationAngle - this.graphdata.initAngle === 0 || dotMarks + edgeMarks === 0) {
+	        state.toggleRotationAngle = 0;
+	      } else {
+	        state.toggleRotationAngle = this.graphdata.isShowRotationAngle ? 2 : 1;
+	      }
+	      return state;
+	    }
+	  }, {
+	    key: 'getView',
+	    value: function getView() {
+	      return this.view;
+	    }
+	  }, {
+	    key: 'getAngle',
+	    value: function getAngle() {
+	      return this.graphdata.rotationAngle;
+	    }
+
+	    /*撤销恢复栈*/
+
+	  }, {
+	    key: 'getStackData',
+	    value: function getStackData() {
+	      return this.stack.getData();
+	    }
+	  }, {
+	    key: 'setStackData',
+	    value: function setStackData(stackData1) {
+	      var stackData = $.extend(true, {}, stackData1);
+	      this.stack.setData(stackData);
+	    }
+	  }, {
+	    key: 'onResize',
+	    value: function onResize(ratio) {
+	      var newX = this.graphdata.translateDis.x * ratio;
+	      var newY = this.graphdata.translateDis.y * ratio;
+	      this.graphdata.translateDis = { x: newX, y: newY };
+	    }
+	  }]);
+
+	  return BaseGraph;
+	}();
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var style = {
+		dotActive: 'on',
+		edgeActive: 'on',
+		dotMark: 'ui_btn_active',
+		edgeMark: 'ui_btn_active',
+		edgeDashed: 'red_dash',
+		changeTurningDotActive: 'switch',
+		turningDot: 'spot_original',
+		anglePathStroke: 'blue',
+		anglePathStrokeWidth: 0.1,
+		anglePathFill: 'blue',
+		hideDom: 'hide_dom',
+		comBtnActive: 'ui_btn_active',
+		menuListOn: 'on',
+		btnDisabled: 'click_disabled',
+		redDot: 'spot_r',
+		yellowDot: 'spot_y',
+		greenDot: 'spot_g',
+		redEdge: 'red_solid',
+		yellowEdge: 'yellow_solid',
+		greenEdge: 'green_solid',
+		redDash: 'red_dash',
+		yellowDash: 'yellow_dash',
+		greenDash: 'green_dash',
+		fontSize: 1,
+		fontColor: 'red',
+		fontWeight: 'bold',
+		red: '#e42222',
+		yellow: '#f6c500',
+		green: '#04740b'
+	};
+	var countDownTime = {
+		dot: 5,
+		edge: 10
+	};
+	var graphDom = {
+		graphOri: '.js_graphOri',
+		graphRot: '.js_graphRot'
+	};
+	var graphClass = {
+		text: 'text',
+		rotText: 'rotText',
+		dot: 'dot',
+		edge: 'edge',
+		anglePath: 'anglePath'
+	};
+	var svgNS = 'http://www.w3.org/2000/svg';
+	var stackMaxLength = 3;
+	// const markColor = ['#e42222', '#f6c500', '#04740b'];
+	var markColor = ['red', 'yellow', 'green'];
+	var angleRadius = [0.8, 1.5, 2.2];
+	exports.style = style;
+	exports.countDownTime = countDownTime;
+	exports.graphDom = graphDom;
+	exports.svgNS = svgNS;
+	exports.graphClass = graphClass;
+	exports.stackMaxLength = stackMaxLength;
+	exports.markColor = markColor;
+	exports.angleRadius = angleRadius;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Utils = function () {
+	    function Utils() {
+	        _classCallCheck(this, Utils);
+	    }
+	    /*屏幕坐标转为svg坐标*/
+	    /*获取svg对象的转化矩阵并求其逆矩阵*/
+
+
+	    _createClass(Utils, [{
+	        key: 'coordinateTransform',
+	        value: function coordinateTransform(screenPoint, someSvgObject) {
+	            var CTM = someSvgObject.getScreenCTM();
+	            return screenPoint.matrixTransform(CTM.inverse());
+	        }
+
+	        /*转化坐标*/
+
+	    }, {
+	        key: 'reportMouseCoordinates',
+	        value: function reportMouseCoordinates(svgElement, pageX, pageY, svgChild) {
+	            var point = svgElement.createSVGPoint();
+	            point.x = pageX;
+	            point.y = pageY;
+	            point = this.coordinateTransform(point, svgChild);
+	            return point;
+	        }
+	        /**
+	            * 获取svg扇形路径信息
+	            * @param cx 旋转中心点 x坐标
+	            * @param cy 旋转中心点 y坐标
+	            * @param r 旋转半径
+	            * @param startAngle 开始角度
+	            * @param endAngle 结束角度
+	            * @returns {string}
+	            */
+
+	    }, {
+	        key: 'getSvgSectorPoint',
+	        value: function getSvgSectorPoint(cx, cy, r, start, end) {
+	            var startAngle = start % 360 < 0 ? start % 360 + 360 : start % 360;
+	            var endAngle = end % 360 < 0 ? end % 360 + 360 : end % 360;
+	            var rad = Math.PI / 180;
+	            var angleOff = (endAngle - startAngle) % 360 < 0 ? (endAngle - startAngle) % 360 + 360 : (endAngle - startAngle) % 360;
+	            // let x1 = cx + (Math.sin(startAngle * rad) * r),
+	            //     y1 = cy - (Math.cos(startAngle * rad) * r),
+	            //     x2 = cx + (Math.sin(endAngle * rad) * r),
+	            //     y2 = cy - (Math.cos(endAngle * rad) * r);
+	            var secOffAngle = void 0,
+	                arrowOffDis = void 0,
+	                arrowOffAngle = void 0,
+	                arrowR = 0.6,
+	                arrowAngle = 8,
+	                textDis = void 0;
+	            if (r === 0.8) {
+	                secOffAngle = 40;
+	                arrowOffDis = 0.2;
+	                arrowOffAngle = 3;
+	                textDis = 0.8;
+	            } else if (r === 1.5) {
+	                secOffAngle = 20;
+	                arrowOffDis = 0.13;
+	                arrowOffAngle = 2;
+	                textDis = 0.6;
+	            } else if (r === 2.2) {
+	                secOffAngle = 13;
+	                arrowOffDis = 0.1;
+	                arrowOffAngle = 1;
+	                textDis = 0.5;
+	            }
+	            if (angleOff <= secOffAngle * 2) {
+	                secOffAngle = 0;
+	                arrowR = 0;
+	            }
+	            var x1 = cx + Math.cos(startAngle * rad) * r,
+	                /*弧形*/
+	            y1 = cy + Math.sin(startAngle * rad) * r,
+	                x2 = cx + Math.cos((endAngle - secOffAngle) * rad) * r,
+	                y2 = cy + Math.sin((endAngle - secOffAngle) * rad) * r,
+
+	            /*箭头*/
+	            x3 = cx + Math.cos((endAngle - arrowOffAngle) * rad) * (r - arrowOffDis),
+	                y3 = cy + Math.sin((endAngle - arrowOffAngle) * rad) * (r - arrowOffDis),
+
+	            /*文字*/
+	            x5 = cx + Math.cos((endAngle - angleOff / 2) * rad) * (r + 1),
+	                y5 = cy + Math.sin((endAngle - angleOff / 2) * rad) * (r + 1);
+	            // x5 = (cx + (Math.cos((endAngle - angle / 2) * rad) * r)).toFixed(2),
+	            // y5 = (cy + (Math.sin((endAngle - angle / 2) * rad) * r)).toFixed(2);
+	            // 是否画大弧
+	            var lenghty = Number(angleOff > 180);
+	            var ar = ['M', x1, y1, 'A', r, r, 0, lenghty, 1, x2, y2];
+
+	            var arrow = this.getArrowPoint(endAngle, { x: x3, y: y3 }, arrowR, arrowAngle);
+	            // let rot = 0;
+	            // if(endAngle > 0 && endAngle <= 180){
+	            //     rot = -10;
+	            // }else if(endAngle > 180 && endAngle < 360){
+	            //     rot = 10;
+	            // }
+
+	            return {
+	                d: ar.join(' '),
+	                arrowD: arrow,
+	                textXY: { x: x5, y: y5 }
+	            };
+	        }
+	        // getSvgSectorPoint(cx, cy, r, start, end) {
+	        //     let startAngle = start % 360;
+	        //     let endAngle = end % 360;
+	        //     let rad = Math.PI / 180;
+	        //     // let x1 = cx + (Math.sin(startAngle * rad) * r),
+	        //     //     y1 = cy - (Math.cos(startAngle * rad) * r),
+	        //     //     x2 = cx + (Math.sin(endAngle * rad) * r),
+	        //     //     y2 = cy - (Math.cos(endAngle * rad) * r);
+	        //     let angle = Math.abs(endAngle - startAngle);
+	        //     let x1 = cx + (Math.cos(startAngle * rad) * r), /*弧形*/
+	        //         y1 = cy + (Math.sin(startAngle * rad) * r),
+	        //         x2 = cx + (Math.cos((endAngle-26) * rad) * r),
+	        //         y2 = cy + (Math.sin((endAngle-26) * rad) * r),
+	        //         /*箭头*/
+	        //         x3 = cx + (Math.cos((endAngle-5) * rad) * (r-0.18)),
+	        //         y3 = cy + (Math.sin((endAngle-5) * rad) * (r-0.18)),
+	        //         /*文字*/
+	        //         x5 = cx + (Math.cos((endAngle-angle/2) * rad) * (r + 0.3)),
+	        //         y5 = cy + (Math.sin((endAngle-angle/2) * rad) * (r + 0.3));
+	        //         // x5 = (cx + (Math.cos((endAngle - angle / 2) * rad) * r)).toFixed(2),
+	        //         // y5 = (cy + (Math.sin((endAngle - angle / 2) * rad) * r)).toFixed(2);
+	        //     // 是否画大弧
+	        //     let lenghty = Number((endAngle-startAngle) > 180);
+	        //     let ar = ['M', x1, y1, 'A', r, r, 0, lenghty, 1, x2, y2];       
+
+	        //     return {
+	        //         d: ar.join(' '),
+	        //         arrowD: this.getArrowPoint(endAngle, {x: x3,y: y3}, 0.6, 13),
+	        //         textXY: {x: x5, y: y5}
+	        //     }
+
+	        // }
+	        /**
+	         * [getArrowPoint 获取箭头参数]
+	         * @param  {[type]} angle  [箭头落在的终点线角度]
+	         * @param  {[type]} endPosition [箭头对的位置]
+	         * @param  {[type]} l      [箭头长度]
+	         * @param {[type]} [shiftAngle] [箭头两边偏移的角度]
+	         * @return {[type]}        [description]
+	         */
+
+	    }, {
+	        key: 'getArrowPoint',
+	        value: function getArrowPoint(angle, endPosition, l, shiftAngle) {
+	            var endPos = {
+	                x: Number(endPosition.x),
+	                y: Number(endPosition.y)
+	            };
+	            var rad = Math.PI / 180;
+	            /*与终点所在线垂直的线上距离为l的点*/
+	            var refPos = {
+	                x: endPos.x + l * Number(Math.cos((90 - angle) * rad)),
+	                y: endPos.y - l * Number(Math.sin((90 - angle) * rad))
+	            };
+	            /*箭头两边距离refPos 偏移的x，y值*/
+	            var xDis = l * Number(Math.tan((shiftAngle + 4) * rad)) * Number(Math.cos(angle * rad)),
+	                yDis = l * Number(Math.tan((shiftAngle + 4) * rad)) * Number(Math.sin(angle * rad));
+	            var leftPoint = { x: (refPos.x - xDis).toFixed(2), y: (refPos.y - yDis).toFixed(2) },
+	                rightPoint = { x: (refPos.x + xDis).toFixed(2), y: (refPos.y + yDis).toFixed(2) };
+	            var ar = ['M', leftPoint.x, leftPoint.y, 'L', rightPoint.x, rightPoint.y, 'L', endPos.x, endPos.y, 'Z'];
+	            // return {
+	            //     arrowD: ar.join(' '),
+	            //     refPos: refPos
+	            // }
+	            return ar.join(' ');
+	        }
+	        /**
+	         * 给两个点，获取角度
+	         * A{x: 0, y: 0}
+	         * B{x: 10, y: 10}
+	         */
+
+	    }, {
+	        key: 'getAngle',
+	        value: function getAngle(A, B) {
+	            var xDis = B.x - A.x,
+	                yDis = B.y - A.y;
+	            var radian = void 0;
+	            radian = Math.atan2(yDis, xDis);
+
+	            return parseFloat((radian * 360 / (2 * Math.PI)).toFixed(2));
+	        }
+	    }]);
+
+	    return Utils;
+	}();
+
+	var utils = new Utils();
+	exports.utils = utils;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Component = __webpack_require__(7)(
+	  /* script */
+	  __webpack_require__(8),
+	  /* template */
+	  __webpack_require__(9),
+	  /* scopeId */
+	  null,
+	  /* cssModules */
+	  null
+	)
+	Component.options.__file = "E:\\toolDevelopENV\\ref\\presenters\\graphmovement_rotation\\libs\\graph.vue"
+	if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+	if (Component.options.functional) {console.error("[vue-loader] graph.vue: functional components are not supported with templates, they should use render functions.")}
+
+	/* hot reload */
+	if (false) {(function () {
+	  var hotAPI = require("vue-hot-reload-api")
+	  hotAPI.install(require("vue"), false)
+	  if (!hotAPI.compatible) return
+	  module.hot.accept()
+	  if (!module.hot.data) {
+	    hotAPI.createRecord("data-v-3f420bbd", Component.options)
+	  } else {
+	    hotAPI.reload("data-v-3f420bbd", Component.options)
+	  }
+	})()}
+
+	module.exports = Component.exports
+
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	module.exports = function normalizeComponent (
+	  rawScriptExports,
+	  compiledTemplate,
+	  scopeId,
+	  cssModules
+	) {
+	  var esModule
+	  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+	  // ES6 modules interop
+	  var type = typeof rawScriptExports.default
+	  if (type === 'object' || type === 'function') {
+	    esModule = rawScriptExports
+	    scriptExports = rawScriptExports.default
+	  }
+
+	  // Vue.extend constructor export interop
+	  var options = typeof scriptExports === 'function'
+	    ? scriptExports.options
+	    : scriptExports
+
+	  // render functions
+	  if (compiledTemplate) {
+	    options.render = compiledTemplate.render
+	    options.staticRenderFns = compiledTemplate.staticRenderFns
+	  }
+
+	  // scopedId
+	  if (scopeId) {
+	    options._scopeId = scopeId
+	  }
+
+	  // inject cssModules
+	  if (cssModules) {
+	    var computed = Object.create(options.computed || null)
+	    Object.keys(cssModules).forEach(function (key) {
+	      var module = cssModules[key]
+	      computed[key] = function () { return module }
+	    })
+	    options.computed = computed
+	  }
+
+	  return {
+	    esModule: esModule,
+	    exports: scriptExports,
+	    options: options
+	  }
+	}
+
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _constant = __webpack_require__(4);
+
+	var CONSTANT = _interopRequireWildcard(_constant);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	exports.default = {
+		props: {
+			graphdata: Object
+
+		},
+		data: function data() {
+			return {
+				cons: Object.seal(CONSTANT)
+			};
+		},
+
+		computed: {},
+		methods: {
+			dotColorClass: function dotColorClass(key) {
+				var colorClass = '';
+				if (this.graphdata.dots[key].isMark) {
+					var index = this.graphdata.colorArr.indexOf(key);
+					if (index !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[index] + 'Dot'];
+					}
+				}
+				return colorClass;
+			},
+			rotDotColorClass: function rotDotColorClass(key) {
+				var colorClass = '';
+				if (this.graphdata.dots[key].isRotMark && this.graphdata.dots[key].isMark) {
+					var index = this.graphdata.colorArr.indexOf(key);
+					if (index !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[index] + 'Dot'];
+					}
+				}
+				return colorClass;
+			},
+			edgeColorClass: function edgeColorClass(key) {
+				var colorClass = '';
+				if (this.graphdata.isShowRotationAngle && this.graphdata.edges[key].isDashed && this.graphdata.rotationAngle - this.graphdata.initAngle !== 0) {
+					var dotKey = key[0] === this.graphdata.currentTurningDot ? key[1] : key[0];
+					var index = this.graphdata.colorArr.indexOf(dotKey);
+					if (index !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[index] + 'Dash'];
+					}
+				} else if (this.graphdata.edges[key].isMark) {
+					var _index = this.graphdata.colorArr.indexOf(key);
+					if (_index !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[_index] + 'Edge'];
+					}
+				}
+				return colorClass;
+			},
+			rotEdgeColorClass: function rotEdgeColorClass(key) {
+				var colorClass = '';
+				if (this.graphdata.isShowRotationAngle && this.graphdata.edges[key].isDashed && this.graphdata.rotationAngle - this.graphdata.initAngle !== 0) {
+					var dotKey = key[0] === this.graphdata.currentTurningDot ? key[1] : key[0];
+					var index = this.graphdata.colorArr.indexOf(dotKey);
+					if (index !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[index] + 'Dash'];
+					}
+				} else if (this.graphdata.edges[key].isRotMark && this.graphdata.edges[key].isMark) {
+					var _index2 = this.graphdata.colorArr.indexOf(key);
+					if (_index2 !== -1) {
+						colorClass = this.cons.style[this.cons.markColor[_index2] + 'Edge'];
+					}
+				}
+				return colorClass;
+			},
+			angleColor: function angleColor(key) {
+				var color = 'none';
+				var edge = this.graphdata.edges[key];
+				var index = void 0;
+				if (edge.isDashed) {
+					var dot = key[0] === this.graphdata.currentTurningDot ? key[1] : key[0];
+					index = this.graphdata.colorArr.indexOf(dot);
+				} else {
+					index = this.graphdata.colorArr.indexOf(key);
+				}
+				if (index !== -1) {
+					color = this.cons.style[this.cons.markColor[index]];
+				}
+				return color;
+			},
+			setAngleTextPos: function setAngleTextPos(refKey, initPos) {
+				var _this = this;
+
+				this.$nextTick(function () {
+					// console.log(this.$refs[refKey][0], dObj);
+					var text = _this.$refs[refKey][0];
+					var textBox = text.getBBox();
+					var textX = initPos.x,
+					    textY = initPos.y;
+					textX = textX - textBox.width / 2;
+					textY = textY + 0.5;
+					// if(this.graphdata.rotationAngle -this.graphdata.initAngle >=0 && this.graphdata.rotationAngle - this.graphdata.initAngle <= 90){
+					// 	textY = textY + 0.5;
+					// }
+
+					// if(textX < 0){
+					// 	textX = textX - textBox.width;
+					// }
+					// if(textY > 0){
+					// 	textY = textY + textBox.height/2;
+					// }
+					text.setAttribute('x', textX);
+					text.setAttribute('y', textY);
+				});
+				return Date.now();
+			}
+		}
+	}; //
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+	//
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+	  return _c('div', {
+	    staticClass: "GraphRotation_main_body",
+	    class: _vm.graphdata.parentDom.split('.')[1],
+	    style: ({
+	      'transform': 'rotate(' + _vm.graphdata.initAngle + 'deg) translate(' + (-_vm.graphdata.translateDis.x) + 'px, ' + (-_vm.graphdata.translateDis.y) + 'px)'
+	    })
+	  }, [_c('div', {
+	    staticClass: "GraphRotation_before",
+	    class: _vm.graphdata.parentStyle,
+	    style: ({
+	      'transform': 'rotate(' + _vm.graphdata.initAngle + 'deg) translate: (' + _vm.graphdata.translateDis.x + 'px, ' + _vm.graphdata.translateDis.y + 'px)'
+	    })
+	  }, [_c('div', {
+	    staticClass: "striangle_wrap"
+	  }), _vm._v(" "), _c('div', {
+	    staticClass: "spot_wrap"
+	  }, _vm._l((_vm.graphdata.dots), function(dot, key) {
+	    return _c('div', [_c('span', {
+	      staticClass: "striangle_spot",
+	      class: [dot.dom.split('.')[1], dot.style, dot.isMark ? _vm.cons.style.dotMark : '', dot.isActive ? _vm.cons.style.dotActive : '', key === _vm.graphdata.currentTurningDot ? _vm.cons.style.turningDot : '', dot.isActiveChTurningDot ? _vm.cons.style.changeTurningDotActive : '', _vm.dotColorClass(key)],
+	      on: {
+	        "click": function($event) {
+	          $event.stopPropagation();
+	          _vm.dotclick(key)
+	        }
+	      }
+	    }), _vm._v(" "), _c('em', {
+	      staticClass: "font nd_NewRoman_italic",
+	      class: [dot.fontStyle],
+	      style: ({
+	        'transform': 'rotate(' + (-_vm.graphdata.initAngle) + 'deg)'
+	      })
+	    }, [_vm._v(_vm._s(key))])])
+	  })), _vm._v(" "), _c('div', {
+	    staticClass: "line_wrap"
+	  }, _vm._l((_vm.graphdata.edges), function(edge, key) {
+	    return _c('span', {
+	      staticClass: "realline",
+	      class: [edge.dom.split('.')[1], edge.style, edge.isActive ? _vm.cons.style.edgeActive : '', edge.isMark ? _vm.cons.style.edgeMark : '', _vm.edgeColorClass(key)],
+	      on: {
+	        "click": function($event) {
+	          $event.stopPropagation();
+	          _vm.edgeclick(key)
+	        }
+	      }
+	    })
+	  }))]), _vm._v(" "), _c('div', {
+	    staticClass: "GraphRotation_after",
+	    class: [_vm.graphdata.parentStyle, (_vm.graphdata.parentStyle === 'GraphRotation_point') && (_vm.graphdata.rotationAngle - _vm.graphdata.initAngle === 0) ? 'hide_dom' : ''],
+	    style: ({
+	      'transform': 'rotate(' + _vm.graphdata.rotationAngle + 'deg)',
+	      'transform-origin': _vm.graphdata.dots[_vm.graphdata.currentTurningDot].pos
+	    })
+	  }, [_c('div', {
+	    staticClass: "striangle_wrap"
+	  }), _vm._v(" "), _c('div', {
+	    staticClass: "spot_wrap"
+	  }, _vm._l((_vm.graphdata.dots), function(dot, key) {
+	    return _c('div', [_c('span', {
+	      staticClass: "striangle_spot",
+	      class: [dot.style, dot.isRotMark ? _vm.cons.style.dotMark : '', dot === _vm.graphdata.currentTurningDot ? _vm.cons.style.turningDot : '', _vm.rotDotColorClass(key), (key === _vm.graphdata.currentTurningDot) ? 'hide_dom' : '']
+	    }), _vm._v(" "), _c('em', {
+	      staticClass: "font nd_NewRoman_italic",
+	      class: [dot.fontStyle, !(key === _vm.graphdata.currentTurningDot) && (_vm.graphdata.rotationAngle - _vm.graphdata.initAngle !== 0) ? '' : 'hide_dom'],
+	      style: ({
+	        'transform': 'rotate(' + (-_vm.graphdata.rotationAngle) + 'deg)'
+	      })
+	    }, [_vm._v(_vm._s(key) + "'")])])
+	  })), _vm._v(" "), _c('div', {
+	    staticClass: "line_wrap"
+	  }, _vm._l((_vm.graphdata.edges), function(edge, key) {
+	    return _c('span', {
+	      staticClass: "realline",
+	      class: [edge.style, edge.isRotMark ? _vm.cons.style.edgeMark : '', _vm.rotEdgeColorClass(key)]
+	    })
+	  }))]), _vm._v(" "), _c('div', {
+	    staticStyle: {
+	      "position": "absolute",
+	      "width": "100%",
+	      "height": "100%"
+	    }
+	  }, [_c('svg', {
+	    class: [_vm.graphdata.isShowRotationAngle && (_vm.graphdata.rotationAngle - _vm.graphdata.initAngle) !== 0 ? '' : 'hide_dom'],
+	    staticStyle: {
+	      "overflow": "visible"
+	    },
+	    style: ({
+	      'transform': 'translate(' + (_vm.graphdata.translateDis.x) + 'px, ' + (_vm.graphdata.translateDis.y) + 'px)'
+	    }),
+	    attrs: {
+	      "xmlns": "http://www.w3.org/2000/svg",
+	      "width": "100%",
+	      "height": "100%",
+	      "preserveAspectRatio": "xMidYMid meet",
+	      "viewBox": "-9 -6 18 12"
+	    }
+	  }, [_vm._l((_vm.graphdata.edges), function(edge, key) {
+	    return (edge.angleObj && edge.angleObj !== null) ? _c('g', {
+	      directives: [{
+	        name: "show",
+	        rawName: "v-show",
+	        value: ((edge.isMark && edge.isRotMark) || edge.isDashed),
+	        expression: "(edge.isMark && edge.isRotMark) || edge.isDashed"
+	      }]
+	    }, [_c('path', {
+	      attrs: {
+	        "stroke": "#fff",
+	        "stroke-width": _vm.cons.style.anglePathStrokeWidth + 0.08,
+	        "fill": "none",
+	        "d": edge.angleObj.d
+	      }
+	    }), _vm._v(" "), _c('path', {
+	      attrs: {
+	        "stroke": "#fff",
+	        "stroke-width": 0.05,
+	        "fill": _vm.angleColor(key),
+	        "d": edge.angleObj.arrowD
+	      }
+	    }), _vm._v(" "), _c('path', {
+	      attrs: {
+	        "stroke": _vm.angleColor(key),
+	        "stroke-width": 0.08,
+	        "fill": "none",
+	        "d": edge.angleObj.d
+	      }
+	    })]) : _vm._e()
+	  }), _vm._v(" "), _vm._l((_vm.graphdata.edges), function(edge, key) {
+	    return (edge.angleObj && edge.angleObj !== null) ? _c('g', {
+	      directives: [{
+	        name: "show",
+	        rawName: "v-show",
+	        value: ((edge.isMark && edge.isRotMark) || edge.isDashed),
+	        expression: "(edge.isMark && edge.isRotMark) || edge.isDashed"
+	      }]
+	    }, [_c('text', {
+	      ref: key,
+	      refInFor: true,
+	      staticClass: "nd_NewRoman_italic",
+	      style: ({
+	        'font-size': _vm.cons.style.fontSize,
+	        'font-weight': _vm.cons.style.fontWeight,
+	        'fill': _vm.angleColor(key)
+	      }),
+	      attrs: {
+	        "for-update": _vm.setAngleTextPos(key, edge.angleObj.textXY)
+	      }
+	    }, [_vm._v(_vm._s(_vm.graphdata.rotationAngle) + "°")])]) : _vm._e()
+	  })], 2)])])
+	},staticRenderFns: []}
+	module.exports.render._withStripped = true
+	if (false) {
+	  module.hot.accept()
+	  if (module.hot.data) {
+	     require("vue-hot-reload-api").rerender("data-v-3f420bbd", module.exports)
+	  }
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Listeners = function () {
+	    function Listeners() {
+	        _classCallCheck(this, Listeners);
+
+	        this.list = {};
+	    }
+
+	    _createClass(Listeners, [{
+	        key: 'add',
+	        value: function add(eventName, fn) {
+	            this.list[eventName] = fn;
+	        }
+	    }, {
+	        key: 'remove',
+	        value: function remove(eventName, fn) {
+	            this.list[eventName] = null;
+	        }
+	    }]);
+
+	    return Listeners;
+	}();
+
+	var EventBus = exports.EventBus = function () {
+	    function EventBus() {
+	        _classCallCheck(this, EventBus);
+
+	        this.listeners = new Listeners();
+	    }
+	    /*事件取消*/
+
+
+	    _createClass(EventBus, [{
+	        key: 'remove',
+	        value: function remove(eventName) {
+	            this.listeners.remove(eventName);
+	        }
+	        /*事件触发*/
+
+	    }, {
+	        key: 'trigger',
+	        value: function trigger(eventName) {
+	            if (!this.listeners.list[eventName]) return;
+	            this.listeners.list[eventName].apply(this, [].slice.call(arguments, 1));
+	        }
+	        /*事件监听*/
+
+	    }, {
+	        key: 'on',
+	        value: function on(eventName, fn) {
+	            if (typeof fn === 'function') {
+	                this.listeners.add(eventName, fn);
+	            }
+	        }
+	    }]);
+
+	    return EventBus;
+	}();
+
+/***/ }
+/******/ ]);]]></presenter><resources><file src="./resources/wood/images/green_dash.png"/><file src="./resources/wood/images/icon_foot1_active.png"/><file src="./resources/wood/images/icon_foot1_disabled.png"/><file src="./resources/wood/images/icon_foot1.png"/><file src="./resources/wood/images/icon_foot2_active.png"/><file src="./resources/wood/images/icon_foot2_disabled.png"/><file src="./resources/wood/images/icon_foot2.png"/><file src="./resources/wood/images/icon_foot3_active.png"/><file src="./resources/wood/images/icon_foot3_disabled.png"/><file src="./resources/wood/images/icon_foot3.png"/><file src="./resources/wood/images/icon_foot4_active.png"/><file src="./resources/wood/images/icon_foot4_disabled.png"/><file src="./resources/wood/images/icon_foot4.png"/><file src="./resources/wood/images/icon_foot5_active.png"/><file src="./resources/wood/images/icon_foot5_disabled.png"/><file src="./resources/wood/images/icon_foot5.png"/><file src="./resources/wood/images/icon_foot6_active.png"/><file src="./resources/wood/images/icon_foot6_disabled.png"/><file src="./resources/wood/images/icon_foot6.png"/><file src="./resources/wood/images/icon_foot7_active.png"/><file src="./resources/wood/images/icon_foot7_disabled.png"/><file src="./resources/wood/images/icon_foot7.png"/><file src="./resources/wood/images/icon_foot8_active.png"/><file src="./resources/wood/images/icon_foot8_disabled.png"/><file src="./resources/wood/images/icon_foot8.png"/><file src="./resources/wood/images/icon-point.png"/><file src="./resources/wood/images/isocele_after1.png"/><file src="./resources/wood/images/isocele_after2.png"/><file src="./resources/wood/images/isocele_after3.png"/><file src="./resources/wood/images/isocele_before1.png"/><file src="./resources/wood/images/isocele_before2.png"/><file src="./resources/wood/images/isocele_before3.png"/><file src="./resources/wood/images/isocelestriangle_on_bottom.png"/><file src="./resources/wood/images/isocelestriangle_on_diagonal.png"/><file src="./resources/wood/images/isocelestriangle_on_left.png"/><file src="./resources/wood/images/isocelestriangle_on.png"/><file src="./resources/wood/images/isocelestriangle.png"/><file src="./resources/wood/images/item_line.png"/><file src="./resources/wood/images/item_point.png"/><file src="./resources/wood/images/item_rectangle.png"/><file src="./resources/wood/images/main_line_bg.png"/><file src="./resources/wood/images/red_dash_row.png"/><file src="./resources/wood/images/red_dash.png"/><file src="./resources/wood/images/striangle_after1.png"/><file src="./resources/wood/images/striangle_after2.png"/><file src="./resources/wood/images/striangle_after3.png"/><file src="./resources/wood/images/striangle_before1.png"/><file src="./resources/wood/images/striangle_before2.png"/><file src="./resources/wood/images/striangle_before3.png"/><file src="./resources/wood/images/striangle_on.png"/><file src="./resources/wood/images/striangle.png"/><file src="./resources/wood/images/tools_icon/icon_246x143.png"/><file src="./resources/wood/images/yellow_dash.png"/></resources></addon>

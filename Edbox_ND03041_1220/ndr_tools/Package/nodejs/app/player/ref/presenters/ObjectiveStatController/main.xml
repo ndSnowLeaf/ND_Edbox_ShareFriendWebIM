@@ -1,0 +1,1218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ObjectiveStatController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return questionTypeMap; });
+var questionTypeMap = {
+  choice: {
+    name: "单选题",
+    type: "A"
+  },
+  order: {
+    name: "排序题",
+    type: "C"
+  },
+  textentry: {
+    name: "填空题",
+    type: "B"
+  },
+  textentrymultiple: {
+    name: "填空题",
+    type: "B"
+  },
+  newhandwrite: {
+    name: "手写题",
+    type: "D"
+  },
+  handwrite: {
+    name: "手写题",
+    type: "D"
+  },
+  match: {
+    name: "连线题",
+    type: "B"
+  },
+  judge: {
+    name: "判断题",
+    type: "A"
+  },
+  multiplechoice: {
+    name: "多选题",
+    type: "A"
+  },
+  vote: {
+    name: "投票题",
+    type: "A"
+  },
+  graphicgapmatch: {
+    name: "拼图题",
+    type: "D"
+  },
+  ChineseCharacterDictation: {
+    name: "汉字听写题",
+    type: "C"
+  }
+};
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return isCompound; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return supportStyleChart; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getAnswerUsers; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getQueryString; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return adaptEventData; });
+/**
+   * 判断是否是复合类统计 */
+var isCompound = function(code) {
+  var result = false;
+  var questions = ["Compound", "ChineseCharacterDictation", "ReadingComprehension"];
+  for (var i = 0, len = questions.length; i < len; i++) {
+    if (code === questions[i]) {
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
+
+/**是否支持图表 */
+var supportStyleChart = function(code) {
+  var result = false;
+  var questions = ["Compound", "ReadingComprehension"];
+  for (var i = 0, len = questions.length; i < len; i++) {
+    if (code === questions[i]) {
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
+
+var getAnswerUsers = function(answers, subquestionId, subquestionType) {
+  var userIds = [];
+  if ($.isArray(answers)) {
+    var answer,
+      answerObj,
+      user_response;
+    $.each(answers, function(i, item) {
+      answer = item.answer;
+      answerObj = JSON.parse(answer);
+      user_response = answerObj.user_response;
+      $.each(user_response, function(j, response) {
+        if (response.subquestionId == subquestionId && response.subquestionType == subquestionType) {
+          if (response.subquestionState != "NO_ANSWER") {
+            userIds = userIds.concat(item.userIds);
+          }
+          return false;
+        }
+      });
+    });
+  }
+  return userIds;
+};
+
+var getQueryString = function(name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+  var r = window.location.search.substr(1).match(reg);
+  if (r != null) return unescape(r[2]);
+  return null;
+}
+
+/**
+ *数据适配，兼容提交规则优化
+ */
+var adaptEventData = function(eventData) {
+
+  if (eventData && eventData.value && eventData.value.answers) {
+
+    eventData.value.noanswerNum = 0;
+    eventData.value.noanswerUserIds = [];
+
+    if (eventData.value.answers instanceof Array) {
+      var matchIndex = [];
+      var popItems = [];
+      var i,
+        ilen;
+      var answers = eventData.value.answers[0];
+      var item,
+        answer;
+      for (i = 0, ilen = answers.length; i < ilen; i++) {
+        item = answers[i];
+        if (item.answer && typeof item.answer == 'string') {
+          answer = JSON.parse(item.answer);
+          if (answer.answerState == 'NO_ANSWER') { //找到匹配项
+            matchIndex.push(i);
+          }
+        }
+      }
+
+      if (matchIndex.length > 0) { //有未作答提交
+        let pops;
+        for (i = matchIndex.length - 1; i >= 0; i--) {
+          pops = answers.splice(matchIndex[i], 1);
+          console.log('pops',pops);
+          popItems = popItems.concat(pops);
+          eventData.value.noanswerNum += pops[0].userIds.length;
+          eventData.value.noanswerUserIds = eventData.value.noanswerUserIds.concat(pops[0].userIds);
+        }
+        eventData.value.finishedNum -= eventData.value.noanswerNum;
+        eventData.value.unfinishedNum += eventData.value.noanswerNum;
+        eventData.value.unfinishedUserIds = eventData.value.unfinishedUserIds.concat(eventData.value.noanswerUserIds);
+      } 
+    }
+  }
+
+}
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_Constants_js__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_fns_js__ = __webpack_require__(1);
+
+
+
+(function() {
+  //version:7.2.0
+  var localTest = false;
+  var myself;
+
+  var buildGraphicgapmatchAnswer = function(answers, subquestionId, users) { //构造D类统计数据
+    var result = [];
+    var item = {
+      answerRawData: "",
+      data: [],
+      groupName: "",
+      seatNumber: "",
+      studentId: "",
+      studentName: "",
+      studentNo: "",
+      tag: false
+    };
+    var noAnswerUsers = [];
+    if ($.isArray(users)) {
+      $.each(users, function(i, u) {
+        noAnswerUsers.push(u.userId);
+      });
+    }
+    var userNameMap = (function(us) {
+      var r = {};
+      $.each(us, function(i, u) {
+        if (!r[u.userId]) {
+          r[u.userId] = u.studentName;
+        }
+      });
+      return r;
+    })(users);
+
+    if ($.isArray(answers)) {
+      $.each(answers, function(i, node) {
+        var answer = JSON.parse(node.answer);
+        var userIds = node.userIds;
+        var j,
+          len,
+          a,
+          aStr,
+          data,
+          tempItem = $.extend(true, {}, item);
+        for (j = 0, len = answer.correct_response.length; j < len; j++) {
+          if ((subquestionId == answer.correct_response[j].subquestionId) && (subquestionId == answer.user_response[j].subquestionId)) {
+            a = {
+              answer_result: answer.user_response[j].subquestionResult,
+              correct_response: [answer.correct_response[j]],
+              user_response: [answer.user_response[j]]
+            };
+            aStr = JSON.stringify(a);
+            data = {
+              type: "raw",
+              value: aStr
+            };
+            tempItem.data.push(data);
+
+            //web版统计增加
+            if (myself.icrStatistics) {
+              tempItem._isAnswerDetail = true;
+            }
+
+            var itemClone;
+            $.each(userIds, function(t, user) {
+              itemClone = $.extend(true, {}, tempItem);
+              itemClone.studentId = user;
+              itemClone.studentName = userNameMap[user];
+              var inIndex = -1;
+              if ((inIndex = $.inArray(user, noAnswerUsers)) >= 0) {
+                noAnswerUsers.splice(inIndex, 1);
+              }
+              result.push(itemClone);
+            });
+            break;
+          }
+        }
+      });
+
+      var noAnswerItem;
+      var undoData = {
+        type: "raw",
+        value: ""
+      };
+      $.each(noAnswerUsers, function(i, u) {
+        noAnswerItem = $.extend(true, {}, item);
+        noAnswerItem.studentId = u;
+        noAnswerItem.studentName = userNameMap[u];
+        noAnswerItem.data.push(undoData);
+        result.push(noAnswerItem);
+      });
+    }
+    return result;
+  };
+
+  /**
+   * web f类统计增加，构造手写题答题数据给d类
+   * @param subData 小题的eventData
+   * @param totalData 所有的作答数据
+   */
+  var buildHandWriterAnswer = function(subData, totalData) {
+    var data = {
+      examId: totalData.value["examId"],
+      totalTime: totalData.value["elapsedTime"], //总耗时
+      submitCount: totalData.value["users"].length, //提交人数（含未作答，等于在线人数）
+      answerCount: totalData.value["users"].length, //作答人数
+      questionType: totalData.value.questionType, //题目类型
+      subquestionType: subData.question_type,
+      subquestionId: subData.question_id,
+      questionUrl: subData.question_data ? subData.question_data.question_data.QuestionUrl : ""
+    };
+
+    //手写题数据放在extraProp下
+    var answers = totalData.extraProp["handWriteAnswers"];
+
+    var answerData;
+
+    try {
+      answerData = answers[subData.question_id]
+    } catch (e) {
+      console.error(subData.question_id + "没有答题数据", e);
+    }
+
+    if (Array.isArray(answerData)) {
+      data.answerData = answerData.slice();
+    }
+
+    return data;
+  };
+
+
+
+  var Presenter = BaseController.extend({
+    metaInfo: {
+      name: 'ObjectiveStateController',
+      type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function() {
+      this._super();
+
+      this.statisticsService = {};
+      this.presenterServiceList = [];
+      this.studentAnswerEventData = null;
+      $PresenterEvent['ObjectiveStatController'] = {
+        QUIZSTATISTICS: 'QuizStatistics',
+        PHONEREMOTECMD: 'PhoneRemoteCmd'
+      };
+      myself = this;
+      this.oriEventData = null;
+      this.pagingDefered = null;
+
+      //web版f类统计添加,_onStatisticsCall在第一次接收到事件时不做处理
+      this.received = false;
+      this.currentSingleStat = "";
+
+      //定义日志
+      this.logger.appendHandler(function(message, context) {
+        console.log(message);
+      }, {
+        level: Logger.DEBUG
+      });
+    },
+    //定义作答流程中需要实现的接口
+    $getInterfaceMethods: function() {
+      return [{
+        interface: "QuestionStatistics",
+        methods: ["enterStatistics", "clickItem"]
+      }, {
+        interface: "QuestionPresenter",
+        methods: ["getResult", "resetQuestion", "startStatistics", "showAnswer", "convertDataForStatistics", "getStatisticClass"]
+      }
+      ]
+    },
+    $afterPresenterRun: function(interfaceName, metaInfo, service) {
+      if (interfaceName == 'QuestionStatistics') {
+        this.statisticsService = service;
+      } else if (interfaceName == 'QuestionPresenter') {
+        this.presenterServiceList.push(service);
+      }
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    _service_: {
+      constructor: function(parent) {
+        this.parent = parent;
+      }
+    },
+    getService: function() {
+      this._service_.constructor(this);
+      return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function(view, model) {
+
+      var arg_main = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["a" /* getQueryString */])("main");
+      if (arg_main != null && arg_main.indexOf("/presenter-demo") == 0) {
+        localTest = true;
+      }
+      this.inStatistics = false;
+      this.normal = true;
+
+      //是否是web版统计平台
+      this.icrStatistics = this.urlParams.sys == "icrStatisticsPlatform";
+      this.__interface = this.__interface || {};
+      this.__interface.asSendQuestionSuccess = function() {
+        //TODO:成功回调
+        console.log("asSendQuestionSuccess");
+        this.inStatistics = false;
+        this.layoutService.adjustLayoutForEndAnswer();
+        this.layoutService.adjustLayoutForStartAnswer();
+      }.bind(this);
+      this.__interface.asSendQuestionFail = function() {
+        //TODO:失败回调
+        console.log("asSendQuestionFail");
+      }.bind(this);
+    },
+    pageShow: function() {
+      this._bindEvent();
+    },
+    pageLeave: function() {
+      this._unbindEvent();
+    },
+
+    destroy: function() {
+      this.presenterServiceList = [];
+      this.inStatistics = false;
+    },
+    /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+    getState: function() {},
+    setState: function(state, options) {},
+    /****以下开始为Presenter的私有方法*****/
+    _getQueryString: function(name) {
+      var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+      var r = window.location.search.substr(1).match(reg);
+      if (r != null) return unescape(r[2]);
+      return null;
+    },
+    _statisRenderReady: function(eventData) {
+      if (myself.layoutService && myself.layoutService.statisRenderReady) {
+        myself.layoutService.statisRenderReady();
+      }
+    },
+    _checkFromClassroomSummary: function() {
+      var questionId = this._getQueryString("classroomsummary_questionId");
+      if (questionId) {
+        if (window.localStorage) {
+          var StatisticData = localStorage.getItem("StatisticData");
+          var data = JSON.parse(StatisticData);
+          var content = data[questionId];
+
+          if (content) {
+            if ((typeof content) == "string") {
+              content = JSON.parse(content);
+            }
+            var data;
+            data = content;
+            this._doForClassroomSummaryStatistics(data, true);
+          }
+        }
+      } else {
+        var fromType = this._getQueryString("fromType");
+        if (fromType == "icrStatisticsPlatform" && window.localStorage) {
+          var StatisticData = localStorage.getItem("StatisticData");
+          var data = JSON.parse(StatisticData);
+
+          var students = data.students;
+
+          ClassroomUtils.getCurrentStudents = function() {
+            //返回一份深拷贝的数据，放置被篡改
+            var studentsCopy = [];
+
+            students.forEach(function(value, index, array) {
+              if (typeof value != "object") {
+                studentsCopy.push(value);
+              } else {
+                studentsCopy.push($.extend(true, {}, value))
+              }
+            });
+
+            return studentsCopy;
+          };
+
+          if (data) {
+            var attrsObj = {
+              noSendFlowers: true
+            };
+            this._doForClassroomSummaryStatistics(data, true, attrsObj);
+          }
+        }
+      }
+    },
+    getSimpleQuestionAnswerInfo: function(answer, keys, answerJson) {
+      for (var key in answerJson) {
+        if (answerJson.hasOwnProperty(key)) {
+          keys.push(key);
+          answer[key] = answerJson[key].value;
+        }
+      }
+      if (this.isAnswerRight(answerJson)) {
+        answer["state"] = "PASSED";
+      } else {
+        answer["state"] = "FAILED";
+      }
+    },
+    _requestStudentAnswer: function(eventData) {
+      //若基础题，向native发送StudentAnswerResult事件
+      if (eventData && myself.presenterServiceList.length > 0 && myself.presenterServiceList[0].getAssessmentModel) {
+        var qAssessmentModel = myself.presenterServiceList[0].getAssessmentModel();
+        var questionInfo = eventData["value"];
+        var qti_answers = [];
+        //获取题目类型
+        var questionType = questionInfo["questionType"];
+        var answers = [];
+        if (questionInfo["answers"][0].length > 0) {
+          //解析每一个相同的答案
+          var correctAnswer = qAssessmentModel.correctAnswer;
+          for (var answerindex = 0; answerindex < questionInfo["answers"][0].length; answerindex++) {
+            var keys = [];
+            for (var key in correctAnswer) {
+              if (correctAnswer.hasOwnProperty(key)) {
+                keys.push(key);
+              }
+            }
+            if (keys.length > 0) {
+              if ("textentry" == questionType) {
+                eventData["value"]["correctAnswer"] = [];
+                for (var ai = 0; ai < keys.length; ai++) {
+                  eventData["value"]["correctAnswer"].push(correctAnswer[keys[ai]].value);
+                }
+              } else {
+                eventData["value"]["correctAnswer"] = correctAnswer[keys[0]].value;
+              }
+            }
+          }
+        }
+
+        myself._fireEvent("StudentAnswerResult", {
+          isApp: true,
+          data: eventData
+        });
+
+      }
+    },
+    _bindEvent: function() {
+      if (localTest) {
+        this.$addEventListener($PresenterEvent.ObjectiveStatController.QUIZSTATISTICS,
+          PresenterEventType.IC_PLAYER_EVENT, this._onHandleQuizStatistics.bind(this));
+      }
+
+      //web版统计平台，给复合题提供手写题数据，QueryAnswers事件回调
+      if (this.icrStatistics) {
+        this.$addEventListener('QueryAnswers',
+          PresenterEventType.IC_PLAYER_EVENT, this._onQueryAnswersforWrite.bind(this));
+      }
+
+      //修复bug#51163
+      if (this.isApp == false && this.isPC == true && this.isWeb == false) {
+        this.$addEventListener($PresenterEvent.ObjectiveStatController.QUIZSTATISTICS,
+          PresenterEventType.NATIVE_EVENT, this._onHandleQuizStatistics.bind(this));
+        this.$addEventListener("StudentAnswer",
+          PresenterEventType.NATIVE_EVENT, this._requestStudentAnswer);
+        this.$addEventListener($PresenterEvent.ObjectiveStatController.PHONEREMOTECMD,
+          PresenterEventType.NATIVE_EVENT, this._onHandlePhoneRemoteCmd);
+        this.$addEventListener("ExamCallback", PresenterEventType.NATIVE_EVENT, this._onExamCallback);
+        this.$addEventListener("StudentStatisCallback", PresenterEventType.NATIVE_EVENT, this._onStudentStatisCallback.bind(this));
+        this.$addEventListener("QuizStatisticsUsersCallback", PresenterEventType.NATIVE_EVENT, this._onQuizStatisticsUsersCallback.bind(this));
+      }
+
+      this.$addEventListener("statistics_call",
+        PresenterEventType.IC_PLAYER_EVENT, this._onStatisticsCall);
+      this.$addEventListener("SwitchQuestionComplete",
+        PresenterEventType.IC_PLAYER_EVENT, this._switchQuestionComplete);
+      this.$addEventListener("PresenterLoaded",
+        PresenterEventType.IC_PLAYER_EVENT, this._checkFromClassroomSummary);
+      /*this.$addEventListener("statisRenderReady",
+        PresenterEventType.IC_PLAYER_EVENT, this._statisRenderReady);*/
+      this.$addEventListener("css_classroom_status_statical", PresenterEventType.IC_PLAYER_EVENT, this._onCssClassroomStatusStatical.bind(this));
+    },
+    _unbindEvent: function() {},
+    _switchQuestionComplete: function(eventData) {
+
+      //当前是web 版，并且是第一次接收事件时
+      if (myself.icrStatistics && !myself.received) {
+
+        myself.received = true;
+
+      } else {
+        if (eventData.question_id && myself.inStatistics) {
+
+          var statType = __WEBPACK_IMPORTED_MODULE_0__constants_Constants_js__["a" /* questionTypeMap */][eventData.question_type].type;
+          // if ((statType != "D" || eventData.question_type == "graphicgapmatch") && myself.layoutService.goSingleStat) { //修复bug#99563,104392
+          //   myself.layoutService.goSingleStat();
+          // }
+          if (myself.layoutService.goSingleStat) {
+            myself.layoutService.goSingleStat();
+          }
+          myself.subquestionId = eventData.question_id;
+          var info = {
+            subquestionId: eventData.question_id,
+            subquestionType: eventData.question_type,
+            statisticClass: __WEBPACK_IMPORTED_MODULE_0__constants_Constants_js__["a" /* questionTypeMap */][eventData.question_type].type
+          };
+          var data = myself.statisticsService["requestSingleStatistics"](info, myself.eventData);
+          myself._doSingleQuizStatistics(data);
+          if (myself.statisticsService.showBack2overview) { //显示返回总览按钮
+            myself.statisticsService.showBack2overview();
+          }
+          if (statType == "D") {
+            myself.layoutService.showSubjectiveStatisticsPanel();
+            if ("graphicgapmatch" == eventData.question_type) { //如果是拼图题，不需要找PC端拿数据
+              var data = {
+                examId: myself.eventData.value["examId"],
+                totalTime: myself.eventData.value["elapsedTime"], //总耗时
+                submitCount: myself.eventData.value["users"].length, //提交人数（含未作答，等于在线人数）
+                answerCount: myself.eventData.value["users"].length, //作答人数
+                questionType: myself.eventData.value.questionType, //题目类型
+                subquestionType: eventData.question_type,
+                subquestionId: eventData.question_id,
+                questionUrl: eventData.question_data ? eventData.question_data.question_data.QuestionUrl : ""
+              };
+              if (this.normal === false) {
+                data.sceneType = 'statical';
+              }
+              var users = myself.eventData.value.users.slice();
+              data.answerData = buildGraphicgapmatchAnswer(myself.eventData.value.answers[0], eventData.question_id, users);
+              myself.$dispatchEvent("CompoundAnswerClassStatis", PresenterEventType.IC_PLAYER_EVENT, data);
+            } else {
+              //web版统计，直接把手写题的数据发送给D类统计
+              if (myself.icrStatistics) {
+                var data = buildHandWriterAnswer(eventData, myself.eventData);
+                if (this.normal === false) {
+                  data.sceneType = 'statical';
+                }
+                myself.$dispatchEvent("CompoundAnswerClassStatis", PresenterEventType.IC_PLAYER_EVENT, data);
+
+              } else {
+                var answers = myself.eventData.value.answers;
+                var userIds = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["b" /* getAnswerUsers */])(answers[0], eventData.question_id, eventData.question_type);
+                var ed = {
+                  "type": "subExamAnswer",
+                  "users": userIds,
+                  "source": "ObjectiveStatController",
+                  "value": {
+                    subExamId: eventData.question_id, //子题id
+                    subExamType: eventData.question_type //子题题型，如subjectivity
+                  }
+                };
+                myself.statisticsService.dispatchEvent("Exam", PresenterEventType.PPT_NATIVE_EVENT, ed);
+              }
+            }
+            if (myself.layoutService && myself.layoutService.statisRenderReady) {
+              myself.layoutService.statisRenderReady();
+            }
+          }
+        }
+      }
+    },
+
+    //web版统计增加，返回手写题数据
+    _onQueryAnswersforWrite: function(eventData) {
+      //拿到手写题答案数据
+      var writeAnswers = myself.eventData.extraProp["handWriteAnswers"];
+
+      var questionItem = writeAnswers[eventData.value.subExamId];
+      var studentId = eventData.users[0];
+      var answerData = {};
+
+      //遍历取出要获取的id学生的答案
+      for (var i = 0, len = questionItem.length; i < len; i++) {
+        if (questionItem[i].studentId == studentId) {
+          $.extend(true, answerData, questionItem[i]);
+          break;
+        }
+      }
+
+      //构造返回的数据
+
+      var response = {
+        answerData: answerData,
+        extra: {
+          subExamId: eventData.value.subExamId,
+          subExamType: eventData.value.subExamType
+        },
+        question_type: "Compound",
+        subExamId: eventData.value.subExamId,
+        subExamType: eventData.value.subExamType
+      };
+
+      //发送查询到的学生作答数据给复合题loader
+      this.$dispatchEvent("QueryAnswersCallback", PresenterEventType.IC_PLAYER_EVENT, response);
+    },
+    //习题数据保存
+    _onCssClassroomStatusStatical: function(data) {
+      var opt = {
+        NO_THUMBS_UP: true,
+        showRepeat: true //显示重发本题按钮
+      };
+      this.normal = false;
+      this._doHandleQuizStatistics(data, opt);
+    },
+    _onStatisticsCall: function(eventData) {
+      if (eventData && eventData.method) {
+        switch (eventData.service) {
+          case "layout":
+            if (this.layoutService[eventData.method]) {
+              this.layoutService[eventData.method]();
+              if (eventData.method == "exitExam") { //如果是退出本题，要调用题型的重置方法resetQuestion()
+                /*if(myself.presenterServiceList.length > 0 && myself.presenterServiceList[0]["resetQuestion"]){
+                    myself.presenterServiceList[0]["resetQuestion"]();
+                }*/
+                myself.inStatistics = false;
+              }
+              if (eventData.method == "requestEnterOverViewForF") {
+                myself.inStatistics = true;
+                if (eventData.args && __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["c" /* supportStyleChart */])(eventData.args.questionType)) {//请求图表
+                  var ed = {
+                    "type": "",
+                    "source": "ObjectiveStatController",
+                    "value": {
+                    }
+                  };
+                  myself.statisticsService.dispatchEvent("getCurrentChart", PresenterEventType.PPT_NATIVE_EVENT, ed);
+                }
+              }
+            }
+            break;
+          case "question":
+            if (myself.presenterServiceList.length > 0 && myself.presenterServiceList[0][eventData.method]) {
+              //如果是截图题，myself.presenterServiceList[0].presenter.model.is_tool = true;
+
+              if (myself.eventData && myself.eventData["screen_image"] === 1) {
+                myself.presenterServiceList[0].presenter.model.is_tool = true;
+              }
+              myself.presenterServiceList[0][eventData.method].apply(myself.presenterServiceList[0], eventData.args);
+              if (eventData.method == "showAnswer" && !eventData.noLockQuestion && myself.presenterServiceList[0]["lockQuestion"]) {
+                myself.presenterServiceList[0]["lockQuestion"].apply(myself.presenterServiceList[0]);
+              }
+            }
+            break;
+          case "statistic":
+            if (myself.statisticsService && myself.statisticsService[eventData.method]) {
+              var currentState = this.layoutService.getCurrentState();
+              myself.statisticsService.setCurrentStatus(currentState);
+              if ($.isArray(eventData["args"])) {
+                eventData["args"].push(myself.eventData);
+              }
+              var data = myself.statisticsService[eventData.method].apply(myself.statisticsService, eventData["args"]);
+              if (eventData.method == "requestSingleStatistics") {
+                myself._doSingleQuizStatistics(data);
+              }
+            }
+            break;
+          case "controller":
+            this[eventData.method] && this[eventData.method]();
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    resend: function() {
+      myself.inStatistics = false;
+    },
+    _onExamCallback: function(eventData) {
+      if (eventData.type == "subExamAnswer" && eventData.target == "ObjectiveStatController") {
+        var data = {
+          examId: myself.eventData.value["examId"],
+          totalTime: myself.eventData.value["elapsedTime"], //总耗时
+          submitCount: myself.eventData.value["users"].length, //提交人数（含未作答，等于在线人数）
+          answerCount: myself.eventData.value["users"].length, //作答人数
+          questionType: myself.eventData.value["questionType"], //题目类型
+          questionUrl: myself.eventData.value["questionXml"],
+          subquestionId: myself.subquestionId,
+          subquestionType: myself.subQuestionType //子题类型
+        };
+        myself.$dispatchEvent("CompoundAnswerClassStatis", PresenterEventType.IC_PLAYER_EVENT, data);
+      // if (myself.layoutService.goSingleStat) { //修复bug#99563
+      //   myself.layoutService.goSingleStat();
+      // }
+      }
+    },
+    _onQuizStatisticsUsersCallback: function(eventData) {
+      console.log("_onQuizStatisticsUsersCallback", eventData);
+      this.oriEventData.value["users"] = eventData.value["users"];
+      this.pagingDefered.resolve();
+    },
+    _onStudentStatisCallback: function(eventData) {
+      var target = _.find(this.oriEventData.value.answers[0], function(item) {
+        return item.answer_id == eventData.value.answer_id
+      });
+      if (target) {
+        target["userIds"] = eventData.value.userIds;
+        target["fatched"] = true;
+      }
+      //判断是否全部获取
+      var fatched = true;
+      $.each(this.oriEventData.value.answers[0], function(i, item) {
+        if (!item['fatched']) {
+          fatched = false;
+          return false;
+        }
+      });
+
+      var data = {
+        "eventName": "GetQuizStatisticsUsers",
+        "eventData": {
+          "source": "ObjectiveStatController",
+          "isApp": true,
+          "value": {
+            "orderBy": "submitTime", //答案标识
+            "startIndex": 1, //当前页第一个学生的索引
+            "pageSize": this.oriEventData.value["usersCount"], //页面展示的学生数量
+          }
+        }
+      };
+
+      fatched && this.$dispatchEvent("sendEvent", PresenterEventType.NATIVE_EVENT, data);
+    },
+    _onHandlePhoneRemoteCmd: function(eventData) {
+      if (eventData && eventData["business_id"] == "exam" && eventData["cmd_id"] == "exit") {
+        //执行模拟退出本题
+        if (myself.statisticsService && myself.statisticsService.exitThisExam) {
+          myself.statisticsService.exitThisExam();
+        }
+      }
+    },
+    _onHandleQuizStatistics: function(eventData) {
+      if (localTest) {
+        $.get(this.basePath + "resources/mock_compound.json", function(eventData) { //比大小mock数据
+          this._doHandleQuizStatistics(eventData);
+        });
+      } else {
+        this.normal = true;
+        this._doHandleQuizStatistics(eventData);
+      }
+    },
+    _doForClassroomSummaryStatistics: function(eventData, showResult, attrsObj) {
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["d" /* adaptEventData */])(eventData);
+      if (myself.presenterServiceList.length > 0) {
+        // 获取题型正确答案getResult
+        var result = myself.presenterServiceList[0].getResult();
+        if (result && result.answer && result.answer && eventData) {
+          // 合并正确答案到统计原始数据
+          eventData.value["correctAnswerTeacher"] = result.answer;
+
+          if (myself.presenterServiceList[0].getQuestionInfo) {
+            var questionInfo = myself.presenterServiceList[0].getQuestionInfo();
+            eventData["questionInfo"] = questionInfo;
+          }
+          //调用题型统计数据转换接口
+          myself.presenterServiceList[0].convertDataForStatistics(eventData);
+
+          // 调用统计模组接口进入统计
+          if (myself.statisticsService && myself.statisticsService.enterStatistics) {
+
+            myself.eventData = $.extend(true, {}, eventData);
+
+            myself.layoutService.adjustLayoutForStartAnswer();
+            //调用controller的showDetailStatistics
+            myself.layoutService.showDetailStatistics();
+
+            if (myself.statisticsService.setExtroAttrs && attrsObj) { //设置统计额外属性
+              myself.statisticsService.setExtroAttrs(attrsObj);
+            }
+
+            var statisticClass = myself.presenterServiceList[0].getStatisticClass();
+            //修复bug#79885
+            eventData.value.convertedData.fromClassSummary = true;
+            myself.statisticsService.enterStatistics(eventData, statisticClass, false);
+            if (statisticClass == "E") {
+              //属于E类，调用controller的disableLayoutDrag
+              myself.layoutService.disableLayoutDrag();
+            }
+          }
+          if (myself.layoutService.hideSubmitButton) {
+            myself.layoutService.hideSubmitButton();
+          }
+
+          if (showResult == true && myself.statisticsService.showResult) { //公布结果
+            myself.statisticsService.showResult({
+              noLockQuestion: true
+            });
+          }
+          myself.presenterServiceList[0].startStatistics();
+
+          //进入web版f类统计
+          if (statisticClass == "F") {
+            //设置footbar，返回总览的dom插入
+            var $footbar = myself.layoutService.getContainer("FootBarPanel");
+            myself.statisticsService.setFootBarPanel($footbar);
+
+            myself.statisticsService.enterWebStatForF();
+            myself.layoutService.presenter.$view.find(".mix-layout__container").addClass("mix-layout--classF mix-layout--wait");
+            myself.layoutService.disableLayoutDrag();
+          }
+
+        }
+      }
+      myself.eventData = $.extend(true, {}, eventData);
+    },
+    _fireEvent: function(eventName, option) {
+      if (!option) {
+        option = {};
+      }
+      option.source = this.__model.ID;
+      if (window.ClassroomUtils && ClassroomUtils.fireEvent) {
+        ClassroomUtils.fireEvent(eventName, option);
+      }
+    },
+    _doSingleQuizStatistics: function(eventData) {
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["d" /* adaptEventData */])(eventData);
+      if (myself.presenterServiceList.length > 0) {
+        // 获取题型正确答案getResult
+        var questionInfo,
+          presenterService;
+        var p;
+        for (var i = 0, len = myself.presenterServiceList.length; i < len; i++) {
+          p = myself.presenterServiceList[i];
+
+          var typeCode = p.getQuestionInfo().type_code;
+          if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["e" /* isCompound */])(typeCode)) {
+            presenterService = p;
+            break;
+          }
+        }
+        var statisticClass = eventData.value["statisticClass"];
+        myself.subQuestionType = eventData.value["questionType"];
+
+        var result;
+        if (presenterService && presenterService.getResult) {
+          result = presenterService.getResult();
+        }
+        if (result && result.answer && result.answer && eventData) {
+          // 合并正确答案到统计原始数据
+          eventData.value["correctAnswerTeacher"] = result.answer;
+
+          //调用题型统计数据转换接口
+          if (statisticClass != "D") {
+            if (presenterService.getQuestionInfo) {
+              questionInfo = presenterService.getQuestionInfo();
+              eventData["questionInfo"] = questionInfo;
+            }
+            presenterService.convertDataForStatistics(eventData);
+          }
+
+          if (myself.statisticsService && myself.statisticsService.enterStatistics) {
+            var $footbar = myself.layoutService.getContainer("FootBarPanel");
+            myself.statisticsService.setFootBarPanel($footbar);
+
+            //调用controller的showDetailStatistics
+            if (myself.layoutService.setStatStateHide) {
+              myself.layoutService.setStatStateHide();
+            }
+            myself.layoutService.showDetailStatistics(statisticClass);
+
+            var attrsObj = {
+              noShowAnswerBtn: true
+            };
+            if (myself.statisticsService.setExtroAttrs && attrsObj) { //设置统计额外属性
+              myself.statisticsService.setExtroAttrs(attrsObj);
+            }
+            var opt = {
+              NO_THUMBS_UP: true,
+              showAnswer: true,
+            };
+            myself.statisticsService.enterStatistics(eventData, statisticClass, true, opt);
+
+            //web版统计增加，隐藏退出本题按钮
+            if (myself.icrStatistics) {
+              $footbar.find(".footbar-exitThisExam").addClass("hide_dom");
+            }
+
+            if (statisticClass == "E") {
+              //属于E类，调用controller的disableLayoutDrag
+              myself.layoutService.disableLayoutDrag();
+            } else if (statisticClass == "F") {
+              myself.layoutService.presenter.$view.find(".mix-layout__container").addClass("mix-layout--classF mix-layout--wait");
+              myself.layoutService.disableLayoutDrag();
+            }
+
+          }
+          // 调用统计模组接口进入统计
+          presenterService.startStatistics();
+        }
+      }
+    //myself.eventData = $.extend(true,{},eventData);
+    },
+    extracted: function(presenterService, eventData, questionInfo, opt) {
+      var result = presenterService.getResult({
+        fromStatistics: true
+      });
+      if (result && result.answer && result.answer && eventData) {
+        // 合并正确答案到统计原始数据
+        eventData.value["correctAnswerTeacher"] = result.answer;
+
+        if (presenterService.getQuestionInfo) {
+          questionInfo = presenterService.getQuestionInfo();
+          eventData["questionInfo"] = questionInfo;
+        }
+        //调用题型统计数据转换接口
+        presenterService.convertDataForStatistics(eventData);
+
+        //向Pc端发送课堂总结统计请求事件
+        if (eventData["questionInfo"] && !eventData["questionInfo"]["dynamic"]) {
+          myself._fireEvent("StatisticsClassSummary", {
+            isApp: true
+          });
+        }
+
+        if (myself.statisticsService && myself.statisticsService.enterStatistics) {
+          var $footbar = myself.layoutService.getContainer("FootBarPanel");
+          myself.statisticsService.setFootBarPanel($footbar);
+
+          var statisticClass = presenterService.getStatisticClass();
+          if (!statisticClass && myself.statisticsService.setFootBar) {
+            myself.statisticsService.setFootBar();
+            return;
+          }
+          //调用controller的showDetailStatistics
+          if (statisticClass == "F") {
+            myself.layoutService.startStatisticForF();
+          } else {
+            myself.layoutService.showDetailStatistics(statisticClass);
+          }
+          myself.statisticsService.enterStatistics(eventData, statisticClass, true, opt);
+          if (statisticClass == "E") {
+            //属于E类，调用controller的disableLayoutDrag
+            myself.layoutService.disableLayoutDrag();
+          } else if (statisticClass == "F") {
+            myself.layoutService.presenter.$view.find(".mix-layout__container").addClass("mix-layout--classF mix-layout--wait");
+            myself.layoutService.disableLayoutDrag();
+          } else if (eventData.questionInfo && eventData.questionInfo.questionType === "TemporaryQuestion") {
+            myself.layoutService.presenter.$view.find(".mix-layout__container").addClass("mix-layout--tempquestion");
+          }
+
+        }
+        // 调用统计模组接口进入统计
+        presenterService.startStatistics();
+      }
+      myself.eventData = $.extend(true, {}, eventData);
+      /*
+       * 如果是汉字听写题，直接进入公布结果。
+       * 本应将此在statisticsService.enterStatistics中实现，然而公布结果时由依赖上面那一行的 myself.eventData
+       */
+      if (eventData && eventData.value && eventData.value.questionType === "ChineseCharacterDictation") {
+        $.isFunction(myself.statisticsService.triggerShowResult) && myself.statisticsService.triggerShowResult();
+      }
+    },
+    _doHandleQuizStatistics: function(eventData, opt) {
+
+      __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["d" /* adaptEventData */])(eventData);
+
+      var option = opt || {
+        showRepeat: true //显示重发本题按钮
+      };
+
+      this.oriEventData = eventData;
+      if (this.presenterServiceList.length > 0) {
+        // 获取题型正确答案getResult
+        var questionInfo,
+          presenterService,
+          questionType = eventData.value.questionType;
+        //Compound
+        if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["e" /* isCompound */])(questionType)) {
+          var p;
+          for (var i = 0, len = this.presenterServiceList.length; i < len; i++) {
+            p = this.presenterServiceList[i];
+            var typeCode = p.getQuestionInfo().type_code;
+            if (__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns_js__["e" /* isCompound */])(questionType)) {
+              presenterService = p;
+              break;
+            }
+          }
+        } else {
+          presenterService = this.presenterServiceList[0];
+        }
+
+        //判断是否需要分页获取名单
+        var answers = eventData.value['answers'][0];
+        this.pagingDefered = $.Deferred();
+        var _self = this;
+        var attrsObj = {
+          noShowAnswerBtn: false
+        };
+        if (_self.statisticsService.setExtroAttrs && attrsObj) { //设置统计额外属性
+          _self.statisticsService.setExtroAttrs(attrsObj);
+        }
+        var i,
+          len = answers.length,
+          data;
+        if (eventData.value['needPaging'] && len > 0) {
+          for (i = 0; i < len; i++) {
+            data = {
+              "eventName": "GetStudentStatis",
+              "eventData": {
+                "source": "ObjectiveStatController",
+                "isApp": true,
+                "value": {
+                  "answer_id": answers[i]["answer_id"], //答案标识
+                  "startIndex": 1, //当前页第一个学生的索引
+                  "pageSize": answers[i]["count"], //页面展示的学生数量
+                }
+              }
+            };
+            this.$dispatchEvent("sendEvent", PresenterEventType.NATIVE_EVENT, data);
+          }
+          var promise = this.pagingDefered.promise();
+          promise.done(function() {
+            _self.extracted(presenterService, eventData, questionInfo, option);
+          });
+        } else {
+          this.extracted(presenterService, eventData, questionInfo, option);
+        }
+      }
+    }
+  }, "ObjectiveStatController");
+
+  window.AddonObjectiveStatController_create = function() {
+    return new Presenter();
+  }
+})();
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

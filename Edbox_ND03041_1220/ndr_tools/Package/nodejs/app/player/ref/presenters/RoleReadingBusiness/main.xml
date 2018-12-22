@@ -1,0 +1,1870 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='RoleReadingBusiness'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="RoleReadService" version="1.2.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .layout_RoleReading{width:100%;height:100%;background:#faf5ec;box-shadow:0 0 .25em 0 rgba(0,0,0,.3);border-radius:.66667em}.exam_skin_wood .layout_RoleReading .com_layout_main{top:8.33333em;left:0;bottom:0;right:5.58333em;background:#f6f2e8;border-top:1px solid #ded7cc;overflow:initial;border-radius:0 0 0 .66667em}.exam_skin_wood .layout_RoleReading .com_layout_main:after,.exam_skin_wood .layout_RoleReading .com_layout_main:before{content:'';position:absolute;top:.83333em;width:1.25em;height:1.25em;border-top:.125em solid #e2ded6}.exam_skin_wood .layout_RoleReading .com_layout_main:before{left:1.04167em;border-left:.125em solid #e2ded6}.exam_skin_wood .layout_RoleReading .com_layout_main:after{right:1.04167em;border-right:.125em solid #e2ded6}.exam_skin_wood .layout_RoleReading .reading_grade{display:inline-block;width:2.75em;height:2.75em;line-height:2.75em;border-radius:50%;text-align:center}.exam_skin_wood .layout_RoleReading .reading_grade span{font-size:1.5em;color:#fff}.exam_skin_wood .layout_RoleReading .reading_grade.grade_a{background:#7fcb5e}.exam_skin_wood .layout_RoleReading .reading_grade.grade_b{background:#48cbdf}.exam_skin_wood .layout_RoleReading .reading_grade.grade_c{background:#ffa421}.exam_skin_wood .layout_RoleReading .reading_grade.grade_d{background:#ff6839}.exam_skin_wood .layout_RoleReading .reading_grade.grade_e{background:red}.exam_skin_wood .role_reading_box{position:relative;height:100%}.exam_skin_wood .role_reading_box:after,.exam_skin_wood .role_reading_box:before{left:2.5em;right:2.5em;height:5.5em;z-index:100;pointer-events:none;position:absolute;content:""}.exam_skin_wood .role_reading_box:before{top:0;background:url(resources/wood/images/rbg_mask.png) repeat-x;background-size:100% 100%}.exam_skin_wood .role_reading_box:after{bottom:6.83333em;background:url(resources/wood/images/rbg_mask.png) repeat-x;background-size:100% 100%;-webkit-transform:rotate(180deg);transform:rotate(180deg)}.exam_skin_wood .role_reading_box .role_r_loading{position:absolute;z-index:150;top:-1.7em;left:-.2em}.exam_skin_wood .role_reading_box .role_r_loading .dot{display:inline-block;width:1.08333em;height:1.08333em;margin-right:.25em;background:url(resources/wood/images/icons_dot.png) center center no-repeat;background-size:100% 100%}.exam_skin_wood .role_reading_box .role_r_loading .dot:nth-child(1){opacity:1}.exam_skin_wood .role_reading_box .role_r_loading.ui_getready .dot:nth-child(1){-webkit-animation:opacitysOut 1s linear 3s forwards;animation:opacitysOut 1s linear 3s forwards}.exam_skin_wood .role_reading_box .role_r_loading.ui_getready .dot:nth-child(2){-webkit-animation:opacitysOut 1s linear 2s forwards;animation:opacitysOut 1s linear 2s forwards}.exam_skin_wood .role_reading_box .role_r_loading.ui_getready .dot:nth-child(3){-webkit-animation:opacitysOut 1s linear 1s forwards;animation:opacitysOut 1s linear 1s forwards}.exam_skin_wood .role_reading_ul_box{position:absolute;top:0;left:0;right:0;bottom:7em;overflow:hidden}.exam_skin_wood .role_reading_ul{position:relative;padding:5.5em 0 2.66667em;-webkit-transform:translate(0,0);transform:translate(0,0);-webkit-transition:-webkit-transform 1s;transition:-webkit-transform 1s;transition:transform 1s;transition:transform 1s,-webkit-transform 1s;will-change:transform}.exam_skin_wood .role_reading_ul li{position:relative}.exam_skin_wood .role_reading_ul li.roler_left{margin-left:5.33333em;padding-left:6.83333em}.exam_skin_wood .role_reading_ul li.roler_left .role_reading_user_pic{left:0}.exam_skin_wood .role_reading_ul li.roler_left .role_reading_user_txt{float:left}.exam_skin_wood .role_reading_ul li.roler_left .roler_tips{right:100%;background-image:url(resources/wood/images/rbg_l1.png);background-position:.125em 0}.exam_skin_wood .role_reading_ul li.roler_right{margin-right:5.33333em;padding-right:6.83333em}.exam_skin_wood .role_reading_ul li.roler_right .role_reading_user_pic{right:0}.exam_skin_wood .role_reading_ul li.roler_right .role_reading_user_txt{float:right}.exam_skin_wood .role_reading_ul li.roler_right .roler_tips{left:100%;background-image:url(resources/wood/images/rbg_r1.png);background-position:-.125em 0}.exam_skin_wood .role_reading_ul li.on .role_reading_user_txt{background-color:#00bcd8;border-color:#00bcd8}.exam_skin_wood .role_reading_ul li.on .role_reading_user_txt p{color:#fff}.exam_skin_wood .role_reading_ul li.on.roler_left .roler_tips{background-image:url(resources/wood/images/rbg_l2.png)}.exam_skin_wood .role_reading_ul li.on.roler_right .roler_tips{background-image:url(resources/wood/images/rbg_r2.png)}.exam_skin_wood .role_reading_ul li.done .reading_grade{display:block}.exam_skin_wood .role_reading_ul li.done .ui_red{color:#ff571d}.exam_skin_wood .role_reading_ul li.done .ui_green{color:#21c519}.exam_skin_wood .role_reading_ul li .reading_grade{display:none;position:absolute;top:.7em;right:100%;margin-right:1em}.exam_skin_wood .role_reading_ul .role_reading_user_pic{position:absolute;top:0;width:5.16667em;height:5.16667em;border:.16667em solid #fff;border-radius:50%;background:#eee}.exam_skin_wood .role_reading_ul .role_reading_user_pic img{width:100%;height:100%;border-radius:50%}.exam_skin_wood .role_reading_ul .role_reading_user_pic.bg_c_male{background:#a6e3e9}.exam_skin_wood .role_reading_ul .role_reading_user_pic.bg_c_female{background:#fec4da}.exam_skin_wood .role_reading_ul .role_reading_user_txt{background:#fff;border-radius:1.25em;border:.125em solid #f0ebe1;padding:1em 1.16667em;margin:.5em 0 2.5em;max-width:70%;position:relative;min-width:10em}.exam_skin_wood .role_reading_ul .roler_tips{position:absolute;top:1.5em;width:1.33333em;height:1.16667em;background-repeat:no-repeat;background-size:100% 100%}.exam_skin_wood .role_reading_ul .roler_txt p{font-size:1.5em;color:#6a6a6a;line-height:1.5;word-wrap:break-word;word-break:break-word}.exam_skin_wood .role_reading_ul .roler_txt p span{display:inline-block}.exam_skin_wood .role_reading_btn_box{position:absolute;right:1.66667em;bottom:1.5em;z-index:150}.exam_skin_wood .role_reading_btn_box .com_btn_circular{margin-left:.83333em}.exam_skin_wood .role_reading_sound{position:absolute;left:50%;bottom:2em;width:6.25em;margin-left:-3em;height:2.83333em;background:url(resources/wood/images/icons_soundp.png) left bottom no-repeat;background-size:auto 2.66667em;padding:.16667em 0 0 2.08333em}.exam_skin_wood .role_reading_sound span{display:inline-block;width:0;height:2.66667em;background:url(resources/wood/images/icons_soundp1.png) left bottom no-repeat;background-size:auto 100%}.exam_skin_wood .role_reading_sound.sound0 span{width:0}.exam_skin_wood .role_reading_sound.sound1 span{width:.41667em}.exam_skin_wood .role_reading_sound.sound2 span{width:1em}.exam_skin_wood .role_reading_sound.sound3 span{width:1.58333em}.exam_skin_wood .role_reading_sound.sound4 span{width:2.16667em}.exam_skin_wood .role_reading_sound.sound5 span{width:2.75em}.exam_skin_wood .role_reading_sound.sound6 span{width:3.33333em}.exam_skin_wood .role_reading_sound.sound7 span{width:4.08333em}.exam_skin_wood .com_btn_round2 .role_reading_sound{width:4.41667em;margin:0;height:2em;background-size:auto 1.91667em;padding:.08333em 0 0 1.33333em;bottom:auto;display:inline-block;top:.4em;left:1.8em}.exam_skin_wood .com_btn_round2 .role_reading_sound span{height:1.91667em;display:block}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound0 span{width:0}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound1 span{width:.33333em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound2 span{width:.75em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound3 span{width:1.16667em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound4 span{width:1.58333em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound5 span{width:2em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound6 span{width:2.41667em}.exam_skin_wood .com_btn_round2 .role_reading_sound.sound7 span{width:2.91667em}.exam_skin_wood .role_reading_result{height:100%;position:relative}.exam_skin_wood .role_reading_result_hd{text-align:center;height:4.91667em;line-height:4.58333em}.exam_skin_wood .role_reading_result_hd .com_btn_round2{margin-top:0;position:absolute;left:0;top:1em}.exam_skin_wood .role_reading_result_hd .com_btn_round2 .text_box{color:#5d390d}.exam_skin_wood .role_reading_result_hd .tit{display:inline-block}.exam_skin_wood .role_reading_result_hd .tit .new_ui_text{font-size:1.91667em;color:#272727}.exam_skin_wood .role_reading_result_hd .ratings_a{font-size:2.08333em;color:#7fcb5e}.exam_skin_wood .role_reading_result_hd .ratings_a span{color:#7fcb5e}.exam_skin_wood .role_reading_result_hd .ratings_b{font-size:2.08333em;color:#48cbdf}.exam_skin_wood .role_reading_result_hd .ratings_b span{color:#48cbdf}.exam_skin_wood .role_reading_result_hd .ratings_c{font-size:2.08333em;color:#ffa421}.exam_skin_wood .role_reading_result_hd .ratings_c span{color:#ffa421}.exam_skin_wood .role_reading_result_hd .ratings_d{font-size:2.08333em;color:#ff6839}.exam_skin_wood .role_reading_result_hd .ratings_d span{color:#ff6839}.exam_skin_wood .role_reading_result_hd .ratings_e{font-size:2.08333em;color:red}.exam_skin_wood .role_reading_result_hd .ratings_e span{color:red}.exam_skin_wood .role_reading_result_bd{padding:0 1em;position:absolute;left:0;right:0;top:4.91667em;bottom:1em}.exam_skin_wood .role_reading_layout_left{border:1px solid #c5c5c5;background:#fff;border-radius:.5em;width:56.25em;float:left;margin-right:1em;position:relative;height:100%}.exam_skin_wood .role_reading_layout_left .en_page_num{position:absolute;left:1em;top:1em}.exam_skin_wood .role_reading_layout_left .en_page_num span{font-size:1.25em;color:#777}.exam_skin_wood .role_reading_layout_left .role_result_main{padding-top:3em}.exam_skin_wood .role_reading_layout_left .role_result_content{width:47.5em;margin:0 auto;padding:0;height:10em;height:11em;text-align:center}.exam_skin_wood .role_reading_layout_left .role_result_content:after{content:"";width:0;height:100%;display:inline-block;vertical-align:middle}.exam_skin_wood .role_reading_layout_left .canto{line-height:1.3;max-width:97%;display:inline-block;vertical-align:middle;text-align:left}.exam_skin_wood .role_reading_layout_left .canto .new_ui_text{word-break:break-word}.exam_skin_wood .role_reading_layout_left .canto .new_ui_text span{display:inline-block}.exam_skin_wood .role_reading_layout_left .new_ui_text{font-size:1.91667em;color:#858984}.exam_skin_wood .role_reading_layout_left .ui_red{color:#ff571d}.exam_skin_wood .role_reading_layout_left .ui_green{color:#7fcb5e}.exam_skin_wood .role_reading_layout_left .result{text-align:center;padding-bottom:1.91667em}.exam_skin_wood .role_reading_layout_left .result .text{display:inline-block;margin:0 1.875em}.exam_skin_wood .role_reading_layout_left .result .new_ui_text{font-size:1.5em;color:#323232}.exam_skin_wood .role_reading_layout_left .result .reading_grade .new_ui_text{color:#fff}.exam_skin_wood .role_reading_layout_left .final_result{background:#e3ebe0;padding:1.5em 0;width:47.5em;margin:0 auto;text-align:center}.exam_skin_wood .role_reading_layout_left .final_result .final_result_title{font-size:2.5em;color:#323232}.exam_skin_wood .role_reading_layout_left .final_result .reading_grade{width:3em;height:3em;line-height:3em}.exam_skin_wood .role_reading_layout_left .final_result .reading_grade .new_ui_text{font-size:2em;color:#fff}.exam_skin_wood .role_reading_layout_left .com_btn_round2 .text_box{color:#5d390d}.exam_skin_wood .role_reading_layout_left .static_refresh_box{display:none;padding:1.25em 0 0;margin-bottom:-.5em}.exam_skin_wood .role_reading_layout_left .static_refresh_box p{color:#323232;font-size:1.25em}.exam_skin_wood .role_reading_layout_left .static_refresh .result{padding-bottom:1em}.exam_skin_wood .role_reading_layout_left .static_refresh .static_refresh_box{display:block}.exam_skin_wood .role_reading_layout_left .static_refresh .role_result_content{height:8.5em}.exam_skin_wood .new_ui_next,.exam_skin_wood .new_ui_previous{position:absolute;top:40%}.exam_skin_wood .new_ui_previous{left:.66667em}.exam_skin_wood .new_ui_next{right:.66667em}.exam_skin_wood .role_result_btns{position:absolute;left:0;bottom:1.5em;right:0;border-top:1px solid #c5c5c5;text-align:center}.exam_skin_wood .role_result_btns .com_btn_round2{text-align:center}.exam_skin_wood .role_reading_layout_right{border:1px solid #c5c5c5;background:#fff;border-radius:.5em;overflow:hidden;height:100%;position:relative}.exam_skin_wood .role_reading_layout_right .role_reading_list_title{height:2.41667em;line-height:2.41667em;border-bottom:1px solid #d2d2d2;text-align:center}.exam_skin_wood .role_reading_layout_right .role_reading_list_title .new_ui_text{color:#323232;font-size:1em}.exam_skin_wood .role_reading_layout_right .role_reading_list{position:absolute;left:0;right:0;bottom:0;top:2.41667em;overflow:auto}.exam_skin_wood .role_reading_layout_right .role_reading_list::-webkit-scrollbar{width:27px;height:27px;border-left:1px solid #c6c6c6}.exam_skin_wood .role_reading_layout_right .role_reading_list::-webkit-scrollbar-thumb{border:27px solid transparent;-webkit-border-image:url(resources/wood/images/wood-vertical-thumb.png) 13 13}.exam_skin_wood .role_reading_layout_right .role_reading_list li{position:relative;height:3.75em;line-height:3.75em;border-bottom:1px solid #d2d2d2;padding:0 2.66667em 0 .5em}.exam_skin_wood .role_reading_layout_right .role_reading_list li.on{background:#f1f1f1}.exam_skin_wood .role_reading_layout_right .role_reading_list li.on .new_ui_text{color:#323232}.exam_skin_wood .role_reading_layout_right .role_reading_list .canto{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.exam_skin_wood .role_reading_layout_right .role_reading_list .new_ui_text{font-size:1.25em;color:#676767}.exam_skin_wood .role_reading_layout_right .role_reading_list .reading_grade{position:absolute;right:.5em;top:.91667em;width:2em;height:2em;line-height:2em}.exam_skin_wood .role_reading_layout_right .role_reading_list .reading_grade span{font-size:1.25em}.exam_skin_wood .com_wrapper_board .layout_RoleReading+.comui_big_pop{position:absolute;border-radius:.7em}.exam_skin_wood .com_wrapper_board .role_result_btns{bottom:.8em}.exam_skin_wood .com_wrapper_board .role_result_btns .com_btn_round2{margin-top:.6em}@-webkit-keyframes opacitysOut{0%{opacity:1}100%{opacity:0}}@keyframes opacitysOut{0%{opacity:1}100%{opacity:0}}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content" id="js_rolereading_view"><div class="layout_RoleReading"><router-view></router-view></div><modal></modal><audio-player></audio-player></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    encode: function (path) {
+        return path.split("/").pop().replace(".wav", "");
+    },
+    decode: function (list, recordId) {
+        var recordSrc = [];
+        for (var i = 0, len = list.length; i < len; i++) {
+            if (list[i].record) {
+                recordSrc = list[i].record.split("/");
+                break;
+            }
+        }
+        if (recordSrc.length === 0) {
+            throw new Error("获取音频路径前缀出错");
+        }
+        recordSrc.pop();
+        recordSrc.push(recordId + ".wav");
+        return recordSrc.join("/");
+    }
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function default_1(score) {
+    var grade;
+    switch (true) {
+        case score >= 90 && score <= 100:
+            grade = "A";
+            break;
+        case score >= 80 && score < 90:
+            grade = "B";
+            break;
+        case score >= 70 && score < 80:
+            grade = "C";
+            break;
+        case score >= 60 && score < 70:
+            grade = "D";
+            break;
+        default:
+            grade = "E";
+    }
+    return grade;
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function default_1(arr, callback) {
+    var result;
+    for (var i = 0, len = arr.length; i < len; i++) {
+        if (callback(arr[i], i, arr)) {
+            result = arr[i];
+            break;
+        }
+    }
+    return result;
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vuex_1 = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var AudioPlayer = (function (_super) {
+    __extends(AudioPlayer, _super);
+    function AudioPlayer() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.show = false;
+        _this.audio = null;
+        return _this;
+    }
+    AudioPlayer.prototype.mounted = function () {
+        this.audio = this.$el.querySelector(".role_reading_audio_player");
+    };
+    AudioPlayer.prototype.play = function () {
+        var _this = this;
+        console.log("音频播放器：", this.audioSrc);
+        this.$nextTick(function () {
+            _this.audio.currentTime = 0;
+            _this.audio.play();
+            _this.$store.commit("AUDIO_END", false);
+        });
+    };
+    AudioPlayer.prototype.pause = function () {
+        this.audio.pause();
+    };
+    AudioPlayer.prototype.end = function () {
+        this.$store.commit("AUDIO_END", true);
+    };
+    return AudioPlayer;
+}(Vue));
+AudioPlayer = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(15),
+        computed: __assign({}, vuex_1.mapState({
+            "audioSrc": function (state) { return state.audioPlayer.audioSrc; },
+            "playState": function (state) { return state.audioPlayer.play; }
+        })),
+        watch: {
+            "playState": {
+                handler: function (newValue, oldValue) {
+                    console.log("音频状态切换：", newValue);
+                    newValue ? this.play() : this.pause();
+                },
+                sync: true
+            },
+            "audioSrc": function (newValue) {
+                console.log("音频地址变化:", newValue);
+            }
+        }
+    })
+], AudioPlayer);
+exports.default = AudioPlayer;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vuex_1 = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var Modal = (function (_super) {
+    __extends(Modal, _super);
+    function Modal() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Modal.prototype.start = function () {
+        if (this.isLock)
+            return;
+        this.$store.commit("SHOW_POPUP", { type: "normal", show: false });
+        this.$store.commit("RE_START", false);
+        this.$store.commit("START_READ", true);
+    };
+    Modal.prototype.cancel = function () {
+        if (this.isLock)
+            return;
+        this.$store.commit("SHOW_POPUP", { type: "confirm", show: false });
+    };
+    Modal.prototype.restart = function () {
+        if (this.isLock)
+            return;
+        this.$store.commit("SHOW_POPUP", { type: "confirm", show: false });
+        this.$store.commit("RE_START", true);
+    };
+    return Modal;
+}(Vue));
+Modal = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(16),
+        computed: __assign({}, vuex_1.mapState(["i18n", "isLock", "showPopup", "popupType"]), vuex_1.mapGetters(["currentRoleInfo", "isFirstRole"]))
+    })
+], Modal);
+exports.default = Modal;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var Router = __webpack_require__(30);
+Vue.use(Router);
+var Read_1 = __webpack_require__(28);
+var Result_1 = __webpack_require__(29);
+exports.default = new Router({
+    routes: [
+        { path: "/roleread/index", component: Read_1.default },
+        { path: "/roleread/result", component: Result_1.default }
+    ],
+    matchMode: "IgnoreNoMatch"
+});
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var event = "ServiceEvent";
+var type = "ic_player_event";
+function callback(eventData) {
+    switch (eventData.method) {
+        case "recordVoiceCallback":
+            finishRecord.call(this, eventData);
+            break;
+        case "evaluatingVoiceCallback":
+            finishEvaluating.call(this, eventData);
+            break;
+        case "voiceVolumeCallback":
+            volumeCallback.call(this, eventData);
+    }
+}
+function finishRecord(eventData) {
+    var _this = this;
+    if (eventData.code === 0) {
+        this.$vueRoot.$service.services.recordService.toggleShow(false).done(function () {
+            _this.$vueRoot.$store.commit("COMMIT_RESULT", {
+                "voiceId": eventData.data.voiceId,
+                "record": eventData.data.url
+            });
+        });
+    }
+}
+function finishEvaluating(eventData) {
+    console.log("评测结果：", eventData);
+    if (eventData.code === 0) {
+        this.$vueRoot.$store.commit("COMMIT_RESULT", {
+            "voiceId": eventData.data.voiceId,
+            "result": eventData.data.evaluationResult
+        });
+    }
+}
+function volumeCallback(eventData) {
+    console.log("pc端音量反馈", eventData);
+    var volume = eventData.volume;
+    var soundLevel = 0;
+    switch (true) {
+        case volume === 0:
+            soundLevel = 0;
+            break;
+        case volume > 0 && volume <= 15:
+            soundLevel = 1;
+            break;
+        case volume > 15 && volume <= 30:
+            soundLevel = 2;
+            break;
+        case volume > 30 && volume <= 45:
+            soundLevel = 3;
+            break;
+        case volume > 45 && volume <= 60:
+            soundLevel = 4;
+            break;
+        case volume > 60 && volume <= 75:
+            soundLevel = 5;
+            break;
+        case volume > 75 && volume <= 90:
+            soundLevel = 6;
+            break;
+        case volume > 90:
+            soundLevel = 7;
+            break;
+    }
+    this.$vueRoot.$store.commit("SOUND_LEVEL", soundLevel);
+}
+function default_1(presenter) {
+    presenter.$addEventListener(event, type, callback.bind(presenter));
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var record_path_parse_1 = __webpack_require__(3);
+function default_1(presenter) {
+    var parent = presenter;
+    return {
+        getQuestionInfo: function () {
+            var model = parent.model;
+            return {
+                id: model.QuestionId,
+                type_code: 'rolereading',
+                type_name: '角色朗读',
+                item: "rolereading",
+                url: model.QuestionId,
+                dispatchOnly: true
+            };
+        },
+        showAnswer: function () {
+            console.log("showAnswer");
+        },
+        getResult: function () {
+            var $vueRoot = parent.$vueRoot;
+            var answerState = "NO_ANSWER";
+            $vueRoot.$store.commit("CHANGE_READ_STATE", "end");
+            $vueRoot.$store.commit("CHANGE_AUDIO_PLAY", false);
+            parent.voiceService.stopRecord({ "voiceId": $vueRoot.$store.getters.currentSection.sectionId });
+            parent.$vueRoot.$store.commit("SHOW_POPUP", false);
+            parent.$vueRoot.$router.push("/roleread/result");
+            parent.$vueRoot.$store.commit("CHANGE_CURRENT_INDEX", 0);
+            var result = {
+                "questionId": parent.model.QuestionId,
+                "answerState": answerState,
+                "answer": {
+                    "answer_result": "true",
+                    "correct_response": [],
+                    "user_response": []
+                }
+            };
+            var hasStarted = parent.$vueRoot.$store.state.hasStarted;
+            if (hasStarted) {
+                answerState = "COMPLETE";
+            }
+            var answerList = parent.$vueRoot.$store.state.list;
+            answerList.forEach(function (item) {
+                var evaluatingResult = item.result;
+                var sectionResult = {
+                    "sectionId": item.sectionId,
+                    "evaluated": item.evaluated,
+                    "content": item.content,
+                    "record": record_path_parse_1.default.encode(item.record),
+                    "finalScore": evaluatingResult.overall.score,
+                    "accuracy": evaluatingResult.accuracy.score,
+                    "integrity": evaluatingResult.integrity.score,
+                    "fluency": evaluatingResult.fluency.score,
+                    "scores": []
+                };
+                if (!item.evaluated && answerState == "COMPLETE") {
+                    answerState = "NO_COMPLETE";
+                }
+                evaluatingResult.details.forEach(function (detail) {
+                    sectionResult.scores.push({
+                        "char": detail.char,
+                        "score": detail.score
+                    });
+                });
+                result.answer["user_response"].push(sectionResult);
+            });
+            result.answerState = answerState;
+            return result;
+        },
+        showResultHint: function () {
+            console.log("showResultHint");
+        },
+        lockQuestion: function () {
+            parent.$vueRoot.$store.commit("LOCK", true);
+            parent.$vueRoot.$store.commit("CHANGE_AUDIO_PLAY", false);
+            parent.$vueRoot.$store.commit("OPERATE_TIMER", { type: "clear" });
+        },
+        unlockQuestion: function () {
+            parent.$vueRoot.$store.commit("LOCK", false);
+        },
+        finishQuestion: function () {
+            console.log("finish question");
+        },
+        resetQuestion: function () {
+            var $vueRoot = parent.$vueRoot;
+            $vueRoot.$store.commit("CHANGE_READ_STATE", "notStart");
+            $vueRoot.$store.commit("OPERATE_TIMER", { type: "clear" });
+            $vueRoot.$store.commit("CHANGE_AUDIO_PLAY", false);
+            parent.voiceService.stopRecord({ "voiceId": $vueRoot.$store.getters.currentSection.sectionId });
+            parent.$vueRoot.$store.commit("RESET_STATE");
+            parent.$vueRoot.$router.push("/roleread/index");
+            if (parent.$vueRoot.$router.currentRoute.path !== "/result") {
+                $vueRoot.$store.commit("SHOW_POPUP", { type: "normal", show: true });
+            }
+        },
+        setLocationProperties: function (i18nModel) {
+            parent.i18nModel = i18nModel;
+        },
+        getStatisticClass: function () {
+            return "F";
+        },
+        convertDataForStatistics: function (originalData) {
+            var value = originalData.value;
+            var questionType = value.questionType;
+            var elapsedTime = value.elapsedTime || 0;
+            var answer = {};
+            var students = function (value) {
+                var students = {
+                    length: 0
+                };
+                $.each(value.users, function (i, item) {
+                    item["studentName"] = item.userId;
+                    students[item.userId] = item;
+                    students.length++;
+                });
+                return students;
+            }(value);
+            var excellentNum = 0;
+            var improveNum = 0;
+            var noanswerNum = 0;
+            var num = 0;
+            var answers = function (answers) {
+                var result = {};
+                answers.forEach(function (item) {
+                    var a = JSON.parse(item.answer);
+                    var responses = a.user_response;
+                    var avgScore = 0;
+                    num = responses.length;
+                    var excellNum = 0;
+                    var excellPercent = 0;
+                    for (var i = 0, len = num; i < len; i++) {
+                        if (!answer[responses[i]['sectionId']]) {
+                            answer[responses[i]['sectionId']] = {
+                                'sectionId': responses[i]['sectionId'],
+                                'content': responses[i]['content'],
+                                'excellNum': 0,
+                                'excellPercent': 0
+                            };
+                        }
+                        responses[i]['finalScore'] = parseInt(responses[i]['finalScore']);
+                        responses[i]['accuracy'] = parseInt(responses[i]['accuracy']);
+                        responses[i]['fluency'] = parseInt(responses[i]['fluency']);
+                        responses[i]['integrity'] = parseInt(responses[i]['integrity']);
+                        avgScore += responses[i]['finalScore'];
+                        responses[i]['playing'] = false;
+                        if (responses[i]['finalScore'] >= 90) {
+                            excellNum++;
+                            answer[responses[i]['sectionId']]['excellNum']++;
+                            answer[responses[i]['sectionId']]['excellPercent'] = students.length > 0 ? Math.round(answer[responses[i]['sectionId']]['excellNum'] * 100 / students.length) : 0;
+                        }
+                        if (responses[i] && responses[i]['accuracy'] >= 0) {
+                            if (responses[i]['accuracy'] >= 90) {
+                                level = "A";
+                            }
+                            else if (responses[i]['accuracy'] >= 80 && responses[i]['accuracy'] < 90) {
+                                level = "B";
+                            }
+                            else if (responses[i]['accuracy'] >= 70 && responses[i]['accuracy'] < 80) {
+                                level = "C";
+                            }
+                            else if (responses[i]['accuracy'] >= 60 && responses[i]['accuracy'] < 70) {
+                                level = "D";
+                            }
+                            else {
+                                level = "E";
+                            }
+                            responses[i]['accuracyLevel'] = level;
+                        }
+                        if (responses[i] && responses[i]['fluency'] >= 0) {
+                            if (responses[i]['fluency'] >= 90) {
+                                level = "A";
+                            }
+                            else if (responses[i]['fluency'] >= 80 && responses[i]['fluency'] < 90) {
+                                level = "B";
+                            }
+                            else if (responses[i]['fluency'] >= 70 && responses[i]['fluency'] < 80) {
+                                level = "C";
+                            }
+                            else if (responses[i]['fluency'] >= 60 && responses[i]['fluency'] < 70) {
+                                level = "D";
+                            }
+                            else {
+                                level = "E";
+                            }
+                            responses[i]['fluencyLevel'] = level;
+                        }
+                        if (responses[i] && responses[i]['integrity'] >= 0) {
+                            if (responses[i]['integrity'] >= 90) {
+                                level = "A";
+                            }
+                            else if (responses[i]['integrity'] >= 80 && responses[i]['integrity'] < 90) {
+                                level = "B";
+                            }
+                            else if (responses[i]['integrity'] >= 70 && responses[i]['integrity'] < 80) {
+                                level = "C";
+                            }
+                            else if (responses[i]['integrity'] >= 60 && responses[i]['integrity'] < 70) {
+                                level = "D";
+                            }
+                            else {
+                                level = "E";
+                            }
+                            responses[i]['integrityLevel'] = level;
+                        }
+                        if (responses[i] && responses[i]['finalScore'] >= 0) {
+                            if (responses[i]['finalScore'] >= 90) {
+                                level = "A";
+                            }
+                            else if (responses[i]['finalScore'] >= 80 && responses[i]['finalScore'] < 90) {
+                                level = "B";
+                            }
+                            else if (responses[i]['finalScore'] >= 70 && responses[i]['finalScore'] < 80) {
+                                level = "C";
+                            }
+                            else if (responses[i]['finalScore'] >= 60 && responses[i]['finalScore'] < 70) {
+                                level = "D";
+                            }
+                            else {
+                                level = "E";
+                            }
+                            responses[i]['finalScoreLevel'] = level;
+                        }
+                    }
+                    excellPercent = Math.round(excellNum * 100 / num);
+                    avgScore = Math.round(avgScore / num);
+                    var level = "A";
+                    if (avgScore >= 90) {
+                        excellentNum++;
+                    }
+                    else {
+                        improveNum++;
+                        if (avgScore >= 80 && avgScore < 90) {
+                            level = "B";
+                        }
+                        else if (avgScore >= 70 && avgScore < 80) {
+                            level = "C";
+                        }
+                        else if (avgScore >= 60 && avgScore < 70) {
+                            level = "D";
+                        }
+                        else {
+                            level = "E";
+                        }
+                    }
+                    for (var j = 0; j < item['userIds'].length; j++) {
+                        result[item.userIds[j]] = {
+                            userId: item.userIds[j],
+                            level: level,
+                            excellPercent: excellPercent,
+                            response: responses
+                        };
+                    }
+                });
+                return result;
+            }(value.answers[0]);
+            var users = value.users;
+            var commitStudents = [];
+            var excellentStudents = [];
+            var improveStudents = [];
+            var undoStudents = [];
+            if (window['ClassroomUtils'] && window['ClassroomUtils'].getCurrentStudents) {
+                var options = {
+                    order: [{
+                            orderProperty: 'seatNumberValue',
+                            orderType: 'asc'
+                        }, {
+                            orderProperty: 'studentNo',
+                            orderType: 'asc'
+                        }]
+                };
+                var currentStudent = window['ClassroomUtils'].getCurrentStudents(options);
+                var tmpStu, stuId, tmpIndex;
+                var inArray = false;
+                var j, len;
+                for (j = 0, len = users.length; j < len; j++) {
+                    for (var i = 0; i < currentStudent.length; i++) {
+                        tmpStu = currentStudent[i];
+                        stuId = tmpStu["studentId"];
+                        if (stuId == users[j]["userId"]) {
+                            inArray = true;
+                            users[j]['headIcon'] = tmpStu.headIcon;
+                            users[j]["studentName"] = tmpStu["studentName"];
+                            users[j]["studentNo"] = tmpStu["studentNo"];
+                            currentStudent.splice(i, 1);
+                            break;
+                        }
+                    }
+                }
+            }
+            users.forEach(function (item, index) {
+                var id = item.userId;
+                var student = students[id];
+                if (student) {
+                    student.submitTime = item.submitTime;
+                    if (answers[id] && answers[id]['response']) {
+                        student['result'] = answers[id]['response'] || {};
+                    }
+                    if (student.submitTime === 0) {
+                        student['excellPercent'] = '--';
+                        undoStudents.push(student);
+                    }
+                    else {
+                        student['level'] = answers[id]['level'];
+                        student['excellPercent'] = answers[id]['excellPercent'];
+                        if (answers[id]['level'] == "A") {
+                            excellentStudents.push(student);
+                        }
+                        else {
+                            improveStudents.push(student);
+                        }
+                    }
+                    commitStudents.push(student);
+                }
+            });
+            var commitNum = commitStudents.length;
+            var avgExcellPercent = Math.round(excellentNum * 100 / commitNum);
+            value.convertedData = {
+                questionType: questionType,
+                commitNum: commitNum,
+                totalNum: students.length,
+                elapsedTime: elapsedTime,
+                students: commitStudents,
+                excellentStudents: excellentStudents,
+                improveStudents: improveStudents,
+                undoStudents: undoStudents,
+                answer: answer,
+                avgExcellPercent: avgExcellPercent,
+            };
+            return originalData;
+        },
+        startStatistics: function () {
+        }
+    };
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vuex = __webpack_require__(1);
+var getters_1 = __webpack_require__(25);
+var mutations_1 = __webpack_require__(27);
+var actions_1 = __webpack_require__(24);
+var state_1 = __webpack_require__(22);
+function roleSort(presenter) {
+    var sections = presenter.model.QuestionContent.sections;
+    var roles = presenter.model.QuestionContent.sectionsRoles;
+    var roleLength = roles.length;
+    var sortList = [];
+    if (roleLength > 1) {
+        sortList.push(sections[1].role);
+        sections.some(function (value, index, arr) {
+            var needPush = sortList.every(function (role, roleIndex) {
+                return value.role !== role;
+            });
+            needPush && sortList.push(value.role);
+            return sortList.length === roleLength;
+        });
+    }
+    else {
+        sortList.push(roles[0].id);
+    }
+    return sortList;
+}
+exports.default = function (presenter) {
+    var orderList = roleSort(presenter);
+    var state = __assign({ presenter: presenter, i18n: presenter.i18nModel, isLock: false, hasStarted: false, result: {
+            grade: "A",
+            score: 90
+        }, timer: null, currentState: {
+            startRead: false,
+            selectedIndex: 0,
+            role: orderList[0],
+            section: {
+                id: "uuid",
+                index: 1
+            }
+        }, readAgain: false, readAgainOver: true, readAgainCount: 0, soundLevel: 0, showAudioIcon: false, audioEnd: false, readState: "notStart", audioPlayer: {
+            audioSrc: "",
+            play: false,
+            end: false
+        }, showResult: true, showPopup: false, popupType: "normal", reStart: false, reEvaluating: false, orderList: orderList }, state_1.default(presenter));
+    return new Vuex.Store({
+        state: state,
+        getters: getters_1.default,
+        mutations: mutations_1.default,
+        actions: actions_1.default
+    });
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony default export */ __webpack_exports__["default"] = ({
+  "QuestionId": "123456789",
+  "roles": [{
+	"id": 1,                                 /*角色ID*/
+	"preset": true,                          /*预置角色*/
+	"picture": "man.jpg"                     /*角色图片*/
+  }, {
+	"id": 2,                                 /*角色ID*/
+	"preset": true,                         /*预置角色*/
+	"picture": "resources/custom.jpg"        /*角色图片*/
+  }],
+  /*分段信息,可是句子也可以是篇章*/
+  "sections": [{
+	"sectionId": "1111",                    /*句子标识*/
+	"content": "Where are you from?",       /*句子内容*/
+	"voice": "http://127.0.0.1:3000/presenter-dist/RoleReadingBusiness/1.0.0/resources/voices/a.mp3",       /*标准发音路径*/
+	"role": 1                               /*角色ID, 对应roles节点中的id*/
+  }, {
+	"sectionId": "22222",
+	"content": "I'm from China",
+	"voice": "http://127.0.0.1:3000/presenter-dist/RoleReadingBusiness/1.0.0/resources/voices/a.mp3",
+	"role": 2
+  }, {
+	"sectionId": "33333",
+	"content": "What's your name?",
+	"voice": "http://127.0.0.1:3000/presenter-dist/RoleReadingBusiness/1.0.0/resources/voices/a.mp3",
+	"role": 1
+  }, {
+	  "sectionId": "44444",
+	  "content": "My name is LiLei",
+	  "voice": "http://127.0.0.1:3000/presenter-dist/RoleReadingBusiness/1.0.0/resources/voices/a.mp3",
+	  "role": 2
+	}]
+});
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+module.exports = VueService;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports) {
+
+module.exports = VueServiceDecorator;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = "<div v-show=show><audio class=role_reading_audio_player :src=audioSrc @ended=end>Your browser does not support the audio tag.</audio></div>"
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=comui_big_pop v-show=showPopup><div class=comui_pop_notebook_bg :class=\"{pop_simple_txt: popupType == 'confirm'}\"><div class=comui_pop_notebook_bg_papper><div class=comui_pop_papper_main><div class=comui_pop_warning_title><span class=comui_txt v-show=isFirstRole>{{ i18n.modal_tip_1 }}</span> <span class=comui_txt v-show=!isFirstRole>{{ i18n.modal_tip_2 }}</span></div><div class=comui_pop_userpic_bd><div class=comui_pop_warning_txt><span class=comui_txt>{{ i18n.modal_tip_3 }}</span></div><div class=\"user_pic bg_c_female\"><img :src=currentRoleInfo.picture></div></div><div class=\"comui_pop_main_ft @@popFtClass\"><a class=\"com_btn_round2 @@classname\" href=javascript:; @click=start v-show=\"popupType !== 'confirm'\"><span class=text_box>{{ i18n.start_read }}</span></a> <a class=\"com_btn_round2 @@classname\" href=javascript:; @click=cancel v-show=\"popupType == 'confirm'\"><span class=text_box>{{ i18n.cancel }}</span></a> <a class=\"com_btn_round2 @@classname\" href=javascript:; @click=restart v-show=\"popupType == 'confirm'\"><span class=text_box>{{ i18n.re_start }}</span></a></div></div></div></div></div>"
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = "<ul class=role_reading_ul style=\"overflow: hidden;\" :style=scrollAnimation><li v-for=\"(item, index) in list\" class=\"clearfix js_read_li\" :class=\"{ roler_right: item.role === currentState.role, roler_left: item.role !== currentState.role, on: currentState.selectedIndex === index, done: item.evaluated && item.role === currentState.role}\"><div class=\"role_reading_user_pic bg_c_female\"><img :src=item.picture></div><div class=role_reading_user_txt><div class=role_r_loading :class=\"{ui_getready: item.showAnimation}\" v-show=item.showAnimation><span class=dot></span> <span class=dot></span> <span class=dot></span></div><span class=roler_tips></span><div class=roler_txt><p v-html=item.result.html></p></div><span class=reading_grade :class=\"{ grade_a:item.result.overall.grade.toLowerCase() == 'a', grade_b:item.result.overall.grade.toLowerCase() == 'b', grade_c:item.result.overall.grade.toLowerCase() == 'c', grade_d:item.result.overall.grade.toLowerCase() == 'd', grade_e:item.result.overall.grade.toLowerCase() == 'e'}\"><span>{{ item.result.overall.grade }}</span></span></div></li></ul>"
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=role_reading_box><div class=role_reading_ul_box><read-list :list=list></read-list></div><div class=role_reading_btn_box v-show=currentState.startRead><a class=\"com_btn_circular pause\" href=javascript:; v-show=isPlaying @click=pause><span class=icons_box></span></a> <a class=\"com_btn_circular refresh\" href=javascript:; v-show=!isPlaying @click=showConfirm><span class=icons_box></span></a> <a class=\"com_btn_circular play\" href=javascript:; v-show=!isPlaying @click=play><span class=icons_box></span></a></div><div class=\"role_reading_sound js_audio_icon\" :class=volumeClass :style=\"{visibility:isPPT && showAudioIcon ? 'visible' : 'hidden'}\" @click=stopRecord><span></span></div></div>"
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=role_reading_result><div class=role_reading_result_hd><a class=com_btn_round2 href=javascript:; @click=reEvaluating><span class=text_box>{{ i18n.re_evaluate }}</span></a><div class=tit><span class=new_ui_text>{{ i18n.total_score }}</span> <span class=ratings_a :class=\"{ ratings_a:totalResult.grade.toLowerCase() == 'a', ratings_b:totalResult.grade.toLowerCase() == 'b', ratings_c:totalResult.grade.toLowerCase() == 'c', ratings_d:totalResult.grade.toLowerCase() == 'd', ratings_e:totalResult.grade.toLowerCase() == 'e'}\"><span>{{ totalResult.grade }}</span></span></div></div><div class=role_reading_result_bd><div class=role_reading_layout_left><p class=en_page_num><span>{{ currentState.selectedIndex + 1 }}</span> <span>/</span> <span>{{ sectionLength }}</span></p><div class=role_result_main :class=\"{static_refresh: readAgain && readAgainCount}\"><div class=role_result_content><p class=canto><span class=new_ui_text v-html=currentSection.result.html></span></p></div><a href=javascript:; class=new_ui_previous @click=pre :class=\"{com_btn_disabled: noPre}\"></a><a href=javascript:; class=new_ui_next @click=next :class=\"{com_btn_disabled: noNext}\"></a><div class=result><span class=text><span class=new_ui_text>{{ i18n.fluency }}</span> <i class=reading_grade :class=\"{ grade_a:currentSection.result.fluency.grade.toLowerCase() == 'a', grade_b:currentSection.result.fluency.grade.toLowerCase() == 'b', grade_c:currentSection.result.fluency.grade.toLowerCase() == 'c', grade_d:currentSection.result.fluency.grade.toLowerCase() == 'd', grade_e:currentSection.result.fluency.grade.toLowerCase() == 'e'}\"><span class=new_ui_text>{{ currentSection.result.fluency.grade }}</span></i></span> <span class=text><span class=new_ui_text>{{ i18n.integrity }}</span> <i class=reading_grade :class=\"{ grade_a:currentSection.result.integrity.grade.toLowerCase() == 'a', grade_b:currentSection.result.integrity.grade.toLowerCase() == 'b', grade_c:currentSection.result.integrity.grade.toLowerCase() == 'c', grade_d:currentSection.result.integrity.grade.toLowerCase() == 'd', grade_e:currentSection.result.integrity.grade.toLowerCase() == 'e'}\"><span class=new_ui_text>{{ currentSection.result.integrity.grade }}</span></i></span> <span class=text><span class=new_ui_text>{{ i18n.accuracy }}</span> <i class=reading_grade :class=\"{ grade_a:currentSection.result.accuracy.grade.toLowerCase() == 'a', grade_b:currentSection.result.accuracy.grade.toLowerCase() == 'b', grade_c:currentSection.result.accuracy.grade.toLowerCase() == 'c', grade_d:currentSection.result.accuracy.grade.toLowerCase() == 'd', grade_e:currentSection.result.accuracy.grade.toLowerCase() == 'e'}\"><span class=new_ui_text>{{ currentSection.result.accuracy.grade }}</span></i></span></div><div class=final_result><span class=text><span class=final_result_title>{{ i18n.overall }}</span> <i class=reading_grade :class=\"{ grade_a:currentSection.result.overall.grade.toLowerCase() == 'a', grade_b:currentSection.result.overall.grade.toLowerCase() == 'b', grade_c:currentSection.result.overall.grade.toLowerCase() == 'c', grade_d:currentSection.result.overall.grade.toLowerCase() == 'd', grade_e:currentSection.result.overall.grade.toLowerCase() == 'e'}\"><span class=new_ui_text>{{ currentSection.result.overall.grade }}</span></i></span><div class=static_refresh_box v-show=\"readAgain && readAgainCount\"><p>{{ i18n.read_again_tip }}</p><a class=com_btn_round2 href=javascript:; @click=reEvaluating><span class=text_box>{{ i18n.re_evaluate }}</span></a></div></div></div><div class=role_result_btns><a class=com_btn_round2 href=javascript:; @click=playStandard><span class=text_box>{{ i18n.standard_voive }}</span></a> <a class=com_btn_round2 href=javascript:; @click=playRecord><span class=text_box>{{ i18n.my_record }}</span></a> <a class=com_btn_round2 href=javascript:; @click=readAgainHandler v-show=readAgainOver><span class=text_box>{{ i18n.read_again }}</span></a> <a class=com_btn_round2 href=javascript:; @click=stopRecord v-show=\"readAgain && !readAgainOver\"><span class=text_box></span><div class=\"role_reading_sound js_audio_icon\" :class=volumeClass :style=\"{visibility:isPPT && showAudioIcon ? 'visible' : 'hidden'}\"><span></span></div></a></div></div><div class=role_reading_layout_right><div class=role_reading_list_title><span class=new_ui_text>{{ i18n.sentence_list }}</span></div><ul class=role_reading_list><li v-for=\"(item, index) in list\" :class=\"{on: index === currentState.selectedIndex}\" @click=changeIndex(index)><div class=canto><span class=new_ui_text>{{ index + 1 }}.</span> <span class=new_ui_text>{{ item.content }}</span></div><div class=reading_grade :class=\"{ grade_a:item.result.overall.grade.toLowerCase() == 'a', grade_b:item.result.overall.grade.toLowerCase() == 'b', grade_c:item.result.overall.grade.toLowerCase() == 'c', grade_d:item.result.overall.grade.toLowerCase() == 'd', grade_e:item.result.overall.grade.toLowerCase() == 'e'}\"><span>{{ item.result.overall.grade }}</span></div></li></ul></div></div></div>"
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vuex_1 = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var ReadListItem = (function (_super) {
+    __extends(ReadListItem, _super);
+    function ReadListItem() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.top = 0;
+        return _this;
+    }
+    ReadListItem.prototype.mounted = function () {
+        this.listItems = this.$el.querySelectorAll(".js_read_li");
+    };
+    return ReadListItem;
+}(Vue));
+ReadListItem = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(17),
+        props: ["list"],
+        computed: __assign({}, vuex_1.mapState(["currentState"]), { scrollAnimation: function (state) {
+                var length = this.list.length;
+                var index = state.currentState.selectedIndex;
+                if (index > 0 && index <= length - 3) {
+                    this.top -= this.listItems.item(index - 1).offsetHeight;
+                }
+                else if (index === 0) {
+                    this.top = 0;
+                }
+                console.info("滚动-------：", this.top);
+                return {
+                    transform: "translateY(" + this.top + "px)"
+                };
+            } })
+    })
+], ReadListItem);
+exports.default = ReadListItem;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var grade_1 = __webpack_require__(4);
+function spliceHtml(content, details) {
+    var arr = [];
+    var stringLen = content.length;
+    for (var i = 0, len = details.length; i < len; i++) {
+        var detail = details[i];
+        if (i === 0) {
+            if (detail.beginIndex > 0) {
+                arr.push(content.substring(0, detail.beginIndex));
+            }
+            arr.push(spanWrapper(detail, content, detail.beginIndex, detail.endIndex + 1));
+        }
+        if (i > 0) {
+            if (detail.beginIndex - details[i - 1].endIndex > 1) {
+                arr.push(content.substring(details[i - 1].endIndex + 1, detail.beginIndex));
+            }
+            arr.push(spanWrapper(detail, content, detail.beginIndex, detail.endIndex + 1));
+            if (i === len - 1 && detail.endIndex < stringLen) {
+                arr.push(content.substring(detail.endIndex + 1, stringLen));
+            }
+        }
+    }
+    return arr.join("");
+}
+function spanWrapper(detail, content, start, end) {
+    var str = content.substring(start, end);
+    var spanClass = detail.pass === 1 ? "" : (detail.pass === 0 ? "ui_red" : "ui_green");
+    return "<span class=\"" + spanClass + "\">" + str + "</span>";
+}
+function addIndex(content, details) {
+    if (typeof details[0].beginindex === "number")
+        return;
+    var searchFrom = 0;
+    var startIndex = 0;
+    details.forEach(function (detail) {
+        startIndex = content.indexOf(detail.char, searchFrom);
+        searchFrom = startIndex + detail.char.length;
+        detail.beginindex = startIndex;
+        detail.endindex = searchFrom - 1;
+    });
+}
+function default_1(currentSection, result) {
+    if (result.voiceId !== currentSection.sectionId)
+        return;
+    var arr = ["overall", "accuracy", "integrity", "fluency"];
+    var evaluationResult = JSON.parse(result.result).result;
+    var curSectionResult = currentSection.result;
+    var content = currentSection.content;
+    arr.forEach(function (value) {
+        var score = evaluationResult[value];
+        if (typeof score === "object") {
+            score = score.overall;
+        }
+        curSectionResult[value].score = score;
+        curSectionResult[value].grade = grade_1.default(score);
+    });
+    curSectionResult.details = [];
+    addIndex(content, evaluationResult.details);
+    evaluationResult.details.forEach(function (detail) {
+        var curDetail = {
+            "char": detail.char,
+            "score": detail.score,
+            "pass": 1,
+            "beginIndex": detail.beginindex,
+            "endIndex": detail.endindex
+        };
+        if (detail.score < 60) {
+            curDetail.pass = 0;
+        }
+        else if (detail.score > 80) {
+            curDetail.pass = 2;
+        }
+        curSectionResult.details.push(curDetail);
+    });
+    curSectionResult.html = spliceHtml(content, curSectionResult.details);
+    currentSection.evaluated = true;
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function getList(sections, roles) {
+    var list;
+    list = sections.map(function (section, sectionIndex) {
+        var result = {
+            index: sectionIndex,
+            evaluated: false,
+            showAnimation: false,
+            record: "",
+            result: {
+                overall: {
+                    grade: "E",
+                    score: 0
+                },
+                accuracy: {
+                    grade: "E",
+                    score: 0
+                },
+                integrity: {
+                    grade: "E",
+                    score: 0
+                },
+                fluency: {
+                    grade: "E",
+                    score: 0
+                },
+                htmlBackup: "",
+                html: "",
+                details: []
+            }
+        };
+        section.content.split(" ").forEach(function (word, index, array) {
+            result.result.html += "<span class=\"ui_red\">" + word + "</span>";
+            if (index < array.length - 1) {
+                result.result.html += "&nbsp";
+            }
+        });
+        result.result.htmlBackup = result.result.html;
+        roles.forEach(function (role, roleIndex) {
+            if (role.id === section.role) {
+                result.preset = role.preset;
+                result.picture = role.picture;
+            }
+        });
+        return $.extend(true, result, section);
+    });
+    return list;
+}
+exports.default = function (presenter) {
+    var model = presenter.model;
+    var isPPT = presenter.isPPTShell;
+    var list;
+    var repeatList;
+    var roles;
+    var orderList;
+    var sections = model.QuestionContent.sections;
+    var modelRoles = model.QuestionContent.sectionsRoles;
+    roles = modelRoles.map(function (role, index) {
+        return $.extend(true, {}, role);
+    });
+    roles.forEach(function (role) {
+        if (role.preset || role.id == -1) {
+            role.picture = presenter.basePath + "resources/demopic/" + role.id + ".png";
+        }
+    });
+    list = getList(sections, roles);
+    repeatList = getList(sections, roles);
+    return {
+        repeatList: repeatList,
+        list: list,
+        roles: roles,
+        isPPT: isPPT
+    };
+};
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var store_1 = __webpack_require__(11);
+var router_1 = __webpack_require__(8);
+var vue_presenter_decorator_1 = __webpack_require__(14);
+var VueService = __webpack_require__(13);
+var Modal_1 = __webpack_require__(7);
+var AudioPlayer_1 = __webpack_require__(6);
+var service_1 = __webpack_require__(10);
+var mockModel_js_1 = __webpack_require__(12);
+var evaluate_event_handler_1 = __webpack_require__(9);
+var record_path_parse_1 = __webpack_require__(3);
+var RoleReadingBusiness;
+(function (RoleReadingBusiness) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this) || this;
+            _this.model = null;
+            _this.debug = false;
+            _this.recordParam = [];
+            _this.metaInfo = {
+                name: "RoleReadingBusiness"
+            };
+            _this.logger.appendHandler(_this.$defaultLoggerHandle, { level: Logger.DEBUG });
+            return _this;
+        }
+        Presenter.prototype.getService = function () {
+            return service_1.default(this);
+        };
+        Presenter.prototype.run = function (view, model) {
+            var _this = this;
+            this.view = view;
+            this.model = model;
+            if (this.isApp) {
+                this.__interface = {
+                    exerciseSubInfoDataParse: this.exerciseSubInfoDataParse.bind(this),
+                    exerciseSubInfoSuccess: this.exerciseSubInfoSuccess.bind(this),
+                    exerciseSubInfoFail: this.exerciseSubInfoFail.bind(this)
+                };
+            }
+            this.debug && (this.model = mockModel_js_1.default);
+            this.buildRecordParam();
+            this.voiceService.init();
+            (_a = this.voiceService).created.apply(_a, this.recordParam).done(function () {
+                console.log("录音和评测组件以创建完成");
+                var serviceX = new VueService.ServiceX({
+                    services: {
+                        recordService: _this.voiceService
+                    }
+                });
+                _this.$vueRoot = new Vue({
+                    el: view.querySelector("#js_rolereading_view"),
+                    service: serviceX,
+                    store: store_1.default(_this),
+                    router: router_1.default,
+                    components: {
+                        Modal: Modal_1.default,
+                        AudioPlayer: AudioPlayer_1.default
+                    }
+                });
+                _this.$vueRoot.$router.push("/roleread/index");
+                evaluate_event_handler_1.default(_this);
+            });
+            var _a;
+        };
+        Presenter.prototype.destroy = function () {
+            this.$vueRoot.$router.push("/roleread/index");
+            this.$vueRoot.$destroy();
+            this.voiceService.destroy();
+            this.$removeEventListener();
+        };
+        Presenter.prototype.buildRecordParam = function () {
+            console.log(this);
+            this.recordParam.push({
+                "instanceId": ClassroomUtils.uuid(),
+                "initVisible": false,
+                "position": {
+                    "left": 0,
+                    "top": 0
+                },
+                "amplitudeStyle": "normal"
+            });
+            if (this.isApp) {
+                this.recordParam.push({
+                    "instanceId": ClassroomUtils.uuid(),
+                    "evaluationType": "sentence"
+                });
+            }
+        };
+        Presenter.prototype.voiceServiceFilter = function () {
+            if (this.isApp) {
+                return "IcrAndroidVoiceService";
+            }
+            else if (this.urlParams.isPreview) {
+                return "IcrPreviewVoiceService";
+            }
+            else if (this.isPPTShell) {
+                return "IcrPCVoiceService";
+            }
+        };
+        Presenter.prototype.exerciseSubInfoDataParse = function (options) {
+            var _this = this;
+            console.log("收题数据：", options);
+            if (typeof options.subExamId !== "string") {
+                throw new Error("subExamId不是字符串！");
+            }
+            this.audioDeferred = $.Deferred();
+            var recordSrc = record_path_parse_1.default.decode(this.$vueRoot.$store.state.list, options.subExamId);
+            this.voiceService.requestAudioBase64(recordSrc).done(function (eventData) {
+                console.info("收到的base64音频：", eventData);
+                var answer = {
+                    data: [
+                        {
+                            type: "audio",
+                            value: eventData.data.value
+                        }
+                    ],
+                    isComplete: true
+                };
+                options.answer = JSON.stringify(answer);
+                _this.audioDeferred.resolve(options);
+            });
+            return this.audioDeferred.promise();
+        };
+        Presenter.prototype.exerciseSubInfoSuccess = function () {
+            console.log("提交成功");
+        };
+        Presenter.prototype.exerciseSubInfoFail = function () {
+            console.error("提交失败");
+        };
+        return Presenter;
+    }(BasicPresenter));
+    __decorate([
+        vue_presenter_decorator_1.autoWired({ namespace: "voiceservice", filter: "voiceServiceFilter" })
+    ], Presenter.prototype, "voiceService", void 0);
+    RoleReadingBusiness.Presenter = Presenter;
+})(RoleReadingBusiness || (RoleReadingBusiness = {}));
+window["AddonRoleReadingBusiness_create"] = function () {
+    return new RoleReadingBusiness.Presenter();
+};
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    change: function (context) {
+        context.commit("CHANGE_AUDIO_PLAY", false);
+        context.commit("READ_AGAIN", false);
+        context.commit("READ_AGAIN_COUNT", 0);
+        context.commit("READ_AGAIN_OVER", true);
+        context.commit("CHANGE_READ_STATE", "notStart");
+    }
+};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var find_1 = __webpack_require__(5);
+var grade_1 = __webpack_require__(4);
+function getCurrentSection(state) {
+    return find_1.default(state.readAgainCount ? state.repeatList : state.list, function (value) {
+        return value.index === state.currentState.selectedIndex;
+    });
+}
+exports.default = {
+    currentSection: function (state) {
+        return getCurrentSection(state);
+    },
+    currentRoleInfo: function (state) {
+        return find_1.default(state.roles, function (value) {
+            return value.id == state.currentState.role;
+        });
+    },
+    isFirstRole: function (state) {
+        return state.currentState.role == state.orderList[0];
+    },
+    sectionLength: function (state) {
+        return state.list.length;
+    },
+    isEvaluating: function (state) {
+        var currentSection = getCurrentSection(state);
+        return currentSection && (currentSection.role === state.currentState.role);
+    },
+    volumeClass: function (state) {
+        var className = "sound" + state.soundLevel;
+        return _a = {},
+            _a[className] = true,
+            _a;
+        var _a;
+    },
+    totalResult: function (state) {
+        var totalScore = 0;
+        var finalScore = 0;
+        state.list.forEach(function (item) {
+            totalScore += parseInt(item.result.overall.score);
+        });
+        finalScore = Math.round(totalScore / state.list.length);
+        return {
+            grade: grade_1.default(finalScore),
+            score: finalScore
+        };
+    }
+};
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CHANGE_CURRENT_INDEX = "CHANGE_CURRENT_INDEX";
+exports.PRE_INDEX = "PRE_INDEX";
+exports.NEXT_INDEX = "NEXT_INDEX";
+exports.CHANGE_AUDIO_SRC = "CHANGE_AUDIO_SRC";
+exports.CHANGE_AUDIO_PLAY = "CHANGE_AUDIO_PLAY";
+exports.AUDIO_END = "AUDIO_END";
+exports.CHANGE_CURRENT_ROLE = "CHANGE_CURRENT_ROLE";
+exports.SHOW_POPUP = "SHOW_POPUP";
+exports.START_READ = "START_READ";
+exports.COMMIT_RESULT = "COMMIT_RESULT";
+exports.RESET_STATE = "RESET_STATE";
+exports.CHANGE_READ_STATE = "CHANGE_READ_STATE";
+exports.READ_AGAIN = "READ_AGAIN";
+exports.READ_AGAIN_OVER = "READ_AGAIN_OVER";
+exports.READ_AGAIN_COUNT = "READ_AGAIN_COUNT";
+exports.SOUND_LEVEL = "SOUND_LEVEL";
+exports.SHOW_AUDIO_ICON = "SHOW_AUDIO_ICON";
+exports.LOCK = "LOCK";
+exports.OPERATE_TIMER = "OPERATE_TIMER";
+exports.HAS_STARTED = "HAS_STARTED";
+exports.RE_START = "RE_START";
+exports.RE_EVALUATE = "RE_EVALUATE";
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(26);
+var grade_process_1 = __webpack_require__(21);
+var find_1 = __webpack_require__(5);
+var hasRecord = false;
+var hasResult = false;
+exports.default = (_a = {},
+    _a[types.CHANGE_CURRENT_INDEX] = function (state, index) {
+        state.currentState.selectedIndex = index;
+    },
+    _a[types.CHANGE_READ_STATE] = function (state, readState) {
+        var oldState = state.readState;
+        var showAnimation = false;
+        if ((oldState === "notStart" || oldState === "pause") && readState === "reading") {
+            showAnimation = true;
+        }
+        state.list[state.currentState.selectedIndex].showAnimation = showAnimation;
+        state.readState = readState;
+    },
+    _a[types.PRE_INDEX] = function (state) {
+        if (state.currentState.selectedIndex >= 0) {
+            state.currentState.selectedIndex--;
+        }
+    },
+    _a[types.NEXT_INDEX] = function (state) {
+        if (state.currentState.selectedIndex < state.list.length - 1) {
+            console.warn("============改变selectedIndex=============");
+            state.currentState.selectedIndex++;
+        }
+    },
+    _a[types.CHANGE_AUDIO_SRC] = function (state, src) {
+        state.audioPlayer.audioSrc = src;
+    },
+    _a[types.CHANGE_AUDIO_PLAY] = function (state, play) {
+        state.audioPlayer.play = play;
+    },
+    _a[types.AUDIO_END] = function (state, isEnd) {
+        state.audioEnd = isEnd;
+    },
+    _a[types.CHANGE_CURRENT_ROLE] = function (state, id) {
+        state.currentState.role = id;
+    },
+    _a[types.SHOW_POPUP] = function (state, payload) {
+        state.popupType = payload.type;
+        state.showPopup = payload.show;
+    },
+    _a[types.START_READ] = function (state, start) {
+        state.currentState.startRead = start;
+    },
+    _a[types.OPERATE_TIMER] = function (state, payload) {
+        if (payload.type === "clear") {
+            window.clearTimeout(state.currentState.timer);
+        }
+        else {
+            state.currentState.timer = payload.timer;
+        }
+    },
+    _a[types.COMMIT_RESULT] = function (state, commitResult) {
+        var currentSection = find_1.default(state.readAgain ? state.repeatList : state.list, function (value) {
+            return value.index === state.currentState.selectedIndex;
+        });
+        if (commitResult.voiceId != currentSection.sectionId) {
+            return;
+        }
+        if (state.readState !== "reading")
+            return;
+        if (commitResult.record) {
+            hasRecord = true;
+            currentSection.record = commitResult.record;
+        }
+        if (commitResult.result) {
+            console.log("提交了评测结果commitResult：", commitResult);
+            hasResult = true;
+            grade_process_1.default(currentSection, commitResult);
+            if (state.readAgain) {
+                state.readAgainCount++;
+                state.readAgainOver = true;
+            }
+            state.showAudioIcon = false;
+        }
+        if (hasRecord && hasResult) {
+            console.log("====播放结束，下一句=====");
+            state.audioEnd = true;
+            hasRecord = false;
+            hasResult = false;
+        }
+    },
+    _a[types.RESET_STATE] = function (state) {
+        state.showResult = true;
+        state.showPopup = false;
+        state.audioEnd = false;
+        state.showAudioIcon = false;
+        state.readAgain = false;
+        state.readAgainOver = true;
+        state.readAgainCount = false;
+        state.currentState.startRead = false;
+        state.currentState.selectedIndex = 0;
+        state.currentState.role = state.orderList[0];
+        state.currentState.section.id = "";
+        state.currentState.section.index = 0;
+        state.audioPlayer.audioSrc = "";
+        state.audioPlayer.play = false;
+        state.result.grade = "";
+        state.result.score = 0;
+        state.list.forEach(function (item) {
+            item.evaluated = false;
+            item.record = "";
+            item.result.html = item.result.htmlBackup;
+            item.result.details = [];
+            var arr = ["overall", "accuracy", "integrity", "fluency"];
+            arr.forEach(function (prop) {
+                item.result[prop].grade = "E";
+                item.result[prop].score = 0;
+            });
+        });
+    },
+    _a[types.READ_AGAIN] = function (state, again) {
+        state.readAgain = again;
+    },
+    _a[types.READ_AGAIN_OVER] = function (state, isOver) {
+        state.readAgainOver = isOver;
+    },
+    _a[types.READ_AGAIN_COUNT] = function (state, count) {
+        state.readAgainCount = count;
+    },
+    _a[types.SOUND_LEVEL] = function (state, level) {
+        state.soundLevel = level;
+    },
+    _a[types.SHOW_AUDIO_ICON] = function (state, show) {
+        state.showAudioIcon = show;
+    },
+    _a[types.LOCK] = function (state, lock) {
+        state.isLock = lock;
+    },
+    _a[types.HAS_STARTED] = function (state, start) {
+        state.hasStarted = start;
+    },
+    _a[types.RE_START] = function (state, start) {
+        state.reStart = start;
+    },
+    _a[types.RE_EVALUATE] = function (state, evaluate) {
+        state.showResult = true;
+        state.showPopup = false;
+        state.audioEnd = false;
+        state.readAgain = false;
+        state.readAgainOver = true;
+        state.readAgainCount = false;
+        state.currentState.startRead = false;
+        state.currentState.selectedIndex = 0;
+        state.currentState.role = state.orderList[0];
+        state.currentState.section.id = "";
+        state.currentState.section.index = 0;
+        state.audioPlayer.audioSrc = "";
+        state.audioPlayer.play = false;
+        state.result.grade = "";
+        state.result.score = 0;
+        state.list.forEach(function (item) {
+            item.evaluated = false;
+            item.result.html = item.result.htmlBackup;
+            item.result.details = [];
+            var arr = ["overall", "accuracy", "integrity", "fluency"];
+            arr.forEach(function (prop) {
+                item.result[prop].grade = "E";
+                item.result[prop].score = 0;
+            });
+        });
+    },
+    _a);
+var _a;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vuex_1 = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var ReadList_1 = __webpack_require__(20);
+function delayInPlay(callback) {
+    return setTimeout(function () {
+        if (typeof callback === "function") {
+            callback();
+        }
+    }, 4000);
+}
+var ReadView = (function (_super) {
+    __extends(ReadView, _super);
+    function ReadView() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.roleState = {
+            index: 0
+        };
+        _this.isPlaying = false;
+        _this.playAudio = true;
+        return _this;
+    }
+    ReadView.prototype.beforeMount = function () {
+        this.presenter.$dispatchEvent("questionStateChange", "ic_player_event", { canSubmit: false });
+    };
+    ReadView.prototype.mounted = function () {
+        this.nextRole();
+        var audioOffset = $(this.$el).find(".js_audio_icon").offset();
+        this.$service.services.recordService.setPosition(audioOffset);
+        this.$service.services.recordService.setRecordSize({
+            width: 0,
+            height: 0
+        });
+    };
+    ReadView.prototype.nextRole = function () {
+        var index = this.roleState.index++;
+        if (index === this.orderList.length) {
+            this.presenter.$dispatchEvent("questionStateChange", "ic_player_event", { canSubmit: true });
+            this.$store.commit("CHANGE_READ_STATE", "end");
+            this.$store.commit("CHANGE_CURRENT_INDEX", 0);
+            this.$router.push("/roleread/result");
+            return;
+        }
+        var role = this.orderList[index];
+        this.$store.commit("CHANGE_CURRENT_ROLE", role);
+        this.$store.commit("START_READ", false);
+        this.$store.commit("CHANGE_CURRENT_INDEX", 0);
+        this.$store.commit("CHANGE_READ_STATE", "notStart");
+        this.$store.commit("SHOW_POPUP", { type: "normal", show: true });
+    };
+    ReadView.prototype.startRead = function () {
+        this.$store.commit("CHANGE_READ_STATE", "reading");
+        this.$store.commit("HAS_STARTED", true);
+        this.isPlaying = true;
+        this.timer = delayInPlay(function () {
+            this.nextSentence(true);
+        }.bind(this));
+        this.$store.commit("OPERATE_TIMER", { type: "new", timer: this.timer });
+    };
+    ReadView.prototype.nextSentence = function (playCurrent) {
+        this.$store.commit("OPERATE_TIMER", { type: "clear" });
+        if (!playCurrent && this.currentState.selectedIndex >= this.sectionLength - 1) {
+            this.nextRole();
+            return;
+        }
+        this.isPlaying = true;
+        this.$store.commit("AUDIO_END", false);
+        this.$store.commit("CHANGE_AUDIO_PLAY", false);
+        !playCurrent && this.$store.commit("NEXT_INDEX");
+        this.playAudio = (this.roleState.index === 0 && this.currentState.selectedIndex === 0)
+            || this.currentState.role !== this.currentSection.role;
+        if (this.orderList.length === 1) {
+            this.playAudio = false;
+        }
+        if (this.playAudio) {
+            console.log("当前播放的音频：", this.currentSection.index, this.currentSection.voice);
+            this.$store.commit("CHANGE_AUDIO_SRC", this.currentSection.voice);
+            this.$store.commit("CHANGE_AUDIO_PLAY", true);
+        }
+        else {
+            this.$service.services.recordService.toggleShow(true);
+            this.$store.commit("SHOW_AUDIO_ICON", true);
+            this.$service.services.recordService.startRecord({
+                "voiceId": this.currentSection.sectionId,
+                "content": this.currentSection.content
+            });
+        }
+    };
+    ReadView.prototype.stopRecord = function () {
+        if (this.isLock)
+            return;
+        this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+        this.$store.commit("SHOW_AUDIO_ICON", false);
+    };
+    ReadView.prototype.pause = function () {
+        if (this.isLock)
+            return;
+        this.isPlaying = false;
+        this.$store.commit("OPERATE_TIMER", { type: "clear" });
+        this.$store.commit("CHANGE_READ_STATE", "pause");
+        if (this.playAudio) {
+            this.$store.commit("CHANGE_AUDIO_PLAY", false);
+        }
+        else {
+            this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+            this.$store.commit("SHOW_AUDIO_ICON", false);
+        }
+    };
+    ReadView.prototype.play = function () {
+        if (this.isLock)
+            return;
+        this.isPlaying = true;
+        this.$store.commit("CHANGE_READ_STATE", "reading");
+        this.timer = delayInPlay(function () {
+            this.nextSentence(true);
+        }.bind(this));
+        this.$store.commit("OPERATE_TIMER", { type: "new", timer: this.timer });
+    };
+    ReadView.prototype.showConfirm = function () {
+        this.$store.commit("SHOW_POPUP", { type: "confirm", show: true });
+    };
+    ReadView.prototype.reEvaluating = function () {
+        if (this.isLock)
+            return;
+        this.isPlaying = false;
+        this.roleState.index = 0;
+        this.$store.commit("RE_EVALUATE");
+        this.nextRole();
+    };
+    return ReadView;
+}(Vue));
+ReadView = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(18),
+        computed: __assign({}, vuex_1.mapState([
+            "presenter",
+            "currentState",
+            "audioEnd",
+            "list",
+            "showAudioIcon",
+            "isPPT",
+            "readState",
+            "isLock",
+            "orderList",
+            "reStart"
+        ]), vuex_1.mapGetters([
+            "currentRoleInfo",
+            "currentSection",
+            "sectionLength",
+            "isEvaluating",
+            "volumeClass"
+        ])),
+        components: {
+            "read-list": ReadList_1.default
+        },
+        watch: {
+            "audioEnd": function (newValue, oldValue) {
+                newValue && this.nextSentence(false);
+            },
+            "currentState.startRead": function (newValue, oldValue) {
+                newValue && this.startRead();
+            },
+            "reStart": function (newValue, oldValue) {
+                newValue && this.reEvaluating();
+            },
+        }
+    })
+], ReadView);
+exports.default = ReadView;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var vuex_1 = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var Result = (function (_super) {
+    __extends(Result, _super);
+    function Result() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Result.prototype.mounted = function () {
+        this.audioIcon = $(this.$el).find(".js_audio_icon");
+    };
+    Result.prototype.pre = function () {
+        if (this.noPre) {
+            return;
+        }
+        this.$store.dispatch("change");
+        this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+        this.$store.commit("PRE_INDEX");
+    };
+    Result.prototype.next = function () {
+        if (this.noNext) {
+            return;
+        }
+        this.$store.dispatch("change");
+        this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+        this.$store.commit("NEXT_INDEX");
+    };
+    Result.prototype.changeIndex = function (index) {
+        this.$store.dispatch("change");
+        this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+        this.$store.commit("CHANGE_CURRENT_INDEX", index);
+    };
+    Result.prototype.playStandard = function () {
+        if (this.isLock)
+            return;
+        console.log("点击到【示范朗读】按钮");
+        this.$store.commit("CHANGE_AUDIO_PLAY", false);
+        this.$store.commit("CHANGE_AUDIO_SRC", this.currentSection.voice);
+        this.$store.commit("CHANGE_AUDIO_PLAY", true);
+    };
+    Result.prototype.playRecord = function () {
+        if (this.isLock)
+            return;
+        console.log("点击到【我的录音】按钮");
+        this.$store.commit("CHANGE_AUDIO_PLAY", false);
+        this.$store.commit("CHANGE_AUDIO_SRC", this.currentSection.record);
+        this.$store.commit("CHANGE_AUDIO_PLAY", true);
+    };
+    Result.prototype.readAgainHandler = function () {
+        var _this = this;
+        if (this.isLock)
+            return;
+        console.log("点击到【再读一遍】按钮");
+        this.$store.commit("READ_AGAIN", true);
+        this.$store.commit("READ_AGAIN_OVER", false);
+        this.$store.commit("CHANGE_READ_STATE", "reading");
+        this.$nextTick(function () {
+            window.setTimeout(function () {
+                _this.$service.services.recordService.setPosition(_this.audioIcon.offset());
+                _this.$service.services.recordService.setRecordSize({
+                    width: Math.round(_this.audioIcon.width()),
+                    height: Math.round(_this.audioIcon.height())
+                });
+                _this.$service.services.recordService.toggleShow(true);
+                _this.$store.commit("SHOW_AUDIO_ICON", true);
+                _this.$service.services.recordService.startRecord({
+                    "voiceId": _this.currentSection.sectionId,
+                    "content": _this.currentSection.content
+                });
+            }, 0);
+        });
+    };
+    Result.prototype.stopRecord = function () {
+        if (this.isLock)
+            return;
+        this.$service.services.recordService.stopRecord({ "voiceId": this.currentSection.sectionId });
+        this.$store.commit("SHOW_AUDIO_ICON", false);
+    };
+    Result.prototype.reEvaluating = function () {
+        if (this.isLock)
+            return;
+        console.log("点击到【重新评测】按钮");
+        this.$store.commit("RESET_STATE");
+        this.$store.commit("CHANGE_READ_STATE", "notStart");
+        this.stopRecord();
+        this.$router.push("/roleread/index");
+    };
+    return Result;
+}(Vue));
+Result = __decorate([
+    vue_class_component_1.default({
+        name: "Result",
+        template: __webpack_require__(19),
+        computed: __assign({ noPre: function () {
+                return this.currentState.selectedIndex <= 0;
+            },
+            noNext: function () {
+                return this.currentState.selectedIndex >= this.sectionLength - 1;
+            } }, vuex_1.mapState([
+            "i18n",
+            "list",
+            "currentState",
+            "result",
+            "readAgain",
+            "readAgainOver",
+            "readAgainCount",
+            "showAudioIcon",
+            "isPPT",
+            "isLock"
+        ]), vuex_1.mapGetters([
+            "currentSection",
+            "sectionLength",
+            "volumeClass",
+            "totalResult"
+        ]))
+    })
+], Result);
+exports.default = Result;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports) {
+
+module.exports = VueRouter;
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/demopic/-1.png' />
+<file src='./resources/demopic/1.png' />
+<file src='./resources/demopic/2.png' />
+<file src='./resources/demopic/3.png' />
+<file src='./resources/demopic/4.png' />
+<file src='./resources/wood/images/icons_dot.png' />
+<file src='./resources/wood/images/icons_soundp.png' />
+<file src='./resources/wood/images/icons_soundp1.png' />
+<file src='./resources/wood/images/rbg_l1.png' />
+<file src='./resources/wood/images/rbg_l2.png' />
+<file src='./resources/wood/images/rbg_mask.png' />
+<file src='./resources/wood/images/rbg_r1.png' />
+<file src='./resources/wood/images/rbg_r2.png' />
+<file src='./resources/wood/images/wood-vertical-thumb.png' />
+
+
+</resources>
+
+</addon>

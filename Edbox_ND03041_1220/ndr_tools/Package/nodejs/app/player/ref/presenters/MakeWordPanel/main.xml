@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MakeWordPanel'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="write_css" version="1.0.3" />
+    <javaScript  name="zeptojs" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="nhw_handwriting_hd"></div><div class="nhw_handwriting_ft"></div><div class="nhw_handwriting_bd"><h2 class="nhw_handwriting_tit"><span class="txt"></span></h2><div class="nhw_phrase_wrap"><div class="nhw_phrase_box"></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+
+(function () {
+    var self = null;
+    var QUESTION_TYPE_DYZ = 0, //多音字
+        QUESTION_TYPE_XJZ = 1; //形进字
+    var Presenter = BasicPresenter.extend({
+        //元数据信息
+        metaInfo: {
+            name: 'MakeWordPanel',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+
+            this.isApp = false;//true:PAD或者白板,false:web端
+            this.isTeacher = false;//true:PAD端老师
+            this.isTeacherPc = false;//true:白板端老师
+            this.isStudent = false;//true:学生端
+            this.isPPTshell = false; //101教育PPT
+            this.isWeb = false; //Web端
+            var currentRuntime = player.getPlayerServices().getRuntime();
+            this.isApp = (currentRuntime != icCreatePlayer.RUNTIME.WEB);
+            if (currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                this.isStudent = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_MOBILE) {
+                this.isTeacher = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_PC) {
+                this.isTeacherPc = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                this.isWeb = true;
+            }
+
+            this.currentIndex = 0;
+            this.result = {};
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            renderPage: function(pageIndex){
+                this.parent._renderPage(pageIndex);
+            },
+            resetNavigatorClass: function(finishes){
+                self.$navigationBar.find("a").each(function(index){
+                    var item = $(this);
+                    if(index == self.currentIndex){
+                        item.addClass('on');
+                    } else{
+                        item.removeClass('on');
+                    }
+                    if(finishes[index]){
+                        item.addClass('over');
+                    }
+                    else{
+                        item.removeClass('over');
+                    }
+                });
+            },
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            self = this;
+            self.$view = $(view);
+            self.model = model;
+            this.content = model.content;
+            this.pages = this.content.pages;
+            this.wordtype = this.content.type;
+            self.$title = self.$view.find('.nhw_handwriting_tit span');
+            self.$navigationBar = self.$view.find('.nhw_handwriting_ft');
+
+        },
+        pageShow: function () {
+            //设置题目,超出一行字体变小
+            self.$title.text(self.model.title);
+            var fontSize = self.$view.parent().data('fontsize');
+            if(self.$title.height() > 2.91667 * fontSize || self.model.title.length === 70){
+                self.$title.parent().addClass('txt_s');
+            }
+            //加载组词页面
+            this._renderPage(0);
+            //加载字导航栏
+            this._renderNavigationBar(this.pages);
+
+            this._bindEvent();
+        },
+        destroy: function () {
+            this._unbindEvent();
+        },
+        //绑定事件
+        _bindEvent: function () {
+            // 点击字切页
+            this.$attachDelegateEvent('mouseup',['.nhw_handwriting_ft a'],this._ClickChangePage);
+            // 左滑动切页
+            Rhui.mobile.swipeLeft(self.$navigationBar[0], self._swipeLeftChangePage, {
+                // 可选参数
+                isStopPropagation: false,
+                isPreventDefault: false,
+                triggerOnMove: true
+            });
+            // 右滑动切页
+            Rhui.mobile.swipeRight(self.$navigationBar[0], self._swipeRightChangePage, {
+                // 可选参数
+                isStopPropagation: false,
+                isPreventDefault: false,
+                triggerOnMove: true
+            });
+        },
+        _unbindEvent: function () {
+            this.$removeEventListener();
+        },
+        /**
+         * 加载组词页面
+         * @param data
+         * @private
+         */
+        _renderPage: function (pageIndex) {
+            var data = this.content.pages[pageIndex];
+            var page = self.$view.find(".nhw_phrase_box"),
+                hidePinyin = data.hidePinyin,
+                type = data.type;
+            page.empty();
+
+            if (this.wordtype == QUESTION_TYPE_DYZ) {
+                $("<span class='phrase_word'>" + data.character + "</span>").appendTo(page);
+            }
+            var pagecontent = $('<div class="phrase_wrap"><span class="brace_big"></span><ul></ul></div>').appendTo(page);
+            var ul = pagecontent.find("ul");
+            var itemsize = data.items.length;
+            var maxlinesize = 0;
+
+            $.each(data.items, function (index, data) {
+                var item = $("<li></li>").appendTo(ul);
+                if (hidePinyin || !data.character) {
+                    $('<p class="spell_text">&nbsp;</p>').appendTo(item);
+                } else {
+                    $('<p class="spell_text"><input type="text" value="' + data.character + '" readOnly/></p>').appendTo(item);
+                }
+                var branceWrapper = $('<div class="brace"></div>').appendTo(item);
+                for (var i = 0; i < data.answers.length; i++) {
+                    $('<p class="brace_small"><input type="text" readOnly/></p>').appendTo(branceWrapper);
+                }
+                maxlinesize = Math.max(maxlinesize, data.answers.length);
+            });
+            page.attr("class", "nhw_phrase_box");
+            if (itemsize > 1 && itemsize < 6) {
+                page.addClass("phrase_list" + itemsize);
+            }
+            if (maxlinesize < 3) {
+                page.addClass("phrase_w" + maxlinesize);
+            }
+            this.currentIndex = pageIndex;
+        },
+        /**
+         * 加载字导航栏
+         * @param pages
+         * @private
+         */
+        _renderNavigationBar: function(pages){
+            self.$navigationBar.html('');
+            $.each(pages, function (index, page) {
+                var item = $('<a href="#" class="nhw_btn"></a>').appendTo(self.$navigationBar);
+                item.html(page.title);
+                if(index === self.currentIndex){
+                    item.addClass('on');
+                }
+                item.data("page_index", index);
+            });
+        },
+        /**
+         * 切换页面
+         * @param pageIndex
+         * @private
+         */
+        _changePage: function(pageIndex) {
+            this.$dispatchEvent('MakewordChangePage', PresenterEventType.IC_PLAYER_EVENT, {
+                pageIndex: pageIndex
+            });
+        },
+        _ClickChangePage: function(selectors, e){
+            e.preventDefault();
+            var tar = $(e.target);
+            var pageIndex = tar.data("page_index");
+            if(pageIndex !== self.currentIndex){
+                self._changePage(pageIndex);
+            }
+        },
+        _swipeLeftChangePage: function(event){
+            if(self.currentIndex > 0){
+                var pageIndex = self.currentIndex - 1;
+                self._changePage(pageIndex);
+            }
+        },
+        _swipeRightChangePage: function(event){
+            if(self.currentIndex < self.pages.length - 1){
+                var pageIndex = self.currentIndex + 1;
+                self._changePage(pageIndex);
+            }
+        }
+    });
+
+    window.AddonMakeWordPanel_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,1 @@
+var Path=require("path"),Fs=require("fs"),checkDir=function(r,i){Fs.stat(r,function(c,e){if(!c)return void i();mkdir(r,i)})},mkdir=function(r,i){var c=Path.dirname(r);checkDir(c,function(){Fs.mkdir(r,i)})};exports.checkDir=checkDir,exports.mkdir=mkdir;

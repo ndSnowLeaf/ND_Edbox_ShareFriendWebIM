@@ -1,0 +1,1 @@
+define(["jquery","espEnvironment"],function($,espEnvironment){return function(config,workbench,coursewareobjectMetadata){workbench.openEditor({type:"coursewareobject",key:coursewareobjectMetadata.identifier,data:coursewareobjectMetadata},"nd.esp.coursewareobject.ExternalBasicQEditor",config)}});

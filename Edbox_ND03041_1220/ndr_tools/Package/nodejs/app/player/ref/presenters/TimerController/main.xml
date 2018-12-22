@@ -1,0 +1,411 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TimerController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+function TimerControllerService(parent) {
+  this.parent = parent;
+}
+
+TimerControllerService.prototype = {
+  //开始计时
+  start: function(isUseModel, startTime) {
+    this.parent._start(isUseModel, startTime);
+  },
+  //暂停计时
+  pause: function(isStopTime) {
+    this.parent._pause(isStopTime);
+  },
+  //停止计时
+  stop: function() {
+    this.parent._stop();
+  },
+  //设置当前计时器
+  // setTimeValue: function(second) {
+
+  // },
+  //获取当前计时
+  getTimeValue: function() {
+    return this.parent.spendSecond;
+  },
+  //重置计时器
+  // resetTimer: function(run) {
+
+  // },
+  /**
+   * 状态恢复需要实现的两个接口
+   */
+  getState: function() {},
+  setState: function(state) {}
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (TimerControllerService);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_TimerControllerService__ = __webpack_require__(0);
+
+
+(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: 'TimerController',
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.services = {ITimer: [], ITimerOver: []};
+            //顺计时或倒计时标志(默认都是顺计时)
+            this.sequence = true;
+            //总计时
+            this.totalSecond = 0;
+            //消耗的时间
+            this.spendSecond = 0;
+            //计时器当前状态; 停止stop,运行running,暂停pause
+            this.currentState = "stop";
+            //计时器句柄
+            this.interval = -1;
+            //配置值
+            this.modelValue = {};
+            //是否启动定时器
+            this.isRunTimer = true;
+            //是否对时过
+            this.isSync = false;
+        },
+        /**
+         * 重写基类方法
+         */
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "ITimer",
+                methods: ['initTimeValue', 'setTimeValue']
+            }, {interface: "ITimerOver", methods: ['onTimeOver']}];
+        },
+        $beforePresenterRun: function (name, metaInfo, service) {
+            this.services[name].push(service);
+        },
+        $afterPresenterRun: function (name, metaInfo, service) {
+        },
+        getService: function () {
+            if (!this._service_) { 
+                this._service_ = new __WEBPACK_IMPORTED_MODULE_0__libs_TimerControllerService__["a" /* default */](this);
+            }
+            return this._service_;
+        },
+        //_queryTimeValue: function () {
+        //    var self = this;
+        //    var timerId = window.setInterval(function () {
+        //        var dispatcher = self.playerController.getToolbarModule('classroomStudentDispatcher') || self.playerController.getModule('classroomStudentDispatcher');
+        //        if (dispatcher != null) {
+        //            window.clearInterval(timerId);
+        //            self.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, {
+        //                item: 'exam',
+        //                type: 'query'
+        //            });
+        //        }
+        //    }, 100);
+        //},
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.isSync = false;
+            //设置模型
+            this.modelValue.sequence = (model.timer_type !== 'countdown');
+            this.modelValue.isPauseOnSubmit = (model.isPauseOnSubmit === true);
+            if (this.modelValue.sequence) {
+                this.modelValue.totalSecond = 0;
+            }
+            else {
+                this.modelValue.totalSecond = parseInt(model.time_limit);
+                (isNaN(this.modelValue.totalSecond)) && (this.modelValue.totalSecond = 0);
+            }
+            if (this.isPPTShell || this.isWeb) {
+                this.$addEventListener("PresenterLoaded", PresenterEventType.IC_PLAYER_EVENT, function () {
+                    //新特性任务-TQD67291:点击查看学生详情后会加载思维导图组件，加载完成后也会发出该事件，但此时不应该启动计时
+                    if(!this._hasStartedByPresenterLoaded) {
+                        this._hasStartedByPresenterLoaded = true;
+                        this._start(false);
+                    }
+                });
+            } else {
+                this.$addEventListener("DefGameQuestion", PresenterEventType.IC_PLAYER_EVENT, this._taskInfoReceive);
+            }
+            //调用所有timerList中的initTimerValue方法
+            //$.each(self.services.ITimer, function (k, v) {
+            //    v.initTimeValue(self.totalSecond);
+            //});
+            //获取服务端时间,并开始计时
+            //this.$addEventListener("TaskInfoCallback", PresenterEventType.IC_PLAYER_EVENT, this._taskInfoReceive);
+            //this._queryTimeValue();
+        },
+        _taskInfoReceive: function (eventData) {
+            if (eventData.value && eventData.value.source === 'PresenterLoaded') {
+                this._sync(eventData);
+                this._start();
+            }
+        },
+        destroy: function () {
+            clearInterval(this.interval);
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function () {
+
+        },
+        setState: function (state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+
+        },
+        _unbindEvent: function () {
+
+        },
+        //时间同步
+        _sync: function (servData) {
+            var currentTimestamp = this._getCurrentTime();
+            if (servData.value && servData.value.source === 'PresenterLoaded') {
+                this.isSync = true;
+				
+                var startTimestamp = servData.value.startTimestamp,
+					submitTimestamp = servData.value.submitTimestamp,
+					stopTimestamp = servData.value.stopTimestamp;
+                if (stopTimestamp) {
+                    this.spendSecond = Math.floor((stopTimestamp - startTimestamp) / 1000);
+                    this.isRunTimer = false;
+                } else if (submitTimestamp && submitTimestamp > startTimestamp) {
+                    var t = (this.modelValue.isPauseOnSubmit) ? submitTimestamp : currentTimestamp;
+                    this.spendSecond = Math.floor((t - startTimestamp) / 1000);
+                    //this.isRunTimer = false;
+                } else if (currentTimestamp > startTimestamp) {
+                    this.spendSecond = Math.floor((currentTimestamp - startTimestamp) / 1000);
+                }
+				
+                if (this.modelValue.sequence) {
+                    this.modelValue.totalSecond += this.spendSecond;
+                } else {
+                    this.modelValue.totalSecond -= this.spendSecond;
+                }
+            }
+        },
+        _step: function () {
+            var self = this;
+            this.spendSecond++;
+            if (this.currentState != 'pause') {
+                $.each(self.services.ITimer, function (k, v) {
+                    v.setTimeValue(self.totalSecond);
+                });
+            }
+        },
+        //开始计时
+        _start: function (isUseModel, startTime) {
+            if (this.currentState == 'stop') {
+                if (isUseModel === false) {
+                    this.totalSecond = 0;
+                    this.sequence = true;
+                } else {
+                    this.totalSecond = this.modelValue.totalSecond;
+                    this.sequence = this.modelValue.sequence;
+                }
+                if (this.isSync !== true) {
+                    if (startTime) {
+                        this.spendSecond = Math.floor((this._getCurrentTime() - startTime) / 1000);
+                        if (this.sequence) {
+                            this.totalSecond += this.spendSecond;
+                        } else {
+                            this.totalSecond -= this.spendSecond;
+                        }
+                    } else {
+                        this.spendSecond = 0;
+                    }
+                }
+				else if(startTime != undefined && startTime != null) {
+					this.isRunTimer = true; //支持思维导图多次交互特性，状态恢复bug-99606、99658 修复
+					this.spendSecond = Math.floor((this._getCurrentTime() - startTime) / 1000);
+					if (this.sequence) {
+						this.totalSecond = this.spendSecond;
+					} else {
+						this.totalSecond -= this.spendSecond;
+					}
+				}
+                var self = this;
+                //为组件设置默认值
+                $.each(self.services.ITimer, function (k, v) {
+                    v.initTimeValue(self.totalSecond);
+                });
+                //开始计时
+                if (this.isRunTimer) {
+                    this.interval = setInterval(function () {
+                        if (self.sequence) {
+                            //顺计时
+                            self.totalSecond++;
+                            self._step();
+                        } else {
+                            if (self.totalSecond > 0) {
+                                self.totalSecond--;
+                                self._step();
+                            }
+                            if (self.totalSecond <= 0) {
+                                $.each(self.services.ITimerOver, function (k, v) {
+                                    v.onTimeOver(self.spendSecond);
+                                });
+                                self._stop();
+                                self.totalSecond = 0;
+                            }
+                        }
+                    }, 1000);
+                }
+            }
+            if (this.isRunTimer) {
+                this.currentState = 'running';
+            }
+        },
+        _pause: function (isStopTime) {
+            //当前计时器在运行或暂停状态
+            if (this.currentState == 'running') {
+                this.currentState = 'pause';
+                (isStopTime !== false) && this._stop();
+            }
+        },
+        //停止计时
+        _stop: function () {
+            if (this.currentState == 'running' || this.currentState == 'pause') {
+                clearInterval(this.interval);
+                this.currentState = 'stop';
+            }
+        },
+        _getCurrentTime: function () {
+            var locTime;
+            if (window.ClassroomUtils && (typeof ClassroomUtils != 'undefined') && ClassroomUtils.getMasterSystemTimeMS) {
+                locTime = ClassroomUtils.getMasterSystemTimeMS();
+                //getMasterSystemTimeMS
+                locTime = locTime == 0 ? new Date().getTime() : locTime;
+            } else {
+                locTime = new Date().valueOf();
+            }
+            return locTime;
+        }
+    });
+
+    window.AddonTimerController_create = function () {
+        return new Presenter();
+    }
+})
+();
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

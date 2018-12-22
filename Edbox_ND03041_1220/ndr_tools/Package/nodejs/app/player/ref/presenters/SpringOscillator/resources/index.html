@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>弹簧振子</title>
+    <link rel="stylesheet" type="text/css" href="../../../common/common.css">
+    <link rel="stylesheet" type="text/css" href="../../../common/tools_common.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<div class="exam_skin_wood" id="layout" style="font-size:24px;">
+    <div class="springOscillator_wrapper @@studentClassName">
+    <!--主要部分开始-->
+    <div class="springOscillator_main">
+
+        <!-- 左侧操作区域 -->
+        <div class="springOscillator_main_bd spolr_show_analysis">
+        <!-- 
+        展示x-t曲线的时候 springOscillator_main_bd 添加类名 .spolr_show_xt 
+        展示x-t曲线的时候 springOscillator_main_bd 添加类名 .spolr_show_cycle 
+        展示x-t曲线的时候 springOscillator_main_bd 添加类名 .spolr_show_analysis
+        -->
+            <div class="springOscillator_tool_box">
+                <!-- 振幅与频率操作按钮 -->
+                <div class="springOscillator_tool_btn_box">
+                    <div class="springOscillator_tool_paper">
+                    <!-- 放置绘制曲线图形的容器宽高设置100% -->
+                    <!-- /放置绘制曲线图形的容器宽高设置100% -->
+                    </div>
+                    <!-- .com_btns点中状态可添加类名 .ui_btn_active 控制 -->
+                    <a class="com_btns btns-primary spolr_ntm_nor_left" href="javascript:;">
+                        <span class="btns-primary-txt">M<span class="spolr_ntm_txt_i">'</span></span>
+                        <div class="spolr_line"></div>
+                    </a>
+                    <a class="com_btns btns-primary spolr_ntm_nor_mid" href="javascript:;">
+                        <span class="btns-primary-txt">O</span>
+                        <div class="spolr_line"></div>
+                    </a>
+                    <a class="com_btns btns-primary spolr_ntm_nor_right" href="javascript:;">
+                        <span class="btns-primary-txt">M</span>
+                        <div class="spolr_line"></div>
+                    </a>
+                    <!-- 分析物理量变化相关 -->
+                    <div class="spolr_analysis_animation_box">
+                        <!-- 能量条 -->
+                        <div class="spolr_analysis_e_line">
+                            <div class="spolr_analysis_e_line_width" style="width: 2%"></div>
+                            <span class="spolr_analysis_e_line_text spolr_et_left">E<i>k</i></span>
+                            <span class="spolr_analysis_e_line_text spolr_et_right">E<i>p</i></span>
+                        </div>
+                        <!-- /能量条 -->
+
+                        <!-- 位移 -->
+                        <div class="spolr_analysis_anime_x">
+                            <span class="anime_x_line"></span>
+                            <span class="anime_x_arrow"></span>
+                        </div>
+                        <!-- /位移 -->
+
+                        <!-- 回复力 -->
+                        <div class="spolr_analysis_anime_f"
+                        style="   
+                        width: 8em;left: 2em;
+                        ">
+                            <span class="anime_x_line"></span>
+                            <span class="anime_x_arrow"></span>
+                        </div>
+                        <!-- /回复力 -->
+
+                        <!-- 加速度 -->
+                        <div class="spolr_analysis_anime_a" 
+                        style="   
+                        width: 5em;left: 5em;
+                        ">
+                            <span class="anime_x_line"></span>
+                            <span class="anime_x_arrow"></span>
+                        </div>
+                        <!-- /加速度 -->
+
+                        <!-- 速度 -->
+                        <div class="spolr_analysis_anime_v" 
+                        style="   
+                        width: 3em;left: 9em;transform: rotateY(72deg);
+                        ">
+                            <span class="anime_x_line"></span>
+                            <span class="anime_x_arrow"></span>
+                        </div>
+                        <!-- /速度 -->
+
+                    </div>
+                    <!-- /分析物理量变化相关 -->
+                    
+                </div>
+                <!-- /振幅与频率操作按钮 -->
+
+                <!-- 放置模型的容器 -->
+                <div class="springOscillator_tool_3d">
+                
+                </div>
+                <!-- /放置模型的容器 -->
+                
+                <!-- 操作提示弹窗 可添加类名 .hide_dom 来隐藏-->
+                <div class="spolr_ui_tips_box ">
+                    <div class="spolr_ui_tips_box_bg"></div>
+                    <div class="spolr_ui_tips_box_txt">
+                        <span>拖动小球一段距离松手，可让振子振动起来哦。</span>
+                    </div>
+                </div>
+                <!-- /操作提示弹窗 -->
+                <!-- 手型提示 可添加类名 .hide_dom 来隐藏-->
+                <div class="spolr_ui_tips_hand ">
+                </div>
+                <!-- /手型提示 -->
+                <!-- 首屏出现的字母标识释义 可添加类名 .hide_dom 来隐藏-->
+                <div class="spolr_ui_txt_explanation ">
+                    <div class="spolr_ui_txt_explanation_list">
+                        <div class="txt_explanation_list">
+                            <span class="spolr_ntm_txt spolr_ntm_txt_sp">M<span class="spolr_ntm_txt_i">'</span> :</span>
+                            <span class="spolr_ntm_txt">左最大位移</span>
+                        </div>
+                    </div>
+                    <div class="spolr_ui_txt_explanation_list">
+                        <div class="txt_explanation_list">
+                            <span class="spolr_ntm_txt spolr_ntm_txt_sp">O :</span>
+                            <span class="spolr_ntm_txt">平衡位置</span>
+                        </div>
+                    </div>
+                    <div class="spolr_ui_txt_explanation_list">
+                        <div class="txt_explanation_list">
+                            <span class="spolr_ntm_txt spolr_ntm_txt_sp">M :</span>
+                            <span class="spolr_ntm_txt">右最大位移</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- /首屏出现的字母标识释义 -->
+            </div>
+
+            <!-- 震动周期表格 -->
+            <div class="springOscillator_cycle_table">
+                <div class="springOscillator_cycle_title">
+                    <span class="uibox_txt">全<br/>振<br/>动<br/>记<br/>录</span>
+                </div>
+                <div class="springOscillator_cycle_main spolr_show_scrollbar"><!--  springOscillator_cycle_main超过三行 的时候加类名 .spolr_show_scrollbar来显示滚动条样式与调整布局 -->
+                    <ul class="springOscillator_cycle_hd">
+                        <li class="spolr_cycle_list"><!-- 
+                             --><span class="uibox_txt">振幅</span><!-- 
+                    --></li>
+                        <li class="spolr_cycle_list"><!-- 
+                             --><span class="uibox_txt">全振动次数</span><!-- 
+                    --></li>
+                        <li class="spolr_cycle_list"><!-- 
+                             --><span class="uibox_txt">时间/s</span><!-- 
+                    --></li>
+                        <li class="spolr_cycle_list"><!-- 
+                         --><span class="uibox_txt">周期<span class="spolr_ntm_txt_i">t</span>/s</span><!-- 
+                    --></li>
+                    </ul>
+                    <div class="springOscillator_cycle_bd spolr_light_scrollbar">
+                        <ul class="springOscillator_cycle_ul">
+                            <li class="spolr_cycle_li">
+                                <div class="spolr_cycle_list"><span class="uibox_txt">1</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                            </li>
+                            <li class="spolr_cycle_li">
+                                <div class="spolr_cycle_list"><span class="uibox_txt">2</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                            </li>
+                            <li class="spolr_cycle_li">
+                                <div class="spolr_cycle_list"><span class="uibox_txt">3</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                            </li>
+                            <li class="spolr_cycle_li">
+                                <div class="spolr_cycle_list"><span class="uibox_txt">4</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                            </li>
+                            <li class="spolr_cycle_li">
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                                <div class="spolr_cycle_list"><span class="uibox_txt">5</span></div>
+                            </li>
+                        </ul>
+                    </div>                    
+                </div>
+            </div>
+            <!-- /震动周期表格 -->
+
+            <!-- 物理量变化面板 -->
+            <div class="springOscillator_analysis_box">
+                <ul class="spolr_analysis_hd">
+                    <li class="spolr_analysis_list">
+                        <span class="uibox_txt">位&nbsp;&nbsp;&nbsp; 移<span class="spolr_ntm_txt_i">x</span></span>
+                        <label class="com_applicationset_switch checked">
+                            <input type="checkbox" style="display:none">
+                        </label>
+                        <div class="spolr_analysis_list_line"></div>
+                    </li>
+                    <li class="spolr_analysis_list">
+                        <span class="uibox_txt">回复力<span class="spolr_ntm_txt_i">F</span></span>
+                        <label class="com_applicationset_switch ">
+                            <input type="checkbox" style="display:none">
+                        </label>
+                        <div class="spolr_analysis_list_line"></div>
+                    </li>
+                    <li class="spolr_analysis_list">
+                        <span class="uibox_txt">加速度<span class="spolr_ntm_txt_i">a</span></span>
+                        <label class="com_applicationset_switch ">
+                            <input type="checkbox" style="display:none">
+                        </label>
+                        <div class="spolr_analysis_list_line"></div>
+                    </li>
+                    <li class="spolr_analysis_list">
+                        <span class="uibox_txt">速&nbsp;&nbsp;&nbsp;度<span class="spolr_ntm_txt_i">v</span></span>
+                        <label class="com_applicationset_switch checked">
+                            <input type="checkbox" style="display:none">
+                        </label>
+                        <div class="spolr_analysis_list_line"></div>
+                    </li>
+                    <li class="spolr_analysis_list">
+                        <span class="uibox_txt">能&nbsp;&nbsp;&nbsp;量<span class="spolr_ntm_txt_i">E</span></span>
+                        <label class="com_applicationset_switch ">
+                            <input type="checkbox" style="display:none">
+                        </label>
+                        <div class="spolr_analysis_list_line"></div>
+                    </li>
+                </ul>
+                <div class="spolr_analysis_bd">
+                    
+                </div>
+            </div>
+            <!-- /物理量变化面板 -->
+
+        </div>
+        <!-- /左侧操作区域 -->
+
+        <!--右侧菜单开始-->
+        <div class="springOscillator_main_right_menu">
+            <ul class="spolr_menu_box">
+    <!-- 选中状态，点击 .spolr_menu_a 的时候父容器 .spolr_menu_item 加类 on 表示切换到当前预设 -->
+    <li class="spolr_menu_item spolr_item1 on">
+         <a href="javascript:void(0)" class="spolr_menu_a"></a>
+    </li>    
+    <li class="spolr_menu_item spolr_item2">
+        <a href="javascript:void(0)" class="spolr_menu_a"></a>
+        <a class="com_btns btns-primary spolr_item2_btn" href="javascript:;">
+            <span class="btns-primary-txt">展示<span class="spolr_ntm_txt_i">x-t</span>曲线</span>
+        </a>
+    </li>
+    <li class="spolr_menu_item spolr_item3">
+         <a href="javascript:void(0)" class="spolr_menu_a"></a>
+    </li>
+    <li class="spolr_menu_item spolr_item4">
+         <a href="javascript:void(0)" class="spolr_menu_a"></a>
+    </li>
+</ul>
+
+           
+        </div>
+        <!--右侧菜单结束-->
+    </div>
+    <!--主要部分结束-->
+    <!--底边栏开始-->
+<!-- com_btns 按钮激活加类 &.ui_btn_active，不可用加类 .click_disabled,第三个预设切换下拉模块加类.switch_drop_module -->
+<div class="springOscillator_bottom switch_drop_module  ">
+    <div class="spolar_dropbox_com spolar_drop_amplitude">
+        <span class="spolar_drop_tip">
+        <span class="tip_text">振幅</span>
+        </span>
+        <a href="javascript:void(0)" class="spolar_drop_num"><!-- 展开的时候 .spolar_drop_num 添加类名 .ui_open 使得箭头向下 -->
+            <span class="num_input">
+            <span class="num_input_text">10</span>
+            </span>
+            <!-- 点击态在a标签上加类.ui_btn_active -->
+            <span class="spolar_drop_arrow"></span>
+            <span class="spolar_drop_preload_img01"></span>
+        </a>
+        <!-- 在class.spolar_drop_numselect上加类.hide_dom隐藏数字选择框 -->
+        <div class="spolar_drop_numselect clearfix ">
+        <div class="spolar_numselect_wrap hide_dom">
+            <a href="javascript:;"><span>1</span></a><!-- 
+             --><a href="javascript:;"><span>2</span></a><!-- 
+             --><a href="javascript:;"><span>3</span></a><!-- 
+             --><a href="javascript:;"><span>4</span></a><!-- 
+             --><a href="javascript:;"><span>5</span></a></br><!-- 
+             --><a href="javascript:;"><span>6</span></a><!-- 
+             --><a href="javascript:;"><span>7</span></a><!-- 
+             --><a href="javascript:;"><span>8</span></a><!-- 
+             --><a href="javascript:;"><span>9</span></a><!-- 
+             --><a href="javascript:;"><span>10</span></a>
+         </div>
+        </div>
+    </div>
+    <div class="spolar_dropbox_com spolar_drop_frequency">
+        <span class="spolar_drop_tip">
+
+        <span class="tip_text">全振动次数</span>
+        </span>
+        <a href="javascript:void(0)" class="spolar_drop_num click_disabled"><!-- 展开的时候 .spolar_drop_num 添加类名 .ui_open 使得箭头向下 -->
+            <span class="num_input">
+            <span class="num_input_text">10</span>
+            </span>
+            <!-- 点击态在a标签上加类.ui_btn_active -->
+            <span href="javascript:;" class="spolar_drop_arrow"></span>
+            <span class="spolar_drop_preload_img01"></span>
+        </a>
+        <!-- 在class.spolar_drop_numselect上加类.hide_dom 隐藏数字选择框 -->
+        <div class="spolar_drop_numselect clearfix  ">
+        <div class="spolar_numselect_wrap hide_dom">
+            <a href="javascript:;"><span>1</span></a><!-- 
+             --><a href="javascript:;"><span>2</span></a><!-- 
+             --><a href="javascript:;"><span>3</span></a><!-- 
+             --><a href="javascript:;"><span>4</span></a><!-- 
+             --><a href="javascript:;"><span>5</span></a></br><!-- 
+             --><a href="javascript:;"><span>6</span></a><!-- 
+             --><a href="javascript:;"><span>7</span></a><!-- 
+             --><a href="javascript:;"><span>8</span></a><!-- 
+             --><a href="javascript:;"><span>9</span></a><!-- 
+             --><a href="javascript:;"><span>10</span></a>
+        </div>
+           
+        </div>
+    </div>
+    <div class="spolr_controlbtn_com spolr_control_amplitude ">
+        <div class="spolar_control_title">
+            <span class="spolar_control_txt">
+            振幅
+            </span>
+        </div>
+        <ul class="spolar_slide_list">
+            <b></b>
+            <ins class="scale_left"></ins>
+            <span class="spolar_item_num spolar_item_num1">0</span>
+            <ins class="scale_mid"></ins>
+            <span class="spolar_item_num spolar_item_num2">5</span>
+            <ins class="scale_right"></ins>
+            <span class="spolar_item_num spolar_item_num3">10</span>
+        </ul>
+    </div>
+    <div class="spolr_controlbtn_com spolr_control_frequency">
+        <div class="spolar_control_title">
+            <span class="spolar_control_txt">频率</span>
+        </div>
+        <ul class="spolar_slide_list ">
+            <!-- 选中在该li加类.spolar_control_selected -->
+            <b></b>
+            <ins class="scale_left"></ins>
+            <span class="spolar_item_num spolar_item_num1">1/10</span>
+            <ins class="scale_mid"></ins>
+            <span class="spolar_item_num spolar_item_num2">4</span>
+            <ins class="scale_right"></ins>
+            <span class="spolar_item_num spolar_item_num3">10</span>
+        </ul>
+    </div>
+    <div class="spolar_com_btns ">
+        <a class="com_btns btns-primary spolr_play_slow" href="javascript:;">
+            <span class="btns-primary-txt">慢放</span>
+        </a>
+        <a class="com_btns btns-primary spolr_play_nor" href="javascript:;">
+            <span class="btns-primary-txt">播放</span>
+        </a>
+        <a class="com_btns btns-primary spolr_play_count" href="javascript:;">
+            <span class="btns-primary-txt">全振动计时</span>
+        </a>
+        <a class="com_btns btns-primary spolr_reset_btn click_disabled " href="javascript:;">
+            <span class="btns-primary-txt">重置</span>
+        </a>
+    </div>
+</div>
+<!--底边栏结束-->
+
+
+    <!-- 底边栏开始 默认添加类名 .hide_dom 隐藏 -->
+<div class="springOscillator_pop pop_has_mask hide_dom ">
+    <div class="springOscillator_pop_main">
+        <div class="springOscillator_pop_hd"><span class="uibox_txt"><span class="spolr_ntm_txt_i">x-t</span> 曲线</span></div>
+        <div class="springOscillator_pop_bd"></div>
+        <div class="springOscillator_pop_ft">
+            <a class="com_btns btns-primary spolr_pop_btn" href="javascript:;">
+                <span class="btns-primary-txt">关闭</span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- 底边栏结束 -->
+</div>
+
+<script src="http://cdn.bootcss.com/jquery/1.9.0/jquery.js"></script>
+<script>
+</script>
+
+</div>
+<script src="../../../common/resources/common/layout/wood/layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='PanelSlides'>
+<properties>
+
+                <property name="module" type="string" />
+                <property name="placeholder" type="html" />
+                <property name="text" type="html" />
+                <property name="textStyle" type="string" />
+                <property name="hideQuickArea" type="boolean" />
+                <property name="quickAreaItems" type="string" />
+                <property name="isVertical" type="boolean" />
+                <property name="autoResizeFontSize" type="boolean" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.text-area {
+  word-wrap: break-word;
+  line-height: 1;
+  padding: 5px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto; }
+
+.text-area ol, ul {
+  list-style-position: inside; }
+
+.text-area > p {
+  margin: 0;
+  word-break: break-all; }
+
+.text-vertical {
+  display: inline-block;
+  -webkit-text-orientation: upright;
+  -moz-text-orientation: upright;
+  -ms-text-orientation: upright;
+  text-orientation: upright;
+  -ms-writing-mode: tb-rl;
+  -webkit-writing-mode: vertical-rl;
+  -moz-writing-mode: vertical-rl;
+  -ms-writing-mode: vertical-rl;
+  writing-mode: vertical-rl; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div id="text-area" class="text-area"></div>
+]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[function AddonPanelSlides_create(){
+   var presenter = {};
+
+   presenter.run = function(view, model) {
+      render(view,model);
+       if(model.text&&model.text.indexOf("latex")!=-1){
+           renderFormula(view);
+       }
+   };
+
+   function renderFormula(view){
+       if (typeof MathJax != 'undefined') {
+           var elementWithFormula = $(view).find(".text-area");
+           var maxWidth = elementWithFormula.width();
+           elementWithFormula.hide();
+
+           MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementWithFormula[0]]);
+           MathJax.Hub.Queue(['End', function () {
+               elementWithFormula.show();
+               //宽度超出后，设置百分比缩放，再重新绘制
+               elementWithFormula.find(".math-tex").each(function () {
+                   var math = this;
+                   math.style.display = "inline";
+                   var w = math.offsetWidth;
+                   math.style.display = "";
+                   if (w > maxWidth) {
+                       math.style.fontSize = Math.floor(maxWidth / w * 100) + "%"
+                   }
+                   MathJax.Hub.Queue(["Rerender", MathJax.Hub, math]);
+               });
+
+           }]);
+       }
+   };
+
+   function render(view, model){
+      var textArea = $(view).find(".text-area");
+      if(model.isVertical){
+         textArea.addClass("text-vertical");
+      }
+      textArea.css("max-height","100%");
+      textArea.css("max-width","100%");
+      addStyle($(view).find(".text-area-wrapper-cell"),textArea,model.textStyle);
+      textArea.html(model.text);
+      NDMediaPlayer.render(textArea, {});
+   };
+
+   function addStyle(textAreaWrapperCell,textArea,style){
+       if(style){
+           var item = style.split(",");
+           if(item[0]){
+               textArea.css('text-align',item[0]);
+               if(item[0]!='center'){
+                   textArea.css('justify-content',"initial");
+               }
+           }
+           if(item[1] != 'middle'){
+               textArea.css('align-items',"baseline");
+           }
+           if(item[2]){
+               textArea.css('color',item[2]);
+           }
+           if(item[3]){
+               textArea.css('font-size',item[3] + 'px');
+           }
+           if(item[4]){
+               textArea.css('font-weight',item[4]);
+           }
+           if(item[5]){
+               textArea.css('text-align',item[5]);
+           }
+      }
+   }
+
+   return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

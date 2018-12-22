@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='HandWriteComponent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="CanvasWriter" version="1.0.5" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_HandWriteComponent #js_handwrire_container{width:100%;height:100%}.addon_HandWriteComponent #js_handwrire_container canvas{cursor:default}.js_penetrate{pointer-events:none}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div id="js_handwrire_container"></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonHandWriteComponent_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by Administrator on 2016/9/23.
+ */
+var _presenter;
+
+function HandWriteService(parent) {
+    _presenter = parent;
+}
+
+HandWriteService.prototype = {
+    constructor: HandWriteService,
+
+    /**
+     * 设置可见性
+     * @param bool true 显示, false 隐藏
+     */
+    setVisible: function (bool) {
+        var displayMode = bool ? "block" : "none";
+
+        _presenter.view.style.display = displayMode;
+    },
+
+    /**
+     * 设置可用性
+     * @param bool boolean: true 可用, false 禁用
+     */
+    setActive: function (bool) {
+        _presenter.writer.setActive(bool);
+    },
+
+    /**
+     * 设置手写形式
+     * @param option
+     * {
+         type: int, //0 可穿透, 1 手写, 2 擦除
+         data: object
+          * 手写：{width:笔尖粗度, color:笔尖颜色}，
+          * 擦除：{isClear:boolean 是否一键清除}
+
+        }
+     */
+    setWriteType: function (type) {
+        var classList = _presenter.view.classList;
+
+        _presenter.writer.setWriteType(type);
+
+        //穿透处理
+        if (type === 0) {
+            classList.add("js_penetrate");
+        } else {
+            classList.remove("js_penetrate");
+        }
+    },
+
+    /**
+     * 设置笔锋
+     * @param thickness 3：细 12：中 15： 粗
+     */
+    setPenThickness: function (thickness) {
+        var width;
+        if (thickness === 3) {
+            width = 7;
+        } else if (thickness === 12) {
+            width = 10;
+        } else if (thickness === 15) {
+            width = 13;
+        }
+
+
+        _presenter.writer.setLineWidth(width);
+    },
+
+    /**
+     * 设置画笔颜色
+     * @param color 颜色
+     */
+    setPenColor: function (color) {
+        _presenter.writer.setStrokeStyle(color);
+    },
+
+    //恢复初始状态,清空操作
+    resetElementState: function () {
+        _presenter.writer.clear();
+    },
+
+    /**
+     * 设置状态数据
+     * @param state object:{action:undo|redo, state: 状态对象}
+     */
+    setElementState: function (state) {
+        if (state.action === "undo") {
+
+        } else if (state.action === "redo") {
+
+        }
+
+        if (typeof state.state === "string") {
+            _presenter.writer.setState(state.state);
+        }
+    },
+
+    //获取状态数据
+    getElementState: function () {
+        return _presenter.writer.getState();
+    },
+
+    /**
+     * 设置位置偏移
+     * @param position
+     * object:{x:int, y: int} //x 水平方向, y 垂直方向 单位(px)
+     */
+    offsetPosition: function (position) {
+        var view = _presenter.view;
+
+        view.style.top = position.y + "px";
+        view.style.left = position.x + "px";
+    }
+};
+
+module.exports = HandWriteService;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(0);
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: "HandWriteComponent",
+        type: "presenterComponent",
+        subtype: ""
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+    },
+    getService: function () {
+        if (!this._service_) {
+            this._service_ = new Service(this);
+        }
+        return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        this.view = view;
+        this.$view = $(view);
+        this.model = model;
+
+        var container = view.querySelector("#js_handwrire_container");
+
+        this.writer = new CanvasWriter(container);
+
+        //设置每次手写前要执行的函数
+        this.writer.setBeforeWrite(this._beforeWrite.bind(this));
+        //设置每次手写后要执行的函数
+        this.writer.setAfterWrite(this._afterWrite.bind(this));
+    },
+    pageShow: function () {
+        var styleList = this.model.renderStyle;
+
+        //设置由启动器传过来的样式
+        styleList && this._setViewStyle(styleList);
+
+    },
+    pageLeave: function () {
+
+    },
+    destroy: function () {
+        this.view = null;
+        this.$view = null;
+        this.model = null;
+        this.writer = null;
+    },
+    /****以下开始为Presenter的私有方法*****/
+    _setViewStyle: function (styleList) {
+        if (typeof styleList !== "object") return;
+
+        var viewStyle = this.view.style;
+
+        for (var prop in styleList) {
+            viewStyle[prop] = styleList[prop];
+        }
+    },
+    //设置在手写板每次书写之前要执行的函数
+    _beforeWrite: function () {
+        this.$dispatchEvent("HandWriterStartWrite", "ic_player_event", {
+            "state": this.writer.getState()
+        });
+    },
+    _afterWrite: function () {
+        this.$dispatchEvent("HandWriterEndWrite", "ic_player_event", {
+            "state": this.writer.getState()
+        });
+    }
+});
+
+module.exports = function () {
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

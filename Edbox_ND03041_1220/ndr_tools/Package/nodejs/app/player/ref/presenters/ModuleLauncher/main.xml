@@ -1,0 +1,467 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ModuleLauncher'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[function AddonModuleLauncher_create() {
+	/**
+	 * Module的逻辑
+	 * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+	 * @param model 模型对象
+	 * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+	 */
+	var $view;
+	var launchedModule = [];
+	var presenter = function() {};
+
+	var isApp = false,
+		isTeacher = false,
+		isStudent = false,
+		isTeacherPc = false,
+		isProjector = false,
+		isWeb = false;
+	/**
+	 * 获取Module当前的运行环境, 通过icPlayer提供的接口
+	 * 已定义的环境枚举包括
+	 * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)
+	 * icCreatePlayer.RUNTIME.STUDENT_MOBILE(学生端)
+	 * icCreatePlayer.RUNTIME.PROJECTION_MOBILE(投影端)
+	 * icCreatePlayer.RUNTIME.WEB(WEB端 )
+	 * icCreatePlayer.RUNTIME.TEACHER_PC(PC端)
+	 * 判断例子
+	 * if(currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE)
+	 */
+	var currentRuntime = player.getPlayerServices().getRuntime();
+	var helper = {
+		popularVote: undefined
+	};
+
+	switch (currentRuntime) {
+		case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+			isTeacher = true;
+			isApp = true;
+			break;
+		case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+			isStudent = true;
+			isApp = true;
+			break;
+		case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+			isProjector = true;
+			isApp = true;
+			break;
+		case icCreatePlayer.RUNTIME.WEB:
+			isWeb = true;
+			break;
+		case icCreatePlayer.RUNTIME.TEACHER_PC:
+			isPC = true;
+			break;
+		default:
+			isApp = false;
+			isWeb = false;
+			isPC = false;
+	}
+
+
+	//监听器集合
+	var bridgeListener = {};
+
+	/**
+	 * native方法封装
+	 */
+	var callNative = function(eventName, data) {
+		if (isApp && Bridge && Bridge.callNative) {
+			return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+		}
+		return false;
+	};
+	var registerNativeListener = function(key, callback) {
+		if (isApp && Bridge && Bridge.registerListener) {
+			bridgeListener[key] = Bridge.registerListener(key, callback);
+		}
+	};
+	var voteCallbackListener = function(data) {
+		if (!helper.popularVote && data && data.type == 'start') {
+			console.time('voterequire');
+			presenter.controller.require({
+				"addonId": "PopularVoteStudent",
+				"layout": {
+					"left": 0,
+					"top": 0,
+					"width": "100%",
+					"height": "100%"
+				},
+				"properties": [{
+					"name": "vote_data",
+					"displayName": "投票数据",
+					"type": "string",
+					"value": JSON.stringify(data),
+				}],
+				"callback": function(addon) {
+					helper.popularVote = addon;
+					console.timeEnd('voterequire');
+					console.log("PopularVoteStudent加载成功");
+				}
+			});
+		} else if (helper.popularVote) {
+			if (data.type == 'start') {
+				helper.popularVote.isStop = false;
+				helper.popularVote.show(data);
+			} else {
+				helper.popularVote.isStop = true;
+				helper.popularVote.hide();
+			}
+		}
+		
+		console.log("老师调用",data);
+	};
+
+	var unbindNativeListener = function(key) {
+		if (isApp && Bridge && Bridge.unRegisterListener) {
+			if (!key) {
+				$.each(bridgeListener, function(k, v) {
+					Bridge.unRegisterListener(k, bridgeListener[k]);
+				});
+				bridgeListener = {};
+			} else {
+				Bridge.unRegisterListener(key, bridgeListener[key]);
+			}
+		}
+	};
+
+	var presenterLogic = function(view, model, isPreview) {
+		$view = view;
+		presenter.model = model;
+		console.log("ModuleLauncher is running");
+		registerNativeListener('NoticeReceived', noticeHandle);
+		registerNativeListener('VoteCallback', voteCallbackListener);
+		//presenter.sendEvent('module',{"addonId":"WordCardDialog"});
+	};
+
+	/**
+	 * 编辑环境下, 创建/刷新预览视图的方法;
+	 * Module在编辑环境下,model改变; 位置改变; DOM结构改变时都会促发该方法
+	 * @param view 预览视图(DOM对象)
+	 * @param model Module的模型, Key-Value结构
+	 */
+	presenter.createPreview = function(view, model) {
+		//Todo: 在此处一般进行model的数据有效性验证
+		presenterLogic(view, model, true);
+	};
+
+	/**
+	 * 运行环境下, 初始化Module的方法
+	 * @param view 运行视图(DOM对象)
+	 * @param model Module的模型, Key-Value结构
+	 * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+	 */
+	presenter.run = function(view, model) {
+		presenterLogic(view, model, false);
+		//绑定Module事件
+		bindEvent();
+	};
+
+	presenter.setPlayerController = function(controller) {
+		presenter.controller = controller;
+		presenter.eventBus = presenter.controller.getEventBus();
+		presenter.eventBus.addEventListener("LaunchModule", presenter);
+	};
+
+
+	/*
+	 * @param  {[type]} eventData [description]
+	 * @return {[type]}           [description]
+	 * eventData
+	 * {
+	 *     type:module or native,
+	 *     moduleId:"WordCardStu",
+	 *     data:{}
+	 * }
+	 */
+	presenter.onEventReceived = function(eventName, eventData) {
+		console.log(arguments);
+		if (eventName == "LaunchModule") {
+			switch (eventData.type) {
+				case 'MODULE':
+					presenter.controller.require({
+						"addonId": "WordCardStu",
+						"layout": {
+							"left": 0,
+							"top": 0,
+							"width": "100%",
+							"height": "100%"
+						},
+						"properties": [],
+						"callback": function(addon) {
+							console.log("加载成功");
+						}
+					});
+					break;
+				case 'NATIVE':
+					if (eventData.hasJsLib && eventData.hasJsLib == true) {
+						icCreatePlayer.jsLibLoader(eventData.jsLib, function() {
+							console.log(eventData.jsLib);
+							callNative(eventData.nativeEvent.eventName, eventData.nativeEvent.eventData);
+						}, 'true');
+					} else {
+						callNative(eventData.nativeEvent.eventName, eventData.nativeEvent.eventData);
+					}
+					break;
+
+			}
+		}
+	};
+
+	// launchedModule = [
+	//         {
+	//            "eventName":"",
+	//            "moduleId":"",
+	//            "pageId":"",
+	//            "instance":""
+	//         }
+	//     ]
+
+	//启动module的处理
+	function moduleHandle(eventData) {
+		var result = hasLaunched(eventData.moduleId);
+		//如果是第一次加载
+		if (!result.hasLaunched) {
+			//加载module，并设置数据
+			launchModule(eventData);
+		} else {
+			result.instance.setData(eventData.data);
+		}
+	}
+
+	//判断是否是第一次加载,即当前页面中是否存在该Module对应的pageId
+	function hasLaunched(moduleId) {
+		var temp = "";
+		var result = {
+			"hasLaunched": false
+		};
+		//遍历launchedModule列表
+		for (var i = 0, len = launchedModule.length; i < len; i++) {
+			temp = launchedModule[i];
+			//列表中存在该moduleId
+			if (temp.moduleId === moduleId) {
+				//并且ModuleLauncher的同级视图中存在该id的div
+				if ($view.siblings().find(temp.id).length != 0) {
+					result.hasLaunched = true;
+					result.instance = temp.instance;
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	//launch module
+	function launchModule(eventData) {
+		presenter.controller.require({
+			addonId: "WordCardStu",
+			layout: {
+				left: 0,
+				top: 0,
+				width: "100%",
+				height: "100%"
+			},
+			properties: [],
+			callback: function(addon) {
+				console.log("加载成功");
+				// 调用该module接口设置数据
+				// addon.setData(eventData.data);
+				// var temp = {
+				//     "moduleId":eventData.moduleId,
+				//     "id":addon.getId(),
+				//     "instance":addon,
+				//     "eventName":"MODULE"
+				// };
+
+				// 已启动的module记录到维护列表中
+				// launchedModule.push(temp);
+			}
+		});
+	}
+	/**
+	 * 运行环境下, 销毁Module时执行的方法
+	 * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+	 */
+	presenter.destroy = function() {
+		//解除绑定的Module事件
+		unBindEvent();
+		//ToDo:释放Module占用的内存对象
+	};
+
+	/**
+	 * 获得当前Module的状态信息;
+	 * 可用于Module的状态恢复和保存
+	 */
+	presenter.getState = function() {
+		//TODO: 添加符合Module需求的状态对象
+		var moduleState = JSON.stringify({
+			module_id: presenter.model.ID
+		});
+		return moduleState;
+	};
+
+	/**
+	 * 设置Module当前状态
+	 * @param state Module状态对象
+	 */
+	presenter.setState = function(state) {
+		var currentState;
+		if (state) {
+			currentState = JSON.parse(state);
+			//ToDo:处理Module的状态恢复
+		}
+	};
+
+	/**
+	 * 绑定事件的方法
+	 */
+	function bindEvent() {
+
+	}
+
+	/**
+	 * 解除事件绑定的方法
+	 */
+	function unBindEvent() {
+
+	}
+	/**
+	 * data 
+	 * {
+	 *     "source":moduleID,
+	 *     "type":"TEACHER",
+	 *     "value":{
+	 *         "eventName":"NATIVE",
+	 *         "eventData":{
+	 *             "hasJsLib":true,
+	 *             "jsLib":[
+	                    {
+	                        "name":"rulers",
+	                        "version":"1.0.0"
+	                    }
+	                ],
+	            "nativeEvent":{//native事件
+	                "eventName":"start_native_subject",
+	                "eventData":{}
+	            },
+	 *         }      
+	 *     }
+	 *     
+	 * }
+	 *
+	 * * {
+	 *     "source":moduleID,
+	 *     "type":"TEACHER",
+	 *     "value":{
+	 *         "eventName":"MODULE",
+	 *         "eventData": {
+	                "moduleID":"WordCardStu",
+	                "data":{}
+	            }   
+	 *     }
+	 *     
+	 * }
+	 */
+	// //NoticeReceived事件处理
+	function noticeHandle(data) {
+		console.log("NoticeReceived");
+		console.log(data);
+
+		var eventName = data.value.eventName;
+		var eventData = data.value.eventData;
+
+		if (isStudent && data.type == 'TEACHER') {
+			switch (eventName) {
+				case 'MODULE':
+					launchModule(eventData);
+					break;
+				case 'NATIVE':
+					if (eventData.hasJsLib && eventData.hasJsLib == true) {
+						icCreatePlayer.jsLibLoader(eventData.jsLib, function() {
+							console.log(eventData.jsLib);
+							callNative(eventData.nativeEvent.eventName, eventData.nativeEvent.eventData);
+						}, 'true');
+					} else {
+						callNative(eventData.nativeEvent.eventName, eventData.nativeEvent.eventData);
+					}
+					break;
+
+			}
+		}
+
+	}
+
+
+
+
+	//检查列表中是否存在id相同的module
+
+	/*    /!**
+	     * 实现Module多语言适配的方法, 如Module存在i18n的支持, 请务必实现此方法
+	     * icplayer会加载当前i18n的配置信息,并通过location参数传入
+	     * @param location 表示当前语言环境的配置信息, 为JSON数组的键值对
+	     *!/
+	    presenter.setLocationProperties = function (location) {
+	    };
+
+	    /!**
+	     * 以下一组为可选运行时初始化函数, icPlayer会根据运行时的不同, 在执行presenter.run 函数之前, 执行对应运行时的初始化函数;
+	     * 如Module在不同运行时需要执行不同初始化操作, 可进行单独实现
+	     *!/
+	        //移动环境教师端
+	    presenter.initTeacherMobile = function() {
+	    };
+	    //移动环境学生端
+	    presenter.initStudentMobile = function() {
+	    };
+	    //移动环境投影端
+	    presenter.initProjectionMobile = function() {
+	    };
+	    //Web端
+	    presenter.initWeb = function() {
+	    };
+	    //教师端PC
+	    presenter.initTeacherPc = function () {
+
+	    };*/
+
+	return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

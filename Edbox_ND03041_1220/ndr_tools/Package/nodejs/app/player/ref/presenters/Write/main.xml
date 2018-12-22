@@ -1,0 +1,202 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Write'>
+<properties>
+
+                <property name="id" displayName="题目ID" type="string" />
+                <property name="writer_background" displayName="手写板背景" type="json" isLocalized="false" />
+                <property name="url" displayName="题目url" type="question" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonWrite_create = function () {
+        return new BasicLauncher({
+            'defaultConfig': 'simple',
+            'dataParse': function (model, pageModels) {
+                var self = this;
+                //是否新版手写题
+                model.isNew = true;
+                var deferred = $.Deferred();
+                if (model.question_url && !model.writer_background) {
+                    //旧手写题
+                    model.isNew = false;
+                    QtiPlayer.load(model.question_url, {
+                        refPath: icCreatePlayer.ref_path
+                    }, function (data) {
+                        for (var item in data.modelMap) {
+                            if (data.modelMap[item].questionType === 'handwrite') {
+                                model.writer_background = {
+                                    url: data.modelMap[item].object.data,
+                                    type: 1,
+                                    left: 0,
+                                    top: 0,
+                                    right: 0,
+                                    bottom: 0
+                                };
+                                break;
+                            }
+                        }
+                        deferred.resolve(model);
+                    });
+                } else {
+                    var panelModel = pageModels.Panel[0];
+                    $.extend(model, panelModel);
+                    deferred.resolve(model);
+                }
+                return deferred.done(
+                    function (data) {
+                        var currentStudent = ClassroomUtils.getCurrentUserInfo();
+                        if(!currentStudent) {
+                            currentStudent = {
+                                studentId: ''
+                            }
+                        }
+                        data.isWhole = data.isWhole || 0;
+                        data.questionType = 'newhandwrite';
+                        data.initData = {
+                            'userID': currentStudent.studentId,
+                            'lessonId': self._getExamId(),
+                            'nativeId': 'write_pad',
+                            'isWhole': (data.isWhole == 1 ? true : false),
+                            'isSinglePage': 1,
+                            'autoSaveState': true,
+                            'questionType': data.questionType,
+                            'background': data.writer_background,
+                            'limitPage': 1,
+                            'wordsNum': 0
+                        };
+                        data.config = JSON.stringify({
+                            "toolbar": ["exit", "order", "send.again"],
+                            'plugins': ['PopularVoteTeacher', 'AnswerContrast', 'AnswerAssessment']
+                        });
+                    }
+                );
+            },
+            'presenterParserMapping': {
+                'answerFlowController': function (config, model) {
+                    config.value.linkQuestionId = model.id;
+                }
+            },
+            'getEnvironment': function () {
+                var envName;
+                var sys = this._getQueryString('sys');
+
+                if (this.isPPTShell || (sys != null && sys.toLowerCase() === 'icrstatisticsplatform')) {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.PPTShell;
+                } else {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.Pad;
+                }
+
+                return envName;
+            },
+            'getComponent': function (model) {
+                var panelConfig = (model.isNew) ?
+                    {
+                        name: 'panel',
+                        presenter: 'InteractionPanel',
+                        autowired: ['module', 'placeholder', 'text', 'textStyle', 'hideQuickArea'],
+                        renderTo: 'panel'
+                    } :
+                    { presenter: 'OldWriteViewer', autowired: ['question_url'], renderTo: 'panel' };
+                return [
+                    /*{
+                        presenter: 'HandWriter',
+                        autowired: ['initData'],
+                        renderTo: 'write'
+                    },*/
+                    panelConfig,
+                    { presenter: 'InteractionTimer', value: { 'view_type': 'new_timer' }, renderTo: 'timer' },
+                    {
+                        presenter: 'InteractionSubmitButton',
+                        value: {
+                            'can_modify': 'true',
+                            'linkQuestionType': 'write',
+                            'linkQuestionId': model.id,
+                            'view_type': 'new_em_button'
+                        },
+                        renderTo: 'submit',
+                        applyTo: ['pad']
+                    }
+                ];
+            },
+            'getController': function (model) {
+                return [
+                    {presenter: 'WriteController', autowired: ['id', 'questionType', 'writer_background','initData']},
+                    //手写题启动器 require d类统计
+                    { presenter: 'AnswerClassStatis', autowired: ['config'], applyTo: ['ppt'] },
+                    {
+                        presenter: 'ClassroomStatusController',
+                        value: {
+                            'questionId': model.id
+                        }
+                    }
+                ];
+            },
+            'getLayout': function (model) {
+                return {
+                    presenter: 'WriteLayout',
+                    value: { 'questionType': 'write', 'noSendQuestion': model.is_tool || false }
+                };
+            },
+            '_getExamId': function () {
+                var examId = '';
+                this.$addEventListener('TaskInfoCallback', PresenterEventType.IC_PLAYER_EVENT, function (eventData) {
+                    if (eventData && eventData.value) {
+                        examId = eventData.value.examId;
+                    }
+                });
+                this.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, { 'item': 'exam', 'type': 'query' });
+                return examId;
+            },
+            '_getQueryString': function (name) {
+                var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]);
+                return null;
+            },
+            'presenterParserMapping': {
+                'interactionStateRecoverFilter': function (module) {
+                    module.applyTo = ['pad'];
+                },
+                'objectiveStatController': function (module) {
+                    module.applyTo = [];
+                },
+                'answerFlowController': function (config, model) {
+                    config.value.linkQuestionId = model.id;
+                }
+            }
+        });
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

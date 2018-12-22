@@ -1,0 +1,1 @@
+define(["jquery","./QuestionEditor/script","./WorkspaceCategory"],function($,QuestionEditor,WorkspaceCategory){return{requires:["nd.esp.workspace"],activator:function(bundleContext){},extensions:[{targetBundle:"workbench",point:"editor",config:QuestionEditor},{targetBundle:"nd.esp.workspace",point:"category",config:[new WorkspaceCategory]}]}});

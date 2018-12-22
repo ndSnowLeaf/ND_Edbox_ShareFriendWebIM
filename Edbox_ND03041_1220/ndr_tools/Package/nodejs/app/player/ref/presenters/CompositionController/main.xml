@@ -1,0 +1,546 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompositionController'>
+<properties>
+
+                <property name="id" displayName="题目ID" type="string" />
+                <property name="examId" displayName="课堂ID" type="string" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+                <property name="questionType" displayName="题型" type="string" />
+                <property name="writer_background" displayName="手写板背景" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="6.0.0" />
+    <javaScript  name="BasicWriteController" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var self = null;
+    var Presenter = BasicWriteController.extend({
+        metaInfo: {
+            name: 'CompositionController',
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        //service中拥有以下方法的presenter会在$beforePresenterRun中传入
+        $getInterfaceMethods: function () {
+            var filterList = [
+                //手写
+                {
+                    interface: 'writerService',
+                    methods: ['getStrokeData', 'parseStrokeData', 'edit', 'editTitle', 'clean', 'closePopWin']
+                },
+                //布局
+                {
+                    interface: 'layoutService',
+                    methods: ['initContainer', 'getContainer', 'adjustLayoutForStartAnswer', 'adjustLayoutForEndAnswer', 'setLocationProperties', 'showMask']
+                },
+                //作文
+                {
+                    interface: 'panelService',
+                    methods: ['getAutowiredPanel', 'setComponent']
+                }
+            ]
+            return filterList;
+        },
+        $beforePresenterRun: function (name, metaInfo, service) {
+            this.logger.debug('获取到需要的service');
+            if (metaInfo.name === 'HandWriter' || metaInfo.name === 'WriteLayout' || metaInfo.name === 'CompositionPanel') {
+                this.services[name] = service;
+            }
+        },
+        /**
+         * 在当前Presenter执行icplayer的run方法之后执行
+         * @param interfaceName
+         * @param metaInfo Presenter的元数据信息
+         * @param service Presenter提供的Service对象
+         */
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            if (metaInfo.name === 'CompositionPanel') {
+                this._requireHandWriter();
+            }
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            self = this;
+            this._super();
+            var currentRuntime = player.getPlayerServices().getRuntime();
+            this.isApp = (currentRuntime != icCreatePlayer.RUNTIME.WEB);
+            if (currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                this.isStudent = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_MOBILE) {
+                this.isTeacher = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_PC) {
+                this.isTeacherPc = true;
+            } else if (currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                this.isWeb = true;
+            }
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        getService: function () {
+            if (!this._service_) {
+                var service = {
+                    lockQuestion: function (data) {
+                        this._super();
+                        console.log('lockQuestion');
+                        if (data != null && data.type !== undefined && data.type === 'OnFinish') {
+                            // 只有老师强制结束，才遮罩
+                            this.parent.services.layoutService.showMask(true);
+                            self.services.writerService.releaseRecord();
+                        }
+                        if (self.isTeacherPc)
+                            self.services.panelService.releaseRecord();
+                    },
+                    unlockQuestion: function () {
+                        this._super();
+                        console.log('unlockQuestion');
+                        if (this.parent.compositionIndex !== 2) {
+                            this.parent.services.writerService.edit(false);
+                        }
+                        this.parent.services.layoutService.showMask(false);
+                    },
+                    resetQuestion: function () {
+                        this._super();
+                        this.parent.services.writerService.editTitle(false);
+                        this.parent.services.writerService.resetPage({});
+                        //this.parent.$dispatchEvent('resetCompositionPageBar', PresenterEventType.IC_PLAYER_EVENT, {});
+                    },
+                    getResult: function (options) {
+                        var me = this;
+                        var $deferred = $.Deferred();
+                        //提交答案时释放录音功能
+                        self.extendPromise = $.Deferred();
+                        self.services.writerService.releaseRecord();
+                        var strokePromise = this.parent.services.writerService.getStrokeData(options || {});
+                        $.when(strokePromise, self.extendPromise).then(function (strokeData) {
+                            console.log('============ getResult $.when.then ============')
+                            return $deferred.resolve(me._constructUserAnswer(strokeData));
+                        });
+                        var state = (this.parent.currentStatus !== 1 ? 'COMPLETE' : 'NO_ANSWER');
+                        var result = {
+                            answer: {
+                                answer_result: true,
+                                correct_response: null,
+                                user_response: [
+                                    $deferred.promise()
+                                ]
+                            },
+                            questionId: this.parent.model.id,
+                            answerState: state
+                        };
+                        return result;
+                    },
+                    _constructUserAnswer: function (strokeData) {
+                        if (typeof strokeData !== "object") {
+                            throw new Error("stroke data must be an object");
+                        }
+                        var result = { data: [], isComplete: true };
+                        for (var key in strokeData.data) {
+                            var item = {
+                                type: 'write',
+                                data_type: 'write',
+                                value: strokeData.data[key],
+                                extra: {
+                                    page: key,
+                                    md5: strokeData.dataMD5[key]
+                                }
+                            };
+                            if (strokeData.extra) {
+                                $.extend(item.extra, JSON.parse(strokeData.extra));
+                            }
+                            //加标题
+                            if (key === '0') {
+                                item.extra.title = strokeData.title
+                            }
+                            result.data.push(item);
+                        }
+                        if (self.recordData && self.recordData.path && self.recordData.name) {
+                            // 测试添加录音
+                            var item1 = {
+                                type: "audio",
+                                ata_type: "file",
+                                value: "",
+                                extra: {
+                                    page: result.data.length,
+                                    name: self.recordData.name
+                                }
+                            }
+                            self.recordIndex = result.data.length;
+                            result.data.push(item1);
+                            result.isComplete = false;
+                        }
+
+                        console.log('========= _constructUserAnswer ===========', result);
+                        return result;
+                    }
+                }
+                var ServiceClass = this.getServiceClass().extend(service);
+
+                this._service_ = new ServiceClass(this);
+            }
+            return this._service_;
+        },
+
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this._super(view, model);
+            self.$view = $(view);
+            self.model = model;
+            this.writer = null;
+            this.isWriteTab = false;
+            this.words = 52;
+            this.limitPage = 10;
+            this.recordData = null;
+            this.recordIndex = 0;
+            // 二次收题保存的数据
+            this.extendData = null;
+            // 二次收题Promise对象
+            this.extendPromise = null;
+        },
+        pageShow: function () {
+            this._super();
+            //初始化背景图
+            this._initBackground();
+            // 发送背景图
+            this._sendToTeacherBackground();
+        },
+        _bindEvent: function () {
+            this._super();
+            this.$addEventListener('HandWriterAddPage', PresenterEventType.IC_PLAYER_EVENT, this._addPage);
+            this.$addEventListener('HandWriterDelPage', PresenterEventType.IC_PLAYER_EVENT, this._delPage);
+            //作文题切换Tab
+            this.$addEventListener('CompositionHandWriteShowed', PresenterEventType.IC_PLAYER_EVENT, this._changeView);
+            // 橡皮一键清除
+            this.$addEventListener('ensureCleanWriter', PresenterEventType.NATIVE_EVENT, this._startWriteHandler.bind(this));
+            // 录音回调
+            this.$addEventListener('audioDataCallback', PresenterEventType.NATIVE_EVENT, this._AudioDataCallback);
+            // 释放录音回调
+            this.$addEventListener('releaseRecordCallback', PresenterEventType.NATIVE_EVENT, this._releaseRecordCallback);
+            // 二次收题
+            this.$addEventListener('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT, this._sendExtendAnswer);
+            // 关闭录音弹窗
+            this.$addEventListener('close_record_pop', PresenterEventType.IC_PLAYER_EVENT, this._closeReocrdPop);
+            // 监听流程控制器
+            this.$addEventListener('sendAnswer', PresenterEventType.IC_PLAYER_EVENT, this._sendAnswerFromAnswerFlowController)
+            // 监听题目播放器点击开始事件
+            this.$addEventListener('NDMediaPlayerStarted', PresenterEventType.IC_PLAYER_EVENT, this._onNDMediaPlayerStarted);
+            // 监听Native播放器点击开始事件
+            this.$addEventListener('audioStartedCallback',PresenterEventType.NATIVE_EVENT,this._onNativeAudioStartedCallback)
+        },
+        _fullScreenEventHandler: function () {
+            this._super();
+            if (self.screenfull.isFullscreen) {
+                self.services.writerService.showToolbar(false);
+            } else {
+                setTimeout(function () {
+                    if (!self.screenfull.isFullscreen) {
+                        self.services.writerService.showToolbar(true);
+                    }
+                }, 500);
+            }
+        },
+        _closeReocrdPop: function (option) {
+            self.services.writerService.closeRecordPopWin(option);
+        },
+        /**
+         * 多媒体全屏播放事件
+         * @param eventData
+         * @private
+         */
+        _setDisplayStatus: function (eventData) {
+            var value = eventData.isFull;
+            this.logger.debug('[receive setDisplayStatus]', value);
+            this.services.writerService.showToolbar(value === true ? false : true);
+        },
+        /**
+         * 随堂练习状态发生改变
+         * @param data
+         * @private
+         */
+        _exerciseStateChange: function (data) {
+            if (data.value.result) {
+                this._super(data);
+                if (!this.services.writerService) {
+                    return;
+                }
+                if (data.type === 'exit') {
+                    this.services.writerService.editTitle(true);
+                    this.services.writerService.resetPage({});
+                    //重置作文题导航
+                    this.$dispatchEvent('ResetTabs', PresenterEventType.IC_PLAYER_EVENT, {});
+                }
+                if (data.type === 'start') {
+                    this.services.writerService.editTitle(false);
+                }
+            }
+        },
+        /**
+         * 初始化背景图
+         * @private
+         */
+        _initBackground: function () {
+            if (this.hasCreatePPTPresenter === false) {
+                this.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+                    'presenterId': this.model.questionType,
+                    'instanceId': this.model.questionType,
+                    'initData': ''
+                });
+                this.hasCreatePPTPresenter = true;
+            }
+            this.model.writer_background.writer_width = 1610;
+            this.model.writer_background.writer_height = 1350;
+            var background = {};
+            for (var key in this.model.writer_background) {
+                background[key] = this.model.writer_background[key];
+            }
+            var p = (background.writer_width * 1.0) / 1620;
+            background.right = p * background.right;
+            background.left = p * background.left;
+            background.top = p * background.top;
+            background.right = background.writer_width - background.right;
+            background.right = background.right < 0 ? background.writer_width : background.right;
+            background.width = background.right - background.left;
+            background.height = parseInt((this.model.writer_background.height * 1.0) / this.model.writer_background.width * background.width);
+            background.bottom = background.top + background.height;
+            background.type = 0;
+            background.writer_width = 1607;
+            background.writer_height = 578;
+            background.width = background.right = background.writer_width;
+            background.height = background.bottom = background.writer_height;
+            this.setBackground(background);
+        },
+        _addPage: function (eventData) {
+            this.currentStatus = this.WRITE_STATUS.writing;
+            // 改变按钮状态
+            this.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                canSubmit: true,
+                linkQuestionId: self.model.id
+            });
+            this.startWrite = true;
+        },
+        _delPage: function (eventData) {
+            this.currentStatus = this.WRITE_STATUS.writing;
+            // 改变按钮状态
+            this.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                canSubmit: true,
+                linkQuestionId: self.model.id
+            });
+            this.startWrite = true;
+        },
+        _changeView: function (eventData) {
+            this.compositionIndex = eventData.index;
+            if (eventData.index === 2) {
+                this.isWriteTab = true;
+                setTimeout(function () {
+                    if (self.isWriteTab) {
+                        self.services.writerService.show(true);
+                    }
+                }, 500);
+            } else {
+                this.isWriteTab = false;
+                this.services.writerService.show(false);
+                //切换到‘查看题目’或‘查看素材’菜单时，通知暂停录音
+                this.services.writerService.pauseRecord();
+            }
+            if (this.isLock === false) {
+                this.services.writerService.edit(eventData.index === 2 ? true : false);
+            }
+        },
+        /**
+         * 加载手写板
+         * @private
+         */
+        _requireHandWriter: function () {
+            //初始化背景纸
+            this._initBackgroundPaper();
+            var writerTab = this.services.panelService.getAutowiredPanel();
+            var initData = {
+                'examId': self.model.examId,
+                'nativeId': 'composition_pad',
+                'isWhole': self.model.isWhole,
+                'isAutoGetState': 1,
+                'isSinglePage': 0,
+                //'background': self.model.writer_background,
+                'questionType': self.model.questionType,
+                'title': self.model.title || '',
+                'wordsNum': self.words,
+                'limitPage': self.limitPage,
+                'position': self.services.layoutService.getContainerPosition(),
+                'canvasWidth': writerTab.width() - 38,
+                'canvasHeight': writerTab.height() - 20
+            };
+            // 设置题型标题
+            var questionTitle = self.i18nModel['Composition_Question'];
+            this.services.panelService.setQuestionTitle(questionTitle);
+            // 设置Tab标题
+            var tabTitle = self.i18nModel['Enter_Writing'];
+            this.services.panelService.setTabTitle(tabTitle);
+            var config = {
+                addonId: 'HandWriter',
+                properties: [
+                    { 'name': 'initData', type: 'json', 'value': initData }
+                ],
+                callback: function (addon) {
+                    self.writer = addon;
+                    self.writer.getService().show(false);
+                    self.writer.getService().edit(false);
+                    self.$dispatchEvent('HandWriterRequiredOver', PresenterEventType.IC_PLAYER_EVENT, {});
+                }
+            };
+            this.services.panelService.setComponent(config);
+        },
+        /**
+         * 初始化手写板背景纸
+         */
+        _initBackgroundPaper: function () {
+            /*
+                不同背景改变data-style的属性：
+                下划线:underline
+                田字格:field
+                米字格:rice
+                格子本:lattice
+            */
+            var paper = '<dl class="composition-paper" data-style="rice"><dt></dt><dd></dd><dd style="display: none"></dd></dl>';
+            var writerTab = this.services.panelService.getAutowiredPanel();
+            writerTab.html(paper);
+            // 背景
+            var bg = writerTab.find('.composition-paper');
+            switch (self.model.paperType) {
+                case '1':
+                    bg.attr('data-style', 'lattice');
+                    self.words = 52;
+                    break;
+                case '4':
+                    bg.attr('data-style', 'underline');
+                    self.words = 0;
+                    break; 
+                case '6':
+                    bg.attr('data-style', 'field');
+                    self.words = 65;
+                    break;
+                case '7':
+                    bg.attr('data-style', 'rice');
+                    self.words = 65;
+                    break;
+            }
+        },
+
+        /**
+         * 二次收题
+         */
+        _sendExtendAnswer: function (eventData) {
+            if (eventData.type == 'get' && self.extendData) {
+                self.$dispatchEvent('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT, self.extendData);
+                console.log('-------------------------SubmitDetail Submit-----------------------------');
+                console.log(self.extendData);
+                ClassroomUtils.log('[Subjectivity] SubmitDetail Submit ' + JSON.stringify(self.extendData));
+            }
+
+        },
+        /**
+         * 保存二次收题的数据
+         */
+        _saveExtendAnswer: function () {
+            if (self.recordData) {
+                var data = {
+                    'source': '作文题',
+                    'type': 'submit',
+                    'value': {
+                        'examId': self.model.examId,
+                        'answerFiles': [{
+                            "url": self.recordData.path,
+                            "meta": "{\"index\":" + self.recordIndex + "}"
+                        }]
+                    }
+                };
+                self.extendData = data;
+            }
+        },
+        _sendAnswerFromAnswerFlowController: function (eventData) {
+            if (!eventData.notSubmit) {
+                self._saveExtendAnswer();
+            }
+        },
+        /**
+         * 返回录音数据
+         */
+        _AudioDataCallback: function (eventData) {
+            console.log('================AudioDataCallback====================');
+            console.log(eventData);
+            console.log('================AudioDataCallback====================');
+            if (!eventData || eventData === "{}") {
+                self.recordData = null;
+            } else {
+                self.recordData = eventData;
+                // 改变按钮状态
+                self.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: true,
+                    linkQuestionId: self.model.id
+                });
+            }
+            if (self.extendPromise) {
+                console.log('================AudioDataCallback promise resolved ===================='); 
+                self.extendPromise.resolve();
+            }
+        },
+        _releaseRecordCallback: function (eventData) {
+            var isSaveRecord = eventData;
+            if (!isSaveRecord) {
+                // 如果结束时没有保存录音直接resolve，如果有保存录音等待录音数据的回调再resolve
+                if (self.extendPromise) {
+                    console.log('================releaseRecordCallback promise resolved ===================='); 
+                    self.extendPromise.resolve();
+                }
+            }
+        },
+        _onNDMediaPlayerStarted: function (eventData) {
+            // 点击题目媒体播放器时候暂停录音播放器
+            self.services.writerService.pausePlayer();
+            self.services.writerService.pauseRecord();
+        },
+        _onNativeAudioStartedCallback: function (eventData) {
+            console.log("_onNativeAudioStartedCallback"); 
+            self.services.panelService.pauseMediaPlay();
+        }
+    });
+
+    window.AddonCompositionController_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

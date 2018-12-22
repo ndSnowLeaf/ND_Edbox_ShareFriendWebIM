@@ -1,0 +1,872 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Layout'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_Layout {
+  font-family: 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+  background: url("resources/wholebg_wood.jpg");
+  width: 100%;
+  height: 100%; }
+  .addon_Layout * {
+    box-sizing: border-box; }
+  .addon_Layout .layout_containter {
+    position: fixed;
+    user-select: none;
+    -webkit-user-select: none;
+    width: 80em;
+    height: 50em;
+    top: 50%;
+    left: 50%;
+    margin: -25em 0 0 -40em;
+    padding: 2em 3.625em;
+    box-sizing: border-box; }
+    .addon_Layout .layout_containter .layout_sts_classE {
+      height: 100%;
+      z-index: 302; }
+      .addon_Layout .layout_containter .layout_sts_classE .ic_module, .addon_Layout .layout_containter .layout_sts_classE .chart_display .stat_wood {
+        position: relative; }
+    .addon_Layout .layout_containter.statistic-view {
+      height: 45.5em;
+      left: 50%;
+      margin: -25em 0 0 -40em;
+      padding: 2.25em 3.625em 0;
+      top: 50%;
+      width: 80em; }
+      .addon_Layout .layout_containter.statistic-view .com_header_time {
+        display: none; }
+  .addon_Layout .layout_statistic {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    visibility: hidden; }
+  .addon_Layout .statistic-view .layout_statistic {
+    visibility: visible; }
+  .addon_Layout .statistic-view .com_lay_header {
+    display: none; }
+  .addon_Layout .statistic-view .com_layout {
+    padding: 12px 0 0 !important; }
+  .addon_Layout .statistic-view .layout_presenter .addon_BasicQuestionViewer.ic_module {
+    height: auto !important; }
+    .addon_Layout .statistic-view .layout_presenter .addon_BasicQuestionViewer.ic_module .wood-bg.teacherpc {
+      bottom: 0em !important; }
+    .addon_Layout .statistic-view .layout_presenter .addon_BasicQuestionViewer.ic_module .header {
+      display: none !important; }
+  .addon_Layout .statistic-view.classroomsummary-detail .layout_presenter > .ic_module {
+    height: auto !important; }
+    .addon_Layout .statistic-view.classroomsummary-detail .layout_presenter > .ic_module .pptshell_btn {
+      display: none !important; }
+  .addon_Layout .layout_presenter {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3.625em;
+    right: 2.5em;
+    overflow: auto;
+    -webkit-user-select: none;
+    user-select: none; }
+    .addon_Layout .layout_presenter .exam_wood .com_layout.layout_whiteboard .com_lay_header {
+      bottom: -12px; }
+      .addon_Layout .layout_presenter .exam_wood .com_layout.layout_whiteboard .com_lay_header .com_lay_toptool {
+        display: none; }
+    .addon_Layout .layout_presenter > .ic_module {
+      right: 0.75em !important;
+      width: auto !important;
+      height: 50em !important;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      position: absolute; }
+      .addon_Layout .layout_presenter > .ic_module .exam_wood .com_layout {
+        background: none; }
+    .addon_Layout .layout_presenter.hidden-overflow > .ic_module {
+      right: 1.2em !important;
+      left: 0; }
+    .addon_Layout .layout_presenter .my-addon-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0; }
+      .addon_Layout .layout_presenter .my-addon-wrapper .wood-bg.teacherpc {
+        top: 18px !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 4.8em !important; }
+        .addon_Layout .layout_presenter .my-addon-wrapper .wood-bg.teacherpc .header {
+          bottom: -4.8em;
+          border: none; }
+    .addon_Layout .layout_presenter .hidden-overflow .my-addon-wrapper .wood-bg.teacherpc {
+      bottom: 4.5em !important; }
+  .addon_Layout .hidden-overflow {
+    overflow: hidden; }
+  .addon_Layout .layout_handle {
+    z-index: 301;
+    position: absolute;
+    bottom: -1.66667em;
+    right: 4.5em;
+    /*background: url(resources/bg_pull.png) left top no-repeat;
+    background-size: 100% auto;*/
+    visibility: hidden;
+    width: 3.33333em;
+    height: 3.33333em; }
+    .addon_Layout .layout_handle .icon {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -1.125em 0 0 -1.125em;
+      width: 2.25em;
+      height: 2.25em;
+      background: url(resources/icon_pull.png) left top no-repeat;
+      background-size: 100% auto; }
+    .addon_Layout .layout_handle .pull_up {
+      background: url(resources/icon_pull.png) left bottom no-repeat;
+      background-size: 100% auto; }
+  .addon_Layout .layout_handle:before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -1.125em 0 0 -1.125em;
+    width: 2.3em;
+    height: 2.25em;
+    content: "";
+    background: url(resources/bg_pull.png) left top no-repeat;
+    background-size: 100% auto; }
+  .addon_Layout .layout_handle:active:before {
+    background: url(resources/bg_pull.png) left bottom no-repeat;
+    background-size: 100% auto; }
+  .addon_Layout .layout_footbar {
+    z-index: 301;
+    position: absolute;
+    /*left:3.625em;*/
+    right: 3.4em;
+    top: 45.7em;
+    visibility: hidden; }
+  .addon_Layout .layout_btn_up {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid #D3D3D3;
+    cursor: pointer; }
+  .addon_Layout .layout_btn_up:hover, .addon_Layout .layout_btn_up:active {
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-bottom: 20px solid white; }
+  .addon_Layout .layout_btn_bottom {
+    width: 0;
+    height: 0;
+    margin-top: 2px;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 20px solid #D3D3D3;
+    cursor: pointer; }
+  .addon_Layout.isPreview .layout_containter {
+    width: auto;
+    height: auto;
+    left: 0;
+    right: 0 !important;
+    top: 0;
+    bottom: 0;
+    margin: 0; }
+    .addon_Layout.isPreview .layout_containter .layout_presenter {
+      left: 0;
+      right: 0; }
+      .addon_Layout.isPreview .layout_containter .layout_presenter .wood-bg.teacherpc {
+        top: 18px !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 80px !important; }
+        .addon_Layout.isPreview .layout_containter .layout_presenter .wood-bg.teacherpc .header {
+          bottom: -90px;
+          border: none; }
+  .addon_Layout .layout_footbar .com_question_switch_tool {
+    float: left;
+    margin: 0 auto;
+    z-index: 3;
+    height: 4.08333em;
+    line-height: 4.08333em; }
+  .addon_Layout .layout_footbar .com_question_switch {
+    z-index: 3;
+    display: inline-block;
+    vertical-align: middle;
+    height: 2.08333em;
+    line-height: 2.08333em; }
+  .addon_Layout .layout_footbar .com_question_switch .count_text {
+    font-size: 1.08333em;
+    line-height: 2.08333em;
+    color: #333; }
+  .addon_Layout .layout_footbar .com_question_switch .count_text em {
+    font-size: 1.38333em;
+    line-height: 1.1;
+    font-style: normal;
+    color: #83ad50; }
+  .addon_Layout .layout_footbar .com_question_switch .com_btn_question_switch {
+    display: inline-block;
+    margin: 0 .16667em;
+    width: 4.75em;
+    height: 2.08333em;
+    line-height: 1.83333em;
+    vertical-align: top;
+    background: url(resources/com_btn_question_switch.png) center top no-repeat;
+    background-size: 100% auto;
+    text-align: center;
+    color: #2c1901;
+    text-decoration: none; }
+  .addon_Layout .layout_footbar .com_question_switch .com_btn_question_switch span {
+    font-size: .83333em; }
+  .addon_Layout .layout_footbar .com_question_switch .com_btn_question_switch:active {
+    background: url(resources/com_btn_question_switch.png) center center no-repeat;
+    background-size: 100% auto; }
+  .addon_Layout .layout_footbar .com_question_switch .com_btn_question_switch.off {
+    background: url(resources/com_btn_question_switch.png) center bottom no-repeat;
+    background-size: 100% auto; }
+  .addon_Layout .layout_footbar .com_question_switch .com_btn_question_switch.off span {
+    color: #9a9a9a; }
+
+.bar_style1::-webkit-scrollbar {
+  width: 9px;
+  border-radius: 12.5px;
+  /*background: url(resources/scroll_bg.png) 50% 50% repeat-y;*/
+  padding: 0 4px;
+  height: 9px;
+  /*border:1px solid #b2874e;*/ }
+
+.bar_style1::-webkit-scrollbar-button:increment {
+  background: url(resources/scrollbar/scroll_thumb_t.png) 50% 50% no-repeat;
+  height: 5px;
+  width: 5px; }
+
+.bar_style1::-webkit-scrollbar-button:decrement {
+  background: url(resources/scrollbar/scroll_thumb_t.png) 50% 50% no-repeat;
+  height: 1px;
+  width: 1px; }
+
+.bar_style1::-webkit-scrollbar-thumb {
+  background-image: url(resources/scrollbar/scroll_thumb_bg.png);
+  background-repeat: repeat;
+  background-position: 50% 0;
+  box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.95), 0px 2px 0px 0px rgba(95, 59, 13, 0.42), inset 0 0 1.95px 20px rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  position: absolute; }
+
+.bar_style1::-webkit-scrollbar-thumb:horizontal:hover {
+  opacity: 0.5; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="layout_containter">
+    <div class="layout_statistic">
+        <a class="layout_handle">
+            <span class="icon"></span>
+        </a>
+    </div>
+    <div class="layout_presenter bar_style1"></div>
+    <div class="layout_footbar"></div>
+</div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[function AddonLayout_create()
+{
+    //1.0.1
+    /**
+     * 获取Module当前的运行环境, 通过icPlayer提供的接口
+     * 已定义的环境枚举包括
+     * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)
+     * icCreatePlayer.RUNTIME.STUDENT_MOBILE(学生端)
+     * icCreatePlayer.RUNTIME.PROJECTION_MOBILE(投影端)
+     * icCreatePlayer.RUNTIME.WEB(WEB端 )
+     * icCreatePlayer.RUNTIME.TEACHER_PC(PC端)
+     * 判断例子
+     * if(currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE)
+     */
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var $view,$layoutContainter,$layoutStatistics,$layoutPresenter,$layoutHandle,$layoutFootbar;
+    var STATUS = {
+        UNSTATISTICS:"unstatistics",//非统计状态
+        SHOWING_DETIAL:"show-detial",//统计态，详细
+        SHOWING_MINI:"show-mini",//统计态，mini
+        HIDING:"isHiding"//统计态，收起统计
+    };
+
+    var currentStatus = STATUS.UNSTATISTICS;//当前状态
+    var exports = {};//布局模组对外暴露的接口
+    var presenterHandler;
+    var presenterWidth = 0,presenterHeight = 0;
+
+    var isApp = false,
+        isTeacher = false,
+        isStudent = false,
+        isTeacherPc = false,
+        isProjector = false,
+        isWeb = false;
+
+    switch (currentRuntime) {
+        case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+            isTeacher = true;
+            isApp = true;
+            break;
+        case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+            isStudent = true;
+            isApp = true;
+            break;
+        case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+            isProjector = true;
+            isApp = true;
+            break;
+        case icCreatePlayer.RUNTIME.WEB:
+            isWeb = true;
+            break;
+        case icCreatePlayer.RUNTIME.TEACHER_PC:
+            isTeacherPc = true;
+            isApp = true;
+            break;
+        default:
+            isApp = false;
+            isWeb = false;
+            isTeacherPc = false;
+    }
+
+    /**
+     * Module的逻辑
+     * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+     * @param model 模型对象
+     * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+     */
+    var presenterLogic = function (view, model, isPreview) {
+        requireStatistic();
+        $layoutContainter.removeClass("statistic-view");
+    };
+
+    var getQueryString = function(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+
+    /**
+     * 加载统计模块
+     */
+    function requireStatistic(){
+        presenter.controller.require({
+            addonId: "ObjectiveQuestionStatistics",
+            id: "ObjectiveQuestionStatistics",
+            layout: {
+                left: 0,
+                top: 0,
+                height: "100%"
+            },
+            renderTo:$view.find(".layout_statistic").get(0),
+            properties: []
+        }).done(function(statistic) {
+            statistic.setLayoutHandler(exports);
+            statistic.setFootBarPanel($view.find(".layout_footbar").get(0));
+            if(isWeb){
+                window.exports = exports;
+            }
+        });
+    }
+
+    var fireEvent = function(eventName, option) {
+        if (!option) {
+            option = {};
+        }
+        option.source = presenter.model.ID;
+        if(window.ClassroomUtils && ClassroomUtils.fireEvent){
+            ClassroomUtils.fireEvent(eventName, option);
+        }
+    };
+
+    /**
+     * 重置模组的样式
+     */
+    function resetPresentersStyle(){
+        function winSize() {
+            var t = 0,
+                e = 0;
+            return document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth && (t = document.documentElement.clientWidth, e = document.documentElement.clientHeight), {
+                width: t,
+                height: e
+            }
+        }
+
+        var t = $view[0],
+            e = 1920,
+            n = 1200,
+            i = 24,
+            o = function() {
+                var o = winSize(),
+                    d = 0,
+                    h = o.width,
+                    c = o.height;
+                o.width / o.height <= e / n ? (d = o.width / e * i, h = o.width < e ? o.width : e, c = n * h / e, o.height > c) : (d = o.height / n * i, c = o.height < n ? o.height : n, h = e * c / n);
+                return d;
+            };
+        var d = o();
+        var l = 87*d/24;
+
+        //获取宽高
+        presenterWidth = $view.width();
+        presenterHeight = $view.height();
+
+        var $presenters = $view.find(".layout_presenter").children();
+        var right = l-6;
+        //$layoutFootbar.css({"right":right+"px"});
+        $.each($presenters,function(i,presenter){
+            //$(presenter).css({"width":(presenterWidth-l*2)+"px","height":presenterHeight+"px","left":l+"px","margin":"0"});
+            $(presenter).css({"height":presenterHeight+"px"});
+            $(presenter).find(".exam_wood .com_layout").css({"background-image":"none"});
+        });
+
+        $view.css("font-size",d+"px");
+        fireEvent("resetPresentersStyle",{"left":l,"width":(presenterWidth-l*2),"height":presenterHeight});
+    }
+
+    var presenter = function () {
+    };
+
+    /**
+     * 编辑环境下, 创建/刷新预览视图的方法;
+     * Module在编辑环境下,model改变; 位置改变; DOM结构改变时都会促发该方法
+     * @param view 预览视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     */
+    presenter.createPreview = function (view, model) {
+        //Todo: 在此处一般进行model的数据有效性验证
+        presenterLogic(view, model, true);
+    };
+
+
+    /**
+     * 运行环境下, 初始化Module的方法
+     * @param view 运行视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+     */
+    presenter.run = function (view, model) {
+
+        var isPreview = getQueryString("isPreview");
+
+        presenter.model = model;
+        $view = $(view);
+
+        $layoutContainter = $view.find(".layout_containter");
+        $layoutStatistics = $view.find(".layout_statistic");
+        $layoutPresenter = $view.find(".layout_presenter");
+        $layoutHandle = $view.find(".layout_handle");
+        $layoutFootbar = $view.find(".layout_footbar");
+
+        currentStatus = STATUS.UNSTATISTICS;//当前状态
+
+        if(isPreview == "true"){//如果是pptshell预览状态
+            $view.addClass("isPreview");
+        }else{
+            $view.removeClass("isPreview");
+        }
+
+        presenterLogic(view, model, false);
+        //绑定Module事件
+        bindEvent();
+
+
+        var defaultWidth = 1920;
+        var defaultHeight = 1200;
+        var defaultFontSize = 24;
+
+        var winWidth = 0;
+        var winHeight = 0;
+        if(document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth){
+            winWidth = document.documentElement.clientWidth;
+            winHeight = document.documentElement.clientHeight;
+        }
+        var winSizeValue = {width:winWidth,height:winHeight};
+        var fontSize = 0;
+        if(winSizeValue.width/winSizeValue.height <= defaultWidth/defaultHeight){
+            fontSize = winSizeValue.width/defaultWidth*defaultFontSize;
+        }else{
+            fontSize = winSizeValue.height/defaultHeight*defaultFontSize;
+        }
+
+        $view.css("font-size",fontSize+"px");
+    };
+
+    /**
+     * 运行环境下, 销毁Module时执行的方法
+     * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+     */
+    presenter.destroy = function () {
+        currentStatus = STATUS.UNSTATISTICS;
+        //解除绑定的Module事件
+        unBindEvent();
+        //ToDo:释放Module占用的内存对象
+    };
+
+    /**
+     * 获得当前Module的状态信息;
+     * 可用于Module的状态恢复和保存
+     */
+    /*presenter.getState = function () {
+        //TODO: 添加符合Module需求的状态对象
+        var moduleState = JSON.stringify({
+            module_id: presenter.model.ID
+        });
+        return moduleState;
+    };*/
+
+    /**
+     * 设置Module当前状态
+     * @param state Module状态对象
+     */
+    presenter.setState = function (state) {
+        var currentState;
+        if(state) {
+            currentState = JSON.parse(state);
+            //ToDo:处理Module的状态恢复
+        }
+    };
+
+    presenter.onEventReceived = function(eventName, eventData){
+        if(eventName == "PageLoaded"){//渲染完毕，强制修改module的宽高
+            resetPresentersStyle();
+        }
+    };
+
+    presenter.setPlayerController = function(controller) {
+        presenter.controller = controller;
+        presenter.eventBus = presenter.controller.getEventBus();
+        presenter.eventBus.addEventListener('PageLoaded', presenter);
+    };
+
+    /**
+     * 暴露给presenter要渲染的位置
+     * @returns {*}
+     */
+    presenter.getMain = function(){
+        return $view.find('.layout_presenter');
+    };
+
+    /**
+     * 设置presenters控制器
+     * @param exps
+     */
+    presenter.setPresenterExports = function(exps){
+        exports["presenterHandler"] = exps;
+    };
+
+    /**
+     * 获取当前状态
+     */
+    exports.getCurrentState = function(){
+        return currentStatus;
+    };
+
+    /**
+     * 显示详细统计界面
+     *
+     */
+    exports.showStatistics = function(height,type){
+
+        if(currentStatus != STATUS.SHOWING_DETIAL && currentStatus != STATUS.SHOWING_MINI){
+
+            $layoutContainter.addClass("statistic-view");
+            //显示底部二级工具栏
+            $layoutFootbar.css({"visibility":"visible"});
+            var fbHeight = $layoutFootbar.height() + 15;
+
+            var d1Height = 0;
+            if(height){
+                d1Height = height;
+            }
+
+            $layoutHandle.css({"visibility":"visible"});
+            $layoutPresenter.animate({"top":d1Height+"px","bottom":(fbHeight)+"px"},250);
+            //$layoutHandle.animate({"top":(d1Height-25)+"px"},250);
+
+            currentStatus = type?type:STATUS.SHOWING_DETIAL;
+        }
+    };
+
+    /**是否允许原题区滑动**/
+    var allowDrag = false;
+
+    /**
+     * 显示详细统计界面
+     */
+    exports.showDetialStatistics = function(ev){
+        /*if(ev){
+            return;
+        }*/
+
+        if(currentStatus != STATUS.SHOWING_DETIAL){
+
+            //bug#39616
+            if(ev && $layoutPresenter.attr("listen-drag") == "down" && currentStatus == STATUS.SHOWING_MINI){
+                //修复bug#46608
+                $layoutPresenter.removeAttr("listen-drag");
+                return;
+            }
+
+            $layoutContainter.addClass("statistic-view");
+            //显示底部二级工具栏
+            $layoutFootbar.css({"visibility":"visible"});
+            var fbHeight = $layoutFootbar.height() + 15;
+
+            //1、隐藏mini统计区
+            $layoutStatistics.find(".statistics-area .chart_display_mini").css({"display":"none"});
+            //2、显示详细统计区
+            $layoutStatistics.find(".statistics-area .chart_display").css({"display":"block"});
+
+            //获取统计区高度
+            var d1Height = $layoutStatistics.height();
+
+            $layoutHandle.css({"visibility":"visible"});
+            //$layoutPresenter.animate({"top":d1Height+"px","bottom":(fbHeight)+"px"},250);
+            $layoutPresenter.animate({"top":d1Height+"px","bottom":"0px"},0);
+            $layoutPresenter.scrollTop(0);
+            //$layoutHandle.animate({"top":(d1Height-25)+"px"},250);
+            $layoutPresenter.addClass("hidden-overflow");
+
+
+            $layoutContainter.off("mousedown mouseup touchstart touchend");
+            $layoutContainter.on("mousedown mouseup touchstart touchend",function(ev){
+                switch (ev.type){
+                    case "mousedown":
+                    case "touchstart":
+                        $layoutPresenter.attr("drag-start-Y",ev.screenY);
+                        var sh = $layoutStatistics.height();
+                        if(ev.clientY > sh){
+                            $layoutPresenter.attr("listen-drag","up");
+                        }
+                        break;
+                    case "mouseup":
+                    case "touchend":
+                        var startY = $layoutPresenter.attr("drag-start-Y");
+                        var endY = ev.screenY;
+                        if((startY - endY) > 50){
+                            exports.showMiniStatistics();
+                        }
+                        $layoutPresenter.attr("drag-start-Y",false);
+                        $layoutPresenter.removeAttr("listen-drag");
+                        break;
+                    default :
+                        break;
+                }
+                ev.stopPropagation();
+            });
+
+            currentStatus = STATUS.SHOWING_DETIAL;
+            var $icon = $layoutHandle.find(".icon");
+            $icon.removeClass("pull_up");
+        }
+    };
+
+    /**
+     * 显示mini统计界面
+     */
+    exports.showMiniStatistics = function(){
+        if(currentStatus != STATUS.SHOWING_MINI){
+
+            $layoutContainter.addClass("statistic-view");
+            //显示底部二级工具栏
+            $layoutFootbar.css({"visibility":"visible"});
+            var fbHeight = $layoutFootbar.height() + 15;
+
+            //1、隐藏详细统计区
+            $layoutStatistics.find(".statistics-area .chart_display").css({"display":"none"});
+            //2、显示mini统计区
+            $layoutStatistics.find(".statistics-area .chart_display_mini").css({"display":"block"});
+
+            //获取统计区高度
+            var d1Height = $layoutStatistics.height();
+
+            //$layoutHandle.css({"visibility":"hidden"});
+            //$layoutPresenter.animate({"top":d1Height+"px","bottom":(fbHeight)+"px"},250);
+            $layoutPresenter.animate({"top":d1Height+"px","bottom":"0px"},250);
+            //$layoutHandle.animate({"top":(d1Height-25)+"px"},250);
+            $layoutPresenter.removeClass("hidden-overflow");
+
+            $layoutContainter.off("mousedown mouseup touchstart touchend");
+            $layoutContainter.on("mousedown mouseup touchstart touchend",function(ev){
+                switch (ev.type){
+                    case "mousedown":
+                    case "touchstart":
+                        var scrollTop = $layoutPresenter.scrollTop();
+                        if(scrollTop < 5){
+                            allowDrag = true;
+                            $layoutPresenter.attr("drag-start-Y",ev.screenY);
+                            $layoutPresenter.attr("drag-start-X",ev.offsetX);
+                        }
+                        var sh = $layoutStatistics.height() + $layoutStatistics.offset().top;//修复bug#46608
+                        if(ev.clientY > sh){
+                            $layoutPresenter.attr("listen-drag","down");
+                        }
+                        //ev.preventDefault();//修复bug49701
+                        break;
+                    case "mouseup":
+                    case "touchend":
+                        var startX = Number($layoutPresenter.attr("drag-start-X"));
+                        var width = $layoutPresenter.width();
+                        if(startX + 20 > width){
+                            $layoutPresenter.attr("drag-start-Y",-1);
+                            allowDrag = false;
+                            break;
+                        }
+                        if(allowDrag == true){
+                            var startY = $layoutPresenter.attr("drag-start-Y");
+                            var endY = ev.screenY;
+                            if((endY - startY) > 50){
+                                exports.showDetialStatistics();
+                            }
+                        }
+                        $layoutPresenter.attr("drag-start-Y",false);
+                        $layoutPresenter.removeAttr("listen-drag");
+                        allowDrag = false;
+                        break;
+                    default :
+                        break;
+                }
+                ev.stopPropagation();
+            });
+
+            currentStatus = STATUS.SHOWING_MINI;
+            var $icon = $layoutHandle.find(".icon");
+            $icon.addClass("pull_up");
+        }
+    };
+
+    /**
+     * 退出本题
+     */
+    exports.exitExam = function(){
+        if(currentStatus != STATUS.UNSTATISTICS){
+            $layoutContainter.off("mousedown mouseup touchstart touchend");
+            $layoutContainter.removeClass("statistic-view");
+            $layoutPresenter.css({"top":"0","bottom":"0"});
+            $layoutHandle.css({"visibility":"hidden"});
+            $layoutFootbar.css({"visibility":"hidden"});
+            currentStatus = STATUS.UNSTATISTICS;
+        }
+    };
+
+    /**
+     * 动态设置原提区的位置
+     */
+    exports.setOrigQuestionTop = function(){
+        //获取统计区高度
+        var d1Height = $layoutStatistics.height();
+
+        //$layoutHandle.css({"visibility":"hidden"});
+        //$layoutPresenter.animate({"top":d1Height+"px","bottom":(fbHeight)+"px"},250);
+        $layoutPresenter.animate({"top":d1Height+"px","bottom":"0px"},250);
+    };
+
+    /**
+     * 禁用拖拽功能
+     */
+    exports.disableLayoutDrag = function(){
+        $layoutContainter.off("mousedown mouseup touchstart touchend");
+    };
+
+
+    /**
+     * 绑定事件的方法
+     */
+    function bindEvent() {
+        $layoutHandle.on("click",function(){
+            var $icon = $(this).find(".icon");
+            if($icon.is(".pull_up")){
+                exports.showDetialStatistics();
+
+            }else{
+                exports.showMiniStatistics();
+
+            }
+        });
+
+        /**监听滚动条**/
+        /*$layoutPresenter.on("scroll",function(){
+            var scrollTop = $layoutPresenter.scrollTop();
+            var scrollHeight = $layoutPresenter[0].scrollHeight;
+            var height = $layoutPresenter.height();
+            if(scrollTop+height+2 >= scrollHeight){
+                console.log("滑到底部了");
+                exports.showMiniStatistics();
+            }
+        });*/
+    }
+
+    /**
+     * 解除事件绑定的方法
+     */
+    function unBindEvent() {
+        $layoutHandle.off("click");
+        $layoutPresenter.off("scroll");
+    }
+    
+/*    /!**
+     * 实现Module多语言适配的方法, 如Module存在i18n的支持, 请务必实现此方法
+     * icplayer会加载当前i18n的配置信息,并通过location参数传入
+     * @param location 表示当前语言环境的配置信息, 为JSON数组的键值对
+     *!/
+    presenter.setLocationProperties = function (location) {
+    };
+
+    /!**
+     * 以下一组为可选运行时初始化函数, icPlayer会根据运行时的不同, 在执行presenter.run 函数之前, 执行对应运行时的初始化函数;
+     * 如Module在不同运行时需要执行不同初始化操作, 可进行单独实现
+     *!/
+        //移动环境教师端
+    presenter.initTeacherMobile = function() {
+    };
+    //移动环境学生端
+    presenter.initStudentMobile = function() {
+    };
+    //移动环境投影端
+    presenter.initProjectionMobile = function() {
+    };
+    //Web端
+    presenter.initWeb = function() {
+    };
+    //教师端PC
+    presenter.initTeacherPc = function () {
+
+    };*/
+
+    return presenter;
+}
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/bg_pull.png' />
+<file src='./resources/com_btn_question_switch.png' />
+<file src='./resources/icon_pull.png' />
+<file src='./resources/scrollbar/scroll_thumb_bg.png' />
+<file src='./resources/scrollbar/scroll_thumb_t.png' />
+<file src='./resources/wholebg_wood.jpg' />
+
+
+</resources>
+
+</addon>

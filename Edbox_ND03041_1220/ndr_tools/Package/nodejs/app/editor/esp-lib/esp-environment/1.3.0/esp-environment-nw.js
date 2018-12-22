@@ -1,0 +1,1 @@
+define([],function(){return{service:"node",coursewareobjectPreview:"../index_js.html?type=coursewareobject&ref-path=./&main=coursewareobject/{id}.pkg/main.xml",coursewareobjectRoot:"../coursewareobject/{id}.pkg",jsLibraryRoot:"/js-library/{name}/{version}",referencePath:"/cs",supports:{asset:!1}}});

@@ -1,0 +1,59 @@
+<div class="ed_composition_field_content">
+    <div class="ed_composition_tabbar">
+        <div class="tab_btn btn_previous" _mark="pre_tab_btn"></div>
+        <div class="tab_btn btn_next" _mark="next_tab_btn"></div>
+        <ul class="ed_composition_asset_wrapper clearfix">
+            <li ng-repeat="item in assets.items track by $index"
+                ng-hide="$index < assets.startTabIndex || $index >= assets.startTabIndex + assets.MAX_IN_ONE_PAGE"
+                _mark="tab_label"
+                _itemIdx="{{$index}}"
+                ng-class="{'ui_btn_select':item.isEnabled,'edit':item.isUnderEdit}"
+                class="tabcell">
+                <i class="tabcell_changename"                   
+                   _itemIdx="{{$index}}"
+                   _mark="edit_tab_btn"></i>
+                <i class="tabcell_del"
+                   _itemIdx="{{$index}}"
+                   _mark="delete_tab_btn">
+                </i>
+                <span class="tabcell_txt"
+                      _mark="tab_label" 
+                      _itemIdx="{{$index}}">
+                    {{item.title + item.titleIdx}}
+                </span>
+                <input type="text" 
+                       _itemIdx="{{$index}}"
+                       value="{{item.title + item.titleIdx}}"
+                       get-focus
+                       maxlength = "12"
+                       class="tabcell_input" />
+            </li>
+            <li class="tabcell" 
+                _mark="add_tab_btn">
+                <span class="tabcell_txt" 
+                      _mark="add_tab_btn">
+                    +
+                </span>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <div class="ed_composition_text_area">
+            <div ng-repeat="item in assets.items" 
+                 ng-model="item.content"
+                 ng-class="{'hide_dom':!item.isEnabled}"
+                 slides-html-editor
+                 i18n-placeholder
+                 i18n-key="material_placeholder" 
+                 class="textarea minmiddle"
+                 contenteditable="true">
+            </div>
+            <div class="textarea minmiddle"
+                 ng-show="assets.items.length === 0"
+                 i18n-render 
+                 i18n-key="no_material_tip" >
+                <!-- 点击按钮以添加素材 -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+define(["jquery","espEnvironment","espService","espModel","prompter"],function($,espEnvironment,espService,espModel,prompter){return function(config){return espService.coursewareobject.createByTemplate(config.$template,espEnvironment.location.params)}});

@@ -1,0 +1,46 @@
+<!-- 
+    等级为A时， .ensentence-sta__item  加class: grade-a ,
+    等级为B时， .ensentence-sta__item  加class: grade-b ,
+    等级为C时， .ensentence-sta__item  加class: grade-c ,
+    等级为D时， .ensentence-sta__item  加class: grade-d ,
+    未作答， .ensentence-sta__item  加class: grade-not 
+-->
+<div class="ensentence-sta__item" :class="setGradeClass(getGrade.overall)">
+    <div class="ensentence-sta__item-score">
+        <span class="score-i"></span>
+    </div>
+    <div class="ensentence-sta__item--main">
+        <div class="ensentence-sta__sen">
+            <span class="sentence-num"><em class="num-t">{{sentenceDetail.index}}.</em></span>
+            <p class="sentence-t">{{sentenceDetail.content}}</p>
+        </div>
+        <!-- 等级评价组件，查看详情，整体比较小，加class:eval-small -->
+        <div class="ndui__components--eval-wrap eval-small">
+            <p class="ndui__components--eval-item">
+                <span class="eval-t" ref="lang_detail.fluency"></span>
+                <!-- 
+                    等级为A时， .eval-cir  加class: grade-a ,
+                    等级为B时， .eval-cir  加class: grade-b ,
+                    等级为C时， .eval-cir  加class: grade-c ,
+                    等级为D时， .eval-cir  加class: grade-d ,
+                    未作答， .eval-cir  加class: grade-not ,
+                -->
+                <span class="eval-cir" :class="setGradeClass(getGrade.fluency)"><em class="eval-l">{{getGrade.fluency}}</em></span>
+            </p>
+            <p class="ndui__components--eval-item">
+                <span class="eval-t" ref="lang_detail.integrity"></span>
+                <span class="eval-cir" :class="setGradeClass(getGrade.integrity)"><em class="eval-l">{{getGrade.integrity}}</em></span>
+            </p>
+            <p class="ndui__components--eval-item">
+                <span class="eval-t" ref="lang_detail.accuracy"></span>
+                <span class="eval-cir" :class="setGradeClass(getGrade.accuracy)"><em class="eval-l">{{getGrade.accuracy}}</em></span>
+            </p>
+        </div>
+    </div>
+    <div class="ensentence-sta__item--tool">
+        <!-- 正常为播放按钮，暂停图标,加class:s-pause，按钮不可点击时,加class:s-disabled -->
+        <a href="javascript:;" class="ndui__btn--play" :class="getAudioClass" @click="play">
+            <audio ref='audioPlayer' :src="audioUrl"></audio>
+        </a>
+    </div>
+</div>

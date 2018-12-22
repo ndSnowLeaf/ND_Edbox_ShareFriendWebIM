@@ -1,0 +1,21 @@
+<div class="fct_shape_controller _module-box " ng-class="{'fct_controller_type2':module.type == 'richtext'}" ng-show="module.selected"><!-- 是虚线框的时候 .fct_shape_controller 添加类名 .fct_controller_type2 -->
+	<div class="fct_shapeMove move_n _move _n" slides-drag="onDrag($event)"  ng-if="!module.template.line"></div>
+	<div class="fct_shapeMove move_s _move _s" slides-drag="onDrag($event)"  ng-if="!module.template.line"></div>
+	<div class="fct_shapeMove move_w _move _w" slides-drag="onDrag($event)"  ng-if="!module.template.line"></div>
+	<div class="fct_shapeMove move_e _move _e" slides-drag="onDrag($event)"  ng-if="!module.template.line"></div>
+	<span class="fct_shapeResize resize_n" slides-drag="onResize($event,'n')"  ng-if="!module.template.line&&!module.template.keep_rate"></span>
+	<span class="fct_shapeResize resize_s" slides-drag="onResize($event,'s')"  ng-if="!module.template.line&&!module.template.keep_rate"></span>
+	<span class="fct_shapeResize resize_w" slides-drag="onResize($event,'w')"  ng-if="!module.template.line&&!module.template.keep_rate"></span>
+	<span class="fct_shapeResize resize_e" slides-drag="onResize($event,'e')" ng-if="!module.template.line&&!module.template.keep_rate"></span>
+	<span class="fct_shapeResize resize_se" slides-drag="onResize($event,'se')" ng-if="!module.template.line"></span>
+	<span class="fct_shapeResize resize_sw" slides-drag="onResize($event,'sw')" ng-if="!module.template.line"></span>
+	<span class="fct_shapeResize resize_ne" slides-drag="onResize($event,'ne')" ng-if="!module.template.line"></span>
+	<span class="fct_shapeResize resize_nw" slides-drag="onResize($event,'nw')" ng-if="!module.template.line"></span>
+	<span class="fct_shapeResize resize_rotate" slides-drag="onRotate($event)" ng-if="!module.disallowrotation" ng-style="rotateStyle(module)"></span>
+
+	<span class="fct_shapeControl" ng-class="{'control_lock':module.locked,'control_unlock':!module.locked}"
+		  ng-click="lockModule($event)" ng-mousedown="stopPropagation($event)" ng-if="!module.group"></span><!-- 不锁定的时候把类名 .control_lock 换成 .control_unlock -->
+	<span class="fct_shapeControl control_delete" ng-click="deleteModule($event)" ng-mousedown="stopPropagation($event)"></span>
+</div>
+
+

@@ -1,0 +1,432 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MindMap'>
+<properties>
+
+                <property name="questionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="questionData" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="MindMap_CSS" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    //加载组件的数据模型
+    function convert2ComponentProperties(option, toStringify) {
+        var properties = [];
+
+        for (var key in option) {
+            if (option.hasOwnProperty(key)) {
+                var value = option[key], valueType = (typeof value).toLocaleLowerCase(),
+                    item = {name: key, value: value};
+
+                switch (valueType) {
+                    case 'number':
+                        item.type = 'number';
+                        break;
+                    case 'boolean':
+                        item.type = 'boolean';
+                        item.value = item.value ? 'true' : 'false';
+                        break;
+                    case 'object':
+                        if ($.isArray(value)) {
+                            item.type = 'list';
+                        } else {
+                            item.type = 'json';
+                        }
+                        item.text = JSON.stringify(item.value);
+                        delete item.value;
+                        break;
+                    default:
+                        item.type = 'string';
+                }
+
+                properties.push(item);
+            }
+        }
+
+        return toStringify ? JSON.stringify(properties) : properties;
+    }
+
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.model = [];
+            this.componentSetting = {};
+            this.__ScopeId__ = 'MindJet_' + new Date().getTime();  //作用域ID
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            $(view).hide();
+
+            var self = this;
+            self.questionId = model.questionId;
+
+            /************ 统计界面查看学生详情 begin ************/
+            self.fromStatistic = model.fromStatistic || false;
+            self.layoutRenderTo = model.renderTo || null;
+            /************ 统计界面查看学生详情 end. ************/
+
+            self._adaptedOriginData(model);
+            self._configComponents();
+            self.model.push({
+                "name": "Components",
+                "type": "json",
+                "text": JSON.stringify(self.componentSetting)
+            });
+			self.model.push({
+                "name": "_AppDomain_",
+                "type": "string",
+                "value": this.__ScopeId__
+            });
+            self.$requireComponent('ComponentLoader', self.model, $(view));
+        },
+        //工具栏列表项配置
+        _getToolbarSetting: function () {
+            /**
+             * 工具栏列表工具项
+             * @param name  名称
+             * @param i18nKey 名称国际化Key
+             * @param type  类型
+             * @param style 样式名
+             * @param icon  图标
+             * @param event 事件名
+             * @returns {{name: *, i18nKey: *, type: *, style: *, icon: *, event: *}}
+             * @private
+             */
+            var _newToolbarItem = function (name, i18nKey, type, style, icon, event) {
+                return {
+                    "name": name,
+                    "i18nKey": i18nKey,
+                    "type": type,
+                    "style": style,
+                    "icon": icon,
+                    "event": event
+                };
+            };
+
+            var toolbarSettings = {
+                items: [
+                    {
+                        "groupName": "mindMap_ly_item",
+                        "type": "string",
+                        "value": JSON.stringify([
+                            _newToolbarItem("中心", "mindjet_center", "button", "mindMap_btn_makePos", "", "mindjet_map_position"),
+                            _newToolbarItem("全屏", "mindjet_full_screen", "button", "mindMap_btn_gro", "", "mindjet_global_view")
+                        ])
+                    },
+                    {
+                        "groupName": "mindMap_gr_item",
+                        "type": "string",
+                        "value": JSON.stringify([
+                            _newToolbarItem("撤销", "mindjet_undo", "button", "mindMap_btn_clear click_disabled", "", "mindjet_un_do"),
+                            _newToolbarItem("还原", "mindjet_redo", "button", "mindMap_btn_reback click_disabled", "", "mindjet_re_do")
+                        ])
+                    },
+                    {
+                        "groupName": "mindMap_progressbar",
+                        "type": "string",
+                        "value": JSON.stringify([
+                            _newToolbarItem("", null, "disSpan", "mindMap_progress_num", "", ""),
+                            _newToolbarItem("", null, "button", "mindMap_btn_procut", "", "mindjet_zoom_in"),
+                            _newToolbarItem("", null, "zoom", "mindMap_pro_bar", "", "mindjet_zoom_slide"),
+                            _newToolbarItem("", null, "button", "mindMap_btn_proadd", "", "mindjet_zoom_out")
+                        ])
+                    }
+                ]
+            };
+            toolbarSettings["layoutStyle"] = "horizontal";
+
+			if(this.urlParams["isSamplePreview"] != "true") { //非范例预览模式
+				if ((this.isPC || this.isWeb) && !this.isPPTShell) { //编辑态
+					var group = [];
+					if (this.urlParams.is_modify === "true") {
+						group.push(_newToolbarItem("保存", "mindjet_save", "button", "mindMap_btn_save", "no", "mindjet_editor_save"));
+					} else {
+						group.push(_newToolbarItem("插入", "mindjet_insert", "button", "mindMap_btn_save", "no", "mindjet_editor_insert"));
+					}
+					group.push(_newToolbarItem("预览", "mindjet_preview", "button", "mindMap_btn_preWat", "no", "mindjet_editor_preview"));
+
+					toolbarSettings["items"].push({
+						"groupName": "pad_rightBtn",
+						"type": "string",
+						"value": JSON.stringify(group)
+					});
+				}
+			}
+
+            return toolbarSettings;
+        },
+        //适配颗粒中定义的数据
+        _adaptedOriginData: function (model) {
+            this.model.push({
+                "name": "questionType",
+                "type": "string",
+                "value": "MindMap"
+            });
+
+            //思维导图
+            this.model.push({
+                "name": "MindJetComponent",
+                "type": "string",
+                "value": convert2ComponentProperties({
+                    questionId: model.questionId,
+                    questionData: model.questionData,
+                    scopeId: this.__ScopeId__
+                }, true)
+            });
+
+            //工具栏控制器
+            var toolbarSettings = this._getToolbarSetting(model); //工具栏列表项配置
+            this.model.push({
+                name: "ToolbarController",
+                type: "string",
+                value: convert2ComponentProperties({
+                    operator: "MindJetComponent",
+                    toolSettings: toolbarSettings,
+                    editorServiceFlag: (!this.fromStatistic && (this.isPC || this.isWeb || this.isTeacher)),
+                    scopeId: this.__ScopeId__
+                }, true)
+            });
+
+            //工具栏组件
+            this.model.push({
+                name: "ToolbarComponent",
+                type: "string",
+                value: convert2ComponentProperties({scopeId: this.__ScopeId__}, true)
+            });
+
+            //时间组件控制器
+            this.model.push({
+                name: "TimerController",
+                type: "string",
+                value: convert2ComponentProperties({
+                    timer_type: "sequence",
+                    time_limit: "0"
+                }, true)
+            });
+
+            //时间组件
+            this.model.push({
+                name: "InteractionTimer",
+                type: "string",
+                value: convert2ComponentProperties({
+                    view_type: "new_timer",
+                }, true)
+            });
+
+            //提交按钮
+            this.model.push({
+                name: "InteractionSubmitButton",
+                type: "string",
+                value: convert2ComponentProperties({
+                    can_modify: true,
+                    linkQuestionType: "MindMap",
+                    linkQuestionId: model.questionId,
+                    view_type: "new_em_button"
+                }, true)
+            });
+
+            //布局组件
+            this.model.push({
+                name: "ObjectiveInteractionLayout",
+                type: "string",
+                value: convert2ComponentProperties({
+                    questionType: "MindMap",
+                    specialTemplate: "true",
+                    templateName: this.fromStatistic ? "statistic_detail" : ""
+                }, true)
+            });
+
+            //习题进度
+            this.model.push({
+                name: "ObjectiveQuestionStatistics",
+                type: "string",
+                value: JSON.stringify([])
+            });
+			
+			//D类统计
+            this.model.push({
+                name: "AnswerClassStatis",
+                type: "string",
+                value: JSON.stringify([{
+					name: "config",
+					type: "string",
+					value: JSON.stringify({
+						"toolbar": ["exit", "order", "send.continue", "send.again"],
+						"plugins": ["MindJetStatisPlugin"]
+					})
+				}])
+            });
+
+            //课堂状态控制器
+            this.model.push({
+                name: 'ClassroomStatusController',
+                type: 'string',
+                value: JSON.stringify([{
+                    name: 'questionId',
+                    type: 'string',
+                    value: model.questionId
+                }])
+            })
+
+            //编辑控制器
+            var courseObjectSaveInterface = this._getCourseObjectSaveInterface(model);
+            this.model.push({
+                name: "MindJetEditorController",
+                type: "string",
+                value: JSON.stringify([{
+                    name: "courseObjectSaveInterface",
+                    type: "string",
+                    value: courseObjectSaveInterface
+                }])
+            });
+        },
+        //颗粒保存API名称
+        _getCourseObjectSaveInterface: function (model) {
+            var courseObjectSaveInterface = "http://localhost:3001/v0.1/interaction/nd_mindjet/" + model.questionId
+                + "?file_path=" + (this.urlParams.file_path || '')
+                + "&is_modify=" + (this.urlParams.is_modify || '');
+
+            return courseObjectSaveInterface;
+        },
+        //构建组件配置
+        _getLayoutModel: function () {
+            return {presenter: "ObjectiveInteractionLayout", renderTo: this.layoutRenderTo};
+        },
+        _configComponents: function () {
+            if (this.isStudent) { //学生端
+                this.componentSetting = {
+                    controllers: [
+                        {presenter: "InteractionStateRecoverFilter"},
+                        {presenter: "I18nFilter"},
+                        {
+                            presenter: "ToolbarController"
+                        },
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: [
+                                {
+                                    property: "TimerService",
+                                    presenter: "TimerController"
+                                }
+                            ]
+                        },
+                        {presenter: "AnswerProgressController"}
+                    ],
+                    layout: this._getLayoutModel(),
+                    components: [
+						{presenter: "MindJetComponent", renderTo: "CenterPanel"},
+                        {presenter: "InteractionTimer", renderTo: "BottomLeftPanel"},
+                        {presenter: "InteractionSubmitButton", renderTo: "BottomRightPanel"},
+                        {presenter: "ToolbarComponent", renderTo: "BottomPanel"}
+                    ]
+                }
+            } else if (this.fromStatistic) { //统计界面查看学生详情
+                this.componentSetting = {
+                    controllers: [
+                        {presenter: "I18nFilter"},
+                        {
+                            presenter: "ToolbarController"
+                        }
+                    ],
+                    layout: this._getLayoutModel(),
+                    components: [
+						{presenter: "MindJetComponent", renderTo: "CenterPanel"},
+                        {presenter: "ToolbarComponent", renderTo: "BottomPanel"}
+                    ]
+                }
+            } else if (this.isPPTShell || this.isTeacher) { //白板端
+                this.componentSetting = {
+                    controllers: [
+                        {presenter: "InteractionStateRecoverFilter"},
+                        {presenter: "I18nFilter"},
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: [
+                                {
+                                    property: "TimerService",
+                                    presenter: "TimerController"
+                                }
+                            ]
+                        },
+                        {
+                            presenter: "ToolbarController",
+                            depends: [{
+                                property: "EditorService",
+                                presenter: "MindJetEditorController"
+                            }]
+                        },
+                        {presenter: "ClassroomStatusController"},
+                        {presenter: "AnswerClassStatis"}
+                    ],
+                    layout: this._getLayoutModel(),
+                    components: [
+						{presenter: "MindJetComponent", renderTo: "CenterPanel"},
+                        {presenter: "InteractionTimer", renderTo: "TopLeftPanel"},
+                        {presenter: "ToolbarComponent", renderTo: "BottomPanel"}
+                    ]
+                }
+            } else if (this.isPC || this.isWeb) { //编辑端
+                this.componentSetting = {
+                    controllers: [
+                        {presenter: "InteractionStateRecoverFilter"},
+                        {presenter: "I18nFilter"},
+                        {
+                            presenter: "ToolbarController",
+                            depends: [{
+                                property: "EditorService",
+                                presenter: "MindJetEditorController"
+                            }]
+                        }
+                    ],
+                    layout: this._getLayoutModel(),
+                    components: [
+						{presenter: "MindJetComponent", renderTo: "CenterPanel"},
+                        {presenter: "ToolbarComponent", renderTo: "BottomPanel"}
+                    ]
+                }
+            }
+        }
+    }, "MindMap");
+
+    window.AddonMindMap_create = function () {
+        return new Presenter();
+    };
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

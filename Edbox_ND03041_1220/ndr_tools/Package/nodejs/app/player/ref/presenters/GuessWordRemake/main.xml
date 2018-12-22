@@ -1,0 +1,1114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='GuessWordRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="NDMediaPlayer" version="1.0.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .guessWord_box{position:relative;height:100%;z-index:333}.exam_skin_wood .guessWord_box .com_layout_main{padding:1.08333em 0 .58333em;overflow:hidden}.exam_skin_wood .guessWord_btn_animate_box{z-index:335;position:absolute;left:0;top:0;-webkit-transform:translate(48.9em,21.5em);transform:translate(48.9em,21.5em);display:inline-block;width:3.66667em;height:3.66667em;line-height:3.41667em;border-radius:.83333em;text-align:center;letter-spacing:normal}.exam_skin_wood .guessWord_btn_animate_box.guessWord_btnS_animate{width:2.70833em;height:2.70833em;line-height:2.5em}.exam_skin_wood .guessWord_btn_animate_box .com_btn_square{margin:auto;position:absolute;left:0;top:0;right:0;bottom:0;min-width:0;min-height:0;width:100%;height:100%;background:url(resources/wood/images/btn_lr_board.png) top no-repeat;background-size:100% auto;cursor:pointer}.exam_skin_wood .guessWord_btn_animate_box .com_btn_square em{font-size:1.91667em;color:#422701}.exam_skin_wood .guessWord_left{padding:0 .33333em 0 .66667em;float:left;width:24.66667em;height:100%;margin-left:-.41667em;text-align:center}.exam_skin_wood .guessWord_left:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .guessWord_left .cellMiddle{display:inline-block;vertical-align:middle;width:98%;height:100%}.exam_skin_wood .guessWord_left .guessWord_tab{padding:0 .20833em;display:inline-block;height:4.83333em;background:rgba(111,75,27,.1);border-radius:.83333em;text-align:left;letter-spacing:-.33333em;white-space:nowrap}.exam_skin_wood .guessWord_left .guessWord_tab li{margin:0 .41667em;position:relative;z-index:0;display:inline-block;border-radius:1.04167em;text-align:center;letter-spacing:normal;vertical-align:middle;cursor:pointer}.exam_skin_wood .guessWord_left .guessWord_tab li img{display:block;width:3.5em;height:3.5em;border-radius:.83333em}.exam_skin_wood .guessWord_left .guessWord_tab li .tabNum{margin:auto;position:absolute;top:0;bottom:0;left:0;right:0;display:inline-block;width:1.75em;height:1.75em;line-height:1.75em;border-radius:.79167em;background:rgba(27,27,27,.4);vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_tab li .tabNum em{font-size:1.5em;color:#fff}.exam_skin_wood .guessWord_left .guessWord_tab li:after{content:"";position:absolute;top:0;left:0;z-index:10;display:inline-block;width:100%;height:100%;background:rgba(34,34,34,.3);border-radius:.83333em}.exam_skin_wood .guessWord_left .guessWord_tab li.on{margin:0 .33333em;border:.20833em solid #fff}.exam_skin_wood .guessWord_left .guessWord_tab li.on .tabNum{background:#f39602}.exam_skin_wood .guessWord_left .guessWord_tab li.on:after{margin:0 auto;left:0;right:0;top:auto;bottom:-1.25em;width:1.33333em;height:.83333em;background:url(resources/wood/images/triangle.png) no-repeat;background-size:auto 100%}.exam_skin_wood .guessWord_left .guessWord_tab li.res_right{margin:0 .33333em;border:.20833em solid #14c061}.exam_skin_wood .guessWord_left .guessWord_tab li.res_right .tabNum{background:#14c061}.exam_skin_wood .guessWord_left .guessWord_tab li.res_err{margin:0 .33333em;border:.20833em solid #d62727}.exam_skin_wood .guessWord_left .guessWord_tab li.res_err .tabNum{background:#d62727}.exam_skin_wood .guessWord_left .guessWord_tab li .res_audio,.exam_skin_wood .guessWord_left .guessWord_tab li .res_video{display:inline-block;width:3.5em;height:3.5em;background-size:cover;border-radius:.83333em;vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_tab li .res_audio{background-image:url(resources/wood/images/img_ico_audio.jpg)}.exam_skin_wood .guessWord_left .guessWord_tab li .res_video{background-image:url(resources/wood/images/img_ico_video.jpg)}.exam_skin_wood .guessWord_left .guessWord_tab:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_content{margin-top:.75em;padding:2.08333em 1.04167em 1.875em;display:inline-block;width:100%;background:#f3f3f5;border-radius:.83333em}.exam_skin_wood .guessWord_left .guessWord_content .guessWord_contentChi{padding:0 .75em;display:block;height:21.91667em;overflow-y:auto}.exam_skin_wood .guessWord_left .guessWord_content .guessWord_contentChi:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_content .content_box{display:inline-block;width:100%;vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_content .content_box audio,.exam_skin_wood .guessWord_left .guessWord_content .content_box img,.exam_skin_wood .guessWord_left .guessWord_content .content_box video{max-width:100%;max-height:100%;vertical-align:middle}.exam_skin_wood .guessWord_left .guessWord_content .content_box audio{min-height:1.25em}.exam_skin_wood .guessWord_left .guessWord_content .content_img{margin-bottom:.83333em;height:13.6em;overflow:hidden}.exam_skin_wood .guessWord_left .guessWord_content .content_audio,.exam_skin_wood .guessWord_left .guessWord_content .content_video{position:relative;width:19.58333em}.exam_skin_wood .guessWord_left .guessWord_content .content_video{height:15.83333em}.exam_skin_wood .guessWord_left .guessWord_content .content_video video{position:absolute;top:0;left:0;width:100%;height:100%;background:#000}.exam_skin_wood .guessWord_left .guessWord_content .content_audio{background:url(resources/wood/images/bg_voice.png) 50% no-repeat;background-size:4em auto;height:15.83333em}.exam_skin_wood .guessWord_left .guessWord_content .content_audio audio{position:absolute;bottom:0;left:0;width:100%}.exam_skin_wood .guessWord_left .guessWord_content p{text-align:left}.exam_skin_wood .guessWord_left .guessWord_content p em{word-wrap:break-word;font-size:1.66667em;color:#2e2e2e;line-height:1.5}.exam_skin_wood .guessWord_right{float:left;width:44.375em;height:100%;background:rgba(111,75,27,.1);border-radius:.83333em;text-align:center}.exam_skin_wood .guessWord_right li{position:relative;display:inline-block;width:3.66667em;height:3.66667em;line-height:3.41667em;border-radius:.83333em;text-align:center;letter-spacing:normal}.exam_skin_wood .guessWord_right li .com_btn_square{margin:auto;position:absolute;left:0;top:0;right:0;bottom:0;min-width:0;min-height:0;width:100%;height:100%;background:url(resources/wood/images/btn_lr_board.png) top no-repeat;background-size:100% auto;cursor:pointer;-webkit-transform:translate(0);transform:translate(0);transition:-webkit-transform .2s ease;transition:transform .2s ease;transition:transform .2s ease,-webkit-transform .2s ease}.exam_skin_wood .guessWord_right li .com_btn_square em{font-size:1.91667em;color:#422701}.exam_skin_wood .guessWord_right li .com_btn_square:active{background-position:bottom}.exam_skin_wood .guessWord_right li:before{content:"";margin:auto;position:absolute;left:0;top:0;right:0;bottom:0;display:inline-block;width:3.33333em;height:3.5em;border-radius:.83333em}.exam_skin_wood .guessWord_right .guessWord_answerBtn{margin:0 .41667em;letter-spacing:-.29167em;white-space:nowrap}.exam_skin_wood .guessWord_right .guessWord_answerBtn li{margin:2.08333em .5em}.exam_skin_wood .guessWord_right .guessWord_answerBtn li:before{background:url(resources/wood/images/gw_answerBox.jpg) no-repeat;background-size:100% 100%;border:.16667em solid #d4a360}.exam_skin_wood .guessWord_right .guessWord_answerBtn li.com_s_right:before{border:.16667em solid #14c061}.exam_skin_wood .guessWord_right .guessWord_answerBtn li.com_s_error:before{border:.16667em solid #d62727}.exam_skin_wood .guessWord_right .guessWord_answerBtn li.on:before{border:.16667em solid #ffd43e}.exam_skin_wood .guessWord_right .guessWord_answerBtn li.click_disabled .com_btn_square{cursor:default}.exam_skin_wood .guessWord_right .guessWord_answerBtn li.click_disabled .com_btn_square:active{background-position:top}.exam_skin_wood .guessWord_right .guessWord_selectBtn{display:inline-block;max-width:35.41667em;height:100%;max-height:21.25em;overflow-y:auto;letter-spacing:-.33333em}.exam_skin_wood .guessWord_right .guessWord_selectBtn li{margin:0 .20833em 1.66667em}.exam_skin_wood .guessWord_right .guessWord_selectBtn li:before{background:rgba(111,75,27,.1)}.exam_skin_wood .guessWord_btnS .guessWord_right li{width:2.70833em;height:2.70833em;line-height:2.5em}.exam_skin_wood .guessWord_btnS .guessWord_right li:before{width:2.45833em;height:2.625em}.exam_skin_wood .guessWord_btnS .guessWord_right .guessWord_answerBtn{margin:0 .20833em .625em}.exam_skin_wood .guessWord_btnS .guessWord_right .guessWord_answerBtn li{margin:1.66667em .08333em}.exam_skin_wood .guessWord_btnS .guessWord_right .guessWord_answerBtn li:before{border-radius:.625em}.exam_skin_wood .guessWord_btnS .guessWord_right .guessWord_selectBtn{max-width:37.5em}.exam_skin_wood .guessWord_btnS .guessWord_right .guessWord_selectBtn li{margin:.83333em}.exam_skin_wood .com_wrapper_pad .guessWord_content .guessWord_contentChi{height:23.75em}.exam_skin_wood .com_wrapper_pad .guessWord_left{margin-left:1.66667em;margin-right:1.25em}.exam_skin_wood .guessWord_right .guessWord_answerBtn,.exam_skin_wood .guessWord_right .guessWord_selectBtn{overflow:visible}.exam_skin_wood .guessWord_box .guessWord_contentChi{display:none!important}.exam_skin_wood .guessWord_box .guessWord_contentChi.on{display:block!important}.exam_skin_wood .guessWord_box .guessWord_answerBtn{display:none!important}.exam_skin_wood .guessWord_box .guessWord_answerBtn.on{display:block!important}.exam_skin_wood .guessWord_box .guessWord_selectBtn{display:none!important}.exam_skin_wood .guessWord_box .guessWord_selectBtn.on{display:inline-block!important}.exam_skin_wood .guessWord_animate{position:absolute;top:0;left:0;width:100%;height:100%;z-index:999;visibility:hidden}.exam_skin_wood .guessWord_box .guessWord_contentChi .media_mask{position:absolute;top:0;left:0;width:100%;height:100%;z-index:999;display:none}.exam_skin_wood .guessWord_box .guessWord_contentChi.locked .media_mask{display:block}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content guessWord_box"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _tit"></h2></div><div class="com_layout_main _com_layout_main"><div class="guessWord_left"><div class="cellMiddle"><ul class="guessWord_tab _guessWord_tab"></ul><div class="guessWord_content _guessWord_content"></div></div></div><div class="guessWord_right _guessWord_right"></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+    var GuessWord = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        //标题
+        this.title = '';
+        this.items = [
+            //            {                item_type: 'picture',                item_url: 'edu/esp/assets/146286750320195.jpg',
+            // hint: 'C1',                correct_answer: ["a", "s", "d", "f", "g", "h", "j", "k", "l"], word_sequence: ["o", "z",
+            // "f", "a", "h", "g", "f", "h", "m", "j", "r", "s", "n", "s", "s", "c", "u", "v", "e", "n", "e", "l", "k", "v", "a",
+            // "g", "i", "h", "e", "d", "g", "r"]            }
+        ];
+        //当前选中的tab
+        this.currentIndex = -1;
+        //是否作答过
+        this.isOperate = false;
+        //是否处于统计状态
+        this.isStatic = false;
+        //用户作答数据-文本,没有作答位置为空字符串
+        this.userAnswer = {};
+        //用户作答数据-索引，没有作答位置为-1
+        this.userAnswerIndex = {};
+        //用户最后选中控制框索引,全部都已作答，没有选中空白框，对应的值为-1
+        this.userLastSelectIndex = {};
+        //正确答案
+        this.correctAnswer = {};
+        this.$main = null;
+        this.animateTop = 0;
+        this.animateLeft = 0;
+        this.$tab = null;
+        this.$tabs = null;
+        this.$content = null;
+        this.$contents = null;
+        this.$operate = null;
+        this.$answerBtns = null;
+        this.$selectBtns = null;
+        this.tabMap = null;
+        this.answerBtnMap = null;
+        this.selectBtnMap = null;
+        this.mediaMap = null;
+
+        this.i18Model = {};
+
+    };
+    GuessWord.prototype = {
+        init: function(view, model, presenter) {
+            var that = this;
+            that.questionId = model.question_id;
+            var question_url = model.question_url;
+            that.title = question_url.title;
+            that.items = question_url.items;
+            that.presenter = presenter;
+            that.$view = $(view);
+            //NDMediaPlayer播放进度
+            that.allPlayProgress = {};
+            //初始化正确答案
+            var item;
+            for (var index = 0; index < that.items.length; index++) {
+                item = that.items[index];
+                that.correctAnswer[index] = item.correct_answer;
+            }
+        },
+        initView: function() {
+            var that = this;
+            //头部标题
+            var $title = that.$view.find('._tit');
+            //主要布局
+            that.$main = that.$view.find('._com_layout_main');
+            //导航
+            that.$tab = that.$view.find('._guessWord_tab');
+            //内容
+            that.$content = that.$view.find('._guessWord_content');
+            //右侧内容
+            that.$operate = that.$view.find('._guessWord_right');
+            //初始化各个view 初始化title
+            if (that.title.length > 35) {
+                $title.addClass('s_tit');
+            } else {
+                $title.removeClass('s_tit');
+            }
+            $title.html(that.title);
+        },
+        initNdMediaPlayer: function() {
+            var that = this;
+            var width = that.$content.find('._media_wrap').width();
+            var height = that.$content.find('._media_wrap').height();
+            for (var i = 0, iLen = that.items.length; i < iLen; i++) {
+                var item = that.items[i];
+                if (item.item_type !== 'video' && item.item_type !== 'audio') {
+                    continue;
+                }
+                var guessWordMediaContainerDom = that.$content.find('._media_wrap')[i];
+                //设置NDMediaPlayer参数选项
+                var ndMediaPlayerOpt = {
+                    containerId: '_media_wrap' + i,
+                    autoAdaptSize: true,
+                    video: {
+                        render: item.item_type === 'video',
+                        width: width,
+                        height: height,
+                        supportFullscreen: false,
+                        showPlayBtnInVideo: false,
+                        showFullscreenBtn: false
+                    },
+                    audio: {
+                        render: item.item_type === 'audio',
+                        width: width,
+                        height: height
+                    },
+                    onTimeUpdate: function(o) {
+                        that.allPlayProgress[that.currentIndex] = o;
+                        that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT);
+                    }
+                };
+                !!guessWordMediaContainerDom && NDMediaPlayer.render(guessWordMediaContainerDom, ndMediaPlayerOpt);
+            }
+        },
+        resetQuestion: function() {
+            var that = this;
+            // that.locked = false;
+            that.isOperate = false;
+            that.isStatic = false;
+            that.currentIndex = 0;
+            that.selectBtnMap = {};
+            that.answerBtnMap = {};
+            that.mediaMap = {};
+            that.tabMap = {};
+            that.userAnswer = {};
+            that.userAnswerIndex = {};
+            that.userLastSelectIndex = {};
+            //初始化导航
+            var tabHtml = '';
+            //初始化内容
+            var contentHtml = '';
+            //操作内容
+            var operateHtml = '';
+            var item;
+            var num;
+            var selectClazz = '';
+            var answerSelectClazz = '';
+            var answerHtml;
+            var optionHtml;
+            var hint;
+            //渲染页面
+            for (var index = 0; index < that.items.length; index++) {
+                item = that.items[index];
+                hint = '';
+                if (item.hint) {
+                    hint = that.i18Model.hint + '：' + item.hint;
+                }
+                num = index + 1;
+                if (index === 0) {
+                    //默认第一个导航选中
+                    selectClazz = 'on';
+                    //根据第一个导航对应正确答案的长度来改变布局
+                    if (item.correct_answer.length > 8) {
+                        that.$main.addClass('guessWord_btnS');
+                    } else {
+                        that.$main.removeClass('guessWord_btnS');
+                    }
+                } else {
+                    selectClazz = '';
+                }
+                var tabIconHtml = '';
+                var tabContentHtml = '';
+                switch (item.item_type) {
+                    case 'picture':
+                        //tabIconHtml = item.item_url;
+                        tabIconHtml = '<img src="' + item.item_path + '"/>';
+                        tabContentHtml = '<div class="content_img _media_wrap">' + item.item_url + '</div><p><em>' +
+                            hint +
+                            '</em></p>';
+                        break;
+                    case 'video':
+                        tabIconHtml = '<span class="res_video"></span>';
+                        tabContentHtml =
+                            '<div class="content_video _media_wrap"><video class="_guessWord_media" controls="controls" preload="meta" poster="" data' +
+                            '-tap-index="' + index + '"><source src="' + item.item_url +
+                            '"/>Your browser does not support HTML5 video.</video><div class="media_mask"></div></div><p><em>' +
+                            hint + '</em></p>';
+                        break;
+                    case 'audio':
+                        tabIconHtml = '<span class="res_audio"></span>';
+                        tabContentHtml =
+                            '<div class="content_audio _media_wrap"><audio class="_guessWord_media" controls="controls" poster="" data-tap-index="' +
+                            index + '"><source src="' + item.item_url +
+                            '"/>Your browser does not support HTML5 video.</audio><div class="media_mask"></div></div><p><em>' +
+                            hint + '</em></p>';
+                        break;
+                }
+                tabHtml += '<li class="_guessWord_tab_item ' + selectClazz + '" data-tap-index="' + index + '">' +
+                    tabIconHtml + '<span class="tabNum"><em>' + num + '</em></span></li>';
+                contentHtml += '<div class="guessWord_contentChi _guessWord_contentChi scrollbar_style_gray ' +
+                    selectClazz + '" data-tap-index="' + index + '"><div class="content_box">' + tabContentHtml +
+                    '</div></div>';
+                answerHtml = '';
+                var tabAnswer = [];
+                var tabIndexAnswer = [];
+                for (var i = 0; i < item.correct_answer.length; i++) {
+                    tabAnswer[i] = '';
+                    tabIndexAnswer[i] = -1;
+                    if (i === 0) {
+                        answerSelectClazz = 'on';
+                    } else {
+                        answerSelectClazz = '';
+                    }
+                    answerHtml += '<li class="_answer_item ' + answerSelectClazz +
+                        '" data-empty="true" data-answer-index="' + i + '"></li>';
+                }
+                optionHtml = '';
+                for (var i = 0; i < item.word_sequence.length; i++) {
+                    optionHtml += '<li class="_select_item" data-empty="false" data-item-index="' + i +
+                        '" data-item-content="' + item.word_sequence[i] +
+                        '"><span class="com_btn_square _btn_square" data-item-index="' + i + '"><em>' + item.word_sequence[
+                            i] + '</em></span></li>';
+                }
+                operateHtml += '<ul class="guessWord_answerBtn _guessWord_answerBtn ' + selectClazz +
+                    '" data-tap-index="' + index + '">' + answerHtml +
+                    '</ul><ul class="guessWord_selectBtn _guessWord_selectBtn scrollbar_style_gray ' + selectClazz +
+                    '" data-tap-index="' + index + '">' + optionHtml + '</ul>';
+                //初始化每个tab的用户答案
+                that.userAnswer[index] = tabAnswer;
+                that.userAnswerIndex[index] = tabIndexAnswer;
+                //默认选中第0个项
+                that.userLastSelectIndex[index] = 0;
+            }
+            that.$tab.html(tabHtml);
+            that.$tabs = that.$tab.find('._guessWord_tab_item');
+            that.$tabs.each(function() {
+                var $this = $(this);
+                var index = $this.data('tap-index');
+                that.tabMap[index] = $this;
+            });
+            that.$content.html(contentHtml);
+            that.$contents = that.$content.find('._guessWord_contentChi');
+            that.$operate.html(operateHtml);
+            that.$answerBtns = that.$operate.find('._guessWord_answerBtn');
+            that.$selectBtns = that.$operate.find('._guessWord_selectBtn');
+            //保存每个tab的用户答题对象和候选对象
+            that.$answerBtns.each(function() {
+                var $this = $(this);
+                var index = $this.data('tap-index');
+                that.answerBtnMap[index] = $this;
+            });
+            that.$selectBtns.each(function() {
+                var $this = $(this);
+                var index = $this.data('tap-index');
+                that.selectBtnMap[index] = $this;
+            });
+            //保存多媒体
+            var $media = that.$content.find('._guessWord_media');
+            $media.each(function() {
+                var $this = $(this);
+                var index = $this.data('tap-index');
+                that.mediaMap[index] = $this;
+
+                /*解决ppt上播放几次就不能播放问题*/
+                var self = this;
+                self.addEventListener('timeupdate', function() {
+                    if (self.currentTime > Math.floor(self.duration)) {
+                        self.pause();
+                        self.currentTime = 0;
+                    }
+                }, false);
+            });
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        _chageTabIndex: function($tagTarget, index) {
+            $tagTarget.each(function() {
+                var $this = $(this);
+                if ($this.data('tap-index') === index) {
+                    $this.addClass('on');
+                } else {
+                    $this.removeClass('on');
+                }
+            });
+        },
+        _selectTab: function(index) {
+            var that = this;
+            //如果当前tab有多媒体，则多媒体关闭
+            var lastIndex = that.currentIndex;
+            var $media = that.mediaMap[lastIndex];
+            if ($media) {
+                $media[0].pause();
+            }
+            var item = that.items[index];
+            //根据正确答案的数量改变布局
+            if (item.correct_answer.length > 8) {
+                that.$main.addClass('guessWord_btnS');
+            } else {
+                that.$main.removeClass('guessWord_btnS');
+            }
+            //当前导航选项变化
+            var $tapItem = that.tabMap[index];
+            that.currentIndex = index;
+            that.$tabs.removeClass('on');
+            $tapItem.addClass('on');
+            //切换到对应的内容、学生当前作答、可操作项
+            that._chageTabIndex(that.$contents, index);
+            that._chageTabIndex(that.$answerBtns, index);
+            that._chageTabIndex(that.$selectBtns, index);
+            if (that.isStatic) {
+                //触发统计页面事件
+                that.presenter.$dispatchEvent('statistics_call', PresenterEventType.IC_PLAYER_EVENT, {
+                    service: 'statistic',
+                    method: 'clickItem',
+                    args: [index, 'B']
+                });
+            }
+        },
+        _move: function($from, $to, content, callback) {
+            var fromOffset = $from.offset();
+            var toOffset = $to.offset();
+            var translateX = toOffset.left - fromOffset.left;
+            var tanslateY = toOffset.top - fromOffset.top;
+            $from.find('._btn_square').css({
+                '-webkit-transform': 'translate(' + translateX + 'px, ' + tanslateY + 'px)',
+                transform: 'translate(' + translateX + 'px, ' + tanslateY + 'px)'
+            });
+            var time = 210;
+            window.setTimeout(function() {
+                $to.html(content);
+                $from.html('');
+                if (callback) {
+                    callback();
+                }
+            }, time);
+        },
+        bindEvent: function() {
+            var that = this;
+            //导航事件绑定
+            that.presenter.$attachDelegateEvent('mousedown', ['._guessWord_tab_item'], function(selector, event) {
+                var $tapItem = $(event.target).closest('._guessWord_tab_item');
+                if ($tapItem.hasClass('on') === false) {
+                    var index = $tapItem.data('tap-index');
+                    that._selectTab(index);
+                    //通知状态变化
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                }
+            });
+            //选项事件绑定
+            that.presenter.$attachDelegateEvent('mousedown', ['._select_item'], function(selector, event) {
+                if (that.locked === false) {
+                    var $selectItem = $(event.target).closest('._select_item');
+                    if ($selectItem.data('empty') === false) {
+                        var $selectBtn = $selectItem.closest('._guessWord_selectBtn');
+                        var index = $selectBtn.data('tap-index');
+                        var itemIndex = $selectItem.data('item-index');
+                        var $answerBtn = that.answerBtnMap[index];
+                        var $answerItems = $answerBtn.find('._answer_item');
+                        var tempHtml = $selectItem.html();
+                        //获取当前选中的答案区域以及下一个为空的区域 当前选项
+                        var $answerTargetItem = null;
+                        //下一个空选项
+                        var $nextTargetItem = null;
+                        //第一个选项
+                        var $firstTargetItem = null;
+                        $answerItems.each(function() {
+                            var result = true;
+                            var $answerItem = $(this);
+                            if ($firstTargetItem === null) {
+                                $firstTargetItem = $answerItem;
+                            }
+                            if ($answerItem.hasClass('on') && $answerTargetItem === null) {
+                                $answerTargetItem = $answerItem;
+                            }
+                            if ($answerItem.data('empty') && $answerItem.hasClass('on') === false &&
+                                $nextTargetItem === null) {
+                                $nextTargetItem = $answerItem;
+                            }
+                            if ($answerTargetItem !== null && $nextTargetItem !== null) {
+                                result = false;
+                            }
+                            return result;
+                        });
+                        var animateDtd = $.Deferred();
+                        if ($answerTargetItem !== null) {
+                            //保存作答
+                            that.isOperate = true;
+                            var tabAnswer = that.userAnswer[index];
+                            var tabIndexAnswer = that.userAnswerIndex[index];
+                            var answerIndex = $answerTargetItem.data('answer-index');
+                            var content = $selectItem.data('item-content');
+                            tabAnswer[answerIndex] = content;
+                            tabIndexAnswer[answerIndex] = itemIndex;
+                            //通知状态变化
+                            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT);
+                            //保存状态 将当前选项状态清空
+                            $selectItem.data('empty', true);
+                            $answerTargetItem.data('empty', false);
+                            $answerTargetItem.data('item-content', content);
+                            //取消选中
+                            $answerTargetItem.removeClass('on');
+                            that._move($selectItem, $answerTargetItem, tempHtml, function() {
+                                //动画执行结束
+                                animateDtd.resolve();
+                                //通知题目答题状态
+                                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController']
+                                    .QUESTION_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true }
+                                );
+                            });
+                        }
+                        //动画显示结束后执行作答判断
+                        animateDtd.done(function() {
+                            if ($nextTargetItem !== null) {
+                                var nextIndex = $nextTargetItem.data('answer-index');
+                                that.userLastSelectIndex[index] = nextIndex;
+                                //通知状态变化
+                                that.presenter.$dispatchEvent($PresenterEvent[
+                                        'InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                                    PresenterEventType.IC_PLAYER_EVENT);
+                                //切换到下一个目标位置
+                                $nextTargetItem.addClass('on');
+                            } else {
+                                //当前tab项作答完成，判断正误
+                                var $tab = that.tabMap[index];
+                                var tabUserAnswer = that.userAnswer[index].join('');
+                                var tabCorrectAnswer = that.correctAnswer[index].join('');
+                                if (tabUserAnswer === tabCorrectAnswer) {
+                                    //当前tab答题正确已经没有空白项
+                                    that.userLastSelectIndex[index] = -1;
+                                    //通知状态变化
+                                    that.presenter.$dispatchEvent($PresenterEvent[
+                                            'InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                                        PresenterEventType.IC_PLAYER_EVENT);
+                                    //当前tab答题正确
+                                    $tab.removeClass('res_err').addClass('res_right');
+                                    //答案项变绿
+                                    $answerItems.addClass('com_s_right');
+                                    //自动切换到下一个未作答正确的tab
+                                    var nextIndex = -1;
+                                    that.$tabs.each(function() {
+                                        var result = true;
+                                        var $this = $(this);
+                                        if ($this.hasClass('res_right') === false) {
+                                            nextIndex = $this.data('tap-index');
+                                            result = false;
+                                        }
+                                        return result;
+                                    });
+                                    if (nextIndex !== -1) {
+                                        that._selectTab(nextIndex);
+                                    }
+                                } else {
+                                    //答题错误 清空并保存答案
+                                    var tabAnswer = that.userAnswer[index];
+                                    var tabIndexAnswer = that.userAnswerIndex[index];
+                                    for (var i = 0; i < tabAnswer.length; i++) {
+                                        tabAnswer[i] = '';
+                                        tabIndexAnswer[i] = -1;
+                                    }
+                                    //选中第一个选项
+                                    that.userLastSelectIndex[index] = 0;
+                                    //通知状态变化
+                                    that.presenter.$dispatchEvent($PresenterEvent[
+                                            'InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                                        PresenterEventType.IC_PLAYER_EVENT);
+                                    //导航状态变化
+                                    $tab.removeClass('res_right').addClass('res_err');
+                                    //清空作答
+                                    var $selectBtn = that.selectBtnMap[index];
+                                    var $selectItems = $selectBtn.find('._select_item');
+                                    $answerItems.each(function() {
+                                        var $this = $(this);
+                                        //将当前选项状态清空
+                                        var itemIndex = $this.find('._btn_square').data(
+                                            'item-index');
+                                        var itemHtml = $this.html();
+                                        $this.html('');
+                                        $this.data('empty', true);
+                                        $selectItems.each(function() {
+                                            var result = true;
+                                            var $selectItem = $(this);
+                                            if ($selectItem.data('item-index') ===
+                                                itemIndex) {
+                                                $selectItem.html(itemHtml);
+                                                $selectItem.data('empty', false);
+                                                result = false;
+                                            }
+                                            return result;
+                                        });
+                                        return true;
+                                    });
+                                    //自动选中首个选项
+                                    $firstTargetItem.addClass('on');
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            //答题事件绑定
+            that.presenter.$attachDelegateEvent('mousedown', ['._answer_item'], function(selector, event) {
+                if (that.locked === false) {
+                    var $answerItem = $(event.target).closest('._answer_item');
+                    var $answerBtn = $answerItem.closest('._guessWord_answerBtn');
+                    //选中
+                    var index = $answerBtn.data('tap-index');
+                    var answerIndex = $answerItem.data('answer-index');
+                    if ($answerItem.hasClass('on') === false) {
+                        that.userLastSelectIndex[index] = answerIndex;
+                        //通知状态变化
+                        that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT);
+                        $answerBtn.find('._answer_item').removeClass('on');
+                        $answerItem.addClass('on');
+                    }
+                    if ($answerItem.data('empty') === false) {
+                        //作答项返回选择区原位置
+                        var $selectBtn = that.selectBtnMap[index];
+                        var itemIndex = $answerItem.find('._btn_square').data('item-index');
+                        var $selectItems = $selectBtn.find('._select_item');
+                        var tempHtml = $answerItem.html();
+                        //保存用户当前作答
+                        var tabAnswer = that.userAnswer[index];
+                        var tabIndexAnswer = that.userAnswerIndex[index];
+                        tabAnswer[answerIndex] = '';
+                        tabIndexAnswer[answerIndex] = -1;
+                        //通知状态变化
+                        that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT);
+                        //将当前选项状态清空
+                        $answerItem.data('empty', true);
+                        var $selectItem = null;
+                        $selectItems.each(function() {
+                            var result = true;
+                            var $this = $(this);
+                            if ($this.data('item-index') === itemIndex) {
+                                $selectItem = $this;
+                                result = false;
+                            }
+                            return result;
+                        });
+                        if ($selectItem !== null) {
+                            that._move($answerItem, $selectItem, tempHtml, function() {
+                                $selectItem.data('empty', false);
+                                //清除某个答案，当前tab清除正误状态
+                                var $tab = that.tabMap[index];
+                                $tab.removeClass('res_right').removeClass('res_err');
+                                //清除某个答案，当前ansertItem清除正误状态
+                                var $answerItems = $answerBtn.find('._answer_item');
+                                $answerItems.removeClass('com_s_right').removeClass('com_s_error');
+                            });
+                        }
+                    }
+                }
+            });
+        },
+        _renderCorrectTab: function(index, correctAnswer) {
+            var that = this;
+            //填充答案
+            var $answerBtn = that.answerBtnMap[index];
+            var $answerItems = $answerBtn.find('._answer_item');
+            var answerItemMap = {};
+            $answerItems.each(function() {
+                var $this = $(this);
+                var answerIndex = $this.data('answer-index');
+                answerItemMap[answerIndex] = $this;
+            });
+            var $selectBtn = that.selectBtnMap[index];
+            var $selectItems = $selectBtn.find('._select_item');
+            var selectItemMap = {};
+            $selectItems.each(function() {
+                var $this = $(this);
+                var content = $this.data('item-content');
+                var selectItemArray = selectItemMap[content];
+                if (!selectItemArray) {
+                    selectItemArray = [];
+                    selectItemMap[content] = selectItemArray;
+                }
+                selectItemArray.push($this);
+            });
+            var $selectItem;
+            var $answerItem;
+            var content;
+            var tempHtml;
+            for (var i = 0; i < correctAnswer.length; i++) {
+                content = correctAnswer[i];
+                if (content !== '') {
+                    $selectItem = selectItemMap[content].shift();
+                    $answerItem = answerItemMap[i];
+                    tempHtml = $selectItem.html();
+                    $selectItem.html('');
+                    $selectItem.data('empty', true);
+                    //渲染目标位置，取消当前目标位置选中
+                    $answerItem.html(tempHtml);
+                    $answerItem.data('empty', false);
+                    $answerItem.data('item-content', content);
+                }
+                //取消选中
+                $answerItem.removeClass('on');
+            }
+            //答题显示正确
+            $answerItems.addClass('com_s_right');
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) {
+            var that = this;
+            if (showAnswerType === 'user') {
+                if (commitedAnswer) {
+                    //重置题目
+                    that.resetQuestion();
+                    //恢复答案
+                    this.userAnswer = commitedAnswer.answer.user_response.userAnswer;
+                    this.userAnswerIndex = commitedAnswer.answer.user_response.userAnswerIndex;
+                    //通知状态变化
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                    //渲染答案 恢复答题数据
+                    for (var id in that.userAnswer) {
+                        that._setTabState(id);
+                    }
+                }
+                //显示正误反馈
+                var tabAnswer;
+                var tabCorrectAnswer;
+                var $tab;
+                for (var id in that.userAnswer) {
+                    tabAnswer = that.userAnswer[id];
+                    tabCorrectAnswer = that.correctAnswer[id];
+                    $tab = that.tabMap[id];
+                    if (tabAnswer.join('') === tabCorrectAnswer.join('')) {
+                        $tab.addClass('res_right');
+                    } else {
+                        $tab.addClass('res_err');
+                    }
+                }
+            } else {
+                //老师端渲染正确答案 重置题目
+                that.resetQuestion();
+                // that.isStatic = true;
+                //渲染答案
+                for (var id in that.correctAnswer) {
+                    that._renderCorrectTab(id, that.correctAnswer[id]);
+                }
+                //tab显示正确
+                that.$tabs.addClass('res_right');
+                //
+                //触发统计页面事件
+                if (that.isStatic) {
+                    that.presenter.$dispatchEvent('statistics_call', PresenterEventType.IC_PLAYER_EVENT, {
+                        service: 'statistic',
+                        method: 'clickItem',
+                        args: [that.currentIndex, 'B']
+                    });
+                }
+            }
+            //锁定
+            that.lockQuestion();
+        },
+        getState: function() {
+            var state = {
+                isOperate: this.isOperate,
+                locked: this.locked,
+                currentIndex: this.currentIndex,
+                userAnswer: this.userAnswer,
+                userAnswerIndex: this.userAnswerIndex,
+                userLastSelectIndex: this.userLastSelectIndex,
+                allPlayProgress: this.allPlayProgress
+            };
+            return state;
+        },
+        //恢复某个tab的用户作答
+        _setTabState: function(index) {
+            var that = this;
+            //填充答案
+            var $answerBtn = that.answerBtnMap[index];
+            var $answerItems = $answerBtn.find('._answer_item');
+            var answerItemMap = {};
+            $answerItems.each(function() {
+                var $this = $(this);
+                var answerIndex = $this.data('answer-index');
+                answerItemMap[answerIndex] = $this;
+            });
+            var $selectBtn = that.selectBtnMap[index];
+            var $selectItems = $selectBtn.find('._select_item');
+            var selectItemMap = {};
+            $selectItems.each(function() {
+                var $this = $(this);
+                var itemIndex = $this.data('item-index');
+                selectItemMap[itemIndex] = $this;
+            });
+            var $selectItem;
+            var $answerItem;
+            var itemIndex;
+            var tempHtml;
+            var tabAnswer = that.userAnswer[index];
+            var tabAnswerIndex = that.userAnswerIndex[index];
+            var tabCorrectAnswer = that.correctAnswer[index];
+            var lastSelectIndex = that.userLastSelectIndex[index];
+            for (var i = 0; i < tabAnswerIndex.length; i++) {
+                itemIndex = tabAnswerIndex[i];
+                $answerItem = answerItemMap[i];
+                if (itemIndex !== -1) {
+                    //有作答
+                    $selectItem = selectItemMap[itemIndex];
+                    tempHtml = $selectItem.html();
+                    $selectItem.html('');
+                    $selectItem.data('empty', true);
+                    //渲染目标位置，取消当前目标位置选中
+                    $answerItem.html(tempHtml);
+                    $answerItem.data('empty', false);
+                    $answerItem.data('item-content', tabAnswer[i]);
+                    //取消选中
+                    $answerItem.removeClass('on');
+                } else {
+                    //当前是空白项,判断是否有被用户选中
+                    if (lastSelectIndex === i) {
+                        //当前空白项为最后选中项
+                        $answerItem.addClass('on');
+                    }
+                }
+            }
+            var $tab = that.tabMap[index];
+            if (tabAnswer.join('') === tabCorrectAnswer.join('')) {
+                $tab.addClass('res_right');
+                $answerItems.addClass('com_s_right');
+            }
+        },
+        //恢复用户状态
+        setState: function(state) {
+            var that = this;
+            that.isOperate = state.isOperate;
+            that.locked = state.locked;
+            that.currentIndex = state.currentIndex;
+            that.userAnswer = state.userAnswer;
+            that.userAnswerIndex = state.userAnswerIndex;
+            that.userLastSelectIndex = state.userLastSelectIndex;
+            that.allPlayProgress = state.allPlayProgress;
+            //切换到正确的tab
+            that._selectTab(that.currentIndex);
+            //恢复答题数据
+            for (var id in that.userAnswer) {
+                that._setTabState(id);
+            }
+
+            //恢复播放进度
+            for (var key in that.allPlayProgress) {
+                var playProgress = that.allPlayProgress[key];
+                playProgress.currentTime = playProgress.currentTime - 1 > 0 ? playProgress.currentTime - 1 : 0;
+                NDMediaPlayer.mediaSkip(playProgress.mediaType, playProgress.index, playProgress.currentTime);
+            }
+        },
+        lockQuestion: function() {
+            var that = this;
+            that.locked = true;
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+            //所有多媒体暂停
+            var $media;
+            for (var id in that.mediaMap) {
+                $media = that.mediaMap[id];
+                $media[0].pause();
+                //测试要求修改为最初状态
+                $media[0].currentTime = 0;
+            }
+            that.$contents.addClass('locked');
+        },
+        unlockQuestion: function() {
+            var that = this;
+            that.locked = false;
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+            that.$contents.removeClass('locked');
+        },
+        startStatistics: function() {
+            var that = this;
+            that.isStatic = true;
+            //触发统计页面事件
+            that.presenter.$dispatchEvent('statistics_call', PresenterEventType.IC_PLAYER_EVENT, {
+                service: 'statistic',
+                method: 'clickItem',
+                args: [that.currentIndex, 'B']
+            });
+        },
+        convertDataForStatistics: function(oriData) {
+            var value = oriData.value;
+            var onlineNum = 0;
+            var item_key = [],
+                percent = [],
+                stuAnswerStat = [];
+            var convertedData = {};
+            var correctMap = {};
+            var correctNumMap = {};
+            convertedData['allrightStu'] = [];
+            if (value.correctAnswerTeacher) {
+                var correct_response = value.correctAnswerTeacher.correct_response;
+                for (var id in correct_response) {
+                    correctMap[id] = correct_response[id].join('');
+                }
+                var num;
+                var ref_key;
+                for (var id in correctMap) {
+                    num = parseInt(id);
+                    ref_key = num + 1;
+                    correctNumMap[id] = num;
+                    if (!stuAnswerStat[num]) {
+                        stuAnswerStat[num] = {
+                            right_userIds: [],
+                            wrong_userIds: [],
+                            unfinished_userIds: value.unfinishedUserIds,
+                            ref_key: ref_key
+                        };
+                    }
+                }
+            }
+            if (value.answers) {
+                //初始化正确答案信息
+                for (var i = 0, ilen = value.answers.length; i < ilen; i++) {
+                    if (!$.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length) {
+                        for (var j = 0, jlen = value.answers[i].length; j < jlen; j++) {
+                            if (typeof(value.answers[i][j]) != "object") {
+                                break;
+                            }
+                            if (typeof(value.answers[i][j].answer) == "string") {
+                                value.answers[i][j].answer = JSON.parse(value.answers[i][j].answer);
+                            } else if (typeof(value.answers[i][j].answer) == "object") {
+                                value.answers[i][j].answer = value.answers[i][j].answer;
+                            } else {
+                                break;
+                            }
+                            //构造当前学生答案
+                            var user_response = value.answers[i][j].answer.user_response.userAnswer;
+                            var responseMap = {};
+                            for (var id in user_response) {
+                                responseMap[id] = user_response[id].join('');
+                            }
+                            //判断当前学生答案是否正确
+                            var isAllRight = true;
+                            var aNum;
+                            for (var item in correctMap) {
+                                aNum = correctNumMap[item];
+                                if (responseMap[item] && responseMap[item] === correctMap[item]) {
+                                    stuAnswerStat[aNum].right_userIds = stuAnswerStat[aNum].right_userIds.concat(
+                                        value.answers[i][j].userIds);
+                                } else {
+                                    isAllRight = false;
+                                    stuAnswerStat[aNum].wrong_userIds = stuAnswerStat[aNum].wrong_userIds.concat(
+                                        value.answers[i][j].userIds);
+                                }
+                            }
+                            if (isAllRight) {
+                                convertedData['allrightStu'] = convertedData['allrightStu'].concat(value.answers[i][j]
+                                    .userIds);
+                            }
+                        }
+                    }
+                }
+            }
+            $.each(stuAnswerStat, function(k, item) {
+                item.rightNum = item.right_userIds.length;
+                item_key.push(item.ref_key);
+            });
+            onlineNum = value.finishedNum + value.unfinishedNum;
+            /**计算正确率**/
+            for (var ii = 0; ii < stuAnswerStat.length; ii++) {
+                percent[ii] = (onlineNum > 0) ? (stuAnswerStat[ii]['rightNum'] / onlineNum).toFixed(2) : 0;
+            }
+            convertedData['spend_time'] = value.elapsedTime ? value.elapsedTime : 0;
+            convertedData['submit_count'] = onlineNum;
+            convertedData['answers'] = value.answers;
+            convertedData['item_key'] = item_key;
+            convertedData['percent'] = percent;
+            convertedData['unfinishedNum'] = value.unfinishedNum;
+            convertedData['unfinishedUserIds'] = value.unfinishedUserIds;
+            convertedData['stuAnswerStat'] = stuAnswerStat;
+            value['convertedData'] = convertedData;
+            return oriData;
+        },
+        getResult: function() {
+            var that = this;
+            var answerState = 'NO_ANSWER';
+            var userResponse = {
+                userAnswer: $.extend(true, {}, this.userAnswer),
+                userAnswerIndex: $.extend(true, {}, this.userAnswerIndex)
+            };
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: userResponse,
+                answer_result: true
+            };
+            //判断是否作答
+            if (that.isOperate) {
+                answerState = 'NO_COMPLETE';
+                //判断作答是否正确
+                var tabAnswer;
+                var correctAnswer;
+                for (var id in this.correctAnswer) {
+                    correctAnswer = this.correctAnswer[id].join('');
+                    tabAnswer = this.userAnswer[id].join('');
+                    if (correctAnswer !== tabAnswer) {
+                        answer.answer_result = false;
+                        break;
+                    }
+                }
+            }
+            var result = {
+                answer: answer,
+                answerState: answerState,
+                questionId: this.questionId
+            };
+            return result;
+        },
+        destroy: function() {
+            this.$view = null;
+            this.$main = null;
+            this.$tab = null;
+            this.$tabs = null;
+            this.$content = null;
+            this.$contents = null;
+            this.$operate = null;
+            this.$answerBtns = null;
+            this.$selectBtns = null;
+            this.tabMap = null;
+            this.answerBtnMap = null;
+            this.selectBtnMap = null;
+            this.mediaMap = null;
+        }
+    };
+    //对外提供服务
+    var Service = function(guessword) {
+        this.questionId = null;
+        this._guessword = guessword;
+        this.status = {};
+    };
+    Service.prototype = {
+        init: function(model, guessword) {
+            this.questionId = model.question_id;
+            this._guessword = guessword;
+            this.parent = this._guessword.presenter;
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: 'guessword',
+                type_name: '猜词题',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._guessword.getResult();
+        },
+        _getState: function() {
+            var state = this._guessword.getState();
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent.metaInfo
+                    .name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._guessword.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this
+                    .parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) {
+            return this._guessword.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) {},
+        resetQuestion: function() {
+            this._guessword.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._guessword.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._guessword.unlockQuestion();
+        },
+        finishQuestion: function() {},
+        getStatisticClass: function() {
+            return 'B';
+        },
+        startStatistics: function() {
+            this._guessword.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) {
+            return this._guessword.convertDataForStatistics(oriData);
+        },
+        //实现国际化
+        setLocationProperties: function(properties) {
+            this._guessword.i18Model = properties;
+        }
+    };
+
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'GuessWordRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._guessword = new GuessWord();
+            this._service_ = new Service(this._guessword);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据 that._guessword = new GuessWord();
+            that._guessword.init(view, model, this);
+            that._guessword.initView();
+            that._guessword.resetQuestion();
+            that._guessword.initNdMediaPlayer();
+            //绑定交互事件
+            that._guessword.bindEvent();
+            //初始化服务
+            that._service_.init(model, that._guessword);
+        },
+        destroy: function() {
+            if (this._guessword) {
+                this._guessword.destroy();
+            }
+        },
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        }
+
+    });
+    //实现icplayer入口调用函数
+    window.AddonGuessWordRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/bg_voice.png' />
+<file src='./resources/wood/images/btn_lr_board.png' />
+<file src='./resources/wood/images/gw_answerBox.jpg' />
+<file src='./resources/wood/images/img_ico_audio.jpg' />
+<file src='./resources/wood/images/img_ico_video.jpg' />
+<file src='./resources/wood/images/triangle.png' />
+
+
+</resources>
+
+</addon>

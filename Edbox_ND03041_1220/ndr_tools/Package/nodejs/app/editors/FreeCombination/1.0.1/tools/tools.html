@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript">
+        function generate(){
+            var text = document.getElementById("shape").value;
+            var template = "";
+            var numbers = [];
+            var number = "";
+            var index = 0;
+            for(var i=0;i<text.length;i++){
+                var ch = text.substring(i,i+1);
+                if("0123456789.-".indexOf(ch)!=-1){
+                    number = number+ch;
+                }
+                else{
+                    if(number.length>0){
+                        template+="{"+index+"}";
+                        numbers.push(parseFloat(number));
+                        index++;
+                        number = "";
+                    }
+                    template = template+ch;
+                }
+            }
+            var result = {svg: template,svg_points:numbers};
+
+            document.getElementById("result").value = JSON.stringify(result);
+        }
+    </script>
+</head>
+<body>
+    <textarea id="shape" rows="20" cols="80"></textarea>
+    <button onclick="javascript:generate()">生成</button>
+    <textarea id="result" rows="20" cols="80"></textarea>
+</body>
+</html>

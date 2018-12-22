@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MindJetEditorController'>
+<properties>
+
+                <property name="courseObjectSaveInterface" displayName="��Ŀ����" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="IcTimer" version="1.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "MindJetEditorController",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.editorService = {};
+            this.courseObjectSaveInterface = "";
+
+            this.previewPopup = null;
+            this.previewCloseBtn = null;
+            this.previewContainer = null;
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            insert: function (operator) {
+                this.parent._insertCourseObject(operator);
+            },
+            save: function (operator) {
+                this.parent._saveCourseObject(operator);
+            },
+            preview: function (operator) {
+                if (this.parent.editorService[operator]) {
+                    var self = this;
+
+                    if(!self.parent.previewPopup) {
+                        self.parent.previewPopup = self.parent.layoutService.getContainer("PopupPanel");
+                        self.parent.previewCloseBtn = self.parent.previewPopup.find('.mindMap_btn_close');
+                        self.parent.previewContainer = self.parent.previewPopup.find('.mindMap_preview_panel');
+                    }
+
+                    //绑定预览窗口的关闭按钮事件
+                    self.parent.previewCloseBtn.off('touchstart mousedown');
+                    self.parent.previewCloseBtn.on('touchstart mousedown', function (event) {
+                        event.preventDefault();
+
+                        self.parent.editorService[operator].closePreview();
+                        self.parent.previewPopup.hide();
+                    });
+
+                    //显示预览窗口
+                    self.parent.previewPopup.show();
+                    self.parent.editorService[operator].showPreview(self.parent.previewContainer);
+                }
+            },
+            getEvents: function () {
+                return ["mindjet_editor_insert", "mindjet_editor_save", "mindjet_editor_preview"];
+            },
+            setLocationProperties: function(properties) {
+                this.parent.$translator.setData(properties);
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /************以下是重写基类的方法*************/
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "IEditor",
+                methods: ["getCourseObjectData", "showPreview"]
+            }];
+        },
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            this.editorService[metaInfo.name] = service;
+
+            if(!!this.layoutService && !!this.layoutService.getContainer) {
+                var messageTextPanel = this.layoutService.getContainer("MessageTextPanel");
+                !!messageTextPanel && messageTextPanel.text(this.$translate('message_save_success'));
+            }
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            if (model["courseObjectSaveInterface"]) {
+                this.courseObjectSaveInterface = model["courseObjectSaveInterface"];
+            }
+        },
+        destroy: function () {
+            !!this.previewCloseBtn && this.previewCloseBtn.off('touchstart mousedown');
+        },
+        _postCourseObject: function (operator, callback) {
+            if (this.courseObjectSaveInterface != "") {
+                //获取思维导图数据
+                var courseObjectData = this.editorService[operator].getCourseObjectData();
+                $.ajax({
+                    url: this.courseObjectSaveInterface,
+                    type: "PUT",
+                    contentType: "application/json",
+                    dataType: "json",
+                    data: JSON.stringify(courseObjectData),
+                    success: function (data) {
+                        if (data.isInterface === true) { //PC端接口调用
+                            try {
+                                window.eval(data.text);
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        } else {
+                            console.log(JSON.stringify(data));
+                        }
+
+                        !!callback && !!callback.success && callback.success(data);
+                    },
+                    error: function (error) {
+                        if (!!callback && !!callback.fail) {
+                            callback.fail(error);
+                        }
+                    }
+                });
+            }
+        },
+        _insertCourseObject: function (operator) {
+            this._postCourseObject(operator);
+        },
+        _saveCourseObject: function (operator) {
+            var self = this;
+            this._postCourseObject(operator, {
+                success: function () {
+                    var messagePanel = self.layoutService.getContainer("MessagePanel");
+                    messagePanel.show();
+                    IcTimer.scheduleTask(function() {
+                        messagePanel.hide();
+                    }, 3000, false);
+                }
+            });
+        }
+    }, "MindJetEditorController");
+
+    window.AddonMindJetEditorController_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

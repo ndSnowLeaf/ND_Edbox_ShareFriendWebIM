@@ -1,0 +1,1845 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WordCardTeacher'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="AlamedaRequire" version="0.3.2" />
+    <javaScript  name="ChineseWordTracing" version="1.0.3" />
+    <javaScript  name="jquery-ui-touch-punch" version="0.2.3.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_WordCardTeacher .scale9{transform:scale(.9)}.addon_WordCardTeacher .scale8{transform:scale(.8)}.addon_WordCardTeacher ._dync_canvas{width:7.29167em;height:7.29167em;position:absolute;left:0;top:0}.addon_WordCardTeacher ._dync_canvas.hide{visibility:hidden}.addon_WordCardTeacher ._dync_canvas .canvas_back{z-index:1}.addon_WordCardTeacher .chinesegrid_show{z-index:auto!important}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="wordcard_teach" style="left: 2em;top: 0em;z-index: 100"><a href="#" class="btn_card_close" _lang="lang_btn_close"></a><div class="cardmain"><div class="wordcard_jiexi_container"><div class="mainbox"><div class="main"><div class="pinyinwrap"><p class="pinyin"><em class="word"></em></p><a href="###" class="btn_voice"></a></div><div class="wordwrap_mid"></div><div class="footwrap stroke-order"><p class="introtxt"><em class="word"><span _lang="lang_count"></span><em class="color_red"></em><span _lang="lang_step"></span></em></p><div class="word_card_write_tab_box"><div class="word_card_write_hd"><a href="###" class="btn_write_hd _js_switch_mode _js_switch_continue" data-bind="css:{on:strokeMode() == 0}"><span class="word" _lang="lang_continue"></span> </a><a href="###" class="btn_write_hd _js_switch_mode _js_switch_break" data-bind="css:{on:strokeMode() == 1}"><span class="word" _lang="lang_stepby"></span></a></div><div class="word_card_write_bd"><div class="btn_write_bd _js_mode_continue" data-bind="css:{hide_dom:strokeMode() == 1}"><a href="###" class="btn_radius_wh speed-normal" data-bind="css:{on:(isStroking() && strokeSpeed() == 0)}"><span class="word" _lang="lang_speed_normal"></span> </a><a href="###" class="btn_radius_wh speed-slow" data-bind="css:{on:(isStroking() && strokeSpeed() == 1)}"><span class="word" _lang="lang_speed_slow"></span></a></div><div class="btn_write_bd _js_mode_break" data-bind="css:{hide_dom:strokeMode() == 0}"><a href="###" class="btn_radius_wh pre" data-bind="css:{click_disabled:!hasPreStep()}"><span class="word" _lang="lang_btn_prestep"></span></a> <a href="###" class="btn_radius_wh next" data-bind="css:{click_disabled:!hasNextStep(),on:isNextSteping()}"><span class="word" _lang="lang_btn_nextstep"></span></a></div></div></div></div><div class="footwrap radicals hide_dom"><p class="introtxt"><em class="word"><em class="color_red"></em><span _lang="lang_txt_radicals"></span></em></p></div><div class="footwrap shape-structure hide_dom"><p class="introtxt"><em class="word"><em class="color_red" _lang="lang_txt_structure"></em></em></p></div></div></div><div class="card_middle"><div class="card_media hide_dom"><div class="mediastage"><div class="mediabox media_pic hide_dom"><div class="box_media_pic"><ul class="media_pic_content clearfix" style="position: relative;left: 0"></ul></div><div class="box_word_wrap" style="bottom: 0"><span class="box_word" data-bind="text: pictureDescription"></span> <span class="box_btn"></span></div><div class="box_flicking"></div></div><div class="mediabox media_xing hide_dom"><img alt=""></div><div class="mediabox media_radio hide_dom"><audio style="width:100%; height:100%" controls="controls">您的浏览器不支持audio</audio></div><div class="mediabox media_video hide_dom"><video style="width:100%; height:100%" controls="controls">您的浏览器不支持此种视频格式</video></div></div><div class="mediatab"><ul><li class="tab_media_cell"><a href="###" class="tab_media icon_pic"></a></li><li class="tab_media_cell hide_dom"><a href="###" class="tab_media icon_xing"></a> <a href="###" class="uedc_preload_img_wordcard_03"></a></li><li class="tab_media_cell"><a href="###" class="tab_media icon_radio"></a></li><li class="tab_media_cell"><a href="###" class="tab_media icon_video"></a></li></ul></div></div><div class="card_analyse hide_dom"><div class="analyse_stage"><div class="footwrap"><div class="switch"><a href="###" class="btn_switch on _inclass"><em class="word" _lang="lang_tab_analysis_class"></em></a> <a href="###" class="btn_switch _extend"><em class="word" _lang="lang_tab_analysis_extend"></em></a></div></div><div class="explain_list scrollbar_style_wborder _inclass"><dl class="explain_content"><dt class="explain_tit"><em class="word" _lang="lang_title_paraphrase"></em></dt><dd class="exlpain_word"><em class="word paraphrase"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_tiele_wordsgroups"></em></dt><dd class="exlpain_word"><em class="word wordsgroups"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_title_sentence"></em></dt><dd class="exlpain_word sentence"></dd></dl></div><div class="explain_list scrollbar_style_wborder _extend hide_dom"><dl class="explain_content"><dt class="explain_tit"><em class="word" _lang="lang_title_paraphrase"></em></dt><dd class="exlpain_word"><em class="word paraphrase"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_title_simwords"></em></dt><dd class="exlpain_word"><em class="word simwords"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_title_simparaphrasewords"></em></dt><dd class="exlpain_word"><em class="word simparaphrasewords"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_title_antisense"></em></dt><dd class="exlpain_word"><em class="word antisense"></em></dd><dt class="explain_tit"><em class="word" _lang="lang_tiele_wordsgroups"></em></dt><dd class="exlpain_word wqroupcentence"></dd></dl></div></div></div></div></div><div class="chinesegrid"><div class="chinesegrid_main"><canvas class="tzg_main_canvas">您的浏览器不支持canvas</canvas><div class="chinesegrid_show"><div class="pinyinwrap"><p class="pinyin"><em class="word"></em></p></div><div class="wordwrap _tzg_show_canvas"><div class="wordwrap_inner hide_dom"></div><div class="_dync_canvas"></div></div><div href="###" class="tzg_switch gridword_show on"><span class="tzg_switch_on _tzg_switch_lefttop"><span class="tzg_switch_text">ON</span> <i class="tzg_switch_icon"></i> </span><span class="tzg_switch_off _tzg_switch_lefttop"><i class="tzg_switch_icon"></i> <span class="tzg_switch_text">OFF</span></span></div></div><div class="chinesegrid_write_gridnum_single hide_line"><div class="pinyinwrap"><p class="pinyin"></p></div><div class="wordwrap"><div class="wordwrap_inner hide_dom"></div></div><div href="###" class="tzg_switch gridhelp_line"><span class="tzg_switch_on _tzg_switch_center"><span class="tzg_switch_text">ON</span> <i class="tzg_switch_icon"></i> </span><span class="tzg_switch_off _tzg_switch_center"><i class="tzg_switch_icon"></i> <span class="tzg_switch_text">OFF</span></span></div></div><div class="chinesegrid_write_gridnum_eight hide_dom"><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div><div class="wordwrap_s"></div></div></div><div class="chinesegrid_btm"><ul class="clearfix gridmode_container"><li class="gridmode_option on"><i class="gridmode_grid"></i></li><li class="gridmode_option"><i class="gridmode_line"></i> <i class="gridmode_grid"></i></li><li class="gridmode_option gridmode_eight"><i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i> <i class="gridmode_grid"></i></li><li class="chinesegrid_writetool_list"><a href="#" class="write_tool on"><i class="write_tool_icon icon_hb"></i> </a><a href="#" class="write_tool"><i class="write_tool_icon icon_xpc"></i><ul class="xpc_type_container hide_dom"><li class="xpc_type_btn xpc_clearall"><i class="xpc_type_icon"></i> <span class="xpc_type_word"><em class="text" _lang="lang_clearall"></em></span></li><li class="xpc_type_btn xpc_ordi"><i class="xpc_type_icon"></i> <span class="xpc_type_word"><em class="text" _lang="lang_eraser"></em></span></li></ul></a></li></ul></div></div></div><div class="cardmenu"><ul class="menulist"><li class="item_menu stroke-order item_left on"><a href="###" class="menu"><em class="word" _lang="lang_menu_strokeorder"></em></a></li><li class="item_menu radicals item_left"><a href="###" class="menu"><em class="word" _lang="lang_menu_radicals"></em></a></li><li class="item_menu shape-structure item_left"><a href="###" class="menu"><em class="word" _lang="lang_menu_shapestructure"></em></a></li><li class="item_menu sequencer item_left"><a href="###" class="menu"><em class="word" _lang="lang_menu_sequencer"></em></a></li><li class="item_menu analysis item_mid"><a href="###" class="menu"><em class="word" _lang="lang_menu_analysis"></em></a></li><li class="item_menu item_media multi-media item_mid"><a href="###" class="menu"><em class="word" _lang="lang_menu_media"></em></a></li><li class="item_menu tianzige" style="display: none"><a href="###" class="menu"><em class="word" _lang="lang_menu_matts"></em></a></li></ul><a href="###" class="btn_send"><em class="send_word" _lang="lang_btn_start_exercise"></em></a> <a href="###" class="btn_send btn_endpar" style="display: none"><i class="icon_time"></i><p class="txt">05:18</p><p class="txt" _lang="lang_btn_end_exercise"></p></a></div></div><div class="chinesegrid_pop hide_dom"><div class="chinesegrid_prom"><div class="chinesegrid_prom_wrap"><p class="gridprom_text"><em class="text" _lang="lang_content_clearall"></em></p><a class="btn_gridprom_tip"><em class="btn_text" _lang="lang_btn_cancel"></em></a> <a class="btn_gridprom_tip color_light"><em class="btn_text" _lang="lang_btn_commit"></em></a></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+
+    //version:5.3.0支持汉字听写
+
+    var SELECTOR = {//选择器
+        wordcard: ".wordcard_teach"
+    };
+
+    var CONSTANTS = {
+        c_stroke_order: ".stroke-order",//笔顺
+        c_radicals: ".radicals",//部首
+        c_shape_structure: "shape-structure",//字形结构
+        c_sequencer: ".sequencer",//音序
+        c_analysis: ".analysis",//生字解析
+        c_multi_media: ".multi-media",//多媒体
+        ANIM_NORMAL: 'normal',
+        ANIM_SLOW: 'slow',
+        DUR_ANIMATION: 200,
+        SHOW_TYPE_RADICAL: "radical",
+        SHOW_TYPE_STRUCTURE: "structure",
+        eventName: {
+            closeWordCard: "closeWordCard",
+            changeFocus: "changeFocus",
+            clickMenu: 'clickMenu',
+            toggleMediaPanel: "toggleMediaPanel",
+            mediaTab: "mediaTab",
+            showWordAnalysis: "showWordAnalysis",
+            analysisTab: "analysisTab",
+            changeSpeed: "changeSpeed"
+        },
+        event_SwitchWordCardStatus: "SwitchWordCardStatus",
+        event_ActiveWordCard: "ActiveWordCard",
+        event_ShowCardClose: "ShowCardClose",
+        event_PlayingMedia: "pauseMediaPlay",
+        html_extend_group: "<span class='group_word clearfix'><span class='title'><em class='word wordsgroups'></em></span><span class='sentence'><em class='word sentence'></em></span></span>"//扩展解析，组词和例句模版
+    };
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "WordCardTeacher",
+            type: "",
+            subtype: ""
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+
+            var INFO = {
+                id: null,
+                identify: null,
+                mAssetIndex: 0,
+                mData: null,
+                mStroke: null,
+                mstrokeFileUrl: null,
+                mWordTraceUtil: null,
+                dync_canvas:null,
+                mResourceReady: false,
+                mViewReady: true,
+                mRelations: null,
+                mLoadTemplate: false,
+                mOption: {
+                    canvasWidth: 0,
+                    canvasHeight: 0,
+                    isExercising: false,
+                    timeOutId: null
+                },
+                mediaAudios: null,
+                mediaVideos: null,
+                mKoBinded:false,
+                mStrokeTimeout:null,
+                mPictureDescriptions:[],//图片描述
+                mViewModel:{
+                    isStroking:ko.observable(false),//是否正在描红
+                    strokeMode:ko.observable(0),//0：连续模式，1：分布模式
+                    strokeSpeed:ko.observable(0),//0:正常，1：慢速
+                    hasPreStep:ko.observable(false),//是否有下一步
+                    hasNextStep:ko.observable(true),//是否有下一步
+                    isNextSteping:ko.observable(false),//正在下一步描红
+                    pictureDescription:ko.observable("")//图片描述文本
+                }
+            };
+            var util = {
+                isLock: false,//是否允许操作，true 不允许 false允许
+                freeBoardsCtr: {
+                    mouseDown: false,
+                    tempPath: [],//记录写字路径
+                    checkDistance: 6.5,//擦除检测长度阀值
+                    curWord:[],
+                    panelWords:{//三种模式的字
+                        model0:[],
+                        model1:[],
+                        model2:[]
+                    },
+                    last: null,
+                    lineWidth: 8,
+                    clearRule: 'last',//笔画清除规则，last表示清除最后一笔，其他默认清除点击到的笔画
+                    strokeStyle: 'rgb(51,51,51)',
+                    isEraser: false,
+                    clearAll:false,
+                    globalCompositeOperation: 'source-over',
+                    ignoreBound:[]
+                },
+                longPressCtr: {
+                    isLongPress: false,//是否长按
+                    pressDuration: 1000,//长按时长,毫秒
+                    pressedTime: 0,//已经按下的时间
+                    radius: 3,//检测长按的半径
+                    timer: null,//长按计时器
+                    pos: {}//第一次按下时的坐标
+                }
+            };
+
+            this.INFO = INFO;
+            this.util = util;
+        },
+        service: Class.extend({
+            $init: function (parent) {
+                this.presenter = parent;
+            },
+            setLocationProperties:function(properties){
+                this.presenter.languageSet = properties;
+                this.presenter.$translatorDeferred.resolve();
+            },
+            isPointInDom: function (event) {
+                var tool = this.presenter.$view;
+                var _w = tool.element.width(),
+                    _h = tool.element.height();
+                var _A = this.getRotateDeg(tool.element[0]); //这里取返就是为了算相对位置直接取旋转前的X,Y，
+                var finalXY = this.getRotateXY(event.pageX, event.pageY, _A, tool.element[0]);
+                var _finalX = finalXY.x,
+                    _finalY = finalXY.y;
+                if (_finalX >= 0 && _finalX <= _w && _finalY >= 0 && _finalY <= _h) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            getRotateDeg: function (dom) {
+                var me = $(dom), angle;
+                var matrix = me.css("-webkit-transform") ||
+                    me.css("-moz-transform") ||
+                    me.css("-ms-transform") ||
+                    me.css("-o-transform") ||
+                    me.css("transform");
+                if (typeof matrix === 'string' && matrix !== 'none' && matrix !== '') {
+                    var values = matrix.split('(')[1].split(')')[0].split(',');
+                    var a = values[0];
+                    var b = values[1];
+                    angle = (Math.atan2(b, a) * (180 / Math.PI)).toFixed(3);
+                } else {
+                    angle = 0;
+                }
+                return angle;
+            },
+            getRotateXY: function (x, y, angle, dom) {
+                var p = this.findOffset(dom);
+                var t = this.getRotateOriginXY(dom);
+
+                x = x - parseInt(p.x) - t.x;
+                y = y - parseInt(p.y) - t.y;
+                if (angle < 0) {
+                    angle = 360 + angle % 360; //3个限项 0-90 90-180 180-270 270-360
+                } else {
+                    angle = angle % 360; //3个限项 0-90 90-180 180-270 270-360
+                }
+                var goalX = x * Math.cos(angle * Math.PI / 180) + y * Math.sin(angle * Math.PI / 180);
+                var goalY = y * Math.cos(angle * Math.PI / 180) - x * Math.sin(angle * Math.PI / 180);
+                return {
+                    x: goalX + t.x,
+                    y: goalY + t.y
+                };
+            },
+            findOffset: function (obj) {
+                var curX = 0,
+                    curY = 0;
+                if (obj.offsetParent) {
+                    do {
+                        curX += obj.offsetLeft;
+                        curY += obj.offsetTop;
+                    } while (obj = obj.offsetParent);
+                    return {
+                        x: curX,
+                        y: curY
+                    };
+                } else
+                    return {
+                        "x": 0,
+                        "y": 0
+                    };
+            },
+            getRotateOriginXY: function (dom) {
+                var str = $(dom).css('transform-origin');
+                return str ? {
+                    x: parseFloat(str.split(' ')[0], 10),
+                    y: parseFloat(str.split(' ')[1], 10)
+                } : {
+                    x: 0,
+                    y: 0
+                };
+            },
+            getIdentify: function () {
+                var parent = this.presenter;
+                return parent.INFO.identify;
+            },
+            changeCard: function (data) {
+                return this.setResource(data);
+            },
+            setPosition: function (position) {
+                var wordCard = this.presenter.$view.find(SELECTOR.wordcard);
+                if ((wordCard.css('left') == '-1000px' && wordCard.css('top') == '-1000px') ||
+                    (position.left == -1000 && position.top == -1000)) {
+                    wordCard.css({left: position.left, top: position.top});
+                }
+            },
+            getOriSize:function(){
+                var wordCard = this.presenter.$view.find(SELECTOR.wordcard);
+                var h = wordCard.height();
+                var w = wordCard.find(".cardmain").width() + wordCard.find(".cardmenu").width();
+                return {width:w,height:h};
+            },
+            setScale: function (num) {
+                if ($.isNumeric(num)) {
+                    var wordCard = this.presenter.$view.find(SELECTOR.wordcard);
+                    if (num < 3) {
+                        wordCard.removeClass("scale9 scale8");
+                    } else if (num == 3) {
+                        wordCard.removeClass("scale9 scale8").addClass("scale9");
+                    } else if (num > 3) {
+                        wordCard.removeClass("scale9 scale8").addClass("scale8");
+                    }
+                }
+            },
+            stopMedia: function () {
+                if (this.presenter.INFO.mediaAudios) {
+                    this.presenter.INFO.mediaAudios.pause();
+                }
+                if (this.presenter.INFO.mediaVideos) {
+                    this.presenter.INFO.mediaVideos.pause();
+                }
+            },
+            setResource: function (data) {//设置词卡资源
+                var id = data.identify;
+                var parent = this.presenter;
+                parent.INFO.mData = data;
+                parent.INFO.identify = id;
+                parent.INFO.id = id;
+                if($("body").height() < 1024 || $("body").width() < 1024){
+                    parent.util.freeBoardsCtr.lineWidth = 5;
+                }else{
+                    parent.util.freeBoardsCtr.lineWidth = 8;
+                }
+
+                //重置词卡资源
+                var def = $.Deferred();
+                var url = data.resourceRoot + "/resources/relations.json";
+                parent._resetWordCard(url).done(function (relations) {//获得资源后，显示词卡
+                    var phonetic = data["phonetic"];
+                    var $view = parent.$view;
+
+                    var $wordcards = $view.find(".wordcard_teach");
+                    var $analysis = $wordcards.find('.cardmenu .menulist .analysis');//解析
+                    var $shapeStructure = $wordcards.find('.cardmenu .menulist .shape-structure');//字形结构
+                    var $sequencer = $wordcards.find('.cardmenu .menulist .sequencer');//音序
+                    var $chinesegrid = $wordcards.find(".chinesegrid");//田字格
+                    var $media = $wordcards.find(".cardmenu .menulist .item_media");//多媒体
+                    var $btn_voice = $wordcards.find(".pinyinwrap .btn_voice");//读音按钮
+                    var $wordcard_jiexi_container = $wordcards.find(".wordcard_jiexi_container");
+
+                    //重置状态
+                    parent.util.freeBoardsCtr.curWord = [];
+                    parent.util.freeBoardsCtr.panelWords.model0 = [];
+                    parent.util.freeBoardsCtr.panelWords.model1 = [];
+                    parent.util.freeBoardsCtr.panelWords.model2 = [];
+                    $wordcards.find(".cardmain").removeClass("on");//关闭多媒体
+                    $chinesegrid.removeAttr("showing").hide();
+                    $wordcard_jiexi_container.show();
+                    $analysis.css({'display': 'list-item'});
+                    $shapeStructure.css({'display': 'list-item'});
+                    $sequencer.css({'display': 'list-item'});
+                    if (data.content == "JuniorGrade") {//1-2年级
+                        $analysis.css({'display': 'none'});
+                        $analysis = null;
+                    } else {//3-6年级
+                        $shapeStructure.css({'display': 'none'});
+                        $sequencer.css({'display': 'none'});
+                        $sequencer = null;
+                        $shapeStructure = null;
+                    }
+
+                    if("ChineseCharacterDictation" === parent.INFO.mData.stage){
+                        $media.css({ 'display': 'none' });
+                        $btn_voice.css({ 'display': 'none' });
+                    }
+
+                    var i;
+                    for (i = 0; i < relations.spellAssets.length; i++) {
+                        if (relations.spellAssets[i].target.title == phonetic) {
+                            parent.INFO.mAssetIndex = i;
+                            break;
+                        }
+                    }
+                    parent._showWordCard(relations);
+                    def.resolve();
+                });
+                return def;
+            }
+        }),
+        getService: function () {
+            //加载对外的Service模块
+            var self = this;
+            if (!this["_service_"]) {
+                this["_service_"] = new this.service(self);
+            }
+            return this["_service_"];
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.$view.find(">.wordcard").removeAttr("id");
+            var option = this.INFO.mOption;
+            option.screenWidth = $("html").width();
+            option.screenHeight = $("html").height();
+
+            var self = this;
+            this.$translatorDeferred.done(function () {
+                var properties = self.languageSet;
+                for(var k in properties){
+                    self.$view.find('[_lang="lang_'+ k +'"]').html(properties[k]);
+                }
+            });
+        },
+        pageShow: function () {
+
+        },
+        pageLeave: function () {
+            this._unbindEvent();
+        },
+        destroy: function () {
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function () {
+
+        },
+        setState: function (state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+            this._unbindEvent();
+
+            var self = this;
+            var $wordcards = self.$view;
+
+            var btn_closecard = '.wordcard_teach>a.btn_card_close';
+            var item_menu = ".menulist .item_menu";
+            var item_media = ".item_media";
+            var item_newword = ".item_menu.analysis";
+            var mediatabLi = '.card_media .mediatab .tab_media_cell';
+            var mediabtn_switch = '.analyse_stage .switch .btn_switch';
+            var mainboxbtn_switch = '.mainbox ._js_mode_continue .btn_radius_wh';
+            var switch_mode = '.mainbox ._js_switch_mode';
+            var strokeStep = "._js_mode_break .btn_radius_wh";
+            var picDot = ".mediastage .media_pic .box_flicking>a";
+            var btn_voice = '.mainbox .btn_voice';
+            var wordCanvas = ".wordwrap_mid>canvas";
+            var send = '.btn_send';
+            var stop = self.$view.find('.btn_send.stop');
+            var tzg_switch_lefttop = ".tzg_switch_on._tzg_switch_lefttop,.tzg_switch_off._tzg_switch_lefttop";
+            var tzg_switch_center = ".tzg_switch_on._tzg_switch_center,.tzg_switch_off._tzg_switch_center";
+            var gridmode_option = "ul.gridmode_container>li.gridmode_option";
+            var write_tool = ".chinesegrid_writetool_list .write_tool";
+            var tzg_main_canvas = ".chinesegrid_main .tzg_main_canvas";
+            var xpc_type_btn = ".xpc_type_btn";
+            var btn_gridprom_tip = ".btn_gridprom_tip";
+            var box_btn = ".box_word_wrap .box_btn";
+
+            //关闭生字图卡
+            $wordcards.on("click", btn_closecard, self, self._wordcardClose);
+            //点击菜单
+            $wordcards.on('click', item_menu, self, self._clickMenu);
+            //显示多媒体卡片
+            $wordcards.on('click', item_media, self, self._toggleMediaPanel);
+            //显示生字解析卡片
+            $wordcards.on('click', item_newword, self, self._showWordAnalysis);
+            //多媒体切换
+            $wordcards.on('click', mediatabLi, self, self._mediaTab);
+            //图片切换
+            $wordcards.on('click', picDot, self, function (ev) {
+                var context = ev.data;
+                var index = $(this).index();
+                $(this).addClass("on").siblings("a").removeClass("on");
+                var $media_pic = $(this).closest(".media_pic").find(".media_pic_content");
+                var itemWidth = parseFloat($($media_pic.children().get(0)).css("width"));
+                var l = -(index) * itemWidth;
+                $media_pic.attr("data-index",index);
+                $media_pic.animate({"left": l + "px"}, 200);
+
+                context.INFO.mViewModel.pictureDescription(context.INFO.mPictureDescriptions[index]?context.INFO.mPictureDescriptions[index]:"");
+                context._onTogglePicDescription(context.$view.find(".media_pic .box_word_wrap"),true);
+            });
+            //生词解析切换
+            $wordcards.on('click', mediabtn_switch, self, self._analysisTab);
+            //笔顺速度切换
+            $wordcards.on('click', mainboxbtn_switch, self, self._changeSpeed);
+            //上一步或下一步
+            $wordcards.on('click', strokeStep, self, self._strokeStep);
+
+            //描红模式切换
+            $wordcards.on('click', switch_mode, self, self._changeStrokeMode);
+            //点击田字格，开始描红
+            $wordcards.delegate(wordCanvas, 'click', self, self._autoTrace);
+            //播放音频
+            $wordcards.on('click', btn_voice, self, function (ev) {
+                var self = ev.data;
+                if (self.INFO.mediaAudios) {
+                    self.INFO.mediaAudios.play();
+                }
+                ev.stopPropagation();
+            });
+
+            $wordcards.on("click", ".media_video .ctrl .btn_play", self, function (ev) {
+                if (!$(this).is(".btn_pause")) {//当前为就绪状态
+                    self.INFO.mediaVideos.play();
+                    $(this).addClass("btn_pause");
+                } else {//当前为播放状态
+                    self.INFO.mediaVideos.pause();
+                    $(this).removeClass("btn_pause");
+                }
+                ev.stopPropagation();
+            });
+
+            $wordcards.on("click", ".media_video .ctrl .btn_fullscreen", self, function (ev) {
+                if (self.INFO.mediaVideos.webkitRequestFullscreen) {
+                    self.INFO.mediaVideos.webkitRequestFullScreen();
+                }
+                ev.stopPropagation();
+            });
+
+            /*田字格工具*/
+            $wordcards.on("click", tzg_switch_lefttop, self, self._tzg_switch_lefttop);
+            $wordcards.on("click", tzg_switch_center, self, self._tzg_switch_center);
+            $wordcards.on("mousedown touchstart", gridmode_option, self, self._gridmode_option);
+            $wordcards.on("click", write_tool, self, self._write_tool);
+            $wordcards.on("click", xpc_type_btn, self, self._selectClearType);
+            $wordcards.on("click", btn_gridprom_tip, self, self._confirmClear);
+            $wordcards.on("mousedown touchstart", tzg_main_canvas, self, self._drawStart);
+            $wordcards.on("mousemove touchmove", tzg_main_canvas, self, self._drawing);
+            $wordcards.on("mouseup touchend mouseleave touchleave", tzg_main_canvas, self, self._drawEnd);
+            /*田字格工具*/
+
+            $wordcards.on("click",box_btn,self,self._toggleDescription);
+            $wordcards.on("mousedown touchstart mousemove touchmove mouseup touchend mouseout touchcancel", "ul.media_pic_content", self, self._swipeImg);
+            $wordcards.on("mousedown touchstart mousemove touchmove mouseup touchend mouseout touchcancel", ".card_analyse .explain_list", self, self._scrollAnalyse);
+
+            self.INFO.mediaVideos.addEventListener("timeupdate", self._timeupdate.bind(self));
+            self.INFO.mediaVideos.addEventListener("loadstart",function(){});//支持直播功能
+            self.INFO.mediaAudios.addEventListener("loadstart",function(){});//支持直播功能
+            self.INFO.mediaVideos.addEventListener("play", self._mediaPlay.bind(self));
+            self.INFO.mediaAudios.addEventListener("play", self._mediaPlay.bind(self));
+
+            //发送练习
+            $wordcards.on('click', send, self, self._sendExercise);
+            //结束练习
+            //$wordcards.on('click',stop,self,stopExercise);
+
+            //拖拽功能
+            $wordcards.find(".wordcard_teach").draggable({
+                containment: ".full_screen",
+                cancel: ".card_middle .mediastage,.explain_list,.chinesegrid_main,a.btn_card_close"//修复在safari上，视频进度条无法拖动问题
+            });
+
+            $wordcards.on("click", self, function (ev) {
+                var self = ev.data;
+                self._changeFocusWordCard(self);
+            });
+
+        },
+        _unbindEvent: function () {
+
+            var self = this;
+            var $wordcards = self.$view;
+
+            var btn_closecard = '>a.btn_card_close';
+            var item_menu = ".menulist .item_menu";
+            var item_media = ".item_media";
+            var item_newword = ".item_menu.analysis";
+            var mediatabLi = '.card_media .mediatab .tab_media_cell';
+            var mediabtn_switch = '.analyse_stage .switch .btn_switch';
+            var mainboxbtn_switch = '.mainbox .switch .btn_switch';
+            var btn_voice = '.mainbox .btn_voice';
+            var send = '.btn_send';
+            var wordCanvas = ".wordwrap_mid>canvas";
+            var stop = self.$view.find('.btn_send.stop');
+            var tzg_switch_lefttop = ".tzg_switch_on._tzg_switch_lefttop,.tzg_switch_off._tzg_switch_lefttop";
+            var tzg_switch_center = ".tzg_switch_on._tzg_switch_center,.tzg_switch_off._tzg_switch_center";
+            var gridmode_option = "ul.gridmode_container>li.gridmode_option";
+            var write_tool = ".chinesegrid_writetool_list .write_tool";
+            var tzg_main_canvas = ".chinesegrid_main";
+            var xpc_type_btn = ".xpc_type_btn";
+            var btn_gridprom_tip = ".btn_gridprom_tip";
+            var box_btn = ".box_word_wrap .box_btn";
+
+            //关闭生字图卡
+            $wordcards.off("click", btn_closecard);
+            //点击菜单
+            $wordcards.off('click', item_menu);
+            //显示多媒体卡片
+            $wordcards.off('click', item_media);
+            //显示生字解析卡片
+            $wordcards.off('click', item_newword);
+            //多媒体切换
+            $wordcards.off('click', mediatabLi);
+            //生词解析切换
+            $wordcards.off('click', mediabtn_switch);
+            //笔顺速度切换
+            $wordcards.off('click', mainboxbtn_switch);
+            //点击田字格，开始描红
+            $wordcards.undelegate(wordCanvas, 'click');
+            //播放音频
+            $wordcards.off('click', btn_voice);
+
+            $wordcards.off("click", ".media_video .ctrl .btn_play");
+
+            $wordcards.off("click", ".media_video .ctrl .btn_fullscreen");
+
+            $wordcards.off("click",box_btn);
+
+            /*田字格工具*/
+            $wordcards.off("click", tzg_switch_lefttop);
+            $wordcards.off("click", tzg_switch_center);
+            $wordcards.off("mousedown touchstart", gridmode_option);
+            $wordcards.off("click", write_tool);
+            $wordcards.off("click", xpc_type_btn);
+            $wordcards.off("click", btn_gridprom_tip);
+            $wordcards.off("mousedown touchstart", tzg_main_canvas);
+            $wordcards.off("mousemove touchmove", tzg_main_canvas);
+            $wordcards.off("mouseup touchend mouseleave touchleave", tzg_main_canvas);
+            /*田字格工具*/
+
+            self.INFO.mediaVideos.removeEventListener("timeupdate", self._timeupdate.bind(self));
+            self.INFO.mediaVideos.removeEventListener("play", self._mediaPlay.bind(self));
+            self.INFO.mediaAudios.removeEventListener("play", self._mediaPlay.bind(self));
+
+            //发送练习
+            $wordcards.off('click', send);
+            //结束练习
+            //$wordcards.on('click',stop,self,stopExercise);
+
+            $wordcards.off("click", self);
+        },
+        _tzg_switch_lefttop: function (ev) {
+            var self = ev.data;
+            var $p = $(this).parent();
+            var $targetCanvas = $p.closest(".chinesegrid_show").find("._dync_canvas");
+            $p.toggleClass("on");
+            if ($p.is(".on")) {
+                $targetCanvas.removeClass("hide");
+            } else {
+                $targetCanvas.addClass("hide");
+            }
+            ev.stopPropagation();
+        },
+        _tzg_switch_center: function (ev) {
+            var self = ev.data;
+            var $wordcard = self.$view;
+            var $p = $(this).parent();
+            var $wordwrap_inner = $wordcard.find(".wordwrap_inner");
+            $p.toggleClass("on");
+            if ($p.is(".on")) {
+                $wordwrap_inner.removeClass("hide_dom");
+            } else {
+                $wordwrap_inner.addClass("hide_dom");
+            }
+            ev.stopPropagation();
+        },
+        _gridmode_option: function (ev) {
+            var self = ev.data;
+            var $parentUl = $(this).parent();
+            var lastIndex = parseInt($parentUl.attr("data-index"));
+            var $wordcard = self.$view;
+            var tzg_main_canvas = $wordcard.find(".tzg_main_canvas")[0];
+            if (!$(this).is(".on")) {
+                $(this).addClass("on").siblings(".gridmode_option").removeClass("on");
+            }
+            var freeBoardsCtr = self.util.freeBoardsCtr;
+
+            var $chinesegrid_write_gridnum_single = $wordcard.find(".chinesegrid_write_gridnum_single");
+            var $chinesegrid_write_gridnum_eight = $wordcard.find(".chinesegrid_write_gridnum_eight");
+            var index = $(this).index();
+            if(lastIndex != index){
+                freeBoardsCtr.panelWords["model" + lastIndex] = $.extend(true,[],freeBoardsCtr.curWord);
+                if (index == 0) {
+                    $chinesegrid_write_gridnum_single.addClass("hide_line");
+                    $chinesegrid_write_gridnum_single.removeClass("hide_dom");
+                    $chinesegrid_write_gridnum_eight.addClass("hide_dom");
+                    freeBoardsCtr.curWord = $.extend(true,[],freeBoardsCtr.panelWords.model0);
+                } else if (index == 1) {
+                    $chinesegrid_write_gridnum_single.removeClass("hide_line");
+                    $chinesegrid_write_gridnum_single.removeClass("hide_dom");
+                    $chinesegrid_write_gridnum_eight.addClass("hide_dom");
+                    freeBoardsCtr.curWord = $.extend(true,[],freeBoardsCtr.panelWords.model1);
+                } else if (index == 2) {
+                    $chinesegrid_write_gridnum_single.addClass("hide_dom");
+                    $chinesegrid_write_gridnum_eight.removeClass("hide_dom");
+                    freeBoardsCtr.curWord = $.extend(true,[],freeBoardsCtr.panelWords.model2);
+                }
+                $parentUl.attr("data-index",index);
+                self._reDraw(tzg_main_canvas);
+            }
+
+            ev.stopPropagation();
+        },
+        _write_tool: function (ev) {
+            var self = ev.data;
+            if(!$(this).is(".on")){
+                $(this).addClass("on").siblings().removeClass("on");
+                var index = $(this).index();
+                if(index == 0){
+                    self.util.freeBoardsCtr.isEraser = false;
+                    $(this).siblings(".write_tool").find(".xpc_type_container").addClass("hide_dom");
+                }else{
+                    $(this).find(".xpc_type_container").removeClass("hide_dom");
+                }
+            }else if($(this).index() == 1){
+                $(this).find(".xpc_type_container").removeClass("hide_dom");
+            }
+            ev.stopPropagation();
+        },
+        _selectClearType:function(ev){
+            var self = ev.data,
+                $wordcards = self.$view.find(".wordcard_teach");;
+            var index = $(this).index();
+            if(index == 0){
+                self.util.freeBoardsCtr.isEraser = false;
+                self.$view.find(".chinesegrid_pop").removeClass("hide_dom");
+            }else{
+                self.util.freeBoardsCtr.isEraser = true;
+            }
+            $(this).closest(".xpc_type_container").addClass("hide_dom");
+            $wordcards.draggable("disable");
+            ev.stopPropagation();
+        },
+        _confirmClear:function(ev){
+            var self = ev.data,
+                $wordcards = self.$view.find(".wordcard_teach");
+            if($(this).is(".btn_gridprom_tip.color_light")){
+                //清空所有笔画
+                self.util.freeBoardsCtr.curWord = [];
+                var canvas = self.$view.find(".tzg_main_canvas")[0];
+                var context = canvas.getContext("2d");
+                var w = canvas.width,h = canvas.height;
+                context.clearRect(0,0,w,h);
+            }
+            $(this).closest(".chinesegrid_pop").addClass("hide_dom");
+            $wordcards.find(".write_tool:eq(0)").addClass("on").siblings(".write_tool").removeClass("on");
+            $wordcards.draggable("enable");
+            ev.stopPropagation();
+        },
+        _windowToCanvas: function (canvas, x, y) {
+            var bbox = canvas.getBoundingClientRect();
+            return {
+                x: x - bbox.left * (canvas.width / bbox.width),
+                y: y - bbox.top * (canvas.height / bbox.height)
+            };
+        },
+        //判断是否是可擦除的笔迹，p为坐标点
+        _eraser: function (canvas, p) {
+            var freeBoardsCtr = this.util.freeBoardsCtr,
+                curWord = freeBoardsCtr.curWord,
+                pointsLen = 0,
+                d = freeBoardsCtr.checkDistance * 2,//点到线段的距离,初始为判定距离的两倍
+                isIn = false,
+                p1 = {x: 0, y: 0},
+                p2 = {x: 0, y: 0};
+
+            //锐角三角形某个点作垂线段的长度,p到p1p2的垂线段
+            function verticalLine(p,p1,p2){
+                var x = Math.sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y)),
+                    y = Math.sqrt((p.x - p2.x)*(p.x - p2.x) + (p.y - p2.y)*(p.y - p2.y)),
+                    z = Math.sqrt((p.x - p1.x)*(p.x - p1.x) + (p.y - p1.y)*(p.y - p1.y)),
+                    d = 0;
+
+                d = Math.sqrt(z*z - ((y*y -x*x -z*z))/(2*x) * ((y*y -x*x -z*z))/(2*x));
+
+                return d;
+            }
+
+            if (curWord.length != 0) {
+                if (freeBoardsCtr.clearRule === 'last') {//清除最后一笔
+                    curWord.splice(curWord.length - 1, 1);
+                } else {
+                    outerloop:
+                        for (var i = curWord.length; i > 0; i--) {
+                            pointsLen = curWord[i - 1].points.length;
+                            for (var m = 0, n = pointsLen; m < n - 1; m++) {
+                                //某个笔画上的路径
+                                p1.x = curWord[i - 1].points[m].x;
+                                p1.y = curWord[i - 1].points[m].y;
+                                p2.x = curWord[i - 1].points[m + 1].x;
+                                p2.y = curWord[i - 1].points[m + 1].y;
+                                //判断规则
+                                if ((p.x > p1.x && p.x < p2.x) || (p.x > p2.x && p.x < p1.x) ||
+                                    (p.y > p1.y && p.y < p2.y) || (p.y > p2.y && p.y < p1.y)) {
+                                    d = verticalLine(p, p1, p2);
+                                    if (d < freeBoardsCtr.checkDistance) {
+                                        console.log('识别到第 ' + i + ' 笔，第' + m + '个点，距离是 ' + d);
+                                        isIn = true;
+                                        curWord.splice(i - 1, 1);
+                                        break outerloop;
+                                    } else {
+                                        console.log('没有识别到，距离是 ' + d);
+                                    }
+
+                                    console.log('p:', p);
+                                    console.log('p1:', p1);
+                                    console.log('p2:', p2);
+                                }
+                            }
+                        }
+                }
+
+            }
+
+            return isIn;
+        },
+        //擦除笔迹，重绘
+        _reDraw: function (canvas) {
+            var context = canvas.getContext('2d'),
+                curWord = this.util.freeBoardsCtr.curWord,
+                pointsLen = 0;
+
+            context.clearRect(0, 0, canvas.width, canvas.height);
+
+            context.beginPath();
+            for(var i = 0,j = curWord.length;i < j;i++){
+                pointsLen = curWord[i].points.length;
+                context.moveTo(curWord[i].points[0].x,curWord[i].points[0].y);
+                for(var m = 0,n = pointsLen;m < n;m++){
+                    context.lineTo(curWord[i].points[m].x,curWord[i].points[m].y);
+                }
+            }
+            context.stroke();
+        },
+        _drawStart: function (ev) {
+            var self = ev.data;
+            var canvas = ev.target,//canvas = $(this).find(".tzg_main_canvas")[0]
+                ctx = canvas.getContext('2d'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                curWord = freeBoardsCtr.curWord,
+                longPressCtr = self.util.longPressCtr,
+                p, p1;
+
+            freeBoardsCtr.mouseDown = true;
+
+            p1 = {
+                "x": ev.type === 'mousedown' ? ev.pageX : ev.originalEvent.touches[0].pageX,
+                "y": ev.type === 'mousedown' ? ev.pageY : ev.originalEvent.touches[0].pageY
+            };
+
+            var $tzg_switch = self.$view.find("._tzg_switch_lefttop,._tzg_switch_center");
+            freeBoardsCtr.ignoreBound = [];
+            var tmp, l, t, r, b, w, h,border,padding;
+            $.each($tzg_switch,function(i,item){
+                tmp = $(item);
+                var offset = tmp.offset();
+                w = tmp.width(),h = tmp.height();
+                border = parseFloat(tmp.css("border")),padding = parseFloat(tmp.css("padding-left")) + parseFloat(tmp.css("padding-right"));
+                l = offset.left - border - 10;
+                t = offset.top - border - 10;
+                r = offset.left + w + padding + border + 10;
+                b = offset.top + h + border + 10;
+                freeBoardsCtr.ignoreBound[i] = {left:l,top:t,right:r,bottom:b};
+            });
+
+            p = self._windowToCanvas(canvas, p1.x, p1.y);
+
+            if (freeBoardsCtr.isEraser == true) {
+                if (self._eraser(canvas, p)) {
+                    self._reDraw(canvas);
+                }
+
+                //长按计时器
+                longPressCtr.timer = setTimeout(function () {
+                    longPressCtr.isLongPress = true;
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    curWord = [];
+                }, longPressCtr.pressDuration);
+            } else {
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                freeBoardsCtr.last = p;
+            }
+            //$(canvas).css("z-index",100);
+            ev.stopPropagation();
+        },
+        _drawing: function (ev) {
+            var self = ev.data;
+            var canvas = ev.target,//canvas = $(this).find(".tzg_main_canvas")[0]
+                ctx = canvas.getContext('2d'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                p,p1;
+
+
+            if(!freeBoardsCtr.mouseDown) return;
+
+            var point = {x:ev.clientX?ev.clientX:ev.originalEvent.touches[0].clientX,y:ev.clientY?ev.clientY:ev.originalEvent.touches[0].clientY};
+            var b;
+            for(var i= 0,len=freeBoardsCtr.ignoreBound.length; i<len; i++){
+                b = freeBoardsCtr.ignoreBound[i];
+                if(point.x >= b.left && point.x <= b.right && point.y >= b.top && point.y <= b.bottom){
+                    $(canvas).attr("converignore",true);
+                    freeBoardsCtr.mouseDown = false;
+                    freeBoardsCtr.last = null;
+                    return;
+                }
+            }
+
+            p1 = {
+                "x": ev.type === 'mousemove' ? ev.pageX : ev.originalEvent.touches[0].pageX,
+                "y": ev.type === 'mousemove' ? ev.pageY : ev.originalEvent.touches[0].pageY
+            };
+
+            p = self._windowToCanvas(canvas,p1.x,p1.y);
+
+
+            if(freeBoardsCtr.last != null){
+                if(freeBoardsCtr.isEraser == false){
+                    freeBoardsCtr.tempPath.push( freeBoardsCtr.last);
+                    ctx.lineWidth = freeBoardsCtr.lineWidth;
+                    ctx.strokeStyle = freeBoardsCtr.strokeStyle;
+                    ctx.lineTo(p.x,p.y);
+                    ctx.stroke();
+                    freeBoardsCtr.tempPath.push({x:p.x,y:p.y});
+                }
+            }
+            //$(canvas).css("z-index",100);
+            freeBoardsCtr.last = p;
+            ev.stopPropagation();
+        },
+        _drawEnd: function (ev) {
+            var self = ev.data;
+            var canvas = ev.target,//canvas = $(this).find(".tzg_main_canvas")[0]
+                board = canvas.getContext('2d'),
+                freeBoardsCtr = self.util.freeBoardsCtr,
+                longPressCtr = self.util.longPressCtr,
+                curWord = freeBoardsCtr.curWord;
+
+            var converignore = $(canvas).attr("converignore");
+            if(!!converignore){
+                $(canvas).removeAttr("converignore");
+            }
+
+            if(freeBoardsCtr.isEraser == true){
+                if(longPressCtr.timer){
+                    clearTimeout(longPressCtr.timer);
+                }
+                longPressCtr.isLongPress = false;
+            }else{
+                if(freeBoardsCtr.tempPath.length > 0){
+                    curWord.push({points:freeBoardsCtr.tempPath});
+                }
+            }
+
+            $(canvas).css("z-index",9);
+            self._reDraw(canvas,board);
+            freeBoardsCtr.tempPath = [];
+            freeBoardsCtr.mouseDown = false;
+            freeBoardsCtr.last = null;
+            freeBoardsCtr.curIndex = '';
+            ev.stopPropagation();
+        },
+        _timeupdate: function (self) {
+            return function () {
+                var currentTime = self.INFO.mediaVideos.currentTime;//获取当前播放时间
+                var duration = self.INFO.mediaVideos.duration;//获取当前播放时间
+                var per = (currentTime * 100) / duration;
+                self.$view.find(".media_video .ctrl .bar").css("width", per + "%");
+            }
+        },
+        _mediaPlay: function () {
+            this.$dispatchEvent(CONSTANTS.event_PlayingMedia, PresenterEventType.IC_PLAYER_EVENT, {identify: this.INFO.identify});
+        },
+        _onAutoTrace:function(){
+
+            var self = this;
+
+            var mv = self.INFO.mViewModel;
+            var timeout = self.INFO.mStrokeTimeout;
+            var strokeSpeed = mv.strokeSpeed();
+            self._callWordTrace(self, "stopAutoTrace");
+            self._callWordTrace(self, "reset");
+            self._callWordTrace(self, "setSpeed", strokeSpeed==0?"normal":"slow");
+            var promise = self._callWordTrace(self, "startAutoTrace");
+            mv.isStroking(true);//状态切为正在描红
+            mv.hasPreStep(false);
+            mv.hasNextStep(false);
+            mv.isNextSteping(false);
+
+            if(timeout){
+                clearTimeout(timeout);
+            }
+            if(promise && promise.done){
+                promise.done(function(){
+                    self.INFO.mStrokeTimeout = setTimeout(function(){
+                        self._resetStroke();
+                    },3000);
+                });
+            }
+        },
+        _autoTrace: function (ev) {
+            var self = ev.data;
+            self._onAutoTrace();
+        },
+        _sendExercise: function (ev) {
+            var self = ev.data;
+            self._changeFocusWordCard(self);
+            var sfl = self.INFO.mstrokeFileUrl;
+            self.$dispatchEvent(CONSTANTS.event_SwitchWordCardStatus, PresenterEventType.IC_PLAYER_EVENT, {
+                identify: self.INFO.identify,
+                status: "Practise",
+                cardData: self.INFO.mStroke,
+                strokeFileUrl: sfl
+            });
+        },
+        _changeFocusWordCard: function (self) {//点击生字图卡切换焦点
+            self.$dispatchEvent(CONSTANTS.event_ActiveWordCard, PresenterEventType.IC_PLAYER_EVENT, {identify: self.INFO.identify});
+        },
+        _wordcardClose: function (ev) {//关闭生字图卡
+            var self = ev.data;
+            var $wordcard = self.$view;
+            var option = self.INFO.mOption;
+            if (option.isExercising == true) {
+                //alert("结束练习后才能关闭生字图卡");
+                if (window.ClassroomUtils && window.ClassroomUtils.showTipMessageBox) {
+                    ClassroomUtils.showTipMessageBox("结束练习后才能关闭生字图卡");
+                }
+                return;
+            }
+
+            self.$dispatchEvent(CONSTANTS.event_ShowCardClose, PresenterEventType.IC_PLAYER_EVENT,
+                {identify: self.INFO.identify, scene: self.INFO.mData["scene"]});
+            self.getService().stopMedia();
+            $wordcard.find(".cardmain").removeClass("on");
+            ev.stopPropagation();
+        },
+        _callWordTrace: function (self, method, arg) {
+            var wordUtil = self.INFO.mWordTraceUtil;
+            var curProgress;
+            if (wordUtil && wordUtil[method]) {
+                if (method == "startAutoTrace" && wordUtil.getTraceProgress) {
+                    curProgress = wordUtil.getTraceProgress();
+                    if (curProgress && curProgress.isInAnimation) {//
+                        wordUtil["stopAutoTrace"]();
+                    }
+                } else if (method == "stopAutoTrace") {
+                    curProgress = wordUtil.getTraceProgress();
+                    if (curProgress && !curProgress.isInAnimation) {//
+                        return;
+                    }
+                }
+                return wordUtil[method](arg);
+            }
+        },
+        _clickMenu: function (ev) {//点击菜单
+            var self = ev.data;
+            var id = self.INFO.id;
+            var $wordcard = self.$view.find(".wordcard_teach");
+            var isChineseGridShowing = $wordcard.find(".chinesegrid").attr("showing");
+            var $pinyin = $wordcard.find("p.pinyin .word");
+            var spellAssets = self.INFO.mRelations.spellAssets[self.INFO.mAssetIndex];
+            var pinyin = spellAssets.target.title;
+
+            self._changeFocusWordCard(self);
+
+            if(self.INFO.mStrokeTimeout){
+                clearTimeout(self.INFO.mStrokeTimeout);
+            }
+
+            if ($(this).is(".item_menu.analysis") || $(this).is(".item_media")) {
+                return;
+            }
+
+            if ($(this).is('.tianzige')) {//田字格工具
+                $(this).toggleClass("on");
+                //与多媒体和生字解析互斥
+                if ($(this).is(".on")) {
+                    $(this).siblings(".analysis,.multi-media").removeClass("on");
+                    var $tzg_main_canvas = $wordcard.find(".chinesegrid_main");
+                    $tzg_main_canvas.find(">canvas").attr({width:$tzg_main_canvas.width(),height:$tzg_main_canvas.height()});
+                    console.log("$tzg_main_canvas",$tzg_main_canvas.width(),$tzg_main_canvas.height());
+                }
+                self._toggleChineseGrid(self);
+            } else {
+                $(this).addClass("on").siblings(".item_menu:not(.analysis,.multi-media)").removeClass("on");
+                var $strokeOrder = $wordcard.find('.footwrap.stroke-order');//笔顺
+                var $radicals = $wordcard.find('.footwrap.radicals');//部首
+                var $shapeStructure = $wordcard.find(".shape-structure");//字体结构
+                var $shapeStructureWord = $wordcard.find("div.shape-structure");//
+                var $sequencer = $wordcard.find('.sequencer');
+                if ($(this).is('.stroke-order')) {//笔顺
+                    $strokeOrder.removeClass("hide_dom");
+                    $strokeOrder.siblings('.footwrap').addClass('hide_dom');
+                    self._onAutoTrace();
+                    self._toggleChineseGrid(self, true);
+                } else if ($(this).is('.radicals')) {//部首
+                    self._callWordTrace(self, "stopAutoTrace");
+                    $radicals.removeClass("hide_dom");
+                    $radicals.siblings('.footwrap').addClass('hide_dom');
+                    self._toggleChineseGrid(self, true);
+                    self._callWordTrace(self, "showRadical");
+                } else if ($(this).is('.shape-structure')) {//字形结构
+                    self._callWordTrace(self, "stopAutoTrace");
+                    $shapeStructure.removeClass("hide_dom");
+                    $shapeStructure.siblings('.footwrap').addClass('hide_dom');
+                    self._callWordTrace(self, "showStructure");
+                    self._toggleChineseGrid(self, true);
+                } else if ($(this).is('.sequencer')) {//音序
+                    if (spellAssets) {
+                        $pinyin.empty();
+                        var spellSeq = spellAssets.spellSeq;
+                        var html = "<font color='red'>(" + spellSeq + ")</font>" + pinyin;
+                        $pinyin.append(html);
+                    }
+                    $strokeOrder.addClass("hide_dom");
+                    $radicals.addClass("hide_dom");
+                    $shapeStructureWord.addClass("hide_dom");
+                    $sequencer.removeClass("hide_dom");
+                    $sequencer.siblings('.footwrap').addClass('hide_dom');
+                    self._toggleChineseGrid(self, true);
+                }
+            }
+
+
+            if (!$(this).is('.sequencer')) {
+                $pinyin.empty();
+                $pinyin.text(pinyin).css({"color": "black"});
+            }
+            if (!$(this).is('.stroke-order') && !$(this).is('.radicals') && !$(this).is('.shape-structure')) {
+                self._callWordTrace(self, "stopAutoTrace");
+            }
+            $strokeOrder = null;
+            $radicals = null;
+            $shapeStructure = null;
+            ev.stopPropagation();
+        },
+        _toggleChineseGrid: function (self, forceClose) {
+            var option = self.INFO.mOption;
+            var $wordcard = self.$view.find(".wordcard_teach");
+            var $jiexiContainer = $wordcard.find(".wordcard_jiexi_container");
+            var $cardmain = $wordcard.find(".cardmain");
+            var $chinesegrid = $wordcard.find(".chinesegrid");
+            var tzg_main_canvas = $wordcard.find(".chinesegrid_main .tzg_main_canvas");
+            var canvas = tzg_main_canvas[0];
+            var context = canvas.getContext("2d");
+            var w = canvas.width,h = canvas.height;
+            if (forceClose == true) {
+                if ($chinesegrid.attr("showing")) {
+                    $jiexiContainer.show();
+                    $chinesegrid.removeAttr("showing").hide();
+                    $cardmain.removeClass("on");
+                    self._adjustSelfPosition(self);
+                    //清空canvas
+                    context.clearRect(0,0,w,h);
+                }
+            } else {
+                if (!$chinesegrid.attr("showing")) {
+                    $jiexiContainer.hide();
+                    $chinesegrid.attr("showing", true).show();
+                    $cardmain.addClass("on");
+                    //恢复canvas
+                    var freeBoardsCtr = self.util.freeBoardsCtr;
+                    context.lineCap = 'round';
+                    context.lineJoin = 'round';
+                    context.lineWidth = freeBoardsCtr.lineWidth;
+                    context.strokeStyle = freeBoardsCtr.strokeStyle;
+                    self._reDraw(canvas);
+                } else {
+                    $jiexiContainer.show();
+                    $chinesegrid.removeAttr("showing").hide();
+                    $cardmain.removeClass("on");
+                    //清空canvas
+                    context.clearRect(0,0,w,h);
+                }
+                self._adjustSelfPosition(self);
+            }
+        },
+        _adjustSelfPosition: function (self) {
+            var option = self.INFO.mOption;
+            var $wordcard = self.$view.find(".wordcard_teach");
+            setTimeout(function () {
+                var w = $wordcard.width() + parseInt($wordcard.css("padding-right"));
+                var left = (option.screenWidth - w) / 2;
+                $wordcard.animate({left: left + "px"}, 150);
+                $wordcard = null;
+            }, 350);
+        },
+        _toggleMediaPanel: function (ev) {//显示多媒体卡片
+            var self = ev.data;
+            var $wordcard = self.$view.find(".wordcard_teach");
+            var option = self.INFO.mOption;
+            option.width = $wordcard.width();
+            var id = self.INFO.id;
+
+            var $cardmain = $wordcard.find(".cardmain");//外层
+            var $card_analyse = $wordcard.find(".cardmain .card_analyse");//解析
+            var $card_media = $wordcard.find(".cardmain .card_media");//对媒体
+            var $item_newword = $wordcard.find(".cardmenu .item_menu.analysis");//解析菜单
+            var $chineseGrid = $wordcard.find(".cardmenu .item_menu.tianzige");//田字格
+
+            self._toggleChineseGrid(self, true);
+            self._changeFocusWordCard(self);
+            $(this).toggleClass("on");//切换自己开关
+            $item_newword.removeClass("on");
+            $chineseGrid.removeClass("on");
+            if ($(this).is(".on")) {//若打开
+                $cardmain.addClass("on");
+                $card_analyse.addClass("hide_dom");//隐藏解析
+                $card_media.removeClass("hide_dom");//显示对媒体
+            } else {
+                $cardmain.removeClass("on");
+                $card_analyse.addClass("hide_dom");//隐藏解析
+                $card_media.addClass("hide_dom");//隐藏对媒体
+                self.INFO.mediaVideos.pause();
+            }
+
+            var $strokeOrder = $wordcard.find('li.item_menu.stroke-order');//笔顺
+            var $radicals = $wordcard.find('li.item_menu.radicals');//部首
+            var $shapeStructure = $wordcard.find("li.item_menu.shape-structure");//字体结构
+            self._callWordTrace(self, "stopAutoTrace");
+            if ($strokeOrder.is(".on")) {
+                //self._callWordTrace(self, "stopAutoTrace");
+            } else if ($radicals.is(".on")) {
+                self._callWordTrace(self, "showRadical");
+            } else if ($shapeStructure.is(".on")) {
+                self._callWordTrace(self, "showStructure");
+            }
+
+
+            self._adjustSelfPosition(self);
+
+            $cardmain = null;
+            $card_analyse = null;
+            $item_newword = null;
+            $card_media = null;
+            ev.stopPropagation();
+        },
+        _showWordAnalysis: function (ev) {//显示生字解析卡片
+            var self = ev.data;
+            var $wordcard = self.$view.find(".wordcard_teach");
+            var option = self.INFO.mOption;
+            option.width = $wordcard.width();
+            var id = self.INFO.id;
+
+            var $cardmain = $wordcard.find(".cardmain");//外层
+            var $card_analyse = $wordcard.find(".cardmain .card_analyse");//解析
+            var $card_media = $wordcard.find(".cardmain .card_media");//对媒体
+            var $item_media = $wordcard.find(".cardmenu .item_menu.item_media");//对媒体菜单
+            var $chineseGrid = $wordcard.find(".cardmenu .item_menu.tianzige");//田字格
+            var $explainList = $cardmain.find(".explain_list");
+
+            self._toggleChineseGrid(self, true);
+            self._changeFocusWordCard(self);
+            $(this).toggleClass("on");//切换自己开关
+            $item_media.removeClass("on");
+            $chineseGrid.removeClass("on");
+            if ($(this).is(".on")) {//若打开
+                $cardmain.addClass("on");
+                $card_media.addClass("hide_dom");//隐藏对媒体
+                $card_analyse.removeClass("hide_dom");//显示解析
+                $explainList.scrollTop(0);
+                self.INFO.mediaVideos.pause();
+            } else {
+                $cardmain.removeClass("on");
+                $card_analyse.addClass("hide_dom");//隐藏解析
+                $card_media.addClass("hide_dom");//隐藏对媒体
+            }
+
+            var $strokeOrder = $wordcard.find('li.item_menu.stroke-order');//笔顺
+            var $radicals = $wordcard.find('li.item_menu.radicals');//部首
+            var $shapeStructure = $wordcard.find("li.item_menu.shape-structure");//字体结构
+            self._callWordTrace(self, "stopAutoTrace");
+            if ($strokeOrder.is(".on")) {
+                //self._callWordTrace(self, "stopAutoTrace");
+            } else if ($radicals.is(".on")) {
+                self._callWordTrace(self, "showRadical");
+            } else if ($shapeStructure.is(".on")) {
+                self._callWordTrace(self, "showStructure");
+            }
+
+            self._toggleChineseGrid(self, true);
+            self._adjustSelfPosition(self);
+
+            $cardmain = null;
+            $card_analyse = null;
+            $item_media = null;
+            $card_media = null;
+            ev.stopPropagation();
+        },
+        _toggleDescription:function (ev) {
+            var context = ev.data;
+            var $parent = $(this).parent();
+            var closed = $parent.is(".close");
+            context._onTogglePicDescription($parent,closed);
+        },
+        _onTogglePicDescription: function($view,open){
+            var box_height = $view.outerHeight();
+            if(open){//处于关闭状态，打开
+                $view.removeClass("close");
+                $view.css("bottom","0");
+            }else{
+                $view.addClass("close");
+                $view.css("bottom",-box_height+"px");
+            }
+        },
+        _scrollAnalyse: function (ev) {
+            var scrollTop = this.scrollTop;
+            switch (ev.type) {
+                case "mousedown":
+                case "touchstart":
+                    var clientY = ev.clientY ? ev.clientY : ev.originalEvent.changedTouches[0].clientY;
+                    $(this).attr("startY", clientY);
+                    $(this).attr("startTop", scrollTop);
+                    $(this).attr("dragging", true);
+                    break;
+                case "mousemove":
+                case "touchmove":
+                case "mouseup":
+                case "touchend":
+                case "mouseout":
+                case "touchcancel":
+                    var dragging = $(this).attr("dragging");
+                    if (dragging == "true") {
+                        var startY = parseFloat($(this).attr("startY"));
+                        var startTop = parseFloat($(this).attr("startTop"));
+                        var y = ev.clientY ? ev.clientY : ev.originalEvent.changedTouches[0].clientY;
+                        ;
+                        var distance = y - startY;
+                        var newTop = startTop - distance;
+                        if (newTop < 0) {
+                            newTop = 0;
+                        }
+                        this.scrollTop = newTop;
+                    }
+                    if (ev.type == "mouseup" || ev.type == "touchend" || ev.type == "mouseout" || ev.type == "touchcancel") {
+                        $(this).removeAttr("dragging");
+                    }
+                    break;
+            }
+        },
+        _swipeImg: function (ev) {
+            var length = $(this).children().length;
+            var itemWidth = parseFloat($($(this).children().get(0)).css("width"));
+            switch (ev.type) {
+                case "mousedown":
+                case "touchstart":
+                    var dataIndex = $(this).attr("data-index");
+                    if (dataIndex == undefined) {
+                        $(this).attr("data-index", 0);
+                    }
+                    var l = parseFloat($(this).css("left"));
+                    var clientX = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+                    $(this).attr("startX", clientX);
+                    $(this).attr("startLeft", l);
+                    $(this).attr("dragging", true);
+                    break;
+                case "mousemove":
+                case "touchmove":
+                    var dragging = $(this).attr("dragging");
+                    if (dragging == "true") {
+                        var l = parseFloat($(this).attr("startLeft"));
+                        var startX = parseFloat($(this).attr("startX"));
+                        var x = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+                        ;
+                        var distance = x - startX;
+                        var newLeft = l + distance;
+                        if (newLeft > 0) {
+                            newLeft = 0;
+                        } else if (newLeft < -((length - 1) * itemWidth)) {
+                            newLeft = -(length - 1) * itemWidth;
+                        }
+                        $(this).css("left", newLeft + "px");
+                    }
+                    break;
+                case "mouseup":
+                case "touchend":
+                case "mouseout":
+                case "touchcancel":
+                    var context = ev.data;
+                    var dragging = $(this).attr("dragging");
+                    if (dragging == "true") {
+                        var l = parseFloat($(this).css("left"));
+                        var startX = parseFloat($(this).attr("startX"));
+                        var x = ev.clientX ? ev.clientX : ev.originalEvent.changedTouches[0].clientX;
+                        ;
+                        var distance = x - startX;
+                        var newLeft = l + distance;
+
+                        var index = parseInt($(this).attr("data-index"));
+                        var toIndex = index;
+                        if (distance >= (itemWidth / 3)) {
+                            toIndex = index - 1;
+                        } else if (distance <= -(itemWidth / 3)) {
+                            toIndex = index + 1;
+                        }
+                        if (newLeft > 0) {
+                            toIndex = 0;
+                        } else if (newLeft < -((length - 1) * itemWidth)) {
+                            toIndex = length - 1;
+                        }
+                        $(this).attr("data-index", toIndex);
+                        newLeft = -(toIndex) * itemWidth;
+                        $(this).animate({"left": newLeft + "px"}, 200);
+                        var $targetA = $(this).closest(".media_pic").find(".box_flicking>a:eq(" + toIndex + ")");
+                        $targetA.addClass("on").siblings("a").removeClass("on");
+
+                        context.INFO.mViewModel.pictureDescription(context.INFO.mPictureDescriptions[toIndex]?context.INFO.mPictureDescriptions[toIndex]:"");
+                        context._onTogglePicDescription(context.$view.find(".media_pic .box_word_wrap"),true);
+                    }
+                    $(this).removeAttr("dragging");
+                    break;
+            }
+            ev.stopPropagation();
+            ev.preventDefault();
+        },
+        _mediaTab: function (ev) {//多媒体切换
+            var self = ev.data;
+            var index = $(this).index();
+            var $tab = $(this);
+            $tab.closest('.card_media').find('.mediastage .mediabox:eq(' + index + ')').removeClass('hide_dom').siblings().addClass('hide_dom');
+            $tab.addClass('on').siblings().removeClass('on');
+
+            self._changeFocusWordCard(self);
+            if ($tab.find("a").is(".tab_media_video")) {
+                self.INFO.mediaVideos.play();
+            } else {
+                self.INFO.mediaVideos.pause();
+            }
+            if ($tab.find("a").is(".tab_media_radio")) {
+                self.INFO.mediaAudios.play();
+            } else {
+                self.INFO.mediaAudios.pause();
+            }
+            ev.stopPropagation();
+        },
+        _analysisTab: function (ev) {//生词解析切换
+            var self = ev.data;
+            self._changeFocusWordCard(self);
+            var index = $(this).index();
+            $(this).addClass('on').siblings().removeClass('on');
+            var explain_list;
+            if ($(this).is("._inclass") && $(this).is(".on")) {
+                explain_list = $(this).closest(".analyse_stage").find(".explain_list._inclass");
+                explain_list.removeClass("hide_dom");
+                explain_list.siblings(".explain_list").addClass("hide_dom");
+            } else if ($(this).is("._extend") && $(this).is(".on")) {
+                explain_list = $(this).closest(".analyse_stage").find(".explain_list._extend");
+                explain_list.removeClass("hide_dom");
+                explain_list.siblings(".explain_list").addClass("hide_dom");
+            }
+            explain_list = null;
+            ev.stopPropagation();
+        },
+        _changeStrokeMode: function(ev){//描红模式
+            var self = ev.data;
+            var mv = self.INFO.mViewModel;
+            var $this = $(this);
+            var strokeMode = mv.strokeMode();
+            var timeout = self.INFO.mStrokeTimeout;
+
+            if(($this.is("._js_switch_continue") && strokeMode == 0) || ($this.is("._js_switch_break") &&  strokeMode == 1))
+                return;
+
+            mv.isStroking(false);
+            if($this.is("._js_switch_continue") && strokeMode == 1){//切换到连续模式
+                if(mv.isNextSteping()){
+                    return;
+                }
+                mv.strokeMode(0);
+            }else if($this.is("._js_switch_break") && strokeMode == 0){//切换到分布模式
+                mv.strokeMode(1);
+                mv.hasNextStep(true);
+                mv.hasPreStep(false);
+                self._callWordTrace(self, "setSpeed", "normal");
+                self._callWordTrace(self, "startSingleStepTrace");
+            }
+            self._callWordTrace(self, "stopAutoTrace");
+            self._callWordTrace(self, "reset");
+            if(timeout){
+                clearTimeout(timeout);
+            }
+
+            ev.stopPropagation();
+        },
+        _strokeStep:function(ev){//上一步或下一步
+            var self = ev.data;
+            var mv = self.INFO.mViewModel;
+            var isNextSteping = mv.isNextSteping();
+            var timeout = self.INFO.mStrokeTimeout;
+            var $this = $(this);
+
+            if(isNextSteping == true){
+                return;
+            }
+
+            if($this.is(".pre") && mv.hasPreStep()){
+                var info = self._callWordTrace(self, "preStep");
+                if(info){
+                    mv.hasPreStep(info.currentStep == 0?false:true);
+                    mv.hasNextStep(info.currentStep < info.totalStep?true:false);
+                }
+                if(timeout){
+                    clearTimeout(timeout);
+                }
+            }else if($this.is(".next") && mv.hasNextStep()){//点击下一步
+                var promise = self._callWordTrace(self, "nextStep");
+                mv.isNextSteping(true);
+                if(promise && promise.done){
+                    promise.done(function(info){
+                        if(info){
+                            mv.isNextSteping(false);
+                            mv.hasNextStep(info.currentStep >= info.totalStep?false:true);
+                            mv.hasPreStep(true);
+                            if(!mv.hasNextStep()){
+                                if(self.INFO.mStrokeTimeout){
+                                    clearTimeout(timeout);
+                                }
+                                self.INFO.mStrokeTimeout = setTimeout(function(){
+                                    self._resetStroke();
+                                },3000);
+                            }
+                        }
+                    });
+                }
+            }
+        },
+        _changeSpeed: function (ev) {//笔顺速度切换
+            var self = ev.data;
+            var mv = self.INFO.mViewModel;
+            var timeout = self.INFO.mStrokeTimeout;
+            var $this = $(this);
+
+            self._changeFocusWordCard(self);
+
+            if ($this.is('.speed-normal')) {//若点击的是正常
+                mv.strokeSpeed(0);
+                self._callWordTrace(self, "setSpeed", "normal");
+            } else if ($this.is('.speed-slow')) {//若点击的是慢速
+                mv.strokeSpeed(1);
+                self._callWordTrace(self, "setSpeed", "slow");
+            }
+            self._callWordTrace(self, "stopAutoTrace");
+            self._callWordTrace(self, "reset");
+            var promise = self._callWordTrace(self, "startAutoTrace");
+            mv.isStroking(true);//状态切为正在描红
+
+            if(timeout){
+                clearTimeout(timeout);
+            }
+            if(promise && promise.done){
+                promise.done(function(){
+                    self.INFO.mStrokeTimeout = setTimeout(function(){
+                        self._resetStroke();
+                    },3000);
+                });
+            }
+            $this = null;
+
+            ev.stopPropagation();
+        },
+        _resetStroke:function(){//重置描红区
+            var self = this;
+            var mv = self.INFO.mViewModel;
+            if(mv.strokeMode() == 1){
+                self._callWordTrace(self, "startSingleStepTrace");
+            }
+            self._callWordTrace(self, "stopAutoTrace");
+            self._callWordTrace(self, "reset");
+            mv.isStroking(false);
+            mv.hasNextStep(true);
+            mv.hasPreStep(false);
+            self.INFO.mStrokeTimeout = null;
+        },
+        _resetWordCard: function (url) {
+            var self = this;
+            var def = $.Deferred();
+            self.INFO.mResourceReady = false;
+            $.getJSON(url, function (relations) {
+                if (relations) {
+                    self.INFO.mRelations = relations;
+                    self.INFO.wordcardInstance = null;
+                    self.INFO.mResourceReady = true;
+                    def.resolve(relations);
+                }
+            });
+            return def;
+        },
+        _showWordCard: function (relations) {
+            var self = this;
+            if (self.INFO.mViewReady && self.INFO.mResourceReady) {
+                self._bindModelView(self, relations);
+                self._bindEvent();
+            }
+        },
+        _getResourcePath: function (path,self) {
+            var refPath = "#{ref-path}".replace("#", "$");
+            var result;
+            if(this.INFO.mData.resourceRoot.startsWith("http://")){//在线
+                var live_ref_path = "http://cs.101.com/v0.1/static";
+                result = path.replace(refPath, live_ref_path);
+            }else{//离线
+                result = path.replace(refPath, self.INFO.mData.resourceRoot + "/_ref");
+            }
+            return result;
+        },
+        _bindModelView: function (self, relations) {
+            var $view = self.$view;
+            var option = self.INFO.mOption;
+            var viewModel = self.INFO.mViewModel;
+            var location, refPath;
+            var id = self.INFO.id;
+            $view.find(".menulist .item_menu.stroke-order").addClass("on").siblings(".item_menu").removeClass("on");
+            $view.find(".mainbox .footwrap.stroke-order").removeClass("hide_dom").siblings(".footwrap").addClass("hide_domw ");
+            var $media_radioContainer = $view.find('.media_radio');
+            var $mediaRadioAudio = $view.find('.media_radio audio');
+            var $mediaVideoVideo = $view.find('.media_video video');
+            option.canvasWidth = $view.find('.wordwrap_mid').width();
+            option.canvasHeight = $view.find('.wordwrap_mid').height();
+            var assetIndex = self.INFO.mAssetIndex;
+
+            self.INFO.mediaAudios = $mediaRadioAudio[0];
+            self.INFO.mediaVideos = $mediaVideoVideo[0];
+            if (self.INFO.mData && self.INFO.mData["scene"] == "Preview") {
+                //备课中预览,没有发题; 没有关闭
+                $view.find("a.btn_send").addClass("hide_dom");
+                $view.find("a.btn_card_close").addClass("hide_dom");
+            } else if (self.INFO.mData && (self.INFO.mData["scene"] == "FullScreenPreview" || "ChineseCharacterDictation" === self.INFO.mData["stage"])) {
+                //全屏预览, 没有发题
+                $view.find("a.btn_send").addClass("hide_dom");
+            }
+            var $btnVoice = $view.find(".mainbox .btn_voice");
+            var $pinyin = $view.find('.pinyinwrap .pinyin .word');
+            var $strokeCount = $view.find(".cardmain .stroke-order .introtxt em em");
+            var $radicals = $view.find(".cardmain .radicals .introtxt em em");
+            var $structure = $view.find(".cardmain .shape-structure .introtxt em em");
+            var picUrl, $picLi, $media_pic_content, $box_flicking, $a, tmpPicLi = "<li class='media_pic'><img></li>", tmpA = "<a ></a>";
+            var $picPanel = $view.find(".card_middle .mediastage .media_pic");
+            var $audioPanel = $view.find(".card_middle .mediastage .media_radio");
+            var $videoPanel = $view.find(".card_middle .mediastage .media_video");
+            var $picLi = $view.find(".card_middle .tab_media.icon_pic").parent();
+            var $audioLi = $view.find(".card_middle .tab_media.icon_radio").parent();
+            var $videoLi = $view.find(".card_middle .tab_media.icon_video").parent();
+            $box_flicking = $view.find('.mediastage .media_pic .box_flicking');
+            $media_pic_content = $view.find('.mediastage ul.media_pic_content');
+            var $exlpain_word = $view.find(".card_analyse .explain_list._extend .wqroupcentence");
+            var $antisense = $view.find(".card_analyse .explain_list._extend .antisense").empty();
+            var $sentence = $view.find(".card_analyse .explain_list._inclass .exlpain_word.sentence");
+            var $simparaphrasewords = $view.find(".card_analyse .explain_list._extend .simparaphrasewords");
+            var $explanparaphrase = $view.find(".card_analyse .explain_list._inclass .paraphrase");
+            var $extendparaphrase = $view.find(".card_analyse .explain_list._extend .paraphrase");
+            var $inclassWordsgroups = $view.find(".card_analyse .explain_list._inclass .wordsgroups");
+            var $analyseSwitchInclass = $view.find(".card_analyse .analyse_stage a.btn_switch._inclass");
+            var $analyseSwitchExtend = $view.find(".card_analyse .analyse_stage a.btn_switch._extend");
+            var $analyseContentInclass = $view.find(".card_analyse .analyse_stage div.explain_list._inclass");
+            var $analyseContentExtend = $view.find(".card_analyse .analyse_stage div.explain_list._extend");
+            var $explain_list = $view.find(".card_analyse .explain_list");
+            var $write_tool0 = $view.find(".chinesegrid_writetool_list .write_tool:eq(0)");
+            var $gridmode_option0 = $view.find("li.gridmode_option:eq(0)");
+            var $wordwrap_inner = $view.find(".wordwrap_inner");
+            var $gridhelp_line = $view.find(".tzg_switch.gridhelp_line");
+            var $gridword_show = $view.find(".tzg_switch.gridword_show");
+            var $chinesegrid_write_gridnum_single = $view.find(".chinesegrid_write_gridnum_single");
+            var $chinesegrid_write_gridnum_eight = $view.find(".chinesegrid_write_gridnum_eight");
+            var $dync_canvas = $view.find("._dync_canvas");
+            var $xpc_type_container = $view.find(".xpc_type_container");
+            var $chinesegrid_pop = $view.find(".chinesegrid_pop");
+            var $gridmode_container = $view.find(".gridmode_container");
+
+            var $mode_continue = $view.find("._js_mode_continue");
+            var $mode_break = $view.find("._js_mode_break");
+            var $continue_btn = $mode_continue.find(".btn_radius_wh");
+            var $break_btn = $mode_break.find(".btn_radius_wh");
+
+            var $box_word_wrap = $view.find(".media_pic .box_word_wrap");
+
+            //重置
+            $box_word_wrap.removeClass("close").css("bottom","0");
+            $mode_continue.removeClass("hide_dom");
+            $mode_break.addClass("hide_dom");
+            $($continue_btn.get(0)).removeClass("on");
+            $($continue_btn.get(1)).removeClass("on");
+            $($break_btn.get(0)).removeClass("on");
+            $($break_btn.get(1)).removeClass("on");
+
+            $gridmode_container.attr("data-index",0);
+            $xpc_type_container.addClass("hide_dom");
+            $chinesegrid_pop.addClass("hide_dom");
+            $write_tool0.addClass("on").siblings().removeClass("on");
+            $gridmode_option0.addClass("on").siblings(".gridmode_option").removeClass("on");
+            self.util.freeBoardsCtr["isEraser"] = false;
+            $wordwrap_inner.addClass("hide_dom");
+            $gridhelp_line.removeClass("on");
+            $gridword_show.addClass("on");
+            $dync_canvas.removeClass("hide");
+            $chinesegrid_write_gridnum_single.addClass("hide_line").removeClass("hide_dom");
+            $chinesegrid_write_gridnum_eight.addClass("hide_dom");
+            $pinyin.empty();
+            $strokeCount.empty();
+            $radicals.empty();
+            $structure.empty();
+            $mediaRadioAudio.removeAttr("src");
+            $mediaVideoVideo.removeAttr("src");
+            $media_pic_content.empty().css("left","0");
+            $box_flicking.empty();
+            $picPanel.addClass("hide_dom");
+            $picLi.removeClass("hide_dom");
+            $audioPanel.addClass("hide_dom");
+            $audioLi.removeClass("hide_dom");
+            $videoPanel.addClass("hide_dom");
+            $videoLi.removeClass("hide_dom");
+            $exlpain_word.empty();
+            $antisense.empty();
+            $sentence.empty();
+            $simparaphrasewords.empty();
+            $explanparaphrase.empty();
+            $extendparaphrase.empty();
+            $inclassWordsgroups.empty();
+            $analyseSwitchInclass.addClass("on");
+            $analyseSwitchExtend.removeClass("on");
+            $analyseContentInclass.removeClass("hide_dom");
+            $analyseContentExtend.addClass("hide_dom");
+            $explain_list.scrollTop(0);
+            self.INFO.mStrokeTimeout = null;
+
+            if(!this.INFO.mKoBinded) {//初次绑定
+                ko.applyBindings(viewModel, $view[0]);
+                this.INFO.mKoBinded = true;
+            }else{
+                viewModel.isStroking(false);//是否正在描红
+                viewModel.strokeMode(0);//0：连续模式，1：分布模式
+                viewModel.strokeSpeed(0);//0:正常，1：慢速
+                viewModel.hasPreStep(false);//是否有下一步
+                viewModel.hasNextStep(true);//是否有下一步
+                viewModel.isNextSteping(false);
+                viewModel.pictureDescription("");//图片描述文本
+            }
+
+            if (relations && relations.wordStrokeAsset && relations.wordStrokeAsset.target && relations.wordStrokeAsset.target.location) {
+                location = relations.wordStrokeAsset.target.location;
+                var strokeUrl = self._getResourcePath(location,self);
+                self.INFO.mstrokeFileUrl = strokeUrl;
+                $.getJSON(strokeUrl, function (obj) {
+                    obj["pinyin"] = relations.spellAssets[assetIndex].target.title;
+                    self.INFO.mStroke = obj;
+                    var cloneWord = $.extend(true, {}, obj);
+                    var cloneWord1 = $.extend(true, {}, obj);
+                    self.INFO.mWordTraceUtil = new ChineseWordTracing({
+                        mode: "display",
+                        word: cloneWord,
+                        renderTo: $view.find('.wordwrap_mid')[0]
+                    });
+                    /*田字格工具屏蔽
+                    self.INFO.dync_canvas = new ChineseWordTracing({
+                        mode: "display",
+                        word: cloneWord1,
+                        renderTo: $view.find('._tzg_show_canvas ._dync_canvas')[0]
+                    });*/
+                });
+            }
+
+
+            if (relations.spellAssets && relations.spellAssets.length > 0) {
+                var i, j, len, jlen, assets, wordEntrywordAsset, $tmp;
+                var spellAssets = relations.spellAssets[assetIndex];
+                var pinyin = spellAssets.target.title;
+                $strokeCount.text(relations.strokeNum);
+                $pinyin.text(pinyin ? pinyin : "");
+                $radicals.text(relations.radical);
+                $structure.text(relations.wordStructure);
+
+                self.INFO.mPictureDescriptions = [];
+                if (spellAssets.spellMultimediaPictureAssets.length > 0) {//图片
+                    var description;
+                    for (i = 0, len = spellAssets.spellMultimediaPictureAssets.length; i < len; i++) {
+                        description = (spellAssets.spellMultimediaPictureAssets[i]['description'] && spellAssets.spellMultimediaPictureAssets[i]['description'].length>0)?
+                            spellAssets.spellMultimediaPictureAssets[i]['description'][0]:"";
+                        self.INFO.mPictureDescriptions.push(description);
+                        location = spellAssets.spellMultimediaPictureAssets[i].target.location;
+                        picUrl = self._getResourcePath(location,self);
+                        $picLi = $(tmpPicLi);
+                        $picLi.find(">img").attr("src", picUrl);
+                        $media_pic_content.append($picLi);
+                        $a = $(tmpA);
+                        if (i == 0) {
+                            $a.addClass("on");
+                        }
+                        $a.html(i + 1);
+                        $box_flicking.append($a);
+                    }
+                    if(self.INFO.mPictureDescriptions.length > 0){
+                        viewModel.pictureDescription(self.INFO.mPictureDescriptions[0]);
+                    }
+                    $picPanel.removeClass("hide_dom");
+                } else {
+                    $picLi.addClass("hide_dom");
+                }
+
+                if (spellAssets.dubbingAsset) {//音频
+                    location = spellAssets.dubbingAsset.target.location;
+                    var audioUrl = self._getResourcePath(location,self);
+                    $mediaRadioAudio.attr("src", audioUrl);
+                    $audioPanel.removeClass("hide_dom");
+                    $btnVoice.removeClass("no_voice");
+                } else {
+                    $audioLi.addClass("hide_dom");
+                    $btnVoice.addClass("no_voice");
+                }
+
+                if (spellAssets.spellMultimediaVideoAssets.length > 0) {//视频
+                    location = spellAssets.spellMultimediaVideoAssets[0].target.location;
+                    var videoUrl = self._getResourcePath(location,self);
+                    $mediaVideoVideo.attr("src", videoUrl);
+                    $videoPanel.removeClass("hide_dom");
+                } else {
+                    $videoLi.addClass("hide_dom");
+                }
+
+                var $tab_media_cell = $view.find(".mediatab .tab_media_cell:not(.hide_dom)");
+                $tab_media_cell.removeClass("on");
+                $($tab_media_cell.get(0)).addClass("on");
+
+                if (spellAssets.spellEntrywordAssets.length > 0) {
+                    for (i = 0, len = spellAssets.spellEntrywordAssets.length; i < len; i++) {//释义
+                        assets = spellAssets.spellEntrywordAssets[i];
+                        if (assets.label == "YX001") {//文中义
+                            $explanparaphrase.html(assets.target.title);
+                        } else {
+                            $extendparaphrase.html(assets.target.title);
+                        }
+                    }
+                }
+
+                for (i = 0, len = spellAssets.spellWordStoneAssets.length; i < len; i++) {//组词
+                    assets = spellAssets.spellWordStoneAssets[i];
+                    if (assets.label == "YX001") {//文中义
+                        $inclassWordsgroups.append(assets.target.title + " ");
+                        if (assets.wordEntrywordAsset.length > 0) {//例句
+                            for (j = 0, jlen = assets.wordEntrywordAsset.length; j < jlen; j++) {
+                                wordEntrywordAsset = assets.wordEntrywordAsset[j];
+                                $tmp = $("<em class='word sentence'></em>");
+                                $tmp.html(wordEntrywordAsset.target.title);
+                                $sentence.append($tmp);
+                            }
+                        }
+                    } else {
+                        var wglen = assets.target.title.length + 1;
+
+                        $tmp = $(CONSTANTS.html_extend_group);
+                        $tmp.find("em.wordsgroups").html(assets.target.title + "：");
+                        if (assets.wordEntrywordAsset.length > 0) {
+                            wordEntrywordAsset = assets.wordEntrywordAsset[0];
+                            $tmp.find("em.sentence").css({"padding-left": wglen + "em"}).html(wordEntrywordAsset.target.title);
+                            $exlpain_word.append($tmp);
+                        }
+
+                        //近义词，反义词
+                        if (assets.wordSynonymAsset.length > 0) {
+                            for (j = 0, jlen = assets.wordSynonymAsset.length; j < jlen; j++) {
+                                if (assets.wordSynonymAsset[j].label == "WordSynonym") {
+                                    $simparaphrasewords.append(assets.wordSynonymAsset[j].target.title);
+                                }
+                            }
+                        }
+                        if (assets.wordAntonymyAsset.length > 0) {
+                            for (j = 0, jlen = assets.wordAntonymyAsset.length; j < jlen; j++) {
+                                if (assets.wordAntonymyAsset[j].label == "WordAntonymy") {
+                                    $antisense.append(assets.wordAntonymyAsset[j].target.title);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                var $simwords = $view.find(".card_analyse .explain_list._extend em.simwords");
+                $simwords.empty().html(relations.wordSimWord);
+            }
+            var event = new Event('WordCardLoaded');
+            $view[0].dispatchEvent(event);
+        }
+    }, 'WordCardTeacher');
+
+    window.AddonWordCardTeacher_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

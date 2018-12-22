@@ -1,0 +1,661 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='NativeHandWriter'>
+<properties>
+
+                <property name="userId" displayName="学号" type="string" />
+                <property name="client" displayName="客户端类型" type="string" />
+                <property name="lessonId" displayName="课堂ID" type="string" />
+                <property name="marginBottom" displayName="下边外距" type="int" />
+                <property name="marginTop" displayName="上边外距" type="int" />
+                <property name="isAutoGetState" displayName="是否启动内部计时器进行状态保存" type="int" />
+                <property name="background" displayName="手写板背景" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_NativeHandWriter .layout-mask{position:fixed;top:7.5em;left:0;width:0;height:0;z-index:1999}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="layout-mask" style="display:none"><div class="mask"></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+var EVENTNAME = {
+    // Native
+    CLEAN: 'clean',
+    SHOW: 'show',
+    SHOW_TOOLBAR: 'showToolbar',
+    DRAW: 'draw',
+    START_WRITING: 'canSendStartWriting',
+    GET_STROKEDATA: 'getStrokeData',
+    PARSE_STROKEDATA: 'parseStrokeData',
+    RECOVER_STATE: 'recoverStrokeData',
+    CLOSE_POP_WIN: 'closePopWin',
+    GET_TOP: 'getTop',
+    SET_TOP: 'setTop',
+    ADD_PAGE: 'addPage',
+    DEL_PAGE: 'delPage',
+    GOTO_PAGE: 'gotoPage',
+    DRAW_LINE: 'drawLine',
+    GET_POINTS_IN_AREA: 'getPointsInArea',
+    GET_LINES_IN_AREA: 'getLinesInArea',
+    SHOW_COMMENTSQUARE: 'showCommentSquare',
+    SHOW_CORRECT: 'event_studentcomment_show_correct',
+    SHOW_COMMENT_RESULT: 'showCommentResult',
+
+    // icPlayer
+    EXERCISE_STATE_CHANGE: 'exerciseStateChange',
+
+    // Callback
+    CALLBACK: {
+        SHOW_MESSAGE_BOX: 'showMessageBox',
+        START_WRITE: 'startWriteCallback',
+        GET_STROKEDATA: 'getStrokeDataCallback',
+        GET_TOP: 'getTopCallback',
+        GET_POINTS: 'getPointsCallback',
+        GET_LINES: 'getLinesCallback',
+        PARSE_STROKEDATA: 'parseStrokeDataCallback',
+
+        // studentcomment
+        SC_SAVE_SUBTEXT: 'event_studentcomment_save_subtext_callback'
+    }
+};
+
+module.exports = EVENTNAME;
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var canvasObj = __webpack_require__(2);
+var Service = __webpack_require__(4);
+var EVENTNAME = __webpack_require__(0);
+var Util = __webpack_require__(5);
+
+var self = null;
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: 'NativeHandWriter',
+        type: PresenterType.PRESENTER_COMPONENT
+    },
+    // Presenter的初始化方法
+    $init: function () {
+        this._super();
+        this.i18nModel = {};
+        this.instanceId = Util.uuid();
+        this.isCurrentEdit = true;
+        this.canvasobj = null;
+        this.examing = false;
+
+        this.getStrokeDataDeffer = null;
+        this.parseStrokeDataDeffer = null;
+        this.getTopDeffer = null;
+        // 生生互评主观题文本截图URL
+        this.imagesUrl = '';
+        this.ensureCleanEventName = 'ensureCleanWriter';
+
+        this.state = {
+            data: '',
+            currentPen: 0,
+            currentColor: 0,
+            currentThickness: 0,
+            writeModel: false,
+            isEdit: false
+        };
+
+        // 日志记录
+        this.logger.appendHandler(function (message) {
+            console.log(message);
+            ClassroomUtils.log(JSON.stringify(message));
+        }, {level: Logger.DEBUG});
+    },
+    // 对外接口
+    getService: function () {
+        self = this;
+        if (!self['_service_']) {
+            self['_service_'] = new Service(self);
+        }
+
+        return self['_service_'];
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        this.$view = $(view);
+        this.model = model;
+        this.canvasobj = canvasObj(this);
+        this.canvasobj.setActive(true);
+        this.examing = true;
+
+        // 实例化Native
+        this.model.initData.instanceId = this.instanceId;
+        this.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+            'presenterId': this.model.initData.nativeId,
+            'instanceId': this.instanceId,
+            'initData': JSON.stringify(this.model.initData)
+        });
+
+        this._bindEvent();
+        this.$dispatchEvent('CanvasesLoaded', PresenterEventType.IC_PLAYER_EVENT, {
+            canvases: this.canvasobj
+        });
+    },
+    pageShow: function () {
+        if (this.model.initData.questionType === 'composition') {
+            this.getService().show(false);
+            this.getService().edit(false);
+        }
+    },
+    pageLeave: function () {
+        this.logger.debug('pageleave');
+        this.$removeEventListener();
+
+        var callback = this.canvasobj.getDestroyCallback();
+        if (callback !== null) {
+            callback();
+        }
+    },
+    destroy: function () {
+        this.logger.debug('destroy');
+        this.examing = false;
+        this.canvasobj.setActive(false);
+        this.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+            'instanceId': this.instanceId
+        });
+    },
+    /****以下开始为私有方法*****/
+    _bindEvent: function () {
+        this.$addEventListener(EVENTNAME.CALLBACK.SHOW_MESSAGE_BOX, PresenterEventType.NATIVE_EVENT, this._showMessageBox);
+        this.$addEventListener(this.ensureCleanEventName, PresenterEventType.NATIVE_EVENT, this._ensureCleanWriter);
+        this.$addEventListener(EVENTNAME.CALLBACK.START_WRITE, PresenterEventType.NATIVE_EVENT, this._startWriteCallback);
+        this.$addEventListener(EVENTNAME.CALLBACK.GET_STROKEDATA, PresenterEventType.NATIVE_EVENT, this._getStrokeDataCallback);
+        this.$addEventListener(EVENTNAME.CALLBACK.PARSE_STROKEDATA, PresenterEventType.NATIVE_EVENT, this._parseStrokeDataCallback);
+        this.$addEventListener(EVENTNAME.CALLBACK.GET_TOP, PresenterEventType.NATIVE_EVENT, this._getTopCallback);
+        this.$addEventListener(EVENTNAME.EXERCISE_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT, this._exerciseStateChange);
+        this.$addEventListener(EVENTNAME.CALLBACK.SC_SAVE_SUBTEXT, PresenterEventType.NATIVE_EVENT, this._scSaveSubtextCallback);
+    },
+    // 一键清除确认框
+    _showMessageBox: function () {
+        ClassroomUtils.showMessageBox([{
+            html: self.i18nModel['nativehandwriter_cancel'],
+            target: 'h5'
+        }, {
+            html: self.i18nModel['nativehandwriter_ensure'],
+            style: 'primary',
+            target: 'h5',
+            callback: {
+                eventName: self.ensureCleanEventName,
+                eventData: {value: 1}
+            }
+        }], self.i18nModel['nativehandwriter_clean_msg']);
+    },
+    // 确认一键清除
+    _ensureCleanWriter: function (eventData) {
+        if (eventData.value === 1) {
+            self._service_.clean();
+        }
+    },
+    // 开始手写
+    _startWriteCallback: function () {
+        self.$dispatchEvent('HandWriterStartWrite', PresenterEventType.IC_PLAYER_EVENT, {});
+    },
+    // 获取轨迹数据回调
+    _getStrokeDataCallback: function (eventData) {
+        // self.logger.debug('新版手写题获取轨迹回调: ', JSON.stringify(eventData));
+        // self.logger.debug('新版手写题获取轨迹回调: ', 'instanceId ' + self.instanceId + ', examing ' + self.examing);
+        if (self.instanceId == eventData.instanceId) {
+            // self.logger.debug('新版手写题提交答案: ', JSON.stringify(eventData.data));
+            self.state.data = eventData.data;
+        }
+        if (self.getStrokeDataDeffer != null) {
+            self.getStrokeDataDeffer.resolve(eventData);
+        }
+    },
+    // 设置轨迹数据回调
+    _parseStrokeDataCallback: function (eventData) {
+        if (self.parseStrokeDataDeffer != null) {
+            self.parseStrokeDataDeffer.resolve();
+        }
+    },
+    // 获取Top
+    _getTopCallback: function (eventData) {
+        self.getTopDeffer.resolve(eventData.top);
+    },
+    // 生生互评主观题文本截图URL 
+    _scSaveSubtextCallback: function (eventData) {
+        if (eventData != null && eventData.url != undefined) {
+            self.imagesUrl = eventData.url;
+        }
+    },
+    // 课堂状态变更
+    _exerciseStateChange: function (eventData) {
+        if (eventData.type === 'exit') {
+            self.examing = false;
+        }
+    },
+    // 更新状态数据
+    _updateState: function (data) {
+        for (var item in data) {
+            this.state[item] = data[item];
+        }
+    },
+    // 返回获取轨迹的Promise对象
+    _getStrokeDataPromise: function () {
+        this.getStrokeDataDeffer = $.Deferred();
+        return this.getStrokeDataDeffer;
+    },
+    // 返回设置轨迹的Promise对象
+    _parseStrokeDataPromise: function () {
+        this.parseStrokeDataDeffer = $.Deferred();
+        return this.parseStrokeDataDeffer;
+    },
+    // 返回获取Top的Promise对象
+    _getTopPromise: function () {
+        this.getTopDeffer = $.Deferred();
+        return this.getTopDeffer;
+    },
+    // 获取canvasObj
+    _getCanvasObj: function () {
+        return this.canvasobj;
+    },
+    //显示评语详情窗口
+    _showSquare: function (data) {
+        self._sendToPresenter('showCommentSquare', data);
+    },
+    // Native Bridge
+    _sendToPresenter: function (type, data) {
+        this.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: this.instanceId,
+            type: type,
+            data: data
+        });
+    }
+}, 'NativeHandWriter');
+
+module.exports = Presenter;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var EVENTNAME = __webpack_require__(0);
+
+var canvasobj = function (presenter) {
+    var _writer = presenter || {};
+    var _active = true;
+    var _destroyCallback = null;
+
+    // 对手写板扩展
+    $.extend(_writer, {
+        getPointsDeffer: null,
+        getLinesDeffer: null,
+
+        // 画直线
+        _drawLine: function (startPoint, endPoint, toolType) {
+            var points = [
+                {x: startPoint.x, y: startPoint.y},
+                {x: endPoint.x, y: endPoint.y}
+            ];
+            _writer._sendToPresenter(EVENTNAME.DRAW_LINE, {
+                points: points,
+                writeModel: toolType
+            });
+        },
+        // 获取可见区域所有顶点
+        _getPoints: function () {
+            _writer.getPointsDeffer = $.Deferred();
+            _writer._sendToPresenter(EVENTNAME.GET_POINTS_IN_AREA, {});
+            return _writer.getPointsDeffer;
+        },
+        // 获取直线
+        _getLinesByPoint: function (p) {
+            _writer.getLinesDeffer = $.Deferred();
+            _writer._sendToPresenter(EVENTNAME.GET_LINES_IN_AREA, p);
+            return _writer.getLinesDeffer;
+        },
+        // 获取可见区域所有顶点回调
+        _getPointsCallback: function (data) {
+            var result = data;
+            if (data != null && data.data != undefined) {
+                result = data.data;
+            }
+            _writer.getPointsDeffer.resolve(result);
+        },
+        // 获取直线回调
+        _getLinesCallback: function (data) {
+            var result = data;
+            if (data != null && data.data != undefined) {
+                result = data.data;
+            }
+            _writer.getLinesDeffer.resolve(result);
+        }
+    });
+    _writer.$addEventListener(EVENTNAME.CALLBACK.GET_POINTS, PresenterEventType.NATIVE_EVENT, _writer._getPointsCallback);
+    _writer.$addEventListener(EVENTNAME.CALLBACK.GET_LINES, PresenterEventType.NATIVE_EVENT, _writer._getLinesCallback);
+
+    return {
+        getCanvasId: function () {
+            return _writer.instanceId;
+        },
+        isActive: function () {
+            return _active;
+        },
+        setActive: function (active) {
+            _active = active;
+        },
+        drawLine: function (startPoint, endPoint, toolType) {
+            _writer._drawLine(startPoint, endPoint, toolType);
+        },
+        getPoints: function () {
+            _writer._getPoints();
+        },
+        getLinesByPoint: function (p) {
+            return _writer._getLinesByPoint(p);
+        },
+        getDestroyCallback: function () {
+            return _destroyCallback;
+        },
+        setDestroyCallback: function (callback) {
+            _destroyCallback = callback;
+        }
+    };
+};
+
+module.exports = canvasobj;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Presenter = __webpack_require__(1);
+
+window.AddonNativeHandWriter_create = function () {
+    return new Presenter();
+};
+
+
+
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var EVENTNAME = __webpack_require__(0);
+
+var Service = Class.extend({
+    // 初始化
+    $init: function (presenter) {
+        this.presenter = presenter;
+    },
+    // 国际化
+    setLocationProperties: function (location) {
+        this.presenter.i18nModel = location;
+    },
+    // 清除手写板
+    clean: function () {
+        this.presenter.logger.debug('NativeHandWriter clean');
+        this.presenter._sendToPresenter(EVENTNAME.CLEAN, '');
+    },
+    // 隐藏/显示手写板
+    show: function (isShow) {
+        var show = isShow.toString();
+        this.presenter.logger.debug('show: ' + show);
+        this.presenter._sendToPresenter(EVENTNAME.SHOW, show);
+    },
+    // 隐藏/显示工具栏
+    showToolbar: function (isShow) {
+        var show = isShow.toString();
+        this.presenter.logger.debug('showToolbar: ' + show);
+        this.presenter._sendToPresenter(EVENTNAME.SHOW_TOOLBAR, show);
+    },
+    // 切换编辑状态
+    edit: function (isEdit) {
+        var edit = isEdit.toString();
+        this.presenter.logger.debug('edit: ' + edit);
+        this.presenter._sendToPresenter(EVENTNAME.DRAW, edit);
+
+        if (isEdit && this.presenter.isCurrentEdit === false) {
+            // 原来不可编辑，现改为可编辑，重新计算手写板的FirstWrite
+            this.presenter._sendToPresenter(EVENTNAME.START_WRITING, '');
+        }
+
+        this.presenter.isCurrentEdit = isEdit;
+        // 具体的状态保存由NativeHandWriter处理
+        this.presenter._updateState({
+            isEdit: isEdit
+        });
+    },
+    // 获取手写板轨迹
+    getStrokeData: function (options) {
+        options = options || {};
+        this.presenter.logger.debug('getStrokeData:', JSON.stringify(options));
+
+        var p = this.presenter._getStrokeDataPromise();
+        this.presenter._sendToPresenter(EVENTNAME.GET_STROKEDATA, options);
+        return p.promise();
+    },
+    // 设置生生互评与手写板的轨迹
+    setCommentStrokeData: function (data) {
+        this.presenter._sendToPresenter('event_studentcomment_load_result', data);
+    },
+    // 设置手写板轨迹
+    parseStrokeData: function (data) {
+        this.presenter.logger.debug('parseStrokeData: ', data);
+        var p = this.presenter._parseStrokeDataPromise();
+        this.presenter._sendToPresenter(EVENTNAME.PARSE_STROKEDATA, JSON.stringify({
+            data: data
+        }));
+        return p.promise();
+    },
+    // 获取状态数据
+    getState: function () {
+        this.presenter.logger.debug('saveState: ', JSON.stringify(this.presenter.state));
+        return this.presenter.state;
+    },
+    // 恢复状态数据
+    setState: function (state) {
+        if (state) {
+            this.presenter.logger.debug('recoverStrokeData: ', JSON.stringify(state));
+
+            this.presenter._updateState(state);
+            this.presenter.isCurrentEdit = state.isEdit;
+            this.presenter._sendToPresenter(EVENTNAME.RECOVER_STATE, '');
+        }
+    },
+    // 获取canvasObj
+    getCanvases: function () {
+        return this.presenter._getCanvasObj();
+    },
+    // 关闭弹出窗口
+    closePopWin: function () {
+        this.presenter._sendToPresenter(EVENTNAME.CLOSE_POP_WIN, '');
+        ClassroomUtils.closeMessageBox();
+    },
+    // 手机查看答题进度接口
+    resetWritingFlag: function () {
+        this.presenter._sendToPresenter(EVENTNAME.START_WRITING, '');
+    },
+    // 第二次加载题目
+    // 1、清空画板 2、并加载背景图 3、加载轨迹
+    loadNewQuestion: function (backgroundOptions, answer, extraData) {
+        // 清空画板,清空学生笔迹
+        this.clean();
+        // 有就设置背景，没有就清空背景
+        var background = backgroundOptions || {};
+        this.presenter._sendToPresenter('setBackground', background);
+        // 设置轨迹
+        if (answer) {
+            var strokeData = answer.data[0] && (answer.data[0]['data_type'] === 'write') && (answer.data[0].value);
+            if (strokeData) {
+                this.parseStrokeData(strokeData);
+            } else {
+                throw new Error('轨迹数据有误！');
+            }
+        }
+    },
+    // 获取Top
+    getTop: function () {
+        var p = this.presenter._getTopPromise();
+        this.presenter._sendToPresenter(EVENTNAME.GET_TOP, {});
+        return p.promise();
+    },
+    // 设置Top
+    setTop: function (top, saved) {
+        if (saved === true) {
+            this.presenter._sendToPresenter(EVENTNAME.SET_TOP, top);
+        }
+    },
+    // 添加页
+    addPage: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.ADD_PAGE, data);
+    },
+    // 删除页
+    delPage: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.DEL_PAGE, data);
+    },
+    // 跳转页
+    gotoPage: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.GOTO_PAGE, data);
+    },
+    // 获取生生互评主观题截图URL
+    getImagesUrl: function () {
+        return this.presenter.imagesUrl;
+    },
+    // 显示生生互评的快捷评语
+    showCommentSquare: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.SHOW_COMMENTSQUARE, data);
+    },
+    // 显示快速评语
+    showCorrect: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.SHOW_CORRECT, data.data);
+    },
+    // 切换成查看评语结果状态
+    showCommentResult: function (data) {
+        this.presenter._sendToPresenter(EVENTNAME.SHOW_COMMENT_RESULT, {});
+    }
+});
+
+module.exports = Service;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+exports.uuid = function () {
+    var s = [], hexDigits = "0123456789abcdef";
+
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+
+    s[14] = "4";
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    return s.join("");
+};
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+
+
+</resources>
+
+</addon>

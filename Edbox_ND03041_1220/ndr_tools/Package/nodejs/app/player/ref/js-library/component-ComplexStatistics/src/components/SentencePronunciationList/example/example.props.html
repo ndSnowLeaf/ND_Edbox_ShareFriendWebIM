@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://www.w3school.com.cn/jquery/jquery-1.11.1.min.js"></script>
+    <script src="../../../node_modules/vue/dist/vue.min.js"></script>
+    <script src="../../../node_modules/vuex/dist/vuex.min.js"></script>
+    <script src="../../../node_modules/vue-class-component/dist/vue-class-component.min.js"></script>
+    <script src="./dist/components.js"></script>
+    <script src="../../../../dist/components.js"></script>
+    <link rel="stylesheet" type="text/css" href="common.css" />
+    <link rel="stylesheet" type="text/css" href="cssbotbtn.css" />
+    <script src="layout.js"></script>
+</head>
+
+<body>
+    <div class="stat_wood">
+        <!-- 下拉时加 pull_down -->
+        <div class="com_layout" id="layout">
+            <div class="com_wrapper" id="wrapper">
+                <!--框架顶部-->
+                <!--头部-->
+                <div class="com_layout_header">
+                    <!--计时器-->
+                    <div class="com_time">
+                        <!--当多语言时，要去掉分和秒文字时，请在.com_time上增加类名.time_lang-->
+                        <!-- 答题时间：<span class="time_m"><em>05</em>分</span> -->
+                        <!-- <span class="time_s"><em>21</em>秒</span> -->
+                        <div class="time_default ">
+                            <b class="time_text">答题时间：</b><span class="time_m"><em>05</em></span>
+                            <b class="time_text">分</b>
+                            <i>:</i>
+                            <span class="time_s"><em>21</em></span>
+                            <b class="time_text">秒</b>
+                        </div>
+                    </div>
+                    <!--/计时器-->
+                    <!--人数统计-->
+                    <!-- <div class="upload">提交人数：<span class="num"><em class="now">35</em>/50</span></div> -->
+                    <div class="upload"><b class="upload_text">提交人数：</b><span class="num _num">0</span>/<span class="_count">1</span></div>
+                    <!--/人数统计-->
+                </div>
+                <!--/头部-->
+                <!--/框架顶部-->
+
+                <!--用户统计详情-->
+                    <user-detail-stat></user-detail-stat>
+                    <!--用户统计详情-->
+
+                <!--主体内容-->
+                <div class="com_layout_container">
+                    <sentence-pronunciation-list :result="result"></sentence-pronunciation-list>
+                </div>
+                <!--/主体内容-->
+            </div>
+
+        </div>
+    </div>
+
+
+    <script>
+        var result = [];
+
+        for (var i = 0; i < 100; i++) {
+            var _userData = {
+                "questionId": "UUID",
+                "time": 321,
+                "user": {
+                    "name": '董',
+                    "img": 'pics/stu_02.jpg'
+                },
+                "answerState": "COMPLETE",
+                "answer": {
+                    "user_response": [{                             /*用户作答结果*/
+                        "sectionId": "UUID",                        /*句子ID*/
+                        "myRecordAuio": "pics/44.mp3",                        /*我的录音音频UR*/
+                        "content": "Man's nature at birth is good.",//内容
+                        "type": "sentence",                        /*题目类型word(单词), sentence(句子), sections(篇章)*/
+                        "evaluationResult": {
+                            "overall": 'B',                           /*句子得分*/
+                            "accuracy": 'D',                             /*准确度*/
+                            "integrity": 'B',                                /*完整度*/
+                            "fluency": 'A',                                   /*流畅度*/
+                            "scores": []
+                        }
+                    },
+                    {                             /*用户作答结果*/
+                        "sectionId": "UUID",                        /*句子ID*/
+                        "myRecordAuio": "pics/44.mp3",                        /*我的录音音频UR*/
+                        "content": "My favorite NBA star is Allen Iverson.His number is three!",//内容
+                        "type": "sentence",                        /*题目类型word(单词), sentence(句子), sections(篇章)*/
+                        "evaluationResult": {
+                            "overall": 'B',                           /*句子得分*/
+                            "accuracy": 'D',                             /*准确度*/
+                            "integrity": 'B',                                /*完整度*/
+                            "fluency": 'A',                                   /*流畅度*/
+                            "scores": []
+                        }
+                    },
+                    {                             /*用户作答结果*/
+                        "sectionId": "UUID",                        /*句子ID*/
+                        "myRecordAuio": "pics/44.mp3",                        /*我的录音音频UR*/
+                        "content": "This is 101 ppt.",//内容
+                        "type": "sentence",                        /*题目类型word(单词), sentence(句子), sections(篇章)*/
+                        "evaluationResult": {
+                            "overall": 'B',                           /*句子得分*/
+                            "accuracy": 'D',                             /*准确度*/
+                            "integrity": 'B',                                /*完整度*/
+                            "fluency": 'A',                                   /*流畅度*/
+                            "scores": []
+                        }
+                    }]
+                }
+            };
+            _userData.user.name = '董' + i;
+            if (i % 5 === 0) {
+                _userData.user.img = 'pics/stu_01.jpg';
+                _userData.answerState = "COMPLETE";
+                _userData.answer.user_response[0].evaluationResult.overall = 'A';
+                _userData.answer.user_response[1].evaluationResult.overall = 'B';
+                _userData.answer.user_response[2].evaluationResult.overall = 'C';
+            }
+            else if (i % 5 === 1) {
+                _userData.user.img = 'pics/stu_02.jpg';
+                _userData.answerState = "COMPLETE";
+                _userData.answer.user_response[0].evaluationResult.overall = 'B';
+                _userData.answer.user_response[1].evaluationResult.overall = 'C';
+                _userData.answer.user_response[2].evaluationResult.overall = 'B';
+            }
+            else if (i % 5 === 2) {
+                _userData.user.img = 'pics/stu_02.jpg';
+                _userData.answerState = "COMPLETE";
+                _userData.answer.user_response[0].evaluationResult.overall = 'C';
+                _userData.answer.user_response[1].evaluationResult.overall = 'A';
+                _userData.answer.user_response[2].evaluationResult.overall = 'A';
+            }
+            else if (i % 5 === 3) {
+                _userData.user.img = 'pics/stu_01.jpg';
+                _userData.answerState = "COMPLETE";
+                _userData.answer.user_response[0].evaluationResult.overall = 'A';
+                _userData.answer.user_response[1].evaluationResult.overall = 'A';
+                _userData.answer.user_response[2].evaluationResult.overall = 'B';
+            } else {
+                _userData.user.img = 'pics/stu_03.jpg';
+                _userData.answer.user_response[0].evaluationResult = null;
+            }
+            result.push(_userData);
+        }
+
+        const sentenceStore = {
+            state: {
+                userDetailPage: {
+                    show: false,
+                    playingAudio: -1,
+                    userData: null
+                }
+            },
+
+            getters: {
+                userDetailPage(state) {
+                    return state.userDetailPage;
+                }
+            },
+
+            actions: {
+
+            },
+
+            mutations: {
+                ['SENTENCE_CURRENT_USER_DETAIL_PAGE'](state, userDetailPage) {
+                    state.userDetailPage = userDetailPage;
+                }
+            }
+        }
+
+
+        var app = new Vue({
+            el: '.com_wrapper',
+            store: new Vuex.Store(sentenceStore),
+            components: {
+                'sentence-pronunciation-list': window.__StatisticsComponent.SentencePronunciationList,
+                'user-detail-stat': window.__StatisticsComponent.SentencePronunciationDetail
+            }
+        })
+    </script>
+</body>
+
+</html>

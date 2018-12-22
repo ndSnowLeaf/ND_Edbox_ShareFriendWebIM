@@ -1,0 +1,1 @@
+$(function(){$("#audio-player").mediaelementplayer({alwaysShowControls:!0,features:["playpause","volume","progress"],audioVolume:"horizontal",startVolume:.8,loop:!0,audioWidth:400,audioHeight:120}),$("#video-player").mediaelementplayer({alwaysShowControls:!0,features:["playpause","volume","progress"],audioVolume:"horizontal",loop:!0,audioWidth:400,audioHeight:176})});

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool type="resizable" height="0" width="0">
+    <presenters> <!-- 描述对 module的引用，其中href为可选，若填写时为私有presenter -->
+        <presenter id="BasicGraph" />
+    </presenters>
+    <properties> <!-- 内容模块 key/value 属性 -->
+        <property name="independent" type="boolean" value="true"/>
+        <property name="singleton" type="boolean" value="true"/>
+        <property name="isPointInPath" type="method" value="isPointInPath"/>
+        <property name="execute" type="method" value="execute"/>
+        <property name="toolKey" type="string" value="BasicGraph"/>
+    </properties>
+
+    <modules main="main"> <!-- 内容模块实例 -->
+        <Module id="main" presenterId="BasicGraph" height="0" width="0" left="0" top="0">
+            <properties> <!-- 内容模块 key/value 属性 -->
+                <property name="type" type="string" value="BasicGraph"/>
+            </properties>
+            <events> <!-- 事件绑定 -->
+                <event name="事件名">
+                    <handler presenterId="Presenter Id" instance="处理事件的实例id">处理事件的入口方法</handler>
+                </event>
+            </events>
+        </Module>
+    </modules>
+</tool>

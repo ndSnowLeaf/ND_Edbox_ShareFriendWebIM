@@ -1,0 +1,1901 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="questionId" displayName="题目ID" type="string" isLocalized="false"/><property name="questionData" displayName="题目内容" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="AlamedaRequire" version="0.3.2"/><javaScript name="common_css" version="1.0.0"/><javaScript name="tool_tip" version="1.0.0"/><javaScript name="tool_dialog" version="1.0.0"/><javaScript name="echarts" version="3.2.3"/><javaScript name="knockout" version="3.3.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .chartmake{position:relative;width:100%;height:100%;background:#bfd3e2;color:#333;text-align:center;overflow:hidden}.exam_skin_wood .chartmake .chartmake_edit{position:absolute;left:50%;top:50%;margin-left:-33.75em;margin-top:-16.29167em;width:67.5em;height:37.08333em;text-align:center}.exam_skin_wood .chartmake .chme_main{width:58.33333em;padding:1.70833em 2em 0;background:#b8cdde}.exam_skin_wood .chartmake .chme_aside,.exam_skin_wood .chartmake .chme_main{position:relative;display:inline-block;height:100%;border-radius:.33333em;vertical-align:top}.exam_skin_wood .chartmake .chme_aside{width:7.08333em;margin-left:.95833em;background:#b1c9dc}.exam_skin_wood .chartmake .chme_aside_page1,.exam_skin_wood .chartmake .chme_aside_page2{height:31.25em}.exam_skin_wood .chartmake .chme_char_tit{width:100%;height:2.91667em}.exam_skin_wood .chartmake .chme_char_tit_input{position:relative;margin:0 auto;width:33.75em;height:100%;border:1px solid #6c8395;border-radius:.41667em;color:#333;background:-webkit-linear-gradient(top,#d6dee6,#e0e6ea);background:linear-gradient(180deg,#d6dee6 0,#e0e6ea);text-align:center}.exam_skin_wood .chartmake .chme_char_tit_input input[type=text]{font-size:1.41667em;width:100%;height:100%;padding:0 1.66667em;background:0 0;text-align:center;vertical-align:top;word-break:normal}.exam_skin_wood .chartmake .chme_char_tit_input:after{content:"";position:absolute;left:1%;bottom:-2px;display:block;width:98%;height:1px;background:#d4e6f7}.exam_skin_wood .chartmake .chme_data_container{position:relative;margin-top:1.91667em}.exam_skin_wood .chartmake .chme_step_title{text-align:left;margin-bottom:.91667em}.exam_skin_wood .chartmake .chme_step_title .text{font-size:1.16667em;line-height:1.66667em}.exam_skin_wood .chartmake .chme_data_type{position:absolute;top:0;right:0}.exam_skin_wood .chartmake .chme_data_type_mid{float:left;display:block;width:1.5em;line-height:1.83333em;text-align:center}.exam_skin_wood .chartmake .chme_data_type_input{position:relative;float:left;width:4.16667em;height:1.91667em;border:1px solid #6c8395;border-radius:.41667em;color:#333;background:-webkit-linear-gradient(top,#d6dee6,#e0e6ea);background:linear-gradient(180deg,#d6dee6 0,#e0e6ea);text-align:center}.exam_skin_wood .chartmake .chme_data_type_input input[type=text]{font-size:1.16667em;width:100%;height:100%;background:0 0;text-align:center;vertical-align:top;word-break:normal}.exam_skin_wood .chartmake .chme_data_type_input:after{content:"";position:absolute;left:5%;bottom:-2px;display:block;width:90%;height:1px;background:#d4e6f7}.exam_skin_wood .chartmake .chme_table{display:-webkit-flex;white-space:nowrap}.exam_skin_wood .chartmake .chme_tr{display:inline-block;-webkit-box-flex:1;-ms-flex:1;flex:1;border-left:.125em solid #6c8395}.exam_skin_wood .chartmake .chme_tr.chme_unit span.unit_v{position:absolute;right:60%;bottom:.33333em;line-height:1;white-space:nowrap}.exam_skin_wood .chartmake .chme_tr.chme_unit span.unit_h{position:absolute;display:inline-block;left:60%;top:.33333em;line-height:1;white-space:nowrap}.exam_skin_wood .chartmake .chme_tr.chme_unit input.unit_v{z-index:10;position:absolute;right:50%;bottom:0;width:50%;height:1.66667em;line-height:1}.exam_skin_wood .chartmake .chme_tr.chme_unit input.unit_h{z-index:10;position:absolute;left:50%;top:0;width:50%;height:1.66667em;line-height:1}.exam_skin_wood .chartmake .chme_tr .ita_linesvg{position:absolute;left:0;top:0}.exam_skin_wood .chartmake .chme_tr:first-child{border-left:none;margin-left:0;-webkit-box-flex:0;-ms-flex:none;flex:none}.exam_skin_wood .chartmake .placeholder::-webkit-input-placeholder{color:#777}.exam_skin_wood .chartmake .chme_td{position:relative;display:block;width:100%;height:2.91667em;line-height:2.91667em;background:#fff;border-top:.125em solid #6c8395;text-align:center}.exam_skin_wood .chartmake .chme_td:first-child{border-top:none}.exam_skin_wood .chartmake .chme_td input[type=text]{font-size:1.16667em;padding:0;width:100%;height:100%;text-align:center;background:0 0;vertical-align:top;word-break:normal}.exam_skin_wood .chartmake .chme_td .text{font-size:1.16667em;text-align:center}.exam_skin_wood .chartmake .chme_td.bg_orange{background:#f1ce97}.exam_skin_wood .chartmake .chme_td.bg_blue{background:#aed2f0}.exam_skin_wood .chartmake .chme_td.bg_white{background:#f1ce97}.exam_skin_wood .chartmake .chme_td.bg_yellow{background:#ffc412}.exam_skin_wood .chartmake .chme_td.bg_qing{background:#2ee5f0}.exam_skin_wood .chartmake .chme_td.bg_red{background:#f66e6e}.exam_skin_wood .chartmake .chme_td.bg_yellow2{background:#f1c701}.exam_skin_wood .chartmake .chme_td.bg_orange2{background:#f5a03c}.exam_skin_wood .chartmake .chme_td.bg_qing2{background:#43b9c5}.exam_skin_wood .chartmake .chme_td.bg_blue2{background:#2986cd}.exam_skin_wood .chartmake .chme_ctype_container{margin-top:2.625em}.exam_skin_wood .chartmake .chme_ctype{padding-top:1em}.exam_skin_wood .chartmake .chme_ctype_cell{float:left;width:25%;text-align:center;cursor:pointer}.exam_skin_wood .chartmake .chme_ctype_cell .chme_icon{display:block;width:100%;height:4.29167em;margin-bottom:1.16667em;background:url(resources/wood/images/chme_type01_nor.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell .text{display:block;font-size:1.16667em;line-height:1.66667em}.exam_skin_wood .chartmake .chme_ctype_cell.strip_v .chme_icon{background:url(resources/wood/images/chme_type01_nor.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.strip_v.ui_btn_active .chme_commit,.exam_skin_wood .chartmake .chme_ctype_cell.strip_v.ui_btn_hover .chme_commit{display:inline-block}.exam_skin_wood .chartmake .chme_ctype_cell.strip_v.ui_btn_active .chme_icon,.exam_skin_wood .chartmake .chme_ctype_cell.strip_v.ui_btn_hover .chme_icon{background:url(resources/wood/images/chme_type01_on.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.strip_h .chme_icon{background:url(resources/wood/images/chme_type02_nor.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.strip_h.ui_btn_active .chme_commit,.exam_skin_wood .chartmake .chme_ctype_cell.strip_h.ui_btn_hover .chme_commit{display:inline-block}.exam_skin_wood .chartmake .chme_ctype_cell.strip_h.ui_btn_active .chme_icon,.exam_skin_wood .chartmake .chme_ctype_cell.strip_h.ui_btn_hover .chme_icon{background:url(resources/wood/images/chme_type02_on.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.line .chme_icon{background:url(resources/wood/images/chme_type03_nor.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.line.ui_btn_active .chme_commit,.exam_skin_wood .chartmake .chme_ctype_cell.line.ui_btn_hover .chme_commit{display:inline-block}.exam_skin_wood .chartmake .chme_ctype_cell.line.ui_btn_active .chme_icon,.exam_skin_wood .chartmake .chme_ctype_cell.line.ui_btn_hover .chme_icon{background:url(resources/wood/images/chme_type03_on.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.sector .chme_icon{background:url(resources/wood/images/chme_type04_nor.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_ctype_cell.sector.ui_btn_active .chme_commit,.exam_skin_wood .chartmake .chme_ctype_cell.sector.ui_btn_hover .chme_commit{display:inline-block}.exam_skin_wood .chartmake .chme_ctype_cell.sector.ui_btn_active .chme_icon,.exam_skin_wood .chartmake .chme_ctype_cell.sector.ui_btn_hover .chme_icon{background:url(resources/wood/images/chme_type04_on.png) no-repeat bottom;background-size:4.29167em 4.29167em}.exam_skin_wood .chartmake .chme_commit{display:none;margin-top:.83333em;padding:0 1.41667em;height:2.25em;line-height:2.16667em;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);border:1px solid #3b7476;border-radius:.58333em;color:#333}.exam_skin_wood .chartmake .chme_commit:active{color:#fff;background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .chartmake .chme_commit .text{display:inline;font-size:1em}.exam_skin_wood .chartmake .chme_aside_list{width:100%;height:6.25em;padding-top:.54167em;cursor:pointer}.exam_skin_wood .chartmake .chme_aside_list .chme_aside_icon{display:block;width:100%;height:3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_tq .chme_aside_icon{background:url(resources/wood/images/aside_tg.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_sr .chme_aside_icon{background:url(resources/wood/images/aside_sr.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_cxrk .chme_aside_icon{background:url(resources/wood/images/aside_cxrk.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_tw .chme_aside_icon{background:url(resources/wood/images/aside_tw.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_shrk .chme_aside_icon{background:url(resources/wood/images/aside_shrk.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_yd .chme_aside_icon{background:url(resources/wood/images/aside_yd.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_nn .chme_aside_icon{background:url(resources/wood/images/aside_nn.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_smbh .chme_aside_icon{background:url(resources/wood/images/aside_smbh.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_szbl .chme_aside_icon{background:url(resources/wood/images/aside_szbl.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list.chme_smsl .chme_aside_icon{background:url(resources/wood/images/aside_smsl.png) no-repeat bottom;background-size:3.25em 3.25em}.exam_skin_wood .chartmake .chme_aside_list .text{font-size:1em;line-height:1.5}.exam_skin_wood .chartmake .chme_aside_list.on{background:#96b7d1}.exam_skin_wood .chartmake .chme_aside_turn{width:100%;height:2.375em;background:url(resources/wood/images/arrow_down_nor.png) no-repeat 50%;background-size:2.04167em .91667em;cursor:pointer}.exam_skin_wood .chartmake .chme_aside_turn:active{background:url(resources/wood/images/arrow_down_act.png) no-repeat 50%;background-size:2.04167em .91667em}.exam_skin_wood .chartmake .chme_aside_turn.chme_up{-webkit-transform:rotate(180deg);transform:rotate(180deg)}.exam_skin_wood .chartmake .chme_aside_new{padding-top:.16667em;text-align:center}.exam_skin_wood .chartmake .chme_aside_new_btn{display:inline-block;width:5.83333em;height:2.625em;line-height:2.54167em;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);border:1px solid #3b7476;border-radius:.58333em;color:#333}.exam_skin_wood .chartmake .chme_aside_new_btn:active{color:#fff;background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .chartmake .chme_aside_new_btn .text{font-size:1em}.exam_skin_wood .chartmake .chartmake_stage{position:absolute;left:50%;top:50%;margin-left:-34.58333em;margin-top:-18.125em;width:69.16667em;height:39em;text-align:center}.exam_skin_wood .chartmake .chms_main{position:relative;display:inline-block;width:62.5em;height:100%;padding:.91667em 0 0 2.25em;background:#b8cdde;border-radius:.33333em;vertical-align:top}.exam_skin_wood .chartmake .chms_tit{text-align:center;line-height:2.91667em}.exam_skin_wood .chartmake .chms_tit .text{font-size:1.41667em}.exam_skin_wood .chartmake .chms_data_container{margin-right:2.41667em;border:.125em solid #6c8395;border-radius:.33333em;text-align:left;overflow-y:hidden;overflow-x:auto}.exam_skin_wood .chartmake .chms_data_container::-webkit-scrollbar{width:.5em;height:.5em;background:#b2c8dd}.exam_skin_wood .chartmake .chms_data_container::-webkit-scrollbar-thumb{border:1px solid #89a3b3;background:#e9e9e9;border-radius:1em}.exam_skin_wood .chartmake .chms_aside{position:relative;display:inline-block;width:5em;height:100%;margin-left:.83333em;vertical-align:top}.exam_skin_wood .chartmake .chms_aside_container{position:absolute;width:100%;left:0;bottom:4.08333em;background:#b1c9dc;border-radius:.33333em;padding:.83333em 0}.exam_skin_wood .chartmake .chms_aside_list{width:100%;height:4.16667em;cursor:pointer}.exam_skin_wood .chartmake .chms_aside_list.chms_ss{background:url(resources/wood/images/chme_type01_nor.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_ss.on{background:url(resources/wood/images/chme_type01_on.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_hs{background:url(resources/wood/images/chme_type02_nor.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_hs.on{background:url(resources/wood/images/chme_type02_on.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_zx{background:url(resources/wood/images/chme_type03_nor.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_zx.on{background:url(resources/wood/images/chme_type03_on.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_bz{background:url(resources/wood/images/chme_type04_nor.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_aside_list.chms_bz.on{background:url(resources/wood/images/chme_type04_on.png) no-repeat 50%;background-size:2.58333em auto}.exam_skin_wood .chartmake .chms_return{position:absolute;bottom:0;left:0;display:block;width:100%;height:2.25em;line-height:2.16667em;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);border:1px solid #3b7476;border-radius:.58333em;color:#333}.exam_skin_wood .chartmake .chms_return:active{color:#fff;background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .chartmake .chms_return .text{font-size:1em}.exam_skin_wood .chartmake .chms_chart_container{position:relative;height:29em}.exam_skin_wood .chartmake .chms_chart_container.small_box{height:26.08333em}.exam_skin_wood .chartmake .chms_chart_container.small_box .chmscrtc_container{top:.41667em}.exam_skin_wood .chartmake .chms_chart_body{z-index:10;position:relative;width:50em;height:100%}.exam_skin_wood .chartmake .chms_chart_body.large_width{width:100%}.exam_skin_wood .chartmake .chms_chart_body.mid_width{width:55em}.exam_skin_wood .chartmake .chms_chart_body.chms_chart_full{width:52em;margin-left:-2em}.exam_skin_wood .chartmake .chms_chart_body.chms_chart_full.large_width{width:100%}.exam_skin_wood .chartmake .chms_chart_body.chms_chart_full.mid_width{width:57em}.exam_skin_wood .chartmake .chmscrtc_container{position:absolute;right:.95833em;top:2.16667em;bottom:0;width:4.25em;text-align:right}.exam_skin_wood .chartmake .chmscrtc_container:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .chartmake .chmscrtc_container.row_2{width:9.25em}.exam_skin_wood .chartmake .chmscrtc_container.row_2 .small_cnt{height:100%;-webkit-writing-mode:tb-rl;-ms-writing-mode:tb-rl;writing-mode:tb-rl}.exam_skin_wood .chartmake .chmscrtc_container.row_2 .chmscrtc_li{width:50%;-webkit-writing-mode:horizontal-tb;-ms-writing-mode:lr-tb;writing-mode:horizontal-tb}.exam_skin_wood .chartmake .chmscrtc_content{display:inline-block;width:92%;vertical-align:middle;text-align:left}.exam_skin_wood .chartmake .chmscrtc_content.small_cnt .chmscrtc_li{height:3.29167em}.exam_skin_wood .chartmake .chmscrtc_content.small_cnt .chmscrtc_li .clor_span{height:1.25em}.exam_skin_wood .chartmake .chmscrtc_li{vertical-align:top;width:100%;color:#333;display:inline-block;margin:.33333em 0;height:3.70833em;text-align:center}.exam_skin_wood .chartmake .chmscrtc_li .clor_span{display:block;margin:0 auto;width:2.08333em;height:1.66667em;border-radius:.29167em;background:#2986cd;border:.08333em solid #005698}.exam_skin_wood .chartmake .chmscrtc_li .text{display:block;font-size:1.08333em;line-height:1.9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.exam_skin_wood .chartmake .chmscrtc_li.stat_hide .clor_span{background:#c4c4c4!important;border-color:#7d7d7d!important}.exam_skin_wood .chartmake .chmscrtc_li.stat_hide .text{color:#7d7d7d!important}.exam_skin_wood .chartmake .chmscrtc_li.stat_on .clor_span{border:.125em solid #fff!important}.exam_skin_wood .chartmake .chmscrtc_li:first-of-type .clor_span{background:#2986cd;border-color:#005698}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(2) .clor_span{background:#ea7b38;border-color:#c0690d}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(3) .clor_span{background:#f1c701;border-color:#ad951d}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(4) .clor_span{background:#f66e6e;border-color:#c4575b}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(5) .clor_span{background:#43b9c5;border-color:#288c99}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(6) .clor_span{background:#9164d0;border-color:#836eaf}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(7) .clor_span{background:#50acf2;border-color:#2186d3}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(8) .clor_span{background:#e19d19;border-color:#bc8212}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(9) .clor_span{background:#c95b5b;border-color:#a75b5d}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(10) .clor_span{background:#df4c98;border-color:#d94a94}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(11) .clor_span{background:#379c4d;border-color:#237535}.exam_skin_wood .chartmake .chmscrtc_li:nth-of-type(12) .clor_span{background:#67db80;border-color:#41af58}.exam_skin_wood .chartmake .chartmake_edit .chme_table{border:.125em solid #6c8395;border-radius:.33333em;overflow-x:auto}.exam_skin_wood .chartmake .chartmake_edit .chme_table::-webkit-scrollbar{width:.5em;height:.5em;background:#b2c8dd}.exam_skin_wood .chartmake .chartmake_edit .chme_table::-webkit-scrollbar-thumb{border:1px solid #89a3b3;background:#e9e9e9;border-radius:1em}.exam_skin_wood .chartmake .chartmake_edit .chme_tr{min-width:9em}.exam_skin_wood .chartmake .chartmake_edit .chme_tr:first-child{width:18em}.exam_skin_wood .chartmake .chartmake_edit .chme_td .text{padding:0}.exam_skin_wood .chartmake .chartmake_stage .chme_tr{min-width:9em}.exam_skin_wood .chartmake_student .chmscrtc_li .text{margin-top:.2em;font-size:1em;line-height:1.2;white-space:normal;padding:0 .4em;overflow:visible}.hide_dom{display:none!important}.notice_tip_box{z-index:500;position:fixed;left:0;right:0;top:0;bottom:0;text-align:center}.notice_tip_box:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.notice_tip_box .notice_tip_con{display:inline-block;padding:1em 4.16667em;line-height:2.08333em;background:rgba(47,47,47,.81);border-radius:.16667em;vertical-align:middle;color:#fff}.notice_tip_box .notice_tip_con .text{font-size:1.41667em}.notice_tip_box.hide_mask{pointer-events:none}.notice_tip_box.hide_mask .notice_tip_con{pointer-events:auto}.prom_confirm_box{z-index:500;position:fixed;left:0;right:0;top:0;bottom:0;text-align:center}.prom_confirm_box:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.prom_confirm_box .prom_confirm_con{display:inline-block;width:33.54167em;height:20.125em;padding:1.08333em 2.08333em 0;line-height:2.08333em;background:rgba(47,47,47,.81);border-radius:.41667em;vertical-align:middle}.prom_confirm_box .confirm_text{position:relative;height:12.91667em;color:#fff;text-align:left}.prom_confirm_box .confirm_text:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.prom_confirm_box .confirm_text .text{display:inline-block;font-size:2em;line-height:2;font-style:normal;vertical-align:middle}.prom_confirm_box .btn_group{text-align:center}.prom_confirm_box .btn_group .cancel,.prom_confirm_box .btn_group .confirm{display:inline-block;vertical-align:middle;padding:0 1em;min-width:8.125em;height:3.08333em;line-height:3em;color:#384650;text-align:center;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);border:1px solid #397274;border-radius:.41667em;margin:0 1.33333em;cursor:pointer}.prom_confirm_box .btn_group .cancel .btn_text,.prom_confirm_box .btn_group .confirm .btn_text{font-size:1.5em;font-style:normal}.prom_confirm_box .btn_group .cancel.click_disabled,.prom_confirm_box .btn_group .confirm.click_disabled{background:#a9b6bf;border:0}.prom_confirm_box .btn_group .cancel:active,.prom_confirm_box .btn_group .confirm:active{background:#87c3c5}.prom_confirm_box.hide_mask{pointer-events:none}.prom_confirm_box.hide_mask .prom_confirm_con{pointer-events:auto}.typefaces_long .exam_skin_wood .chartmake .chme_main{width:55.63333em}.typefaces_long .exam_skin_wood .chartmake .chme_aside{width:9.78333em}.typefaces_long .exam_skin_wood .chartmake .chme_char_tit_input{width:100%}.typefaces_long .exam_skin_wood .chartmake .chme_char_tit_input input{padding:.5em}.typefaces_long .exam_skin_wood .chartmake .chme_data_type_input{width:15.29167em}.typefaces_long .exam_skin_wood .chartmake .chme_data_type_mid+.chme_data_type_input{width:10.25em}.typefaces_long .exam_skin_wood .chartmake .chme_ctype_cell .text{line-height:1.2;height:2.3em}.typefaces_long .exam_skin_wood .chartmake .chme_aside_list .text{line-height:1.1}.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn{position:relative;width:2.5em;height:2.5em;border-radius:50%}.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn:before{content:"";position:absolute;width:1.25em;height:.16667em;left:50%;top:50%;margin-left:-.625em;margin-top:-.08333em;background:#3b7476;border-radius:.16667em}.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn:after{content:"";position:absolute;width:.16667em;height:1.25em;left:50%;top:50%;margin-left:-.08333em;margin-top:-.625em;background:#3b7476;border-radius:.16667em}.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn:active:after,.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn:active:before{background:#fff}.typefaces_long .exam_skin_wood .chartmake .chme_aside_new_btn .text{display:none}.typefaces_long .exam_skin_wood .chartmake .chms_tit .text{display:block;padding-right:2em;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_main{width:55.63333em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside{width:9.78333em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_char_tit_input{width:100%}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_char_tit_input input{padding:.5em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_data_type_input{width:15.29167em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_data_type_mid+.chme_data_type_input{width:10.25em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_ctype_cell .text{line-height:1.2;height:2.3em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_list .text{line-height:1.1}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn{position:relative;width:2.5em;height:2.5em;border-radius:50%}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn:before{content:"";position:absolute;width:1.25em;height:.16667em;left:50%;top:50%;margin-left:-.625em;margin-top:-.08333em;background:#3b7476;border-radius:.16667em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn:after{content:"";position:absolute;width:.16667em;height:1.25em;left:50%;top:50%;margin-left:-.08333em;margin-top:-.625em;background:#3b7476;border-radius:.16667em}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn:active:after,.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn:active:before{background:#fff}.typefaces_ru_RU .exam_skin_wood .chartmake .chme_aside_new_btn .text{display:none}.typefaces_ru_RU .exam_skin_wood .chartmake .chms_tit .text{display:block;padding-right:2em;max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="chartmake _container"><div class="chartmake_edit _edit_container"><div class="chme_main"><div class="chme_char_tit"><div class="chme_char_tit_input _edit_title"><input class="" type="text" name="" value="" data-bind="attr:{placeholder:statistics_diagram_input_title}"></div></div><div class="chme_data_container"><div class="chme_step_title"><span class="text" data-bind="text:statistics_diagram_edit_data"></span></div><div class="chme_data_type"><span class="chme_data_type_input"><input type="text" value="" class="_data_name" maxlength="5" data-bind="attr:{placeholder:statistics_diagram_data}"> </span><span class="chme_data_type_mid"><span class="text">/</span></span> <span class="chme_data_type_input"><input type="text" value="" class="_unit_name" maxlength="5" data-bind="attr:{placeholder:statistics_diagram_unit}"></span></div><ul class="chme_table clearfix _edit_statistics_table"><li class="chme_tr chme_unit"><span class="chme_td bg_orange"><input type="text" class="placeholder" value="" maxlength="5" data-index="0_0" data-bind="attr:{placeholder:statistics_diagram_type_name}"> </span><span class="chme_td bg_blue"><input type="text" class="placeholder" value="" maxlength="5" data-index="1_0" data-bind="attr:{placeholder:statistics_diagram_series_1}"> </span><span class="chme_td bg_blue"><input type="text" class="placeholder" value="" maxlength="5" data-index="2_0" data-bind="attr:{placeholder:statistics_diagram_series_2}"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_1" data-bind="attr:{placeholder:statistics_diagram_type_1}"> </span><span class="chme_td"><input type="text" value="" data-index="1_1"></span><span class="chme_td"><input type="text" value="" data-index="2_1"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_2" data-bind="attr:{placeholder:statistics_diagram_type_2}"> </span><span class="chme_td"><input type="text" value="" data-index="1_2"></span><span class="chme_td"><input type="text" value="" data-index="2_2"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_3" data-bind="attr:{placeholder:statistics_diagram_type_3}"> </span><span class="chme_td"><input type="text" value="" data-index="1_3"></span><span class="chme_td"><input type="text" value="" data-index="2_3"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_4" data-bind="attr:{placeholder:statistics_diagram_type_4}"> </span><span class="chme_td"><input type="text" value="" data-index="1_4"></span><span class="chme_td"><input type="text" value="" data-index="2_4"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_5" data-bind="attr:{placeholder:statistics_diagram_type_5}"> </span><span class="chme_td"><input type="text" value="" data-index="1_5"></span><span class="chme_td"><input type="text" value="" data-index="2_5"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_6" data-bind="attr:{placeholder:statistics_diagram_type_6}"> </span><span class="chme_td"><input type="text" value="" data-index="1_6"></span><span class="chme_td"><input type="text" value="" data-index="2_6"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_7" data-bind="attr:{placeholder:statistics_diagram_type_7}"> </span><span class="chme_td"><input type="text" value="" data-index="1_7"></span><span class="chme_td"><input type="text" value="" data-index="2_7"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_8" data-bind="attr:{placeholder:statistics_diagram_type_8}"> </span><span class="chme_td"><input type="text" value="" data-index="1_8"></span><span class="chme_td"><input type="text" value="" data-index="2_8"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_9" data-bind="attr:{placeholder:statistics_diagram_type_9}"> </span><span class="chme_td"><input type="text" value="" data-index="1_9"></span><span class="chme_td"><input type="text" value="" data-index="2_9"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_10" data-bind="attr:{placeholder:statistics_diagram_type_10}"> </span><span class="chme_td"><input type="text" value="" data-index="1_10"></span><span class="chme_td"><input type="text" value="" data-index="2_10"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_11" data-bind="attr:{placeholder:statistics_diagram_type_11}"> </span><span class="chme_td"><input type="text" value="" data-index="1_11"></span><span class="chme_td"><input type="text" value="" data-index="2_11"></span></li><li class="chme_tr"><span class="chme_td bg_orange"><input class="placeholder" type="text" value="" maxlength="5" data-index="0_12" data-bind="attr:{placeholder:statistics_diagram_type_12}"> </span><span class="chme_td"><input type="text" value="" data-index="1_12"></span><span class="chme_td"><input type="text" value="" data-index="2_12"></span></li></ul></div><div class="chme_ctype_container"><div class="chme_step_title"><span class="text" data-bind="text:statistics_diagram_select_diagram"></span></div><ul class="chme_ctype clearfix _footer_chart_type_container"><li class="chme_ctype_cell strip_v"><i class="chme_icon"></i> <span class="text" data-bind="text:statistics_diagram_vertical_bar_chart"></span> <a href="#" class="chme_commit _create_chart" data-chart-type="VERTICAL_BAR_CHART"><span class="text" data-bind="text:statistics_diagram_create"></span></a></li><li class="chme_ctype_cell strip_h"><i class="chme_icon"></i> <span class="text" data-bind="text:statistics_diagram_horizontal_bar_chart"></span> <a href="#" class="chme_commit _create_chart" data-chart-type="HORIZONTAL_BAR_CHART"><span class="text" data-bind="text:statistics_diagram_create"></span></a></li><li class="chme_ctype_cell line"><i class="chme_icon"></i> <span class="text" data-bind="text:statistics_diagram_line_chart"></span> <a href="#" class="chme_commit _create_chart" data-chart-type="LINE_CHART"><span class="text" data-bind="text:statistics_diagram_create"></span></a></li><li class="chme_ctype_cell sector"><i class="chme_icon"></i> <span class="text" data-bind="text:statistics_diagram_pie_chart"></span> <a href="#" class="chme_commit _create_chart" data-chart-type="PIE_CHART"><span class="text" data-bind="text:statistics_diagram_create"></span></a></li></ul></div><div class="chme_commit_container"></div></div><div class="chme_aside"><ul class="chme_aside_container"><li class="chme_aside_page1 _aside_page"><ul><li class="chme_aside_list chme_tq on" data-templet="weather"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_weather"></span></li><li class="chme_aside_list chme_sr" data-templet="birthday"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_birthday"></span></li><li class="chme_aside_list chme_cxrk" data-templet="urbanRuralPopulation"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_urban_rural_population"></span></li><li class="chme_aside_list chme_tw" data-templet="temperature"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_temperature"></span></li><li class="chme_aside_list chme_shrk" data-templet="shanghaiPopulation"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_shanghai_population"></span></li></ul></li><li class="chme_aside_page2 hide_dom _aside_page"><ul><li class="chme_aside_list chme_yd" data-templet="sports"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_sports"></span></li><li class="chme_aside_list chme_nn" data-templet="milkIngredient"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_milk_ingredient"></span></li><li class="chme_aside_list chme_smbh" data-templet="treeChanges"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_tree_changes"></span></li><li class="chme_aside_list chme_szbl" data-templet="treeProportion"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_tree_proportion"></span></li><li class="chme_aside_list chme_smsl" data-templet="treeNumber"><i class="chme_aside_icon"></i> <span class="text" data-bind="text:statistics_diagram_tree_number"></span></li></ul></li><li class="chme_aside_turn _turn_page"></li><li class="chme_aside_new"><a href="#" class="chme_aside_new_btn _create_new_statistics"><span class="text" data-bind="text:statistics_diagram_new_statistics_diagram"></span></a></li></ul></div></div><div class="chartmake_stage hide_dom _stage_container"><div class="chms_main"><div class="chms_tit"><span class="text _stage_title"></span></div><div class="chms_data_container"><ul class="chme_table clearfix _stage_statistics_table"></ul></div><div class="chms_chart_container _chart_container"><div class="chms_chart_body _chart_body"></div><div class="chmscrtc_container _chart_legend_container"><ul class="chmscrtc_content"></ul></div></div></div><div class="chms_aside"><ul class="chms_aside_container _aside_chart_type_container"><li class="chms_aside_list chms_ss" data-chart-type="VERTICAL_BAR_CHART"></li><li class="chms_aside_list chms_hs" data-chart-type="HORIZONTAL_BAR_CHART"></li><li class="chms_aside_list chms_zx" data-chart-type="LINE_CHART"></li><li class="chms_aside_list chms_bz" data-chart-type="PIE_CHART"></li></ul><a href="#" class="chms_return _return_back"><span class="text" data-bind="text:statistics_diagram_back"></span></a></div></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+(function () {
+  var logger;
+  var helper = {
+    chartType: {
+      verticalBarChart: 'VERTICAL_BAR_CHART',
+      horizontalBarChart: 'HORIZONTAL_BAR_CHART',
+      lineChart: 'LINE_CHART',
+      pieChart: 'PIE_CHART'
+    },
+    presenter: null,
+    chart: null,
+    curTableData: null,
+    curTempletName: undefined, //当前的模板名
+    isTempletData: true,
+    isModify: undefined, //是否是在编辑端
+    isChangedTempletData: false,
+    nextTempletData: undefined, //如果模板数据被改变，用来保存将要展示的的模板，新建时为new
+    //存储页面的DOM元素
+    domObj: {},
+    i18n: {}
+  };
+  var templetData = {};
+
+  var VerticalBarChart, HorizontalBarChart, LineChart, PieChart;
+
+  var Presenter = BasicPresenter.extend({
+    metaInfo: {
+      name: 'StatisticsDiagram',
+      type: PresenterType.PRESENTER_COMPONENT,
+      subtype: ''
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function $init() {
+      var self = this;
+      self._super();
+      //定义日志
+      self.logger.appendHandler(function (message, context) {
+        switch (context.level.name) {
+          case 'DEBUG':
+            console.debug(message);
+            break;
+          case 'INFO':
+            console.info(message);
+            break;
+          case 'WARN':
+            console.warn(message);
+            break;
+          case 'ERROR':
+            console.error(message);
+            break;
+          default:
+            console.log(message);
+            break;
+        }
+      }, {
+        level: Logger.DEBUG
+      });
+      logger = self.logger;
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    _service_: {
+      constructor: function constructor(parent) {
+        this.parent = parent;
+      },
+      getQuestionInfo: function getQuestionInfo() {
+        return {
+          id: helper.model.ID,
+          type_code: 'StatisticsDiagram',
+          type_name: helper.i18n['statistics_diagram'],
+          url: '',
+          item: 'StatisticsDiagram',
+          statistics_type: 'no_need',
+          dispatchOnly: true,
+          notExistStatistics: true,
+          noNeedQuizProgress: true
+        };
+      },
+      getExtendData: function getExtendData() {
+        //编辑的表格数据
+        var editTableData = [];
+        for (var i = 0; i < 3; i++) {
+          var $inputs = helper.domObj.$tableInputs.filter('input[data-index^="' + i + '_"]');
+          $inputs.each(function () {
+            editTableData.push({ dataIndex: $(this).data('index'), value: $(this).val() });
+          });
+        }
+        //展示的表格数据
+        var stageTableDataChecked = [];
+        var $spans = helper.domObj.$stageStatisticsTable.find('span.chme_td[data-index]');
+        $spans.each(function () {
+          if ($(this).css('background-color') !== 'rgb(255, 255, 255)') {
+            stageTableDataChecked.push($(this).data('index'));
+          }
+        });
+
+        var option = {
+          isShowEditContainer: !helper.domObj.$editContainer.hasClass('hide_dom'), //是否显示编辑态
+          title: helper.domObj.$editTitle.val(), //标题
+          dataName: helper.domObj.$dataName.val(), //数据名称
+          unitName: helper.domObj.$unitName.val(), //单位名称
+          tableData: editTableData, //表格数据
+          isTurnPage: helper.domObj.$turnPage.hasClass('chme_up'), //是否翻页
+          asidePageChecked: helper.domObj.$asideTempletItems.filter('.on').data('templet'), //选中的分类
+          chartTypeChecked: helper.domObj.$footerChartTypes.filter('.ui_btn_active').find('a').data('chartType'), //选中的图表类型
+          stageTableDataChecked: stageTableDataChecked, //展示表格选中的单元格
+          asideChartTypeChecked: helper.domObj.$asideChartTypes.filter('.on').data('chartType'), //选中的展示左边图表类型
+          asideLegendNameChecked: helper.domObj.$chartLegendContainer.find('li.stat_hide').data('legendName'), //图例名称
+          editTableScrollLeft: helper.domObj.$editStatisticsTable.data('scrollLeft'), //编辑态表格滚动条位置
+          editTableScrollWidth: helper.domObj.$editStatisticsTable.data('scrollWidth'), //编辑态表格宽度
+          stageTableScrollLeft: helper.domObj.$stageStatisticsTable.parent().data('scrollLeft'), //展示态表格滚动条位置
+          stageTableScrollWidth: helper.domObj.$stageStatisticsTable.parent().data('scrollWidth'), //展示态表格宽度
+          templetData: templetData, //模板数据
+          helper: {
+            curTableData: helper.curTableData,
+            isTempletData: helper.isTempletData,
+            isChangedTempletData: helper.isChangedTempletData, //模板数据是否被改变过
+            nextTempletData: helper.nextTempletData //模板数据被改变过，将要被的下一个模板
+          }
+        };
+
+        return option;
+      },
+      setLocationProperties: function setLocationProperties(properties) {
+        helper.i18n = properties;
+      }
+    },
+    getService: function getService() {
+      this._service_.constructor(this);
+      return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function run(view, model) {
+      $.extend(helper, {
+        chartType: {
+          verticalBarChart: 'VERTICAL_BAR_CHART',
+          horizontalBarChart: 'HORIZONTAL_BAR_CHART',
+          lineChart: 'LINE_CHART',
+          pieChart: 'PIE_CHART'
+        },
+        presenter: null,
+        chart: null,
+        curTableData: null,
+        isTempletData: true,
+        isChangedTempletData: false,
+        isModify: this.urlParams.is_modify === 'true', //是否是编辑端
+        //存储页面的DOM元素
+        domObj: {}
+      });
+      helper.presenter = this;
+      helper.model = model;
+      helper.$view = $(view);
+      helper.isStudent = this.isStudent;
+    },
+    pageShow: function pageShow(view, model) {
+      var self = this;
+      ko.applyBindings(helper.i18n, view);
+      self._initTempletData();
+      self._initComponent();
+      self._bindEvent();
+
+      var $deferred = $.Deferred();
+      require(['VerticalBarChart', 'HorizontalBarChart', 'LineChart', 'PieChart'], function (V, H, L, P) {
+        VerticalBarChart = V;
+        HorizontalBarChart = H;
+        LineChart = L;
+        PieChart = P;
+      }).then(function () {
+        helper.domObj.$asideTempletItems.first().trigger('click');
+        self._pushProcess();
+      }).then(function () {
+        //XXX 解决101ppt截图不全问题
+        setTimeout(function () {
+          $deferred.resolve();
+        }, 2000);
+      });
+
+      if (helper.isStudent) {
+        helper.domObj.$container.addClass('chartmake_student');
+      }
+      return $deferred.promise();
+    },
+    pageLeave: function pageLeave() {
+      this._unbindEvent();
+    },
+    destroy: function destroy() {},
+    /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+    getState: function getState() {},
+    setState: function setState(state, options) {},
+    /****以下开始为Presenter的私有方法*****/
+    _pushProcess: function _pushProcess() {
+      //工具窗口是否有推送数据
+      var extendData = helper.model['__ExtendModel'];
+      if (!$.isEmptyObject(extendData)) {
+        //模板数据
+        templetData = extendData.templetData;
+        //选中右边分类项
+        !!extendData.asidePageChecked && helper.domObj.$asideTempletItems.filter('li[data-templet="' + extendData.asidePageChecked + '"]').trigger('click');
+        //设置标题
+        helper.domObj.$editTitle.val(extendData.title);
+        //设置数据名称
+        helper.domObj.$dataName.val(extendData.dataName);
+        //设置单位名称
+        helper.domObj.$unitName.val(extendData.unitName);
+        //设置编辑态表格数据
+        for (var i = 0, iLen = extendData.tableData.length; i < iLen; i++) {
+          var cell = extendData.tableData[i];
+          helper.domObj.$tableInputs.filter('input[data-index="' + cell.dataIndex + '"]').val(cell.value);
+        }
+        //右边分类是否翻页
+        extendData.isTurnPage && helper.domObj.$turnPage.trigger('click');
+        //选中的图表类型
+        !!extendData.chartTypeChecked && helper.domObj.$footerChartTypes.find('a[data-chart-type="' + extendData.chartTypeChecked + '"]').parent().trigger('click');
+        if (extendData.isShowEditContainer) {
+          //编辑态
+          helper.domObj.$editContainer.removeClass('hide_dom');
+          helper.domObj.$stageContainer.addClass('hide_dom');
+          if (extendData.helper.isChangedTempletData && !!extendData.helper.nextTempletData) {
+            $.extend(helper, extendData.helper);
+            if (extendData.helper.nextTempletData === 'new') {
+              helper.domObj.$createNewStatistics.trigger('click');
+            } else {
+              helper.domObj.$asideTempletItems.filter('li[data-templet="' + extendData.helper.nextTempletData + '"]').trigger('click');
+            }
+          }
+          //设置编辑态的表格滚动条，点击处理之后处理
+          var editScrollRatio = helper.domObj.$editStatisticsTable[0].scrollWidth / extendData.editTableScrollWidth;
+          helper.domObj.$editStatisticsTable.scrollLeft(extendData.editTableScrollLeft * editScrollRatio);
+        } else {
+          //展示态
+          //设置编辑态的表格滚动条，表格容器隐藏之前处理
+          var editScrollRatio = helper.domObj.$editStatisticsTable[0].scrollWidth / extendData.editTableScrollWidth;
+          helper.domObj.$editStatisticsTable.scrollLeft(extendData.editTableScrollLeft * editScrollRatio);
+          helper.domObj.$editContainer.addClass('hide_dom');
+          helper.domObj.$stageContainer.removeClass('hide_dom');
+          !!extendData.chartTypeChecked && helper.domObj.$footerChartTypes.find('a[data-chart-type="' + extendData.chartTypeChecked + '"]').trigger('click');
+          //右边选中的图表类型
+          !!extendData.asideChartTypeChecked && helper.domObj.$asideChartTypes.filter('li[data-chart-type="' + extendData.asideChartTypeChecked + '"]').trigger('click');
+          //如果不是饼图，才触发图例的点击事件
+          if (extendData.chartTypeChecked !== helper.chartType.pieChart) {
+            !!extendData.asideLegendNameChecked && helper.domObj.$chartLegendContainer.find('li[data-legend-name="' + extendData.asideLegendNameChecked + '"]').trigger('mousedown');
+          }
+          //触发表格的点击事件
+          extendData.stageTableDataChecked.forEach(function (di) {
+            helper.domObj.$stageStatisticsTable.find('span.chme_td[data-index="' + di + '"]').trigger('mousedown');
+          });
+        }
+
+        //设置展示态滚动条位置
+        var stageScrollRatio = helper.domObj.$stageStatisticsTable.parent()[0].scrollWidth / extendData.stageTableScrollWidth;
+        helper.domObj.$stageStatisticsTable.parent().scrollLeft(extendData.stageTableScrollLeft * stageScrollRatio);
+      }
+    },
+    _initTempletData: function _initTempletData() {
+      templetData = {
+        //天气
+        weather: {
+          name: helper.i18n['statistics_diagram_weather'],
+          title: helper.i18n['statistics_diagram_beijing_2012_weather'],
+          dataName: '',
+          unitName: '',
+          defaultChart: helper.chartType.verticalBarChart,
+          tableData: [[helper.i18n['statistics_diagram_weather'], helper.i18n['statistics_diagram_fine'], helper.i18n['statistics_diagram_overcast'], helper.i18n['statistics_diagram_cloudy'], helper.i18n['statistics_diagram_shower'], helper.i18n['statistics_diagram_thunder_shower']], [helper.i18n['statistics_diagram_number_of_days'], 9, 6, 9, 5, 2]]
+        },
+        //生日
+        birthday: {
+          name: helper.i18n['statistics_diagram_birthday'],
+          title: helper.i18n['statistics_diagram_our_class_birthday_stat'],
+          dataName: '',
+          unitName: '',
+          defaultChart: helper.chartType.verticalBarChart,
+          tableData: [[helper.i18n['statistics_diagram_birthday_month'], helper.i18n['statistics_diagram_month_1'], helper.i18n['statistics_diagram_month_2'], helper.i18n['statistics_diagram_month_3'], helper.i18n['statistics_diagram_month_4'], helper.i18n['statistics_diagram_month_5'], helper.i18n['statistics_diagram_month_6'], helper.i18n['statistics_diagram_month_7'], helper.i18n['statistics_diagram_month_8'], helper.i18n['statistics_diagram_month_9'], helper.i18n['statistics_diagram_month_10'], helper.i18n['statistics_diagram_month_11'], helper.i18n['statistics_diagram_month_12']], [helper.i18n['statistics_diagram_number_of_people']]]
+        },
+        //城乡人口
+        urbanRuralPopulation: {
+          name: helper.i18n['statistics_diagram_urban_rural_population'],
+          title: helper.i18n['statistics_diagram_urban_rural_population_stat'],
+          dataName: helper.i18n['statistics_diagram_number_of_people'],
+          unitName: helper.i18n['statistics_diagram_ten_thousand'],
+          defaultChart: helper.chartType.verticalBarChart,
+          tableData: [[helper.i18n['statistics_diagram_year'], '1980', '1990', '2000', '2010'], [helper.i18n['statistics_diagram_town'], 21, 27, 35, 46], [helper.i18n['statistics_diagram_village'], 58, 54, 49, 43]]
+        },
+        //体温
+        temperature: {
+          name: helper.i18n['statistics_diagram_temperature'],
+          title: helper.i18n['statistics_diagram_one_day_temperature_stat'],
+          dataName: helper.i18n['statistics_diagram_temperature'],
+          unitName: '℃',
+          defaultChart: helper.chartType.lineChart,
+          tableData: [[helper.i18n['statistics_diagram_time'], helper.i18n['statistics_diagram_get_up'], '10:00', '14:00', '17:30', '19:30'], [helper.i18n['statistics_diagram_likang'], 36.5, 36.8, 37.0, 37.2, 37.0], [helper.i18n['statistics_diagram_self']]]
+        },
+        //上海人口
+        shanghaiPopulation: {
+          name: helper.i18n['statistics_diagram_shanghai_population'],
+          title: helper.i18n['statistics_diagram_shanghai_population_born_die'],
+          dataName: helper.i18n['statistics_diagram_population_number'],
+          unitName: helper.i18n['statistics_diagram_ten_thousand'],
+          defaultChart: helper.chartType.lineChart,
+          tableData: [[helper.i18n['statistics_diagram_time'], '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010'], [helper.i18n['statistics_diagram_born_population'], 5.76, 6.20, 5.73, 8.09, 8.25, 8.12, 10.08, 9.67, 9.23, 10.02], [helper.i18n['statistics_diagram_die_population'], 9.34, 9.67, 10.07, 9.65, 10.23, 9.80, 10.22, 10.70, 10.67, 10.87]]
+        },
+        //运动
+        sports: {
+          name: helper.i18n['statistics_diagram_sports'],
+          title: helper.i18n['statistics_diagram_61_favourite_sports_stat'],
+          dataName: '',
+          unitName: '',
+          defaultChart: helper.chartType.pieChart,
+          tableData: [[helper.i18n['statistics_diagram_item'], helper.i18n['statistics_diagram_ping_pong'], helper.i18n['statistics_diagram_football'], helper.i18n['statistics_diagram_rope_skipping'], helper.i18n['statistics_diagram_shuttlecock'], helper.i18n['statistics_diagram_other']], [helper.i18n['statistics_diagram_number_of_people'], 12, 8, 5, 6, 9]]
+        },
+        //牛奶成分
+        milkIngredient: {
+          name: helper.i18n['statistics_diagram_milk_ingredient'],
+          title: helper.i18n['statistics_diagram_milk_ingredient_stat'],
+          dataName: helper.i18n['statistics_diagram_percentage'],
+          unitName: '%',
+          defaultChart: helper.chartType.pieChart,
+          tableData: [[helper.i18n['statistics_diagram_nutritional_ingredient'], helper.i18n['statistics_diagram_water'], helper.i18n['statistics_diagram_protein'], helper.i18n['statistics_diagram_fat'], helper.i18n['statistics_diagram_milk_sugar'], helper.i18n['statistics_diagram_other']], [helper.i18n['statistics_diagram_percentage'], 87, 3.3, 4, 5, 0.7]]
+        },
+        //树木变化
+        treeChanges: {
+          name: helper.i18n['statistics_diagram_tree_changes'],
+          title: helper.i18n['statistics_diagram_lvyin_school_tree_count_stat'],
+          dataName: helper.i18n['statistics_diagram_count'],
+          unitName: helper.i18n['statistics_diagram_ke'],
+          defaultChart: helper.chartType.lineChart,
+          tableData: [[helper.i18n['statistics_diagram_year'], '2007', '2008', '2009', '2010', '2011'], [helper.i18n['statistics_diagram_count'] + '/' + helper.i18n['statistics_diagram_ke'], 100, 120, 150, 170, 200]]
+        },
+        //树种占比
+        treeProportion: {
+          name: helper.i18n['statistics_diagram_tree_proportion'],
+          title: helper.i18n['statistics_diagram_lvyin_school_tree_percentage_stat'],
+          dataName: helper.i18n['statistics_diagram_percentage'],
+          unitName: '%',
+          defaultChart: helper.chartType.pieChart,
+          tableData: [[helper.i18n['statistics_diagram_varieties_of_trees'], helper.i18n['statistics_diagram_poplar'], helper.i18n['statistics_diagram_willow'], helper.i18n['statistics_diagram_pine'], helper.i18n['statistics_diagram_chinese_scholar_tree'], helper.i18n['statistics_diagram_other']], [helper.i18n['statistics_diagram_percentage'] + '/%', 25, 20, 15, 15, 25]]
+        },
+        //树木数量
+        treeNumber: {
+          name: helper.i18n['statistics_diagram_tree_number'],
+          title: helper.i18n['statistics_diagram_lvyin_school_tree_number_stat'],
+          dataName: helper.i18n['statistics_diagram_count'],
+          unitName: helper.i18n['statistics_diagram_ke'],
+          defaultChart: helper.chartType.verticalBarChart,
+          tableData: [[helper.i18n['statistics_diagram_varieties_of_trees'], helper.i18n['statistics_diagram_poplar'], helper.i18n['statistics_diagram_willow'], helper.i18n['statistics_diagram_pine'], helper.i18n['statistics_diagram_chinese_scholar_tree'], helper.i18n['statistics_diagram_other']], [helper.i18n['statistics_diagram_count'] + '/' + helper.i18n['statistics_diagram_ke'], 50, 40, 30, 30, 50]]
+        }
+      };
+    },
+    _initComponent: function _initComponent() {
+      //容器
+      helper.domObj.$container = helper.$view.find('._container');
+
+      //编辑态的容器
+      helper.domObj.$editContainer = helper.$view.find('._edit_container');
+      //编辑态的标题
+      helper.domObj.$editTitle = helper.$view.find('._edit_title input');
+      //编辑态的数据名称
+      helper.domObj.$dataName = helper.$view.find('._data_name');
+      //编辑态的单位名称
+      helper.domObj.$unitName = helper.$view.find('._unit_name');
+      //编辑态表格容器
+      helper.domObj.$editStatisticsTable = helper.$view.find('._edit_statistics_table');
+      //编辑态表格里的所有input
+      helper.domObj.$tableInputs = helper.$view.find('._edit_statistics_table input');
+      //编辑态的翻页按钮
+      helper.domObj.$turnPage = helper.$view.find('._turn_page');
+      //编辑态的右边的所有模板选项
+      helper.domObj.$asideTempletItems = helper.$view.find('._aside_page li');
+      //编辑态的新建统计图按钮
+      helper.domObj.$createNewStatistics = helper.$view.find('._create_new_statistics');
+      //编辑态的底部的所有报表图选项
+      helper.domObj.$footerChartTypes = helper.$view.find('._footer_chart_type_container li');
+      //编辑态的底部所有生成按钮
+      helper.domObj.$createCharts = helper.$view.find('._footer_chart_type_container ._create_chart');
+
+      //展示的容器
+      helper.domObj.$stageContainer = helper.$view.find('._stage_container');
+      //展示的标题
+      helper.domObj.$stageTitle = helper.$view.find('._stage_title');
+      //展示表格容器
+      helper.domObj.$stageStatisticsTable = helper.$view.find('._stage_statistics_table');
+      //返回按钮
+      helper.domObj.$returnBack = helper.$view.find('._return_back');
+      //展示的右边所有图表类型
+      helper.domObj.$asideChartTypes = helper.$view.find('._aside_chart_type_container li');
+      //展示的图表容器，包含图例标记
+      helper.domObj.$chartContainer = helper.$view.find('._chart_container');
+      //展示的图表容器,仅仅图表
+      helper.domObj.$chartBody = helper.$view.find('._chart_body');
+      //展示的图例容器
+      helper.domObj.$chartLegendContainer = helper.$view.find('._chart_legend_container');
+    },
+    _bindEvent: function _bindEvent() {
+      var self = this;
+      //编辑态表格滚动
+      helper.domObj.$editStatisticsTable.scroll(function () {
+        $(this).data('scrollWidth', helper.domObj.$editStatisticsTable[0].scrollWidth);
+        $(this).data('scrollLeft', helper.domObj.$editStatisticsTable[0].scrollLeft);
+      });
+      helper.domObj.$stageStatisticsTable.parent().scroll(function () {
+        $(this).data('scrollWidth', helper.domObj.$stageStatisticsTable.parent()[0].scrollWidth);
+        $(this).data('scrollLeft', helper.domObj.$stageStatisticsTable.parent()[0].scrollLeft);
+      });
+
+      //编辑态模板的数据被修改时
+      helper.domObj.$tableInputs.on('change', self._tableInputValueChangedHandler);
+      helper.domObj.$editTitle.on('change', function (e) {
+        e.preventDefault();
+        helper.isChangedTempletData = true;
+        //修改模板数据
+        if (helper.isModify && helper.curTempletName !== 'new') {
+          templetData[helper.curTempletName].title = $(this).val();
+        }
+      });
+      helper.domObj.$dataName.on('change', function (e) {
+        e.preventDefault();
+        helper.isChangedTempletData = true;
+        //修改模板数据
+        if (helper.isModify && helper.curTempletName !== 'new') {
+          templetData[helper.curTempletName].dataName = $(this).val();
+        }
+      });
+      helper.domObj.$unitName.on('change', function (e) {
+        e.preventDefault();
+        helper.isChangedTempletData = true;
+        //修改模板数据
+        if (helper.isModify && helper.curTempletName !== 'new') {
+          templetData[helper.curTempletName].unitName = $(this).val();
+        }
+      });
+      //编辑态时，右边翻页
+      helper.domObj.$turnPage.on('click', self._asideTurnPageClickHandler);
+
+      //编辑态时，右边选项的点击事件
+      helper.domObj.$asideTempletItems.on('click', self._asideTempletItemClickHandler);
+
+      //点击新建统计图
+      helper.domObj.$createNewStatistics.on('click', self._createNewStatisticsClickHandler);
+
+      //编辑态时，底部chart类型切换
+      helper.domObj.$footerChartTypes.on('mouseenter', function (e) {
+        e.preventDefault();
+        $(this).addClass('ui_btn_hover');
+      });
+      helper.domObj.$footerChartTypes.on('mouseleave', function (e) {
+        e.preventDefault();
+        $(this).removeClass('ui_btn_hover');
+      });
+      helper.domObj.$footerChartTypes.on('click', function (e) {
+        e.preventDefault();
+        helper.domObj.$footerChartTypes.removeClass('ui_btn_active');
+        $(this).addClass('ui_btn_active');
+        //修改模板数据
+        if (helper.isModify && helper.curTempletName !== 'new') {
+          templetData[helper.curTempletName].defaultChart = $(this).find('._create_chart').data('chartType');
+        }
+      });
+
+      //点击生成
+      helper.domObj.$createCharts.on('click', self._createChartClickHandler);
+
+      //点击返回按钮
+      helper.domObj.$returnBack.on('click', function (e) {
+        e.preventDefault();
+        helper.domObj.$editContainer.removeClass('hide_dom');
+        helper.domObj.$stageContainer.addClass('hide_dom');
+      });
+      //切换图表
+      helper.domObj.$asideChartTypes.on('click', self._asideChartTypesClickHandler);
+    },
+    _unbindEvent: function _unbindEvent() {
+      helper.domObj.$returnBack.off('click');
+    },
+    /**
+     * 表格数据验证，返回值
+     * 0：表示成功
+     * 1：表示数字非法
+     * 2：表示内容为空
+     * 3：表示超出范围0-10000
+     * @param opt
+     * @returns {number}
+     * @private
+     */
+    _validateOptionData: function _validateOptionData(opt) {
+      var validate = 0;
+      for (var i = 1, iLen = opt.tableData.length; i < iLen; i++) {
+        for (var j = 1, jLen = opt.tableData[i].length; j < jLen; j++) {
+          if (isNaN(opt.tableData[i][j])) {
+            validate = 1;
+            return validate;
+          }
+          if (Number(opt.tableData[i][j]) < 0 || Number(opt.tableData[i][j]) > 10000) {
+            validate = 3;
+            return validate;
+          }
+        }
+      }
+      if (opt.tableData === undefined || opt.tableData[1] === undefined || opt.tableData[1][1] == undefined) {
+        validate = 2;
+      }
+      return validate;
+    },
+    _getOptionData: function _getOptionData() {
+      var optData = {
+        name: helper.domObj.$asideTempletItems.filter('.on').find('span.text').text(),
+        title: helper.domObj.$editTitle.val(),
+        dataName: helper.domObj.$dataName.val(),
+        unitName: helper.domObj.$unitName.val(),
+        selectedChart: helper.domObj.$footerChartTypes.filter('.ui_btn_active').find('a').data('chartType'),
+        tableData: []
+      };
+      for (var i = 0; i < 3; i++) {
+        var data = [];
+        for (var j = 0; j < 13; j++) {
+          var input = helper.domObj.$tableInputs.filter('[data-index=' + i + '_' + j + ']');
+          // var typeInput = helper.domObj.$tableInputs.filter('[data-index=0_' + j + ']');
+          // var serieInput = helper.domObj.$tableInputs.filter('[data-index=' + i + '_0]');
+          // if ((i > 0 && j > 0) && $.trim(typeInput.val()) !== '' && $.trim(serieInput.val()) !== '' && $.trim(input.val()) == '') {
+          //     input.val(0);
+          // }
+          data.push($.trim(input.val()));
+        }
+        optData.tableData.push(data);
+      }
+      //过滤数据为空的行
+      for (var i = 1, iLen = optData.tableData.length; i < iLen; i++) {
+        var isRowEmpty = true;
+        for (var j = 0, jLen = optData.tableData[i].length; j < jLen; j++) {
+          if (optData.tableData[i][j] && optData.tableData[i][j] != '') {
+            isRowEmpty = false;
+            break;
+          }
+        }
+        if (isRowEmpty) {
+          optData.tableData.splice(i, 1);
+          iLen--;
+        }
+      }
+
+      //过滤数据为空的列
+      for (var i = 1; i < 13; i++) {
+        var isColEmpty = true;
+        for (var j = 0; j < 3; j++) {
+          //需要再判断行是否为空，因为有可能j=1那行有可能为空
+          if (!optData.tableData[j]) {
+            continue;
+          }
+          if (optData.tableData[j][i] != '') {
+            isColEmpty = false;
+            break;
+          }
+        }
+        if (isColEmpty) {
+          for (var k = 0; k < 3; k++) {
+            if (optData.tableData[k]) {
+              optData.tableData[k].splice(i, 1);
+            }
+          }
+          i--;
+        }
+      }
+      //如果只有一行的话，那就只表头，没有数据
+      // if (optData.tableData.length <= 1) {
+      //     return null;
+      // }
+      if (optData.tableData && optData.tableData[0] && optData.tableData[0][0] == '') {
+        optData.tableData[0][0] = helper.i18n['statistics_diagram_type_name'];
+      }
+      //如果类别或系列为空，补上默认的,小数位超过两位，保留两位
+      for (var i = 1, iLen = optData.tableData.length; i < iLen; i++) {
+        for (var j = 1, jLen = optData.tableData[i].length; j < jLen; j++) {
+          if ($.trim(optData.tableData[i][j]) == '') {
+            optData.tableData[i][j] = '0';
+          }
+          if (optData.tableData[i][j].toString().indexOf('.') != -1) {
+            optData.tableData[i][j] = Number(Number(optData.tableData[i][j]).toFixed(2));
+          }
+          if (optData.tableData[0][j] == '') {
+            optData.tableData[0][j] = helper.i18n['statistics_diagram_type'] + j;
+          }
+          if (optData.tableData[i][0] == '') {
+            optData.tableData[i][0] = helper.i18n['statistics_diagram_series'] + i;
+          }
+        }
+      }
+
+      return optData;
+    },
+    _asideChartTypesClickHandler: function _asideChartTypesClickHandler(e) {
+      e.preventDefault();
+      var chart;
+      var chartType = $(this).data('chartType');
+      var opt = helper.presenter._getOptionData();
+      opt.selectedChart = chartType;
+      switch (chartType) {
+        case helper.chartType.horizontalBarChart:
+          chart = new HorizontalBarChart(opt, helper);
+          break;
+        case helper.chartType.verticalBarChart:
+          chart = new VerticalBarChart(opt, helper);
+          break;
+        case helper.chartType.lineChart:
+          chart = new LineChart(opt, helper);
+          break;
+        case helper.chartType.pieChart:
+          chart = new PieChart(opt, helper);
+          break;
+        default:
+          logger.error('不支持的图表类型[' + chartType + ']');
+      }
+
+      if (helper.chart.getType() != 'pie' && chart.getType() != 'pie') {
+        var legend = helper.chart.getEchart().getOption().legend;
+        var option = chart.getEchart().getOption();
+        option.legend = legend;
+        chart.getEchart().setOption(option);
+        //图例dom标记也要改变
+        for (var i = 0, iLen = option.series.length; i < iLen; i++) {
+          var name = option.series[i].name;
+          var $legend = helper.domObj.$chartLegendContainer.find('ul li[data-legend-name="' + name + '"]');
+          if (legend[0] === undefined || legend[0].selected === undefined || legend[0].selected[name] === undefined || legend[0].selected[name]) {
+            $legend.removeClass('stat_hide');
+          } else {
+            $legend.addClass('stat_hide');
+          }
+        }
+      }
+      helper.chart = chart;
+    },
+    _tableInputValueChangedHandler: function _tableInputValueChangedHandler(e) {
+      e.preventDefault();
+      //模板数据被改变
+      if (helper.isTempletData) {
+        helper.isChangedTempletData = true;
+      }
+      //修改模板数据
+      if (helper.isModify && helper.curTempletName !== 'new') {
+        var indexs = $(this).data('index').split('_');
+        templetData[helper.curTempletName].tableData[indexs[0]] === undefined && (templetData[helper.curTempletName].tableData[indexs[0]] = []);
+        templetData[helper.curTempletName].tableData[indexs[0]][indexs[1]] = $(this).val();
+      }
+    },
+    _asideTurnPageClickHandler: function _asideTurnPageClickHandler(e) {
+      e.preventDefault();
+      $(this).hasClass('chme_up') ? $(this).removeClass('chme_up') : $(this).addClass('chme_up');
+      $.each($('._aside_page'), function (i, value) {
+        $(value).hasClass('hide_dom') ? $(value).removeClass('hide_dom') : $(value).addClass('hide_dom');
+      });
+    },
+    _asideTempletItemClickHandler: function _asideTempletItemClickHandler(e) {
+      e.preventDefault();
+      var that = this;
+      if (helper.isChangedTempletData && !helper.isModify) {
+        helper.nextTempletData = $(that).data('templet');
+        ToolDialog.show({
+          i18n: {
+            confirm: helper.i18n['statistics_diagram_confirm'],
+            cancel: helper.i18n['statistics_diagram_cancel']
+          },
+          container: helper.$view,
+          text: helper.i18n['statistics_diagram_change_data_unsave'],
+          confirm: function confirm() {
+            helper.presenter._asideTempletItemHandler.call(that);
+            helper.isChangedTempletData = false;
+            helper.nextTempletData = undefined;
+          },
+          cancel: function cancel() {
+            helper.nextTempletData = undefined;
+          }
+        });
+      } else {
+        helper.presenter._asideTempletItemHandler.call(that);
+      }
+    },
+    _asideTempletItemHandler: function _asideTempletItemHandler() {
+      var $this = $(this);
+      helper.curTempletName = $this.data('templet');
+      //模板数据被选中
+      helper.isTempletData = true;
+      helper.domObj.$asideTempletItems.removeClass('on');
+      $this.addClass('on');
+      var templet = templetData[$this.data('templet')];
+      if (!templet || $.isEmptyObject(templet)) {
+        logger.error('得到空的模板[' + $this.data('templet') + ']数据');
+        return;
+      }
+      helper.domObj.$editTitle.val(templet.title);
+      helper.domObj.$dataName.val(templet.dataName);
+      helper.domObj.$unitName.val(templet.unitName);
+      helper.domObj.$footerChartTypes.removeClass('ui_btn_active');
+      helper.domObj.$footerChartTypes.find('a[data-chart-type=' + templet.defaultChart + ']').parent().addClass('ui_btn_active');
+      helper.domObj.$tableInputs.val('');
+      for (var i = 0, iLen = templet.tableData.length; i < iLen; i++) {
+        for (var j = 0, jLen = templet.tableData[i].length; j < jLen; j++) {
+          var $input = helper.domObj.$editStatisticsTable.find('input[data-index=' + i + '_' + j + ']');
+          $input.val(templet.tableData[i][j]);
+        }
+      }
+    },
+    _createChartClickHandler: function _createChartClickHandler(e) {
+      e.preventDefault();
+      //helper.isChangedTempletData = false;
+      helper.domObj.$footerChartTypes.removeClass('ui_btn_active');
+      $(this).parent().addClass('ui_btn_active');
+      //要生成的图表类型
+      var chartType = $(this).data('chartType');
+      var chart;
+      var opt = helper.presenter._getOptionData();
+      var validateResult = helper.presenter._validateOptionData(opt);
+      if (validateResult === 2) {
+        ToolTip.show({ container: helper.$view, text: helper.i18n['statistics_diagram_uninput_data'] });
+        return;
+      }
+      if (validateResult === 1 || validateResult === 3) {
+        ToolTip.show({ container: helper.$view, text: helper.i18n['statistics_diagram_input_0_10000_number'] });
+        return;
+      }
+      helper.domObj.$editContainer.addClass('hide_dom');
+      helper.domObj.$stageContainer.removeClass('hide_dom');
+
+      switch (chartType) {
+        case helper.chartType.horizontalBarChart:
+          chart = new HorizontalBarChart(opt, helper);
+          break;
+        case helper.chartType.verticalBarChart:
+          chart = new VerticalBarChart(opt, helper);
+          break;
+        case helper.chartType.lineChart:
+          chart = new LineChart(opt, helper);
+          break;
+        case helper.chartType.pieChart:
+          chart = new PieChart(opt, helper);
+          break;
+        default:
+          logger.error('不支持的图表类型[' + chartType + ']');
+      }
+
+      helper.chart = chart;
+    },
+    _createNewStatisticsClickHandler: function _createNewStatisticsClickHandler(e) {
+      e.preventDefault();
+      var that = this;
+      if (helper.isChangedTempletData && !helper.isModify) {
+        helper.nextTempletData = 'new';
+        ToolDialog.show({
+          i18n: {
+            confirm: helper.i18n['statistics_diagram_confirm'],
+            cancel: helper.i18n['statistics_diagram_cancel']
+          },
+          container: helper.$view,
+          text: helper.i18n['statistics_diagram_change_data_unsave'],
+          confirm: function confirm() {
+            helper.curTempletName = 'new';
+            //清空数据
+            helper.domObj.$editTitle.val('');
+            helper.domObj.$dataName.val('');
+            helper.domObj.$unitName.val('');
+            helper.domObj.$tableInputs.val('');
+            helper.domObj.$footerChartTypes.removeClass('ui_btn_active').first().addClass('ui_btn_active');
+            helper.domObj.$asideTempletItems.removeClass('on');
+            helper.isChangedTempletData = false;
+            helper.nextTempletData = undefined;
+            //用自定义的数据，非模板数据
+            helper.isTempletData = false;
+          },
+          cancel: function cancel() {
+            helper.nextTempletData = undefined;
+          }
+        });
+      } else {
+        helper.curTempletName = 'new';
+        //清空数据
+        helper.domObj.$editTitle.val('');
+        helper.domObj.$dataName.val('');
+        helper.domObj.$unitName.val('');
+        helper.domObj.$tableInputs.val('');
+        helper.domObj.$footerChartTypes.removeClass('ui_btn_active').first().addClass('ui_btn_active');
+        helper.domObj.$asideTempletItems.removeClass('on');
+        helper.isChangedTempletData = false;
+        //用自定义的数据，非模板数据
+        helper.isTempletData = false;
+      }
+    },
+    __interface: {
+      resizeScreen: function resizeScreen(data) {
+        if (helper.chart) {
+          var chart = helper.chart;
+          chart.echart.resize();
+        }
+      }
+    }
+  });
+
+  window.AddonStatisticsDiagram_create = function () {
+    return new Presenter('StatisticsDiagram');
+  };
+})();
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * 有坐标轴图表的基类
+ * @param opt
+ * @constructor
+ */
+define('AxisChart', ['BaseChart'], function (BaseChart) {
+    var AxisChart = BaseChart.extend({
+        $init: function $init(opt, helper) {
+            this._super(opt, helper);
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self._super();
+            //点击Echart
+            self.getEchart().on('mousedown', function (params) {
+                console.log(params);
+                params.event.event.preventDefault();
+                params.event.event.stopPropagation();
+                var $td = self.helper.domObj.$stageStatisticsTable.find('span[data-index=' + params.seriesIndex + '_' + params.dataIndex + ']');
+                var option = this.getOption();
+                var series = option.series;
+                if (_typeof(series[params.seriesIndex].data[params.dataIndex]) === 'object') {
+                    var isSelected = series[params.seriesIndex].data[params.dataIndex].selected;
+                    series[params.seriesIndex].data[params.dataIndex].selected = isSelected ? false : true;
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+                chartClickHandler(params.seriesIndex, params.dataIndex, $td);
+            });
+
+            //点击表格
+            self.helper.domObj.$stageStatisticsTable.find('span[data-index]').on('mousedown', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $td = $(this);
+                var seriesIndex = $td.data('index').split('_')[0];
+                var dataIndex = $td.data('index').split('_')[1];
+                chartClickHandler(seriesIndex, dataIndex, $td);
+            });
+
+            function chartClickHandler(seriesIndex, dataIndex, $td) {
+                var option = self.getEchart().getOption();
+                var series = option.series;
+                var val = series[seriesIndex].data[dataIndex];
+                if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object") {
+                    $td.css({
+                        "background-color": "#fff",
+                        "color": "#333"
+                    });
+                    series[seriesIndex].data.splice(dataIndex, 1, val.value);
+                } else {
+                    $td.css({ "background-color": self.lightColor[seriesIndex], "color": "#333" });
+                    series[seriesIndex].data.splice(dataIndex, 1, {
+                        value: $td.find('span.text').text(),
+                        label: {
+                            normal: {
+                                show: false,
+                                position: self.getLabelPosition(),
+                                textStyle: {
+                                    fontFamily: "微软雅黑",
+                                    color: "#000",
+                                    fontSize: 40
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: self.lightColor[seriesIndex],
+                                borderColor: self.lightBorderColor[seriesIndex]
+                            }
+                        }
+                    });
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+            };
+        },
+        renderLegend: function renderLegend() {
+            var self = this;
+            var td = this.opt.tableData;
+            //图例
+            if (td && td.length > 2) {
+                var legendHtml = '';
+                for (var i = 1; i < td.length; i++) {
+                    legendHtml += '<li class="chmscrtc_li" data-legend-name="' + td[i][0] + '">' + '   <span class="clor_span"></span>' + '   <span class="text" title="' + td[i][0] + '">' + td[i][0] + '</span>' + '</li>';
+                }
+                self.helper.domObj.$chartLegendContainer.find('ul li').off('mousedown');
+                self.helper.domObj.$chartLegendContainer.children('ul').html(legendHtml);
+                self.helper.domObj.$chartLegendContainer.find('ul li').on('mousedown', legendClickHandler);
+            } else {
+                self.helper.domObj.$chartLegendContainer.find('ul li').off('mousedown');
+                self.helper.domObj.$chartLegendContainer.children('ul').html('');
+            }
+            self.helper.domObj.$chartLegendContainer.removeClass('row_2');
+            self.helper.domObj.$chartLegendContainer.children('ul').removeClass('small_cnt');
+
+            function legendClickHandler(e) {
+                e.preventDefault();
+                var $this = $(this);
+                $this.toggleClass('stat_hide');
+                self.getEchart().dispatchAction({
+                    type: 'legendToggleSelect',
+                    name: $this.data('legendName')
+                });
+            };
+        },
+        configOption: function configOption() {
+            this._super();
+            var td = this.opt.tableData;
+            this.chartOption.grid.right = td[0][0].length * 30 + 15;
+            this.chartOption.xAxis = {
+                nameTextStyle: {
+                    color: "#000",
+                    fontSize: 22
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#6c8395",
+                        width: 3
+                    }
+                },
+                axisTick: {
+                    length: 10,
+                    interval: 0,
+                    alignWithLabel: true,
+                    lineStyle: {
+                        width: 3,
+                        color: "#6c8395"
+                    }
+                },
+                axisLabel: {
+                    interval: 0,
+                    textStyle: {
+                        color: "#000",
+                        fontSize: 24
+                    }
+                }
+            };
+            this.chartOption.yAxis = {
+                nameTextStyle: {
+                    color: "#000",
+                    fontSize: 22
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#6c8395",
+                        width: 3
+                    }
+                },
+                axisTick: {
+                    length: 10,
+                    interval: 0,
+                    alignWithLabel: true,
+                    lineStyle: {
+                        width: 3,
+                        color: "#6c8395"
+                    }
+                },
+                axisLabel: {
+                    interval: 0,
+                    textStyle: {
+                        color: "#000",
+                        fontSize: 24
+                    }
+                }
+            };
+        },
+        getType: function getType() {
+            return 'bar';
+        },
+        /**
+         * <li>Echarts 中axisLabel中值太长自动换行处理；经测试：360、IE7-IE11、google、火狐  * 均能正常换行显示</li>
+         * <li>处理echarts 柱状图 x 轴数据显示根据柱子间隔距离自动换行显示</li>
+         * @param title             将要换行处理x轴值
+         * @param barCount
+         * @param fontSize          x轴数据字体大小，根据图片字体大小设置而定，此处内部默认为12
+         * @param barContainerWidth         柱状图初始化所在的外层容器的宽度
+         * @param xWidth            柱状图x轴左边的空白间隙 x 的值，详见echarts文档中grid属性，默认80
+         * @param x2Width           柱状图x轴邮编的空白间隙 x2 的值，详见echarts文档中grid属性，默认80
+         * @param insertContent     每次截取后要拼接插入的内容， 不传则默认为换行符：\n
+         * @returns titleStr        截取拼接指定内容后的完整字符串
+         */
+        getEchartBarXAxisTitle: function getEchartBarXAxisTitle(title, barCount, fontSize, barContainerWidth, xWidth, x2Width, insertContent) {
+
+            if (!title || title.length == 0) {
+                title = '';
+            }
+            if (!fontSize) {
+                fontSize = 12;
+            }
+            if (isNaN(xWidth)) {
+                xWidth = 80; //默认与echarts的默认值一致
+            }
+            if (isNaN(x2Width)) {
+                x2Width = 80; //默认与echarts的默认值一致
+            }
+            if (!insertContent) {
+                insertContent = "\n";
+            }
+
+            var xAxisWidth = parseInt(barContainerWidth) - (parseInt(xWidth) + parseInt(x2Width)); //柱状图x轴宽度=统计页面宽度-柱状图x轴的空白间隙(x + x2)
+            var preBarWidth = Math.floor(xAxisWidth / barCount); //统计x轴每个单元格的间隔
+            var preBarFontCount = Math.floor(preBarWidth / fontSize); //柱状图每个柱所在x轴间隔能容纳的字数 = 每个柱子 x 轴间隔宽度 / 每个字的宽度（12px）
+            if (preBarFontCount > 3) {
+                //为了x轴标题显示美观，每个标题显示留两个字的间隙，如：原本一个格能一样显示5个字，处理后一行就只显示3个字
+                preBarFontCount -= 2;
+            } else if (preBarFontCount <= 3 && preBarFontCount >= 2) {
+                //若每个间隔距离刚好能放两个或者字符时，则让其只放一个字符
+                preBarFontCount -= 1;
+            }
+
+            var newTitle = ""; //拼接每次截取的内容，直到最后为完整的值
+            var titleSuf = ""; //用于存放每次截取后剩下的部分
+            var rowCount = Math.ceil(title.length / preBarFontCount); //标题显示需要换行的次数
+            if (rowCount > 1) {
+                //标题字数大于柱状图每个柱子x轴间隔所能容纳的字数，则将标题换行
+                for (var j = 1; j <= rowCount; j++) {
+                    if (j == 1) {
+
+                        newTitle += title.substring(0, preBarFontCount) + insertContent;
+                        titleSuf = title.substring(preBarFontCount); //存放将截取后剩下的部分，便于下次循环从这剩下的部分中又从头截取固定长度
+                    } else {
+
+                        var startIndex = 0;
+                        var endIndex = preBarFontCount;
+                        if (titleSuf.length > preBarFontCount) {
+                            //检查截取后剩下的部分的长度是否大于柱状图单个柱子间隔所容纳的字数
+
+                            newTitle += titleSuf.substring(startIndex, endIndex) + insertContent;
+                            titleSuf = titleSuf.substring(endIndex); //更新截取后剩下的部分，便于下次继续从这剩下的部分中截取固定长度
+                        } else if (titleSuf.length > 0) {
+                            newTitle += titleSuf.substring(startIndex);
+                        }
+                    }
+                }
+            } else {
+                newTitle = title;
+            }
+            return newTitle;
+        }
+    });
+    return AxisChart;
+});
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * 图表的基类
+ * @param opt
+ * @constructor
+ */
+define('BaseChart', function () {
+    var BaseChart = Class.extend({
+        $init: function $init(opt, helper) {
+            this.opt = opt;
+            this.helper = helper;
+            this.initUI();
+            this.color = ['#2986cd', '#ea7b38', '#f1c701', '#f66e6e', '#43b9c5', '#9164d0', '#50acf2', '#e19d19', '#c95b5b', '#df4c98', '#379c4d', '#67db80'];
+            this.borderColor = ['#005698', '#c0690d', '#ad951d', '#c4575b', '#288c99', '#836eaf', '#2186d3', '#bc8212', '#c95b5b', '#d94a94', '#237535', '#41af58'];
+            this.lightColor = ['#2ee5f0', '#ffc412'];
+            this.lightBorderColor = ['#0f8a95', '#a77d00'];
+            this.configOption();
+            this.echart = echarts.init(this.helper.domObj.$chartBody[0]);
+            this.adapterData();
+            this.selectChartType();
+            this.renderTitle();
+            this.renderTable();
+            this.renderLegend();
+            this.renderChart();
+            this.unbindAction();
+            this.bindAction();
+        },
+        initUI: function initUI() {
+            var self = this;
+            //UI样式要求三行表格时，要添加small_box。如果没有侧边颜色块，则加类 large_width ，调大容器
+            if (this.opt.tableData.length === 3) {
+                self.helper.domObj.$chartContainer.addClass('small_box');
+                self.helper.domObj.$chartBody.removeClass('large_width');
+                self.helper.domObj.$chartBody.addClass('mid_width');
+            } else {
+                self.helper.domObj.$chartContainer.removeClass('small_box');
+                self.helper.domObj.$chartBody.addClass('large_width');
+                self.helper.domObj.$chartBody.removeClass('mid_width');
+            }
+            self.helper.domObj.$chartBody.removeClass('chms_chart_full');
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self.helper.$view.find('.chartmake').off('mousedown');
+            self.helper.$view.find('.chartmake').on('mousedown', function (e) {
+                //清空表格
+                self.helper.domObj.$stageStatisticsTable.find('span[data-index]').css({
+                    "background-color": "#fff"
+                });
+
+                //清空图表
+                var option = self.getEchart().getOption();
+                var series = option.series;
+                for (var i = 0, iLen = series.length; i < iLen; i++) {
+                    for (var j = 0, jLen = series[i].data.length; j < jLen; j++) {
+                        var val = series[i].data[j];
+                        if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object") {
+                            series[i].data.splice(j, 1, val.value);
+                        }
+                    }
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+            });
+        },
+        unbindAction: function unbindAction() {
+            var self = this;
+            self.helper.domObj.$stageStatisticsTable.find('span[data-index]').off('mousedown');
+            self.helper.$view.find('.chartmake').off('mousedown');
+        },
+        getEchart: function getEchart() {
+            return this.echart;
+        },
+        configOption: function configOption() {
+            this.chartOption = {
+                title: {
+                    text: ""
+                },
+                color: this.color,
+                grid: {
+                    left: "40",
+                    bottom: "30",
+                    right: "60",
+                    containLabel: true
+                },
+                legend: {
+                    show: false,
+                    data: []
+                },
+                series: {
+                    data: []
+                }
+            };
+        },
+        adapterData: function adapterData() {
+            var td = this.opt.tableData;
+            var series = [];
+            for (var i = 1; i < td.length; i++) {
+                series.push({
+                    name: td[i][0],
+                    barGap: 0,
+                    barMaxWidth: 80,
+                    itemStyle: {
+                        normal: {
+                            borderWidth: 2,
+                            borderColor: this.borderColor[i - 1]
+                        }
+                    },
+                    type: this.getType(),
+                    z: 100,
+                    data: td[i].slice(1, td[i].length)
+                });
+            }
+            return series;
+        },
+        selectChartType: function selectChartType() {
+            var self = this;
+            self.helper.domObj.$asideChartTypes.removeClass('on');
+            self.helper.domObj.$asideChartTypes.filter('[data-chart-type=' + this.opt.selectedChart + ']').addClass('on');
+        },
+        renderTitle: function renderTitle() {
+            var self = this;
+            self.helper.domObj.$stageTitle.text(this.opt.title);
+        },
+        renderTable: function renderTable() {
+            var self = this;
+            var td = this.opt.tableData;
+            var tdHtml = '';
+            var colLen = td[0].length;
+            if (td.length === 3) {
+                for (var i = 0; i < colLen; i++) {
+                    if (i == 0) {
+                        tdHtml += '<li class="chme_tr chme_unit">' + '   <span class="chme_td bg_orange"><span class="text">' + td[0][i] + '</span></span>' + '   <span class="chme_td bg_blue"><span class="text">' + td[1][i] + '</span></span>' + '   <span class="chme_td bg_blue"><span class="text">' + td[2][i] + '</span></span>' + '</li>';
+                    } else {
+                        tdHtml += '<li class="chme_tr">' + '   <span class="chme_td bg_orange"><span class="text">' + td[0][i] + '</span></span>' + '   <span class="chme_td" data-index="0_' + (i - 1) + '"><span class="text">' + td[1][i] + '</span></span>' + '   <span class="chme_td" data-index="1_' + (i - 1) + '"><span class="text">' + td[2][i] + '</span></span>' + '</li>';
+                    }
+                }
+            } else {
+                for (var i = 0; i < colLen; i++) {
+                    if (i == 0) {
+                        tdHtml += '<li class="chme_tr chme_unit">' + '   <span class="chme_td bg_orange"><span class="text">' + td[0][i] + '</span></span>' + '   <span class="chme_td bg_blue"><span class="text">' + td[1][i] + '</span></span>' + '</li>';
+                    } else {
+                        tdHtml += '<li class="chme_tr">' + '   <span class="chme_td bg_orange"><span class="text">' + td[0][i] + '</span></span>' + '   <span class="chme_td" data-index="0_' + (i - 1) + '"><span class="text">' + td[1][i] + '</span></span>' + '</li>';
+                    }
+                }
+            }
+            //FIXME 临时处理，找切图协商换个类
+            for (var i = 0; i < 14; i++) {
+                self.helper.domObj.$stageStatisticsTable.removeClass('horizontal_' + i);
+            }
+            self.helper.domObj.$stageStatisticsTable.addClass('horizontal_' + colLen);
+            self.helper.domObj.$stageStatisticsTable.html(tdHtml);
+        },
+        renderChart: function renderChart() {
+            this.echart.setOption(this.chartOption);
+        }
+    });
+
+    return BaseChart;
+});
+'use strict';
+
+/**
+ * 横式坚形图
+ * @param opt
+ * @constructor
+ */
+define('HorizontalBarChart', ['AxisChart'], function (AxisChart) {
+    var HorizontalBarChart = AxisChart.extend({
+        $init: function $init(opt, helper) {
+            this._super(opt, helper);
+        },
+        getLabelPosition: function getLabelPosition() {
+            return 'right';
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self._super();
+        },
+        configOption: function configOption() {
+            this._super();
+            var td = this.opt.tableData;
+            var name = '';
+            if ($.trim(this.opt.dataName) != '' && $.trim(this.opt.unitName) != '') {
+                name = this.opt.dataName + '/' + this.opt.unitName;
+            } else if ($.trim(this.opt.dataName) != '') {
+                name = this.opt.dataName;
+            } else if ($.trim(this.opt.unitName != '')) {
+                name = this.opt.unitName;
+            }
+            if (name.length === 0) {
+                var nameLen = 1;
+                for (var i = 1, iLen = td.length; i < iLen; i++) {
+                    for (var j = 1, jLen = td[i].length; j < jLen; j++) {
+                        if (td[i][j].length > nameLen) {
+                            nameLen = td[i][j].length;
+                        }
+                    }
+                }
+                this.chartOption.grid.right = nameLen * 10 + 10;
+            } else {
+                this.chartOption.grid.right = name.length * 25;
+            }
+
+            var lableMaxLen = 1;
+            for (var i = 0, iLen = td[0].length; i < iLen; i++) {
+                if (td[0][i].length > lableMaxLen) {
+                    lableMaxLen = td[0][i].length;
+                }
+            }
+            // this.chartOption.grid.right = (name.length > 5 ? 5 : name.length) * 30 + 15;
+            // this.chartOption.grid.right = name.length * 22 + 15;
+            this.chartOption.grid.left = (lableMaxLen > 5 ? 5 : lableMaxLen) * 12;
+            var xAxis = $.extend(true, {}, this.chartOption.xAxis, {
+                name: name,
+                nameLocation: "end",
+                type: 'value',
+                splitLine: {
+                    lineStyle: {
+                        color: "#6E8394",
+                        width: 2,
+                        type: "dashed"
+                    }
+                },
+                axisLabel: {
+                    formatter: function formatter(value, index) {
+                        return value;
+                    }
+                }
+            });
+            this.chartOption.xAxis = xAxis;
+
+            var yAxis = $.extend({
+                name: td[0][0],
+                nameLocation: "end",
+                type: 'category'
+            }, this.chartOption.yAxis);
+            this.chartOption.yAxis = yAxis;
+            this.chartOption.yAxis.data = td[0].slice(1, td[0].length);
+
+            this.chartOption.series = this.adapterData();
+        }
+    });
+    return HorizontalBarChart;
+});
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+/**
+ * 折线图
+ * @param opt
+ * @constructor
+ */
+define('LineChart', ['AxisChart'], function (AxisChart) {
+    var LineChart = AxisChart.extend({
+        $init: function $init(opt, helper) {
+            this._super(opt, helper);
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self._super();
+            self.getEchart().off('mousedown');
+            self.helper.domObj.$stageStatisticsTable.find('span[data-index]').off('mousedown');
+
+            self.getEchart().on('mousedown', function (params) {
+                console.log(params);
+                params.event.event.preventDefault();
+                params.event.event.stopPropagation();
+                var $td = self.helper.domObj.$stageStatisticsTable.find('span[data-index=' + params.seriesIndex + '_' + params.dataIndex + ']');
+                var option = this.getOption();
+                var series = option.series;
+                if (_typeof(series[params.seriesIndex].data[params.dataIndex]) === 'object') {
+                    var isSelected = series[params.seriesIndex].data[params.dataIndex].selected;
+                    series[params.seriesIndex].data[params.dataIndex].selected = isSelected ? false : true;
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+                chartClickHandler(params.seriesIndex, params.dataIndex, $td);
+            });
+
+            //点击表格
+            self.helper.domObj.$stageStatisticsTable.find('span[data-index]').on('mousedown', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $td = $(this);
+                var seriesIndex = $td.data('index').split('_')[0];
+                var dataIndex = $td.data('index').split('_')[1];
+                chartClickHandler(seriesIndex, dataIndex, $td);
+            });
+
+            function chartClickHandler(seriesIndex, dataIndex, $td) {
+                var fontSize = 40,
+                    symbolSize = 30;
+                if (self.helper.isStudent) {
+                    fontSize = 15;
+                    symbolSize = 20;
+                }
+                var option = self.getEchart().getOption();
+                var series = option.series;
+
+                var val = series[seriesIndex].data[dataIndex];
+                if ((typeof val === 'undefined' ? 'undefined' : _typeof(val)) === "object") {
+                    $td.css({
+                        "background-color": "#fff"
+                    });
+                    val.selected = !val.selected;
+                    series[seriesIndex].data.splice(dataIndex, 1, val.value);
+                    self.getEchart().dispatchAction({
+                        type: 'downplay',
+                        seriesIndex: seriesIndex,
+                        dataIndex: dataIndex
+                    });
+                } else {
+                    $td.css({ "background-color": self.lightColor[seriesIndex] });
+                    series[seriesIndex].data.splice(dataIndex, 1, {
+                        value: $td.find('span.text').text(),
+                        symbolSize: symbolSize,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: self.getLabelPosition(),
+                                textStyle: {
+                                    fontFamily: "微软雅黑",
+                                    color: "#000",
+                                    fontSize: fontSize
+                                }
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                color: self.lightColor[seriesIndex],
+                                borderWidth: 2,
+                                borderColor: self.lightBorderColor[seriesIndex]
+                            }
+                        }
+                    });
+                    self.getEchart().dispatchAction({
+                        type: 'highlight',
+                        seriesIndex: seriesIndex,
+                        dataIndex: dataIndex
+                    });
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+            }
+        },
+
+        getLabelPosition: function getLabelPosition() {
+            return 'top';
+        },
+        configOption: function configOption() {
+            var self = this;
+            self._super();
+            var td = this.opt.tableData;
+            this.chartOption.grid.right = (td[0][0].length > 5 ? 5 : td[0][0].length) * 25 + 15;
+
+            var xAxis = $.extend(true, {}, this.chartOption.xAxis, {
+                name: td[0][0],
+                nameLocation: "end",
+                type: 'category',
+                boundaryGap: true,
+                splitLine: {
+                    lineStyle: {
+                        color: "#6E8394",
+                        width: 2,
+                        type: "dashed"
+                    }
+                },
+                axisLabel: {
+                    interval: 0,
+                    textStyle: {
+                        fontSize: 18
+                    },
+                    formatter: function formatter(value, index) {
+                        if (self.helper.isStudent) {
+                            var vals = value.split('');
+                            if (vals.length > 3) {
+                                vals.splice(3, 0, '\n');
+                            }
+                            return vals.join('');
+                            // return self.getEchartBarXAxisTitle(value,td[0].length-1,24,self.helper.domObj.$chartContainer[0].getBoundingClientRect().width);
+                        } else {
+                            return value;
+                        }
+                    }
+                }
+            });
+            this.chartOption.xAxis = xAxis;
+            this.chartOption.xAxis.data = td[0].slice(1, td[0].length);
+
+            var name = '';
+            if ($.trim(this.opt.dataName) != '' && $.trim(this.opt.unitName) != '') {
+                name = this.opt.dataName + '/' + this.opt.unitName;
+            } else if ($.trim(this.opt.dataName) != '') {
+                name = this.opt.dataName;
+            } else if ($.trim(this.opt.unitName != '')) {
+                name = this.opt.unitName;
+            }
+            //XXX:修复87587 ，echart的bug，坐标轴名称太长会被切断,如果echart有修复，可以去掉这段代码
+            for (var i = 0, iLen = name.length; i < iLen; i++) {
+                name = '  ' + name;
+            }
+            var yAxis = $.extend({
+                name: name,
+                nameLocation: "end",
+                type: 'value',
+                splitLine: {
+                    lineStyle: {
+                        color: "#6E8394",
+                        width: 2,
+                        type: "dashed"
+                    }
+                }
+            }, this.chartOption.yAxis);
+            this.chartOption.yAxis = yAxis;
+
+            this.chartOption.series = this.adapterData();
+        },
+
+        adapterData: function adapterData() {
+            var self = this;
+            var fontSize = 40,
+                symbolSize = 20;
+            if (self.helper.isStudent) {
+                fontSize = 15;
+                symbolSize = 10;
+            }
+            var td = this.opt.tableData;
+            var series = [];
+            for (var i = 1; i < td.length; i++) {
+                series.push({
+                    name: td[i][0],
+                    symbol: "circle",
+                    symbolSize: symbolSize,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: this.getLabelPosition(),
+                            textStyle: {
+                                color: "#000",
+                                fontSize: fontSize
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: this.color[i - 1],
+                            borderWidth: 2,
+                            borderColor: this.borderColor[i - 1]
+                        }
+                    },
+                    type: this.getType(),
+                    data: td[i].slice(1, td[i].length)
+                });
+            }
+            return series;
+        },
+
+        getType: function getType() {
+            return 'line';
+        }
+    });
+    return LineChart;
+});
+'use strict';
+
+/**
+ * 饼图
+ * @param opt
+ * @constructor
+ */
+define('PieChart', ['BaseChart'], function (BaseChart) {
+    var PieChart = BaseChart.extend({
+        $init: function $init(opt, helper) {
+            this._super(opt, helper);
+        },
+        initUI: function initUI() {
+            var self = this;
+            self._super();
+            self.helper.domObj.$chartBody.removeClass('large_width');
+            if (self.opt.tableData[0].length > 7) {
+                self.helper.domObj.$chartBody.removeClass('mid_width');
+            } else {
+                self.helper.domObj.$chartBody.addClass('mid_width');
+            }
+            self.helper.domObj.$chartBody.addClass('chms_chart_full');
+        },
+        renderLegend: function renderLegend() {
+            var self = this;
+            var td = self.opt.tableData;
+            //图例
+            var legendHtml = '';
+            for (var i = 1; i < td[0].length; i++) {
+                legendHtml += '<li class="chmscrtc_li" data-index="' + (i - 1) + '" data-legend-name="' + td[0][i] + '">' + '   <span class="clor_span"></span>' + '   <span class="text" title="' + td[0][i] + '">' + td[0][i] + '</span>' + '</li>';
+            }
+            self.helper.domObj.$chartLegendContainer.find('ul li').off('mousedown');
+            self.helper.domObj.$chartLegendContainer.children('ul').html(legendHtml);
+            self.helper.domObj.$chartLegendContainer.find('ul li').on('mousedown', legendClickHandler);
+
+            //样式控制
+            if (self.helper.domObj.$chartLegendContainer.find('ul li').size() >= 6) {
+                self.helper.domObj.$chartLegendContainer.children('ul').addClass('small_cnt');
+            } else {
+                self.helper.domObj.$chartLegendContainer.children('ul').removeClass('small_cnt');
+            }
+            if (self.helper.domObj.$chartLegendContainer.find('ul li').size() > 6) {
+                self.helper.domObj.$chartLegendContainer.addClass('row_2');
+            } else {
+                self.helper.domObj.$chartLegendContainer.removeClass('row_2');
+            }
+
+            //图例点击处理
+            function legendClickHandler(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $this = $(this);
+                var dataIndex = $this.data('index');
+                $this.toggleClass('stat_on');
+                if ($this.hasClass('stat_on')) {
+                    for (var i = 0, iLen = self.seriesDataState.length; i < iLen; i++) {
+                        if (self.seriesDataState[i][dataIndex]) {
+                            continue;
+                        }
+                        self.helper.domObj.$stageStatisticsTable.find('span[data-index=' + i + '_' + dataIndex + ']').trigger('mousedown');
+                    }
+                } else {
+                    for (var i = 1; i < td.length; i++) {
+                        self.helper.domObj.$stageStatisticsTable.find('span[data-index=' + (i - 1) + '_' + dataIndex + ']').trigger('mousedown');
+                    }
+                }
+            };
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self.seriesDataState = [];
+            for (var i = 1, iLen = self.opt.tableData.length; i < iLen; i++) {
+                var seriesState = [];
+                for (var j = 1, jLen = self.opt.tableData[i].length; j < jLen; j++) {
+                    seriesState.push(false);
+                }
+                self.seriesDataState.push(seriesState);
+            }
+
+            self.getEchart().on('mousedown', function (params) {
+                params.event.event.preventDefault();
+                params.event.event.stopPropagation();
+                var $td = self.helper.domObj.$stageStatisticsTable.find('span[data-index=' + params.seriesIndex + '_' + params.dataIndex + ']');
+
+                // var option = self.getEchart().getOption();
+                // var series = option.series;
+                // var isSelected = series[params.seriesIndex].data[params.dataIndex].selected;
+                // isSelected = isSelected === undefined ? true : isSelected;
+                // series[params.seriesIndex].data[params.dataIndex].selected = (isSelected ? false : true);
+                // self.getEchart().setOption({
+                //     series: series
+                // });
+                chartClickHandler(params.seriesIndex, params.dataIndex, $td);
+            });
+
+            //点击表格
+            self.helper.domObj.$stageStatisticsTable.find('span[data-index]').on('mousedown', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var $this = $(this);
+                var seriesIndex = $this.data('index').split('_')[0];
+                var dataIndex = $this.data('index').split('_')[1];
+
+                chartClickHandler(seriesIndex, dataIndex, $this);
+            });
+
+            //清空数据
+            self.helper.$view.find('.chartmake').off('mousedown');
+            self.helper.$view.find('.chartmake').on('mousedown', function (e) {
+                //初始化是否选中的标记
+                for (var i = 0, iLen = self.seriesDataState.length; i < iLen; i++) {
+                    for (var j = 0, jLen = self.seriesDataState[i].length; j < jLen; j++) {
+                        self.seriesDataState[i][j] = false;
+                        //清空图例
+                        lightLegend(j);
+                    }
+                }
+                //清空表格
+                self.helper.domObj.$stageStatisticsTable.find('span[data-index]').css({
+                    "background-color": "#fff",
+                    "color": "#000"
+                });
+
+                //清空图表
+                var option = self.getEchart().getOption();
+                var series = option.series;
+                for (var i = 0, iLen = series.length; i < iLen; i++) {
+                    for (var j = 0, jLen = series[i].data.length; j < jLen; j++) {
+                        var val = series[i].data[j];
+                        series[i].data.splice(j, 1, { name: val.name, value: val.value });
+                    }
+                }
+                self.getEchart().setOption({
+                    series: series
+                });
+            });
+
+            function chartClickHandler(seriesIndex, dataIndex, $td) {
+                var option = self.getEchart().getOption();
+                var series = option.series;
+
+                //if (series[seriesIndex].data[dataIndex].selected) {
+                if (self.seriesDataState[seriesIndex][dataIndex]) {
+                    //series[seriesIndex].data[dataIndex].selected = false;
+                    series[seriesIndex].data[dataIndex].itemStyle = null;
+                    series[seriesIndex].data[dataIndex].label = {
+                        normal: {
+                            textStyle: {
+                                fontSize: 20
+                            }
+                        }
+                    };
+                    $td.css({
+                        "background-color": "#fff"
+                    });
+                } else {
+                    //series[seriesIndex].data[dataIndex].selected = true;
+                    series[seriesIndex].data[dataIndex].label = {
+                        normal: {
+                            textStyle: {
+                                fontSize: self.helper.isStudent ? 22 : 30
+                            }
+                        }
+                    };
+                    series[seriesIndex].data[dataIndex].itemStyle = {
+                        normal: {
+                            borderColor: "#fff",
+                            borderWidth: 6
+                        }
+                    };
+                    $td.css({ "background-color": option.color[dataIndex] });
+                }
+
+                self.getEchart().setOption({
+                    series: series
+                });
+
+                self.seriesDataState[seriesIndex][dataIndex] = !self.seriesDataState[seriesIndex][dataIndex];
+
+                //如果同一个类别都选中，则图例也高亮
+                lightLegend(dataIndex);
+            }
+
+            //是否高亮图例
+            function lightLegend(dataIndex) {
+                var isNeedLight = true;
+                for (var i = 0, iLen = self.seriesDataState.length; i < iLen; i++) {
+                    if (!self.seriesDataState[i][dataIndex]) {
+                        isNeedLight = false;
+                        break;
+                    }
+                }
+                if (isNeedLight) {
+                    self.helper.domObj.$chartLegendContainer.find('ul li[data-index=' + dataIndex + ']').addClass('stat_on');
+                } else {
+                    self.helper.domObj.$chartLegendContainer.find('ul li[data-index=' + dataIndex + ']').removeClass('stat_on');
+                }
+            }
+        },
+        configOption: function configOption() {
+            this._super();
+            var td = this.opt.tableData;
+
+            //图例
+            this.chartOption.xAxis = null;
+            this.chartOption.yAxis = null;
+            this.chartOption.series = this.adapterData();
+        },
+        adapterData: function adapterData() {
+            var self = this;
+            var td = this.opt.tableData;
+            var names = [];
+            for (var i = 1; i < td[0].length; i++) {
+                names.push(td[0][i]);
+            }
+
+            var series = [];
+            for (var i = 1; i < td.length; i++) {
+                var vals = td[i].slice(1, td[i].length);
+                var pieData = [];
+                for (var j = 0, jLen = vals.length; j < jLen; j++) {
+                    pieData.push({
+                        name: names[j],
+                        value: vals[j]
+                    });
+                }
+                series.push({
+                    name: td[i][0],
+                    selectedMode: "multiple",
+                    avoidLabelOverlap: true,
+                    label: {
+                        normal: {
+                            show: true,
+                            position: self.helper.isStudent ? "outside" : "inside",
+                            formatter: "{d}%",
+                            textStyle: {
+                                color: '#fff',
+                                fontSize: 20
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            length: 10,
+                            length2: 5,
+                            show: self.helper.isStudent
+                        }
+                    },
+                    type: this.getType(),
+                    selectedOffset: 0,
+                    legendHoverLink: false,
+                    hoverAnimation: false,
+                    data: pieData
+                });
+            }
+            if (series.length === 1) {
+                series[0].radius = ['0', '90%'];
+                series[0].center = ['50%', '50%'];
+            } else if (series.length === 2) {
+                series[0].radius = self.helper.isStudent ? ['0', '55%'] : ['0', '90%'];
+                series[0].center = ['25%', '50%'];
+                series[1].radius = self.helper.isStudent ? ['0', '55%'] : ['0', '90%'];
+                series[1].center = ['75%', '50%'];
+            }
+            return series;
+        },
+        getType: function getType() {
+            return 'pie';
+        }
+    });
+    return PieChart;
+});
+'use strict';
+
+/**
+ * 坚式坚形图
+ * @param opt
+ * @constructor
+ */
+define('VerticalBarChart', ['AxisChart'], function (AxisChart) {
+    var VerticalBarChart = AxisChart.extend({
+        $init: function $init(opt, helper) {
+            this._super(opt, helper);
+        },
+        getLabelPosition: function getLabelPosition() {
+            return 'top';
+        },
+        bindAction: function bindAction() {
+            var self = this;
+            self._super();
+        },
+        configOption: function configOption() {
+            var self = this;
+            self._super();
+            var td = this.opt.tableData;
+            var name = td[0][0];
+            this.chartOption.grid.right = (name.length > 5 ? 5 : name.length) * 25 + 15;
+
+            var lableMaxLen = 1;
+            for (var i = 1, iLen = td.length; i < iLen; i++) {
+                for (var j = 1, jLen = td[i].length; j < jLen; j++) {
+                    var len = Number(td[i][j]).toString().split('.')[0].length;
+                    if (len > lableMaxLen) {
+                        lableMaxLen = len;
+                    }
+                }
+            }
+            this.chartOption.grid.left = (lableMaxLen > 5 ? 5 : lableMaxLen) * 10 + 10;
+
+            var xAxis = $.extend(true, {}, this.chartOption.xAxis, {
+                name: td[0][0],
+                nameLocation: "end",
+                type: "category",
+                axisLabel: {
+                    interval: 0,
+                    textStyle: {
+                        fontSize: 18
+                    },
+                    formatter: function formatter(value, index) {
+                        if (self.helper.isStudent) {
+                            var vals = value.split('');
+                            if (vals.length > 3) {
+                                vals.splice(3, 0, '\n');
+                            }
+                            return vals.join('');
+                            // return self.getEchartBarXAxisTitle(value,td[0].length-1,24,self.helper.domObj.$chartContainer[0].getBoundingClientRect().width);
+                        } else {
+                            return value;
+                        }
+                    }
+                }
+            });
+            this.chartOption.xAxis = xAxis;
+            this.chartOption.xAxis.data = td[0].slice(1, td[0].length);
+            var name = '';
+            if ($.trim(this.opt.dataName) != '' && $.trim(this.opt.unitName) != '') {
+                name = this.opt.dataName + '/' + this.opt.unitName;
+            } else if ($.trim(this.opt.dataName) != '') {
+                name = this.opt.dataName;
+            } else if ($.trim(this.opt.unitName != '')) {
+                name = this.opt.unitName;
+            }
+            //XXX:修复87587 ，echart的bug，坐标轴名称太长会被切断,如果echart有修复，可以去掉这段代码
+            for (var i = 0, iLen = name.length; i < iLen; i++) {
+                name = '  ' + name;
+            }
+            name = '   ' + name;
+
+            var yAxis = $.extend(true, {}, this.chartOption.yAxis, {
+                name: name,
+                nameLocation: "end",
+                type: 'value',
+                splitLine: {
+                    lineStyle: {
+                        color: "#6E8394",
+                        width: 2,
+                        type: "dashed"
+                    }
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: "#6c8395",
+                        width: 3
+                    }
+                },
+                axisLabel: {
+                    formatter: function formatter(value, index) {
+                        return value;
+                    }
+                }
+            });
+            this.chartOption.yAxis = yAxis;
+
+            this.chartOption.series = this.adapterData();
+        }
+    });
+    return VerticalBarChart;
+});]]></presenter><resources><file src="./resources/wood/images/arrow_down_act.png"/><file src="./resources/wood/images/arrow_down_nor.png"/><file src="./resources/wood/images/aside_cxrk.png"/><file src="./resources/wood/images/aside_nn.png"/><file src="./resources/wood/images/aside_shrk.png"/><file src="./resources/wood/images/aside_smbh.png"/><file src="./resources/wood/images/aside_smsl.png"/><file src="./resources/wood/images/aside_sr.png"/><file src="./resources/wood/images/aside_szbl.png"/><file src="./resources/wood/images/aside_tg.png"/><file src="./resources/wood/images/aside_tw.png"/><file src="./resources/wood/images/aside_yd.png"/><file src="./resources/wood/images/chme_type01_nor.png"/><file src="./resources/wood/images/chme_type01_on.png"/><file src="./resources/wood/images/chme_type02_nor.png"/><file src="./resources/wood/images/chme_type02_on.png"/><file src="./resources/wood/images/chme_type03_nor.png"/><file src="./resources/wood/images/chme_type03_on.png"/><file src="./resources/wood/images/chme_type04_nor.png"/><file src="./resources/wood/images/chme_type04_on.png"/></resources></addon>

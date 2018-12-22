@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Image'>
+<properties>
+     <property name="imageSrc" displayName="imageSrc" type="image" isLocalized="false" />
+</properties>
+
+<css>
+
+</css>
+
+<view>
+  &lt;div style=&apos; width: 100%;height:100%;&apos; &gt;
+
+  &lt;/div&gt;
+</view>
+
+<preview>
+&lt;div style=&apos; width: 100%;height:100%;&apos; &gt;
+
+&lt;/div&gt;
+</preview>
+
+<presenter>
+function AddonImage_create() {
+
+  var imageSrc;
+
+  var IMAGE_FILES_MISSING = &quot;This addon needs at least 1 image file.&quot;;
+
+  var presenterLogic = function(view, model, isPreview) {};
+
+  var presenter = function() {};
+
+  presenter.createPreview = function(view, model) {
+     presenter.initialize(view, model, false);
+  };
+
+  presenter.run = function(view, model) {
+    presenter.initialize(view, model, false);
+  };
+
+  presenter.getModel = function() {
+  return presenterModel;
+  };
+
+  presenter.close = function() {
+  };
+
+  presenter.initialize = function(view, model, isPreview) {
+    var upgradedModel = presenter.upgradeModel(model);
+    presenter.$view = $(view);
+    createView(view, upgradedModel, isPreview);
+  };
+
+  presenter.upgradeModel = function(model) {
+    return presenter.upgradeEnableLoop(model);
+  };
+
+  presenter.upgradeEnableLoop = function(model) {
+    var upgradedModel = {};
+    $.extend(true, upgradedModel, model); // Deep copy of model object
+
+    if (!upgradedModel[&quot;enableLoop&quot;]) {
+      upgradedModel[&quot;enableLoop&quot;] = &quot;&quot;;
+    }
+
+    return upgradedModel;
+  };
+
+  function createView(view, model, isPreview) {
+    imageSrc = model.imageSrc;
+    $(view).html("");
+    if (!imageSrc) {
+      $(view).html(IMAGE_FILES_MISSING);
+    }
+    $(view).append(&quot;&lt;image style=&apos; width: 100%;height: 100%;&apos; src=&apos;&quot; + imageSrc + &quot;&apos;&gt;&lt;/image&gt;&quot;);
+  }
+
+
+  return presenter;
+}
+
+</presenter>
+<resources>
+</resources></addon>

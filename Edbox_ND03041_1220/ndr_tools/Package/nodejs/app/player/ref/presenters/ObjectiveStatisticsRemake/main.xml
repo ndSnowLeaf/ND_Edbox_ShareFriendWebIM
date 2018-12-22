@@ -1,0 +1,1567 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ObjectiveStatisticsRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="限制时长" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="DynamicChartRender" version="1.0.0" />
+    <javaScript  name="ObjectiveRenderLauncher" version="1.5.0" />
+    <javaScript  name="PresentFlowersTips" version="2.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout"><div class="com_wrapper _newstatistics_container"><div class="com_layout_header"><div class="com_time spend_time"><span class="lang_time">答题时间</span>: <span class="time_m"><em>0</em><span class="lang_min">分</span></span> <span class="time_s"><em>0</em><span class="lang_sec">秒</span></span></div><div class="upload submitCount"><span class="lang_submitnum">提交人数</span>: <span class="num"><em class="now js_submit">0</em>/<em class="js_online_all">0</em></span></div></div><a class="uicom_icon_pull layout_handle"><span class="icon"></span></a><div class="com_layout_container statistics-area"></div><div class="com_layout_container statistics-overview"></div><div class="com_layout_container statistics-overview chart_content"></div><div class="ndui-pop com_pop pop_roster pop_rostertab analysis_wrapper hide_dom"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><div class="pop_wrap"><div class="content"><div class="statistic-item-content"></div><div class="rostertab statistic-stu-list"><ul class="comui-list-roster"></ul></div><div class="ndui-pager statistic-page-list"></div><div class="stat_wood"><div class="com_send_flower_wrap"><p class="flow_text"><em class="text lang_flower">每人送一朵花</em></p><div class="com_send_flower btn_flower"></div></div></div></div></div><a href="###" class="ndui-pop-close right close_analysis_wrapper"></a><a href="###" class="ndui-pop-close left close_analysis_wrapper"></a></div></div></div><div class="ndui-pop com_pop answer_detail_wrapper hide_dom"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><div class="pop_wrap"><div class="content scrollbar_style_light_color"><h2 class="detail_header pop_title"></h2><p class="detail_body pop_text"></p></div></div><a href="###" class="ndui-pop-close right close_answer_detail_wrapper"></a><a href="###" class="ndui-pop-close left close_answer_detail_wrapper"></a></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export setAnswerOptions */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return statisticMap; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return SingleStatClass; });
+
+
+var statisticMap = {
+  choice: "A",
+  order: "C",
+  textentry: "B",
+  textentrymultiple: "B",
+  newhandwrite: "D",
+  handwrite: "D",
+  match: "B",
+  judge: "A",
+  multiplechoice: "A",
+  vote: "A",
+  graphicgapmatch: "D",
+  ChineseCharacterDictation: "C"
+};
+var SingleStatClass = {
+  "A": "choice_content",
+  "B": "fillBlank_content",
+  "C": "trueof_content"
+};
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getAnswerOptions; });
+/* unused harmony export isCompound */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return supportStyleChart; });
+/**
+   * 判断是否是复合类统计 */
+var isCompound = function(code) {
+  var result = false;
+  var questions = ["Compound", "ChineseCharacterDictation", "ReadingComprehension"];
+  for (var i = 0, len = questions.length; i < len; i++) {
+    if (code === questions[i]) {
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
+
+/**
+ *是否支持图表
+ */
+var supportStyleChart = function(code) {
+  var result = false;
+  var questions = ["Compound", "ReadingComprehension"];
+  for (var i = 0, len = questions.length; i < len; i++) {
+    if (code === questions[i]) {
+      result = true;
+      break;
+    }
+  }
+  return result;
+};
+
+var getAnswerOptions = function(properties) {
+
+  return {
+    choice: [{
+      key: "A",
+      value: "A"
+    }, {
+      key: "B",
+      value: "B"
+    }, {
+      key: "C",
+      value: "C"
+    }, {
+      key: "D",
+      value: "D"
+    }, {
+      key: "E",
+      value: "E"
+    }, {
+      key: "F",
+      value: "F"
+    }],
+    multichoice: [{
+      key: "A",
+      value: "A"
+    }, {
+      key: "B",
+      value: "B"
+    }, {
+      key: "C",
+      value: "C"
+    }, {
+      key: "D",
+      value: "D"
+    }, {
+      key: "E",
+      value: "E"
+    }, {
+      key: "F",
+      value: "F"
+    }],
+    judge: [{
+      key: "YES",
+      value: properties.yes ? properties.yes : "是"
+    }, {
+      key: "NO",
+      value: properties.no ? properties.no : "否"
+    }]
+  };
+}
+
+
+
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__constants_Constants__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__constants_fns__ = __webpack_require__(1);
+
+
+(function() {
+  //当前版本：7.2.0
+  var currentRuntime = player.getPlayerServices().getRuntime();
+  var layoutHandler;
+  var $view,
+    $footbarUl,
+    $analysis_content,
+    $analysis_close,
+    $answer_detail_content,
+    $answer_detail_close,
+    $footbarContainer,
+    $layout_handle;
+  var $analysis_wrapper,
+    $answer_detail_wrapper;
+  var dialogWidth = 0,
+    dialogHeight = 0;
+  var examId;
+  var footbar,
+    setAnswer;
+  var isApp = false,
+    isTeacher = false,
+    isStudent = false,
+    isTeacherPc = false,
+    isProjector = false,
+    isWeb = false;
+  var basePath;
+  var rightStu = [],
+    wrongStu = [],
+    unfinishedStu = [],
+    curStuList = [];
+  var currentStudent = [];
+  var stuList = {
+    rightStu: [],
+    wrongStu: [],
+    unfinishedStu: [],
+    curStuList: []
+  };
+  var cloneStuList = {};
+  var correctAnswer;
+
+  switch (currentRuntime) {
+    case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+      isTeacher = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+      isStudent = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+      isProjector = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.WEB:
+      isWeb = true;
+      break;
+    case icCreatePlayer.RUNTIME.TEACHER_PC:
+      isTeacherPc = true;
+      isApp = true;
+      break;
+    default:
+      isApp = false;
+      isWeb = false;
+      isTeacherPc = false;
+  }
+
+  //底部二级工具栏配置
+  var footBarConfig = [];
+  var mock,
+    convertedData;
+  var questionType = "";
+  var myself;
+  var allowAnalysis = false; //是否允许查看解析按钮
+  var analysisContent = ""; //查看解析内容
+  var setAnswerOption = "";
+  var setAnswerOptions;
+
+  //监听器集合
+  var bridgeListener = {};
+
+
+  window.AddonObjectiveStatisticsRemake_create = function() {
+
+    var Presenter = BasicPresenter.extend({
+      //Presenter的元数据
+      metaInfo: {
+        name: "ObjectiveStatisticsRemake",
+        type: PresenterType.PRESENTER_COMPONENT,
+        subtype: SubPresenterType.UTILITY_COMPONENT
+      },
+      $init: function() {
+        this._super();
+        this.viewModel = {
+          view: null,
+          question: {
+            title: "",
+            content: ""
+          }
+        };
+        this.model = null;
+        this.$view = null;
+        this.correctAnswer = [];
+        this.container = null;
+        this.currentStatus = null;
+        this.options = {};
+
+        //是否是web版统计平台
+        this.icrStatistics = this.urlParams.sys == "icrStatisticsPlatform";
+      },
+      _service_: {
+        constructor: function(parent) {
+          this.parent = parent;
+        },
+
+        setLocationProperties: function(properties) {
+          setAnswerOptions = __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns__["a" /* getAnswerOptions */])(properties);
+          this.parent.langProperties = properties;
+        },
+        dispatchEvent: function() {
+          this.parent.$dispatchEvent.apply(this.parent, arguments);
+        },
+        setExtroAttrs: function(attrsObj) {
+          if (!!attrsObj) {
+            this.parent["attrsObj"] = $.extend(this.parent["attrsObj"] || {}, attrsObj);
+          }
+        },
+        showBack2overview: function() { //显示返回总览
+          $footbarContainer.find(".square_tool_backView").removeClass("hide_dom");
+        },
+        requestSingleStatistics: function(info, data) {
+          var eventData = $.extend(true, {}, data);
+          var value = eventData.value;
+          var answers = value.answers[0];
+          var answer;
+          var statisticClass = info.statisticClass;
+          value["questionType"] = info["subquestionType"];
+          value["statisticClass"] = statisticClass;
+          value.finishedNum = 0;
+          for (var i = 0, len = answers.length; i < len; i++) {
+            answer = answers[i];
+            var cr,
+              ur,
+              a;
+            a = JSON.parse(answer.answer);
+            for (var j = 0, jlen = a.correct_response.length; j < jlen; j++) {
+              cr = a.correct_response[j], ur = a.user_response[j];
+              if (cr["subquestionId"] == info["subquestionId"] && ur["subquestionId"] == info["subquestionId"]) {
+                a.correct_response = [cr];
+                a.user_response = [ur];
+                a.answer_result = ur.subquestionResult;
+                answer.isCorrect = ur.subquestionResult;
+                statisticClass = __WEBPACK_IMPORTED_MODULE_0__constants_Constants__["a" /* statisticMap */][ur["subquestionType"]];
+                var strAnswer = JSON.stringify(a);
+                answer.answer = strAnswer;
+                if (ur.subquestionState == "NO_ANSWER") {
+                  value.unfinishedNum += answer.userIds.length;
+                  value.unfinishedUserIds = value.unfinishedUserIds.concat(answer.userIds);
+                } else {
+                  value.finishedNum += answer.userIds.length;
+                }
+                break;
+              }
+            }
+          }
+          return eventData;
+        },
+        exitThisExam: function() {
+          if (this.parent.exitThisExam) {
+            $analysis_wrapper.css({
+              "display": "none"
+            });
+            $answer_detail_wrapper.css({
+              "display": "none"
+            });
+            $(document).trigger("statisticEvent", {
+              "eventName": "closeAnalysisDialog",
+              "eventData": {
+                "type": questionType
+              }
+            });
+            this.parent.exitThisExam();
+          }
+        },
+        enterStatistics: function(eventData, statisticClass, needFootbar, opt) {
+          this.parent.options = opt || {};
+          if (eventData.questionInfo && eventData.questionInfo.dynamic == true) {
+            this.parent.options.showRepeat = false;
+          }
+          var lang_time = this.parent.langProperties.time ? this.parent.langProperties.time : "答题时间：";
+          var lang_min = this.parent.langProperties.minute ? this.parent.langProperties.minute : "分";
+          var lang_sec = this.parent.langProperties.second ? this.parent.langProperties.second : "秒";
+          var lang_submitnum = this.parent.langProperties.submit_num ? this.parent.langProperties.submit_num : "提交人数：";
+          //国际化
+          $view.find(".com_layout_header .lang_time").html(lang_time);
+          $view.find(".com_layout_header .lang_min").html(lang_min);
+          $view.find(".com_layout_header .lang_sec").html(lang_sec);
+          $view.find(".com_layout_header .lang_submitnum").html(lang_submitnum);
+
+          if (eventData.type == 'show') {
+            console.log("enterStatistics", eventData);
+            statisticClass !== "D" && (this.parent._setStatClass.call(this.parent, statisticClass), this.parent.statisticClass = statisticClass);
+            //统计处理函数
+            examId = eventData.value.examId;
+            questionType = eventData.value.questionType;
+
+            //收集加旗子学生列表
+            this.parent["tagUsers"] = [];
+            if (eventData.value["users"] && $.isArray(eventData.value["users"])) {
+              var u;
+              for (var i = 0, len = eventData.value["users"].length; i < len; i++) {
+                u = eventData.value["users"][i];
+                if (u["tag"] == true) {
+                  this.parent["tagUsers"].push(u["userId"]);
+                }
+              }
+            }
+
+            if (eventData["questionInfo"] && eventData["questionInfo"]["dynamic"] == true) {
+              this.parent.dynamic_create_question = true;
+            } else {
+              this.parent.dynamic_create_question = false;
+            }
+            this.parent.statisticsData = $.extend(true, {}, eventData);
+            var chart_display = $view.find(".statistics-area"),
+              header = $view.find(".com_layout_header");
+            this.parent.statisticsHandler(questionType, eventData, chart_display, header, statisticClass, opt);
+            if (needFootbar == true) {
+              this.parent.setFootBar(questionType);
+            }
+            if (opt && opt.showAnswer == true) {
+              this.showResult();
+            }
+
+            if (this.parent.statisticClass == "E") { //若属于E类统计
+              $view.closest(".mix-layout__container").addClass("mix-layout--classE");
+              return true;
+            }
+          }
+        },
+        showResult: function(appendData) {
+          var eventData = {
+            service: "question",
+            method: "showAnswer",
+            args: ["correct"]
+          };
+          if (appendData) {
+            eventData = $.extend(eventData, appendData);
+          }
+          var context = this.parent;
+          context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+          if (context.statisticClass == "A" && window.__StatisticsRender && window.__StatisticsRender.choiceStatRender && window.__StatisticsRender.choiceStatRender.showAnswer) {
+            window.__StatisticsRender.choiceStatRender.showAnswer();
+          }
+        },
+        clickItem: function() {
+          var argLen = arguments.length;
+          if (argLen == 3 && arguments[1] == "B") {
+            window.__StatisticsRender && window.__StatisticsRender.fillStatRender.gotoIndex(arguments[0]);
+            this.parent.statisticLauncher && this.parent.statisticLauncher.gotoIndex(arguments[0]);
+          } else if (argLen > 3 && arguments[2] == "B") {
+            window.__StatisticsRender && window.__StatisticsRender.fillStatRender.gotoIndex(arguments[0], arguments[1]);
+            this.parent.statisticLauncher && this.parent.statisticLauncher.gotoIndex(arguments[0], arguments[1]);
+          }
+        },
+        //实现状态恢复的两个方法
+        getState: function() {
+          return;
+        },
+        setState: function(state) {},
+        showDetailStatistics: function() {
+          var eventData = {
+            "service": "layout",
+            "method": "showDetailStatistics"
+          };
+          myself.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+        },
+        getCurrentStatus: function() {
+          return this.parent.currentStatus;
+        },
+        setCurrentStatus: function(status) {
+          this.parent.currentStatus = status;
+        },
+        setFootBarPanel: function(containter) {
+          var $tmp = $(containter).append("<div class='ndui-tool k12-footer-tool'><div class='ndui-tool-box'></div></div>");
+          $footbarContainer = $tmp.find(".ndui-tool-box");
+        },
+        setFootBar: function(type) {
+          this.parent.setFootBar(type);
+        },
+        triggerShowResult: function() { //直接触发公布结果
+          var btnShowResult = $footbarContainer.find(".square_tool_result:first");
+          if (btnShowResult[0] && btnShowResult.css('display') !== "none") {
+            btnShowResult.trigger('click');
+          }
+        },
+        getPresenterView: function() {
+          return this.parent.$view;
+        },
+        setStuList: function(views, type) {
+          var btn_sendflower = $view.find(".com_send_flower_wrap");
+          var $statistic_stu_list = views.statistic_stu_list;
+          var $pageUl = views.pageUl;
+          $statistic_stu_list.empty();
+          $pageUl.children().off("click");
+          $pageUl.empty();
+
+          var i,
+            pageIndex,
+            $stuUl,
+            $stuLi,
+            $pageLi;
+
+          if (type == "rightAnswer") {
+            stuList.curStuList = stuList.rightStu;
+            cloneStuList.curStuList = cloneStuList.rightStu;
+          } else if (type == "wrongAnswer") {
+            stuList.curStuList = stuList.wrongStu;
+            cloneStuList.curStuList = cloneStuList.wrongStu;
+          } else if (type == "unfinished") {
+            stuList.curStuList = stuList.unfinishedStu;
+            cloneStuList.curStuList = cloneStuList.unfinishedStu;
+          }
+
+          if (stuList.curStuList.length > 0) {
+            basePath = this.parent.basePath;
+            for (i = 0; i < stuList.curStuList.length; i++) {
+              if (i % 30 == 0) {
+                pageIndex = Math.floor(i / 30) + 1;
+                $pageLi = $("<a class='ndui-pager-a on'>" + pageIndex + "</a>");
+                $pageLi.attr("pageIndex", pageIndex);
+                $pageUl.append($pageLi);
+
+                $stuUl = $("<ul class='comui-list-roster'></ul>");
+                $stuUl.attr("pageIndex", pageIndex);
+                $statistic_stu_list.append($stuUl);
+                if (pageIndex > 1) {
+                  $stuUl.css("display", "none");
+                  $pageLi.removeClass("on");
+                }
+              }
+              $stuLi = $("<li><span class='head'><img src='" + basePath + "/resources/images/head_img.png' style='width: 100%;height:100%;'/></span><span class='name'>" + stuList.curStuList[i] + "</span></li>"); //
+              if (cloneStuList.curStuList[i] && $.isArray(this.parent["tagUsers"]) && $.inArray(cloneStuList.curStuList[i], this.parent["tagUsers"]) > -1) {
+                $stuLi.prepend('<span class="stat_com_icon_flag"></span>');
+              }
+              $stuUl.append($stuLi);
+            }
+            var pageCount = $pageUl.children().length;
+            $pageUl.attr("current-page-index", 1);
+            $pageUl.attr("page-count", pageCount);
+
+            var $previous = $("<a class='ndui-pager-a ndui-pager-previous off'></a>");
+            var $next = $("<a class='ndui-pager-a ndui-pager-next'></a>");
+            if (pageCount == 1) {
+              $next.addClass("off");
+            }
+            $pageUl.prepend($previous);
+            $pageUl.append($next);
+
+            $pageUl.children().on("click", function() {
+              var count = $pageUl.attr("page-count");
+              var pageIndex = $(this).attr("pageIndex");
+              count = parseInt(count);
+              var curIndex;
+              if (pageIndex) { //点击页码
+                $pageUl.attr("current-page-index", pageIndex);
+                $(this).siblings().removeClass("on");
+                $(this).addClass("on");
+                var $stuUl = $statistic_stu_list.find("ul");
+                $stuUl.each(function() {
+                  var index = $(this).attr("pageIndex");
+                  var css = (index == pageIndex) ? "block" : "none";
+                  $(this).css("display", css);
+                });
+                if (pageIndex == 1) {
+                  $(this).siblings(".previous").addClass("off");
+                  if (parseInt(pageIndex) < count) {
+                    $(this).siblings(".next").removeClass("off");
+                  }
+                }
+                if (pageIndex == count) {
+                  $(this).siblings(".next").addClass("off");
+                  if (parseInt(pageIndex) > 1) {
+                    $(this).siblings(".previous").removeClass("off");
+                  }
+                }
+              } else {
+                curIndex = $pageUl.attr("current-page-index");
+                curIndex = parseInt(curIndex);
+
+                if ($(this).is(".previous")) { //点击上一页
+                  curIndex--;
+                  if (curIndex <= 1) {
+                    $(this).addClass("off");
+                    curIndex = 1;
+                  }
+                  if (curIndex < pageCount) {
+                    $(this).siblings(".next").removeClass("off");
+                  } else {
+                    $(this).siblings(".next").addClass("off");
+                  }
+                } else if ($(this).is(".next")) { //点击下一页
+                  curIndex++;
+                  if (curIndex >= pageCount) {
+                    $(this).addClass("off");
+                    curIndex = pageCount;
+                  }
+                  if (curIndex > 1) {
+                    $(this).siblings(".previous").removeClass("off");
+                  } else {
+                    $(this).siblings(".previous").addClass("off");
+                  }
+                }
+                if (curIndex < 1 || curIndex > count) {
+                  return;
+                }
+                $pageUl.attr("current-page-index", curIndex);
+                $pageUl.find(">a[pageIndex!=" + curIndex + "]").removeClass("on");
+                $pageUl.find(">a[pageIndex=" + curIndex + "]").addClass("on");
+                var $stuUl = $statistic_stu_list.find("ul");
+                $stuUl.each(function() {
+                  var index = $(this).attr("pageIndex");
+                  var css = (index == curIndex) ? "block" : "none";
+                  $(this).css("display", css);
+                });
+              }
+            });
+          }
+
+          if (this.parent["attrsObj"] && !!this.parent["attrsObj"]["noSendFlowers"]) {
+            btn_sendflower.hide();
+          } else {
+            btn_sendflower.show();
+            btn_sendflower.off("click").on("click", this.parent, function(ev) {
+              var self = ev.data;
+              self.fireStuffEvent("FLOWER", cloneStuList.curStuList);
+              if (window.PresenterFlowerTip) {
+                window.PresenterFlowerTip(stuList.curStuList);
+              }
+            });
+          }
+
+
+          //设置学生列表总高度
+          var $stuItem = $statistic_stu_list.find(">ul>li");
+          var h = $stuItem.height();
+          var margin = $stuItem.css("margin-bottom");
+          margin = parseFloat(margin);
+          //$statistic_stu_list.height(6*(h+margin) + 2*margin);
+          $stuItem = null;
+        },
+        getFootbarUl: function() {
+          return $footbarContainer.find(">ul.ndui-tool-list");
+        },
+        getFootbarConfig: function() { //获取底部菜单配置
+          return footBarConfig;
+        },
+        getOnlineStu: function(data, key, attr) {
+
+          stuList.rightStu = [];
+          stuList.wrongStu = [];
+          stuList.unfinishedStu = [];
+
+          if ("unfinish" == key) {
+            stuList.rightStu = [];
+            stuList.wrongStu = [];
+            stuList.unfinishedStu = $.extend(true, [], data.unfinishedUserIds); //修复bug#57635
+          } else {
+            //处理回答正确，错误，和未回答的学生列表
+            if (data.stuAnswerStat) {
+              if ($.isArray(data.stuAnswerStat)) {
+                for (var i = 0; i < data.stuAnswerStat.length; i++) {
+                  if (data.stuAnswerStat[i].ref_key == key) {
+                    stuList.rightStu = $.extend(true, [], data.stuAnswerStat[i].right_userIds);
+                    stuList.wrongStu = $.extend(true, [], data.stuAnswerStat[i].wrong_userIds);
+                    stuList.unfinishedStu = $.extend(true, [], data.stuAnswerStat[i].unfinished_userIds);
+                    break;
+                  }
+                }
+              } else if (attr) {
+                for (var i = 0; i < data.stuAnswerStat[attr].length; i++) {
+                  if (data.stuAnswerStat[attr][i].ref_key == key) {
+                    stuList.rightStu = $.extend(true, [], data.stuAnswerStat[attr][i].right_userIds);
+                    stuList.wrongStu = $.extend(true, [], data.stuAnswerStat[attr][i].wrong_userIds);
+                    stuList.unfinishedStu = $.extend(true, [], data.stuAnswerStat[attr][i].unfinished_userIds);
+                    break;
+                  }
+                }
+              }
+            }
+          }
+
+          cloneStuList = $.extend(true, {}, stuList);
+
+          /**
+           * 学号和姓名映射
+           */
+          if (window.ClassroomUtils && ClassroomUtils.getCurrentStudents) {
+            currentStudent = ClassroomUtils.getCurrentStudents();
+            var tmpStu,
+              stuId,
+              tmpIndex;
+            for (var i = 0; i < currentStudent.length; i++) {
+              tmpStu = currentStudent[i];
+              stuId = tmpStu["studentId"];
+              if ((tmpIndex = $.inArray(stuId, stuList.rightStu)) >= 0) {
+                stuList.rightStu[tmpIndex] = tmpStu["studentName"];
+              } else if ((tmpIndex = $.inArray(stuId, stuList.wrongStu)) >= 0) {
+                stuList.wrongStu[tmpIndex] = tmpStu["studentName"];
+              } else if ((tmpIndex = $.inArray(stuId, stuList.unfinishedStu)) >= 0) {
+                stuList.unfinishedStu[tmpIndex] = tmpStu["studentName"];
+              }
+            }
+          }
+
+          return stuList;
+        },
+        questionAnalysis: function(data) { //显示查看解析
+          allowAnalysis = true;
+          analysisContent = data["content"];
+        },
+        showAnswerDetail: function() { //显示做题情况,弹出对话框
+
+          $analysis_wrapper.removeClass("hide_dom");
+
+          /**
+           * 构造对话框内容
+           */
+          var $statistic_stu_list = $view.find(".statistic-stu-list");
+          var $statistic_page_list = $view.find(".statistic-page-list");
+          var $statistic_item_content = $view.find(".statistic-item-content");
+          $statistic_stu_list.empty();
+          $view.find(".com_send_flower_wrap .lang_flower").html(this.parent.langProperties.send_lower ? this.parent.langProperties.send_lower : "每人送一朵花");
+
+          var views = {
+            statistic_stu_list: $statistic_stu_list,
+            pageUl: $statistic_page_list,
+            statistic_item_content: $statistic_item_content
+          };
+          return views;
+        },
+        showQuestionAnalysis: function() { //查看解析，弹出对话框
+
+          $answer_detail_wrapper.removeClass("hide_dom");
+
+          /**
+           * 构造对话框内容
+           */
+          var $detail_header = $view.find(".detail_header");
+          var $detail_body = $view.find(".detail_body");
+
+          var views = {
+            detail_header: $detail_header,
+            detail_body: $detail_body
+          };
+
+          return views;
+        },
+        //进入web版统计，复合题
+        enterWebStatForF: function() {
+          this.parent.showResult({
+            data: this.parent
+          });
+
+          //设置返回总览的按钮
+          $footbarUl = $footbarContainer.find(">ul.ndui-tool-list");
+          if ($footbarUl.length == 0) {
+            $footbarUl = $(footbar);
+            $footbarUl.addClass("ndui-tool-left");
+            $footbarContainer.append($footbarUl);
+
+            $footbarUl = $(footbar);
+            $footbarUl.addClass("ndui-tool-right");
+            $footbarContainer.append($footbarUl);
+          }
+          $footbarContainer.find("ul.ndui-tool-list.li").off("click");
+          $footbarContainer.find("ul.ndui-tool-list").empty();
+
+          var backBtn;
+
+          //遍历按钮配置，找出返回总览的按钮
+          for (var i = 0, len = footBarConfig.length; i < len; i++) {
+            if (footBarConfig[i].clazz == "square_tool_backView hide_dom") {
+              backBtn = footBarConfig[i];
+              break;
+            }
+          }
+
+          //构造返回总览按钮dom结构
+          var btnHtml = [];
+
+          btnHtml.push("<li class='square_tool_backView hide_dom'>");
+          btnHtml.push("<span class='com_btn_pic'></span>");
+          btnHtml.push("<span class='com_btn_text'>" + backBtn.title + "</span>");
+          btnHtml.push("</li>");
+
+          var btnString = btnHtml.join("");
+
+          var $leftBtn = $(btnString);
+          var $rightBtn = $(btnString);
+
+          $leftBtn.on("click", this.parent, backBtn.click);
+          $rightBtn.on("click", this.parent, backBtn.click);
+
+          $footbarUl.append($rightBtn);
+          $footbarContainer.find("ul.ndui-tool-list.ndui-tool-left").append($leftBtn);
+
+        }
+      },
+      getService: function() {
+        this._service_.constructor(this);
+        return this._service_;
+      },
+      /****以下开始为icPlayer的生命周期方法*****/
+      run: function(view, model) {
+
+        myself = this;
+        this.model = model;
+        this.$view = $(view);
+        this.$view.css({
+          "width": "auto"
+        });
+
+        this.statisticLauncher = null;
+
+        footbar = '<ul class="ndui-tool-list"></ul>';
+        $view = $(view);
+        //this.layoutReset();
+
+        this.presenterLogic(view, model, false);
+        $.ajax({
+          url: myself.basePath + '/resources/html/SetAnswer_templete.html',
+          type: 'GET',
+          cache: false,
+          success: function(data) {
+            setAnswer = data;
+          }
+        });
+      },
+      $getQueryString: function(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+      },
+      $checkFromClassroomSummary: function() {
+        var questionId = this.$getQueryString("classroomsummary_questionId");
+        if (questionId) {
+          if (window.localStorage) {
+            var StatisticData = localStorage.getItem("StatisticData");
+            var data = JSON.parse(StatisticData);
+            var content = data[questionId];
+
+            if (content) {
+              if ((typeof content) == "string") {
+                content = JSON.parse(content);
+              }
+              var $detial = $view.find(".statistics-area");
+              var header = $view.find(".com_layout_header");
+              var data;
+
+              if (!content.value) {
+                data = {};
+                data.value = content;
+                data.value.questionType = "wordpuzzles";
+              } else {
+                data = content;
+              }
+              examId = data.value.examId;
+              questionType = data.value.questionType;
+              if (this.parent.statisticClass == "E") { //若属于E类统计
+                $view.closest(".mix-layout__container").addClass("mix-layout--classE");
+                var eventData = {
+                  "service": "layout",
+                  "method": "disableLayoutDrag"
+                };
+                myself.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+              }
+
+              content.value.correctAnswerTeacher = correctAnswer;
+              this.statisticsHandler(questionType, data, $detial, header, this.parent.statisticClass);
+              var eventData = {
+                "service": "layout",
+                "method": "showDetailStatistics"
+              };
+              myself.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+            }
+          }
+        }
+      },
+      pageShow: function() {
+        //this.$checkFromClassroomSummary();
+      },
+      pageLeave: function() {
+        this.$unbindEvent();
+      },
+      destroy: function() {},
+      //以下是私有方法
+      fireEvent: function(eventName, option) {
+        if (!option) {
+          option = {};
+        }
+        option.source = this.model.ID;
+        if (window.ClassroomUtils && ClassroomUtils.fireEvent) {
+          ClassroomUtils.fireEvent(eventName, option);
+        }
+      },
+      fireStuffEvent: function(item, usrIds, num) {
+        this.fireEvent("Stuff", {
+          "source": "ObjectiveStatisticsRemake",
+          "item": item,
+          "value": {
+            "num": num ? num : 1, //默认送1
+            "userIds": usrIds // 答对的用户ID
+          },
+          isApp: true
+        });
+      },
+      presenterLogic: function(view, model, isPreview) {
+
+        footBarConfig = [
+          {
+            key: "ExitExam",
+            title: this.langProperties.exit_exam ? this.langProperties.exit_exam : "退出本题",
+            icon: "icon_exitexam.png",
+            clazz: "square_tool_quit",
+            click: this.exitThisExam
+          },
+          {
+            key: "ShowResult",
+            title: this.langProperties.show_result ? this.langProperties.show_result : "公布结果",
+            icon: "icon_showresult.png",
+            clazz: "square_tool_result",
+            click: this.showResult
+          },
+          {
+            key: "ShowAnalysis",
+            title: this.langProperties.show_analysis ? this.langProperties.show_analysis : "查看解析",
+            clazz: "square_tool_analysis hide_dom",
+            click: this.showAnalysis
+          },
+          {
+            key: "Back2OverView",
+            title: this.langProperties.back2overview ? this.langProperties.back2overview : "返回总览",
+            clazz: "square_tool_backView hide_dom",
+            click: this._back2overview
+          },
+          {
+            key: "ChartStyles",
+            title: this.langProperties.chartstyles ? this.langProperties.chartstyles : "图表样式",
+            clazz: "square_tool_chartstyles hide_dom",
+            click: this._chartstyles
+          },
+          {
+            key: "Repeat",
+            title: this.langProperties.repeat ? this.langProperties.repeat : "重发本题",
+            clazz: "ndui-btn-square square_tool_repeat hide_dom",
+            click: this._repeat
+          }
+        ];
+
+        var w = $view.closest(".mix-layout__container").width();
+        var h = $view.closest(".mix-layout__container").height();
+        dialogWidth = w * 0.56;
+        dialogHeight = h * 0.63;
+        var left = "calc(50% - " + dialogWidth / 2 + "px)";
+        var top = "calc(50% - " + dialogHeight / 2 + "px)";
+
+        $analysis_wrapper = $view.find(".analysis_wrapper");
+        $analysis_content = $analysis_wrapper.find(".analysis_content");
+        $analysis_close = $analysis_wrapper.find(".close_analysis_wrapper");
+        $answer_detail_wrapper = $view.find(".answer_detail_wrapper");
+        $answer_detail_content = $answer_detail_wrapper.find(".answer_detail_content");
+        $answer_detail_close = $answer_detail_wrapper.find(".close_answer_detail_wrapper");
+        $layout_handle = $view.find(".layout_handle");
+
+        this.$bindEvent();
+      },
+      statisticsHandler: function(questionType, answerData, detailArea, header, statisticClass, opt) {
+        var self = this;
+        var _newstatistics_container = header.closest('._newstatistics_container')[0]; //统计外层容器
+        var _statisticLauncher;
+        _statisticLauncher = this.statisticLauncher || (window['_ObjectiveRenderLauncher_'] && new window['_ObjectiveRenderLauncher_'](_newstatistics_container, self));
+        this.statisticLauncher = _statisticLauncher;
+
+        if (_statisticLauncher) {
+          //开始渲染
+          var deffered = _statisticLauncher.handle(answerData, statisticClass);
+          var data = answerData.value.convertedData;
+          if (data && data["allrightStu"]) { //做对的点赞
+            if (opt && opt.NO_THUMBS_UP == true) {
+              return;
+            }
+            //修复bug#79885
+            if (self.statisticsData.value.convertedData.fromClassSummary === true) {
+              return;
+            }
+            self.fireStuffEvent("THUMBS_UP", data["allrightStu"]); //点赞/送花
+          }
+          //某些题型，做错需要发送事件
+          if (data && data["mistake"]) {
+            self.fireStuffEvent("MISTAKE", data["mistake"]);
+          }
+        }
+      },
+      _presenterInit: function() {},
+      _back2overview: function(ev) {
+        var context = ev.data;
+        var eventData = {
+          service: "layout",
+          method: "back2OverView"
+        };
+        context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+        context.$dispatchEvent("Event_backToOverView", PresenterEventType.IC_PLAYER_EVENT, {
+          back2OverView: true
+        });
+      },
+      _repeat: function(ev) { //重发本题
+        var context = ev.data;
+        var eventData = {
+          service: "controller",
+          method: "resend"
+        };
+        context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+        context && context.playerController && context.playerController.startFlow('asSendQuestion', {
+          op: 'resend'
+        });
+        context["hasSetAnswer"] = false;
+      },
+      _chartstyles: function(ev) {
+        var context = ev.data;
+        var eventData = {
+          "type": "",
+          "source": "ObjectiveStatisticsRemake",
+          "value": {
+          }
+        };
+        context.$dispatchEvent("showChartSelector", PresenterEventType.PPT_NATIVE_EVENT, eventData);
+      },
+      showAnalysis: function(e) {
+        if (analysisContent != "") {
+          var $analysisArea = myself._service_.showQuestionAnalysis();
+          $analysisArea.detail_body.html(analysisContent);
+          var analysis_title = myself.langProperties.analysis ? myself.langProperties.analysis : "解析";
+          $analysisArea.detail_header.html(analysis_title);
+
+          NDMediaPlayer.render($analysisArea.detail_body, {
+            img: {
+              render: true
+            },
+            lang: myself.currentLanguage
+          });
+        }
+      },
+      buildImageSendData: function(sdv) {
+        var correctAnswer = [];
+        for (var key in setAnswerOption) {
+          correctAnswer.push(setAnswerOption[key]["value"]);
+        }
+        var data = {
+          type: "exam",
+          value: {
+            answers: sdv.answers,
+            correctAnswer: correctAnswer,
+            elapsedTime: sdv.elapsedTime,
+            finishedNum: sdv.finishedNum,
+            questionType: sdv.questionType,
+            examId: sdv.examId,
+            flag: "image",
+            questionUrl: sdv.questionXml,
+            unfinishedNum: sdv.unfinishedNum,
+            unfinishedUserIds: sdv.unfinishedUserIds,
+            users: []
+          }
+        };
+        var correctUsers = [],
+          wrongUsers = [];
+
+        var i,
+          j,
+          ilen,
+          jlen,
+          answers,
+          answer,
+          user,
+          isCorrect;
+        answers = sdv.answers[0];
+        for (i = 0, ilen = sdv.users.length; i < ilen; i++) {
+          isCorrect = false;
+          user = sdv.users[i];
+          if ($.isArray(answers)) {
+            for (j = 0, jlen = answers.length; j < jlen; j++) {
+              answer = answers[j];
+              if ($.isArray(answer["userIds"]) && $.inArray(user["userId"], answer["userIds"]) >= 0) {
+                if ((typeof answer.answer) == "string") {
+                  var a = JSON.parse(answer.answer);
+                  if (a["RESPONSE_1-1"] && a["RESPONSE_1-1"]["value"] && $.inArray(setAnswerOption["key"], a["RESPONSE_1-1"]["value"]) >= 0) {
+                    isCorrect = true;
+                    correctUsers.push(user["userId"]);
+                    break;
+                  }
+                } else if (answer.answer["RESPONSE_1-1"] && (typeof setAnswerOption == 'object')) {
+                  if (answer.answer["RESPONSE_1-1"]["value"] && //
+                    Object.keys(setAnswerOption).sort().join() == answer.answer["RESPONSE_1-1"]["value"].sort().join()) {
+                    isCorrect = true;
+                    correctUsers.push(user["userId"]);
+                    break;
+                  }
+                }
+              }
+            }
+            user["isCorrect"] = isCorrect;
+          }
+        }
+        for (i = 0, ilen = sdv.users.length; i < ilen; i++) {
+          if ($.inArray(sdv.users[i]["userId"], correctUsers) < 0) {
+            wrongUsers.push(sdv.users[i]["userId"]);
+          }
+        }
+        data["value"]["users"] = sdv.users;
+        return {
+          data: data,
+          correctUsers: correctUsers,
+          wrongUsers: wrongUsers
+        };
+      },
+      showResult: function(e) {
+        var context = e.data;
+
+        //如果是F类，进入总览
+        if (context.statisticClass == "F") {
+          var eventData = {
+            service: "layout",
+            method: "requestEnterOverViewForF",
+            args: {
+              questionType: context.statisticsData.value.questionType
+            }
+          };
+          context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+          $(this).find('>a').addClass("hide_dom");
+          $(this).closest("ul.ndui-tool-list").siblings("ul.ndui-tool-list").find("a.square_tool_result").addClass("hide_dom");
+
+          __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__constants_fns__["b" /* supportStyleChart */])(context.statisticsData.questionInfo.type_code) && $(this).closest(".ndui-tool-box").find(".square_tool_chartstyles").removeClass('hide_dom');
+
+          eventData = {
+            service: "question",
+            method: "showAnswer",
+            args: ["correct"]
+          };
+          context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+          return;
+        }
+
+        var $layout_footbar = $(this).closest(".layout_footbar");
+        if (context.dynamic_create_question) {
+          var isSettingAnswer = $layout_footbar.attr("isSettingAnswer");
+          if (isSettingAnswer == "true") {
+            if (setAnswerOption != "" && Object.keys(setAnswerOption).length > 0) {
+              if ($(e.target).closest("div._setAnswer").length > 0) {
+                return;
+              }
+              //关闭设置答案，向pc端发送数据,eventName=StudentAnswerResults
+              var sdv = context.statisticsData.value;
+              var result = context.buildImageSendData(sdv);
+              context.fireStuffEvent("THUMBS_UP", result["correctUsers"]); //点赞
+              context.fireStuffEvent("MISTAKE", result["wrongUsers"]); //答错了鼓励
+              context["hasSetAnswer"] = true;
+              //公布结果
+              $(this).find('.square_tool_result').addClass("hide_dom");
+              $(this).closest("ul.ndui-tool-list").siblings("ul.ndui-tool-list").find("a.square_tool_result").addClass("hide_dom");
+              var eventData = {
+                service: "question",
+                method: "showAnswer",
+                noLockQuestion: true,
+                args: ["correct"]
+              };
+              context.$view.find("ul li.choice_column_wrapper").removeClass("choice_correct_answer on");
+              var rightAnswer = Object.keys(setAnswerOption);
+              context.showRightAnswer.call(context, rightAnswer);
+              context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+            }
+            $layout_footbar.removeAttr("isSettingAnswer");
+            $layout_footbar.find("._setAnswer").remove();
+            return;
+          }
+        }
+
+        if (e.target.className == "squere_tool_result_list_content") {
+          return;
+        }
+        if (context.dynamic_create_question && !context["hasSetAnswer"]) { //如果是截图答题
+          //$(this).closest(".layout_footbar").addClass("max_index");
+          $(this).closest(".layout_footbar"); //去掉max_index类，修复底部按钮在弹窗上面的问题
+          if (setAnswer) {
+            $(this).find("._setAnswer").remove();
+            var $setAnswer = $(setAnswer);
+            if ($(this).closest(".ndui-tool-list").is(".ndui-tool-left")) {
+              $setAnswer.find(".square_tool_result_list").addClass("for_left");
+            }
+            var $squere_tool_result_list_content = $setAnswer.find(".squere_tool_result_list_content");
+            var $label;
+            var optionType = context.statisticsData.value.questionType;
+            var options = setAnswerOptions[optionType];
+            var setRightAnswer = context.langProperties.set_right_answer ? context.langProperties.set_right_answer : "请设置正确答案";
+            $setAnswer.find(".squere_tool_result_list_txt").text(setRightAnswer + ":");
+            if (options) {
+              for (var i = 0, len = options.length; i < len; i++) {
+                $label = $('<label class="squere_tool_result_list_radio" optionType = "' + optionType + '" option="' + options[i].key + '"><span class="txt">' + options[i].value + '</span></label>');
+                if (setAnswerOption == options[i]) {
+                  $label.addClass("checked");
+                }
+                $squere_tool_result_list_content.append($label);
+              }
+              $(this).append($setAnswer);
+              $layout_footbar.attr("isSettingAnswer", true);
+              $squere_tool_result_list_content.find("label.squere_tool_result_list_radio").off("click").on("click", context, context.setAnswer4DynamicQuestion);
+            }
+          }
+        } else {
+          if (allowAnalysis && analysisContent != "") {
+            $(this).addClass("hide_dom").closest('ul.ndui-tool-list').find("a.square_tool_analysis").removeClass("hide_dom");
+            $(this).closest("ul.ndui-tool-list").siblings("ul.ndui-tool-list").find("a.square_tool_result").addClass("hide_dom").closest('ul.ndui-tool-list').find("a.square_tool_analysis").removeClass("hide_dom");
+            if (context.statisticClass == "A") {
+              context.statisticLauncher && context.statisticLauncher.showAnalysis(analysisContent);
+            }
+          } else {
+            $(this).find(">.square_tool_result").addClass("hide_dom");
+            $(this).closest("ul.ndui-tool-list").siblings("ul.ndui-tool-list").find("a.square_tool_result").addClass("hide_dom");
+          }
+          var eventData = {
+            service: "question",
+            method: "showAnswer",
+            noLockQuestion: true,
+            args: ["correct"]
+          };
+          if (context["hasSetAnswer"]) {
+            context.$view.find("ul li[data-identifier='" + setAnswerOption["value"] + "']").addClass("choice_correct_answer").siblings("li").removeClass("choice_correct_answer");
+          }
+          context.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+          if (!context.dynamic_create_question && context.statisticClass == "A" && context.statisticLauncher && context.statisticLauncher.showRightAnswer) {
+            var correctAnswerDisplayCtrl = {
+              showCorrectAnswer: true,
+              correctAnswer: []
+            };
+            context.statisticLauncher.showRightAnswer(correctAnswerDisplayCtrl);
+          }
+        }
+      },
+      exitThisExam: function(ev) {
+        allowAnalysis = false;
+        analysisContent = "";
+        if (myself["dynamic_create_question"] == true) {
+          //if(!myself["hasSetAnswer"]){
+          var sdv = myself.statisticsData.value;
+          var result = myself.buildImageSendData(sdv);
+          myself.fireEvent("StudentAnswerResults", {
+            isApp: true,
+            data: result.data
+          });
+          //}
+          setAnswerOption = "";
+          myself["hasSetAnswer"] = false;
+        }
+        $(document).trigger("statisticEvent", {
+          "eventName": "exitExam",
+          "eventData": {
+            "type": questionType
+          }
+        });
+        var eventData = {
+          "service": "layout",
+          "method": "exitExam"
+        };
+        myself.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, eventData);
+        $footbarUl = $footbarContainer.find(">ul.ndui-tool-list");
+        if ($footbarUl) {
+          $footbarUl.children("li").off("click");
+          $footbarUl.empty();
+        }
+        var examOption = {
+          type: 'hide'
+        };
+        myself.fireEvent('Exam', examOption);
+        myself.attrsObj = null;
+        if (window.__StatisticsRender) {
+          for (var r in window.__StatisticsRender) {
+            if (window.__StatisticsRender[r] && window.__StatisticsRender[r]["dispose"]) {
+              window.__StatisticsRender[r]["dispose"]();
+            }
+          }
+        }
+      },
+      setAnswer4DynamicQuestion: function(ev) {
+        var context = ev.data;
+        var questionType = context.statisticsData.value.questionType;
+        var optionType = $(this).attr("optionType");
+        var key = $(this).attr("option");
+        var options = setAnswerOptions[optionType];
+        var i,
+          len;
+        setAnswerOption = {};
+        if (questionType == 'multichoice') {
+          $(this).toggleClass("checked");
+          var $checkedLi = $(this).parent().children('label.checked');
+          var option;
+          setAnswerOption = {};
+          for (i = 0, len = $checkedLi.length; i < len; i++) {
+            option = $($checkedLi.get(i)).attr('option');
+            setAnswerOption[option] = {};
+          }
+          for (var k in setAnswerOption) {
+            for (var j = 0; j < options.length; j++) {
+              if (options[j]['key'] === k) {
+                setAnswerOption[k] = options[j];
+                break;
+              }
+            }
+          }
+        } else {
+          $(this).addClass("checked").siblings("label").removeClass("checked");
+          if (options) {
+            for (i = 0, len = options.length; i < len; i++) {
+              if (options[i].key == key) {
+                setAnswerOption[key] = options[i];
+                break;
+              }
+            }
+          }
+        }
+
+        var btnTxt; //
+        var $layout_footbar = $(this).closest(".layout_footbar");
+        if (Object.keys(setAnswerOption).length == 0) {
+          btnTxt = myself.langProperties.set_andwer ? myself.langProperties.set_andwer : "设置答案";
+        //$layout_footbar.removeAttr("isSettingAnswer");
+        } else {
+          btnTxt = myself.langProperties.show_result ? myself.langProperties.show_result : "公布结果";
+          $layout_footbar.attr("isSettingAnswer", true);
+        }
+        var $li = $(this).closest(".ndui-tool-cell");
+        $li.find(".ndui-btn-text").html(btnTxt);
+        $li.closest(".ndui-tool-list").siblings("ul").find(".square_tool_result .ndui-btn-text").html(btnTxt);
+        ev.stopPropagation();
+      },
+      showRightAnswer: function(rightAnswer) { //设置正确答案
+        var correctAnswerDisplayCtrl = {
+          showCorrectAnswer: true,
+          correctAnswer: rightAnswer || []
+        };
+        this.statisticLauncher.showRightAnswer && this.statisticLauncher.showRightAnswer(correctAnswerDisplayCtrl);
+      },
+      _setStatClass: function(c) {
+        var $com_layout = this.$view.find(".com_layout");
+        c !== "D" && $com_layout.removeClass(__WEBPACK_IMPORTED_MODULE_0__constants_Constants__["b" /* SingleStatClass */][this.statisticClass]).addClass(__WEBPACK_IMPORTED_MODULE_0__constants_Constants__["b" /* SingleStatClass */][c]);
+      },
+      $bindEvent: function() {
+
+        $layout_handle.on("click", function(ev) {
+          var $com_layout = $(this).closest(".com_layout");
+          $com_layout.toggleClass("pull_down");
+        });
+
+        //关闭查看详情对话框
+        $analysis_close.on("click", function(ev) {
+          $analysis_wrapper.addClass("hide_dom");
+        });
+
+        //关闭查看解析对话框
+        $answer_detail_close.on("click", function(ev) {
+          $answer_detail_wrapper.addClass("hide_dom");
+          $(document).trigger("statisticEvent", {
+            "eventName": "closeAnalysisDialog",
+            "eventData": {
+              "type": questionType
+            }
+          });
+        });
+        $analysis_content.on("click", function(ev) {
+          ev.stopPropagation();
+        });
+        $answer_detail_content.on("click", function(ev) {
+          ev.stopPropagation();
+        });
+        $answer_detail_wrapper.on("mousedown", function(ev) {
+          ev.stopPropagation();
+        });
+        $analysis_wrapper.on("mousedown", function(ev) {
+          ev.stopPropagation();
+        });
+      },
+      $unbindEvent: function() {
+
+        var $closeAnswerDetail = $view.find('.close_answer_detail_wrapper');
+        $closeAnswerDetail.off('click');
+
+        $analysis_close.off("click");
+        $answer_detail_close.off("click");
+        $analysis_content.off("click");
+        $analysis_wrapper.off("click");
+        $answer_detail_wrapper.off("click");
+      },
+      setFootBar: function(type) {
+        $footbarUl = $footbarContainer.find(">ul.ndui-tool-list");
+        if ($footbarUl.length == 0) {
+          $footbarUl = $(footbar);
+          $footbarUl.addClass("ndui-tool-left");
+          $footbarContainer.append($footbarUl);
+
+          $footbarUl = $(footbar);
+          $footbarUl.addClass("ndui-tool-right");
+          $footbarContainer.append($footbarUl);
+        }
+        $footbarContainer.find("ul.ndui-tool-list.li").off("click");
+        $footbarContainer.find("ul.ndui-tool-list").empty();
+
+        var $li,
+          $a;
+        for (var i = footBarConfig.length - 1; i >= 0; i--) {
+          if ((this.statisticClass == "E" || this.statisticClass == "G") && footBarConfig[i].clazz.indexOf("square_tool_result") >= 0 && footBarConfig[i].clazz.indexOf("hide_dom") < 0) {
+            footBarConfig[i].clazz = footBarConfig[i].clazz + " hide_dom";
+          }
+
+          var extrClass = "";
+          if (footBarConfig[i].clazz.indexOf("square_tool_result") >= 0) { //公布结果
+            if (this.dynamic_create_question) {
+              footBarConfig[i].title = this.langProperties["set_andwer"];
+            }
+            if (this["attrsObj"] && this["attrsObj"]["noShowAnswerBtn"]) {
+              extrClass = "hide_dom";
+            }
+            if (type == "vote") {
+              extrClass = "hide_dom";
+            }
+          }
+
+          $li = $("<li class='ndui-tool-cell'></li>");
+          $a = $("<a class='ndui-btn-square " + footBarConfig[i].clazz + "'><i class='ndui-btn-pic'></i></a>");
+          $a.addClass(extrClass);
+          if (this.options.showRepeat && footBarConfig[i].clazz.indexOf("square_tool_repeat") >= 0) { //重发本题
+            $a.removeClass("hide_dom");
+          }
+
+          if (footBarConfig[i].clazz.indexOf("square_tool_backView") >= 0) { //返回总览
+            if (this["attrsObj"] && this["attrsObj"]["ShowOverViewBtn"]) {
+              $li.removeClass("hide_dom");
+            }
+          }
+
+          $li.append($a);
+          $a.append("<em class='ndui-btn-text'>" + footBarConfig[i].title + "</em>");
+          if (footBarConfig[i].click) {
+            $li.on("click", this, footBarConfig[i].click);
+          }
+          $footbarUl.append($li);
+        }
+        $footbarContainer.find("ul.ndui-tool-list.ndui-tool-left").find("li").off("click").remove();
+        for (var i = 0; i < footBarConfig.length; i++) {
+          if (this.statisticClass == "E") {
+            break;
+          }
+          var extrClass = "";
+          $li = $("<li class='ndui-tool-cell'></li>");
+          $a = $("<a class='ndui-btn-square " + footBarConfig[i].clazz + "'><i class='ndui-btn-pic'></i></a>");
+
+          if (footBarConfig[i].clazz.indexOf("square_tool_result") >= 0) { //公布结果
+            if (this["attrsObj"] && this["attrsObj"]["noShowAnswerBtn"]) {
+              extrClass = "hide_dom";
+            }
+            if (type == "vote") {
+              extrClass = "hide_dom";
+            }
+          }
+
+          if (footBarConfig[i].clazz.indexOf("square_tool_backView") >= 0) { //返回总览
+            if (this["attrsObj"] && this["attrsObj"]["ShowOverViewBtn"]) {
+              $li.removeClass("hide_dom");
+            }
+          }
+          $a.addClass(extrClass);
+          if (this.options.showRepeat && footBarConfig[i].clazz.indexOf("square_tool_repeat") >= 0) { //重发本题
+            $a.removeClass("hide_dom");
+          }
+          $li.append($a);
+          $a.append("<em class='ndui-btn-text'>" + footBarConfig[i].title + "</em>");
+          if (footBarConfig[i].click) {
+            $li.on("click", this, footBarConfig[i].click);
+          }
+          $footbarContainer.find("ul.ndui-tool-list.ndui-tool-left").append($li);
+        }
+      }
+    }, "ObjectiveStatisticsRemake");
+
+    return new Presenter();
+  }
+})();
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/html/SetAnswer_templete.html' />
+<file src='./resources/images/bg_arrow.png' />
+<file src='./resources/images/bg_pop_square.png' />
+<file src='./resources/images/btn_br_board.png' />
+<file src='./resources/images/head_img.png' />
+<file src='./resources/images/icon_analysis.png' />
+<file src='./resources/images/icon_back2overview.png' />
+<file src='./resources/images/icon_close.png' />
+<file src='./resources/images/icon_endexam.png' />
+<file src='./resources/images/icon_exitexam.png' />
+<file src='./resources/images/icon_flag.png' />
+<file src='./resources/images/icon_flower.png' />
+<file src='./resources/images/icon_flower_panel.png' />
+<file src='./resources/images/icon_next.png' />
+<file src='./resources/images/icon_previous.png' />
+<file src='./resources/images/icon_progress.png' />
+<file src='./resources/images/icon_showresult.png' />
+<file src='./resources/mock.json' />
+<file src='./resources/mock_bak.json' />
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,19 @@
+define([
+    './../fc_stage.js',
+    './coursewareobject_page_module.js',
+    './coursewareobject_page_module_box.js',
+    './coursewareobject_page_stage.js',
+    './image_module.js',
+    './shape_module.js',
+    './shape_point.js',
+    './table_module.js',
+    './table_config.js',
+    './text_module.js',
+    './page_module_draggable.js',
+    './context_menu.js',
+    './bind_contextmenu.js',
+    './title_attachment.js',
+    './copy_handler.js',
+    './check_clipboardstatus.js',
+    './draw_shape.js'
+],function(){});

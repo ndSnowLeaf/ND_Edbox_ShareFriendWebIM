@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                identifier="" title="ND表格题" adaptive="false" timeDependent="false"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/imsqti_v2p1.xsd">
+    <responseDeclaration identifier="RESPONSE_1-1" cardinality="multiple" baseType="directedPair" sequence="1-1">
+        <correctResponse>
+            ${correctResponseValues}
+        </correctResponse>
+    </responseDeclaration>
+    <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+        <defaultValue>
+            <value>0.0</value>
+        </defaultValue>
+    </outcomeDeclaration>
+    <itemBody>
+        <gapMatchInteraction responseIdentifier="RESPONSE_1-1" questionType="gapmatch" shuffle="true">
+            <prompt>
+                <p>${promptText}</p>${promptMedia}
+            </prompt>
+            ${gapTexts}
+            <div class="gapMatchInteraction_table_content">
+                ${tableContent}
+            </div>
+        </gapMatchInteraction>
+    </itemBody>
+    <responseProcessing template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"></responseProcessing>
+    <modalFeedback showHide="show" outcomeIdentifier="FEEDBACK" identifier="showHint" sequence="1"></modalFeedback>
+    <modalFeedback showHide="show" outcomeIdentifier="FEEDBACK" identifier="showAnswer" sequence="1"></modalFeedback>
+</assessmentItem>

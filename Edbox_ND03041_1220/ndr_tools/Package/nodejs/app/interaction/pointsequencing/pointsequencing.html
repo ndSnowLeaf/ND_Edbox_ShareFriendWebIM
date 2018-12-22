@@ -1,0 +1,85 @@
+<style>.point {
+	position: absolute;
+	z-index: 10;
+	background: -webkit-linear-gradient(top, #FBCB09 0%, #E78F08 100%);
+}
+
+.forbidSelect {
+	moz-user-select: -moz-none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.errorPoint {
+	background: indianred;
+}
+
+.verticalAlign {
+	vertical-align: middle;
+	display: inline-block;
+	height: 100%;
+	width: 1px;
+	margin-left: -1px;
+}
+
+.pointsequence_btn {
+	background-color: #138ecb;
+	border: 0px solid #138ecb;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	border-radius: 0px;
+	color: #ffffff;
+	font-size: large;
+}
+
+.pointsequence_btn:hover {
+	background-color: #1893da;
+}
+
+.pointsequence_btn:disabled {
+	background-color: #808080;
+}
+
+#scrollBarContainter {
+	display: inline-block;
+	width: 215px;
+	height: 17.17791px;
+	vertical-align: middle;
+}
+
+#scrollBar {
+
+	position: relative;
+	width: 215px;
+	height: 6.13497px;
+	margin: 6.74847px auto;
+}
+
+/* #scroll_Thumb {
+	    background-color: #efefef;
+    position: absolute;
+    width: 17.17791px;
+    height: 17.17791px;
+    top: -3.68098px;
+    background: url(/pointsequencing/assets/images/wood/point.png);
+    margin-left: -9.41925px;
+    background-size: cover;
+	
+} */</style><div class="exam_wood" onresize='alert("浏览器窗口已被改变！")'><div class="com_layout com_layout_large"><div class="com_lay_main"><div class="com_lay_header"><new-time-box></new-time-box><!--
+				<div class="com_lay_toptool">
+					<a href="javascript:void(0);" class="com_u_btn1">提交</a>
+				</div>
+				--></div><div class="com_lay_contain"><div class="com_lay_mboard"><div class="com_lay_boardtit"><h2 class="com_u_boardtit"><textarea new-edit-box default-title-setting="defaultTitleSetting" title="model.title" max-size="24" min-size="16" class="tit" placeholder="{{'linkup.placeholder.title' | translate }}" rows="2" ng-model="model.title" ng-keyup="event.titleChange()"></textarea><!--此处建议使用p标签配合contenteditable属性的形式，也可换成input--></h2><span style="float:right; font-size: 15px;bottom: 5px;position: absolute;text-align: right;right: 30px;color: rgb(100,100,100)" class="ng-binding">{{model.title ? model.title.length : 0 }}/70</span><!--{{info.titleLength}}--></div><div class="com_lay_board"><div class="pointseqencing"><div class="pointseqencing_box"><div style="position: relative;left: 0px;top:0px;width: 100%;height: 100%"><!--background:url(pointsequencing/assets/images/wood/bg_board_center.jpg) center center no-repeat;--><div class="forbidSelect" id="pointsequencing-containter" style="position: relative;width: 100%;height: 100%" ng-dblclick="event.addPointInContainter($event)" ng-click="event.clearStatus()"><img id="pointsequencing-img" style="position: absolute;z-index: 1; border: 1px solid darkgray" ng-show="info.imgSrc !== ''" ng-dblclick="event.addPoint($event)" ng-style="{opacity:info.finish?'0':'1',left:info.position.left,top:info.position.top}" ng-src="{{info.imgSrc | filterRefPath}}" ng-click="event.clearStatus()" ng-mousemove="event.onMouseMove($event)" ng-mouseenter="event.onMouseEnter($event)" ng-mouseleave="event.onMouseLeave($event)"><div style="position: absolute" id="showPoint"><div class="point" style="font-weight: 700;text-align: center;position: relative;cursor: pointer;overflow: hidden;display: inline-block" ng-style="{left:info.mousePosition.x+info.position.left-info.pointSize.width/2,
+				                                            top:info.mousePosition.y+info.position.top-info.pointSize.height/2,
+				                                            width: info.pointSize.width+'px',
+				                                            height: info.pointSize.height+'px',
+				                                            opacity:info.hoverOpacity,
+				                                            color: '#bd1300',
+				                                            border:'1px solid #ff0000',
+				                                            display:info.enterPoint===true?'none':info.display,
+				                                            borderRadius:info.pointSize.width/2,
+				                                            lineHeight:info.pointSize.height+'px'}">{{info.value}}</div></div><point ng-repeat="point in info.points" opt="point" panel="info" error-model="errorModel" panel-event="event"></point></div></div></div><div class="pointseqencing_operate"><button id="replaceFocus" style="opacity: 0;width: 0"></button><div class="scale"><a class="minus" ng-disabled="info.background.url==='' || info.currentScalePosition<=0 " ng-click="event.scaleImg(false)"></a><div class="progress"><div class="progress_bar"><div class="scroll_Thumb"></div></div></div><a class="add" ng-disabled="info.background.url===''  || info.currentScalePosition>=info.scaleSize.length-1 " ng-click="event.scaleImg(true)"></a></div><a class="com_u_btn4 com_u_btn4_s" ng-click="event.adjustToSize()" ng-disabled="info.background.url==='' || info.currentScalePosition===info.firstScalePosition" translate="pointsequencing.self.adaption"></a> <a class="com_u_btn4 com_u_btn4_s change_img" href="javascript:void(0)" after-add="addAssets('image')" assets-select is-common-valid="true" common-valid-param="resourceValidParam" image-size="480" image-data="info.description" image-column="asset" item-type="image" select-type="single">{{info.background.url=='' ? LabelAddImage:LabelChangeImage}}</a></div></div></div></div></div></div><foot-tool description-id="'description-id'" model="model" encode-data="encodeOrder" decode-data="decodeOrder" valid-data="validPostData"></foot-tool><!--  题型秒速模板 --><div style="display:none" id="description-id"><a href="javascript:;" class="mainlink"><ins></ins> <span translate="pointsequencing.topic.titile"></span></a><div class="toolpop"><div class="popheader"><h2 class="poptit" translate="pointsequencing.topic.lian_titile"></h2></div><div class="popbody"><question-guide image-root="interaction/pointsequencing/assets/guide" image-prefix="dpx" image-suffix=".jpg" image-amount="3"></question-guide><p class="introtxt" translate="pointsequencing.topic.text"></p></div><div class="popfoot"><a href="javascript:;" class="btn btn_submit" ng-click="$parent.hide()">{{'linkup.topic.know' | translate}}</a></div></div></div></div></div><error-tip error-data="errorModel"></error-tip>

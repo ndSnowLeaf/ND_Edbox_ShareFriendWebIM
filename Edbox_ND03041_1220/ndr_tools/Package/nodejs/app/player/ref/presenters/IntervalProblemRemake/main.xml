@@ -1,0 +1,4327 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='IntervalProblemRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="threejs" version="73.1" />
+    <javaScript  name="threejs_canvasrender" version="73.1" />
+    <javaScript  name="threejs_projector" version="73.1" />
+    <javaScript  name="out_frame" version="1.0.8" />
+    <javaScript  name="threex_dynamictexture" version="1.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[a,button,img,input,li,textarea{-webkit-tap-highlight-color:transparent}.addon_IntervalProblemRemake .intervaltype .com_mask{position:fixed;left:0;right:0;bottom:0;top:0;background-color:rgba(0,0,0,.7);z-index:1050}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate{overflow:hidden;position:absolute;left:50%;top:50%;margin-left:-23.125em;margin-top:-9.66667em;width:46.25em;height:19.375em;text-align:center;border-radius:.75em;z-index:999}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operatet_tit{position:absolute;left:0;top:0;right:0;height:2.75em;line-height:2.75em;background:url(resources/images/bg_sidetit1.png) repeat-x;background-size:auto 100%;border-top-left-radius:.75em;border-top-right-radius:.75em}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operatet_tit h5{font-size:1.5em;color:#333;text-shadow:0 1px 0 rgba(255,255,255,.51)}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operate_contain{padding:3.33333em 1.66667em 4.16667em 0;height:100%;line-height:2.33333em;background-image:url(resources/images/decl_sidecon.png),url(resources/images/decr_sidecon.png),url(resources/images/decm_sidecon.png),url(resources/images/bg_sidecon1.png);background-repeat:no-repeat,no-repeat,repeat-x,repeat;background-position:left bottom,right bottom,center bottom,left top;background-size:.875em auto,.875em auto,.375em auto,2.70833em auto;background-origin:border-box,border-box,border-box,content-box;box-shadow:.0625em .10825em .79167em 0 rgba(75,40,0,.75)}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operate_contain li{list-style-type:decimal;list-style-position:outside;font-size:1.5em;color:#333;text-align:left}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operate_contain_wrap{overflow-y:auto;padding-left:3.75em;padding-right:.83333em;height:100%}.addon_IntervalProblemRemake .intervaltype .com_mask .com_pop_tip_operate .operate_bottom{position:absolute;left:0;right:0;bottom:0;height:3.75em}.addon_IntervalProblemRemake .intervaltype .com_mask .com_btn_rectangle{display:inline-block;width:6.33333em;height:2.83333em;line-height:2.83333em;text-align:center;color:#825318;font-size:1em;background:url(resources/images/btn_exam_nr.png) center top no-repeat;background-size:100% auto;text-decoration:none}.addon_IntervalProblemRemake .intervaltype .com_mask .com_btn_rectangle.btn_disabled,.addon_IntervalProblemRemake .intervaltype .exam_skin_sky .com_btn_rectangle:active{background-position:center -3.25em}.addon_IntervalProblemRemake .intervaltype .com_mask .com_btn_rectangle_big{display:inline-block;width:7.83333em;height:3.91667em;text-align:center;color:#a27031;background:url(resources/images/btn_exam_b.png) center top no-repeat;background-size:100% auto;text-decoration:none}.addon_IntervalProblemRemake .intervaltype .com_mask .com_btn_rectangle_big.on,.addon_IntervalProblemRemake .intervaltype .exam_skin_sky .com_btn_rectangle_big:active{background-position:center -3.91667em}.addon_IntervalProblemRemake .intervaltype .com_mask .com_btn_rectangle_big .com_btn_text{display:none}.addon_IntervalProblemRemake .intervaltype{position:relative;width:100%;height:100%}.addon_IntervalProblemRemake .intervaltype .com_layout_main{overflow:hidden;text-align:center;vertical-align:middle}.addon_IntervalProblemRemake .intervaltype .com_layout_main:after{display:inline-block;width:0;height:100%;vertical-align:middle;content:""}.addon_IntervalProblemRemake .intervaltype .intervaltype_board{overflow:hidden;position:relative;padding:0 1.25em;height:100%}.addon_IntervalProblemRemake .intervaltype .interval_title{border-bottom:1px solid #ebcea3}.addon_IntervalProblemRemake .intervaltype .interval_title .interval_h2{overflow:hidden;width:100%;height:3em;line-height:2.08333em;border-bottom:1px solid #c39c64;color:#7b4d0c;text-align:center;word-break:break-all}.addon_IntervalProblemRemake .intervaltype .interval_title .interval_h2:after{content:'';display:inline-block;width:0;height:100%;vertical-align:middle}.addon_IntervalProblemRemake .interval_title .interval_h2 span{display:inline-block;font-size:1.66667em;color:#333}.addon_IntervalProblemRemake .intervaltype .interval_title .txtmin{line-height:1.08333em}.addon_IntervalProblemRemake .intervaltype .interval_title .txtmin span{font-size:.83333em}.addon_IntervalProblemRemake .intervaltype .interval_exercise{border-bottom:1px solid #ebcea3}.addon_IntervalProblemRemake .intervaltype .interval_exercise .interval_exercise_wrap{overflow:hidden;height:6.5em;line-height:5.91667em;white-space:nowrap;text-overflow:ellipsis;border-bottom:1px solid #c39c64;color:#5d390d;letter-spacing:.20833em}.addon_IntervalProblemRemake .intervaltype .interval_exercise .text span{font-size:2.5em}.addon_IntervalProblemRemake .intervaltype .interval_exercise .text .weight{font-size:2.91667em;color:#b5802d;font-weight:700}.addon_IntervalProblemRemake .intervaltype .com_grid_wrap{position:absolute;left:3.33333em;right:3.33333em;bottom:3.75em;top:12.08333em;height:auto;width:auto}.addon_IntervalProblemRemake .intervaltype .interval_bottom{position:absolute;left:3.33333em;right:3.33333em;bottom:0;height:3.16667em;line-height:3.16667em;text-align:left}.addon_IntervalProblemRemake .intervaltype .interval_bottom .interval_label{display:inline-block;position:relative;padding-left:2.25em;height:100%;background:url(resources/images/interval_label.png) left center no-repeat;background-size:1.58333em auto}.addon_IntervalProblemRemake .intervaltype .interval_bottom .interval_label .font{font-size:1.5em;color:#5d390d}.addon_IntervalProblemRemake .intervaltype .interval_bottom .interval_label.on{background-image:url(resources/images/interval_label_on.png)}.addon_IntervalProblemRemake .intervaltype .interval_bottom .interval_label.disabled{pointer-events:none;background-image:url(resources/images/interval_label_disable.png)}.addon_IntervalProblemRemake .intervaltype .interval_bottom .interval_label.on.disabled{pointer-events:none;background-image:url(resources/images/interval_label_on_disable.png)}.addon_IntervalProblemRemake .intervaltype .interval_bottom .btn_explain{float:right;margin-top:.58333em;width:7.375em;height:2.5924em;line-height:2.41667em;text-align:center;color:#4f2c0b;background:url(resources/images/btn_explain.png) center top no-repeat;background-size:100% auto}.addon_IntervalProblemRemake .intervaltype .interval_bottom .btn_explain .font{font-size:1.16667em}.addon_IntervalProblemRemake .intervaltype .interval_bottom .btn_explain:active{background-position:center bottom}.addon_IntervalProblemRemake .intervaltype .interval_bottom .btn_explain.com_btn_disabled{color:#c2ad8e}.addon_IntervalProblemRemake .intervaltype .interval_bottom .btn_explain.com_btn_disabled:active{background-position:center top}.addon_IntervalProblemRemake .student_loading{position:absolute;width:100%;height:100%;left:0;top:0;background-color:transparent;z-index:2;display:none}.addon_IntervalProblemRemake .loading_contents{background-color:rgba(0,0,0,.7);border-radius:10px;width:300px;height:100px;margin:350px auto;color:#fff;line-height:100px;text-align:center;font-size:24px}.addon_IntervalProblemRemake .bg_pop{display:none;position:absolute;padding:30px 67px;border-radius:5px;font-size:20px;color:#fff;background:rgba(0,0,0,.66);left:40%;top:30%;z-index:1000}.addon_IntervalProblemRemake .bg_pop .text{color:#fff}.addon_IntervalProblemRemake .interval_respondRes_tip{position:absolute;left:0;right:0;margin:.43333em 0 0;padding:0 .83333em;font-size:1.66667em;text-align:center}.addon_IntervalProblemRemake .interval_respondRes_tip.respond_right{color:#258d52}.addon_IntervalProblemRemake .interval_respondRes_tip.respond_error{color:#d52a2a}.addon_Layout .layout_handle{bottom:-1.65em}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content intervaltype"><div class="com_mask" style="display: none"><div class="com_pop_tip_operate"><div class="operatet_tit"><h5></h5></div><div class="operate_contain"><div class="operate_contain_wrap scrollbar_style_gray"><ul class="operate_col"><li></li><li></li><li></li></ul></div></div><div class="operate_bottom"><a class="com_btn_rectangle" href="javascript:;"><span class="com_btn_text"></span></a></div></div></div><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit"></h2></div><div class="com_layout_main"><p class="interval_respondRes_tip">&nbsp;</p><div class="intervaltype_board"><div class="interval_title"><div class="interval_h2"></div></div><div class="interval_exercise"><div class="interval_exercise_wrap"><p class="text"></p></div></div><div class="com_grid_wrap"></div><div class="interval_bottom"><label for="" class="interval_label"><span class="font"></span></label><a href="###" class="btn_explain"><span class="font"></span></a></div></div></div></div><div class="bg_pop pop_result"><p class="text"></p></div></div><img crossorigin="anonymous" data-src="" class="cache-delete-img" style="display:none">]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(1);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _appPresenter = __webpack_require__(2);
+
+	var _appPresenter2 = _interopRequireDefault(_appPresenter);
+
+	var rewritePresenter = BasicPresenter.extend(_appPresenter2["default"], "IntervalProblemRemake");
+	window.AddonIntervalProblemRemake_create = function () {
+		return new rewritePresenter();
+	};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterRun = __webpack_require__(3);
+
+	var _presenterRun2 = _interopRequireDefault(_presenterRun);
+
+	var _presenterSetBasePath = __webpack_require__(38);
+
+	var _presenterSetBasePath2 = _interopRequireDefault(_presenterSetBasePath);
+
+	var _presenterDestroy = __webpack_require__(39);
+
+	var _presenterDestroy2 = _interopRequireDefault(_presenterDestroy);
+
+	var _presenterPageShow = __webpack_require__(40);
+
+	var _presenterPageShow2 = _interopRequireDefault(_presenterPageShow);
+
+	var _presenterRuntime = __webpack_require__(7);
+
+	var _presenterPreviewAnswer = __webpack_require__(26);
+
+	var _presenterPreviewAnswer2 = _interopRequireDefault(_presenterPreviewAnswer);
+
+	var _presenterSubmitControl = __webpack_require__(34);
+
+	var _presenter$init = __webpack_require__(41);
+
+	var _presenter$init2 = _interopRequireDefault(_presenter$init);
+
+	var _presenter_service_ = __webpack_require__(42);
+
+	var _presenter_service_2 = _interopRequireDefault(_presenter_service_);
+
+	var _presenterI18N = __webpack_require__(37);
+
+	var _presenterI18N2 = _interopRequireDefault(_presenterI18N);
+
+	exports['default'] = {
+		run: _presenterRun2['default'],
+		destroy: _presenterDestroy2['default'],
+		setBasePath: _presenterSetBasePath2['default'],
+		initTeacherMobile: _presenterRuntime.initTeacherMobile,
+		initStudentMobile: _presenterRuntime.initStudentMobile,
+		initWeb: _presenterRuntime.initWeb,
+		initTeacherPc: _presenterRuntime.initTeacherPc,
+		pageShow: _presenterPageShow2['default'],
+		previewAnswer: _presenterPreviewAnswer2['default'],
+		getAnswerContent: _presenterSubmitControl.getAnswerContent,
+		getI18n: _presenterSubmitControl.getI18n,
+		getWrongPopup: _presenterSubmitControl.getWrongPopup,
+		metaInfo: {
+			name: 'IntervalProblemRemake',
+			type: PresenterType.PRESENTER_COMPONENT,
+			subtype: SubPresenterType.INTERACTION_QUESTION
+		},
+		$init: _presenter$init2['default'],
+		getService: function getService() {
+			var self = this;
+			this._service_ = new _presenter_service_2['default'](self);
+
+			return this._service_;
+		},
+		setLocationProperties: _presenterI18N2['default']
+
+	};
+	module.exports = exports['default'];
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 *运行环境下, 初始化Module的方法
+	 * @param view 运行视图(DOM对象)
+	 * @param model Module的模型, Key-Value结构
+	 * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+	 * 
+	 **/
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterLogic = __webpack_require__(4);
+
+	var _presenterLogic2 = _interopRequireDefault(_presenterLogic);
+
+	exports['default'] = function (view, model) {
+	  (0, _presenterLogic2['default'])(view, model, false);
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* global $ icCreatePlayer */
+	/**
+	 * Module的逻辑
+	 * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+	 * @param model 模型对象
+	 * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threeManger = __webpack_require__(5);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _runtime = __webpack_require__(7);
+
+	var _runtime2 = _interopRequireDefault(_runtime);
+
+	var _moduleControl = __webpack_require__(32);
+
+	var _I18N = __webpack_require__(37);
+
+	var interval = undefined;
+	exports.interval = interval;
+
+	exports['default'] = function (view, model, isPreview) {
+		_presenter2['default'].model = model;
+		_presenter2['default'].view = view;
+		_presenter2['default'].tmpData = null;
+		(0, _I18N.initPage)(view);
+		// 使用 basePath 替换 view 中的图片 url
+		var $imgs = $(view).find('img');
+		$imgs.each(function () {
+			$(this).attr('src', _presenter2['default'].path + $(this).attr('data-src'));
+		});
+		if (_presenter2['default'].isTeacherPc || _presenter2['default'].isPPTShell) {
+			//$(view).find(".com_layout").addClass("layout_whiteboard")
+		}
+
+		if (model.question_url.title && model.question_url.title.length > 38) {
+			$(_presenter2['default'].view).find(".tit").addClass("s_tit");
+		}
+
+		$(_presenter2['default'].view).find('.com_btn_rectangle').click(function () {
+			$(_presenter2['default'].view).find('.com_mask').hide();
+		});
+
+		(0, _moduleControl.moduleStart)();
+	};
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.threeStart = threeStart;
+	exports.resizeThree = resizeThree;
+	exports.destroyThree = destroyThree;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constants = __webpack_require__(6);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	//import Matchstick from './shape/Matchstick'
+
+	var _UtilsDestroyThreeObjectJs = __webpack_require__(8);
+
+	var _UtilsDestroyThreeObjectJs2 = _interopRequireDefault(_UtilsDestroyThreeObjectJs);
+
+	var _ShapeNumberAxis = __webpack_require__(9);
+
+	var _ShapeNumberAxis2 = _interopRequireDefault(_ShapeNumberAxis);
+
+	var _UtilsAddCoordScale = __webpack_require__(13);
+
+	var _UtilsAddCoordScale2 = _interopRequireDefault(_UtilsAddCoordScale);
+
+	var _UtilsAutoDetectRenderer = __webpack_require__(16);
+
+	var _setState = __webpack_require__(17);
+
+	var _setState2 = _interopRequireDefault(_setState);
+
+	var renderer;
+	var scene;
+	var camera;
+	var raycaster;
+	var intersectObjs;
+	var mouse;
+	//var matchstick;
+	var currenAnimate;
+	var watchInterval = undefined;
+
+	function initThree() {
+		var container = $(_presenter2['default'].view).find('.com_grid_wrap');
+		var oldDomHeight = 0;
+
+		//创建渲染
+		renderer = (0, _UtilsAutoDetectRenderer.autoDetectRenderer)({
+			antialias: true,
+			alpha: true
+		});
+		renderer.setClearColor(0xFFFFFF, 0);
+		container.get(0).appendChild(renderer.domElement);
+		checkDomSize();
+		//let watchInterval = setInterval(checkDomSize, 100);
+		function checkDomSize() {
+			if (container.height() != oldDomHeight) {
+				//console.log("three init")
+				resizeThree(container);
+				initCamera();
+				initScene();
+				camera.aspect = container.width() / container.height();
+				camera.updateProjectionMatrix();
+				renderer.setSize(_constants.REAL_ESTATE.width, _constants.REAL_ESTATE.height);
+				oldDomHeight = container.height();
+				initControllerTool();
+				initNumberAXIS();
+
+				if (_presenter2['default'].tmpData) {
+					(0, _setState2['default'])(_presenter2['default'].tmpData);
+				}
+				render();
+				watchInterval = setInterval(checkDomSize, 100);
+			}
+		}
+	}
+
+	function initScene() {
+		exports.scene = scene = new THREE.Scene();
+	}
+
+	function initCamera() {
+		//创建Camera
+		var RATIO = 2;
+		exports.camera = camera = new THREE.OrthographicCamera(_constants.REAL_ESTATE.width / -RATIO, _constants.REAL_ESTATE.width / RATIO, _constants.REAL_ESTATE.height / RATIO, _constants.REAL_ESTATE.height / -RATIO, -20000, 20000);
+		camera.position.x = 0;
+		camera.position.y = 0;
+		camera.position.z = 500;
+		camera.lookAt({ x: 0, y: 0, z: 0 });
+	}
+
+	function initRaycaster() {
+		//添加点击检测
+		exports.raycaster = raycaster = new THREE.Raycaster();
+		raycaster.linePrecision = 1;
+
+		exports.intersectObjs = intersectObjs = new Array();
+		exports.mouse = mouse = new THREE.Vector2();
+	}
+
+	function initControllerTool() {
+		var planeXY = new THREE.Mesh(new THREE.PlaneBufferGeometry(_constants.REAL_ESTATE.width, _constants.REAL_ESTATE.height, 2, 2), new THREE.MeshBasicMaterial({ color: 0xff0000, transparent: true, opacity: 0 }));
+		planeXY.name = 'boundary';
+		scene.add(planeXY);
+	}
+
+	function initNumberAXIS() {
+		//创建数轴
+		var numberAxis = new _ShapeNumberAxis2['default']().creatNumberAxis();
+		scene.add(numberAxis);
+		(0, _UtilsAddCoordScale2['default'])(scene);
+	}
+
+	//function animate() {
+	//	currenAnimate = requestAnimationFrame(animate);
+	//	render();
+	//}
+
+	function render() {
+		renderer.render(scene, camera);
+	}
+
+	function threeStart() {
+		initRaycaster();
+		initThree();
+	}
+
+	function resizeThree(container) {
+
+		var offset = container[0].getBoundingClientRect();
+
+		_constants.REAL_ESTATE.offsetLeft = offset.left;
+		_constants.REAL_ESTATE.offsetTop = offset.top;
+		_constants.REAL_ESTATE.width = container.width();
+		_constants.REAL_ESTATE.height = container.height();
+
+		(0, _constants.updataNumberAxisConstData)(_constants.REAL_ESTATE.width - 50);
+
+		container.find('.canvas').width(container.width());
+		container.find('.canvas').height(container.height());
+	}
+
+	function destroyThree() {
+		(0, _UtilsDestroyThreeObjectJs2['default'])(camera);
+		(0, _UtilsDestroyThreeObjectJs2['default'])(scene);
+		(0, _UtilsDestroyThreeObjectJs2['default'])(renderer);
+		$(renderer.domElement).remove();
+		$(renderer.domElement).splice(0);
+		$(renderer.domElement)[0] = null;
+		renderer = null;
+		exports.camera = camera = null;
+		exports.mouse = mouse = null;
+		exports.scene = scene = null;
+		exports.raycaster = raycaster = null;
+		exports.intersectObjs = intersectObjs = null;
+		cancelAnimationFrame(currenAnimate);
+		clearInterval(watchInterval);
+		currenAnimate = null;
+		watchInterval = null;
+	}
+
+	exports.render = render;
+	exports.scene = scene;
+	exports.camera = camera;
+	exports.raycaster = raycaster;
+	exports.intersectObjs = intersectObjs;
+	exports.mouse = mouse;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* global $ */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports.updataNumberAxisConstData = updataNumberAxisConstData;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _runtime = __webpack_require__(7);
+
+	var _runtime2 = _interopRequireDefault(_runtime);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	// 定义 addon 的可活动大小
+	var REAL_ESTATE = {
+	    width: 1000,
+	    height: 200,
+	    offsetLeft: 0,
+	    offsetTop: 500
+	};
+
+	exports.REAL_ESTATE = REAL_ESTATE;
+	// 定义所有的操作类型
+	var ACTION_TYPE = {
+	    add: 'add',
+	    changePoint: 'change',
+	    changeInter: 'changeInter',
+	    intervalRect: 'intervalRect',
+	    deleteInterval: 'deleteInterval'
+	};
+
+	exports.ACTION_TYPE = ACTION_TYPE;
+	//数轴的长度
+	var NumberAxisWidth = 900;
+	exports.NumberAxisWidth = NumberAxisWidth;
+	var NumberAxisHeight = 5 / 24;
+
+	exports.NumberAxisHeight = NumberAxisHeight;
+	//数轴标记的刻度数
+	var NumberOfScale = 43;
+
+	exports.NumberOfScale = NumberOfScale;
+	var NumberAxisConstData = {
+
+	    numberAxisWidth: NumberAxisWidth,
+	    scaleCount: NumberOfScale,
+	    scaleLineHalfLength: NumberAxisWidth / 2 - 20,
+	    scaleMargin: (NumberAxisWidth / 2 - 20) * 2 / NumberOfScale,
+	    numberAxisHeight: NumberAxisHeight
+	};
+
+	exports.NumberAxisConstData = NumberAxisConstData;
+
+	function updataNumberAxisConstData(NumberAxisWidth) {
+	    NumberAxisConstData.numberAxisWidth = NumberAxisWidth;
+	    NumberAxisConstData.scaleCount = NumberOfScale;
+	    NumberAxisConstData.scaleLineHalfLength = NumberAxisWidth / 2 - 20;
+	    NumberAxisConstData.scaleMargin = (NumberAxisWidth / 2 - 20) * 2 / NumberOfScale;
+	}
+
+	//刻度的高度
+	var CoordScaleHeight = {
+	    width: 3 / 24,
+	    small: 10 / 24,
+	    big: 40 / 24
+	};
+
+	exports.CoordScaleHeight = CoordScaleHeight;
+	//对象的名称
+	var IntervalObjNames = {
+
+	    Line: 'Line', //数轴
+	    Endpoint1: 'Endpoint1', //区间小（左）端点
+	    Endpoint2: 'Endpoint2', //区间大（右）端点
+	    SoildCircle: 'SoildCircle', //区间实心圆
+	    EmptyCircle: 'EmptyCircle', //区间空心圆
+	    LeftTriangle: 'LeftTriangle', //区间左边三角形
+	    RightTriangle: 'RightTriangle', //区间右边三角形
+	    CoordScaleName: 'CoordScale', //刻度
+	    Arrow: 'Arrow',
+	    AreaGroup: 'AreaGroup',
+	    EndPointShow: 'EndPointShow',
+	    IntervalRect: 'IntervalRect',
+	    IntervalLine: 'IntervalLine',
+	    DeleteBtn: 'DeleteBtn',
+	    DotCircle: 'DotCircle'
+	};
+
+	exports.IntervalObjNames = IntervalObjNames;
+	//区间端点的默认状态索引
+	var StatusIndex = {
+	    SoildCircle: 0,
+	    EmptyCircle: 1,
+	    Triangle: 2
+	};
+
+	exports.StatusIndex = StatusIndex;
+	//选择框的宽高
+	var SelectBox = {
+	    Height: NumberAxisHeight * 4,
+	    Width: NumberAxisHeight * 1.8,
+	    IntervaleRectHeight: NumberAxisHeight * 8
+	};
+
+	exports.SelectBox = SelectBox;
+	//区间端点圆的半径
+	var CircleRadius = {
+	    soild: NumberAxisHeight * 1.8,
+	    empty: NumberAxisHeight * 1.2,
+	    triangleSideLength: NumberAxisHeight * 2.5
+	};
+
+	exports.CircleRadius = CircleRadius;
+	//颜色
+	var Color = {
+	    normal: 0xCB1F1F,
+	    'delete': 0xFBE798,
+	    emptyCircle: 0xffffff,
+	    numberAxis: 0x5c3709,
+	    numberText: '#5d390d'
+	};
+
+	exports.Color = Color;
+	//层级关系
+	var ZOriginIndex = {
+	    endpoint: 5,
+	    intervalRect: 2,
+	    intervalGroup: 1
+	};
+
+	exports.ZOriginIndex = ZOriginIndex;
+	//数轴文字
+	var Number = {
+	    fontFamily: 'Microsoft YAHEI',
+	    fontSize: 46 / 24,
+	    distance: 80 / 24
+	};
+	exports.Number = Number;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.initDefault = initDefault;
+	exports.initTeacherMobile = initTeacherMobile;
+	exports.initStudentMobile = initStudentMobile;
+	exports.initProjectionMobile = initProjectionMobile;
+	exports.initWeb = initWeb;
+	exports.initTeacherPc = initTeacherPc;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function initDefault() {
+		_presenter2['default'].isTeacherMobile = false;
+		_presenter2['default'].isStudentMobile = false;
+		_presenter2['default'].isProjectionMobile = false;
+		_presenter2['default'].isTeacherPc = false;
+		_presenter2['default'].isWeb = false;
+		_presenter2['default'].isApp = false;
+	}
+
+	function initTeacherMobile() {
+		initDefault();
+		_presenter2['default'].isTeacherMobile = true;
+		_presenter2['default'].isApp = true;
+	}
+
+	function initStudentMobile() {
+		initDefault();
+		_presenter2['default'].isStudentMobile = true;
+		_presenter2['default'].isApp = true;
+	}
+
+	function initProjectionMobile() {
+		initDefault();
+		_presenter2['default'].isProjectionMobile = true;
+		_presenter2['default'].isApp = true;
+	}
+
+	function initWeb() {
+		initDefault();
+		_presenter2['default'].isWeb = true;
+		_presenter2['default'].isApp = false;
+	}
+
+	function initTeacherPc() {
+		initDefault();
+		_presenter2['default'].isTeacherPc = true;
+		_presenter2['default'].isApp = false;
+	}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports["default"] = destroyThreeObject;
+
+	function destroyThreeObject(object) {
+		if (!object) return;
+		if (object.children && object.children.length > 0) {
+			for (var i = 0; i < object.children.length; i++) {
+				destroyThreeObject(object.children[i]);
+			}
+		}
+		if (object.geometry) object.geometry.dispose();
+		if (object.material) {
+			object.material.dispose();
+			if (object.material.map && object.material.map.dispose) object.material.map.dispose();
+		}
+		object = null;
+	}
+
+	module.exports = exports["default"];
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/13.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _UtilsUpdateVertices = __webpack_require__(10);
+
+	var _UtilsUpdateVertices2 = _interopRequireDefault(_UtilsUpdateVertices);
+
+	var _UtilsRotateAngle = __webpack_require__(11);
+
+	var _constants = __webpack_require__(6);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	//添加刻度
+	//addCoordScale(numberAxis);
+
+	/**
+	 * startPoint 数轴起始点（左端点）
+	 * endPoint 数轴终止点（右端点）
+	 * lineWidth 数轴线宽
+	 */
+
+	var NumberAxis = (function () {
+		function NumberAxis() {
+			var startPoint = arguments.length <= 0 || arguments[0] === undefined ? new THREE.Vector3(-_constants.NumberAxisConstData.numberAxisWidth / 2, 0, 0) : arguments[0];
+			var endPoint = arguments.length <= 1 || arguments[1] === undefined ? new THREE.Vector3(_constants.NumberAxisConstData.numberAxisWidth / 2, 0, 0) : arguments[1];
+			var lineHeight = arguments.length <= 2 || arguments[2] === undefined ? (0, _UtilsEm2['default'])(_constants.NumberAxisHeight) : arguments[2];
+
+			_classCallCheck(this, NumberAxis);
+
+			this.startPoint = startPoint;
+			this.endPoint = endPoint;
+			this.lineHeight = lineHeight;
+		}
+
+		//线材质
+
+		_createClass(NumberAxis, [{
+			key: 'getLineMaterial',
+			value: function getLineMaterial() {
+				return new THREE.MeshBasicMaterial({
+					color: _constants.Color.numberAxis,
+					transparent: false,
+					opacity: 1
+				});
+			}
+
+			// 容器材质
+		}, {
+			key: 'getGroupMaterial',
+			value: function getGroupMaterial() {
+				return new THREE.MeshBasicMaterial({
+					color: 0x333333,
+					transparent: true,
+					opacity: 0
+				});
+			}
+
+			//绘制线
+		}, {
+			key: 'creatLine',
+			value: function creatLine() {
+				var shape = new THREE.Shape();
+
+				var halfHeight = this.lineHeight / 2;
+				shape.moveTo(this.startPoint.x, halfHeight);
+				shape.lineTo(this.startPoint.x, -halfHeight);
+				shape.lineTo(this.endPoint.x, -halfHeight);
+				shape.lineTo(this.endPoint.x, halfHeight);
+				shape.lineTo(this.startPoint.x, halfHeight);
+
+				var geometry = new THREE.ShapeGeometry(shape);
+				var line = new THREE.Mesh(geometry, this.getLineMaterial());
+				line.name = _constants.IntervalObjNames.Line;
+				return line;
+			}
+
+			//绘制数轴正方向的箭头标示
+		}, {
+			key: 'creatArrow',
+			value: function creatArrow() {
+
+				var arrow = new THREE.Object3D();
+				var centerPotGeometry = new THREE.CircleGeometry(this.lineHeight / 2, 32);
+				var arrowCenterPot = new THREE.Mesh(centerPotGeometry, this.getLineMaterial());
+				var center = new THREE.Vector3(0, 0, 0);
+
+				//正方向上长度为20的向量
+				var lengthVector = (0, _UtilsRotateAngle.getLocationPoint)(center, this.startPoint, (0, _UtilsEm2['default'])(20 / 24));
+
+				// 画图形
+				var arrowPointA = (0, _UtilsRotateAngle.rotatePoint)(lengthVector, center, 45);
+				var arrowPointB = (0, _UtilsRotateAngle.rotatePoint)(lengthVector, center, -45);
+
+				// 绘制箭头上边
+				var sideA = new THREE.Shape();
+				sideA.moveTo(0, -this.lineHeight);
+				sideA.lineTo(arrowPointA.x, -this.lineHeight);
+				sideA.lineTo(arrowPointA.x, this.lineHeight);
+				sideA.lineTo(0, this.lineHeight);
+				sideA.lineTo(0, -this.lineHeight);
+				var sideAGeometry = new THREE.ShapeGeometry(sideA);
+				var arrowUp = new THREE.Mesh(sideAGeometry, this.getLineMaterial());
+				(0, _UtilsUpdateVertices2['default'])(arrowUp, center, arrowPointA, this.lineHeight);
+
+				// 绘制箭头下边
+				var sideB = new THREE.Shape();
+
+				sideB.moveTo(0, -this.lineHeight);
+				sideB.lineTo(arrowPointB.x, -this.lineHeight);
+				sideB.lineTo(arrowPointB.x, this.lineHeight);
+				sideB.lineTo(0, this.lineHeight);
+				sideB.lineTo(0, -this.lineHeight);
+				var sideBGeometry = new THREE.ShapeGeometry(sideB);
+				var arrowDown = new THREE.Mesh(sideBGeometry, this.getLineMaterial());
+				(0, _UtilsUpdateVertices2['default'])(arrowDown, center, arrowPointB, this.lineHeight);
+
+				arrow.add(arrowCenterPot);
+				arrow.add(arrowUp);
+				arrow.add(arrowDown);
+				arrow.position.copy(this.endPoint);
+				arrow.name = _constants.IntervalObjNames.Arrow;
+				return arrow;
+			}
+
+			//绘制一个框用来扩大数轴的点击区域
+		}, {
+			key: 'creatClickAreaGroup',
+			value: function creatClickAreaGroup() {
+
+				var areaShape = new THREE.Shape();
+				areaShape.moveTo(this.startPoint.x, this.lineHeight * 2.5);
+				areaShape.lineTo(this.startPoint.x, -this.lineHeight * 2.5);
+				areaShape.lineTo(this.endPoint.x, -this.lineHeight * 2.5);
+				areaShape.lineTo(this.endPoint.x, this.lineHeight * 2.5);
+				areaShape.lineTo(this.startPoint.x, this.lineHeight * 2.5);
+
+				var areaGeometry = new THREE.ShapeGeometry(areaShape);
+				var areaMesh = new THREE.MeshBasicMaterial({
+					transparent: true,
+					opacity: 0
+				});
+
+				var areaGroup = new THREE.Mesh(areaGeometry, areaMesh);
+				areaGroup.name = _constants.IntervalObjNames.AreaGroup;
+				return areaGroup;
+			}
+
+			//创建数轴
+		}, {
+			key: 'creatNumberAxis',
+			value: function creatNumberAxis() {
+
+				//创建一个组的容器
+				var line = this.creatLine(),
+				    //创建数轴线
+				arrow = this.creatArrow(); //创建箭头
+
+				//将数轴的元素添加到容器中
+
+				//添加箭头
+				line.add(arrow);
+				//添加刻度
+
+				return line;
+			}
+		}]);
+
+		return NumberAxis;
+	})();
+
+	exports['default'] = NumberAxis;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _rotateAngle = __webpack_require__(11);
+
+	exports['default'] = function (shape, pointA, pointB, lineWidth) {
+		var length = lineWidth / 2;
+		var vector1 = (0, _rotateAngle.rotationAngleVector)(pointB, pointA, 90, true).vector.setLength(length);
+		var vector2 = (0, _rotateAngle.rotationAngleVector)(pointB, pointA, 90, false).vector.setLength(length);
+		var vertices = [];
+		var orgVertices = shape.geometry.vertices;
+
+		vertices.push(new THREE.Vector2().addVectors(pointA, vector2));
+		vertices.push(new THREE.Vector2().addVectors(pointB, vector2));
+		vertices.push(new THREE.Vector2().addVectors(pointB, vector1));
+		vertices.push(new THREE.Vector2().addVectors(pointA, vector1));
+
+		for (var i = 0; i < orgVertices.length; i++) {
+			orgVertices[i].x = vertices[i].x;
+			orgVertices[i].y = vertices[i].y;
+		}
+		shape.geometry.verticesNeedUpdate = true;
+		shape.geometry.computeBoundingSphere();
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	/**
+	 * 跟中心转一定角度后的坐标
+	 * @param point 点
+	 * @param center 中心
+	 * @param angle 角度
+	 * @returns {THREE.Vector3} 结果
+	 */
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.rotatePoint = rotatePoint;
+	exports.getLocationPoint = getLocationPoint;
+	exports.rotationAngleVector = rotationAngleVector;
+	exports.getAngle = getAngle;
+	exports.getVectorAngle = getVectorAngle;
+
+	function rotatePoint(point, center, angle) {
+		var l = angle * Math.PI / 180;
+
+		//sin/cos value
+		var cosv = Math.cos(l);
+		var sinv = Math.sin(l);
+
+		// calc new point
+		var newX = (point.x - center.x) * cosv - (point.y - center.y) * sinv + center.x;
+		var newY = (point.x - center.x) * sinv + (point.y - center.y) * cosv + center.y;
+		return new THREE.Vector3(newX, newY, 0);
+	}
+
+	/**
+	 *  从A到B的方向距离length的点
+	 * @param pointA
+	 * @param pointB
+	 * @param length
+	 * @returns {THREE.Vector3}
+	 */
+
+	function getLocationPoint(pointA, pointB, length) {
+		var vector = new THREE.Vector3(0, 0, 0);
+		vector.subVectors(pointB, pointA);
+		vector = vector.setLength(length);
+		vector.add(pointA);
+		return vector;
+	}
+
+	/**
+	 * 向量旋转后的向量，返回旋转后的点和向量;
+	 * @param movePoint 旋转角度
+	 * @param fixedPoint 旋转轴点（固定的点）
+	 * @param angle 旋转角度
+	 * @param clockwise 旋转方向
+	 */
+
+	function rotationAngleVector(movePoint, fixedPoint, angle, clockwise) {
+
+		var tempVector = new THREE.Vector2(movePoint.x - fixedPoint.x, movePoint.y - fixedPoint.y);
+		var valueX = undefined,
+		    valueY = undefined;
+		var radian = angle / 180 * Math.PI;
+
+		if (clockwise) {
+			valueX = tempVector.x * Math.cos(radian) + tempVector.y * Math.sin(radian) + fixedPoint.x;
+			valueY = tempVector.y * Math.cos(radian) - tempVector.x * Math.sin(radian) + fixedPoint.y;
+		} else {
+			valueX = tempVector.x * Math.cos(radian) - tempVector.y * Math.sin(radian) + fixedPoint.x;
+			valueY = tempVector.y * Math.cos(radian) + tempVector.x * Math.sin(radian) + fixedPoint.y;
+		}
+
+		var afterRotationPoint = new THREE.Vector2(valueX, valueY);
+		var afterRotationVector = new THREE.Vector2(valueX - fixedPoint.x, valueY - fixedPoint.y);
+
+		return {
+			point: afterRotationPoint,
+			vector: afterRotationVector
+		};
+	}
+
+	/*
+	first_p：起点坐标，center_p：端点坐标，second_p：末点
+	*/
+
+	function getAngle(first_p, center_p, second_p) {
+		var v_ao = new THREE.Vector2().subVectors(first_p, center_p);
+		var v_bo = new THREE.Vector2().subVectors(second_p, center_p);
+		return getVectorAngle(v_ao, v_bo);
+	}
+
+	function getVectorAngle(vector1, vector2) {
+		"use strict";
+		var dx1 = undefined,
+		    dx2 = undefined,
+		    dy1 = undefined,
+		    dy2 = undefined,
+		    angle = undefined,
+		    abs = undefined;
+		dx1 = vector1.x;
+		dy1 = vector1.y;
+		dx2 = vector2.x;
+		dy2 = vector2.y;
+		var c = Math.sqrt(dx1 * dx1 + dy1 * dy1) * Math.sqrt(dx2 * dx2 + dy2 * dy2);
+		if (c == 0) return -1;
+		abs = (dx1 * dx2 + dy1 * dy2) / c;
+		if (abs < 0 && Math.abs(abs) > 1) {
+			//当abs>且是负数的时候，向量方向相反重合，为180°
+			return 180;
+		}
+		if (Math.abs(abs) > 1) {
+			//当abs>1且是正数数的时候，向量方向一致且重合，为0°
+			return 0;
+		}
+		angle = Math.acos((dx1 * dx2 + dy1 * dy2) / c) * 180 / Math.PI;
+
+		var isClockWise = vector1.x * vector2.y - vector1.y * vector2.x < 0;
+		isClockWise ? null : angle = -angle;
+		return {
+			//弧度
+			radian: angle * Math.PI / 180,
+
+			//second_p相对于first_p顺逆时针，true标示顺时针
+			clockWise: isClockWise,
+
+			//角度
+			angle: angle
+		};
+	}
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by liuyuanpeng on 2016/7/12.
+	 */
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports["default"] = function (em) {
+	  return parseFloat($(_presenter2["default"].view).css("font-size")) * em;
+	};
+
+	module.exports = exports["default"];
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/14.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _shapeCoordinateScale = __webpack_require__(14);
+
+	var _shapeCoordinateScale2 = _interopRequireDefault(_shapeCoordinateScale);
+
+	var _constants = __webpack_require__(6);
+
+	var _UtilsAddText = __webpack_require__(15);
+
+	var _UtilsAddText2 = _interopRequireDefault(_UtilsAddText);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	exports['default'] = function (scene) {
+		var startPosition = 0;
+		var coordWidth = undefined,
+		    coordHeight = undefined;
+		for (var i = 0; i <= 20; i++) {
+			coordWidth = (0, _UtilsEm2['default'])(_constants.CoordScaleHeight.width);
+			coordHeight = i % 5 ? (0, _UtilsEm2['default'])(_constants.CoordScaleHeight.small) : (0, _UtilsEm2['default'])(_constants.CoordScaleHeight.big);
+			var text = undefined;
+			var pozitivaShape = new _shapeCoordinateScale2['default'](coordWidth, coordHeight).creatCoordinateScale();
+			pozitivaShape.position.x = startPosition;
+			if (i == 0) {
+				var dot = pozitivaShape.getObjectByName(_constants.IntervalObjNames.DotCircle);
+				dot.visible = true;
+			}
+			//正方向
+			if (i % 5 == 0) {
+				//添加文字
+				text = (0, _UtilsAddText2['default'])(i.toString(), new THREE.Vector3(startPosition, -(0, _UtilsEm2['default'])(_constants.Number.distance), 0), 128, 128, _constants.Color.numberText, (0, _UtilsEm2['default'])(_constants.Number.fontSize), _constants.Number.fontFamily);
+				scene.add(text);
+			}
+			pozitivaShape.position.y = i % 5 == 0 ? 0 : coordHeight * 0.5;
+			scene.add(pozitivaShape);
+			//负方向
+			if (i > 0) {
+				var j = -i;
+				if (j % 5 == 0) {
+					text = (0, _UtilsAddText2['default'])(j.toString(), new THREE.Vector3(-startPosition, -(0, _UtilsEm2['default'])(_constants.Number.distance), 0), 128, 128, _constants.Color.numberText, (0, _UtilsEm2['default'])(_constants.Number.fontSize), _constants.Number.fontFamily);
+					scene.add(text);
+				}
+				var negativaShape = new _shapeCoordinateScale2['default'](coordWidth, coordHeight).creatCoordinateScale();
+				negativaShape.position.x = -startPosition;
+				negativaShape.position.y = i % 5 == 0 ? 0 : coordHeight * 0.5;
+				scene.add(negativaShape);
+				_threeMangerJs.intersectObjs.push(negativaShape);
+			}
+			startPosition += _constants.NumberAxisConstData.scaleMargin;
+		}
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/13.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _constants = __webpack_require__(6);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	/**
+	 * 绘制刻度
+	 * lineWidth 刻度的宽度
+	 * lineHeight 刻度的高度
+	 */
+
+	var coordinateScale = (function () {
+		function coordinateScale() {
+			var lineWidth = arguments.length <= 0 || arguments[0] === undefined ? 6 : arguments[0];
+			var lineHeight = arguments.length <= 1 || arguments[1] === undefined ? 20 : arguments[1];
+
+			_classCallCheck(this, coordinateScale);
+
+			this.lineWidth = lineWidth;
+			this.lineHeight = lineHeight;
+		}
+
+		_createClass(coordinateScale, [{
+			key: 'creatCoordGroup',
+			value: function creatCoordGroup() {
+
+				//画选择区域框
+				var groupHalfHeight = (0, _UtilsEm2['default'])(_constants.SelectBox.Height),
+				    groupWidth = (0, _UtilsEm2['default'])(_constants.SelectBox.Width);
+
+				var groupShape = new THREE.Shape();
+
+				groupShape.moveTo(-groupWidth, groupHalfHeight);
+				groupShape.lineTo(-groupWidth, -groupHalfHeight);
+				groupShape.lineTo(groupWidth, -groupHalfHeight);
+				groupShape.lineTo(groupWidth, groupHalfHeight);
+				groupShape.lineTo(-groupWidth, groupHalfHeight);
+
+				var groupGeometry = new THREE.ShapeGeometry(groupShape);
+				var groupMesh = new THREE.Mesh(groupGeometry, new THREE.MeshBasicMaterial({ color: 0x006666, transparent: true, opacity: 0 }));
+				groupMesh.name = _constants.IntervalObjNames.CoordScaleName;
+
+				return groupMesh;
+			}
+		}, {
+			key: 'creatCoord',
+			value: function creatCoord() {
+				//画刻度框
+				var shape = new THREE.Shape();
+				var halfWidth = this.lineWidth / 2,
+				    halfHeight = this.lineHeight / 2;
+
+				shape.moveTo(-halfWidth, halfHeight);
+				shape.lineTo(-halfWidth, -halfHeight);
+				shape.lineTo(halfWidth, -halfHeight);
+				shape.lineTo(halfWidth, halfHeight);
+				shape.lineTo(-halfWidth, halfHeight);
+
+				var geometry = new THREE.ShapeGeometry(shape);
+				var coordScale = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+					color: _constants.Color.numberAxis,
+					transparent: false,
+					opacity: 1
+				}));
+
+				coordScale.name = "coordScale";
+				return coordScale;
+			}
+
+			//画原点
+		}, {
+			key: 'creatDot',
+			value: function creatDot() {
+
+				var radius = (0, _UtilsEm2['default'])(_constants.SelectBox.Width) * 0.8;
+				var soildCircleGeometry = new THREE.CircleGeometry(radius, 64);
+				var dotCircle = new THREE.Mesh(soildCircleGeometry, new THREE.MeshBasicMaterial({ color: _constants.Color.numberAxis, overdraw: 0.5 }));
+				dotCircle.visible = false;
+
+				dotCircle.name = _constants.IntervalObjNames.DotCircle;
+				return dotCircle;
+			}
+		}, {
+			key: 'creatCoordinateScale',
+			value: function creatCoordinateScale() {
+
+				var group = this.creatCoordGroup(),
+				    coord = this.creatCoord(),
+				    dot = this.creatDot();
+
+				group.add(coord);
+				group.add(dot);
+				_threeMangerJs.intersectObjs.push(group);
+				return group;
+			}
+		}]);
+
+		return coordinateScale;
+	})();
+
+	exports['default'] = coordinateScale;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+	/*
+
+	@param text 所要绘制的文字
+	@param position 存放位置
+	@param width 文字的宽高
+
+	*/
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	exports['default'] = function (text, position, width, height) {
+		var fontColor = arguments.length <= 4 || arguments[4] === undefined ? 'black' : arguments[4];
+		var fontSize = arguments.length <= 5 || arguments[5] === undefined ? 23 : arguments[5];
+		var fontFamily = arguments.length <= 6 || arguments[6] === undefined ? 'Arial' : arguments[6];
+
+		var dynamicTexture = new THREEx.DynamicTexture(width, height);
+		dynamicTexture.context.font = fontSize + 'px ' + fontFamily;
+		var geometry = new THREE.PlaneGeometry(width, height);
+
+		var textField = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+			map: dynamicTexture.texture,
+			transparent: true
+		}));
+
+		textField.position.x = position.x;
+		textField.position.y = position.y;
+		textField._dynamicTexture = dynamicTexture;
+		textField._dynamicTexture.drawText(text, undefined, height / 2, fontColor);
+		return textField;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	function autoDetectRenderer(options, noWebGL) {
+		if (!noWebGL && isWebGLSupported()) {
+			return new THREE.WebGLRenderer(options);
+		}
+		return new THREE.CanvasRenderer(options);
+	}
+
+	function isWebGLSupported() {
+		var contextOptions = { stencil: true };
+		try {
+			if (!window.WebGLRenderingContext) {
+				return false;
+			}
+			var canvas = document.createElement('canvas'),
+			    gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
+			return !!(gl && gl.getContextAttributes().stencil);
+		} catch (e) {
+			return false;
+		}
+	}
+	exports.isWebGLSupported = isWebGLSupported;
+	exports.autoDetectRenderer = autoDetectRenderer;
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _threeManger = __webpack_require__(5);
+
+	var _shapeCreatIntervalGroup = __webpack_require__(18);
+
+	var _shapeCreatIntervalGroup2 = _interopRequireDefault(_shapeCreatIntervalGroup);
+
+	var _UtilsAddInterval = __webpack_require__(20);
+
+	var _UtilsAddInterval2 = _interopRequireDefault(_UtilsAddInterval);
+
+	var _constants = __webpack_require__(6);
+
+	var _UtilsPackMethod = __webpack_require__(22);
+
+	var _previewAnswer = __webpack_require__(26);
+
+	var _UtilsChangeEndpointStatus = __webpack_require__(24);
+
+	var _EventDocumentEvent = __webpack_require__(27);
+
+	exports['default'] = function (jsonData) {
+		if (!_threeManger.scene) {
+			_presenter2['default'].tmpData = jsonData;
+			return;
+		}
+		//字符串转json
+		var tmp = null;
+		try {
+			tmp = JSON.parse(jsonData);
+		} catch (err) {
+			console.error('state data error');
+		}
+		console.log(tmp);
+		if (tmp) {
+			//作答状态恢复
+			(0, _previewAnswer.clearIntervals)();
+			(0, _EventDocumentEvent.changeEmptyState)(tmp.isEmptyAnswer ? 'on' : 'off');
+			if (!tmp.isEmptyAnswer) {
+				tmp.answer.forEach(function (group, index) {
+					var intervalGroup = (0, _shapeCreatIntervalGroup2['default'])();
+					var point1 = (0, _UtilsAddInterval2['default'])(new THREE.Vector3(group.point1.val, 0, 0), group.point1.val, intervalGroup);
+					point1.name = _constants.IntervalObjNames.Endpoint1;
+					point1.userData = group.point1.userData;
+					(0, _UtilsChangeEndpointStatus.updateEndpointStatus)(point1);
+					_threeManger.scene.add(intervalGroup);
+					if (group.point2) {
+						var point2 = (0, _UtilsPackMethod.addLineAndAnotherEndpoint)(point1, new THREE.Vector3(group.point2.val, 0, 0));
+						point2.userData = group.point2.userData;
+						(0, _UtilsChangeEndpointStatus.updateEndpointStatus)(point2);
+					}
+				});
+			}
+			//恢复按钮状态
+			_presenter2['default'].buttonState = tmp.buttonState;
+			_presenter2['default'].buttonValue = tmp.buttonValue;
+			var modifyTime = tmp.modifyTime;
+			var getResultTime = tmp.getResultTime;
+			if (modifyTime === getResultTime && !!modifyTime) {
+				// 来自服务端，更换了pad导致的状态恢复
+				_presenter2['default'].buttonState = 'success';
+			}
+
+			if (tmp.lock) {
+				_presenter2['default'].self._service_.lockQuestion();
+			}
+
+			if (tmp.showHintInfo) {
+				if (tmp.showHintInfo.hasShow) {
+					_presenter2['default'].isAnswerCorrect = tmp.showHintInfo.result;
+					_presenter2['default'].self._service_.showResultHint();
+				}
+			}
+			_presenter2['default'].isAnswerd = tmp.answerState;
+			console.log(_presenter2['default'].isAnswerd);
+			(0, _threeManger.render)();
+		}
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/21.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _shapeCreatDeleteBtnJs = __webpack_require__(19);
+
+	var _shapeCreatDeleteBtnJs2 = _interopRequireDefault(_shapeCreatDeleteBtnJs);
+
+	var _constants = __webpack_require__(6);
+
+	exports['default'] = function () {
+
+	  var intervalGroup = new THREE.Object3D();
+	  intervalGroup.position.z = _constants.ZOriginIndex.intervalGroup;
+	  intervalGroup.name = 'intervalGroup';
+	  //判断是否删除
+	  intervalGroup.userData.isDelete = false;
+	  return intervalGroup;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/21.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	exports['default'] = function (interval) {
+		//删除按钮
+		var deleteTexture = new THREEx.DynamicTexture(119, 96);
+		var image = $(_presenter2['default'].view).find('.cache-delete-img').get(0); //document.createElement('img');
+		// image.crossOrigin = "anonymous";
+		// image.src = presenter.path + 'resources/delete.png';
+		deleteTexture.drawImage(image, 0, 0);
+		// image.addEventListener('load', function() {
+		// 	deleteTexture.drawImage(image, 0, 0);
+		// 	deleteBtn.visible = true;
+		// });
+		var geometry = new THREE.PlaneBufferGeometry((0, _UtilsEm2['default'])(96 / 24), (0, _UtilsEm2['default'])(80 / 24));
+		var material = new THREE.MeshBasicMaterial({
+			map: deleteTexture.texture,
+			transparent: true
+		});
+		var deleteBtn = new THREE.Mesh(geometry, material);
+		deleteBtn.position.y = -(0, _UtilsEm2['default'])(10 / 24);
+
+		//创建点击区域
+		var areaShape = new THREE.Shape();
+		areaShape.moveTo(-(0, _UtilsEm2['default'])(33 / 24), (0, _UtilsEm2['default'])(20 / 24));
+		areaShape.absarc(-(0, _UtilsEm2['default'])(33 / 24), (0, _UtilsEm2['default'])(18 / 24), (0, _UtilsEm2['default'])(2 / 24), Math.PI / 2, Math.PI, true);
+		areaShape.lineTo(-(0, _UtilsEm2['default'])(35 / 24), -(0, _UtilsEm2['default'])(18 / 24));
+		areaShape.absarc(-(0, _UtilsEm2['default'])(33 / 24), -(0, _UtilsEm2['default'])(18 / 24), (0, _UtilsEm2['default'])(2 / 24), Math.PI, Math.PI * 3 / 2, true);
+		areaShape.lineTo(-(0, _UtilsEm2['default'])(5 / 24), -(0, _UtilsEm2['default'])(20 / 24));
+		areaShape.lineTo((0, _UtilsEm2['default'])(1 / 24), -(0, _UtilsEm2['default'])(28 / 24));
+		areaShape.lineTo((0, _UtilsEm2['default'])(7 / 24), -(0, _UtilsEm2['default'])(20 / 24));
+		areaShape.lineTo((0, _UtilsEm2['default'])(35 / 24), -(0, _UtilsEm2['default'])(20 / 24));
+		areaShape.absarc((0, _UtilsEm2['default'])(35 / 24), -(0, _UtilsEm2['default'])(18 / 24), (0, _UtilsEm2['default'])(2 / 24), Math.PI * 3 / 2, Math.PI * 2, true);
+		areaShape.lineTo((0, _UtilsEm2['default'])(37 / 24), (0, _UtilsEm2['default'])(18 / 24));
+		areaShape.absarc((0, _UtilsEm2['default'])(35 / 24), (0, _UtilsEm2['default'])(18 / 24), (0, _UtilsEm2['default'])(2 / 24), 0, Math.PI / 2, true);
+		areaShape.lineTo(-(0, _UtilsEm2['default'])(33 / 24), (0, _UtilsEm2['default'])(20 / 24));
+
+		var areaGeometry = new THREE.ShapeGeometry(areaShape);
+		var areaMesh = new THREE.MeshBasicMaterial({
+			transparent: true,
+			opacity: 0
+		});
+
+		var areaGroup = new THREE.Mesh(areaGeometry, areaMesh);
+
+		areaGroup.position.y = (0, _UtilsEm2['default'])(60 / 24);
+		areaGroup.name = _constantsJs.IntervalObjNames.DeleteBtn;
+		areaGroup.visible = true;
+		areaGroup.add(deleteBtn);
+		areaGroup.position.z = 100;
+		areaGroup.scale.set(1.4, 1.4, 1);
+
+		_threeMangerJs.intersectObjs.push(areaGroup);
+		interval.add(areaGroup);
+		return areaGroup;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/18.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constants = __webpack_require__(6);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _shapeIntervalEndpointJs = __webpack_require__(21);
+
+	var _shapeIntervalEndpointJs2 = _interopRequireDefault(_shapeIntervalEndpointJs);
+
+	exports['default'] = function (startPoint, positionX, intervalGroup) {
+		//超过20不创建区间点
+		var currentPot = Math.round(startPoint.x / _constants.NumberAxisConstData.scaleMargin);
+		//if (Math.abs(currentPot) > 20)
+		//	return;
+
+		var endPot = new _shapeIntervalEndpointJs2['default']();
+		endPot.position.x = positionX;
+		endPot.userData.numberMark = currentPot;
+		endPot.position.z += 1;
+		_threeMangerJs.intersectObjs.push(endPot);
+		//scene.add(endPot);
+		intervalGroup.add(endPot);
+
+		return endPot;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/13.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constants = __webpack_require__(6);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	exports['default'] = function () {
+
+		//let endpoint = new THREE.Object3D();
+		//endpoint.name = IntervalObjNames.Endpoint;
+		var material = new THREE.MeshBasicMaterial({ color: _constants.Color.normal, overdraw: 0.5 });
+		var radius = (0, _UtilsEm2['default'])(_constants.CircleRadius.soild),
+		    triangleSideLength = (0, _UtilsEm2['default'])(_constants.NumberAxisHeight * 2);
+
+		//画选择区域框
+		var groupHalfHeight = (0, _UtilsEm2['default'])(_constants.SelectBox.Height * 1.2),
+		    groupWidth = (0, _UtilsEm2['default'])(_constants.SelectBox.Width * 1.1);
+		var groupShape = new THREE.Shape();
+
+		groupShape.moveTo(-groupWidth, groupHalfHeight);
+		groupShape.lineTo(-groupWidth, -groupHalfHeight);
+		groupShape.lineTo(groupWidth, -groupHalfHeight);
+		groupShape.lineTo(groupWidth, groupHalfHeight);
+		groupShape.lineTo(-groupWidth, groupHalfHeight);
+
+		var groupGeometry = new THREE.ShapeGeometry(groupShape);
+		var endpoint = new THREE.Mesh(groupGeometry, new THREE.MeshBasicMaterial({
+			color: 0x00ff00,
+			transparent: true,
+			opacity: 0,
+			overdraw: 0.5
+		}));
+
+		//绘制实心圆
+		var soildCircleGeometry = new THREE.CircleGeometry(radius, 64);
+		var soildCircle = new THREE.Mesh(soildCircleGeometry, material);
+		soildCircle.name = _constants.IntervalObjNames.SoildCircle;
+
+		//绘制空心圆
+		var emptyCircleGeometry = new THREE.CircleGeometry((0, _UtilsEm2['default'])(_constants.CircleRadius.empty), 64);
+		var emptyCircle = new THREE.Mesh(emptyCircleGeometry, new THREE.MeshBasicMaterial({ color: _constants.Color.emptyCircle, overdraw: 0.5 }));
+		emptyCircle.name = _constants.IntervalObjNames.EmptyCircle;
+		emptyCircle.visible = false;
+
+		//绘制左边三角形
+		var lefthape = new THREE.Shape();
+		length = triangleSideLength * Math.sqrt(3) / 2;
+
+		lefthape.moveTo(radius, triangleSideLength);
+		lefthape.lineTo(-length, 0);
+		lefthape.lineTo(radius, -triangleSideLength);
+		lefthape.lineTo(radius, triangleSideLength);
+
+		var leftTriangelGeometry = new THREE.ShapeGeometry(lefthape);
+		var leftTriangleMesh = new THREE.Mesh(leftTriangelGeometry, material);
+		leftTriangleMesh.name = _constants.IntervalObjNames.LeftTriangle;
+		leftTriangleMesh.visible = false;
+
+		//绘制右边三角形
+		var rightShape = new THREE.Shape();
+		//length = triangleSideLength * Math.sqrt(3);
+		rightShape.moveTo(-radius, triangleSideLength);
+		rightShape.lineTo(length, 0);
+		rightShape.lineTo(-radius, -triangleSideLength);
+		rightShape.lineTo(-radius, triangleSideLength);
+		var rightTrianglegeometry = new THREE.ShapeGeometry(rightShape);
+		var rightTriangleMesh = new THREE.Mesh(rightTrianglegeometry, material);
+		rightTriangleMesh.name = _constants.IntervalObjNames.RightTriangle;
+		rightTriangleMesh.visible = false;
+
+		//添加图形
+		endpoint.add(soildCircle);
+		endpoint.add(emptyCircle);
+		endpoint.add(leftTriangleMesh);
+		endpoint.add(rightTriangleMesh);
+		endpoint.position.z = _constants.ZOriginIndex.endpoint;
+		//添加状态标示
+		endpoint.userData.statusIndex = 0;
+		//保存点的坐标
+		endpoint.userData.isSingle = true;
+		//判断是否改变状态
+		endpoint.userData.isChangeStatus = false;
+
+		return endpoint;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/18.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.addLineAndAnotherEndpoint = addLineAndAnotherEndpoint;
+	exports.updateInterval = updateInterval;
+	exports.updateMovingInterval = updateMovingInterval;
+	exports.undateIntervalWhenMouthUp = undateIntervalWhenMouthUp;
+	exports.allIntervals = allIntervals;
+	exports.movingIntervalCombinInterval = movingIntervalCombinInterval;
+	exports.removeInterval = removeInterval;
+	exports.removeObj = removeObj;
+	exports.twoEndpointCoincide = twoEndpointCoincide;
+	exports.updateMovingpoint = updateMovingpoint;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _shapeCreatIntervalLineJs = __webpack_require__(23);
+
+	var _shapeCreatIntervalLineJs2 = _interopRequireDefault(_shapeCreatIntervalLineJs);
+
+	var _UtilsAddIntervalJs = __webpack_require__(20);
+
+	var _UtilsAddIntervalJs2 = _interopRequireDefault(_UtilsAddIntervalJs);
+
+	var _UtilsUpdateVerticesJs = __webpack_require__(10);
+
+	var _UtilsUpdateVerticesJs2 = _interopRequireDefault(_UtilsUpdateVerticesJs);
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _UtilsChangeEndpointStatusJs = __webpack_require__(24);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _UtilsDrawIntervalJs = __webpack_require__(25);
+
+	var _UtilsDrawIntervalJs2 = _interopRequireDefault(_UtilsDrawIntervalJs);
+
+	var _UtilsDestroyThreeObjectJs = __webpack_require__(8);
+
+	var _UtilsDestroyThreeObjectJs2 = _interopRequireDefault(_UtilsDestroyThreeObjectJs);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	//import seleteInterval from '../Utils/seleteInterval.js'
+
+	//添加线和另外一个点
+
+	function addLineAndAnotherEndpoint(selectedObj, movePoint) {
+
+		//添加另外一条边和端点
+		selectedObj.userData.isSingle = false;
+
+		(0, _shapeCreatIntervalLineJs2['default'])(selectedObj.position, movePoint, selectedObj.parent);
+		var otherEndPot = new _UtilsAddIntervalJs2['default'](new THREE.Vector3(selectedObj.position.x, 0, 0), movePoint.x, selectedObj.parent);
+		otherEndPot.name = _constantsJs.IntervalObjNames.Endpoint2;
+		otherEndPot.userData.isSingle = false;
+
+		//将生产的区间排序，EndPoint1 < EndPoint2
+		if (otherEndPot.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1).position.x > otherEndPot.position.x) {
+			otherEndPot.name = _constantsJs.IntervalObjNames.Endpoint1;
+			otherEndPot.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1).name = _constantsJs.IntervalObjNames.Endpoint2;
+		}
+		return otherEndPot;
+	}
+
+	//更新区间
+
+	function updateInterval(selectedObj) {
+		var point1 = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1).position,
+		    point2 = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2).position;
+		var smallPot = undefined,
+		    bigPot = undefined;
+		if (point1.x < point2.x) {
+			smallPot = new THREE.Vector2(point1.x + (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild * 0.4), 0);
+			bigPot = new THREE.Vector2(point2.x - (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild * 0.4), 0);
+		} else {
+			smallPot = new THREE.Vector2(point2.x + (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild * 0.4), 0);
+			bigPot = new THREE.Vector2(point1.x - (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild * 0.4), 0);
+			//切换区间两个端点的大小
+			var endpoint1 = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+			var endpoint2 = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+			endpoint1.name = _constantsJs.IntervalObjNames.Endpoint2;
+			endpoint2.name = _constantsJs.IntervalObjNames.Endpoint1;
+		}
+		(0, _UtilsChangeEndpointStatusJs.updateEndpointStatus)(selectedObj);
+		//更新
+		updateIntervalRect(selectedObj, smallPot, bigPot);
+	}
+
+	//更新区间中间的矩形
+	function updateIntervalRect(selectedObj, point1, point2) {
+		var rectObj = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.IntervalRect);
+		var intervalLine = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.IntervalLine);
+		(0, _UtilsUpdateVerticesJs2['default'])(rectObj, point1, point2, (0, _UtilsEm2['default'])(_constantsJs.SelectBox.Height * 2.4));
+		(0, _UtilsUpdateVerticesJs2['default'])(intervalLine, point1, point2, (0, _UtilsEm2['default'])(_constantsJs.NumberAxisConstData.numberAxisHeight));
+	}
+
+	//移动更新区间
+
+	function updateMovingInterval(selectedObj, movePoint) {
+		selectedObj.position.x = movePoint.x;
+		selectedObj.userData.isChangeStatus = false;
+		selectedObj.userData.numberMark = Math.round(selectedObj.position.x / _constantsJs.NumberAxisConstData.scaleMargin);
+		updateInterval(selectedObj);
+	}
+
+	//鼠标抬起后更新区间
+
+	function undateIntervalWhenMouthUp(selectedObj) {
+		selectedObj.position.x = selectedObj.userData.numberMark * _constantsJs.NumberAxisConstData.scaleMargin;
+		updateInterval(selectedObj);
+	}
+
+	//得出所有的区间的端点
+
+	function allIntervals() {
+		var intervalGroup = [];
+		for (var i = 0; i < _threeMangerJs.intersectObjs.length; i++) {
+			if (_threeMangerJs.intersectObjs[i].name == _constantsJs.IntervalObjNames.Endpoint1 || _threeMangerJs.intersectObjs[i].name == _constantsJs.IntervalObjNames.Endpoint2) {
+				intervalGroup.push(_threeMangerJs.intersectObjs[i]);
+			}
+		}
+		return intervalGroup;
+	}
+
+	/**
+	 *  方法： 移动后合并区间
+	 *  @param selectedObj 选中移动的端点
+	 **/
+
+	function movingIntervalCombinInterval(selectedObj) {
+		var smallEndpoint = undefined,
+		    bigEndpoint = undefined;
+		if (selectedObj.name == _constantsJs.IntervalObjNames.Endpoint1) {
+			smallEndpoint = selectedObj;
+			//if(smallEndpoint.userData.isSingle == true) smallEndpoint.userData.isSingle = false;
+			bigEndpoint = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+		} else {
+			smallEndpoint = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+			bigEndpoint = selectedObj;
+		}
+		if (smallEndpoint.userData.numberMark == bigEndpoint.userData.numberMark) {
+			smallEndpoint.userData.statusIndex = 0;
+			bigEndpoint.userData.statusIndex = 0;
+			(0, _UtilsChangeEndpointStatusJs.updateEndpointStatus)(smallEndpoint);
+			(0, _UtilsChangeEndpointStatusJs.updateEndpointStatus)(bigEndpoint);
+		}
+		var intervalPoints = allIntervals();
+		//移除自身的端点
+		removeObj(smallEndpoint, intervalPoints);
+		removeObj(bigEndpoint, intervalPoints);
+		var inEndpoints = [];
+		for (var i = 0; i < intervalPoints.length; i++) {
+			var endPointNumMark = intervalPoints[i].userData.numberMark;
+			if (smallEndpoint.userData.numberMark <= endPointNumMark && endPointNumMark <= bigEndpoint.userData.numberMark) {
+				inEndpoints.push(intervalPoints[i]);
+			}
+		}
+		if (selectedObj.name == _constantsJs.IntervalObjNames.Endpoint1) {
+			moveSmallEndpointCombinInterval(smallEndpoint, bigEndpoint, inEndpoints);
+		} else {
+			moveBigEndpointCombinInterval(smallEndpoint, bigEndpoint, inEndpoints);
+		}
+	}
+
+	//移动区间较大的端点
+	function moveBigEndpointCombinInterval(rangeEndpoint1, rangeEndpoint2, endpointsGroup) {
+		//判断右端点是否是空心
+		if (rangeEndpoint1.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle || rangeEndpoint2.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle) {
+			//遍历判断是否存在和右端点重合的点，且为空心
+			for (var _i = 0; _i < endpointsGroup.length; _i++) {
+				if (endpointsGroup[_i].userData.numberMark == rangeEndpoint2.userData.numberMark && endpointsGroup[_i].userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle && rangeEndpoint2.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle) {
+					removeObj(endpointsGroup[_i], endpointsGroup);
+				}
+				//判断左端点和右点重合时
+				else if (endpointsGroup[_i].userData.numberMark == rangeEndpoint1.userData.numberMark && endpointsGroup[_i].name == _constantsJs.IntervalObjNames.Endpoint2) {
+						removeObj(endpointsGroup[_i], endpointsGroup);
+					}
+			}
+		}
+
+		//没有点在内直接返回
+		if (endpointsGroup.length == 0) return;
+		var maxPointGroup = [];
+		//取出所有在移动区间内点所对应的右边点
+		maxPointGroup = inMaxEndpoints(endpointsGroup);
+		if (maxPointGroup.length == 0) return;
+		var tempEndpoint = maxPointGroup[0];
+		maxPointGroup.push(rangeEndpoint2);
+		for (var i = 1; i < maxPointGroup.length; i++) {
+			if (maxPointGroup[i].userData.numberMark == tempEndpoint.userData.numberMark && maxPointGroup[i].userData.statusIndex == _constantsJs.StatusIndex.SoildCircle) {
+				tempEndpoint = maxPointGroup[i];
+			} else if (maxPointGroup[i].userData.numberMark > tempEndpoint.userData.numberMark) {
+				tempEndpoint = maxPointGroup[i];
+			}
+		}
+
+		var maxEndpoint = tempEndpoint.clone();
+		maxEndpoint.userData.isSingle = false;
+		//if(maxEndpoint.userData.statusIndex != 2) maxEndpoint.userData.statusIndex = 0;
+		var endpoint1 = rangeEndpoint1.clone();
+		//移除包含的区间
+		removeCombinObj(maxPointGroup);
+		//重新绘制区间
+		(0, _UtilsDrawIntervalJs2['default'])(endpoint1, maxEndpoint);
+		undateIntervalWhenMouthUp(maxEndpoint);
+	}
+
+	//移动区间小的端点
+	function moveSmallEndpointCombinInterval(rangeEndpoint1, rangeEndpoint2, endpointsGroup) {
+		//判断左端点是否是空心
+		if (rangeEndpoint1.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle || rangeEndpoint2.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle) {
+			//遍历判断是否存在右端点和移动区间左端点重合的点，且都为空心
+			for (var _i2 = 0; _i2 < endpointsGroup.length; _i2++) {
+				if (endpointsGroup[_i2].userData.numberMark == rangeEndpoint1.userData.numberMark && endpointsGroup[_i2].userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle && rangeEndpoint1.userData.statusIndex == _constantsJs.StatusIndex.EmptyCircle) {
+					removeObj(endpointsGroup[_i2], endpointsGroup);
+				}
+				//判断左端点和右点重合时
+				else if (endpointsGroup[_i2].userData.numberMark == rangeEndpoint2.userData.numberMark && endpointsGroup[_i2].name == _constantsJs.IntervalObjNames.Endpoint1) {
+						removeObj(endpointsGroup[_i2], endpointsGroup);
+					}
+			}
+		}
+
+		//没有点在内直接返回
+		if (endpointsGroup.length == 0) return;
+
+		var minPointGroup = [];
+		//取出所有在移动区间内点所对应的左（小）端点
+		minPointGroup = inMinEndpoints(endpointsGroup);
+		if (minPointGroup.length == 0) return;
+		var tempEndpoint = minPointGroup[0];
+
+		minPointGroup.push(rangeEndpoint1);
+
+		for (var i = 0; i < minPointGroup.length; i++) {
+			if (minPointGroup[i].userData.numberMark == tempEndpoint.userData.numberMark && minPointGroup[i].userData.statusIndex == _constantsJs.StatusIndex.SoildCircle) {
+				tempEndpoint = minPointGroup[i];
+			} else if (minPointGroup[i].userData.numberMark < tempEndpoint.userData.numberMark) {
+				tempEndpoint = minPointGroup[i];
+			}
+		}
+
+		if (!tempEndpoint) return;
+		var minEndpoint = tempEndpoint.clone();
+		minEndpoint.userData.isSingle = false;
+		//if(minEndpoint.userData.statusIndex != 2) minEndpoint.userData.statusIndex = 0;
+		var endpoint2 = rangeEndpoint2.clone();
+		//移除包含的区间
+		removeCombinObj(minPointGroup);
+		//重新绘制区间
+		(0, _UtilsDrawIntervalJs2['default'])(minEndpoint, endpoint2);
+		undateIntervalWhenMouthUp(minEndpoint);
+	}
+
+	//寻找区间内所有的大端点
+	function inMaxEndpoints(endpointsGroup) {
+		var maxPointGroup = [];
+		for (var i = 0; i < endpointsGroup.length; i++) {
+			if (endpointsGroup[i].name == _constantsJs.IntervalObjNames.Endpoint1) {
+				if (endpointsGroup[i].userData.isSingle) {
+					maxPointGroup.push(endpointsGroup[i]);
+				} else {
+					var endpoint2 = endpointsGroup[i].parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+					maxPointGroup.push(endpoint2);
+				}
+			}
+		}
+		return maxPointGroup;
+	}
+
+	//寻找区间内所有的小端点
+	function inMinEndpoints(endpointsGroup) {
+		var minPointGroup = [];
+		for (var i = 0; i < endpointsGroup.length; i++) {
+			if (endpointsGroup[i].name == _constantsJs.IntervalObjNames.Endpoint1 && endpointsGroup[i].userData.isSingle) {
+				minPointGroup.push(endpointsGroup[i]);
+			} else if (endpointsGroup[i].name == _constantsJs.IntervalObjNames.Endpoint2) {
+				var endpoint1 = endpointsGroup[i].parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+				minPointGroup.push(endpoint1);
+			}
+		}
+		return minPointGroup;
+	}
+
+	/**
+	 *  方法： 删除合并的对象
+	 *  @param endpointGroup 包含区间所有小端点或所有大端点的数组
+	 *
+	 **/
+	function removeCombinObj(endpointGroup) {
+		for (var i = 0; i < endpointGroup.length; i++) {
+			//intersectObjs上移除合并对象
+			removeFromIntersectObjs(endpointGroup[i]);
+			//scene上移除合并对象
+			_threeMangerJs.scene.remove(endpointGroup[i].parent);
+			(0, _UtilsDestroyThreeObjectJs2['default'])(endpointGroup[i].parent);
+		}
+	}
+
+	/**
+	 *  方法： 删除传入对象对应的区间
+	 *  @param obj 区间内的一个对象，如区间线，或端点
+	 *
+	 **/
+
+	function removeInterval(obj) {
+		removeFromIntersectObjs(obj);
+		_threeMangerJs.scene.remove(obj.parent);
+		(0, _UtilsDestroyThreeObjectJs2['default'])(obj.parent);
+	}
+
+	function removeFromIntersectObjs(obj) {
+		if (obj.userData.isSingle) {
+			removeObj(obj);
+		} else {
+			var intervalGroup = obj.parent;
+			var endpoint1 = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1),
+			    intervalRect = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.IntervalRect),
+			    endpoint2 = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2),
+			    deleteBtn = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.DeleteBtn);
+			removeObj(endpoint1);
+			removeObj(intervalRect);
+			removeObj(endpoint2);
+			if (deleteBtn) removeObj(deleteBtn);
+		}
+	}
+
+	function removeObj(Obj, objsArray) {
+		if (!objsArray) objsArray = _threeMangerJs.intersectObjs;
+		var index = $.inArray(Obj, objsArray);
+		if (index == -1) return;
+		objsArray.splice(index, 1);
+	}
+
+	//移动过程中两个点重合
+
+	function twoEndpointCoincide(endpoint) {
+		//获取区间group
+		var intervalGroup = endpoint.parent;
+		var endpoint1 = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1),
+		    intervalRect = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.IntervalRect);
+		//不是区间
+		if (!intervalRect) return;
+		var endpoint2 = intervalGroup.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+		if (endpoint1.userData.numberMark == endpoint2.userData.numberMark) {
+			intervalGroup.remove(endpoint2);
+			intervalGroup.remove(intervalRect);
+			removeObj(endpoint2);
+			removeObj(intervalRect);
+			(0, _UtilsDestroyThreeObjectJs2['default'])(endpoint2);
+			(0, _UtilsDestroyThreeObjectJs2['default'])(intervalRect);
+			//变为单个实心点
+			endpoint1.userData.isSingle = true;
+			endpoint1.userData.statusIndex = 0;
+			(0, _UtilsChangeEndpointStatusJs.updateEndpointStatus)(endpoint1);
+		}
+	}
+
+	function updateMovingpoint(selectedObj, movingPoint) {
+
+		var otherEndpoint = undefined;
+		if (selectedObj.name == _constantsJs.IntervalObjNames.Endpoint1) {
+			otherEndpoint = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+		} else {
+			otherEndpoint = selectedObj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+		}
+		if (Math.abs(otherEndpoint.userData.numberMark) > 20) {
+			//如果数轴对应的另一个端点超过20
+			var instance = (_constantsJs.NumberAxisConstData.scaleCount - 3) * 0.5 * _constantsJs.NumberAxisConstData.scaleMargin;
+			if (otherEndpoint.position.x > 0 && movingPoint.x > instance) {
+				selectedObj.position.x = instance;
+				movingPoint.x = selectedObj.position.x;
+			} else if (otherEndpoint.position.x < 0 && movingPoint.x < -instance) {
+				selectedObj.position.x = -instance;
+				movingPoint.x = selectedObj.position.x;
+			}
+		}
+		return movingPoint;
+	}
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/18.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _shapeIntervalEndpointJs = __webpack_require__(21);
+
+	var _shapeIntervalEndpointJs2 = _interopRequireDefault(_shapeIntervalEndpointJs);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _UtilsEm = __webpack_require__(12);
+
+	var _UtilsEm2 = _interopRequireDefault(_UtilsEm);
+
+	exports['default'] = function (fixPoint, movingPoint, intervalGroup) {
+
+		var leftPot = undefined,
+		    rightPot = undefined;
+		var lineHight = (0, _UtilsEm2['default'])(_constantsJs.NumberAxisHeight);
+		console.log('lineHight', lineHight);
+		if (movingPoint.x >= fixPoint.x) {
+			leftPot = fixPoint;
+			rightPot = movingPoint;
+		} else {
+			leftPot = movingPoint;
+			rightPot = fixPoint;
+		}
+
+		//画区间的线的其实坐标位置
+		var rectLeftCenterX = leftPot.x + (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild),
+		    rectRightCenterX = rightPot.x - (0, _UtilsEm2['default'])(_constantsJs.CircleRadius.soild);
+
+		//画区域框
+		var groupHalfHeight = (0, _UtilsEm2['default'])(_constantsJs.SelectBox.Height * 1.2);
+		var groupShape = new THREE.Shape();
+		console.log(groupHalfHeight);
+		groupShape.moveTo(rectLeftCenterX, groupHalfHeight);
+		groupShape.lineTo(rectLeftCenterX, -groupHalfHeight);
+		groupShape.lineTo(rectRightCenterX, -groupHalfHeight);
+		groupShape.lineTo(rectRightCenterX, groupHalfHeight);
+		groupShape.lineTo(rectLeftCenterX, groupHalfHeight);
+
+		var groupGeometry = new THREE.ShapeGeometry(groupShape);
+		var rectGroup = new THREE.Mesh(groupGeometry, new THREE.MeshBasicMaterial({ color: 0x0000ff, transparent: true, opacity: 0 }));
+		rectGroup.name = _constantsJs.IntervalObjNames.IntervalRect;
+
+		var halfHeight = lineHight * 0.5;
+		var intervalShape = new THREE.Shape();
+		console.log(halfHeight);
+		intervalShape.moveTo(rectLeftCenterX, halfHeight);
+		intervalShape.lineTo(rectLeftCenterX, -halfHeight);
+		intervalShape.lineTo(rectRightCenterX, -halfHeight);
+		intervalShape.lineTo(rectRightCenterX, halfHeight);
+		intervalShape.lineTo(rectLeftCenterX, halfHeight);
+		var intervalGeometry = new THREE.ShapeGeometry(intervalShape);
+		var intervalRect = new THREE.Mesh(intervalGeometry, new THREE.MeshBasicMaterial({ color: _constantsJs.Color.normal }));
+		//intervalRect.visible = true;
+		intervalRect.name = _constantsJs.IntervalObjNames.IntervalLine;
+		rectGroup.position.z = _constantsJs.ZOriginIndex.intervalRect;
+		rectGroup.add(intervalRect);
+		_threeMangerJs.intersectObjs.push(rectGroup);
+		intervalGroup.add(rectGroup);
+		console.log(intervalGroup);
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/14.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.changeEndpointStatus = changeEndpointStatus;
+	exports.updateEndpointStatus = updateEndpointStatus;
+	exports.showSoildCircle = showSoildCircle;
+	exports.showEmptyCircle = showEmptyCircle;
+	exports.showTriangle = showTriangle;
+
+	var _constantsJs = __webpack_require__(6);
+
+	//修改状态
+
+	function changeEndpointStatus(endpoint) {
+		if (endpoint.userData.isSingle) return;
+		endpoint.userData.statusIndex = (endpoint.userData.statusIndex + 1) % 2;
+		if (endpoint.userData.statusIndex == 20 || endpoint.userData.statusIndex == -20) {
+			endpoint.userData.statusIndex == 0;
+		}
+		updateEndpointStatus(endpoint);
+	}
+
+	//更新状态
+
+	function updateEndpointStatus(endpoint) {
+
+		var index = endpoint.userData.statusIndex;
+		if (endpoint.userData.numberMark >= -20 && endpoint.userData.numberMark <= 20) {
+			index = endpoint.userData.statusIndex;
+		} else {
+			index = _constantsJs.StatusIndex.Triangle;
+		}
+
+		switch (index) {
+			case _constantsJs.StatusIndex.SoildCircle:
+				showSoildCircle(endpoint);
+				break;
+			case _constantsJs.StatusIndex.EmptyCircle:
+				showEmptyCircle(endpoint);
+				break;
+			case _constantsJs.StatusIndex.Triangle:
+				showTriangle(endpoint);
+				break;
+		}
+	}
+
+	function showSoildCircle(endpoint) {
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.SoildCircle).visible = true;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.EmptyCircle).visible = false;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle).visible = false;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.RightTriangle).visible = false;
+	}
+
+	function showEmptyCircle(endpoint) {
+
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.SoildCircle).visible = true;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.EmptyCircle).visible = true;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle).visible = false;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.RightTriangle).visible = false;
+	}
+
+	function showTriangle(endpoint) {
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.SoildCircle).visible = false;
+		endpoint.getObjectByName(_constantsJs.IntervalObjNames.EmptyCircle).visible = false;
+
+		//大于20显示右边三角形
+		if (endpoint.userData.numberMark > 20) {
+			endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle).visible = false;
+			endpoint.getObjectByName(_constantsJs.IntervalObjNames.RightTriangle).visible = true;
+		} else {
+			//小于-20显示左边三角形
+			endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle).visible = true;
+			endpoint.getObjectByName(_constantsJs.IntervalObjNames.RightTriangle).visible = false;
+		}
+	}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/19.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _shapeIntervalEndpointJs = __webpack_require__(21);
+
+	var _shapeIntervalEndpointJs2 = _interopRequireDefault(_shapeIntervalEndpointJs);
+
+	var _shapeCreatIntervalLineJs = __webpack_require__(23);
+
+	var _shapeCreatIntervalLineJs2 = _interopRequireDefault(_shapeCreatIntervalLineJs);
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _shapeCreatIntervalGroupJs = __webpack_require__(18);
+
+	var _shapeCreatIntervalGroupJs2 = _interopRequireDefault(_shapeCreatIntervalGroupJs);
+
+	exports['default'] = function (endpoint1, endpoint2) {
+		var intervalGroup = (0, _shapeCreatIntervalGroupJs2['default'])();
+		intervalGroup.add(endpoint1);
+		(0, _shapeCreatIntervalLineJs2['default'])(endpoint1.position, endpoint2.position, intervalGroup);
+		intervalGroup.add(endpoint2);
+		_threeMangerJs.intersectObjs.push(endpoint1);
+		_threeMangerJs.intersectObjs.push(endpoint2);
+
+		//将生产的区间排序，EndPoint1 < EndPoint2
+		if (endpoint1.position.x <= endpoint2.position.x) {
+			endpoint1.name = _constantsJs.IntervalObjNames.Endpoint1;
+			endpoint2.name = _constantsJs.IntervalObjNames.Endpoint2;
+		} else {
+			endpoint1.name = _constantsJs.IntervalObjNames.Endpoint2;
+			endpoint2.name = _constantsJs.IntervalObjNames.Endpoint1;
+		}
+		_threeMangerJs.scene.add(intervalGroup);
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.clearIntervals = clearIntervals;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _shapeIntervalEndpoint = __webpack_require__(21);
+
+	var _shapeIntervalEndpoint2 = _interopRequireDefault(_shapeIntervalEndpoint);
+
+	var _threeManger = __webpack_require__(5);
+
+	var _constants = __webpack_require__(6);
+
+	var _UtilsChangeEndpointStatus = __webpack_require__(24);
+
+	var _shapeCreatIntervalLine = __webpack_require__(23);
+
+	var _shapeCreatIntervalLine2 = _interopRequireDefault(_shapeCreatIntervalLine);
+
+	var _UtilsDestroyThreeObject = __webpack_require__(8);
+
+	var _UtilsDestroyThreeObject2 = _interopRequireDefault(_UtilsDestroyThreeObject);
+
+	var _UtilsPackMethod = __webpack_require__(22);
+
+	var answerObject3D = null;
+
+	exports['default'] = function (answer) {
+		answerObject3D = new THREE.Object3D();
+		answerObject3D.name = 'answerObject3D';
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = answer[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var interval = _step.value;
+
+				if (interval.min.num === interval.max.num && interval.min.num !== "") {
+					var endPot = new _shapeIntervalEndpoint2['default']();
+					endPot.position.x = interval.min.num * _constants.NumberAxisConstData.scaleMargin;
+					answerObject3D.add(endPot);
+				} else {
+					var minNum = interval.min.num;
+					if (minNum === '') {
+						minNum = -21;
+					}
+					var minPot = drawPoint(minNum, interval.min.contain);
+
+					var maxNum = interval.max.num;
+					if (maxNum === '') {
+						maxNum = 21;
+					}
+					var maxPot = drawPoint(maxNum, interval.max.contain);
+					(0, _shapeCreatIntervalLine2['default'])(minPot.position, maxPot.position, answerObject3D);
+				}
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator['return']) {
+					_iterator['return']();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+
+		_threeManger.scene.add(answerObject3D);
+		(0, _threeManger.render)();
+	};
+
+	function drawPoint(num, contain) {
+		var endPot = new _shapeIntervalEndpoint2['default']();
+		endPot.position.x = num * _constants.NumberAxisConstData.scaleMargin;
+		endPot.position.z = 1;
+		if (Math.abs(num) <= 20) {
+			if (contain === "1") {
+				(0, _UtilsChangeEndpointStatus.showSoildCircle)(endPot);
+			} else {
+				(0, _UtilsChangeEndpointStatus.showEmptyCircle)(endPot);
+			}
+		} else {
+			endPot.userData.numberMark = num;
+			(0, _UtilsChangeEndpointStatus.showTriangle)(endPot);
+		}
+		answerObject3D.add(endPot);
+		return endPot;
+	}
+
+	function clearIntervals() {
+		for (var index = _threeManger.scene.children.length - 1; index >= 0; index--) {
+			var child = _threeManger.scene.children[index];
+			if (child.name) {
+				if (child.name == 'answerObject3D') {
+					(0, _UtilsPackMethod.removeObj)(child.getObjectByName('IntervalRect'));
+					_threeManger.scene.remove(child);
+					(0, _UtilsDestroyThreeObject2['default'])(child);
+					child = null;
+				} else if (child.name == 'intervalGroup') {
+					(0, _UtilsPackMethod.removeInterval)(child.children[0]);
+					child = null;
+				}
+			}
+		}
+		(0, _threeManger.render)();
+	}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.setLastSelToDelObj = setLastSelToDelObj;
+	exports.documentInit = documentInit;
+	exports.removeEventListerner = removeEventListerner;
+	exports.onViewUp = onViewUp;
+	exports.changeEmptyState = changeEmptyState;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threeManger = __webpack_require__(5);
+
+	var _constants = __webpack_require__(6);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _shapeIntervalEndpoint = __webpack_require__(21);
+
+	var _shapeIntervalEndpoint2 = _interopRequireDefault(_shapeIntervalEndpoint);
+
+	var _UtilsChangeEndpointStatus = __webpack_require__(24);
+
+	var _UtilsAddInterval = __webpack_require__(20);
+
+	var _UtilsAddInterval2 = _interopRequireDefault(_UtilsAddInterval);
+
+	var _UtilsSeleteInterval = __webpack_require__(28);
+
+	var _shapeCreatIntervalGroup = __webpack_require__(18);
+
+	var _shapeCreatIntervalGroup2 = _interopRequireDefault(_shapeCreatIntervalGroup);
+
+	var _UtilsMatchAnswer = __webpack_require__(30);
+
+	var _UtilsMatchAnswer2 = _interopRequireDefault(_UtilsMatchAnswer);
+
+	var _UtilsSetZPosition = __webpack_require__(29);
+
+	var _UtilsPackMethod = __webpack_require__(22);
+
+	var _previewAnswer = __webpack_require__(26);
+
+	var _sendICPlayerEvent = __webpack_require__(31);
+
+	var _sendICPlayerEvent2 = _interopRequireDefault(_sendICPlayerEvent);
+
+	// 二维平面对象
+	var boundary,
+
+	// 存放鼠标对象的data
+	mouseData = {},
+
+	//当前选中对象
+	selectedObj,
+	    intersects;
+	var actionType = undefined;
+
+	var lastSelToDelObj = undefined;
+	var maxMarkPosition = undefined;
+
+	function setLastSelToDelObj(obj) {
+		lastSelToDelObj = obj;
+	}
+
+	function documentInit() {
+		removeEventListerner();
+		if (_presenter2['default'].isApp || _presenter2['default'].isTeacherPc) {
+			_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('touchstart', onDocumentMouseDown, false);
+			_presenter2['default'].view.addEventListener('touchend', onViewUp, false);
+		}
+		if (_presenter2['default'].isPPTShell || _presenter2['default'].isTeacherPc || _presenter2['default'].isWeb) {
+			_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('mousedown', onDocumentMouseDown, false);
+			_presenter2['default'].view.addEventListener('mouseup', onViewUp, false);
+		}
+		$(_presenter2['default'].view).find('.interval_label').click(function (e) {
+			e.preventDefault();
+			if (_presenter2['default'].isEmptyAnswer) {
+				changeEmptyState('off');
+			} else {
+				changeEmptyState('on');
+			}
+			_presenter2['default'].isAnswerd = true;
+			(0, _sendICPlayerEvent2['default'])($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE);
+			(0, _sendICPlayerEvent2['default'])($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE, { canSubmit: true });
+		});
+		$(_presenter2['default'].view).find('.btn_explain').click(function () {
+			$(_presenter2['default'].view).find('.com_mask').show();
+		});
+	}
+
+	function intersectObjects(pointer, objects) {
+		var $show = $(_presenter2['default'].view).find('.com_grid_wrap>canvas');
+		var offset = $show[0].getBoundingClientRect();
+		var offsetLeft = offset.left;
+		var offsetTop = offset.top;
+		var width = $show.width();
+		var height = $show.height();
+
+		var pageY = pointer.clientY + $(_presenter2['default'].view).find('.com_layout').scrollTop() + $('body').scrollTop() + $('.com_lay_contain').scrollTop();
+		var pageX = pointer.clientX + $(_presenter2['default'].view).find('.com_layout').scrollLeft() + $('body').scrollLeft() + $('.com_lay_contain').scrollLeft();
+
+		var pointerVector = new THREE.Vector2((pageX - offsetLeft) / width * 2 - 1, -((pageY - offsetTop) / height) * 2 + 1);
+		_threeManger.raycaster.setFromCamera(pointerVector, _threeManger.camera);
+		var intersections = _threeManger.raycaster.intersectObjects(objects, false);
+		return intersections;
+	}
+
+	function onDocumentMouseDown(event) {
+
+		event.stopPropagation();
+		event.preventDefault();
+
+		maxMarkPosition = (_constants.NumberAxisConstData.scaleCount - 1) * 0.5 * _constants.NumberAxisConstData.scaleMargin;
+		boundary = _threeManger.scene.getObjectByName('boundary');
+		var pointer = event.changedTouches ? event.changedTouches[0] : event;
+
+		intersects = intersectObjects(pointer, _threeManger.intersectObjs);
+		var startPoint = intersectObjects(pointer, [boundary])[0];
+		mouseData.startPoint = startPoint.point;
+
+		//如果没有点击到对象则返回,取消之前选中的对象
+		if (!intersects.length) {
+			(0, _UtilsSeleteInterval.cancelSelected)(lastSelToDelObj);
+			return;
+		}
+		//发送可提交按钮
+		_presenter2['default'].isAnswerd = true;
+		changeEmptyState('off');
+		selectedObj = intersects[0].object;
+		//取消上一次选中
+		switch (selectedObj.name) {
+			case _constants.IntervalObjNames.CoordScaleName:
+				(0, _UtilsSeleteInterval.cancelSelected)(lastSelToDelObj);
+				actionType = _constants.ACTION_TYPE.add;
+				var intervalGroup = (0, _shapeCreatIntervalGroup2['default'])();
+				var endPot = (0, _UtilsAddInterval2['default'])(new THREE.Vector3(startPoint.point.x, 0, 0), selectedObj.position.x, intervalGroup);
+				if (!endPot) return;
+				endPot.name = _constants.IntervalObjNames.Endpoint1;
+				selectedObj = endPot;
+				_threeManger.scene.add(intervalGroup);
+				(0, _threeManger.render)();
+				break;
+			case _constants.IntervalObjNames.Endpoint1:
+			case _constants.IntervalObjNames.Endpoint2:
+				actionType = _constants.ACTION_TYPE.changePoint;
+				(0, _UtilsSetZPosition.addZPosition)(selectedObj);
+				break;
+			case _constants.IntervalObjNames.IntervalRect:
+				actionType = _constants.ACTION_TYPE.intervalRect;
+				break;
+			case _constants.IntervalObjNames.DeleteBtn:
+				actionType = _constants.ACTION_TYPE.deleteInterval;
+				break;
+			default:
+				break;
+		}
+		//绑定点击事件
+		bindingMouseDownClickEvent();
+	}
+
+	function onDocumentMouseMove(event) {
+
+		event.stopPropagation();
+		event.preventDefault();
+
+		var pointer = event.changedTouches ? event.changedTouches[0] : event;
+		var movePointObj = intersectObjects(pointer, [boundary])[0];
+
+		if (selectedObj.name == _constants.IntervalObjNames.IntervalRect || selectedObj.name == _constants.IntervalObjNames.DeleteBtn) return;
+		if (movePointObj.point && Math.abs(movePointObj.point.x - mouseData.startPoint.x) > 5) {
+			//移动距离超过5才当做移动
+			if (Math.abs(movePointObj.point.x) >= _constants.NumberAxisConstData.numberAxisWidth * 0.5) {
+				onDocumentMouseUp(event);
+				return;
+			}
+			if (Math.abs(movePointObj.point.x) >= maxMarkPosition) {
+				if (movePointObj.point.x < 0) {
+					movePointObj.point.x = -maxMarkPosition;
+				} else {
+					movePointObj.point.x = maxMarkPosition;
+				}
+			}
+			(0, _UtilsSeleteInterval.cancelSelected)(lastSelToDelObj, selectedObj);
+
+			if (selectedObj.userData.isSingle) {
+				//添加边和另外一条端点
+				selectedObj = (0, _UtilsPackMethod.addLineAndAnotherEndpoint)(selectedObj, movePointObj.point);
+			}
+
+			//判断当前移动的点的最终位置
+			var movingPoint = (0, _UtilsPackMethod.updateMovingpoint)(selectedObj, movePointObj.point);
+			(0, _UtilsPackMethod.updateMovingInterval)(selectedObj, movingPoint);
+
+			actionType = _constants.ACTION_TYPE.changeInter;
+			(0, _threeManger.render)();
+		}
+	}
+
+	function onDocumentMouseUp(event) {
+
+		event.stopPropagation();
+		event.preventDefault();
+
+		(0, _UtilsSeleteInterval.cancelSelected)(lastSelToDelObj, selectedObj);
+
+		switch (actionType) {
+			case _constants.ACTION_TYPE.add:
+				break;
+			case _constants.ACTION_TYPE.changePoint:
+
+				//超过20刻度不切换状态
+				if (Math.abs(selectedObj.userData.numberMark) <= 20) {
+					(0, _UtilsChangeEndpointStatus.changeEndpointStatus)(selectedObj);
+				}
+				if (selectedObj.name == _constants.IntervalObjNames.Endpoint1 && selectedObj.userData.isSingle) {
+					//选中端点，且是单个点
+					selectedObj.parent.userData.isDelete = !selectedObj.parent.userData.isDelete;
+					(0, _UtilsSeleteInterval.seleteInterval)(selectedObj);
+				}
+				if (selectedObj.userData.isSingle) break;
+				//两个区间左端点和右端点重合时切换端点在执行合并
+				(0, _UtilsPackMethod.movingIntervalCombinInterval)(selectedObj);
+				(0, _UtilsSetZPosition.setOriginalPosition)(selectedObj);
+				break;
+			case _constants.ACTION_TYPE.changeInter:
+				(0, _UtilsPackMethod.undateIntervalWhenMouthUp)(selectedObj);
+				(0, _UtilsPackMethod.movingIntervalCombinInterval)(selectedObj);
+				(0, _UtilsPackMethod.twoEndpointCoincide)(selectedObj);
+				(0, _UtilsSetZPosition.setOriginalPosition)(selectedObj);
+				break;
+			case _constants.ACTION_TYPE.intervalRect:
+				//取消上次选中
+				selectedObj.parent.userData.isDelete = !selectedObj.parent.userData.isDelete;
+				(0, _UtilsSeleteInterval.seleteInterval)(selectedObj);
+				//cancelSelected(lastSelToDelObj,selectedObj);
+				break;
+			case _constants.ACTION_TYPE.deleteInterval:
+				(0, _UtilsPackMethod.removeInterval)(selectedObj);
+				break;
+			default:
+				break;
+		}
+		actionType = null;
+		//绑定鼠标抬起的事件
+		bindingMouseUpClickEvent();
+		(0, _threeManger.render)();
+
+		(0, _sendICPlayerEvent2['default'])($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE);
+		(0, _sendICPlayerEvent2['default'])($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE, { canSubmit: true });
+	}
+
+	function removeEventListerner() {
+		if (_presenter2['default'].view.getElementsByTagName('canvas')[0]) {
+			_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('mousedown', onDocumentMouseDown, false);
+			_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('touchstart', onDocumentMouseDown, false);
+		}
+		_presenter2['default'].view.removeEventListener('touchend', onViewUp, false);
+		_presenter2['default'].view.removeEventListener('mouseup', onViewUp, false);
+
+		$(_presenter2['default'].view).find('.interval_label').off('click');
+		$(_presenter2['default'].view).find('.btn_explain').off('click');
+	}
+
+	//绑定事件
+	function bindingMouseDownClickEvent() {
+
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('mousemove', onDocumentMouseMove, false);
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('mouseup', onDocumentMouseUp, false);
+
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('touchend', onDocumentMouseUp, false);
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].addEventListener('touchmove', onDocumentMouseMove, false);
+	}
+	function bindingMouseUpClickEvent() {
+
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('mousemove', onDocumentMouseMove, false);
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('mouseup', onDocumentMouseUp, false);
+
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('touchmove', onDocumentMouseMove, false);
+		_presenter2['default'].view.getElementsByTagName('canvas')[0].removeEventListener('touchend', onDocumentMouseUp, false);
+	}
+
+	function onViewUp() {
+		(0, _UtilsSeleteInterval.cancelSelected)(lastSelToDelObj);
+		(0, _threeManger.render)();
+	}
+
+	function changeEmptyState(data) {
+		var label = $(_presenter2['default'].view).find('.interval_label');
+		if (data == 'on') {
+			label.addClass('on');
+			(0, _previewAnswer.clearIntervals)();
+			_presenter2['default'].isEmptyAnswer = true;
+		} else {
+			label.removeClass('on');
+			_presenter2['default'].isEmptyAnswer = false;
+		}
+	}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/20.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.seleteInterval = seleteInterval;
+	exports.cancelSelected = cancelSelected;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _shapeCreatDeleteBtnJs = __webpack_require__(19);
+
+	var _shapeCreatDeleteBtnJs2 = _interopRequireDefault(_shapeCreatDeleteBtnJs);
+
+	var _EventDocumentEventJs = __webpack_require__(27);
+
+	var _setZPositionJs = __webpack_require__(29);
+
+	function seleteInterval(obj) {
+		if (!obj) return;
+		changeIntervalColor(obj);
+		//如果将选中的当做上一次的
+		if (obj.parent.userData.isDelete) {
+			(0, _EventDocumentEventJs.setLastSelToDelObj)(obj);
+			//obj.parent.position.z += 1;
+			(0, _setZPositionJs.addZPosition)(obj);
+		} else {
+			(0, _EventDocumentEventJs.setLastSelToDelObj)();
+			//obj.parent.position.z = 1;
+			(0, _setZPositionJs.setOriginalPosition)(obj);
+		}
+
+		changeDeleteBtn(obj);
+	}
+
+	function changeDeleteBtn(obj) {
+
+		var btn = obj.parent.getObjectByName(_constantsJs.IntervalObjNames.DeleteBtn);
+
+		if (!btn) {
+			btn = (0, _shapeCreatDeleteBtnJs2['default'])(obj.parent);
+		} else {
+			btn.visible = !btn.visible;
+		}
+
+		var x1 = 0;
+		var x2 = 0;
+		var x = 0;
+
+		//获取两个端点去中点的坐标
+		var endPoint1 = obj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+		var endPoint2 = obj.parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+		if (endPoint1) x1 = endPoint1.position.x;
+		if (endPoint2) x2 = endPoint2.position.x;
+		if (endPoint1 && endPoint2) {
+			x = (x1 + x2) / 2;
+		} else if (endPoint1) {
+			x = x1;
+		} else if (endPoint2) {
+			x = x2;
+		}
+		btn.position.x = x - 2;
+	}
+
+	//改变区间的颜色
+	function changeIntervalColor(obj) {
+
+		if (obj.parent.userData.isDelete) {
+			changeToColor(obj, _constantsJs.Color['delete']);
+		} else {
+			changeToColor(obj, _constantsJs.Color.normal);
+		}
+	}
+
+	//整个区间要改变的颜色
+	function changeToColor(obj, color) {
+		var interval = obj.parent;
+		if (interval) {
+			var intervalRect = interval.getObjectByName(_constantsJs.IntervalObjNames.IntervalLine);
+			if (intervalRect) intervalRect.material.color.setHex(color);
+
+			var point1 = interval.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+			var point2 = interval.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+			if (point1) changeEndpointColor(point1);
+			if (point2) changeEndpointColor(point2);
+		}
+	}
+
+	//改变端点的颜色
+	function changeEndpointColor(endpoint) {
+
+		var visibleShape = undefined;
+		if (endpoint.userData.statusIndex == 0) {
+			// 显示实心圆
+			visibleShape = endpoint.getObjectByName(_constantsJs.IntervalObjNames.SoildCircle);
+		} else if (endpoint.userData.statusIndex == 1) {
+			// 显示空心圆
+			//visibleShape = endpoint.getObjectByName(IntervalObjNames.EmptyCircle);
+			visibleShape = endpoint.getObjectByName(_constantsJs.IntervalObjNames.SoildCircle);
+		} else {
+			if (endpoint.numberMark < 20) {
+				//显示左边三角形
+				visibleShape = endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle);
+			} else {
+				//显示右边三角形
+				visibleShape = endpoint.getObjectByName(_constantsJs.IntervalObjNames.LeftTriangle);
+			}
+		}
+
+		if (endpoint.parent.userData.isDelete) {
+			visibleShape.material.color.setHex(_constantsJs.Color['delete']);
+		} else {
+			visibleShape.material.color.setHex(_constantsJs.Color.normal);
+		}
+	}
+
+	//取消选中
+
+	function cancelSelected(lastSelectedObj, curSelectedObj) {
+		if (lastSelectedObj) {
+			//如果当前选中和上一次的是同一个物体，则不执行
+			if (curSelectedObj && lastSelectedObj == curSelectedObj) return;
+			lastSelectedObj.parent.userData.isDelete = false;
+			seleteInterval(lastSelectedObj);
+		}
+	}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.addZPosition = addZPosition;
+	exports.setOriginalPosition = setOriginalPosition;
+
+	var _constantsJs = __webpack_require__(6);
+
+	var _threeManger = __webpack_require__(5);
+
+	//let zPosition = 0;
+
+	function addZPosition(selectedObj) {
+
+		var shape = selectedObj.parent;
+		if (!shape) return;
+
+		if (selectedObj.name == _constantsJs.IntervalObjNames.Endpoint1 || selectedObj.name == _constantsJs.IntervalObjNames.Endpoint2) {
+			selectedObj.position.z += 2;
+		}
+		//++zPosition;
+		//shape.position.z = zPosition;
+		shape.position.z += 1;
+		(0, _threeManger.render)();
+	}
+
+	//还原回之前坐标
+
+	function setOriginalPosition(selectedObj) {
+
+		var shape = selectedObj.parent;
+		if (!shape) return;
+
+		if (selectedObj.name == _constantsJs.IntervalObjNames.Endpoint1 || selectedObj.name == _constantsJs.IntervalObjNames.Endpoint2) {
+			var endpoint1 = shape.getObjectByName(_constantsJs.IntervalObjNames.Endpoint1);
+			var endpoint2 = shape.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+			endpoint1.position.z = _constantsJs.ZOriginIndex.endpoint;
+			if (endpoint2) endpoint2.position.z = _constantsJs.ZOriginIndex.endpoint;
+		}
+
+		shape.position.z = _constantsJs.ZOriginIndex.intervalGroup;
+		(0, _threeManger.render)();
+	}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Administrator on 2016/1/22.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.getUserAnswer = getUserAnswer;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _threeMangerJs = __webpack_require__(5);
+
+	var _constantsJs = __webpack_require__(6);
+
+	exports['default'] = function () {
+		//获取备课端所有的答案
+		var answer = _presenter2['default'].model.question_url.content.answer;
+		//module端所有的区间数组
+		var endpoint1Group = getAllEndpoint1();
+		if (answer.length != endpoint1Group.length) return false;
+		//如果都为空集为真
+		if (answer.length == 0 && endpoint1Group.length == 0 && $(_presenter2['default'].view).find('.interval_label').hasClass('on')) return true;
+		//用来保存匹配结果
+		var matchResult = false;
+		//逐个匹配答案
+		for (var i = 0; i < answer.length; i++) {
+			//如果answer的区间不在操作区间内就返回
+			if (i > 0) {
+				if (!matchResult) return false;
+				matchResult = false;
+			}
+			var minAnsNum = answer[i].min.num,
+			    minAnsContain = answer[i].min.contain;
+			//判断
+			for (var j = 0; j < endpoint1Group.length; j++) {
+				var endpoint1 = endpoint1Group[j];
+				var _status = isAnswerEqule(minAnsNum, minAnsContain, endpoint1);
+				if (_status) {
+					//判断大的端点
+					var maxAnsNum = answer[i].max.num,
+					    maxAnsContain = answer[i].max.contain;
+					var endpoint2 = undefined;
+					if (endpoint1Group[j].userData.isSingle) {
+						endpoint2 = endpoint1Group[j];
+					} else {
+						endpoint2 = endpoint1Group[j].parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+					}
+					_status = isAnswerEqule(maxAnsNum, maxAnsContain, endpoint2);
+					matchResult = _status;
+					if (_status) {
+						//移除已经放入临时数组的集合，减少遍历次数
+						var index = endpoint1Group.indexOf(endpoint1Group[j]);
+						endpoint1Group.splice(index, 1);
+					}
+				}
+			}
+			//取出区间的小端点
+		}
+		return matchResult;
+	};
+
+	function getUserAnswer() {
+		var userAnswer = [];
+		if ($(_presenter2['default'].view).find('.interval_label').hasClass('on')) {
+			userAnswer.isEmpty = true;
+			return userAnswer;
+		}
+		userAnswer.isEmpty = false;
+		var endpoint1Group = getAllEndpoint1();
+		for (var j = 0; j < endpoint1Group.length; j++) {
+			var endpoint1 = endpoint1Group[j];
+			var endpoint2 = null;
+			if (endpoint1Group[j].userData.isSingle) {
+				endpoint2 = endpoint1Group[j];
+			} else {
+				endpoint2 = endpoint1Group[j].parent.getObjectByName(_constantsJs.IntervalObjNames.Endpoint2);
+			}
+			userAnswer.push({
+				min: {
+					"num": endpoint1.userData.numberMark,
+					"contain": endpoint1.userData.statusIndex == 0 ? '1' : '0'
+				},
+				max: {
+					"num": endpoint2.userData.numberMark,
+					"contain": endpoint2.userData.statusIndex == 0 ? '1' : '0'
+				}
+			});
+		}
+
+		return userAnswer;
+	}
+
+	//判断answer的点和present上区间点是否相同
+	function isAnswerEqule(answerNum, answerContain, Endpoint) {
+		var endpointNumberMar = Endpoint.userData.numberMark;
+		//无穷大是的判断
+		if (answerNum === "" && Math.abs(endpointNumberMar) > 20) return true;
+
+		if (answerNum === "") return false;
+		//如果坐标相等
+		if (answerNum * 1 === endpointNumberMar) {
+			//判断状态，如果状态相同返回true
+			if (answerContain == 1 && Endpoint.userData.statusIndex == 0 || answerContain == 0 && Endpoint.userData.statusIndex == 1) return true;
+		}
+		return false;
+	}
+
+	//获取区间所有Endpoint1的数组
+	function getAllEndpoint1() {
+		//存放所有的endpoint1点的数组
+		var tempEndpoint1Group = [];
+
+		for (var i = 0; i < _threeMangerJs.intersectObjs.length; i++) {
+			if (_threeMangerJs.intersectObjs[i].name == _constantsJs.IntervalObjNames.Endpoint1) {
+				tempEndpoint1Group.push(_threeMangerJs.intersectObjs[i]);
+			}
+		}
+		return tempEndpoint1Group;
+	}
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by liuyuanpeng on 2016/6/2.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (key, data) {
+	  _presenter2['default'].self.$dispatchEvent(key, PresenterEventType.IC_PLAYER_EVENT, data);
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by zhoujunzhou on 2016/1/4.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.moduleStart = moduleStart;
+	exports.isApp = isApp;
+	exports.moduleClose = moduleClose;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _runtime = __webpack_require__(7);
+
+	var _runtime2 = _interopRequireDefault(_runtime);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _constants = __webpack_require__(6);
+
+	var _threeManger = __webpack_require__(5);
+
+	var _event = __webpack_require__(33);
+
+	var _submitControl = __webpack_require__(34);
+
+	var _EventDocumentEventJs = __webpack_require__(27);
+
+	function moduleStart() {
+		(0, _threeManger.threeStart)();
+		//显示提交按钮
+		if (_presenter2['default'].isStudentMobile) {}
+		if (_presenter2['default'].isStudentMobile) {
+			(0, _event.registerNativeListener)('ExamCallback', _submitControl.examCallBack);
+		}
+	}
+
+	function isApp() {
+		return _presenter2['default'].isTeacherMobile || _presenter2['default'].isStudentMobile;
+	}
+
+	function moduleClose() {
+		(0, _event.unbindNativeListener)('ExamCallback');
+		(0, _event.unbindNativeListener)('ExamInfoCallback');
+		(0, _EventDocumentEventJs.removeEventListerner)();
+		(0, _threeManger.destroyThree)();
+	}
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * 事件
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.unbindNativeListener = unbindNativeListener;
+	exports.registerNativeListener = registerNativeListener;
+
+	var _moduleControl = __webpack_require__(32);
+
+	//事件监听销毁方法
+	var callbacks = {};
+	exports.callbacks = callbacks;
+
+	function unbindNativeListener(key) {
+		if ((0, _moduleControl.isApp)() && Bridge && Bridge.unRegisterListener) {
+			if (!key) {
+				$.each(callbacks, function (k, v) {
+					Bridge.unRegisterListener(k, callbacks[k]);
+				});
+				exports.callbacks = callbacks = {};
+			} else {
+				Bridge.unRegisterListener(key, callbacks[key]);
+			}
+		}
+	}
+
+	;
+
+	//事件监听注册方法
+
+	function registerNativeListener(key, _callback) {
+		if ((0, _moduleControl.isApp)() && Bridge && Bridge.registerListener) {
+			callbacks[key] = Bridge.registerListener(key, _callback);
+		}
+	}
+
+	;
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by zhoujunzhou on 2016/1/11.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.getI18n = getI18n;
+	exports.getAnswerContent = getAnswerContent;
+	exports.getWrongPopup = getWrongPopup;
+	exports.getResult = getResult;
+	exports.showWebSubmit = showWebSubmit;
+	exports.showAlert = showAlert;
+	exports.showPreViewPop = showPreViewPop;
+	exports.recordSubmitAnswer = recordSubmitAnswer;
+	exports.recoverSubmitAnswer = recoverSubmitAnswer;
+	exports.examCallBack = examCallBack;
+	exports.callSubmiterdo = callSubmiterdo;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _sendICPlayerEvent = __webpack_require__(31);
+
+	var _sendICPlayerEvent2 = _interopRequireDefault(_sendICPlayerEvent);
+
+	var _UtilsMatchAnswer = __webpack_require__(30);
+
+	var _UtilsMatchAnswer2 = _interopRequireDefault(_UtilsMatchAnswer);
+
+	var _EventDocumentEvent = __webpack_require__(27);
+
+	var _getState = __webpack_require__(35);
+
+	var _getState2 = _interopRequireDefault(_getState);
+
+	function getI18n() {
+		return {
+			"answer_correct": "太棒啦, 您答对了!",
+			"answer_error": "这道题没有做对, 下次加油哦!",
+			"next_come_on": "答题结束，下次加油哦！",
+			"time_over": "时间到了，练习结束！",
+			"button_submit": "提交",
+			//'pic_or_text'     : '请将下方属于该分类的图/文拖到这里',
+			'options': '选项',
+			'people': '人'
+		};
+	}
+
+	function getAnswerContent(answer) {
+		if (!answer || answer.length == 0) {
+			//获取正确答案
+		} else {
+				//根据选项ID获取内容
+			}
+	}
+
+	function getWrongPopup() {}
+
+	/**
+	 * 学生端点击提交的时候调用改函数
+	 */
+
+	function getResult() {
+		var isCorrect = (0, _UtilsMatchAnswer2['default'])();
+		var correct_response = _presenter2['default'].model.question_url.content.answer;
+
+		var res = {
+			answer: {
+				"answer_result": isCorrect,
+				"correct_response": correct_response,
+				"user_response": (0, _getState2['default'])()
+			},
+			answerState: _presenter2['default'].isAnswerd ? 'COMPLETE' : 'NO_ANSWER',
+			questionId: _presenter2['default'].model.question_id
+		};
+		return res;
+	}
+
+	function showWebSubmit() {
+		new CommitBtn($(_presenter2['default'].view).find('div.com_lay_toptool'), 'time_id', function () {
+			submitWebTeacher();
+		});
+	}
+
+	//显示弹窗内容
+
+	function showAlert(type) {
+		var msg = '';
+		if (type == 'student') {
+			//学生端，根据是否提交进行提示
+			if (_presenter2['default'].submitStatus == 'doing' || _presenter2['default'].submitStatus == 'do') {
+				msg = getI18n['next_come_on'];
+			} else {
+				msg = getI18n['time_over'];
+			}
+		} else if (type == 'teacher') {
+			//教师端，根据正误提示
+			//var res = getAnsResult();
+			var res = {};
+			if (res.is_right) {
+				msg = getI18n['answer_correct'];
+			} else {
+				msg = getI18n['answer_error'];
+			}
+		}
+	}
+
+	function showPreViewPop(msg) {
+		var node = $(_presenter2['default'].view).find('.pop_result');
+		node.find('.text').html(msg);
+		node.show();
+		setTimeout(function () {
+			node.find('.text').html('');
+			node.hide();
+		}, 2000);
+	}
+
+	//记录已经提交的答案
+
+	function recordSubmitAnswer() {
+		//获取底下的分类
+		var options = [];
+
+		//将数据保存成json
+		var tmpObj = JSON.parse(JSON.stringify('{test:testResult}'));
+		var value = { 'options': options, 'catesObj': tmpObj };
+
+		_presenter2['default'].submitAnser = value;
+	}
+
+	//恢复已经提交的答案
+
+	function recoverSubmitAnswer() {
+		if (_presenter2['default'].submitAnser) {}
+	}
+
+	function examCallBack(data) {
+		var type = data.type;
+		var value = data.value ? data.value : false;
+
+		/**fix bug **/
+		if (value && type == 'result') {
+			//公布答案
+			//如果是学生端就显示
+			$(_presenter2['default'].view).find('.com_mask').hide();
+			var $resultTip = $(_presenter2['default'].view).find('.resultTip').removeClass('correct error');
+			var isCorrect = (0, _UtilsMatchAnswer2['default'])();
+
+			if (isCorrect) {
+				$resultTip.addClass('correct');
+				$resultTip.text('太棒啦, 您答对了!');
+			} else {
+				$resultTip.addClass('error');
+				$resultTip.text('很遗憾,回答错误!');
+			}
+			//记录答题状态
+			_presenter2['default'].submitStatus = 'result';
+		}
+	}
+
+	//自动提交
+
+	function callSubmiterdo(time) {
+		if (_presenter2['default'].isStudentMobile) {
+			//发送结束考试
+			(0, _sendICPlayerEvent2['default'])("autoSendAnswer", { question_id: _presenter2['default'].model.question_id, question_type: 'nd_intervalproblem' });
+			//这边因为不会回调，所以要自己添加
+			showAlert('student');
+			//记录答题状态
+			_presenter2['default'].submitStatus = 'finished';
+			//记录答题时间
+			_presenter2['default'].submitTime = time;
+		} else {
+			submitWebTeacher();
+		}
+	}
+
+	function submitWebTeacher() {
+		//教师端的预览提示
+		var isCorrect = (0, _UtilsMatchAnswer2['default'])();
+		(0, _EventDocumentEvent.onViewUp)();
+		$(_presenter2['default'].view).find('.com_mask').hide();
+		if (isCorrect) {
+			showPreViewPop('太棒啦, 您答对了!');
+		} else {
+			showPreViewPop('很遗憾,回答错误!');
+		}
+	}
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * 获得当前Module的状态信息
+	 * 可用于Module的状态恢复和保存
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _getCurrentTime = __webpack_require__(36);
+
+	var _getCurrentTime2 = _interopRequireDefault(_getCurrentTime);
+
+	var _threeManger = __webpack_require__(5);
+
+	var _constants = __webpack_require__(6);
+
+	exports['default'] = function () {
+		var modifyTime = (0, _getCurrentTime2['default'])();
+		var getResultTime = modifyTime;
+		var answer = new Array();
+		if (_threeManger.scene && _threeManger.scene.children) {
+			_threeManger.scene.children.forEach(function (obj, index) {
+				if (obj.name == 'intervalGroup') {
+					var endPoint1 = obj.getObjectByName(_constants.IntervalObjNames.Endpoint1),
+					    endPoint2 = obj.getObjectByName(_constants.IntervalObjNames.Endpoint2);
+					var group = {};
+					if (endPoint1) {
+						group.point1 = { val: endPoint1.position.x, type: endPoint1.userData.statusIndex, userData: endPoint1.userData };
+					}
+					if (endPoint2) {
+						group.point2 = { val: endPoint2.position.x, type: endPoint2.userData.statusIndex, userData: endPoint2.userData };
+					}
+					answer.push(group);
+				}
+			});
+		}
+		var state = {
+			module_id: _presenter2['default'].model.ID,
+			answer: answer,
+			isEmptyAnswer: _presenter2['default'].isEmptyAnswer,
+			modifyTime: modifyTime,
+			getResultTime: getResultTime,
+			buttonState: _presenter2['default'].buttonState ? _presenter2['default'].buttonState : 'init',
+			buttonValue: _presenter2['default'].buttonValue ? _presenter2['default'].buttonValue : '',
+			lock: _presenter2['default'].self.lock,
+			showAnswerInfo: _presenter2['default'].self.showAnswerInfo,
+			showHintInfo: _presenter2['default'].self.showHintInfo,
+			answerState: _presenter2['default'].isAnswerd
+		};
+		_presenter2['default'].tmpData = JSON.stringify(state);
+		console.log(state);
+		return _presenter2['default'].tmpData;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	exports['default'] = function () {
+		var locTime;
+		if (window.ClassroomUtils && typeof ClassroomUtils != 'undefined' && ClassroomUtils.getMasterSystemTime) {
+			locTime = ClassroomUtils.getMasterSystemTime();
+			locTime = locTime == 0 ? new Date().getTime() : locTime * 1000;
+		} else {
+			locTime = new Date().valueOf();
+		}
+		return locTime;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by kalen on 2016/9/26.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports.initPage = initPage;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (properties) {
+	    _presenter2['default'].i18n = properties;
+	};
+
+	function initPage(view) {
+	    var $view = $(view);
+	    $view.find('.operatet_tit h5').text(_presenter2['default'].i18n['OI.title']);
+	    $view.find('.operate_col li:eq(0)').text(_presenter2['default'].i18n['OI.description1']);
+	    $view.find('.operate_col li:eq(1)').text(_presenter2['default'].i18n['OI.description2']);
+	    $view.find('.operate_col li:eq(2)').text(_presenter2['default'].i18n['OI.description3']);
+	    $view.find('.com_btn_text').text(_presenter2['default'].i18n['button.close']);
+	    $view.find('.interval_label span').html(_presenter2['default'].i18n['button.empty']);
+	    $view.find('.btn_explain span').text(_presenter2['default'].i18n['button.OI']);
+	    $view.find('.cache-delete-img').attr('data-src', _presenter2['default'].i18n['button.delete.png']);
+	}
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (path) {
+		_presenter2['default'].path = path;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// 销毁 module 占用的内存
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _moduleControlJs = __webpack_require__(32);
+
+	exports["default"] = function () {
+		"use strict";
+		(0, _moduleControlJs.moduleClose)();
+	};
+
+	module.exports = exports["default"];
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _EventDocumentEvent = __webpack_require__(27);
+
+	exports['default'] = function (view, model) {
+		showInterval(view, model);
+		(0, _EventDocumentEvent.documentInit)();
+	};
+
+	function showInterval(view, model) {
+		var intervals = model.question_url.content.intervals;
+		var html = "";
+		if (intervals.length > 2) html += "<em class='weight'>(</em>";
+		html += "<span>";
+		var index = 0;
+		var _iteratorNormalCompletion = true;
+		var _didIteratorError = false;
+		var _iteratorError = undefined;
+
+		try {
+			for (var _iterator = intervals[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+				var interval = _step.value;
+
+				if (interval.addType) {
+					if (interval.addType === "0") {
+						html += "&cup;";
+					} else {
+						html += "&cap;";
+					}
+				}
+				if (interval.min.contain === "0") {
+					html += "(";
+				} else {
+					html += "[";
+				}
+				if (interval.min.num === "") {
+					html += "-&infin;";
+				} else {
+					html += interval.min.num;
+				}
+
+				html += ",";
+
+				if (interval.max.num === "") {
+					html += "+&infin;";
+				} else {
+					html += interval.max.num;
+				}
+				if (interval.max.contain == "0") {
+					html += ")";
+				} else {
+					html += "]";
+				}
+
+				if (intervals.length > 2 && index == 1) {
+					html += "</span><em class='weight'>)</em><span>";
+				}
+				index++;
+			}
+		} catch (err) {
+			_didIteratorError = true;
+			_iteratorError = err;
+		} finally {
+			try {
+				if (!_iteratorNormalCompletion && _iterator['return']) {
+					_iterator['return']();
+				}
+			} finally {
+				if (_didIteratorError) {
+					throw _iteratorError;
+				}
+			}
+		}
+
+		html += "</span>";
+
+		$(view).find(".text").html(html);
+
+		var title = model.question_url.title;
+		$(view).find(".tit").html(title);
+	}
+	module.exports = exports['default'];
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by liuyuanpeng on 2016/6/2.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = $init;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function $init() {
+	    this._super();
+	    _presenter2['default'].self = this;
+	    _presenter2['default'].isAnswerd = false;
+	    _presenter2['default'].isEmptyAnswer = false;
+	}
+
+	module.exports = exports['default'];
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by liuyuanpeng on 2016/5/31.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _submitControl = __webpack_require__(34);
+
+	var _previewAnswer = __webpack_require__(26);
+
+	var _previewAnswer2 = _interopRequireDefault(_previewAnswer);
+
+	var _EventDocumentEvent = __webpack_require__(27);
+
+	var _timer = __webpack_require__(43);
+
+	var _getState2 = __webpack_require__(35);
+
+	var _getState3 = _interopRequireDefault(_getState2);
+
+	var _setState = __webpack_require__(17);
+
+	var _setState2 = _interopRequireDefault(_setState);
+
+	var serviceAction = {
+	    toggleInteraction: function toggleInteraction(enabled) {
+	        //$(presenter.view).find('.interval_label').prop('disabled', enabled);
+	        _presenter2['default'].self.lock = enabled;
+	        var interval_label = $(_presenter2['default'].view).find('.interval_label');
+	        if (enabled) {
+	            (0, _EventDocumentEvent.removeEventListerner)();
+	            interval_label.addClass('disabled');
+	            $(_presenter2['default'].view).find('.btn_explain').addClass('com_btn_disabled');
+	        } else {
+	            interval_label.removeClass('disabled');
+	            $(_presenter2['default'].view).find('.btn_explain').removeClass('com_btn_disabled');
+	            (0, _EventDocumentEvent.documentInit)();
+	        }
+	    },
+	    /**
+	     * 显示正确答案
+	     */
+	    showAnswer: function showAnswer() {
+	        (0, _previewAnswer.clearIntervals)();
+	        var answer = _presenter2['default'].model.question_url.content.answer;
+	        $(_presenter2['default'].view).find('.interval_label').removeClass('disabled');
+	        $(_presenter2['default'].view).find('.interval_label').removeClass("on");
+	        if (answer.length == 0) {
+	            $(_presenter2['default'].view).find('.interval_label').addClass("on");
+	        } else {
+	            (0, _previewAnswer2['default'])(answer);
+	        }
+	    },
+	    /**
+	     * 重置问题
+	     */
+	    resetQuestion: function resetQuestion() {
+	        (0, _previewAnswer.clearIntervals)();
+	        $(_presenter2['default'].view).find('.interval_label').removeClass('on');
+	        _presenter2['default'].isAnswerd = false;
+	        _presenter2['default'].isEmptyAnswer = false;
+	    },
+	    getPresenterView: function getPresenterView() {
+	        return _presenter2['default'].view;
+	    },
+	    reset: function reset() {
+	        (0, _timer.resetSubmitBtn)();
+	    }
+	};
+
+	var Service = (function () {
+	    function Service(parent) {
+	        _classCallCheck(this, Service);
+
+	        this.parent = parent;
+	        this.status = {};
+	    }
+
+	    //export function getService() {    presenter._service_.constructor(presenter.self);    return presenter._service_; }
+
+	    _createClass(Service, [{
+	        key: 'getQuestionInfo',
+	        value: function getQuestionInfo() {
+	            return {
+	                id: _presenter2['default'].model.question_id,
+	                type_code: 'nd_intervalproblem',
+	                type_name: '区间题',
+	                url: _presenter2['default'].model.question_id,
+	                dispatchOnly: true
+	            };
+	        }
+	    }, {
+	        key: 'getResult',
+	        value: function getResult() {
+	            var result = (0, _submitControl.getResult)();
+	            _presenter2['default'].isAnswerCorrect = result.answer.answer_result;
+	            console.log(result);
+	            return result;
+	        }
+	    }, {
+	        key: 'getStatisticClass',
+	        value: function getStatisticClass() {
+	            return "C";
+	        }
+	    }, {
+	        key: 'convertDataForStatistics',
+	        value: function convertDataForStatistics(oriData) {
+	            var i, j;
+	            var value = oriData.value;
+
+	            var convertedData = {};
+	            //题目类型
+	            convertedData.questionType = value.questionType;
+	            //用时
+	            convertedData.elapsedTime = value.elapsedTime;
+	            //已作答人数
+	            convertedData.finishedNum = value.finishedNum;
+	            //未作答人数
+	            convertedData.unfinishedNum = value.unfinishedNum;
+	            //总人数
+	            convertedData.totalNum = value.unfinishedNum + value.finishedNum;
+
+	            convertedData.unfinishedUsers = value.unfinishedUserIds;
+	            convertedData.correctUsers = [];
+	            convertedData.wrongUsers = [];
+	            var answer;
+	            if (value.answers) {
+	                for (i = 0; i < value.answers.length; i++) {
+	                    if (!$.isArray(value.answers[i])) {
+	                        break;
+	                    }
+	                    if (value.answers[i].length > 0) {
+	                        for (j = 0; j < value.answers[i].length; j++) {
+	                            answer = value.answers[i][j].answer;
+	                            if (answer && typeof answer == "string") {
+	                                answer = JSON.parse(answer);
+	                                if (answer && answer.answer_result) {
+	                                    convertedData.correctUsers = convertedData.correctUsers.concat(value.answers[i][j].userIds);
+	                                } else {
+	                                    convertedData.wrongUsers = convertedData.wrongUsers.concat(value.answers[i][j].userIds);
+	                                }
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+
+	            convertedData.allrightStu = [];
+	            convertedData.allrightStu = convertedData.allrightStu.concat(convertedData.correctUsers);
+	            convertedData.spend_time = value ? value.elapsedTime ? value.elapsedTime : 0 : 0;
+	            convertedData.submit_count = value ? value.finishedNum + value.unfinishedNum : 0;
+	            convertedData.correctNum = convertedData.correctUsers.length;
+	            convertedData.wrongNum = convertedData.wrongUsers.length;
+	            value["convertedData"] = convertedData;
+	            return oriData;
+	        }
+
+	        /**
+	         * 显示答案
+	         * @param answer 需要显示的答案,如果对象为空则显示正确答案
+	         */
+	    }, {
+	        key: 'showAnswer',
+	        value: function showAnswer(showAnswerType, commitedAnswer) {
+	            (0, _EventDocumentEvent.onViewUp)();
+	            serviceAction.toggleInteraction(true);
+	            if (commitedAnswer) {
+	                _presenter2['default'].isAnswerCorrect = commitedAnswer.answer.answer_result;
+	                (0, _setState2['default'])(commitedAnswer.answer.user_response);
+	            } else {
+	                switch (showAnswerType) {
+	                    //显示正确答案
+	                    case "correct":
+	                        {
+	                            serviceAction.showAnswer();
+	                            break;
+	                        }
+	                    //显示当前学生答案用
+	                    case "user":
+	                        {
+	                            break;
+	                        }
+	                    //统计使用
+	                    default:
+	                        {
+	                            serviceAction.showAnswer();
+	                            break;
+	                        }
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'showResultHint',
+	        value: function showResultHint(option) {
+	            this.parent.showResult = true;
+	            //状态恢复
+	            this.parent.showHintInfo = {
+	                'hasShow': true,
+	                'result': _presenter2['default'].isAnswerCorrect
+	            };
+	            //通知状态变化
+	            this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+	            /*先通知状态变化再修改dom结构*/
+	            PresenterEventType.IC_PLAYER_EVENT);
+	            //答题显示正误
+	            $(_presenter2['default'].view).find('.com_mask').hide();
+	            var $toastArea = $(_presenter2['default'].view).find('.interval_respondRes_tip');
+	            if (_presenter2['default'].isAnswerCorrect && _presenter2['default'].isAnswerd) {
+	                $toastArea.removeClass('respond_error').addClass('respond_right').text(_presenter2['default'].i18n['answer.correct.tip']);
+	            } else {
+	                $toastArea.removeClass('respond_right').addClass('respond_error').text(_presenter2['default'].i18n['answer.mistake.tip']);
+	            }
+	            $toastArea.show();
+	        }
+
+	        //将题目重置为未作答状态
+	    }, {
+	        key: 'resetQuestion',
+	        value: function resetQuestion() {
+	            //清空所有的作答结果
+	            serviceAction.resetQuestion();
+	            //通知状态变化
+	            this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+	        }
+	    }, {
+	        key: '_getState',
+	        value: function _getState() {
+	            return (0, _getState3['default'])();
+	        }
+	    }, {
+	        key: 'getState',
+	        value: function getState() {
+	            this.parent.playerController.startFlow('css_classroom_status_changed', {
+	                presenterCode: this.parent.metaInfo.name
+	            });
+	            return this._getState();
+	        }
+	    }, {
+	        key: 'setState',
+	        value: function setState(state) {
+	            (0, _setState2['default'])(state);
+	        }
+	    }, {
+	        key: 'getClassroomStatus',
+	        value: function getClassroomStatus() {
+	            return this._getState();
+	        }
+	    }, {
+	        key: 'setClassroomStatus',
+	        value: function setClassroomStatus(status) {
+	            this.status = status;
+	            !!this.status && this.setState(status);
+	            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+	                presenterCode: this.parent.metaInfo.name
+	            });
+	        }
+	    }, {
+	        key: 'clearClassroomStatus',
+	        value: function clearClassroomStatus() {
+	            this.setClassroomStatus(null);
+	        }
+	    }, {
+	        key: 'startStatistics',
+	        value: function startStatistics() {}
+	        // 结束答题的时候不清空，退出本题的时候再清空。 修复bug：47603 this.resetQuestion(); this.parent._setStatisticsViewAttr();
+	        // this.parent._bindStatisticsView(); onViewUp(); serviceAction.toggleInteraction(true);
+
+	        //将题目设置为不可作答状态
+
+	    }, {
+	        key: 'lockQuestion',
+	        value: function lockQuestion() {
+	            (0, _EventDocumentEvent.onViewUp)();
+	            serviceAction.toggleInteraction(true);
+	        }
+
+	        //将题目设置为可作答状态
+	    }, {
+	        key: 'unlockQuestion',
+	        value: function unlockQuestion() {
+	            serviceAction.toggleInteraction(false);
+	        }
+
+	        //将题目设置为结束作答状态
+	    }, {
+	        key: 'finishQuestion',
+	        value: function finishQuestion() {
+	            serviceAction.toggleInteraction(false);
+	        }
+	    }]);
+
+	    return Service;
+	})();
+
+	exports['default'] = Service;
+	module.exports = exports['default'];
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by zhoujunzhou on 2016/1/19.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.initTimer = initTimer;
+	exports.setButtonSub = setButtonSub;
+	exports.resetSubmitBtn = resetSubmitBtn;
+	exports.startTimer = startTimer;
+	exports.lastTimer = lastTimer;
+	exports.syncTime = syncTime;
+	exports.registerTimer = registerTimer;
+	exports.timeListem = timeListem;
+	exports.destoryTimer = destoryTimer;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _sendEventToDispatcher = __webpack_require__(44);
+
+	var _submitControl = __webpack_require__(34);
+
+	var _UtilsMatchAnswer = __webpack_require__(30);
+
+	var _UtilsMatchAnswer2 = _interopRequireDefault(_UtilsMatchAnswer);
+
+	var _previewAnswer = __webpack_require__(26);
+
+	var _EventDocumentEvent = __webpack_require__(27);
+
+	var timerPPTShell = undefined;
+	exports.timerPPTShell = timerPPTShell;
+	var submitPPTShell = null,
+	    subAndtimerPPT = null;
+
+	function initTimer() {
+		//记录是不是已经同步过时间了
+		_presenter2['default'].isSyncTime = false;
+		//记录提交时间
+		_presenter2['default'].submitTime = 0;
+		if (!_presenter2['default'].model.question_url) {
+			return;
+		}
+		//获取model传递过来的时间
+		var modelTimer = _presenter2['default'].model.question_url.timer;
+		//计时组件
+		//计时器类型: "sequence",正计时
+		// "countdown" 倒计时
+		var mark = modelTimer.timer_type == 'sequence' ? true : false;
+		var time_limit = parseInt(modelTimer.time_minute) * 60 + parseInt(modelTimer.time_second);
+
+		//备课端显示提交按钮
+		if (!_presenter2['default'].isApp && !(_presenter2['default'].isTeacherPc || _presenter2['default'].isPPTShell)) {
+			if (submitPPTShell && submitPPTShell.disable) {
+				submitPPTShell.disable();
+				submitPPTShell.onDestory();
+				$(_presenter2['default'].view).find('#submit').remove();
+			}
+			submitPPTShell = new CommitBtn($(_presenter2['default'].view).find('div.com_lay_toptool'), 'submit', submitAndShowResult);
+		}
+
+		//备课，学生端显示时间按钮
+		if ((!_presenter2['default'].isApp || _presenter2['default'].isStudentMobile) && !(_presenter2['default'].isTeacherPc || _presenter2['default'].isPPTShell)) {
+			exports.timerPPTShell = timerPPTShell = new Timer($(_presenter2['default'].view).find('div.com_u_timebox'), {
+				'sequence': mark,
+				'seconds': parseInt(time_limit)
+			});
+			//如果是倒计时，设置回调函数
+			if (!mark) {
+				timerPPTShell.onStop(function (time) {
+					(0, _submitControl.callSubmiterdo)(time);
+				});
+			}
+			if (_presenter2['default'].isStudentMobile) {
+				var data = { item: 'exam', type: 'query' };
+				(0, _sendEventToDispatcher.sendEventToDispatcher)(data);
+			} else {
+				timerPPTShell.start();
+			}
+		}
+		if (_presenter2['default'].isPPTShell || _presenter2['default'].isTeacherPc) {
+			$(_presenter2['default'].view).find('.com_layout').addClass('layout_whiteboard');
+			subAndtimerPPT = new PPTShellBtn($(_presenter2['default'].view).find('.com_lay_header'), {
+				timerType: modelTimer.timer_type,
+				timeLimit: parseInt(time_limit) || 0,
+				// timerType: 'countdown',
+				// timeLimit: 6 || 0,
+				timeoutCallback: function timeoutCallback() {
+					$(_presenter2['default'].view).find('.com_mask').hide();
+					GameMessageBox.showPop($(_presenter2['default'].view), {
+						mode: 'wood',
+						type: 'error',
+						text: '时间到了'
+					});
+					setButtonRedo();
+					subAndtimerPPT.toggleView();
+				},
+				clickCallback: function clickCallback(action) {
+					if (action === 'redo') {
+						setButtonSub();
+						subAndtimerPPT.toggleView();
+					} else {
+						GameMessageBox.showPop($(_presenter2['default'].view), {
+							mode: 'wood',
+							type: 'confirm',
+							buttons: [{
+								text: '确认',
+								handle: function handle() {
+									var type = 'error';
+									var correct = submitAndShowResult();
+									if (correct) {
+										type = 'right';
+									}
+									GameMessageBox.showPop($(_presenter2['default'].view), {
+										mode: 'wood',
+										type: type
+									});
+									setButtonRedo();
+									subAndtimerPPT.stopTimer();
+									subAndtimerPPT.toggleView();
+								}
+							}]
+						});
+					}
+				}
+			});
+		}
+	}
+
+	//***************pptshell或者白板端遮罩层***********************
+	function showPPTShellMask() {
+		$(_presenter2['default'].view).find('.pptshell_mask').addClass('show');
+	}
+
+	function hidePPTShellMask() {
+		$(_presenter2['default'].view).find('.pptshell_mask').removeClass('show');
+	}
+
+	function setButtonRedo() {
+		showPPTShellMask();
+	}
+
+	function setButtonSub() {
+		$(_presenter2['default'].view).find('.interval_label').trigger('state', 'off');
+		hidePPTShellMask();
+		(0, _previewAnswer.clearIntervals)();
+	}
+
+	function resetSubmitBtn() {
+		setButtonSub();
+		if (subAndtimerPPT && subAndtimerPPT.container.find('.min').length == 0) subAndtimerPPT.toggleView();
+	}
+
+	//备课端点击提交按钮后处理情况
+	function submitAndShowResult() {
+		var isCorrect = (0, _UtilsMatchAnswer2['default'])();
+		(0, _EventDocumentEvent.onViewUp)();
+		if (!(_presenter2['default'].isTeacherPc || _presenter2['default'].isPPTShell)) {
+			if (isCorrect) {
+				GameMessageBox.show($(_presenter2['default'].view), '太棒啦, 您答对了！', 3000);
+			} else {
+				GameMessageBox.show($(_presenter2['default'].view), '很遗憾,回答错误!', 3000);
+			}
+		} else {
+			return isCorrect;
+		}
+	}
+
+	//开始计时
+
+	function startTimer() {
+		timerPPTShell.start();
+	}
+
+	//显示最后的时间
+
+	function lastTimer(startTime) {
+		startTime = parseInt(startTime);
+		var timestamp = new Date().valueOf();
+		timerPPTShell.sync(timestamp - startTime * 1000);
+	}
+
+	/**
+	 * 请求时间同步
+	 */
+
+	function syncTime() {
+		//如果是学生才进行时间同步
+		if (_presenter2['default'].isWeb || _presenter2['default'].isStudentMobile) {
+			var param = { "eventName": "ExamInfo", "eventData": { item: "time" } };
+			callNative('sendEvent', param);
+		}
+	}
+
+	/**
+	 * 注册时间回调函数
+	 */
+
+	function registerTimer() {
+		registerNativeListener('ExamCallback', examCallBack);
+		registerNativeListener('ExamInfoCallback', timeListem);
+	}
+
+	function timeListem(data) {
+		var item = data.item || '';
+		var value = data.value || {};
+
+		//如果已经同步过，就不再同步了
+		if (_presenter2['default'].isSyncTime == true) {
+			return false;
+		}
+
+		//如果是时间同步事件
+		if (item == 'time') {
+			var elapsedTime = value.data ? parseInt(value.data.elapsedTime) : 0;
+
+			//状态恢复使用
+			if (_presenter2['default'].submitStatus == 'finished' || _presenter2['default'].submitStatus == 'result') {
+				_presenter2['default'].isSyncTime = true;
+
+				//换pad的时候，答题时间数据丢失，就将教师端时间显示出来
+				if (_presenter2['default'].submitTime <= 0) {
+					lastTimer(elapsedTime);
+				}
+
+				//将时间停止
+				destoryTimer();
+			} else {
+				startTimer(elapsedTime);
+				_presenter2['default'].isSyncTime = true;
+			}
+		}
+	}
+
+	function destoryTimer() {
+		if (timerPPTShell) {
+			timerPPTShell.onDestory();
+		}
+	}
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by zhoujunzhou on 2016/1/20.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	exports.sendEventToDispatcher = sendEventToDispatcher;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	//发送事件给分发器
+
+	function sendEventToDispatcher(data) {
+		//是学生才能发送
+		if (!_presenter2['default'].isStudentMobile) {
+			return false;
+		}
+		var timerId = window.setInterval(function () {
+			var dispatcher = player.getPlayerServices().getToolbarModule('classroomStudentDispatcher') || player.getPlayerServices().getModule('classroomStudentDispatcher');
+			if (dispatcher != null) {
+				window.clearInterval(timerId);
+				_presenter2['default'].eventBus.sendEvent('TaskInfo', data);
+			}
+		});
+	}
+
+	;
+
+/***/ })
+/******/ ]);
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/bg_grid_s.png' />
+<file src='./resources/images/bg_sidecon1.png' />
+<file src='./resources/images/bg_sidetit1.png' />
+<file src='./resources/images/btn_exam_b.png' />
+<file src='./resources/images/btn_exam_nr.png' />
+<file src='./resources/images/btn_explain.png' />
+<file src='./resources/images/com_h_close.png' />
+<file src='./resources/images/decl_sidecon.png' />
+<file src='./resources/images/decm_sidecon.png' />
+<file src='./resources/images/decr_sidecon.png' />
+<file src='./resources/images/delete.png' />
+<file src='./resources/images/delete_en.png' />
+<file src='./resources/images/delete_japan.png' />
+<file src='./resources/images/interval_label.png' />
+<file src='./resources/images/interval_label_disable.png' />
+<file src='./resources/images/interval_label_on.png' />
+<file src='./resources/images/interval_label_on_disable.png' />
+<file src='./resources/images/ops_btn_act.png' />
+<file src='./resources/images/ops_btn_nor.png' />
+<file src='./resources/images/radio-checked.png' />
+<file src='./resources/images/radio.png' />
+<file src='./resources/images/remind.png' />
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/en_US/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/ja_JP/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_HK/lang.json' />
+<file src='./resources/locations/zh_TW/lang.json' />
+
+
+</resources>
+
+</addon>

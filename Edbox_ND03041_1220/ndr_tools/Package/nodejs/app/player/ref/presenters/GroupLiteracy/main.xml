@@ -1,0 +1,724 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='GroupLiteracy'>
+<properties>
+
+                <property name="QuestionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="questionData" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="vue-libs" version="2.2.0" />
+    <javaScript  name="component-Common" version="1.0.0" />
+    <javaScript  name="component-GroupLiteracy" version="1.0.2" />
+    <javaScript  name="ChineseWordTracing" version="1.0.3" />
+    <javaScript  name="LiteracyResourceService" version="1.0.0" />
+    <javaScript  name="es6-promise" version="1.0.0" />
+    <javaScript  name="dragula" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="tooldialog_skin_wood"><div class="exam_skin_wood js_app"><router-view></router-view><div class="CollectLiteracy_loading" style="display: none"><div class="loading__wrap"><span class="loading"></span><p class="loading__text"><span class="text lang_loading_message"></span></p></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+// const Routes = (components) => {
+//   return [
+//     {
+//       path: "/exercise",
+//       component: components['GroupLiteracy:Exercise']
+//     },
+//     {
+//       path: "/preview",
+//       component: components['GroupLiteracy:Exercise']
+//     },
+//     {
+//       path: "/edit",
+//       component: components['GroupLiteracy:Exercise']
+//     }
+//   ]
+// }
+var Routes = function (components) {
+    return [
+        {
+            path: "/exercise",
+            component: components['GroupLiteracy:Exercise']
+        },
+        {
+            path: "/preview",
+            component: components['GroupLiteracy:Preview']
+        },
+        {
+            path: "/edit",
+            component: components['GroupLiteracy:Edit']
+        }
+    ];
+};
+exports.default = Routes;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function bindExecute(context, callback) {
+    return function (options) {
+        if (context.toolHasLoaded) {
+            return;
+        }
+        context.toolHasLoaded = true;
+        if (context.beforeResourceLoad) {
+            context.beforeResourceLoad.call(context, options.eventData);
+        }
+        context.Logger.info('begin to load literacy resource, chapterId is: ', options.eventData.chapterId);
+        // 从颗粒资源服务 加载数据
+        context.literacyResourceService.getWordList(options.eventData.chapterId)
+            .then(function (newWord) {
+            context.Logger.info('load literacy resource successfully', newWord);
+            if (context.afterResourceLoad) {
+                context.afterResourceLoad.call(context, Object.assign({}, options.eventData, { data: newWord }));
+            }
+            callback && callback(newWord, options.eventData.scene);
+        });
+    };
+}
+exports.bindExecute = bindExecute;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+exports.GETTERS_TYPES = {
+    // 获取生字列表
+    GET_NEWWORD: 'GROUPLITERACY/ACTIONS/GET_NEWWORD',
+    I18N: 'GROUPLITERACY/I18N',
+    GET_EDITING: 'GROUPLITERACY/GET_EDITING'
+};
+exports.ACTIONS_TYPES = {
+    // 从颗粒服务中获取章节生字
+    FETCH_NEWWORD: 'GROUPLITERACY/ACTIONS/FETCH_NEWWORD',
+};
+exports.MUTATIONS_TYPES = {
+    // 设置章节生字
+    SET_NEWWORD: 'GROUPLITERACY/MUTATIONS/SET_NEWWORD',
+    // 添加一个生字
+    ADD_WORD: 'GROUPLITERACY/MUTATIONS/ADD_WORD',
+    // 删除一个生字
+    DELETE_WORD: 'GROUPLITERACY/MUTATIONS/DELETE_WORD',
+    // 修改一个生字
+    UPDATE_WORD: 'GROUPLITERACY/MUTATIONS/UPDATE_WORD',
+    // 保存搜索结果
+    SAVE_WORD_SEARCH_RESULT: 'GROUPLITERACY/MUTATIONS/SAVE_WORD_SEARCH_RESULT',
+    SET_SCENE: 'GROUPLITERACY/MUTATIONS/SET_SCENE',
+    SET_EDITING: 'GROUPLITERACY/SET_EDITING'
+};
+exports.Store = function ($service) {
+    return {
+        state: {
+            newWord: {
+                chapterId: '',
+                wordList: []
+            },
+            wordSearchResult: {
+                status: '',
+                data: []
+            },
+            scene: {
+                toolAndInClass: false,
+                isTool: false,
+                isPPTShell: false
+            },
+            editing: false,
+            i18n: $service.state.languagePackage
+        },
+        getters: (_a = {},
+            _a[exports.GETTERS_TYPES.GET_NEWWORD] = function (state) {
+                return state.newWord;
+            },
+            // 组件内定义type
+            _a[exports.GETTERS_TYPES.I18N] = function (state) {
+                return state.i18n;
+            },
+            _a[exports.GETTERS_TYPES.GET_EDITING] = function (state) {
+                return state.editing;
+            },
+            /**
+             * 实现组件生字数据getter
+             */
+            _a[$service.components['GroupLiteracy:Exercise'].StoreTypes.GetterTypes.WORDS_RESOURCE] = function (state, getters) {
+                return getters[exports.GETTERS_TYPES.GET_NEWWORD];
+            },
+            /**
+             * 实现组件单字搜索结果getter
+             */
+            _a[$service.components['GroupLiteracy:Edit'].StoreTypes.GetterTypes.SEARCH_RESULT] = function (state) {
+                return state.wordSearchResult;
+            },
+            /**
+             * 实现组件单字搜索结果getter
+             */
+            _a[$service.components['GroupLiteracy:Exercise'].StoreTypes.GetterTypes.GET_SCENE] = function (state) {
+                return state.scene;
+            },
+            _a),
+        mutations: (_b = {},
+            /**
+             * 设置生字数据
+             * @param state
+             * @param newWord
+             */
+            _b[exports.MUTATIONS_TYPES.SET_NEWWORD] = function (state, payload) {
+                state.newWord.wordList = payload.wordList;
+                if (payload.chapterId) {
+                    state.newWord.chapterId = payload.chapterId;
+                }
+            },
+            /**
+             * 添加一个生字
+             * @param state
+             * @param payload
+             */
+            _b[exports.MUTATIONS_TYPES.ADD_WORD] = function (state, payload) {
+                var to = (payload && typeof payload.index !== 'undefined') ? payload.index : 0;
+                state.newWord.wordList.splice(to, 0, payload.word);
+            },
+            /**
+             * 根据索引删除某个生字
+             * @param state
+             * @param newWord
+             */
+            _b[exports.MUTATIONS_TYPES.DELETE_WORD] = function (state, payload) {
+                state.newWord.wordList.splice(payload.index, 1);
+            },
+            /**
+             * 修改一个生字
+             * @param state
+             * @param payload
+             */
+            _b[exports.MUTATIONS_TYPES.UPDATE_WORD] = function (state, payload) {
+                var word = state.newWord.wordList[payload.index];
+                if (word) {
+                    Vue.set(state.newWord.wordList, payload.index, payload.word);
+                }
+            },
+            /**
+             * 保存搜索结果
+             * @param state
+             * @param payload
+             */
+            _b[exports.MUTATIONS_TYPES.SAVE_WORD_SEARCH_RESULT] = function (state, payload) {
+                state.wordSearchResult = payload.result;
+            },
+            /**
+             * 保存搜索结果
+             * @param state
+             * @param payload
+             */
+            _b[exports.MUTATIONS_TYPES.SET_SCENE] = function (state, payload) {
+                state.scene = Object.assign({}, state.scene, payload);
+            },
+            /**
+             * 保存搜索结果
+             * @param state
+             * @param payload
+             */
+            _b[exports.MUTATIONS_TYPES.SET_EDITING] = function (state, payload) {
+                state.editing = payload.editing;
+            },
+            _b),
+        actions: (_c = {},
+            /**
+             * 从颗粒服务获取生字数据
+             * @param commit
+             * @param payload
+             */
+            // [ACTIONS_TYPES.FETCH_NEWWORD]: ({ commit }, payload: {chapterID: string}) => {
+            //   $service.literacyResourceService.getWordList(payload.chapterID)
+            //     .then(newWord => {
+            //       commit(MUTATIONS_TYPES.SET_NEWWORD, {wordList: newWord})
+            //     })
+            // },
+            /**
+             * 实现组件的方法 添加 strokeContent
+             */
+            _c[$service.components['GroupLiteracy:Exercise'].StoreTypes.ActionTypes.STROKE_LOADED] = function (_a, payload) {
+                var state = _a.state, commit = _a.commit;
+                // console.log(`[${$service.components['GroupLiteracy:Exercise'].StoreTypes.ActionTypes.STROKE_LOADED}] action dispatched, payload.stroke=${payload.stroke} payload.strokeContent=${payload.strokeContent}`)
+                for (var i = 0, len = state.newWord.wordList.length; i < len; i++) {
+                    if (state.newWord.wordList[i].stroke == payload.stroke) {
+                        commit(exports.MUTATIONS_TYPES.UPDATE_WORD, {
+                            index: i,
+                            word: Object.assign({}, state.newWord.wordList[i], { strokeContent: payload.strokeContent })
+                        });
+                    }
+                }
+            },
+            /**
+             * 实现组件方法 添加一个生字
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.WORD_ADD] = function (_a, payload) {
+                var commit = _a.commit;
+                commit(exports.MUTATIONS_TYPES.ADD_WORD, payload);
+            },
+            /**
+             * 实现组件方法 删除一个生字
+             */
+            _c[$service.components['GroupLiteracy:Exercise'].StoreTypes.ActionTypes.WORD_DELETE] = function (_a, payload) {
+                var commit = _a.commit;
+                console.log("[" + $service.components['GroupLiteracy:Exercise'].StoreTypes.ActionTypes.WORD_DELETE + "] action dispatched, payload.index=" + payload.index);
+                commit(exports.MUTATIONS_TYPES.DELETE_WORD, payload);
+            },
+            /**
+             * 实现搜索方法
+             * @param commit
+             * @param keyWord
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.SEARCH_WORD] = function (_a, payload) {
+                var commit = _a.commit;
+                $service.literacyResourceService.getWordInfo(payload.wordKey)
+                    .then(function (words) {
+                    commit(exports.MUTATIONS_TYPES.SAVE_WORD_SEARCH_RESULT, {
+                        result: {
+                            status: 'success',
+                            data: words.wordList || []
+                        }
+                    });
+                })
+                    .catch(function () {
+                    commit(exports.MUTATIONS_TYPES.SAVE_WORD_SEARCH_RESULT, {
+                        result: {
+                            status: 'fail',
+                            data: []
+                        }
+                    });
+                });
+            },
+            /**
+             * 实现搜索结果清空方法
+             * @param commit
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.CLEAR_RESULT] = function (_a) {
+                var commit = _a.commit;
+                commit(exports.MUTATIONS_TYPES.SAVE_WORD_SEARCH_RESULT, {
+                    result: {
+                        status: '',
+                        data: []
+                    }
+                });
+            },
+            /**
+             * 实现生字列表调整顺序方法
+             * @param commit
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.DRAGGED] = function (_a, payload) {
+                var state = _a.state, commit = _a.commit;
+                var tempWord = Object.assign({}, state.newWord.wordList[payload.from]);
+                commit(exports.MUTATIONS_TYPES.DELETE_WORD, { index: payload.from });
+                commit(exports.MUTATIONS_TYPES.ADD_WORD, {
+                    index: payload.to,
+                    word: tempWord
+                });
+            },
+            /**
+             * 关闭工具
+             */
+            _c[$service.components['GroupLiteracy:Exercise'].StoreTypes.ActionTypes.EXIT_TOOL] = function () {
+                $service.context.PlayerController.getCommands().closeTool &&
+                    $service.context.PlayerController.getCommands().closeTool();
+            },
+            /**
+             * 更新数据源
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.UPDATE_WORDS] = function (_a, payload) {
+                var state = _a.state, commit = _a.commit;
+                commit(exports.MUTATIONS_TYPES.SET_NEWWORD, { wordList: payload });
+            },
+            /**
+             * 更新数据源
+             */
+            _c[$service.components['GroupLiteracy:Edit'].StoreTypes.ActionTypes.UPDATE_EDITING] = function (_a, payload) {
+                var state = _a.state, commit = _a.commit;
+                commit(exports.MUTATIONS_TYPES.SET_EDITING, payload);
+            },
+            _c)
+    };
+    var _a, _b, _c;
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = VueRouter;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(0);
+var Vuex = __webpack_require__(5);
+var VueRouter = __webpack_require__(4);
+var _1 = __webpack_require__(3);
+var _2 = __webpack_require__(1);
+var Interface_1 = __webpack_require__(2);
+var GroupLiteracy;
+(function (GroupLiteracy) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        // 构造函数
+        function Presenter(clazz) {
+            var _this = _super.call(this, clazz) || this;
+            _this.metaInfo = Object.assign(_this.metaInfo || {}, {
+                name: clazz,
+                type: ConstVariable.PresenterType.LAUNCHER
+            });
+            return _this;
+        }
+        /**
+         * 程序入口
+         * @param options
+         * @returns {Promise<T>}
+         */
+        Presenter.prototype.$launch = function (options) {
+            var _this = this;
+            // 模式标识，'tool'工具模式，'page'课件模式
+            this.scope = this.Model.$.scope;
+            //
+            this.isPPTShell = this.embedApplication('pptshell');
+            // 生字数据源
+            this.newWord = this.Model.questionData || {};
+            // 语言包
+            this.languagePackage = options.lang || {};
+            // 实例化颗粒服务
+            this.literacyResourceService = new window['__ServiceComponent']['LiteracyResourceService'].Classroom();
+            // 颗粒保存接口初始化
+            this.toolSaveInterFaceInit();
+            return new Promise(function (resolve) {
+                if ('tool' === _this.scope) {
+                    // 学科工具模式
+                    _this.__interface = {
+                        execute: Interface_1.bindExecute(_this, function (newWord, scene) {
+                            _this.scene = scene;
+                            _this.newWord = newWord;
+                            _this.launchApp().then(resolve);
+                        })
+                    };
+                }
+                else {
+                    _this.launchApp().then(resolve);
+                }
+            });
+        };
+        /**
+         * 程序释放
+         */
+        Presenter.prototype.$release = function () { };
+        /**
+         * 加载，启动组件
+         */
+        Presenter.prototype.launchApp = function () {
+            var _this = this;
+            var promise = new Promise(function (resolve) {
+                // 加载组件
+                Midware.componentRequire([
+                    'GroupLiteracy:Exercise',
+                    'GroupLiteracy:Preview',
+                    'GroupLiteracy:Edit'
+                ])
+                    .then(function (components) {
+                    // 装载应用
+                    _this.mount(components);
+                    // 初始化路由跳转
+                    _this.initRoute();
+                    // 初始化场景状态
+                    _this.store.commit(_1.MUTATIONS_TYPES.SET_SCENE, {
+                        toolAndInClass: 'tool' === _this.scope && 'InClass' === _this.scene,
+                        isPPTShell: _this.isPPTShell,
+                        isTool: 'tool' === _this.scope
+                    });
+                    resolve();
+                });
+            });
+            return promise;
+        };
+        /**
+         * 装载vue、vuex、router
+         */
+        Presenter.prototype.mount = function (components) {
+            // vuex
+            var storeService = {
+                context: this,
+                state: {
+                    languagePackage: Object.freeze(this.languagePackage)
+                },
+                literacyResourceService: this.literacyResourceService,
+                components: components
+            };
+            this.store = new Vuex.Store(_1.Store, storeService);
+            // 转载数据
+            this.store.commit(_1.MUTATIONS_TYPES.SET_NEWWORD, this.newWord);
+            // vue router
+            this.router = new VueRouter({
+                // 设置路由模式， 不走hash模式，防止与其它路由串掉
+                mode: 'abstract',
+                base: '/GroupLiteracy/',
+                routes: _2.default(components)
+            });
+            // 实例化vue
+            this.$vueRoot = new Vue({
+                el: ".js_app",
+                store: this.store,
+                router: this.router
+            });
+        };
+        /**
+         * 初始化路由跳转
+         */
+        Presenter.prototype.initRoute = function () {
+            // 学科工具模式
+            if ('tool' === this.scope) {
+                // 预览模式
+                if ('Preview' == this.scene) {
+                    this.$vueRoot.$router.push('/preview');
+                }
+                else {
+                    this.$vueRoot.$router.push('/exercise');
+                }
+            }
+            else {
+                // 播放中
+                if (this.embedApplication('pptshell')) {
+                    this.$vueRoot.$router.push('/exercise');
+                }
+                else {
+                    this.$vueRoot.$router.push('/edit');
+                }
+            }
+        };
+        /**
+         * 颗粒保存初始化
+         */
+        Presenter.prototype.toolSaveInterFaceInit = function () {
+            var _this = this;
+            // 颗粒保存接口定义-编辑中
+            if ('page' === this.scope && !this.isPPTShell) {
+                // 颗粒保存接口
+                window.top['SaveSubjectTool'] = function () {
+                    // 在vue中发送点击按钮的事件，通知组件进行相关业务处理
+                    _this.$vueRoot.$emit('subjectToolSave');
+                    // 如果颗粒在编辑中，不进行颗粒保存（子组件通过接收'subjectToolSave'事件进行弹窗提示）
+                    if (_this.store.getters[_1.GETTERS_TYPES.GET_EDITING]) {
+                        return null;
+                    }
+                    var newWord = Object.assign({}, _this.store.getters[_1.GETTERS_TYPES.GET_NEWWORD]);
+                    // 简化颗粒保存的数据，去除没有必要的strokeContent属性
+                    newWord.wordList.forEach(function (word) {
+                        word.strokeContent && delete word.strokeContent;
+                    });
+                    _this.subjectToolSave(_this.Model.questionId, newWord);
+                };
+            }
+        };
+        /**
+         * 颗粒保存
+         * @param questionID
+         * @param data
+         * @param refBase
+         */
+        Presenter.prototype.subjectToolSave = function (questionID, data) {
+            var _this = this;
+            this.Logger.info("begin to save the question id: " + questionID + ", and data is:", data);
+            // 调用颗粒保存服务
+            data.ref_base = icCreatePlayer.ref_base;
+            this.literacyResourceService.updateGroupLiteracyPresenter(questionID, data)
+                .then(function (res) {
+                if (res.isInterface === true) {
+                    try {
+                        eval(res.text);
+                    }
+                    catch (e) {
+                        console.log(e);
+                    }
+                }
+                else {
+                    console.log(JSON.stringify(data));
+                }
+                // 向组件发送成功能事件
+                _this.$vueRoot.$emit('subjectToolSaveResponse', 'success');
+                _this.Logger.info("save the question id: " + questionID + " successfully");
+            })
+                .catch(function () {
+                // 向组件发送失败能事件
+                _this.$vueRoot.$emit('subjectToolSaveResponse', 'fail');
+                _this.Logger.info("save the question id: " + questionID + " failed");
+            });
+        };
+        /**
+         * 加载数据前
+         * @param options
+         */
+        Presenter.prototype.beforeResourceLoad = function (options) {
+            this.showLoading(options.scene == 'InClass');
+        };
+        /**
+         * 加载数据后
+         */
+        Presenter.prototype.afterResourceLoad = function () {
+            this.removeLoading();
+        };
+        /**
+         * 显示loading
+         * @param styleFlag
+         */
+        Presenter.prototype.showLoading = function (styleFlag) {
+            // WTF
+            this.$loading = $(this.View).find('.CollectLiteracy_loading');
+            // 显示loading
+            this.$loading.show();
+            if (styleFlag) {
+                this.$loading.addClass('CollectLiteracy_loading_show');
+            }
+        };
+        /**
+         * 移除loading
+         */
+        Presenter.prototype.removeLoading = function () {
+            if (this.$loading) {
+                this.$loading.remove();
+            }
+        };
+        return Presenter;
+    }(CommonClass));
+    GroupLiteracy.Presenter = Presenter;
+})(GroupLiteracy || (GroupLiteracy = {}));
+window['AddonGroupLiteracy_create'] = function () {
+    return new GroupLiteracy.Presenter('GroupLiteracy');
+};
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

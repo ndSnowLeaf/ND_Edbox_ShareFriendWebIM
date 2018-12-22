@@ -1,0 +1,422 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ToolbarComponent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var _CONSTANTS = {
+        CSS_CLICK_DISABLED: 'click_disabled'
+    };
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "ToolbarComponent",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.UTILITY_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this.logger.appendHandler(function(message, context) {
+                console.log(message);
+            }, {
+                level: Logger.DEBUG
+            });
+
+            this.defValue = 5;
+            this.scopeData = [0, 0.1, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 2, 2.5];
+            this.$dispScal = null; //百分比显示框
+            this.$scal = null; //刻度条
+            this.$moveBlk = null; //滑块
+            this.undoFlag = false; //是否可以撤销
+            this.redoFlag = false; //是否可以还原
+            this.unLock_undo = false; //解锁时恢复撤销按钮数据标识
+            this.unLock_redo = false; //解锁时恢复还原按钮数据标识
+            this.scalText = 1; //保存缩放值
+            this.initedToolbarFlag = false; //工具栏是否初始化标识
+            this.isToolbarLocked = false;  //工具栏是否被锁定标识
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _ServiceClass_: {
+            constructor: function(parent) {
+                this.parent = parent;
+                this.__ScopeId__ = parent.__ScopeId__;
+            },
+            initToolbar: function(model) {
+                this.parent._initToolbar(model);
+            },
+            setZoom: function(data) {
+                this.parent._setZoom(data);
+            },
+            enAbleUndo: function(data) {
+                this.parent._enAbleUndo(data);
+            },
+            enAbleRedo: function(data) {
+                this.parent._enAbleRedo(data);
+            },
+            toolbarLock: function(data) {
+                this.parent._toolbarLock(data);
+            },
+            getState:function(){
+                return this.parent._getState();
+            },
+            setState: function (state) {
+                this.parent._setState(state);
+            },
+            setLocationProperties: function(properties) {
+                this.parent.$translator.setData(properties);
+            }
+        },
+        getService: function() {
+            if(this._service_) return this._service_;
+
+            this._service_ = $.extend({}, this._ServiceClass_);
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            this.$view = $(view);
+            this._viewUniqueClass = 'ToolbarComponent_' + new Date().getTime();
+            this.$view.addClass(this._viewUniqueClass);
+
+            this.__ScopeId__ = model.scopeId;
+            !!this._service_ && (this._service_.__ScopeId__ = model.scopeId);
+        },
+
+        destroy: function() {
+            this._unbindEvent();
+        },
+
+        _getState: function () {
+            var self = this;
+            var state = {
+                disSpan: self.scalText
+            };
+            return JSON.stringify(state);
+        },
+
+        _setState: function (state) {
+            var self = this;
+            var stateObj = JSON.parse(state);
+            
+            if (stateObj) {
+                //恢复滑动百分比按钮的状态
+                self.scalText = stateObj.disSpan;
+                !!self.initedToolbarFlag && self._setZoom({value: self.scalText});
+            }
+        },
+
+        /****以下开始为Presenter的私有方法*****/
+        _unbindEvent: function () {
+        },
+
+        _initToolbar: function(model) {
+            var dwnEventList = []; //mousedown事件列表
+            var slideEventList = []; //刻度滑动事件
+            var dwnOffset = {},
+                offsetLeft = 0,
+                floatOffsetLeft = {};
+            var dwnFlag = false;
+            var self = this;
+            var renderHtml = '<div class="button_modules"><span class="uedc_preload_mm_img_01"></span><div class="com_part_toolbar">';
+            $.each(model.toolSettings.items, function(key, item) {
+                //按钮渲染
+                renderHtml += '<ul class="' + item.groupName + '" onselectstart="return false;">';
+                var btnValue = JSON.parse(item.value);
+
+                $.each(btnValue, function(index, btnItem) {
+                    if(!!btnItem.i18nKey) {
+                        btnItem.name = self.$translate(btnItem.i18nKey);
+                    }
+
+                    if (btnItem.type == "button") {
+                        if (btnItem.icon == "no") {
+                            renderHtml += '<li class="' + btnItem.style + '"><a href="javascript:;" class="' + btnItem.event + '">' + btnItem.name + '</a></li>';
+                        } else {
+                            renderHtml += '<li class="' + btnItem.style + '"><a href="javascript:;" class="com_btn_square_tool ' + btnItem.event + '"><i class="com_btn_pic"></i><em class="com_btn_text">' + btnItem.name + '</em></a></li>';
+                        }
+                        dwnEventList.push('.' + btnItem.event);
+
+                    } else if (btnItem.type == "zoom") {
+                        renderHtml += '<li class="' + btnItem.style + '"><b class="' + btnItem.event + '"></b><ins class="scale" style="left: 33%"></ins><ins class="scale" style="left: 66%"></ins></li>';
+                        slideEventList.push('.' + btnItem.event); 
+                    } else if (btnItem.type == "disSpan") {
+                        renderHtml += '<li class="display_scal ' + btnItem.style + '">100%</li>';
+                    }
+                });
+
+                renderHtml += '</ul>';
+
+            });
+            renderHtml += '</div></div>';
+
+            this.$view.append(renderHtml);
+
+            //this.$view.find(".undo_redo").hide();
+
+            this.$dispScal = this.$view.find(".display_scal"); //百分比显示框
+            this.$scal = this.$view.find(".mindMap_pro_bar"); //刻度条
+            this.$moveBlk = this.$view.find(".mindjet_zoom_slide"); //滑块
+
+            //去除zoom_slide事件之外的所有点击事件
+            self.$attachDelegateEvent("click", self._wrapDelegateEventSelector(dwnEventList), self._onToolbarEvent);
+
+            //zoom_slide事件处理
+            self.$attachDelegateEvent("mousedown", self._wrapDelegateEventSelector([".mindMap_pro_bar"]), function(target, event) {
+                dwnFlag = true;
+                //修复bug:60249
+                this.$moveBlk.addClass('on');
+                var scaleValue = (self._eventsHandle(event) - this.$scal.offset().left) / (this.$scal.width()/2.5);
+                self._sendH5Event("mindjet_zoom_slide", scaleValue);
+            });
+
+            self.$attachDelegateEvent("mousemove", self._wrapDelegateEventSelector([".mindMap_pro_bar"]), function(target, event) {
+                event.preventDefault();
+                if (dwnFlag) {
+                    var moveValue = self._eventsHandle(event) - this.$scal.offset().left;
+                    if (moveValue >= 0 && moveValue <= this.$scal.width() + 1) {
+                        var scaleValue = (self._eventsHandle(event) - this.$scal.offset().left) / (this.$scal.width()/2.5);
+                        self._sendH5Event("mindjet_zoom_slide", scaleValue);
+                    }
+                }
+            });
+
+            self.$attachDelegateEvent("mouseup", self._wrapDelegateEventSelector([".mindjet_zoom_slide"]), function(target, event) {
+                dwnFlag = false;  
+                //修复bug:60249
+                this.$moveBlk.removeClass('on');
+            });
+
+            self.$attachDelegateEvent("mouseup", self._wrapDelegateEventSelector([".mindMap_progressbar"]), function(target, event) {
+                dwnFlag = false;  
+                //修复bug:60249
+                this.$moveBlk.removeClass('on');
+            });
+
+            //防止先进行状态恢复再进行工具栏DOM的渲染
+            self.initedToolbarFlag = true;
+            setTimeout(function(){
+                self._setZoom({value: self.scalText});
+            }, 500);         
+        },
+
+        //获取pc和移动端pageX值
+        _eventsHandle: function(event) {
+            var px = null;
+            if (event.type == "mousedown" || event.type == "mousemove") {
+                px = event.pageX;
+            } else if (event.type == "touchstart" || event.type == "touchmove") {
+                px = (event.originalEvent || event).touches[0].pageX;     
+            }
+            return px;
+        },
+
+        _sendH5Event: function(eventName, value) {
+            this.$dispatchEvent(eventName, PresenterEventType.IC_PLAYER_EVENT, {
+				source: 'ToolbarComponent',
+                event: eventName,
+                value: value,
+                scopeId: this.__ScopeId__
+            });
+        },
+
+        _wrapDelegateEventSelector: function($classNameArray) {
+            var self = this, $viewUniqueClass = '.' + self._viewUniqueClass, result = [];
+            $.each($classNameArray, function() {
+
+                result.push($viewUniqueClass + ' ' + this);
+            });
+
+            return result;
+        },
+        _getDelegateEventName: function(eventName) {
+
+            return eventName.substr(eventName.lastIndexOf('.') + 1);
+        },
+
+        _onToolbarEvent: function(target, event) {
+            event.preventDefault();
+            var self = this;
+            var eventName = self._getDelegateEventName(target);
+
+            var moveData = this.$dispScal.html();
+            this.defValue = this.calcMoveData(moveData);
+
+            switch (eventName) {
+                case "mindjet_zoom_out":
+                    if (this.defValue != this.scopeData.length - 1) {
+                        this.defValue += 1;
+                    }
+                    self._sendH5Event(eventName, self.scopeData[this.defValue]);
+
+                    break;
+                case "mindjet_zoom_in":
+                    if (this.defValue != 1) {
+                        this.defValue -= 1;
+                    }
+                    self._sendH5Event(eventName, self.scopeData[this.defValue]);
+
+                    break;
+                case "mindjet_un_do": //对撤销、还原按钮根据状态判断是否发送事件
+                    if (self.undoFlag) {
+                        self._sendH5Event(eventName, "");
+                    }
+                    break;
+                case "mindjet_re_do": //对撤销、还原按钮根据状态判断是否发送事件
+                    if (self.redoFlag) {
+                        self._sendH5Event(eventName, "");
+                    }
+                    break;
+                default:
+                    self._sendH5Event(eventName, "");
+            }
+        },
+
+        //根据滑动所在的刻度值，计算放大，缩小值
+        calcMoveData: function(moveData) {
+            var inputData = parseFloat(moveData.split("%")[0]) / 100;
+            var inxData = this.scopeData[0];
+            var indValue = 0;
+
+            $.each(this.scopeData, function(index, value) {
+                var devFirst = Math.abs(inxData - inputData);
+                var devSecond = Math.abs(value - inputData);
+                if (devSecond < devFirst) {
+                    inxData = value;
+                    indValue = index;
+                }
+            });
+            return indValue;
+        },
+
+        //接收思维导图手动缩放事件，滑块移动处理
+        _setZoom: function(data) {
+            var self = this;
+            self.scalText = data.value;
+            var scaleData = self.scalText;
+            var moveBlkWth = this.$moveBlk.width(); //滑块宽度
+            var scaleWidth = this.$scal.width(); //长刻度滑条宽度
+            var valueMove = scaleData * scaleWidth / 2.5 - moveBlkWth / 2 + this.$scal.offset().left; //滑块距父节点left值
+            var valueText = (scaleData * 100).toFixed(0) + "%";
+
+            this.$moveBlk.offset({
+                "left": valueMove
+            });
+
+            this.$dispScal.html(valueText);
+
+            //通知状态恢复筛选器，答题状态变化
+            self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+
+        _displayScale: function() {
+            var self = this;
+            self.$dispScal.css("visibility", "visible");
+
+            !!self.displayScaleTimer && clearTimeout(self.displayScaleTimer);
+            self.displayScaleTimer =  window.setTimeout(function() {
+                   self.$dispScal.css("visibility", "hidden")
+             }, 700);
+        },
+
+        //接收撤销是否可操作事件, 对撤销按钮样式进行处理
+        _enAbleUndo: function(data) {
+            var self = this;
+            if (data.value) {
+                !this.isToolbarLocked && this.$view.find(".mindMap_btn_clear").removeClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                self.undoFlag = true;
+                self.unLock_undo = true;
+            } else {
+                this.$view.find(".mindMap_btn_clear").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                self.undoFlag = false;
+                self.unLock_undo = false;
+            }
+        },
+
+        //接收还原是否可操作事件, 对还原按钮样式进行处理
+        _enAbleRedo: function(data) {
+            var self = this;
+            if (data.value) {
+                !this.isToolbarLocked && this.$view.find(".mindMap_btn_reback").removeClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                self.redoFlag = true; 
+                self.unLock_redo = true;  
+            } else {
+                this.$view.find(".mindMap_btn_reback").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                self.redoFlag = false;
+                self.unLock_redo = false;
+            }
+        },
+
+        //监听撤销还原按钮锁住事件，撤销还原按钮锁住，（或者解锁）
+        _toolbarLock: function(data) {
+            var self = this, $view = this.$view;
+            this.isToolbarLocked = data.value || false; //设置工具栏锁定标识
+            if (data.value) {
+                $view.find(".mindMap_btn_reback").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                $view.find(".mindMap_btn_clear").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                self.redoFlag = false;  
+                self.undoFlag = false;
+            } else {
+                if (self.unLock_undo) {
+                    $view.find(".mindMap_btn_clear").removeClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                    self.undoFlag = true;
+                } else {
+                    $view.find(".mindMap_btn_clear").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                    self.undoFlag = false;
+                }
+                if (self.unLock_redo) {
+                    $view.find(".mindMap_btn_reback").removeClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                    self.redoFlag = true; 
+                } else {
+                    $view.find(".mindMap_btn_reback").addClass(_CONSTANTS.CSS_CLICK_DISABLED);
+                    self.redoFlag = false;
+                }        
+            }
+        }
+    }, "ToolbarComponent");
+
+    window.AddonToolbarComponent_create = function() {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

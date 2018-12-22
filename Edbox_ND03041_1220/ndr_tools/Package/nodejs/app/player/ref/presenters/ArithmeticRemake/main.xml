@@ -1,0 +1,1476 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ArithmeticRemake'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="common_css" version="1.1.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_green.dot_show,.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_red.dot_show,.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_show{cursor:pointer}.exam_skin_wood .arithmetic_box{position:relative;height:100%;z-index:333}.exam_skin_wood .arithmetic_box .com_layout_main{margin:0 1.5em;padding:1.08333em 0 1em;letter-spacing:-.29167em;right:0;left:1em}.exam_skin_wood .arithmetic_box .com_u_btn2{margin:.16667em 0;position:relative;width:4.16667em;height:2.91667em;line-height:2.91667em;font-size:1em;letter-spacing:normal;font-weight:400;color:#824f06}.exam_skin_wood .arithmetic_box .com_u_btn2>em{font-size:2.5em}.exam_skin_wood .arithmetic_box .com_u_btn2 .serial_number{position:absolute;left:-.25em;top:-.125em;display:inline-block;width:2.33333em;height:1.91667em;line-height:1.41667em;background:url(resources/wood/images/icons_snum.png) no-repeat;background-size:auto 100%;font-size:.83333em;color:#6d6d6d;text-align:center}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_fill,.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_on{color:#fff}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_fill .serial_number{left:-.25em;top:-.08333em}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_on .serial_number{left:-.33333em;top:-.20833em}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_right{background:-webkit-linear-gradient(top,#1ea056,#268b52);background:linear-gradient(180deg,#1ea056,#268b52)}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_error{background:-webkit-linear-gradient(top,#ca4747,#d62727);background:linear-gradient(180deg,#ca4747,#d62727)}.exam_skin_wood .arithmetic_box button.com_u_btn2:active{background:url(resources/wood/images/btn2_press.png) no-repeat;background-size:100% 100%}.exam_skin_wood .arithmetic_box .btn_none{margin:.16667em 0;display:inline-block;width:4.16667em;height:2.91667em;line-height:2.91667em;font-size:1em;vertical-align:middle;letter-spacing:normal}.exam_skin_wood .arithmetic_left{margin:0 17.5em 0 0;padding:1em 1em 1em 0;height:100%;background:rgba(111,75,27,.1);white-space:nowrap}.exam_skin_wood .arithmetic_left>div{text-align:center;height:101%;overflow-y:auto}.exam_skin_wood .arithmetic_left>div span{margin:.20833em}.exam_skin_wood .arithmetic_left>div .line{width:100%;height:.375em;border-top:1px solid #9b6e29;background:#9b6e29;border-bottom:1px solid #e5d4bf;margin:.20833em 0}.exam_skin_wood .arithmetic_right{position:absolute;top:0;bottom:0;right:0;width:17.33333em;height:15.41667em;margin:auto;padding-left:.83333em}.exam_skin_wood .arithmetic_right a{margin-bottom:5px}.exam_skin_wood .arithmetic_right .com_u_btn2{width:5em;height:3.5em;line-height:3.5em;margin:.16667em}.exam_skin_wood .arithmetic_right .com_u_btn3{margin-left:.20833em;height:3.5em;width:5em;line-height:3.5em;font-size:1em}.exam_skin_wood .arithmetic_right .com_u_btn3 .icon{display:inline-block;width:2.83333em;height:1.83333em;background:url(resources/wood/images/icon_del.png) no-repeat;background-size:100% auto;vertical-align:middle}.exam_skin_wood .arithmetic_right .com_u_btn3:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .arithmetic_right .com_u_btn3:active{background:url(resources/wood/images/btn3_press.png) no-repeat;background-size:100% 100%}.exam_skin_wood .arithmetic{padding:2.5em 0 1.45833em}.exam_skin_wood .addition ul{display:inline-block;vertical-align:middle}.exam_skin_wood .addition ul li{list-style:none;text-align:right}.exam_skin_wood .addition ul li>em{display:inline-block;width:2.5em;text-align:left;font:2.5em 黑体;color:#824f06;font-weight:700;vertical-align:bottom}.exam_skin_wood .addition:after,.exam_skin_wood .division:after{content:"";width:0;display:inline-block}.exam_skin_wood .addition:after{height:100%;vertical-align:middle}.exam_skin_wood .division .division_box{display:inline-block;vertical-align:middle;text-align:right}.exam_skin_wood .division .division_box ul{margin-top:.20833em;display:inline-block;position:relative;padding:.625em 0 0 1.45833em;vertical-align:top;background:url(resources/wood/images/division.png) no-repeat;background-size:auto 4.125em}.exam_skin_wood .division .division_box ul li{list-style:none}.exam_skin_wood .division:after{height:99%;vertical-align:middle}.exam_skin_wood .divisor{display:inline-block;margin-top:.83333em;padding-right:.41667em}.exam_skin_wood .exam_wood .arithmetic .com_u_btn2,.exam_skin_wood .exam_wood .arithmetic .com_u_btn3{margin-bottom:.125em;outline:0;position:relative}.exam_skin_wood .exam_wood .arithmetic .com_u_btn2.com_s_fill:active,.exam_skin_wood .exam_wood .arithmetic_right .com_u_btn2:active,.exam_skin_wood .exam_wood .arithmetic_right .com_u_btn3:active{opacity:.9}.exam_skin_wood .arithmetic_box .arithmetic_right .com_u_right_dot{overflow:hidden}.exam_skin_wood .arithmetic_box .arithmetic_right .com_u_btn2 .arithmetic_right_ui_dot{font-size:5.5em;line-height:.1em}.exam_skin_wood .arithmetic_box .arithmetic_left li{margin-top:.25em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal{padding:0 .41667em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar{width:1.08333em;border:1.08333em solid transparent;-webkit-border-image:url(resources/wood/images/scrollv_bg.png) 15 15}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:increment:vertical{width:1.25em;height:1.25em;background:url(resources/wood/images/scrollv_down.png) 50% 50% no-repeat;background-size:.75em .79167em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:decrement:vertical{width:1.25em;height:1.25em;background:url(resources/wood/images/srcollv_up.png) 50% 50% no-repeat;background-size:.75em .79167em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:increment:horizontal{background:url(resources/wood/images/scrollh_down.png) 50% 50% no-repeat;background-size:.625em .625em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:decrement:horizontal{background:url(resources/wood/images/scrollh_up.png) 50% 50% no-repeat;background-size:.625em .625em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-thumb:vertical{border:1.29167em solid transparent;-webkit-border-image:url(resources/wood/images/scrollv_thumb_bg.png) 15 15}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-corner{background-color:transparent}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar:horizontal{height:1.08333em;border:1.08333em solid transparent;-webkit-border-image:url(resources/wood/images/scrollv_horizontal_bg.png) 15 15}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-thumb:horizontal{border:1.29167em solid transparent;-webkit-border-image:url(resources/wood/images/scrollv_thumb_horizontal_bg.png) 14 14}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:horizontal:decrement{width:1.25em;height:1.25em;background:url(resources/wood/images/scrollv_left.png) 50% 50% no-repeat;-webkit-transform:rotate(90deg);transform:rotate(90deg);background-size:.75em .79167em}.exam_skin_wood .arithmetic_box .arithmetic_left .arithmetic_scrollbar_horizontal::-webkit-scrollbar-button:horizontal:increment{width:1.25em;height:1.25em;background:url(resources/wood/images/scrollv_right.png) 50% 50% no-repeat;-webkit-transform:rotate(90deg);transform:rotate(90deg);background-size:.75em .79167em}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot{width:1.375em;height:1.58333em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;display:inline-block;vertical-align:bottom;position:relative;border-radius:.16667em}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot .serial_number{position:absolute;left:-.25em;top:-.125em;display:inline-block;width:2.33333em;height:1.91667em;line-height:1.66667em;background:url(resources/wood/images/icons_snum.png) no-repeat;background-size:auto 100%;font-size:.41667em;color:#6d6d6d;text-align:left;text-indent:.8em}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_default{background:url(resources/wood/images/dot2.png) no-repeat;background-size:auto 100%}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_show:before{content:" ";position:absolute;left:0;top:0;bottom:0;right:0;margin:auto;width:.75em;height:.75em;background:url(resources/wood/images/dot_show.png) no-repeat;background-size:auto 100%}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_blue{background-image:-webkit-linear-gradient(top,#5398cc,#71aacb);background-image:linear-gradient(180deg,#5398cc,#71aacb);border:none;cursor:pointer;box-shadow:.16667em .16667em .66667em rgba(68,49,19,.34)}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_blue.blue_active,.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_blue:active{background:-webkit-linear-gradient(top,#5096c9,#6dadd4);background:linear-gradient(180deg,#5096c9,#6dadd4);border:.125em solid #1f6ea6;box-shadow:.16667em .16667em .66667em rgba(68,49,19,.34),0 0 .66667em rgba(37,127,192,.34)}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_red{background:-webkit-linear-gradient(top,#ca4747,#d62727);background:linear-gradient(180deg,#ca4747,#d62727);border:1px solid red}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_red.dot_show:before{background-image:url(resources/wood/images/dot_white.png)}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_green{background:-webkit-linear-gradient(top,#1ea056,#268b52);background:linear-gradient(180deg,#1ea056,#268b52);border:1px solid green}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_green.dot_show:before{background-image:url(resources/wood/images/dot_white.png)}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_btn_dot.dot_dashed:after{content:" ";width:1.75em;height:1.79167em;position:absolute;left:-.16667em;top:-.08333em;background:url(resources/wood/images/dot_dashed.png) no-repeat;background-size:1.75em 1.79167em}.exam_skin_wood .arithmetic_box .arithmetic_left .com_u_zero{background:url(resources/wood/images/com_btn_zero.png) no-repeat;background-size:4.16667em 2.91667em;border:none;box-shadow:.16667em .16667em .66667em rgba(68,49,19,.34)}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_fill{background-image:-webkit-linear-gradient(top,#5398cc,#71aacb);background-image:linear-gradient(180deg,#5398cc,#71aacb);box-shadow:.16667em .16667em .66667em rgba(68,49,19,.34);border:none}.exam_skin_wood .arithmetic_box .com_u_btn2.com_s_on{background-image:-webkit-linear-gradient(top,#5499cd,#6dadd3);background-image:linear-gradient(180deg,#5499cd,#6dadd3);line-height:2.8em;border:.16667em solid #1f6ea6;box-shadow:.16667em .16667em .66667em rgba(68,49,19,.34),0 0 .66667em rgba(37,127,192,.34)}.exam_skin_wood .arithmetic_box .com_u_btn2,.exam_skin_wood .arithmetic_box .com_u_btn3{text-shadow:.5px .87px 0 rgba(255,255,255,.51);box-shadow:inset 0 .16667em .54167em rgba(255,226,181,.4),.16667em .16667em .66667em rgba(68,49,19,.34);border:1px solid #cf973e}.exam_skin_wood .arithmetic_box .com_u_btn3{border:1px solid #e28a7a}.exam_skin_wood .arithmetic_box .dot_blue,.exam_skin_wood .arithmetic_box .dot_default,.exam_skin_wood .arithmetic_box .dot_green,.exam_skin_wood .arithmetic_box .dot_red,.exam_skin_wood .arithmetic_box .dot_show{box-shadow:1px 1px .33333em rgba(68,49,19,.34);border:1px solid #cf973e}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content arithmetic_box"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _tit"></h2></div><div class="com_layout_main"><div class="arithmetic_left" data-type="arithmetic"><div class="division arithmetic_scrollbar_horizontal" data-type="division" style="display: block"><div class="division_box"></div></div><div class="addition arithmetic_scrollbar_horizontal" data-type="add" style="display: none"></div><div class="addition arithmetic_scrollbar_horizontal" data-type="multiply" style="display: none"></div></div><div class="arithmetic_right"><button class="com_u_btn2" data-oper="add" data-value="1"><em>1</em></button> <button class="com_u_btn2" data-oper="add" data-value="2"><em>2</em></button> <button class="com_u_btn2" data-oper="add" data-value="3"><em>3</em></button> <button class="com_u_btn2" data-oper="add" data-value="4"><em>4</em></button> <button class="com_u_btn2" data-oper="add" data-value="5"><em>5</em></button> <button class="com_u_btn2" data-oper="add" data-value="6"><em>6</em></button> <button class="com_u_btn2" data-oper="add" data-value="7"><em>7</em></button> <button class="com_u_btn2" data-oper="add" data-value="8"><em>8</em></button> <button class="com_u_btn2" data-oper="add" data-value="9"><em>9</em></button> <button class="com_u_btn2" data-oper="add" data-value="0"><em>0</em></button> <button class="com_u_btn2 com_u_right_dot" data-oper="add" data-value="."><em class="arithmetic_right_ui_dot">.</em></button> <button class="com_u_btn3" data-oper="delete"><i class="icon"></i></button></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+
+    var Arithmetic = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        this.$main = null;
+    }
+
+    function accDiv(arg1, arg2) {
+        var t1 = 0,
+            t2 = 0,
+            r1,
+            r2;
+        try {
+            t1 = arg1.toString().split(".")[1].length
+        } catch (e) {}
+        try {
+            t2 = arg2.toString().split(".")[1].length
+        } catch (e) {}
+        with(Math) {
+            r1 = Number(arg1.toString().replace(".", ""))
+            r2 = Number(arg2.toString().replace(".", ""))
+            return accMul((r1 / r2), pow(10, t2 - t1));
+        }
+    }
+    //乘法
+    function accMul(arg1, arg2) {
+        var m = 0,
+            s1 = arg1.toString(),
+            s2 = arg2.toString();
+        try {
+            m += s1.split(".")[1].length
+        } catch (e) {}
+        try {
+            m += s2.split(".")[1].length
+        } catch (e) {}
+        return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m)
+    }
+    //加法
+    function accAdd(arg1, arg2) {
+        var r1,
+            r2,
+            m;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2))
+        return (arg1 * m + arg2 * m) / m
+    }
+    //减法
+    function Subtr(arg1, arg2) {
+        var r1,
+            r2,
+            m,
+            n;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+        n = (r1 >= r2) ? r1 : r2;
+        return ((arg1 * m - arg2 * m) / m).toFixed(n);
+    }
+
+    var helper = {
+        i18n: {}
+    }
+    //常量
+    var CONSTANT = {
+        SPAN_HTML: '<span  class="com_u_btn2 $fillClass $com_u_zero" $index $foucsIndex><em>$num</em>$serialNumber</span>',
+        SPAN_PLACEHOLDER_HTML: '<span class="btn_none"></span>',
+        SPAN_PLACE_DOT_HTML: '<span class="com_u_btn_dot"></span>',
+        SPAN_DOT_HTML: '<span class="com_u_btn_dot $dotShow $fillClass $dot_dashed" $index $foucsIndex $group><em></em>$serialNumber</span>',
+        FILL_SPAN_CLASS: 'com_s_fill',
+        DASHED_SPAN_CLASS: 'com_u_zero',
+        RIGHT_SPAN_CLASS: 'com_s_right',
+        DOT_FILL_SPAN_CLASS: 'dot_fill',
+        DOT_DEFAULT_SPAN_CLASS: 'dot_default',
+        DOT_RED_SPAN_CLASS: 'dot_red',
+        DOT_BLUE_SPAN_CLASS: 'dot_blue',
+        DOT_GREEN_SPAN_CLASS: 'dot_green',
+        DOT_DASHED_SPAN_CLASS: 'dot_dashed',
+        DOT_SHOW_SPAN_CLASS: 'dot_show',
+        DOT_SERIAL_SPAN_CLASS: 'com_u_btn2'
+
+    }
+
+    Arithmetic.prototype = {
+        init: function(view, model, presenter) {
+            this.questionId = model.question_id;
+            var question_url = model.question_url;
+            this.title = question_url.title;
+            this.correctAnswer = question_url.correctAnswer.value;
+            this.userAnswer = [];
+            this.prompt = this.getPromptFromXml(question_url.model);
+            this.presenter = presenter;
+            this.locked = false;
+            this.showResult = false;
+            this.submitCount = 0;
+            this.$view = $(view);
+        },
+        initView: function() {
+            var that = this;
+            that.$main = that.$view.find('._manage');
+            that.initClear();
+
+            //头部标题
+            var $title = that.$view.find('._tit');
+            if (that.title.length > 35) {
+                $title.addClass('s_tit');
+            } else {
+                $title.removeClass('s_tit');
+            }
+            $title.html(that.title);
+
+            that.initArithmeticLeftView();
+            that.initArithmeticRightView();
+            that.resetQuestion();
+
+        },
+
+        initArithmeticLeftView: function() {
+            var prompt = this.prompt;
+            var $view = this.$view;
+            var OperatorView = {
+                prompt: prompt,
+                fillCount: 0,
+                initByOperator: function(oper) {
+                    if (oper === 'add' || oper === 'minus') {
+                        this.initAddView();
+                    } else if (oper === 'multiply') {
+                        this.initMultiplyView();
+                    } else if (oper === 'divide') {
+                        this.initDivideView();
+                    }
+                    var lineCount = oper === 'divide' ? 2 : 0;
+                    lineCount += $view.find(
+                        '[data-type="multiply"] ul li,[data-type="division"] ul li').length;
+                    // if (lineCount > 6) {     $view.find('.arithmetic_left').addClass('arithmetic_btnS') }
+                },
+                initAddView: function() {
+                    var htmlArr = [];
+                    var that = this;
+                    htmlArr.push('<ul>');
+                    var keys = ['first', 'second', 'result'];
+                    var operMap = {
+                        add: '+',
+                        minus: '-'
+                    }
+                    keys.forEach(function(key, index) {
+                        htmlArr.push('<li>');
+                        if (key === 'second') {
+                            htmlArr.push('<em>' + operMap[prompt.operator] + '</em>');
+                        }
+                        if ($.isPlainObject(prompt[key])) {
+                            var spansHtml = that.getSpansHtmlFromArray(prompt[key], key);
+                            htmlArr.push(spansHtml);
+                        } else {
+                            throw new Error("prompt." + key + "对象数据转化异常！");
+                        }
+                        htmlArr.push('</li>');
+                        if (key === 'second') {
+                            htmlArr.push('<li class="line"></li>');
+                        }
+                    })
+                    htmlArr.push('</ul>');
+                    $view.find('[data-type="add"]').html(htmlArr.join('')).show();
+                },
+                initMultiplyView: function() {
+                    var htmlArr = [];
+                    var that = this;
+                    htmlArr.push('<ul>');
+                    var keys = ['first', 'second', 'procedure', 'result'];
+
+                    keys.forEach(function(key, index) {
+                        if (key === 'procedure') {
+                            if ($.isArray(prompt[key])) {
+                                var precedures = prompt[key];
+                                precedures.forEach(function(preItem) {
+                                    htmlArr.push('<li>');
+                                    var spansHtml = that.getSpansHtmlFromArray(
+                                        preItem, key);
+                                    htmlArr.push(spansHtml);
+                                });
+                            } else {
+                                throw new Error("prompt." + key + "对象数据转化异常！");
+                            }
+                        } else {
+                            htmlArr.push('<li>');
+                            if (key === 'second') {
+                                htmlArr.push('<em>x</em>');
+                                var l = prompt.result.numArr.length - prompt.second.numArr.length;
+                                for (var i = 1; i < l; i++) {
+                                    htmlArr.push(CONSTANT.SPAN_PLACEHOLDER_HTML);
+                                    htmlArr.push(CONSTANT.SPAN_PLACE_DOT_HTML);
+                                }
+                            }
+                            if ($.isPlainObject(prompt[key])) {
+                                var spansHtml = that.getSpansHtmlFromArray(prompt[key], key);
+                                htmlArr.push(spansHtml);
+                            } else {
+                                throw new Error("prompt." + key + "对象数据转化异常！");
+                            }
+                            htmlArr.push('</li>');
+                        }
+
+                        if (key === 'second' || (key === 'procedure' && prompt['procedure']
+                                .length > 0)) {
+                            htmlArr.push('<li class="line"></li>');
+                        }
+                    })
+                    htmlArr.push('</ul>');
+                    $view.find('[data-type="multiply"]').html(htmlArr.join('')).show();
+                },
+                initDivideView: function() {
+                    var htmlArr = [];
+                    var that = this;
+                    //渲染商html
+                    htmlArr.push('<div class="division_box">');
+                    htmlArr.push('<p>');
+                    var spansHtml = that.getSpansHtmlFromArray(prompt.result, "result");
+                    htmlArr.push(spansHtml);
+                    htmlArr.push('</p>');
+                    htmlArr.push('<div class="divisor">');
+                    var spansHtml = that.getSpansHtmlFromArray(prompt.second, "second");
+                    htmlArr.push(spansHtml);
+                    htmlArr.push('</div>');
+                    var keys = ['first', 'procedure', 'remainder'];
+                    htmlArr.push('<ul>');
+                    keys.forEach(function(key, index) {
+                        if (key === 'procedure') {
+                            if ($.isArray(prompt[key])) {
+                                var precedures = prompt[key];
+                                precedures.forEach(function(preItem, preIndex) {
+                                    htmlArr.push('<li>');
+                                    var spansHtml = that.getSpansHtmlFromArray(
+                                        preItem, key);
+                                    htmlArr.push(spansHtml);
+                                    var l = prompt.first.numArr.length - preItem.numArr
+                                        .length - parseInt(preItem.offset);
+                                    for (var i = 0; i < l; i++) {
+                                        htmlArr.push(CONSTANT.SPAN_PLACEHOLDER_HTML);
+                                        htmlArr.push(CONSTANT.SPAN_PLACE_DOT_HTML);
+                                    }
+                                    htmlArr.push('</li>');
+                                    if ((preIndex & 1) === 0) {
+                                        htmlArr.push('<li class="line"></li>');
+                                    }
+                                });
+                            } else {
+                                throw new Error("prompt." + key + "对象数据转化异常！");
+                            }
+                        } else {
+                            htmlArr.push('<li>');
+                            if ($.isPlainObject(prompt[key])) {
+                                var spansHtml = that.getSpansHtmlFromArray(prompt[key], key);
+                                htmlArr.push(spansHtml);
+                            } else {
+                                throw new Error("prompt." + key + "对象数据转化异常！");
+                            }
+                            htmlArr.push('</li>');
+                        }
+                    });
+                    htmlArr.push('</ul>');
+                    htmlArr.push('</div>');
+                    $view.find('[data-type="division"]').html(htmlArr.join('')).show();
+                },
+                getSpanHtml: function(opts) {
+                    var that = this;
+                    var str = CONSTANT.SPAN_HTML.replace(/\$fillClass/g, opts.fillClass).replace(
+                        /\$num/g, opts.num).replace(/\$com_u_zero/g, opts.dashed);
+                    if ($.isNumeric(opts.index)) {
+                        var numStr = 'data-index="' + opts.index + '"';
+                        str = str.replace(/\$index/g, numStr);
+                        var serialStr = '<i class="serial_number" style="display: none;">' + (opts.index +
+                            1) + '</i>'
+                        str = str.replace(/\$serialNumber/g, serialStr);
+                    } else {
+                        str = str.replace(/\$index/g, '');
+                        str = str.replace(/\$serialNumber/g, '');
+                    }
+                    if ($.isNumeric(opts.foucsIndex) && opts.fillClass !== '') {
+                        var numStr = 'foucs-index="' + opts.foucsIndex + '"';
+                        str = str.replace(/\$foucsIndex/g, numStr);
+                    } else {
+                        str = str.replace(/\$foucsIndex/g, '');
+                    }
+                    return str;
+                },
+                getDotHtml: function(opts) {
+                    var that = this;
+                    var str = CONSTANT.SPAN_DOT_HTML.replace(/\$fillClass/g, opts.fillClass);
+                    if ($.isNumeric(opts.index)) {
+                        var numStr = 'data-index="' + opts.index + '"';
+                        str = str.replace(/\$index/g, numStr);
+                        var serialStr = '<i class="serial_number" style="display: none;">' + (opts.index +
+                            1) + '</i>'
+                        str = str.replace(/\$serialNumber/g, serialStr);
+                    } else {
+                        str = str.replace(/\$index/g, '');
+                        str = str.replace(/\$serialNumber/g, '');
+                    }
+
+                    if ($.isNumeric(opts.foucsIndex) && opts.fillClass == CONSTANT.DOT_BLUE_SPAN_CLASS) {
+                        var numStr = 'foucs-index="' + opts.foucsIndex + '"';
+                        str = str.replace(/\$foucsIndex/g, numStr);
+
+                        var groupStr = 'group ="' + opts.group + '"';
+                        str = str.replace(/\$group/g, groupStr);
+                    } else {
+                        str = str.replace(/\$foucsIndex/g, '');
+                        str = str.replace(/\$group/g, '');
+                    }
+                    if (opts.dot_show) {
+                        str = str.replace(/\$dotShow/g, CONSTANT.DOT_SHOW_SPAN_CLASS);
+                    } else {
+                        str = str.replace(/\$dotShow/g, "");
+                    }
+                    if (opts.dashed) {
+                        str = str.replace(/\$dot_dashed/g, CONSTANT.DOT_DASHED_SPAN_CLASS);
+                    } else {
+                        str = str.replace(/\$dot_dashed/g, "");
+                    }
+                    return str;
+                },
+                isContainsDot: function(numArr) {
+                    var isContains = false;
+                    numArr.forEach(function(numItem, index) {
+                        if (numItem.content === '.' && numItem.hide) {
+                            isContains = true;
+                        }
+                    });
+
+                    return isContains;
+                },
+                getSpansHtmlFromArray: function(busItem, key) {
+                    var html = '';
+                    var that = this;
+                    var numArr = busItem.numArr;
+                    var offset = busItem.offset;
+                    for (var i = 0; i < offset.left_blank; i++) {
+                        html += CONSTANT.SPAN_PLACEHOLDER_HTML
+                        html += CONSTANT.SPAN_PLACE_DOT_HTML;
+                    }
+                    numArr.forEach(function(numItem, index) {
+                        if (numItem.content === '.') {
+                            return;
+                        }
+                        var opts = {
+                            num: numItem.hide ? '' : numItem.content,
+                            fillClass: numItem.hide ? CONSTANT.FILL_SPAN_CLASS : '',
+                            index: numItem.index != undefined ? numItem.index : '',
+                            foucsIndex: numItem.hide ? that.fillCount++ : that.fillCount,
+                            dashed: numItem.dashed ? CONSTANT.DASHED_SPAN_CLASS : ''
+                        };
+                        var spanHtml = that.getSpanHtml(opts);
+                        var isContains = that.isContainsDot(numArr);
+                        var dot_opts = {
+                            num: ".",
+                            fillClass: '',
+                            dot_show: false,
+                            dot_dashed: false,
+                            index: '',
+                            foucsIndex: '',
+                            group: key
+                        };
+                        if (index < numArr.length - 1) {
+                            var nextNum = numArr[index + 1];
+                            if (nextNum.content === '.') {
+                                dot_opts.fillClass = nextNum.hide ? CONSTANT.DOT_BLUE_SPAN_CLASS :
+                                    CONSTANT.DOT_DEFAULT_SPAN_CLASS;
+                                dot_opts.dot_show = nextNum.hide ? false : true;
+                                dot_opts.index = nextNum.index;
+                                dot_opts.foucsIndex = nextNum.hide ? that.fillCount++ :
+                                    that.fillCount;
+                                dot_opts.dashed = nextNum.dashed;
+                            } else {
+                                dot_opts.fillClass = isContains ? CONSTANT.DOT_BLUE_SPAN_CLASS :
+                                    '';
+                                dot_opts.dot_show = false;
+                                dot_opts.index = "";
+                                dot_opts.foucsIndex = isContains ? that.fillCount++ : that.fillCount;
+                                dot_opts.dashed = false;
+
+                            }
+                        }
+                        if (index == numArr.length - 1) {
+                            dot_opts.fillClass = '';
+                            dot_opts.dot_show = false;
+                            dot_opts.index = "";
+                            dot_opts.foucsIndex = "";
+                            dot_opts.dashed = false;
+                        }
+                        var dotHtml = that.getDotHtml(dot_opts);
+                        html += spanHtml + dotHtml;
+                    });
+
+                    for (var i = 0; i < offset.right_blank; i++) {
+                        html += CONSTANT.SPAN_PLACEHOLDER_HTML
+                        html += CONSTANT.SPAN_PLACE_DOT_HTML;
+                    }
+
+                    return html
+                }
+
+            }
+            OperatorView.initByOperator(prompt.operator);
+        },
+        initArithmeticRightView: function() {},
+        initClear: function(select) {
+            var select = '[data-type="division"],[data-type="add"],[data-type="multiply"]'
+            this.$view.find(select).empty().hide();
+        },
+        bindDomEvent: function() {
+            var that = this;
+            var $view = that.$view;
+            $view.on('click', '.arithmetic_left .com_s_fill', function(event) {
+                var $entrys = that.$view.find('.com_s_fill');
+                $entrys.removeClass('com_s_on');
+                var $dots = that.$view.find('.blue_active');
+                $dots.removeClass('blue_active');
+                $(this).addClass('com_s_on');
+            });
+
+            $view.on('click', '.arithmetic_left .dot_blue', function(event) {
+                var $entrys = that.$view.find('.com_s_fill');
+                $entrys.removeClass('com_s_on');
+
+                var $dots = that.$view.find('.blue_active');
+                $dots.removeClass('blue_active');
+
+                $(this).addClass('blue_active');
+            });
+
+            $view.find('.arithmetic_right [data-oper="add"]').on('click', function(e) {
+                if (that.locked) {
+                    return false;
+                }
+                var $entrySelected = $view.find('.com_s_fill.com_s_on');
+                var $dotSelected = $view.find('.dot_blue.blue_active');
+                if ($entrySelected.size() === 0 && $dotSelected.size() === 0) {
+                    return;
+                }
+
+                var $this = $(this);
+                var key = $this.data('value');
+                if (key === ".") {
+                    var group = $dotSelected.attr('group');
+                    $view.find('.arithmetic_left  [group=' + group + ']').removeClass("dot_show");
+                    $dotSelected.addClass('dot_show');
+                } else {
+                    $entrySelected.find('em').html(key);
+                }
+
+                if (!that.presenter.isHomework) {
+                    //点击完，自动跳转到下一个填空
+                    $entrySelected.removeClass('com_s_on');
+                    $dotSelected.removeClass('blue_active');
+                    var index = 0;
+                    var group = "";
+                    if ($entrySelected.length > 0) {
+                        index = Number($entrySelected.attr('foucs-index')) + 1;
+                    }
+                    if ($dotSelected.length > 0) {
+                        index = Number($dotSelected.attr('foucs-index')) + 1;
+                        group = $dotSelected.attr('group');
+                    }
+                    var $fillElement = $view.find('.arithmetic_left  [foucs-index=' + index + ']');
+                    // var nextGroup = $fillElement.attr('group'); while (group == nextGroup) {     index++;     $fillElement =
+                    // $view.find('.arithmetic_left  [foucs-index=' + index + ']');     nextGroup = $fillElement.attr('group'); }
+                    if ($fillElement.hasClass("com_u_btn_dot") && $fillElement.hasClass("dot_blue")) {
+                        $fillElement.addClass('blue_active');
+                    } else {
+                        $fillElement.addClass('com_s_on');
+                    }
+                    //有滚动条需要自动往下滚
+                    questionScroll($fillElement);
+                }
+                //提交按钮逻辑
+                var submitFlag = that.canSubEvent();
+                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, { canSubmit: submitFlag });
+
+                function questionScroll(element) {
+                    if (!$(element).offset()) {
+                        return;
+                    }
+                    var eleTop = $(element).offset().top - $view.find('.division').offset().top;
+                    $view.find('.division').scrollTop(eleTop);
+                    $view.find('.addition').scrollTop(eleTop);
+                };
+            });
+
+            $view.find('.arithmetic_right [data-oper="delete"]').on('click', function(e) {
+                if (that.locked) {
+                    return false;
+                }
+                $view.find('.com_s_fill.com_s_on em').empty();
+                $view.find('.dot_blue.blue_active').removeClass("dot_show");
+                //提交按钮逻辑
+                var submitFlag = that.canSubEvent();
+                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, { canSubmit: submitFlag });
+            });
+        },
+        /**
+         * @param model
+         * @returns {{}}
+         */
+        getPromptFromXml: function(model) {
+            var that = this;
+            var prompt = {};
+            var quesHtml = model['prompt'];
+            var correctAnswerIndex = 0;
+
+            /**
+             * 从xml的html结构中获取竖式计算内容，文档结构如<div type="result"><textEntry />5<textEntry /></div>
+             * 获取'<textEntry />5<textEntry />'转化成'$5$'的结构
+             * 获取'5<dotEntry />2'转化成'5#2'的结构
+             * @param quesHtml
+             * @param select
+             * @returns {*}
+             */
+            function trimAndReplaceHtml(quesHtml, select) {
+                var html = $(quesHtml).find(select).html();
+                return html.replace(/\s+/g, '').replace(/\<textentry\>\<\/textentry\>/g, '$');
+            }
+
+            /**
+             * 根据correctAnswer替换<textEntry />得到完整的num ，
+             * 例如'<textEntry />5<textEntry />'，correctAnswer=[1,2,3],correctAnswerIndex为0得到对象是
+             * {
+             *   numArr:[
+             *      {content:'1',hide:true,index:0},
+             *      {content:'3',hide:false},
+             *      {content:'2',hide:true,index:1},
+             *   ],
+             *   numString:'152'
+             * }
+             * 其中hide为false标示需要填空的项
+             * @param str
+             * @returns {{numArr: Array, numString: string}}
+             */
+            function getNumObjectByStr(str) {
+                var numObj = {
+                    numArr: [],
+                    numString: ''
+                };
+                if (str) {
+                    str.split('').forEach(function(char, index) {
+                        var item = {};
+                        if (char === '$') {
+                            item.index = correctAnswerIndex;
+                            item.content = that.correctAnswer[correctAnswerIndex++];
+                            item.hide = true;
+                        } else {
+                            item.content = char;
+                            item.hide = false;
+                        }
+                        numObj.numArr.push(item);
+                        numObj.numString += item.content;
+                    });
+
+                }
+                return numObj;
+            }
+
+            var operator = trimAndReplaceHtml(quesHtml, 'div[type=operator]');
+            if (operator == '+') {
+                prompt.operator = 'add';
+            } else if (operator == '-') {
+                prompt.operator = 'minus';
+            } else if (operator == '*') {
+                prompt.operator = 'multiply';
+            } else if (operator == '/') {
+                prompt.operator = 'divide';
+            }
+            if (!prompt.operator) {
+                alert(helper.i18n['arithmetic_data_format_wrong']);
+            }
+
+            if (prompt.operator === 'divide') {
+                var resultStr = trimAndReplaceHtml(quesHtml, 'div[type=result]');
+                prompt.result = getNumObjectByStr(resultStr);
+            }
+
+            var firstStr = trimAndReplaceHtml(quesHtml, 'div[type=first]');
+            prompt.first = getNumObjectByStr(firstStr);
+            var secondStr = trimAndReplaceHtml(quesHtml, 'div[type=second]');
+            prompt.second = getNumObjectByStr(secondStr);
+
+            //乘除法计算过程对象单独处理需要带位置偏移属性
+            prompt.procedure = [];
+            var procedures = $(quesHtml).find('div[type=procedure] div');
+            procedures.each(function(i) {
+                var $procedure = $(procedures[i]);
+                var itemHtml = $procedure.html().replace(/\s+/g, '').replace(
+                    /\<textentry\>\<\/textentry\>/g, '$');
+                var obj = getNumObjectByStr(itemHtml);
+                prompt.procedure.push(obj);
+            });
+
+            //获取余数
+            var $remainder = $(quesHtml).find('div[type=remainder] div');
+            if ($remainder.length > 0) {
+                var remainderStr = trimAndReplaceHtml(quesHtml, 'div[type=remainder] div');
+                prompt.remainder = getNumObjectByStr(remainderStr);
+            }
+
+            if (prompt.operator === 'divide') {
+                that.wrapByDivisorItem(prompt.second.numArr);
+                var pows = that.getPowArr();
+                var fractionLength = that.getFractionLength(prompt.second.numString.toString());
+                var b = accMul(prompt.second.numString, pows[fractionLength]);
+                var a = accMul(prompt.first.numString, pows[fractionLength]);
+                if (parseFloat(prompt.first.numString) < 1) {
+                    prompt.first.numArr = that.wrapDivisorItemLessOne(a.toString(), prompt.first.numArr);
+                } else {
+                    prompt.first.numArr = that.wrapDivisorItem(a.toString(), prompt.first.numArr);
+                }
+
+            }
+
+            var length = 0;
+
+            if (prompt.operator !== 'divide') {
+                var resultStr = trimAndReplaceHtml(quesHtml, 'div[type=result]');
+                prompt.result = getNumObjectByStr(resultStr);
+                if (prompt.operator === 'multiply') {
+                    length = prompt.result.numString.replace(".", "").length;
+                }
+            }
+
+            //设置他的位置
+            var offset = that.getOffset(prompt.first.numString, prompt.second.numString, prompt.result.numString,
+                prompt.operator);
+            prompt.first.offset = offset.first;
+            prompt.second.offset = offset.second;
+            prompt.result.offset = offset.result;
+
+            if ($remainder.length > 0) {
+                length = parseInt($remainder.attr('offset')) + prompt.remainder.numString.length;
+                var firstLegnth = 0;
+
+                for (var i = 0; i < prompt.first.numArr.length; i++) {
+                    var item = prompt.first.numArr[i];
+                    if (item.content == ".") {
+                        continue
+                    }
+                    firstLegnth++;
+                }
+
+                if (length < firstLegnth) {
+                    length = firstLegnth;
+                }
+                prompt.remainder.offset = {
+                    left_blank: parseInt($remainder.attr('offset')),
+                    right_blank: length - parseInt($remainder.attr('offset')) - prompt.remainder.numString
+                        .length
+                }
+            }
+
+            if (prompt.operator === 'divide') {
+                prompt.first.offset = {
+                    left_blank: 0,
+                    right_blank: length - firstLegnth
+                };
+                $(prompt.procedure).each(function(i, item) {
+                    var $procedure = $(procedures[i]);
+                    item.offset = {
+                        left_blank: parseInt($procedure.attr('offset')),
+                        right_blank: length - parseInt($procedure.attr('offset')) - item.numString
+                            .length
+                    };
+                });
+            } else {
+                $(prompt.procedure).each(function(i, item) {
+                    var $procedure = $(procedures[i]);
+                    item.offset = {
+                        left_blank: length - parseInt($procedure.attr('offset')) - item.numString
+                            .length,
+                        right_blank: parseInt($procedure.attr('offset'))
+                    };
+                });
+            }
+
+            return prompt;
+        },
+        getResult: function() {
+            var answerState = 'NO_ANSWER';
+            var userResponse = this.getUserResponse();
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: userResponse,
+                answer_result: true
+            };
+            var correctAnswerStr = this.correctAnswer.join('');
+            var userResponseStr = userResponse.join('');
+            if (correctAnswerStr !== userResponseStr) {
+                answer.answer_result = false;
+            }
+            if (userResponseStr.length === 0 && this.submitCount === 0) {
+                answerState = 'NO_ANSWER';
+            } else if (userResponseStr.length >= 0 && userResponseStr.length < correctAnswerStr.length) {
+                answerState = 'NO_COMPLETE';
+            } else if (userResponseStr.length === correctAnswerStr.length) {
+                answerState = 'COMPLETE';
+            }
+            //获取答案增加提交次数
+            this.submitCount++;
+            var result = {
+                answer: answer,
+                answerState: answerState,
+                questionId: this.questionId
+            };
+            return result;
+        },
+        getPowArr: function() {
+            var powArr = [];
+            var mark = 0;
+            for (var i = 0; i < 10; i++) {
+                powArr.push(Math.pow(10, i));
+            }
+            return powArr;
+        },
+        getFractionLength: function(text) {
+            var len = text.indexOf(".") > -1 ? text.split('.')[1].length : 0;
+            return len;
+        },
+        getOffset: function(firstNum, secondNum, resultNum, operator) {
+            var firstNum_dotLength = firstNum.split(".").length > 1 ? firstNum.split(".")[1].length : 0;
+            var secondNum_dotLength = secondNum.split(".").length > 1 ? secondNum.split(".")[1].length : 0;
+            var resultNum_dotLength = resultNum.split(".").length > 1 ? resultNum.split(".")[1].length : 0;
+
+            var firstNum_Length = firstNum.split(".")[0].length;
+            var secondNum_Length = secondNum.split(".")[0].length;
+            var resultNum_Length = resultNum.split(".")[0].length;
+
+            var maxLength_left = 0;
+            var maxLength_right = 0;
+
+            maxLength_left = firstNum_Length > maxLength_left ? firstNum_Length : maxLength_left;
+            maxLength_left = secondNum_Length > maxLength_left ? secondNum_Length : maxLength_left;
+            maxLength_left = resultNum_Length > maxLength_left ? resultNum_Length : maxLength_left;
+
+            maxLength_right = firstNum_dotLength > maxLength_right ? firstNum_dotLength : maxLength_right;
+            maxLength_right = secondNum_dotLength > maxLength_right ? secondNum_dotLength : maxLength_right;
+            maxLength_right = resultNum_dotLength > maxLength_right ? resultNum_dotLength : maxLength_right;
+            if (operator == "multiply") {
+                return {
+                    first: {
+                        left_blank: maxLength_right - resultNum_dotLength,
+                        right_blank: 0
+                    },
+                    second: {
+                        left_blank: maxLength_right - resultNum_dotLength,
+                        right_blank: 0
+                    },
+                    result: {
+                        left_blank: 0,
+                        right_blank: 0
+                    }
+                };
+            } else if (operator == "divide") {
+                return {
+                    first: {
+                        left_blank: 0,
+                        right_blank: 0
+                    },
+                    second: {
+                        left_blank: 0,
+                        right_blank: 0
+                    },
+                    result: {
+                        left_blank: 0,
+                        right_blank: 0
+                    }
+                };
+
+            } else {
+                return {
+                    first: {
+                        left_blank: maxLength_left - firstNum_Length,
+                        right_blank: maxLength_right - firstNum_dotLength
+                    },
+                    second: {
+                        left_blank: maxLength_left - secondNum_Length,
+                        right_blank: maxLength_right - secondNum_dotLength
+                    },
+                    result: {
+                        left_blank: maxLength_left - resultNum_Length,
+                        right_blank: maxLength_right - resultNum_dotLength
+                    }
+                };
+            }
+        },
+        wrapByDivisorItem: function(numArr) {
+            $(numArr).each(function(index, item) {
+                if (item.content == ".") {
+                    item.dashed = true;
+                }
+            });
+        },
+        wrapDivisorItemLessOne: function(wrapStrNum, numArr) {
+            var origStrNum = "";
+            $(numArr).each(function(index, item) {
+                origStrNum += item.content;
+            })
+            var origArr = origStrNum.split(".");
+            var wrapArr = wrapStrNum.split(".");
+
+            var resultStrNum = "";
+            if (origArr.length > 1) {
+                var index = origStrNum.indexOf(wrapArr[0].charAt(0));
+                resultStrNum += origStrNum.substr(0, index);
+            }
+            if (wrapArr.length > 1) {
+                resultStrNum += wrapArr[0] + "." + wrapArr[1];
+            } else {
+                resultStrNum += wrapArr[0];
+            }
+
+            var result = [];
+            for (var i = 0; i < resultStrNum.length; i++) {
+                var character = resultStrNum.charAt(i);
+                result.push({ content: character, hide: false });
+            }
+
+            //去小数点
+            for (var i = 0; i < result.length - 1; i++) {
+                var item = result[i];
+                if (item.content == ".") {
+                    item.dashed = true;
+                    break;
+                }
+            }
+
+            //补0
+            for (var i = result.length - 1; i > 0; i--) {
+                var item = result[i];
+                if (item.content == "0") {
+                    item.dashed = true;
+                } else {
+                    break;
+                }
+            }
+            return result;
+        },
+        wrapDivisorItem: function(wrapStrNum, numArr) {
+            var warpNumArr = [];
+            var a1_1 = [],
+                a1_2 = [],
+                a2_1 = numArr,
+                a2_2 = [];
+            for (var i = 0; i < wrapStrNum.length; i++) {
+                var character = wrapStrNum.charAt(i);
+                a1_1.push({ content: character, hide: false });
+            }
+
+            for (var i = 0; i < wrapStrNum.length; i++) {
+                var character = wrapStrNum.charAt(i);
+                if (character == ".") {
+                    continue;
+                }
+                a1_2.push({ content: character, hide: false });
+            }
+
+            for (var i = 0; i < numArr.length; i++) {
+                if (numArr[i].content == ".") {
+                    continue;
+                }
+                a2_2.push({ content: numArr[i].content, hide: false });
+            }
+
+            for (var i = 0; i < a1_2.length; i++) {
+                var item = a1_2[i];
+                if (i >= a2_2.length) {
+                    item.dashed = true;
+                }
+            }
+
+            warpNumArr = a1_2;
+            var dotIndex = 0;
+            $(a1_1).each(function(index, item) {
+                if (item.content === ".") {
+                    dotIndex = index;
+                }
+            });
+
+            if (dotIndex > 0) {
+                warpNumArr.splice(dotIndex, 0, {
+                    content: ".",
+                    hide: false
+                });
+            }
+
+            var dashdotIndex = 0;
+            $(a2_1).each(function(index, item) {
+                if (item.content === ".") {
+                    dashdotIndex = index;
+                }
+            });
+            if (dashdotIndex > 0) {
+                warpNumArr.splice(dashdotIndex, 0, {
+                    content: ".",
+                    hide: false,
+                    dashed: true
+                });
+            }
+
+            return warpNumArr;
+        },
+        getUserResponse: function() {
+            var entryResult = [];
+            var entrys = this.$view.find('.arithmetic_left .com_s_fill');
+            var dotentrys = this.$view.find('.arithmetic_left .dot_blue');
+            var item = {
+                text: "",
+                index: ""
+            };
+
+            // 需要判断&nbsp;
+            $.each(entrys, function(index, item) {
+                var value = $(item).find("em").html()
+                var dataIndex = $(item).attr("data-index");
+                if (parseInt(value) >= 0) {
+                    entryResult.push({ text: value, index: dataIndex });
+                } else {
+                    entryResult.push({ text: '', index: dataIndex });
+                }
+            });
+            $.each(dotentrys, function(index, item) {
+                var value = $(item).hasClass("dot_show");
+                var dataIndex = $(item).attr("data-index");
+                if (parseInt(dataIndex) >= 0) {
+                    if (value) {
+                        entryResult.push({ text: '.', index: dataIndex });
+                    } else {
+                        entryResult.push({ text: ' ', index: dataIndex });
+                    }
+                }
+            });
+            entryResult.sort(function(a, b) {
+                return a.index - b.index
+            });
+
+            var result = []
+            $.each(entryResult, function(index, item) {
+                result.push(item.text);
+            });
+
+            this.userAnswer = result;
+            return result;
+        },
+        resetUserAnswerVeiw: function(userAnswer) {
+            var that = this;
+            var $fills = that.$view.find('.arithmetic_left .com_s_fill');
+            var $dotfills = that.$view.find('.arithmetic_left .dot_blue');
+
+            for (var i = 0, iLen = userAnswer.length; i < iLen; i++) {
+                var index = $fills.eq(i).attr("data-index");
+                if (index == undefined) {
+                    continue;
+                }
+                if (userAnswer[index] !== '.') {
+                    $fills.eq(i).find('em').html(userAnswer[index]);
+                }
+            }
+
+            for (var j = 0, jLen = $dotfills.length; j < jLen; j++) {
+                var dotindex = $dotfills.eq(j).attr("data-index");
+                if (dotindex == undefined) {
+                    $dotfills.eq(j).removeClass("blue_active").removeClass("dot_show")
+                    continue;
+                }
+                if (userAnswer[dotindex] == ".") {
+                    $dotfills.eq(j).removeClass("blue_active").addClass("dot_show")
+                }
+            }
+
+        },
+        showAnswer: function(showAnswerType, specialAnswer) {
+            var that = this;
+            if (specialAnswer) {
+                that.userAnswer = specialAnswer.answer.user_response;
+                that.resetUserAnswerVeiw(that.userAnswer);
+            } else {
+                if (showAnswerType === 'user') {
+                    that.showResult = true;
+                    //通知状态变化
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        /*先通知状态变化再修改dom结构*/
+                        PresenterEventType.IC_PLAYER_EVENT);
+                } else {
+                    //统计页面显示正确答案 清除用户作答
+                    that.locked = true;
+                    that.$main.addClass('show_number');
+                    that.resetUserAnswerVeiw(that.correctAnswer);
+                }
+            }
+            showAnswerView();
+
+            function showAnswerView() {
+                var $fills = that.$view.find('.arithmetic_left .com_s_fill');
+                var $dotfills = that.$view.find('.arithmetic_left .dot_blue');
+                $fills.each(function(index, fill) {
+                    var i = $fills.eq(index).attr("data-index");
+                    if ($(fill).find('em').html() === that.correctAnswer[i]) {
+                        $(fill).removeClass('com_s_error').addClass('com_s_right');
+                    } else {
+                        $(fill).removeClass('com_s_right').addClass('com_s_error');
+                    }
+                })
+
+                $dotfills.each(function(index, fill) {
+                    var i = $dotfills.eq(index).attr("data-index");
+                    var group = $(fill).attr("group");
+                    that.$view.find('.arithmetic_left  [group=' + group + ']').removeClass(
+                        "dot_red").removeClass("dot_blue");
+                });
+
+                var userCorrectAnswers = [];
+                $dotfills.each(function(index, fill) {
+                    var i = $dotfills.eq(index).attr("data-index");
+                    var group = $(fill).attr("group");
+                    if (i !== undefined && that.correctAnswer[i] == ".") {
+                        if ($(fill).hasClass("dot_show")) {
+                            userCorrectAnswers.push({ group: group, userCorrectAnswer: true, index: index })
+                        } else {
+                            userCorrectAnswers.push({ group: group, userCorrectAnswer: false, index: index })
+                        }
+                    }
+                });
+
+                $(userCorrectAnswers).each(function(index, item) {
+                    if (item.userCorrectAnswer == true) {
+                        that.$view.find('.arithmetic_left  [group=' + item.group + ']').addClass(
+                            "dot_green");
+                        $dotfills.eq(item.index).addClass("dot_show");
+                    } else {
+                        that.$view.find('.arithmetic_left  [group=' + item.group + ']').addClass(
+                            "dot_red");
+                    }
+
+                });
+            }
+        },
+        getState: function() {
+            var state = {
+                userAnswer: this.getUserResponse(),
+                showResult: this.showResult,
+                isLock: this.locked
+            };
+            return state;
+        },
+        setState: function(state) {
+            var that = this;
+            that.resetQuestion();
+            that.showResult = state.showResult;
+            that.userAnswer = state.userAnswer;
+            that.locked = state.isLock;
+
+            that.resetUserAnswerVeiw(that.userAnswer);
+        },
+        //判断是否可提交
+        canSubEvent: function() {
+            var $emEntrys = this.$view.find('.arithmetic_left .com_s_fill em');
+            var $dotEntrys = this.$view.find('.arithmetic_left .dot_blue');
+
+            var isCanSubmit = false;
+            var isDotCanSubmit = false;
+            $emEntrys.each(function(index) {
+                // 选项值大于等于0的为合法数据
+                if (parseInt($(this).html()) >= 0) {
+                    isCanSubmit = true;
+                }
+            });
+
+            $dotEntrys.each(function(index, item) {
+                // 选项值大于等于0的为合法数据
+                var value = $(item).hasClass("dot_show");
+                if (value) {
+                    isDotCanSubmit = true;
+                }
+            });
+
+            if (isCanSubmit || isDotCanSubmit) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        resetQuestion: function() {
+            this.$view.find('.arithmetic_left .serial_number').hide();
+            this.$view.find('.arithmetic_left .com_s_fill').off('click.statistics');
+            this.$view.find('.arithmetic_left .com_s_fill').removeClass('com_s_error com_s_right').find(
+                'em').empty();
+            this.$view.find('.arithmetic_left .com_s_fill').removeClass('com_s_on').eq(0).addClass(
+                'com_s_on');
+            this.$view.find('.arithmetic_left .dot_blue').removeClass('blue_active').removeClass("dot_red")
+                .removeClass("dot_green").removeClass("dot_show");
+            this.$view.find('.arithmetic_left .dot_red').removeClass('blue_active').removeClass('dot_red').addClass(
+                "dot_blue").removeClass("dot_show");
+            this.$view.find('.arithmetic_left .dot_green').removeClass('blue_active').removeClass(
+                'dot_green').addClass("dot_blue").removeClass("dot_show");
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        lockQuestion: function() {
+            this.locked = true;
+        },
+        unlockQuestion: function() {
+            this.locked = false;
+        },
+        startStatistics: function() {
+            /*结束答题开始统计数据*/
+            var that = this;
+            that.$main.addClass('show_number');
+            that.$view.find('.arithmetic_left .serial_number').show();
+            that.$view.find('.arithmetic_left .com_s_fill').on('click.statistics', function(e) {
+                var index = $(this).data("data-index");
+                that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                    service: "statistic",
+                    method: "clickItem",
+                    args: [index, "B"]
+                });
+            });
+
+            that.$view.find('.arithmetic_left .dot_blue').on('click.statistics', function(e) {
+                var index = $(this).data("data-index");
+                that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                    service: "statistic",
+                    method: "clickItem",
+                    args: [index, "B"]
+                });
+            });
+            /*统计要加标号*/
+        },
+        convertDataForStatistics: function(oriData) {
+            var that = this;
+            var i,
+                j,
+                k,
+                m;
+            var value = oriData.value;
+            var onlineNum = 0;
+            var correctAnswer,
+                item_key = [],
+                percent = [],
+                stuAnswerStat = [];
+            var convertedData = {};
+            convertedData["allrightStu"] = [];
+
+            var answer;
+            if (value.answers) {
+                for (i = 0; i < value.answers.length; i++) {
+                    if (!$.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length > 0) {
+                        for (j = 0; j < value.answers[i].length; j++) {
+                            answer = value.answers[i][j].answer;
+                            if (answer && (typeof answer) == "string") {
+                                answer = JSON.parse(answer);
+
+                                if (!correctAnswer) { //获取正确答案并设置编号
+                                    correctAnswer = answer.correct_response;
+                                    if (correctAnswer && $.isArray(correctAnswer)) {
+                                        for (k = 0; k < correctAnswer.length; k++) {
+                                            item_key.push(k + 1);
+                                            stuAnswerStat.push({
+                                                "rightNum": 0,
+                                                "right_userIds": [],
+                                                "wrong_userIds": [],
+                                                "unfinished_userIds": value.unfinishedUserIds,
+                                                "ref_key": (k + 1)
+                                            });
+                                        }
+                                    }
+                                }
+
+                                if (correctAnswer && answer.user_response) {
+                                    var judgeIsCorrect = true;
+                                    for (k = 0; k < correctAnswer.length; k++) {
+                                        if (correctAnswer[k] == answer.user_response[k]) {
+                                            for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                                stuAnswerStat[k]["rightNum"] = ((typeof stuAnswerStat[k][
+                                                        "rightNum"
+                                                    ]) == "number") ? (stuAnswerStat[k]["rightNum"] + 1) :
+                                                    1;
+                                                stuAnswerStat[k]["right_userIds"].push(value.answers[i][j].userIds[
+                                                    m]);
+                                            }
+                                        } else {
+                                            judgeIsCorrect = false;
+                                            for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                                stuAnswerStat[k]["wrong_userIds"].push(value.answers[i][j].userIds[
+                                                    m]);
+                                            }
+                                        }
+                                    }
+                                    answer.isCorrect = judgeIsCorrect;
+                                    if (answer.isCorrect) {
+                                        convertedData["allrightStu"] = convertedData["allrightStu"].concat(
+                                            value.answers[i][j].userIds);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $.each(value.correctAnswerTeacher.correct_response, function(k, item) {
+                            if (!stuAnswerStat[k]) {
+                                stuAnswerStat[k] = {
+                                    rightNum: 0,
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k + 1)
+                                };
+                                item_key.push(k + 1);
+                            }
+                        });
+                        convertedData["allrightStu"] = [];
+                    }
+                }
+
+            }
+            onlineNum = value.finishedNum + value.unfinishedNum;
+            /**计算正确率**/
+            for (i = 0; i < stuAnswerStat.length; i++) {
+                percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+            }
+
+            convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+            convertedData["submit_count"] = onlineNum;
+            convertedData["answers"] = value.answers;
+            convertedData["item_key"] = item_key;
+            convertedData["percent"] = percent;
+            convertedData["unfinishedNum"] = value.unfinishedNum;
+            convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+            convertedData["stuAnswerStat"] = stuAnswerStat;
+            value['convertedData'] = convertedData;
+            return oriData;
+        },
+        destroy: function() {
+            this.$view = null;
+            this.$main = null;
+        },
+        showResultHint: function() {}
+    };
+
+    //对外提供服务
+    var Service = function() {
+        this.questionId = null;
+        this._arithmetic = null;
+        this.status = {};
+    };
+    Service.prototype = {
+        init: function(model, arithmetic) {
+            this.questionId = model.question_id;
+            this._arithmetic = arithmetic;
+            this.parent = this._arithmetic.presenter;
+            this.status = {};
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: 'arithmetic',
+                type_name: '竖式计算',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._arithmetic.getResult();
+        },
+        _getState: function() {
+            var state = this._arithmetic.getState();
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent
+                    .metaInfo.name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._arithmetic.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this.parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*老师端和学生端调用的都是这个函数*/
+            return this._arithmetic.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) { /*只有学生端调用的*/
+            this._arithmetic.showResultHint();
+        },
+        resetQuestion: function() {
+            this._arithmetic.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._arithmetic.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._arithmetic.unlockQuestion();
+        },
+        finishQuestion: function() {
+            this._arithmetic.unlockQuestion();
+        },
+        getStatisticClass: function() { /*统计类型*/
+            return 'B';
+        },
+        startStatistics: function() { /*结束答题时调用*/
+            this._arithmetic.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) { /*转化统计数据*/
+            return this._arithmetic.convertDataForStatistics(oriData);
+        }
+    };
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'ArithmeticRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._service_ = new Service();
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据
+            that._arithmetic = new Arithmetic();
+            that._arithmetic.init(view, model, this);
+            that._arithmetic.initView();
+            that._arithmetic.bindDomEvent();
+
+            //初始化服务
+            that._service_.init(model, that._arithmetic);
+        },
+        destroy: function() {
+            if (this._arithmetic) {
+                this._arithmetic.destroy();
+            }
+        },
+
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        },
+        setLocationProperties: function(properties) {
+            helper.i18n = properties;
+        }
+    });
+    //实现icplayer入口调用函数
+    window.AddonArithmeticRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/bo/lang.po' />
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/bo_CN/lang.po' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/lang.po' />
+<file src='./resources/wood/images/btn2_normal.jpg' />
+<file src='./resources/wood/images/btn2_press.png' />
+<file src='./resources/wood/images/btn3_press.png' />
+<file src='./resources/wood/images/com_btn_zero.png' />
+<file src='./resources/wood/images/division.png' />
+<file src='./resources/wood/images/dot.png' />
+<file src='./resources/wood/images/dot2.png' />
+<file src='./resources/wood/images/dot_dashed.png' />
+<file src='./resources/wood/images/dot_fill.png' />
+<file src='./resources/wood/images/dot_show.png' />
+<file src='./resources/wood/images/dot_white.png' />
+<file src='./resources/wood/images/icons_snum.png' />
+<file src='./resources/wood/images/icon_del.png' />
+<file src='./resources/wood/images/scrollh_line_mid.png' />
+<file src='./resources/wood/images/scrollv_bg.png' />
+<file src='./resources/wood/images/scrollv_down.png' />
+<file src='./resources/wood/images/scrollv_horizontal_bg.png' />
+<file src='./resources/wood/images/scrollv_left.png' />
+<file src='./resources/wood/images/scrollv_right.png' />
+<file src='./resources/wood/images/scrollv_thumb_bg.png' />
+<file src='./resources/wood/images/scrollv_thumb_horizontal_bg.png' />
+<file src='./resources/wood/images/srcollv_up.png' />
+<file src='./resources/wood/images/wood-bg.png' />
+<file src='./resources/wood/images/wood-vertical-thumb.png' />
+
+
+</resources>
+
+</addon>

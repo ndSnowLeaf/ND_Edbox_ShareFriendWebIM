@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="app">
+
+        <role-read-user-list :students="students" v-on:detail="seeDetail"></role-read-user-list>
+
+
+    </div>
+
+    <script src="../../../node_modules/vue/dist/vue.min.js"></script>
+    <script src="../../../../dist/components.js"></script>
+
+    <script>
+        var data = {
+            "convertedData": {
+                "questionType": "Compound",
+                "commitNum": 1,
+                "totalNum": 1,
+                "elapsedTime": 26,
+                "students": [],
+                "correctStudents": [{
+                    "submitTime": 27,
+                    "tag": false,
+                    "userId": "20002",
+                    "studentName": "n101778",
+                    "studentNo": "",
+                    "accuracy": 100
+                }],
+                "errorStudents": [{
+                    "submitTime": 27,
+                    "tag": false,
+                    "userId": "20001",
+                    "studentName": "n101777",
+                    "studentNo": "",
+                    "accuracy": 15
+                }, {
+                    "submitTime": 27,
+                    "tag": false,
+                    "userId": "20003",
+                    "studentName": "n101779",
+                    "studentNo": "",
+                    "accuracy": 93
+                }, {
+                    "submitTime": 27,
+                    "tag": false,
+                    "userId": "20004",
+                    "studentName": "n10162",
+                    "studentNo": "",
+                    "accuracy": 17
+                }, {
+                    "submitTime": 27,
+                    "tag": false,
+                    "userId": "20005",
+                    "studentName": "n101745",
+                    "studentNo": "",
+                    "accuracy": 65
+                }],
+                "undoStudents": [],
+                "accuracy": 0,
+                "allrightStu": []
+            },
+            "tagUsers": []
+        };
+
+        /**
+         * 学生列表排序规则
+         */
+        var compareStudent = function() {
+            return function(a, b) {
+                if (a.accuracy === b.accuracy) { //如果正确率相同，仅客观题比较正确率
+                    return compare(a, b);
+                }
+                return ~~b.accuracy - ~~a.accuracy; //正确率 desc
+            };
+        };
+
+        /**
+         * 学生列表对应css样式
+         */
+        var getUserItemStyle = function(accuracy) {
+            if (accuracy >= 80) {
+                return 'list_font_green';
+            } else if (accuracy >= 60) {
+                return 'list_font_orange';
+            } else {
+                return 'list_font_red';
+            }
+        };
+
+        var convertedData = data.convertedData;
+        var correctStudents = convertedData.correctStudents;
+        var errorStudents = convertedData.errorStudents;
+        var undoStudents = convertedData.undoStudents;
+
+        var finishedFilter = function(item) {
+            item.time = ~~(item.submitTime / 60) + "分" + (item.submitTime % 60) + "秒";
+            item.style = getUserItemStyle(item.accuracy);
+            item.accuracy = item.accuracy + '%';
+        };
+        var unfinishedFilter = function(item) {
+            item.style = 'noanswer';
+            item.accuracy = '--%';
+            item.time = '-:-';
+        };
+        //按优秀率从大到小排序
+        var comparator = compareStudent();
+        correctStudents.sort(comparator).map(function(item) {
+            finishedFilter(item)
+        });
+        errorStudents.sort(comparator).map(function(item) {
+            finishedFilter(item)
+        });
+        undoStudents.sort(comparator).map(function(item) {
+            unfinishedFilter(item)
+        });
+
+        var students = correctStudents.concat(errorStudents, undoStudents);
+
+        var app = new Vue({
+            el: ".app",
+            data: {
+                students: students
+            },
+            methods: {
+                seeDetail: function(userid) {
+                    //拿到点击项的userid
+
+                }
+            },
+            components: {
+                'RoleReadUserList': window.__ModuleComponent.RoleReadUserList
+            }
+        });
+    </script>
+</body>
+
+</html>

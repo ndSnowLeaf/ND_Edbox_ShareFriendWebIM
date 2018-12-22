@@ -1,0 +1,960 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='PopularVoteTeacher'>
+<properties>
+
+                <property name="vote_data" displayName="投票数据" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="stat_wood"><div class="com_layout record_content vote_content" id="layout"><div class="com_wrapper in-vote" id="inVoteUser" style="display:none"><div class="com_layout_header"><div class="title_vote lang_vote_title">人气投票</div></div><div class="com_layout_container"><div class="com_stat_layout time_sort"><div class="ndui-list-box com-list-box"><ul class="ndui-list"><li class="ndui-list-item"><span class="vote_total"><em class="vote-count">0</em></span><div class="com_stat_list_contain"><div class="com_stat_list_pic popular-vote-user-panel"></div><div class="com_stat_list_btm"><div class="com_stat_list_skin"><a href="javascript:;" class="pic" title="图片"></a></div><div class="com_stat_list_name_wp"><span class="student"><span class="name"></span></span></div></div></div></li></ul></div></div></div><div class="layout_footer_bottom"><div class="ndui-tool k12-footer-tool"><div class="ndui-tool-box"><ul class="ndui-tool-list ndui-tool-right"><li class="ndui-tool-cell"><a href="javascript:;" class="ndui-btn-square square_tool_vote quit-vote"><i class="ndui-btn-pic"></i> <em class="ndui-btn-text">退出投票</em></a></li></ul></div></div></div></div><div class="mask" style="display:none"></div><div class="ndui-pop com_pop stu_screen_pic popular-vote-user-preview" style="display:none"><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="###" class="ndui-pop-close right"></a> <a href="###" class="ndui-pop-close left"></a><div class="pop_wrap pop_slidebottom"><div class="content"><div class="student_screen popular-vote-user-panel"></div></div></div><div class="pop_foot"><div class="com_stat_slidebox slidebox_big media_box"><a href="###" class="btn_slide slide_prev"></a> <i class="shadow shadow_l"></i><div class="slidebox_wrap"><ul class="popular-vote-user-tabs"></ul></div><i class="shadow shadow_r"></i> <a href="###" class="btn_slide slide_next"></a></div></div></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var DEBUG = false;
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'PopularVoteTeacher',
+            type: PresenterType.PRESENTER_CONTROLLER,
+            subType: 'AnswerClassStatisticsExtend'
+        },
+        $init: function () {
+            this._super();
+            this.itemsSelect = 0;
+            this.candidateUser = {};
+            this.userIdMap = {};
+            this.statisticsService = null;
+            this.voteId = '';
+            this.pageInfo = {
+                prePageNum: 12,
+                pageIndex: 0,
+                maxIndex: 0,
+                minIndex: 0,
+                currentPageUser: []
+            };
+            var tipContainer = undefined;
+            this.inVoteMode = false;
+            this.toolbarItem = undefined;
+            this.globalData = undefined;
+            this.orignalData = undefined;
+            //多语言Key列表
+            this.languageKeySet = {};
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {
+                level: Logger.DEBUG
+            });
+        },
+        /*****Presenter的生命周期方法*******/
+        run: function (view, model) {
+            var self = this;
+            this.$view = $(view);
+            //定义ViewModel对象
+            this.viewModel = popularVoteViewModel(this);
+            this.viewModel.init(this.$view);
+            //绑定本地和监听事件
+            this._bindEvent();
+            //向统计组件注入组件入口
+            if (this.statisticsService != null) {
+                var title = this._getLanguageText("popular_vote_teacher");
+                this.statisticsService.injectToolbarItem([{
+                    identify: 'popularVote',
+                    type: 'SimpleButton',
+                    text: title,
+                    class: 'square_tool_vote',
+                    events: [{
+                        event: 'click',
+                        fn: $.proxy(self._enterPopularVote, self)
+                    }],
+                    callback: function (toolbarItem) {
+                        self.toolbarItem = $(toolbarItem);
+                        //按钮默认为隐藏
+                        self.toolbarItem.hide();
+                    }
+                }], 9);
+            }
+            this._layoutReset();
+            this.$view.find('.lang_vote_title').html(this._getLanguageText('popular_vote_teacher'));
+            this.$view.find('.lang_exit_vote').html(this._getLanguageText('popular_vote_teacher_exit_vote'));
+            this.$view.hide();
+        },
+        destroy: function () {
+            this._unbindEvent();
+            this.tipContainer.off('click', '.confirm-vote');
+            this.tipContainer.off('click', '.cancle-vote');
+            this.tipContainer.off('click', '.random');
+        },
+        /*****************/
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /********私有的方法********/
+        //注册事件
+        _bindEvent: function () {
+            var self = this;
+            this.$view.on('click', '.users-all .com_stat_list_pic', $.proxy(self._toggleSelect, self))
+                .on('click', '.in-vote .ndui-list-item', $.proxy(self._showBigPreview, self))
+                // .on('click', '.in-vote .com_stat_list', $.proxy(self._showBigPreview, self))
+                .on('click', '.quit-vote', $.proxy(self._notifyVoteEnd, self))
+                // .on('click', '.com_btn_close', $.proxy(self._closePreview, self));
+                .on('click', '.ndui-pop-close', $.proxy(self._closePreview, self));
+            //绑定事件监听
+            this.$addEventListener('getVoteInfoCallback', PresenterEventType.NATIVE_EVENT, this._onGetVoteInfoCallback);
+            this.$addEventListener('VoteCallback', PresenterEventType.NATIVE_EVENT, this._onVoteCallback);
+            this.$addEventListener('VoteUpdate', PresenterEventType.NATIVE_EVENT, this._onVoteUpdate);
+            this.$addEventListener('Exam', PresenterEventType.IC_PLAYER_EVENT, this._onStatisExit);
+            this.$addEventListener('EnterAnswerClassStatis', PresenterEventType.IC_PLAYER_EVENT, this._onStatisEnter);
+        },
+        _unbindEvent: function () {
+            this.$view.off();
+            this.$removeEventListener();
+        },
+        /**
+         * 进入人气投票
+         * @private
+         */
+        _enterPopularVote: function () {
+            //统计组件进入选择模式
+            this.statisticsService.enterSelectMode({presenterId: 'PopularVoteTeacher'});
+            //显示标题
+            this.statisticsService.showInjectPanel('top', 'PopularVoteTitleTip', true);
+            //显示工具栏按钮
+            this.statisticsService.showInjectPanel('bottom', 'PopularVoteToolbar', true);
+            //告知统计进入了人气投票
+            this.statisticsService.plugin.enter('PopularVoteTeacher');
+            //标记当前进入人气投票
+            this.inVoteMode = true;
+            //获取投票信息
+            this._getVoteInfo();
+        },
+        _exitPopularVote: function () {
+            //统计组件离开选择模式
+            this.statisticsService.exitSelectMode();
+            //隐藏标题区域
+            this.statisticsService.hideInjectPanel('top', 'PopularVoteTitleTip');
+            //隐藏工具栏按钮
+            this.statisticsService.hideInjectPanel('bottom', 'PopularVoteToolbar');
+            //告知统计离开了人气投票
+            this.statisticsService.plugin.exit('PopularVoteTeacher');
+            //标记已经离开人气投票
+            this.inVoteMode = false;
+        },
+        /**
+         * 获取当前可投票的用户信息
+         * @private
+         */
+        _getVoteInfo: function () {
+            if(DEBUG === true){
+            var self = this;
+            $.ajax({
+                url: "presenter-demo/PopularVoteTeacher/2.0.0/pages/resources/model.json",
+                type: "get",
+                datatype: "json"
+            }).done(function (data) {
+                self._onGetVoteInfoCallback(data);
+            });
+
+            } else {
+            //获取统计模块的当前状态
+            var state = this.statisticsService.getCurrentState();
+            this.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+                instanceId: state.questionType,
+                type: 'getVoteInfo',
+                data: {
+                    sortKey: state.sortInfo.sortKey,
+                    sortType: state.sortInfo.sortType
+                }
+            });
+            }
+        },
+        /***组件对原生事件的响应方法***/
+        _onVoteCallback: function (data) {
+            data.resultCode = +data.resultCode;
+            switch (data.resultCode) {
+                case 1:
+                case 2:
+                    if (data.type === 'start') {
+                        this._showTip(this._getLanguageText('popular_vote_teacher_start_vote_fail_restart'));
+                        this.logger.debug('开始投票失败');
+                    } else if (data.type === 'stop') {
+                        this._showTip(this._getLanguageText('popular_vote_teacher_exit_vote_fail_reexit'));
+                        this.logger.debug('结束投票失败');
+                    }
+                    break;
+                default:
+                    if (data.type === 'start') {
+                        this._showInVote();
+                        this.$view.show();
+                        this.logger.debug('成功开始投票');
+                    } else if (data.type === 'stop') {
+                        this._exitPopularVote();
+                        this.$view.hide();
+                        this.logger.debug('成功结束投票');
+                    }
+            }
+        },
+        _onVoteUpdate: function (data) {
+            var self = this;
+            $.each(data.updateVote.vote, function (k, vote) {
+                $.each(self.viewModel.getCurrentView('inVote'), function (k, item) {
+                    if (item.attr('data-user') === vote.candidateId) {
+                        var countDom = item.find('.vote-count');
+                        var preCount = +countDom.attr('data-count') || 0;
+                        var currentCount = preCount + vote.count;
+                        var $voteDom = $('<span class="vote_add vote_add_ac"><em>+1</em></span>');
+                        item.append($voteDom);
+                        $voteDom.on('animationend webkitAnimationEnd', function () {
+                            $(this).remove();
+                        });
+                        countDom.attr('data-count', currentCount).text(currentCount);
+                    }
+                });
+            });
+        },
+        /**
+         * 当作答统计进入时
+         * @private
+         */
+        _onStatisEnter: function (data) {
+            //如果当前是手写题
+            if (data.presenter === 'newhandwrite' && this.toolbarItem !== undefined) {
+                this.toolbarItem.show();
+            }
+        },
+        /**
+         * 当作答统计退出时
+         * @private
+         */
+        _onStatisExit: function (data) {
+            if (data.type === 'hide' && data.source === 'AnswerClassStatis') {
+                //TDOO:做一些清理的工作
+            }
+        },
+        /**
+         * 获取投票信息的回调函数
+         * @param data
+         * @private
+         */
+        _onGetVoteInfoCallback: function (data) {
+            //创建新的投票ID
+            this.voteId = 'vote' + new Date().valueOf();
+            //获取当前的统计状态
+            var state = this.statisticsService.getCurrentState();
+            $.extend(data, {totalTime: state.answer.totalTime, submitCount: state.answer.submitCount});
+            this.orignalData = deepCopy(data);
+            this.globalData = this._adaptedData(data);
+            this.itemsSelect = 0;
+            this.candidateUser = {};
+        },
+        /**组件DOM的响应方法**/
+        _toggleSelect: function (event) {
+            var selectObj = $(event.currentTarget).parent().parent();
+            var userId = selectObj.attr('data-user');
+            if (selectObj.attr('data-select') === 'yes') {
+                selectObj.attr('data-select', 'no');
+                selectObj.removeClass('on');
+                this.itemsSelect--;
+                delete this.candidateUser[userId];
+            } else {
+                if (this.itemsSelect >= 4) {
+                    return;
+                }
+                this.candidateUser[userId] = userId;
+                selectObj.attr('data-select', 'yes');
+                selectObj.addClass('on');
+                this.itemsSelect++;
+            }
+        },
+        _showBigPreview: function (event) {
+            var userId = $(event.currentTarget).attr('data-user');
+            this.viewModel.renderData('preview', [this.userIdMap[userId]]);
+            this.viewModel.updateUI();
+            this.$view.find('.popular-vote-user-preview').show();
+            this.$view.find('.mask').show();
+        },
+        /**
+         * 按钮开始投票的响应事件
+         * @private
+         */
+        _beginVote: function () {
+            //获取选择的对象
+            var selectItems = this.statisticsService.getSelectedItems();
+            if (selectItems.length >= 2 && selectItems.length <= 4) {
+                var self = this;
+                this.itemsSelect = selectItems.length;
+                //构建候选人
+                $.each(selectItems, function (k, v) {
+                    self.candidateUser[v.studentId] = v.studentId;
+                });
+                var candidates = this._getCandidateData();
+                this._notifyVoteBegin(candidates);
+            } else {
+                this._showTip(this._getLanguageText('popular_vote_student_limit'));
+            }
+        },
+        /**
+         * 通知开始投票
+         * @private
+         */
+        _notifyVoteBegin: function (candidates) {
+            //如果投票数量符合规范
+            if (this.itemsSelect >= 2 && this.itemsSelect <= 4) {
+                if(DEBUG === true){
+                this._onVoteCallback({id: "1111", type: "start", resultCode: 0});
+                } else {
+                this.$dispatchEvent('Vote', PresenterEventType.NATIVE_EVENT, {
+                    id: this.voteId,
+                    type: 'start',
+                    value: {
+                        subject: '手写题投票',
+                        creator: '手写题统计',
+                        createTime: getCurrentTime(),
+                        userIds: [],
+                        options: { // 投票可选项（默认值）
+                            modifiable: false,
+                            selfVote: true,
+                            timesLimit: 1,
+                            choiceLimit: 1
+                        },
+                        candidates: candidates
+                    }
+                });
+                }
+            }
+        },
+        //通知结束投票
+        _notifyVoteEnd: function () {
+            if(DEBUG === true){
+            this._onVoteCallback({id: "1111", type: "stop", resultCode: 0});
+            } else {
+            this.$dispatchEvent('Vote', PresenterEventType.NATIVE_EVENT, {
+                id: this.voteId,
+                type: 'stop'
+            });
+            }
+        },
+        _closePreview: function () {
+            this.$view.find('.popular-vote-user-preview').hide();
+            this.$view.find('.mask').hide();
+        },
+        _randomSelectUsers: function (event) {
+            var seedLen = this.globalData.length;
+            var randomSeed = createRandomSeed(seedLen);
+            var len = +$(event.currentTarget).attr('data-random');
+            if (len > seedLen) {
+                len = seedLen;
+            }
+            this.itemsSelect = 0;
+            this.candidateUser = {};
+            for (var i = 0; i < len; i++) {
+                var userId = this.globalData[randomSeed[i]].userId;
+                this.itemsSelect++;
+                this.candidateUser[userId] = userId;
+            }
+            /*            this.viewModel.renderData('candidate', this.pageInfo.currentPageUser, true);
+             this.viewModel.updateUI();*/
+            //通知投票开始
+            var candidates = this._getCandidateData();
+            this._notifyVoteBegin(candidates);
+        },
+        /**********以下开始私有方法***************/
+        /**
+         * @private 获取当前被选中的用户信息
+         * @return Array 当前被选中的用户信息
+         */
+        _getCandidateData: function () {
+            var users = [];
+            var index = 0;
+            var self = this;
+            $.each(this.candidateUser, function (k, v) {
+                var user = self.userIdMap[k];
+                var userInfo = {
+                    userName: user.userName
+                };
+                users.push({
+                    index: index,
+                    id: user.userId,
+                    description: JSON.stringify(userInfo),
+                    files: user.files
+                });
+                index++;
+            });
+            return users;
+        },
+        _renderCurrentPage: function () {
+            var pageIndex = this.pageInfo.pageIndex;
+            this.pageInfo.currentPageUser = [];
+            for (var i = pageIndex * this.pageInfo.prePageNum, len = i + this.pageInfo.prePageNum, max = this.globalData.length; i < len && i < max; i++) {
+                this.pageInfo.currentPageUser.push(this.globalData[i]);
+            }
+        },
+        _initPageInfo: function () {
+            var len = this.globalData.length;
+            this.pageInfo.maxIndex = Math.ceil(len / this.pageInfo.prePageNum) - 1;
+            this.pageInfo.pageIndex = 0;
+        },
+        _get4PageIndexs: function () {
+            var pages = [];
+            var index = this.pageInfo.pageIndex;
+            var max = this.pageInfo.maxIndex;
+            var min = this.pageInfo.minIndex;
+            var start, end;
+
+            if (index % 4 > 1) {
+                end = index + 2;
+                if (end > max) {
+                    end = max;
+                }
+                start = end - 3;
+            } else {
+                start = index - index % 4;
+                end = start + 3;
+                if (end > max) {
+                    end = max;
+                }
+            }
+            if (index !== 0 && max >= 4) {
+                if (index === start) {
+                    start = start - 1;
+                }
+                end = start + 3;
+
+            }
+            if (end > max) {
+                end = max;
+                start = end - 3;
+            }
+            if (start < 0) {
+                start = 0;
+            }
+            for (var i = start; i <= end; i++) {
+                pages.push(i);
+            }
+            return pages;
+        },
+        _create4PageDom: function () {
+            var pages = this._get4PageIndexs();
+            var index = this.pageInfo.pageIndex;
+            var html = '', currentClass = '', showIndex;
+            for (var i = 0, len = pages.length; i < len; i++) {
+                showIndex = pages[i] + 1;
+                if (pages[i] === index) {
+                    currentClass = 'on';
+                } else {
+                    currentClass = '';
+                }
+                html += '<a href="javascript:;" class="gotopage ' + currentClass + '" data-page="' + showIndex + '">' + showIndex + '</a>';
+            }
+            return html;
+        },
+        _showInVote: function () {
+            this.$view.find('.users-all').hide();
+            this.viewModel.renderData('inVote', this._getCandidateUserData());
+            this.viewModel.updateUI();
+            this.$view.find('.in-vote').show();
+            this.$view.find('.in-vote .com_layout_container .com-list-box').removeClass('vote_two vote_three vote_four');
+            switch (this.itemsSelect) {
+                case 2:
+                    this.$view.find('.in-vote .com_layout_container .com-list-box').addClass('vote_two');
+                    break;
+                case 3:
+                    this.$view.find('.in-vote .com_layout_container .com-list-box').addClass('vote_three');
+                    break;
+                case 4:
+                    this.$view.find('.in-vote .com_layout_container .com-list-box').addClass('vote_four');
+                    break;
+                default:
+                    throw '投票人数不对';
+            }
+        },
+        _getCandidateUserData: function () {
+            var temp = [];
+            var self = this;
+            $.each(this.candidateUser, function (k, v) {
+                temp.push(self.userIdMap[k]);
+            });
+            return temp;
+        },
+        _showTip: function (text) {
+            var $tip = this.tipContainer.find('.com_pop_bgtips');
+            $tip.show();
+            $tip.find('.font_size').text(text);
+            setTimeout(function () {
+                $tip.hide();
+            }, 2000);
+        },
+        _showPreVoteHeader: function () {
+            this.$view.find('.users-all .com_layout_header .com_time').html(this._getTimeFormat(this.orignalData.totalTime));
+            this.$view.find('.users-all .com_layout_header .upload .num .now').html(this.orignalData.submitCount);
+        },
+        /**
+         * 将不符合规范的题型数据适配为可进行投票的数据
+         * @private
+         */
+        //适配数据
+		_adaptedData:function(data){
+			var afterData = [];
+			var answers = data.answerData;
+			var questionType = data.question_type;
+			for (var i = 0, len = answers.length; i < len; i++) {
+				var answer = answers[i];
+				var tempAnswer = {};
+				tempAnswer.headIcon = answer.headIcon;
+				tempAnswer.userId = answer.studentId;
+				tempAnswer.userName = answer.studentName;
+				tempAnswer.userNo = answer.studentNo;
+				tempAnswer.viewFiles = [{
+					type: 'image',
+					url: answer.data[0] ? answer.data[0].value || '' : ''
+				}];
+				tempAnswer.files = this._adaptedDataForQuestion(answer, questionType).files;
+				this.userIdMap[answer.studentId] = tempAnswer;
+				afterData.push(tempAnswer);
+			}
+			return afterData;
+        },
+		_adaptedDataForQuestion: function(answer, questionType){
+            var files = []
+			if (questionType === 'newhandwrite') {
+				files = [{
+					type: 'track',
+					url: answer.answerRawData
+				}]
+			}else if(questionType === 'fillcolor'){
+				files = [{
+					type: 'image',
+					url: answer.answerRawData
+				}]
+			}
+            return {
+                files: files
+            }
+        },
+        _layoutReset: function () {
+            var layoutEle = this.$view[0];
+            var defaultWidth = 1920;
+            var defaultHeight = 1080;
+            var defaultFontSize = 24;
+            var resize = function () {
+                var winSizeValue = winSize();
+                var fontSize = 0;
+                var wrapperWidth = winSizeValue.width;
+                var wrapperHeight = winSizeValue.height;
+                if (winSizeValue.width / winSizeValue.height <= defaultWidth / defaultHeight) {
+                    fontSize = winSizeValue.width / defaultWidth * defaultFontSize;
+                    wrapperWidth = winSizeValue.width < defaultWidth ? winSizeValue.width : defaultWidth;
+                    wrapperHeight = defaultHeight * wrapperWidth / defaultWidth;
+                } else {
+                    fontSize = winSizeValue.height / defaultHeight * defaultFontSize;
+                    wrapperHeight = winSizeValue.height < defaultHeight ? winSizeValue.height : defaultHeight;
+                    wrapperWidth = defaultWidth * wrapperHeight / defaultHeight;
+                }
+                layoutEle.style.fontSize = fontSize + 'px';
+            };
+            resize();
+        },
+        _getLanguageText: function (key) {
+            if (this.languageKeySet[key] == undefined)
+                return "ERROR";
+            return this.languageKeySet[key];
+        },
+        _getTimeFormat: function (totalSeconds) {
+            var min = Math.floor(totalSeconds / 60),
+                seconds = totalSeconds % 60;
+            return this._getLanguageText('popular_vote_teacher_answer_time') +
+                '：<span class="time_m"><em>' + min + '</em>' +
+                this._getLanguageText('popular_vote_teacher_minute') + '</span><span class="time_s"><em>' + seconds + '</em>' +
+                this._getLanguageText('popular_vote_teacher_second') + '</span>';
+        },
+        _replaceLanguage: function (view) {
+            $.each(this.languageKeySet, function (key, value) {
+                view.find('.lang_' + key).html(value);
+            });
+        },
+        /**组件DOM的响应方法结束**/
+        _service_: {
+            //对外实现的方法
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            //向统计组件的工具栏中注入DOM元素
+            injectLayout: function (headPanel, bottomPanel) {
+                var self = this;
+                //加载需要注入的内容
+                $.get(this.parent.basePath + '/resources/template.html', function (data) {
+                    var wrap = document.createElement('div');
+                    wrap.innerHTML = data;
+                    var injectContent = $(wrap), toolbar = injectContent.find('.js_vote_toolbar');
+                    self.parent._replaceLanguage(injectContent);
+                    headPanel.append(injectContent.find('.js_title_tip'));
+                    bottomPanel.append(toolbar);
+                    self.parent.tipContainer = toolbar;
+                    //绑定相应的事件
+                    toolbar.on('click', '._confirm-vote', $.proxy(self.parent._beginVote, self.parent));
+                    toolbar.on('click', '._cancle-vote', $.proxy(self.parent._exitPopularVote, self.parent));
+                    toolbar.on('click', '._random', $.proxy(self.parent._randomSelectUsers, self.parent));
+                });
+            },
+            setStatisticsService: function (service) {
+                if (service != null && this.parent.statisticsService == null) {
+                    this.parent.statisticsService = service;
+                }
+            },
+            setLocationProperties: function (properties) {
+                this.parent.languageKeySet = properties;
+            }
+        }
+    }, 'PopularVoteTeacher');
+
+    function winSize() {
+        var winWidth = 0;
+        var winHeight = 0;
+        if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+            winWidth = document.documentElement.clientWidth;
+            winHeight = document.documentElement.clientHeight;
+        }
+        return {
+            'width': winWidth,
+            'height': winHeight
+        };
+    }
+
+    function createRandomSeed(seedAmount) {
+        var order = [];
+        var random = [];
+        for (var i = 0; i < seedAmount; i++) {
+            order[i] = i;
+        }
+        while (order.length) {
+            var seed = Math.random();
+            random.push(order.splice(Math.floor(seed * order.length), 1)[0]);
+        }
+        return random;
+    }
+
+    //获取当前时间
+    function getCurrentTime() {
+        var locTime;
+        if (window.ClassroomUtils && (typeof ClassroomUtils != 'undefined') && ClassroomUtils.getMasterSystemTime) {
+            locTime = ClassroomUtils.getMasterSystemTime();
+            locTime = !locTime ? new Date().getTime() : (locTime * 1000);
+        } else {
+            locTime = new Date().valueOf();
+        }
+        return locTime;
+    }
+
+    function deepCopy(obj) {
+        var copyData;
+        if (obj instanceof jQuery) {
+            return obj.clone();
+        }
+        if ($.isArray(obj)) {
+            copyData = $.extend(true, [], obj);
+        } else if ($.isPlainObject(obj)) {
+            copyData = $.extend(true, {}, obj);
+        } else {
+            copyData = obj;
+        }
+        return copyData;
+    }
+
+    function equal(obj1, obj2) {
+        var isEqual = true;
+        if (getObjectType(obj1) !== getObjectType(obj2)) {
+            return false;
+        }
+        if (isObject(obj1) || isArray(obj1)) {
+            $.each(obj1, function (k, v) {
+                if (isObject(obj1[k]) || isArray(obj1)) {
+                    isEqual = equal(obj1[k], obj2[k]);
+                } else {
+                    if (obj1[k] !== obj2[k]) {
+                        isEqual = false;
+                        return false;
+                    }
+                }
+            });
+        } else {
+            if (obj1 !== obj2) {
+                isEqual = false;
+            }
+        }
+        return isEqual;
+    }
+
+    function getObjectType(obj) {
+        var type = Object.prototype.toString.call(obj);
+        return type.substring(8, type.length - 1);
+    }
+
+    function isString(obj) {
+        return Object.prototype.toString.call(obj) === '[obj String]';
+    }
+
+    function isObject(obj) {
+        return Object.prototype.toString.call(obj) === '[object Object]';
+    }
+
+    function isArray(obj) {
+        return Object.prototype.toString.call(obj) === '[object Array]';
+    }
+
+    function isFunction(obj) {
+        return Object.prototype.toString.call(obj) === '[object Function]';
+    }
+
+    function popularVoteViewModel(presenter) {
+        var $view = presenter.$view;
+        var viewModel = function () {
+        };
+        var _baseView = {
+            allCandidate: {
+                parent: '.users-all .com_layout_container .com_stat_layout ul',
+                dom: undefined
+            },
+            inVote: {
+                parent: '.in-vote .com_layout_container .com_stat_layout ul',
+                dom: undefined
+            },
+            preview: {
+                parent: '.popular-vote-user-preview',
+                dom: undefined,
+                parentIsSelf: true
+            }
+        };
+        var _viewModel = {
+            allCandidate: {
+                isDirty: false,
+                view: undefined,
+                model: undefined
+            },
+            inVote: {
+                isDirty: false,
+                view: undefined,
+                model: undefined
+            },
+            preview: {
+                isDirty: false,
+                view: undefined,
+                model: undefined
+            }
+        };
+
+        viewModel.init = function () {
+            $.each(_baseView, function (k, item) {
+                item.parent = $view.find(item.parent);
+                if (item.parentIsSelf) {
+                    item.dom = deepCopy(item.parent);
+                } else {
+                    item.dom = deepCopy($(item.parent.children()[0]));
+                }
+            });
+        };
+
+        viewModel.getCurrentView = function (type) {
+            return _viewModelMap(type).view;
+        };
+
+        viewModel.renderData = function (type, data, isForcible) {
+            switch (type) {
+                case 'candidate':
+                    _createCandidateDom(data, isForcible);
+                    break;
+                case 'inVote':
+                    _createInVoteDom(data, isForcible);
+                    break;
+                case 'preview':
+                    _createPreviewDom(data, isForcible);
+                    break;
+                default:
+                    presenter.logger.debug('类型错误，请检查');
+            }
+        };
+
+        viewModel.updateUI = function () {
+            $.each(_viewModel, function (k, item) {
+                var base = _baseView[k];
+                var parent = base.parent;
+                if (item.isDirty) {
+                    if (base.parentIsSelf) {
+                        parent.html('');
+                        parent.append(item.view[0].children());
+                    } else {
+                        parent.html('');
+                        parent.append(item.view);
+                    }
+                    item.isDirty = false;
+                }
+            });
+        };
+
+        function _map(dataType, itemType) {
+            var parentData;
+            var tempObj;
+            switch (dataType) {
+                case 'baseView':
+                    parentData = _baseView;
+                    break;
+                case 'viewModel':
+                    parentData = _viewModel;
+                    break;
+                default:
+                    throw '只支持viewModel和baseView';
+            }
+            switch (itemType) {
+                case 'candidate':
+                    tempObj = parentData.allCandidate;
+                    break;
+                case 'inVote':
+                    tempObj = parentData.inVote;
+                    break;
+                case 'preview':
+                    tempObj = parentData.preview;
+                    break;
+                default:
+                    throw '只支持candidate、inVote和preview';
+            }
+            return tempObj;
+        }
+
+        function _baseMap(type) {
+            return _map('baseView', type);
+        }
+
+        function _viewModelMap(type) {
+            return _map('viewModel', type);
+        }
+
+        function _createFileItem(type, url) {
+            var $tag;
+            switch (type) {
+                case 'image':
+                    $tag = $('<span class="pic-vertical-mc"><img class="vote-image"></span>');
+                    break;
+                case 'video':
+                    $tag = $('<video class="vote-video"></video>');
+                    break;
+                case 'audio':
+                    $tag = $('<audio class="vote-audio"></audio>');
+                    break;
+                default:
+                    throw '不支持改文件类型';
+            }
+            $tag.find('.vote-' + type).attr('src', url);
+            return $tag;
+        }
+
+        function _createPreviewThumb(type, url) {
+            var $html = $('<li><a href="###" class="slide_a"><span class="pic-vertical-mc"><img src="" alt="" /></span><span class="icon"></span></a></li>');
+            $html.find('img').attr('src', url);
+            switch (type) {
+                case 'image':
+                    $html.find('a').addClass('picture');
+                    break;
+                case 'video':
+                    $html.find('a').addClass('video');
+                    break;
+                case 'audio':
+                    $html.find('a').addClass('media');
+                    break;
+                case 'write':
+                    $html.find('a').addClass('write');
+                    break;
+                default:
+                    throw '不支持改文件类型';
+            }
+            return $html;
+        }
+
+        function _createDom(type, data, isForcible) {
+            var base = _baseMap(type);
+            var baseDom = base.dom;
+            var viewModel = _viewModelMap(type);
+            var view = [];
+            if (!equal(data, viewModel.model) || isForcible) {
+                var paramType = type;
+                $.each(data, function (k, item) {
+                    var baseView = baseDom.clone();
+                    baseView.attr('data-user', item.userId);
+                    if (paramType == 'candidate') {
+                        if (self.presenter.candidateUser[item.userId]) {
+                            baseView.addClass('on').attr('data-select', 'yes');
+                        } else {
+                            baseView.removeClass('on').attr('data-select', 'no');
+                        }
+                    }
+                    baseView.find('.com_stat_list_name_wp .name').text(item.userName);
+                    var basePanel = baseView.find('.popular-vote-user-panel');
+                    var baseTabs = baseView.find('.popular-vote-user-tabs');
+                    for (var i = 0, len = item.viewFiles.length; i < len; i++) {
+                        var file = item.viewFiles[i];
+                        var type = file.type;
+                        var url = file.url;
+                        basePanel.append(_createFileItem(type, url));
+                        basePanel.addClass(type + i);
+                        if (i == 0) {
+                            baseTabs.append(_createPreviewThumb(type, url).addClass('on'));
+                        }
+                    }
+                    if (item.viewFiles.length > 5) {
+                        baseView.find('.slidebox').addClass('flow');
+                    }
+                    view.push(baseView);
+                });
+                viewModel.model = data;
+                viewModel.isDirty = true;
+                viewModel.view = view;
+            }
+        }
+
+        function _createCandidateDom(data, isForcible) {
+            _createDom('candidate', data, isForcible);
+        }
+
+        function _createInVoteDom(data, isForcible) {
+            _createDom('inVote', data, isForcible);
+        }
+
+        function _createPreviewDom(data, isForcible) {
+            _createDom('preview', data, isForcible);
+        }
+
+        return viewModel;
+    }
+
+    window.AddonPopularVoteTeacher_create = function () {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/template.html' />
+
+
+</resources>
+
+</addon>

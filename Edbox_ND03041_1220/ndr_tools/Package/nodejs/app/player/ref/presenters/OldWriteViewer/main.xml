@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='OldWriteViewer'>
+<properties>
+
+                <property name="question_url" displayName="题目url" type="question" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+
+    function _isShowNative(isShow) {
+        var data = 'false';
+        if (isShow) {
+            data = 'true';
+        }
+        callNative('sendToPresenter', {
+            type: 'show',
+            instanceId: instanceId,
+            data: data
+        });
+    }
+
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            if (window.QtiPlayer) {
+                var qtiOptions = {
+                    showLock: true,
+                    refPath: icCreatePlayer.ref_path
+                };
+                var qtiplayer = QtiPlayer.createPlayer(qtiOptions);
+                var self = this;
+                qtiplayer.load(model.question_url, function () {
+                    var commonRenderOption = {
+                        showTitleArea: true,
+                        hideAnswerArea: true,
+                        showHint: false,
+                        theme: 'wood',
+                        containerId: 'Write' + model.$.unqiueId
+                    };
+
+                    qtiplayer.render($(view), commonRenderOption, function () {
+                        console.log('qtiplayer render finished');
+                        //var container = $(view);
+                        //container.css({
+                        //    'position': 'absolute',
+                        //    'left': '0px',
+                        //    'width': container.parent().width(),
+                        //    'height': container.parent().height() - parseInt(container.css('top').replace('px', ''), 10)
+                        //});
+                    });
+
+                    qtiplayer.mediaOnFullScreenChange(function(isFull) {
+                        //isFull:true 全屏，false 非全屏
+                        self.$dispatchEvent('HandWriteDisplayChange', PresenterEventType.IC_PLAYER_EVENT, {
+                            'isFull': isFull
+                        });
+                    })
+                });
+            }
+        },
+        destroy: function () {
+
+        }
+    });
+
+    window.AddonOldWriteViewer_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

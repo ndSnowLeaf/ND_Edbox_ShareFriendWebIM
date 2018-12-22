@@ -1,0 +1,22 @@
+<div class="stat_compound_answerdetail">
+    <div class="column_title" ref="lang_answerDetail"></div>
+    <a href="#" class="column_arrow_left js_btn_move_histogram js_arrow_hide" v-on:click="moveHistogram($event,'left')"></a>
+    <a href="#" class="column_arrow_right js_btn_move_histogram js_arrow_hide" v-on:click="moveHistogram($event,'right')"></a>
+    <div class="column_container scrollbar_style_light_bg" v-on:scroll="onScroll($event)">
+        <div class="column_content" style="min-width:100%;">
+            <ul class="column_show">
+                <li v-for="q in questions" class="column_single js_single_stat" :class="[q.style]">
+                    <span class="column_color" :style="{height: q.height+'%'}" v-on:click="clickItem(q)">
+                        <em class="column_data">{{q.accuracy}}%</em>  
+                    </span>
+                    <span class="column_num_type">    
+                        <em class="num">{{q.index}}</em>  
+                        <em class="num">{{q.subquestion}}</em> 
+                        <em class="type"></em>  
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="column_tips" ref="lang_tag"></div>
+</div>

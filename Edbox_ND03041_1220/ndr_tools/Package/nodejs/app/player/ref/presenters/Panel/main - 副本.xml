@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<addon id="Panel">
+    <model>
+        <property name="module" type="string"/>
+        <property name="placeholder" type="html"/>
+        <property name="text" type="html"/>
+        <property name="textStyle" type="string"/>
+        <property name="hideQuickArea" type="boolean"/>
+        <property name="quickAreaItems" type="string"/>
+        <property name="isVertical" type="boolean"/>
+        <property name="autoResizeFontSize" type="boolean"/>
+    </model>
+    <css>
+
+
+        .text-area{
+        word-wrap: break-word;
+        line-height: 1;
+        padding: 5px;
+        width: 100%;
+        height: 100%;
+        text-align: left;
+        overflow-y: auto;
+        }
+        .text-area  ol,ul {
+        list-style-position: inside;
+        }
+
+        .text-area > p{
+        margin: 0;
+        }
+
+        .text-vertical{
+            display: inline-block;
+            -webkit-text-orientation: upright;
+            -moz-text-orientation: upright;
+            -ms-text-orientation: upright;
+            text-orientation: upright;
+            -ms-writing-mode: tb-rl;
+            -webkit-writing-mode: vertical-rl;
+            -moz-writing-mode: vertical-rl;
+            -ms-writing-mode: vertical-rl;
+            writing-mode: vertical-rl;
+        }
+
+    </css>
+    <view>
+        <![CDATA[           
+           <div id="text-area" class="text-area"></div>           
+        ]]>
+    </view>
+    <preview>
+    </preview>
+    <presenter>
+      <![CDATA[
+
+        function AddonPanel_create(){
+
+           var presenter = {};
+
+           presenter.run = function(view, model) {
+              render(view,model);
+              renderFormula(view);
+           };
+
+           function renderFormula(view){
+               var elementWithFormula = $(view).find(".text-area");
+               elementWithFormula.hide();
+               MathJax.Hub.Queue(["Typeset", MathJax.Hub, elementWithFormula[0]]);               
+	           MathJax.Hub.Queue(['End', function () {
+	                elementWithFormula.show(); 
+	           }]);
+	               
+           };
+
+           function render(view, model){
+              var textArea = $(view).find(".text-area");
+              if(model.isVertical){
+                 textArea.addClass("text-vertical");
+              }
+              textArea.css("max-height",model.Height+"px");
+              textArea.css("max-width",model.Width+"px");
+	          addStyle($(view).find(".text-area-wrapper-cell"),textArea,model.textStyle);
+              textArea.html(model.text);
+           };
+
+           function addStyle(textAreaWrapperCell,textArea,style){
+               if(style){
+                 var item = style.split(",");
+                 textAreaWrapperCell.css('text-align',item[0]);
+				 textAreaWrapperCell.css('vertical-align',item[1]);
+				 textArea.css('color',item[2]);
+				 textArea.css('font-size',item[3] && item[3] + 'px');
+				 textArea.css('font-weight',item[4]);
+                 textArea.css('text-align',item[5]);
+              }
+           }
+
+           return presenter;
+        }
+
+      ]]>
+    </presenter>
+</addon>

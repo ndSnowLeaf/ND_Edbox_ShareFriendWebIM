@@ -1,0 +1,670 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Responder'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_Responder *{box-sizing:border-box;vertical-align:baseline;font:12px/1.5 'Microsoft YaHei',Helvetica,Arial,sans-serif}.addon_Responder .container{width:100%;height:100%;position:fixed;top:0;left:0;z-index:101}.addon_Responder .container ul{list-style:none}.addon_Responder .uiMain{width:100%;height:100%;position:absolute;top:0;left:0;z-index:102}.addon_Responder .uiMain .panel{width:614px;height:535px;position:relative}.addon_Responder .uiMain .panel .wrapper{width:100%;height:100%;text-align:center;background:#F5F7F8;position:relative;border-radius:2px;-webkit-box-shadow:0 0 10px gray;-moz-box-shadow:0 0 10px gray;box-shadow:0 0 10px gray;padding-top:84px;padding-bottom:48px}.addon_Responder .uiMain .panel .wrapper>div{display:none}.addon_Responder .title{font-size:48px;letter-spacing:5px;margin-top:0;margin-bottom:48px;color:#333}.addon_Responder #uiResponded .student_name{display:inline-block;text-align:center;font-size:20px;position:relative;word-break:break-all;word-wrap:break-word}.addon_Responder #uiResponded .student_name.no_1,.addon_Responder #uiResponded .student_name.no_2,.addon_Responder #uiResponded .student_name.no_3{background-repeat:no-repeat;background-size:100%;color:#fff;position:absolute;width:148px;height:110px;padding-top:10px;font-size:23px;display:none}.addon_Responder #uiResponded .student_name.no_1{background-image:url(resources/images/no_1.png);width:165px;height:140px;font-size:28px;left:232px}.addon_Responder #uiResponded .student_name.no_2{background-image:url(resources/images/no_2.png);top:134px;left:48px}.addon_Responder #uiResponded .student_name.no_3{background-image:url(resources/images/no_3.png);top:134px;right:48px}.addon_Responder .hourglass{background-image:url(resources/images/hourglass.png);background-size:100%;width:220px;height:236px;display:inline-block}.addon_Responder .podium{position:relative}.addon_Responder .podium li{flex-grow:1;-webkit-flex-grow:1;max-width:33%}.addon_Responder .center_flex_layout{align-items:center;justify-content:center;display:-webkit-inline-flex;-webkit-align-items:center;-webkit-justify-content:center}.addon_Responder #uiMini{position:absolute;z-index:102;top:50%;margin-top:-315px;right:100px;background:#F5F7F8;padding:0;height:636px;width:264px;-webkit-box-shadow:0 0 10px gray;-moz-box-shadow:0 0 10px gray;box-shadow:0 0 10px gray;border-radius:2px;display:none}.addon_Responder #uiMini .header{background-color:#333;color:#fff;height:46px;line-height:46px;font-size:20px;padding-left:14px}.addon_Responder #uiMini .header span{font-size:20px}.addon_Responder #uiMini .footer{width:100%;text-align:center;position:absolute;z-index:102;bottom:20px}.addon_Responder #uiMini ul{width:100%;margin-top:36px;padding:0 15px}.addon_Responder #uiMini ul li{position:relative;vertical-align:middle;margin-bottom:44px;padding:2px;border:2px solid;border-radius:32px;display:none}.addon_Responder #uiMini ul li .full_name{display:none;position:absolute;z-index:104;right:50px;top:40px;background:#fff;padding:8px;font-size:20px;border-radius:5px;white-space:nowrap;-webkit-box-shadow:0 0 10px gray;-moz-box-shadow:0 0 10px gray;box-shadow:0 0 10px gray}.addon_Responder #uiMini ul li .student_name:hover+.full_name.show{display:inline}.addon_Responder #uiMini ul li.no_1{border-color:#DC3E3B}.addon_Responder #uiMini ul li.no_1 .student_index{background-color:#DC3E3B}.addon_Responder #uiMini ul li.no_2{border-color:#1C87C3}.addon_Responder #uiMini ul li.no_2 .student_index{background-color:#1C87C3}.addon_Responder #uiMini ul li.no_3{border-color:#7BAD27}.addon_Responder #uiMini ul li.no_3 .student_index{background-color:#7BAD27}.addon_Responder #uiMini .student_index{display:inline-block;width:50px;height:50px;border-radius:50%;text-align:center;color:#fff;margin-right:10px;font-size:36px;line-height:50px;vertical-align:middle}.addon_Responder #uiMini .student_name{font-size:20px;word-break:break-all;word-wrap:break-word;color:#333;vertical-align:middle}.addon_Responder #uiMini .flower{display:inline-block;width:46px;height:46px;background-image:url(resources/images/flower.png);background-size:100%;cursor:pointer;position:absolute;right:2px;top:4px;vertical-align:middle}.addon_Responder #uiMini .flower:active{background-image:url(resources/images/flower_active.png)}.addon_Responder #btnStartNewOne{text-decoration:none;color:#fff;text-align:center;background:#7CA82D;border:1px solid transparent;font-size:20px;display:inline-block;min-width:188px;padding:0 5px;border-radius:5px;height:54px;line-height:54px}.addon_Responder #btnMainClose,.addon_Responder #btnMiniClose{display:inline-block;width:46px;height:46px;border-top:none;border-right:none;position:absolute;right:0;z-index:102}.addon_Responder #btnMiniClose{background:url(resources/images/btn_close.png) no-repeat;background-size:100%}.addon_Responder #btnMainClose{background:url(resources/images/btn_close_white.png) no-repeat;background-size:100%}.addon_Responder #countdownCounter{font-size:120px;vertical-align:middle;height:240px;line-height:240px;color:#649c01}.addon_Responder .popup{opacity:0;display:none;width:538px;background-color:#fff;position:absolute;top:50%;left:50%;z-index:103;margin-top:0;margin-left:-269px;-webkit-box-shadow:0 0 10px gray;-moz-box-shadow:0 0 10px gray;box-shadow:0 0 10px gray;border-radius:2px}.addon_Responder .popup>div{width:100%;height:100%;padding:20px 0;align-items:center;display:-webkit-inline-flex;-webkit-align-items:center}.addon_Responder .popup .flower{display:inline-block;min-width:60px;width:60px;height:60px;background:url(resources/images/flower.png) no-repeat;background-size:100%;margin-left:20px;margin-right:16px;vertical-align:middle;float:left}.addon_Responder .popup .text{font-size:24px;color:#000;vertical-align:middle}.addon_Responder .popup .student_name{font-size:24px;color:#649c01}.addon_Responder .circleProgress_wrapper{width:240px;height:240px;margin:50px auto;position:relative;background-color:#fff;border:none;border-radius:50%}.addon_Responder .circleProgress_wrapper .circle_wrapper{width:120px;height:240px;position:absolute;top:0;overflow:hidden}.addon_Responder .circleProgress_wrapper .left{left:0}.addon_Responder .circleProgress_wrapper .right{right:0}.addon_Responder .circleProgress_wrapper .circleProgress{width:240px;height:240px;border:5px solid #ddd;border-radius:50%;position:absolute;top:0}.addon_Responder .circleProgress_wrapper .left_circle{border-bottom:5px solid #5EA600;border-left:5px solid #5EA600;left:0}.addon_Responder .circleProgress_wrapper .right_circle{border-top:5px solid #5EA600;border-right:5px solid #5EA600;right:0}.addon_Responder .circleProgress_wrapper .point{position:absolute;width:20px;height:20px;background-color:#5EA600;border-radius:50%}.addon_Responder .circleProgress_wrapper.prog_3 .left_circle,.addon_Responder .circleProgress_wrapper.prog_3 .right_circle{-webkit-transform:rotate(-135deg);transform:rotate(-135deg)}.addon_Responder .circleProgress_wrapper.prog_3 .point{display:none}.addon_Responder .circleProgress_wrapper.prog_2 .left_circle{-webkit-transform:rotate(-135deg);transform:rotate(-135deg)}.addon_Responder .circleProgress_wrapper.prog_2 .right_circle{-webkit-transform:rotate(0);transform:rotate(0)}.addon_Responder .circleProgress_wrapper.prog_2 .point{top:190px;right:24px}.addon_Responder .circleProgress_wrapper.prog_1 .left_circle{-webkit-transform:rotate(-85deg);transform:rotate(-85deg)}.addon_Responder .circleProgress_wrapper.prog_1 .right_circle{-webkit-transform:rotate(45deg);transform:rotate(45deg)}.addon_Responder .circleProgress_wrapper.prog_1 .point{top:185px;left:20px}.addon_Responder .circleProgress_wrapper.prog_0 .left_circle,.addon_Responder .circleProgress_wrapper.prog_0 .right_circle{-webkit-transform:rotate(45deg);transform:rotate(45deg)}.addon_Responder .circleProgress_wrapper.prog_0 .point{top:-8px;left:114px}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="container" onselectstart="return false;"><div id="uiMain" class="uiMain center_flex_layout" style="display: none"><div class="panel"><a href="javascript:void(0);" id="btnMainClose" draggable="false"></a><div class="wrapper"><p class="title" id="uiMainTitle"></p><div id="uiReady2Respond"><div class="circleProgress_wrapper"><div class="circle_wrapper right"><div class="circleProgress right_circle"></div></div><div class="circle_wrapper left"><div class="circleProgress left_circle"></div></div><div id="countdownCounter">3</div><div class="point"></div></div></div><div id="uiResponding"><div class="hourglass"></div></div><div id="uiResponded" class="podium"><div class="student_name no_1"></div><div class="student_name no_2"></div><div class="student_name no_3"></div></div></div></div></div><div id="uiMini"><div class="header"><span id="titleRanking"></span> <a href="javascript:void(0);" id="btnMiniClose" draggable="false"></a></div><ul class="ranking"><li class="no_1"><span class="student_index">1</span><span class="student_name"></span><span class="full_name"></span><span index="1" class="flower"></span></li><li class="no_2"><span class="student_index">2</span><span class="student_name"></span><span class="full_name"></span><span index="2" class="flower"></span></li><li class="no_3"><span class="student_index">3</span><span class="student_name"></span><span class="full_name"></span><span index="3" class="flower"></span></li></ul><div class="footer"><a href="javascript:void(0);" id="btnStartNewOne"></a></div></div><div class="popup template"><div><span class="flower"></span><p class="text"></p></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[function AddonResponder_create() {
+    /**
+     * 获取Module当前的运行环境, 通过icPlayer提供的接口
+     * 已定义的环境枚举包括
+     * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)
+     * icCreatePlayer.RUNTIME.STUDENT_MOBILE(学生端)
+     * icCreatePlayer.RUNTIME.PROJECTION_MOBILE(投影端)
+     * icCreatePlayer.RUNTIME.WEB(WEB端 )
+     * icCreatePlayer.RUNTIME.TEACHER_PC(PC端)
+     * 判断例子
+     * if(currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE)
+     */
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var runtimeModel = {}; //数据对象
+    var bridgeListeners = {}; //注册Bridge监听器对象集
+    var domEventsBind = []; //HTML DOM对象事件绑定
+    var $view; //DOM对象
+
+    //状态定义
+    var RESPONDER_STATUS = {
+        INIT: 'init', //准备抢答
+        ONGOING: 'Responding', //抢答进行中
+        END: 'Responded' //抢答结束
+    };
+    var FLOWER_EVENT = 'Stuff';
+    var RESPONDER_EVENT = 'Responder';
+    var RESPONDER_EVENT_TYPE = {
+        START: 'start',
+        UPDATE: 'update',
+        END: 'end',
+        RESTORE: 'restore'
+    };
+    var COUNT_DOWN_SECS = 3; //倒计时数(秒制)
+    var LABEL_PREPARE = '请准备抢答';
+    var LABEL_RESPONDING = '抢答进行中...';
+    var LABEL_RESPONDED = '抢答结束';
+    var MESSAGE_SEND_FLOWER = "";
+
+    runtimeModel.isApp = (currentRuntime != icCreatePlayer.RUNTIME.WEB);
+
+    /**
+     * Module的逻辑
+     * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+     * @param model 模型对象
+     */
+    var presenterLogic = function (view, model) {
+        $view = $(view);
+        $view.hide();
+        runtimeModel.moduleID = model.ID;
+
+        runtimeModel.container = $view.find('.container');
+        runtimeModel.uiMain = $view.find('#uiMain');
+        runtimeModel.uiMainTitle = $view.find('#uiMainTitle');
+        runtimeModel.uiReady2Respond = $view.find('#uiReady2Respond');
+        runtimeModel.uiResponding = $view.find('#uiResponding');
+        runtimeModel.uiResponded = $view.find('#uiResponded');
+        runtimeModel.uiMini = $view.find('#uiMini');
+        runtimeModel.countdownCounter = $view.find('#countdownCounter');
+        runtimeModel.templatePopup = $view.find('.popup');
+
+        runtimeModel.btnSendFlower = $view.find('#uiMini .ranking .flower');
+        runtimeModel.btnMainClose = $view.find('#btnMainClose');
+        runtimeModel.btnMiniClose = $view.find('#btnMiniClose');
+        runtimeModel.btnStartNewOne = $view.find('#btnStartNewOne');
+
+        //国际化Label
+        i18nHandle();
+    };
+
+    function i18nHandle() {
+        LABEL_PREPARE = Utils.getI18NText('state_prepare');
+        LABEL_RESPONDING = Utils.getI18NText('state_in_progress');
+        LABEL_RESPONDED = Utils.getI18NText('state_finished');
+        MESSAGE_SEND_FLOWER = Utils.getI18NText('message_send_flower');
+
+        $view.find('#titleRanking').text(Utils.getI18NText('label_ranking'));
+        runtimeModel.btnStartNewOne.text(Utils.getI18NText('label_once_again'));
+        runtimeModel.uiMainTitle.text(LABEL_PREPARE);
+    }
+
+    var presenter = function () {
+    };
+
+    /**
+     * 定义该函数，可以使用player的方法
+     * @param controller Object controller是Player Controller 。内部api太多，具体参考Player-services.htm
+     */
+    presenter.setPlayerController = function (controller) {
+        runtimeModel.controller = controller;
+        runtimeModel.eventBus = controller.getEventBus();
+
+        //监听Responder事件
+        runtimeModel.eventBus.addEventListener(RESPONDER_EVENT, this);
+        Utils.registerBridgeListener(RESPONDER_EVENT, ResponderEventHandler);
+    };
+
+    var ResponderEventHandler = function (eventData) {
+        if (eventData) {
+            switch (eventData.type) {
+                case RESPONDER_EVENT_TYPE.START: //启动抢答
+                    runtimeModel.activityID = eventData.id;
+                    startResponder();
+
+                    break;
+                case RESPONDER_EVENT_TYPE.UPDATE: //抢答成功的学生信息
+                    if (runtimeModel.students) {
+                        if (runtimeModel.students.length < 3) {
+                            var student = {
+                                userId: eventData.userId,
+                                userName: eventData.userName,
+                                index: eventData.index
+                            };
+
+                            addStudent(student);
+                        }
+                    }
+
+                    break;
+                case RESPONDER_EVENT_TYPE.END: //结束抢答
+                    terminateResponder(false);
+
+                    break;
+                case RESPONDER_EVENT_TYPE.RESTORE: //状态恢复
+                    startResponder(true);
+
+                    if (eventData.status === RESPONDER_STATUS.ONGOING) {
+                        runtimeModel.status = RESPONDER_STATUS.ONGOING;
+                        $.each(eventData.students, function (index, student) {
+                            runtimeModel.uiResponded.find('.no_' + (index + 1)).text(getStudentNameAbbr(student.userName));
+                            runtimeModel.uiMini.find('.student_name:eq(' + index + ')').text(student.userName);
+                        });
+
+                        $view.show();
+                        runtimeModel.uiMini.show();
+                    } else if (eventData.status === RESPONDER_STATUS.END) {
+                        runtimeModel.status = RESPONDER_STATUS.END;
+                        $.each(eventData.students, function (index, student) {
+                            runtimeModel.uiResponded.find('.no_' + (index + 1)).text(getStudentNameAbbr(student.userName));
+                            runtimeModel.uiMini.find('.student_name:eq(' + index + ')').text(student.userName);
+                        });
+
+                        $view.show();
+                        runtimeModel.uiMini.show();
+                    }
+
+                    break;
+                default:
+                    ;
+            }
+        }
+    };
+
+    /**
+     * 接收事件
+     * @param eventName 事件名称
+     * @param eventData 事件数据
+     */
+    presenter.onEventReceived = function (eventName, eventData) {
+        if (eventName === RESPONDER_EVENT) {
+            ResponderEventHandler(eventData);
+        }
+    };
+
+    presenter.setLocationProperties = function (properties) {
+        Utils.setI18NData(properties);
+    };
+
+    /**
+     * 运行环境下, 初始化Module的方法
+     * @param view 运行视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+     */
+    presenter.run = function (view, model) {
+        presenterLogic(view, model, false);
+
+        //绑定Module事件
+        bindEvent();
+    };
+
+    /**
+     * 运行环境下, 销毁Module时执行的方法
+     * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+     */
+    presenter.destroy = function () {
+        //解除绑定的Module事件
+        unBindEvent();
+        //ToDo:释放Module占用的内存对象
+
+        clearData();
+    };
+
+    /**
+     * 绑定事件的方法
+     */
+    function bindEvent() {
+        Utils.bindEvent(runtimeModel.uiMini, 'mousedown touchstart', function (e) {
+            e.stopPropagation();
+
+            runtimeModel.isUIMiniMousedown = true;
+
+            var rect = runtimeModel.uiMini[0].getBoundingClientRect();
+            runtimeModel.uiMiniPosWidth = rect.width;
+            runtimeModel.uiMiniPosHeight = rect.height;
+            runtimeModel.uiMiniPosLeft = rect.left;
+            runtimeModel.uiMiniPosTop = rect.top;
+            runtimeModel.eventOrginPos = Utils.getCursorPosition(e);
+
+            runtimeModel.viewWidth = runtimeModel.container.width();
+            runtimeModel.viewHeight = runtimeModel.container.height();
+        });
+
+        Utils.bindEvent($view, 'mousemove touchmove', function (e) {
+            e.stopPropagation();
+
+            if (runtimeModel.isUIMiniMousedown) {
+                var currentPos = Utils.getCursorPosition(e);
+                var left = Math.min(Math.max(0, (runtimeModel.uiMiniPosLeft + (currentPos.x - runtimeModel.eventOrginPos.x))), runtimeModel.viewWidth - runtimeModel.uiMiniPosWidth),
+                    top = Math.min(Math.max(0, (runtimeModel.uiMiniPosTop + (currentPos.y - runtimeModel.eventOrginPos.y))), runtimeModel.viewHeight - runtimeModel.uiMiniPosHeight);
+
+                runtimeModel.uiMini.css({
+                    'left': left + 'px',
+                    'top': top + 'px',
+                    'margin-top': 'auto'
+                });
+            }
+        });
+
+        Utils.bindEvent($view, 'mouseup touchend', function (e) {
+            if (runtimeModel.isUIMiniMousedown) {
+                runtimeModel.isUIMiniMousedown = false;
+            }
+        });
+    }
+
+    /**
+     * 解除事件绑定的方法
+     */
+    function unBindEvent() {
+        Utils.unbindEvent();
+    }
+
+    /**
+     * 启动抢答器
+     */
+    function startResponder() {
+        clearData();
+
+        //初始化数据
+        runtimeModel.status = RESPONDER_STATUS.INIT; //设置为初始状态
+        runtimeModel.students = [];
+        runtimeModel.isMiniUI = false;
+        runtimeModel.uiMainTitle.text(LABEL_PREPARE);
+
+        //按钮事件绑定
+        runtimeModel.btnSendFlower.on('click', function (e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            //Step0. 获取学生信息
+            var $target = $(e.target);
+            var student = runtimeModel.students[parseInt($target.attr('index')) - 1];
+
+            //Step1. 发送送花事件
+            Utils.fireEvent(FLOWER_EVENT, {
+                'source': runtimeModel.moduleID,
+                'item': 'FLOWER',
+                'value': {
+                    'userIds': [student.userId],
+                    'num': 1
+                }
+            });
+
+            //Step2. 显示提示框: 成功向XXX同学送出1朵鲜花
+            var popup = runtimeModel.templatePopup.clone();
+            popup.find('.text').html(MESSAGE_SEND_FLOWER.replace('{0}', '<label class="student_name">' + student.userName + '</label>'));
+            popup.appendTo(runtimeModel.container).show();
+            popup.animate({'margin-top': '-120px', 'opacity': '1'}, 1000, function () {
+                popup.fadeOut(2000, function () {
+                    popup.remove();
+                });
+            });
+        });
+        runtimeModel.btnMainClose.on('mousedown touchstart', function (e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            terminateResponder(true);
+        });
+        runtimeModel.btnMiniClose.on('mousedown touchstart', function (e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            terminateResponder(true);
+        });
+        runtimeModel.btnStartNewOne.on('mousedown touchstart', function (e) {
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            //Step1. 结束当前抢答
+            terminateResponder(false);
+
+            //Step2. 发送事件通知PC，再次发起抢答
+            Utils.callNative(RESPONDER_EVENT, {
+                //'id': runtimeModel.activityID,
+                'type': RESPONDER_EVENT_TYPE.START
+            });
+        });
+
+        //显示倒计时界面
+        $view.show();
+
+        runtimeModel.uiMain.css('display', 'inline-flex');
+
+        //启动倒计时计时器
+        startCountdownTimer();
+    }
+
+    function startCountdownTimer() {
+        runtimeModel.countDownTimer && clearInterval(runtimeModel.countDownTimer);
+
+        //倒计时：3, 2, 1
+        runtimeModel.countDownCounter = COUNT_DOWN_SECS;
+        runtimeModel.countdownCounter.text(runtimeModel.countDownCounter);
+        runtimeModel.uiReady2Respond.show();
+
+        runtimeModel.uiReady2Respond.find('.circleProgress_wrapper').removeClass('prog_0 prog_1 prog_2 prog_3').addClass('prog_' + runtimeModel.countDownCounter);
+        runtimeModel.countDownTimer = setInterval(function () {
+            runtimeModel.countDownCounter--;
+
+            runtimeModel.countdownCounter.text(runtimeModel.countDownCounter);
+            runtimeModel.uiReady2Respond.find('.circleProgress_wrapper').removeClass('prog_0 prog_1 prog_2 prog_3').addClass('prog_' + runtimeModel.countDownCounter);
+            if (runtimeModel.countDownCounter <= 0) {
+                clearInterval(runtimeModel.countDownTimer);
+
+                setTimeout(function () {
+                    //设置为初始状态
+                    runtimeModel.status = RESPONDER_STATUS.ONGOING;
+
+                    //跳转到"抢答进行中"界面
+                    if (!(runtimeModel.students && runtimeModel.students.length > 0)) { //修复bug-37668
+                        runtimeModel.uiMainTitle.text(LABEL_RESPONDING);
+                        runtimeModel.uiReady2Respond.hide();
+                        runtimeModel.uiResponding.show();
+                    }
+                }, 100);
+            }
+        }, 1000);
+    }
+
+    /**
+     * 窗口缩小规则： 当有三名学生抢答成功过1秒、或者第一名学生抢答成功之后再过3秒，窗口自动缩小。
+     */
+    function addStudent(student) {
+        runtimeModel.students.push(student);
+
+        if (runtimeModel.status === RESPONDER_STATUS.INIT) {
+            runtimeModel.countDownTimer && clearInterval(runtimeModel.countDownTimer);
+            runtimeModel.uiReady2Respond.hide();
+        }
+
+        switch (runtimeModel.students.length) {
+            case 1:
+                //Title显示成“抢答结束”
+                runtimeModel.status = RESPONDER_STATUS.END;
+                runtimeModel.uiMainTitle.text(LABEL_RESPONDED);
+
+                showStudentName(student, 1);
+                runtimeModel.uiResponding.hide();
+                runtimeModel.uiResponded.show();
+
+                runtimeModel.uiMiniShowTimer && clearTimeout(runtimeModel.uiMiniShowTimer);
+                runtimeModel.uiMiniShowTimer = setTimeout(function () {
+                    switchToMiniUI();
+                }, 3000);
+
+                break;
+            case 2:
+                showStudentName(student, 2);
+
+                break;
+            case 3:
+                //设置为初始状态
+                showStudentName(student, 3);
+
+                //1秒后，窗口自动缩小
+                if (!runtimeModel.isMiniUI) {
+                    runtimeModel.uiMiniShowTimer && clearTimeout(runtimeModel.uiMiniShowTimer);
+                    runtimeModel.uiMiniShowTimer = setTimeout(function () {
+                        switchToMiniUI();
+                    }, 1000);
+                }
+
+                break;
+            default:
+                ;
+        }
+    }
+
+    function showStudentName(student, index) {
+        runtimeModel.uiResponded.find('.no_' + index).text(getStudentNameAbbr(student.userName, 10, 10)).show();
+
+        var nameSpan = runtimeModel.uiMini.find('.student_name:eq(' + (index - 1) + ')');
+        var displayName = getStudentNameAbbr(student.userName, 12, 10);
+        nameSpan.text(displayName).parent().show();
+        if (displayName != student.userName) {
+            nameSpan.nextAll('.full_name').text(student.userName).addClass('show');
+        }
+    }
+
+    //针对姓名过长的学生姓名进行截取
+    function getStudentNameAbbr(name, bytes, chars) {
+        if (!!name && (Utils.getTextBytes(name) > bytes || name.length > chars)) {
+            return Utils.subTextByBytes(name, 4) + '...' + Utils.subTextByBytes(name, 4, true);
+        }
+
+        return name;
+    }
+
+    /**
+     * 窗口自动缩小
+     */
+    function switchToMiniUI() {
+        if (runtimeModel.isMiniUI) return;
+
+        runtimeModel.uiMain.hide();
+        runtimeModel.uiResponded.hide();
+        runtimeModel.uiMini.show();
+        runtimeModel.isMiniUI = true;
+    }
+
+    /**
+     * 结束抢答
+     */
+    function terminateResponder(needNotifyPC) {
+		/** 修复bug-114759: UI渲染延迟导致，CEF隐藏后，H5改变自己的外观，CEF却不会同步更新UI，所以采用延迟机制实现。 */
+		
+        //清除数据
+        clearData();
+		setTimeout(function() {
+			//发送“抢答结束”事件给老师PC端
+			!!needNotifyPC && Utils.callNative(RESPONDER_EVENT, {
+				'id': runtimeModel.activityID,
+				'type': RESPONDER_EVENT_TYPE.END
+			});
+		}, 500);
+    }
+
+    /**
+     * 数据清理
+     */
+    function clearData() {
+        //清除可能正在运行中的定时器
+        !!runtimeModel.countDownTimer && clearInterval(runtimeModel.countDownTimer);
+        !!runtimeModel.uiMiniShowTimer && clearTimeout(runtimeModel.uiMiniShowTimer);
+
+        //清空学生数据
+        runtimeModel.students = null;
+        $view.find('.student_name').text('');
+
+        //解绑DOM事件
+        runtimeModel.btnSendFlower.off('click');
+        runtimeModel.btnMainClose.off('mousedown touchstart');
+        runtimeModel.btnMiniClose.off('mousedown touchstart');
+        runtimeModel.btnStartNewOne.off('mousedown touchstart');
+
+        //隐藏界面
+        runtimeModel.uiMain.hide();
+        runtimeModel.uiReady2Respond.hide();
+        runtimeModel.uiResponding.hide();
+        runtimeModel.uiResponded.hide();
+        runtimeModel.uiMini.hide();
+        runtimeModel.uiMini.removeAttr('style');
+
+        runtimeModel.uiResponded.find('div.student_name').hide();
+        runtimeModel.uiMini.find('ul.ranking>li').hide();
+        runtimeModel.uiMini.find('.full_name').text('').removeClass('show');
+        runtimeModel.uiReady2Respond.find('.circleProgress_wrapper').removeClass('prog_0 prog_1 prog_2 prog_3');
+
+        //关闭抢答界面
+        $view.hide();
+    }
+
+    var Utils = {
+        //绑定事件到DOM对象
+        'bindEvent': function ($element, eventNames, handler) {
+            domEventsBind.push({
+                element: $element,
+                eventNames: eventNames
+            });
+
+            return $element.on(eventNames, handler);
+        },
+        //解除DOM对象事件绑定
+        'unbindEvent': function ($element, eventNames) {
+            if (!$element) {
+                $.each(domEventsBind, function () {
+                    this.element.off(this.eventNames);
+                });
+
+                domEventsBind = [];
+            } else {
+                $element.off(eventNames);
+            }
+        },
+        //获取光标位置
+        'getCursorPosition': function (evt) {
+            if (evt.type.indexOf('touch') > -1) {
+                touch = evt.originalEvent.changedTouches[0];
+                return {x: touch.pageX, y: touch.pageY};
+            } else {
+                return {x: evt.pageX, y: evt.pageY};
+            }
+        },
+        //注册Bridge监听器
+        'registerBridgeListener': function (eventName, eventHandler) {
+            if (runtimeModel.isApp && Bridge && Bridge.registerListener) {
+                bridgeListeners[eventName] = Bridge.registerListener(eventName, eventHandler);
+            }
+        },
+        //注销Bridge监听器
+        'unRegisterBridgeListener': function () {
+            if (runtimeModel.isApp && Bridge && Bridge.unRegisterListener) {
+                if (bridgeListeners) {
+                    for (var key in bridgeListeners) {
+                        if (bridgeListeners.hasOwnProperty(key) && bridgeListeners[key]) {
+                            Bridge.unRegisterListener(key, bridgeListeners[key]);
+                        }
+                    }
+
+                    bridgeListeners = {};
+                }
+            }
+        },
+        //调用本地方法
+        'callNative': function (eventName, data) {
+            if (runtimeModel.isApp && Bridge && Bridge.callNative) {
+                return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+            }
+
+            return false;
+        },
+        'fireEvent': function (eventName, option) {
+            if (!option) {
+                option = {};
+                ClassroomUtils.log("发送事件的option为空");
+
+            }
+
+            option.source = runtimeModel.moduleID;
+            option.isApp = true;
+            ClassroomUtils.fireEvent(eventName, option);
+        },
+        isSingleByte: function (c) {
+            return /^[\u0000-\u00ff]$/.test(c);
+        },
+        getTextBytes: function (text) {
+            if (!text) return 0;
+
+            var bytesCount = 0;
+            for (var i = 0; i < text.length; i++) {
+                bytesCount += (this.isSingleByte(text.charAt(i)) ? 1 : 2);
+            }
+
+            return bytesCount;
+        },
+        subTextByBytes: function (text, bytes, isReverse) {
+            if (!text) return text;
+
+            var buffer = '', bytesCount = 0;
+            if (!!isReverse) {
+                for (var i = text.length - 1; i >= 0; i--) {
+                    var c = text.charAt(i);
+                    bytesCount += (this.isSingleByte(c) ? 1 : 2);
+
+                    if (bytesCount <= bytes) {
+                        buffer = c + buffer;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                for (var i = 0; i < text.length; i++) {
+                    var c = text.charAt(i);
+                    bytesCount += (this.isSingleByte(c) ? 1 : 2);
+
+                    if (bytesCount <= bytes) {
+                        buffer += c;
+                    } else {
+                        break;
+                    }
+                }
+            }
+
+            return buffer;
+        },
+        setI18NData: function (data) {
+            runtimeModel.i18nData = data;
+        },
+        getI18NText: function (key) {
+            if (!runtimeModel.i18nData) return key;
+
+            return runtimeModel.i18nData[key];
+        }
+    };
+
+    return presenter;
+}
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/btn_close.png' />
+<file src='./resources/images/btn_close_white.png' />
+<file src='./resources/images/flower.png' />
+<file src='./resources/images/flower_active.png' />
+<file src='./resources/images/hourglass.png' />
+<file src='./resources/images/no_1.png' />
+<file src='./resources/images/no_2.png' />
+<file src='./resources/images/no_3.png' />
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/en_US/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/ja_JP/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+
+
+</resources>
+
+</addon>

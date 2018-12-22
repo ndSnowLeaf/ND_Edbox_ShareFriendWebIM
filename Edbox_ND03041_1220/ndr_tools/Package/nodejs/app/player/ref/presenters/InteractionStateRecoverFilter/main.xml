@@ -1,0 +1,226 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='InteractionStateRecoverFilter'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BaseController.extend({
+        //元数据信息
+        metaInfo: {
+            name: "InteractionStateRecoverFilter",
+            type: PresenterType.PRESENTER_FILTER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.currentState = {};
+            this.loadedServiceList = [];
+            this.questionService = {};
+            //定义组件的事件
+            $PresenterEvent['InteractionStateRecoverFilter'] = {
+                PRESENTER_STATE_CHANGE: "interaction_presenter_state_change"
+            };
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {
+                level: Logger.DEBUG
+            });
+        },
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "IStatRecover",
+                methods: ['getState', 'setState']
+            }, {
+                interface: "IQuestion",
+                methods: ['getQuestionInfo']
+            }];
+        },
+        /**
+         * 实现基类的中对拦截的Presenter执行run方法后的处理
+         * @param interfaceName 定义的接口名称
+         * @param metaInfo 被拦截Presenter的metaInfo
+         * @param service 被拦截Presenter的service
+         */
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            if (interfaceName == "IStatRecover") {
+                // 为动态加载的服务执行状态恢复
+                var stateKey = metaInfo.name;
+                if (service.getPresenterIdentify) {
+                    stateKey = service.getPresenterIdentify();
+                }
+                var presenterState = this.currentState[stateKey];
+                if (presenterState != null) {
+                    service.setState(presenterState);
+                }
+                this.loadedServiceList.push({
+                    metaInfo: metaInfo,
+                    service: service
+                });
+            } else if (interfaceName == "IQuestion") {
+                this.questionService = service;
+            }
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.initStateEvent();
+            //在这里进行所有需要进行状态恢复的事件绑定
+            this.$addEventListener($PresenterEvent.InteractionStateRecoverFilter.PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT, this._stateChange);
+        },
+        getQuestionId: function () {
+            if (this.questionService && this.questionService.getQuestionInfo) {
+                var info = this.questionService.getQuestionInfo();
+                if (info && info.id) {
+                    return info.id;
+                }
+            }
+            return '';
+        },
+        initStateEvent: function (params) {
+            var that = this;
+            //数据回调
+            this.$addEventListener('getQuestionStateCallback', PresenterEventType.NATIVE_EVENT, function (state) {
+                that.logger.debug("getQuestionStateCallback：" + state);
+                if (state && state.state) {
+                    that.setState(state.state);
+                }
+            });
+            //加载结束后，向原生层拿数据
+            this.$addEventListener('PresenterLoaded', PresenterEventType.IC_PLAYER_EVENT, function () {
+                var id = that.getQuestionId();
+                that.logger.debug("当前题目id：" + id);
+                if (id && this.urlParams['app'] === 'advance') {
+                    try {
+                        that.$dispatchEvent('getQuestionState', PresenterEventType.NATIVE_EVENT, {id: id});
+                    } catch (e) {
+                    }
+                }
+            });
+        },
+        destroy: function () {
+            //移除事件总线上的监听
+            this.$removeEventListener();
+            //移除事件定义
+            delete $PresenterEvent.InteractionStateRecoverFilter;
+        },
+        getState: function () {
+            this.logger.debug("执行到GetState咯");
+            var state = {};
+            $.each(this.loadedServiceList, function (key, item) {
+                //获取单个Presenter的状态
+                var presenterState = item.service.getState();
+                //附加__stateFromRemote的定义,优先认为是本地的状态恢复
+                $.extend(presenterState, {
+                    __stateFromRemote: false
+                });
+                //修改使用CLASS_ID作为唯一标识
+                if (presenterState != null) {
+                    var stateKey = item.metaInfo.name;
+                    if (item.service.getPresenterIdentify) {
+                        stateKey = item.service.getPresenterIdentify();
+                    }
+                    state[stateKey] = presenterState;
+                }
+            });
+            return state;
+        },
+        setState: function (state, options) {
+            var self = this;
+            this.logger.debug("执行到SetState咯");
+            this.logger.debug("当前的状态", state);
+            this.logger.debug("状态恢复选项", options);
+            //当options.isClassroomExam不为true时，这是一次新的随堂练习，无需任何状态恢复
+            if (options != null && !options.isClassroomExam) {
+                return;
+            }
+            var stateFromRemote = false;
+            var isSubmitSucceed = false;
+            // 当options.isClassroomExam为true，且options.isServerState为false时，
+            // 说明该生未在服务端提交过状态，或服务端的状态比本地状态要早，因此setState提供的是本地的状态。
+            if (options != null && options.isClassroomExam && !options.isServerState) {
+                stateFromRemote = false;
+            }
+            //当options.isClassroomExam为true，且options.isServerState为true时，
+            // 说明服务端的状态是最新的，setState提供的是来自服务端的状态。
+            if (options != null && options.isClassroomExam && options.isServerState) {
+                stateFromRemote = true;
+            }
+            if (options != undefined) {
+                isSubmitSucceed = options.isSubmitSucceed;
+            }
+            this.currentState = state;
+            //将状态中的每个对象的__stateFromRemote设置为正确的值
+            $.each(this.currentState, function (key, item) {
+                item.__stateFromRemote = stateFromRemote;
+                item.__isSubmitSucceed = isSubmitSucceed;
+            });
+            // 把已经准备好的服务setState
+            $.each(this.loadedServiceList, function (index, item) {
+                var stateKey = item.metaInfo.name;
+                if (item.service.getPresenterIdentify) {
+                    stateKey = item.service.getPresenterIdentify();
+                }
+                item.service.setState(self.currentState[stateKey]);
+            });
+        },
+        _stateChange: function () {
+            this.playerController.getState().savePageState();
+            var state = this.getState();
+            this.logger.debug("当前的状态:", state, JSON.stringify(state));
+            var id = this.getQuestionId();
+            if (id) {
+                if (this.urlParams['app'] === 'advance') {
+                    try {
+                        this.$dispatchEvent('questionStateChange', PresenterEventType.NATIVE_EVENT, {id: id, state: state});
+                    } catch (e) {
+                    }
+                }
+
+            } else {
+                this.logger.debug("当前题目id不存在，无法触发questionStateChange事件");
+            }
+
+        }
+    }, "InteractionStateRecoverFilter");
+
+    window.AddonInteractionStateRecoverFilter_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,59 @@
+<div class="ndui-pop com_pop ensentence-sta__pop" :class="hideDom">
+    <div class="ndui-pop-mask"></div>
+    <!-- 提示框 start-->
+    <div class="dialog_mask" style="position:absolute;left:0;right:0;height:100%;z-index:999;" :class='{"hide_dom":!popMsg}'>
+        <div style="font-size: 1.667em;margin-top: 11.5em;margin-left:11.88883em;margin-right:11.88883em;background: rgba(0,0,0,0.5);padding-bottom: 2em;padding-top: 2em;border-radius: .667em;color: #f5f5f5;">{{msg}}</div>
+    </div>
+    <!--提示框 end-->
+    <div class="ndui-pop-square">
+        <!-- 弹窗内容区 -->
+        <div class="ndui-pop-wrap">
+            <a href="###" class="ndui-pop-close right" @click="closeDetail"></a>
+            <a href="###" class="ndui-pop-close left" @click="closeDetail"></a>
+            <div class="ensentence-sta">
+                <div class="ensentence-sta__head">
+                    <div class="ensentence-sta__user">
+                        <img class="user-img" :src="userInfo.imgUrl" alt="">
+                        <p class="user-name">
+                            <span class="name-t">{{userInfo.name}}</span>
+                        </p>
+                    </div>
+                    <!--计时器-->
+                    <div class="com_time ensentence-sta__time">
+                        <!--当多语言时，要去掉分和秒文字时，请在.com_time上增加类名.time_lang-->
+                        <!-- 答题时间：<span class="time_m"><em>05</em>分</span> -->
+                        <!-- <span class="time_s"><em>21</em>秒</span> -->
+                        <div class="time_default ">
+                            <b class="time_text" ref="lang_detail.totaltime"></b>
+                            <span class="time_m"><em>{{getTime.minute}}</em></span>
+                            <b class="time_text" ref="lang_detail.minute"></b>
+                            <span class="time_s"><em>{{getTime.second}}</em></span>
+                            <b class="time_text" ref="lang_detail.second"></b>
+                        </div>
+                    </div>
+                    <!--/计时器-->
+                </div>
+                <div class="ensentence-sta__content ">
+                    <!--句子列表-->
+                    <base-list :data="getSentences" class="ensentence-sta__list scroll-enread-dark">
+                        <template scope="props">
+                            <sentence-detail-item :sentence-detail="props.data" @showmsg="showMsg"></sentence-detail-item>
+                        </template>
+                    </base-list>
+                    <!--句子列表-->
+                </div>
+                <div class="ensentence-sta__bottom">
+                    <!-- 右下送花 -->
+                    <!--送花-加文字 -->
+                    <div class="com_send_flower_wrap ensentence-sta__flower" :class='{"hide_dom":hideFlower}'>
+                        <p class="flow_text"><em class="text" ref="lang_detail.sendFlower"></em></p>
+                        <div class="com_send_flower" @click="sendFlower"></div>
+                    </div>
+                    <!--/送花-加文字-->
+                    <!-- /右下送花 -->
+                </div>
+            </div>
+        </div>
+        <!-- /弹窗内容区 -->
+    </div>
+</div>

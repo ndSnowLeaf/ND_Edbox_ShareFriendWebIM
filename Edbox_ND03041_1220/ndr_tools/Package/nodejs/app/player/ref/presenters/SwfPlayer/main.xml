@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SwfPlayer'>
+    <model>
+
+        <property name="id" displayName="题目ID" type="string"/>
+        <property name="swf_url" displayName="swf地址" type="file"/>
+        <property name="image_url" displayName="swf封面" type="image"/>
+
+    </model>
+
+    <dependencies>
+
+
+        <jsDependency>
+            <javaScript name="swfobject" version="2.3"/>
+        </jsDependency>
+
+
+    </dependencies>
+
+    <css>
+        <![CDATA[.addon_SwfPlayer * {
+    margin: 0;
+    padding: 0;
+
+}
+
+.addon_SwfPlayer .swfplayer_container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    position:absolute;
+    background-color:#eee;
+}
+
+.addon_SwfPlayer .loading{
+    background: #eee url(resources/loading.gif) no-repeat 50% 50%;
+}
+
+.addon_SwfPlayer img {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.drag_box.insert_flash, .insert_flash.move_box {
+  width: 263px;
+  height: 226px;
+  background: url(resources/icon_flash.png) center center no-repeat; }
+
+.insert_flash .play, .insert_flash .pause {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 36px;
+  height: 36px;
+  border: 2px solid #a6d0ff;
+  border-radius: 100%; }
+
+.insert_flash .play {
+  background: url(resources/spirit4.png) no-repeat 11px -558px; }
+
+.insert_flash .pause {
+  background: url(resources/stop.png) no-repeat 50% 50%;
+}
+
+.insert_flash .play:hover {
+  background:rgb(245,195,126) url(resources/spirit4.png) no-repeat 11px -558px;
+  border-color: #ecb05e; }
+
+.insert_flash .pause:hover {
+  background:rgb(245,195,126) url(resources/stop.png) no-repeat 50% 50%;
+  border-color: #ecb05e; }
+
+]]>
+
+    </css>
+
+
+    <view>
+
+        <![CDATA[<div class="swfplayer_container insert_flash loading">
+    <div class="placeholder" style="background:center center no-repeat;width:100%;height:100%"></div>
+    <div class="swfplayer_player" id="swfplayer_player"></div>
+    <a class="play"></a>
+    <a class="pause" style="display: none;"></a>
+</div>]]>
+    </view>
+
+
+    <preview>
+
+
+    </preview>
+
+
+    <presenter>
+
+        <![CDATA[function AddonSwfPlayer_create() {
+
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var viewModel = {};
+    var timerId=0;
+
+
+    var presenter = function () {
+    };
+
+    presenter.run = function (view, model) {
+        viewModel.view = view;
+        viewModel.model = model;
+
+        initView();
+        bindEvent();
+    };
+
+    presenter.setBasePath = function (path) {
+        presenter.basePath = path;
+    };
+
+    presenter.destroy = function () {
+        unBindEvent();
+    };
+    function bindEvent() {
+        $(viewModel.view).find("a.play").off("click").on("click", playSwf);
+        $(viewModel.view).find("a.pause").off("click").on("click", pauseSwf);
+    }
+
+    function unBindEvent() {
+        $(viewModel.view).find("a.play").off("click");
+        $(viewModel.view).find("a.pause").off("click");
+    }
+
+    //移动环境投影端:注册投影端事件监听
+    presenter.initProjectionMobile = function () {
+    };
+
+    function initView() {
+        var defimg = presenter.basePath + 'resources/icon_flash.png', url;
+        url = !viewModel.model.image_url || viewModel.model.image_url == 'undefined' ? defimg : viewModel.model.image_url;
+        $(viewModel.view).find(".placeholder").css("background-image","url("+url+")");
+       
+    }
+
+    function playSwf(evt) {
+        if (typeof swfobject != 'undefined') {
+            var parent = $(evt.currentTarget).parent(),
+                el = parent.find("#swfplayer_player")[0];
+            parent.find(".placeholder").hide();
+            
+            var flashvars = {}, params = {'wmode': 'transparent'}, attributes = {};
+            parent.addClass('loading');
+
+            swfobject.embedSWF(viewModel.model.swf_url, el, "100%", "100%", "9.0.0", "",flashvars, {}, attributes);
+            $(viewModel.view).find("img").fadeOut(200);
+            $(viewModel.view).find("a.play").hide();
+            $(viewModel.view).find("a.pause").show();
+
+            window.clearTimeout(timerId);
+            timerId=window.setTimeout(function(){
+                parent.removeClass('loading');
+            },3000);
+        }
+    }
+
+    function pauseSwf(evt) {
+        var parent = $(evt.currentTarget).parent(),
+            el = parent.find("object")[0];
+
+        parent.addClass('loading');
+        window.clearTimeout(timerId);
+        $(viewModel.view).find("a.play").show();
+        $(viewModel.view).find("a.pause").hide();
+        $(viewModel.view).find("img").show();
+        swfobject.removeSWF(el);
+        $(viewModel.view).find(".swfplayer_container").prepend('<div id="swfplayer_player"></div>');
+        $(viewModel.view).find(".placeholder").show();
+    }
+
+    return presenter;
+}
+]]>
+
+    </presenter>
+
+
+    <resources>
+
+        <file src='./resources/bk.jpg'/>
+        <file src='./resources/expressInstall.swf'/>
+        <file src='./resources/FOBfrictionlessPush.swf'/>
+        <file src='./resources/stop.png'/>
+        <file src='./resources/play.png'/>
+        <file src='./resources/active.png'/>
+        <file src='./resources/spirit4.png'/>
+        <file src='./resources/hover.png'/>
+        <file src='./resources/loading.gif'/>
+        <file src='./resources/icon_flash.png'/>
+
+
+    </resources>
+
+</addon>

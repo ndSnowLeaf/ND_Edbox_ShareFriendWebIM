@@ -1,0 +1,798 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ReadingEvaluating'>
+<properties>
+
+                <property name="questionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="questionType" displayName="题目类型" type="string" isLocalized="false" />
+                <property name="questionTitle" displayName="题目标题" type="string" isLocalized="false" />
+                <property name="timerType" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="timeLimit" displayName="限制时长" type="string" isLocalized="false" />
+                <property name="questionContent" displayName="题目内容" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="vue-libs" version="2.1.3" />
+    <javaScript  name="common_css" version="1.1.1" />
+    <javaScript  name="common_stat_css" version="2.0.0" />
+    <javaScript  name="ClassroomUtils" version="2.0.8" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var ReadingEvaluating;
+(function (ReadingEvaluating) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this, 'ReadingEvaluating') || this;
+            _this.$view = null;
+            _this.model = null;
+            _this.loadedQuestion = function () {
+                _this.scene.parseModel(_this.model).then(function (model) {
+                    _this.Logger.debug('【ReadingEvaluating】', '题目数据准备就绪，开始加载业务presenter');
+                    var components = _this.scene.buildSettings(_this.model, _this.Environment);
+                    _this.requireComponent('ComponentLoader', components, _this.$view, {
+                        left: 0,
+                        top: 0,
+                        width: 0,
+                        height: 0
+                    });
+                });
+            };
+            _this.metaInfo.name = 'ReadingEvaluating';
+            _this.metaInfo.type = ConstVariable.PresenterType.LAUNCHER;
+            return _this;
+        }
+        Presenter.prototype.mockInit = function () {
+            this.model.questionContent = {
+                "sectionsType": "sentence",
+                "sections": [
+                    {
+                        "sectionId": "UUID",
+                        "content": "Where are you from?",
+                        "voice": "resource/voices/a.mp3",
+                        "role": 1
+                    }, {
+                        "sectionId": "UUID",
+                        "content": "I'm from China",
+                        "voice": "resource/voices/b.mp3",
+                        "role": 2
+                    }, {
+                        "sectionId": "UUID",
+                        "content": "What's your name?",
+                        "voice": "resource/voices/c.mp3",
+                        "role": 1
+                    }
+                ]
+            };
+            this.loadedQuestion();
+        };
+        Presenter.prototype.$setSceneLogic = function (logic) { };
+        Presenter.prototype.$launch = function (options) {
+            this.Logger.debug('run $launch method');
+            if (this.View !== null) {
+                this.$view = $(this.View);
+            }
+            var sceneName = options.scene.name;
+            this.model = this.Model;
+            this.$view.hide();
+            var scene = __webpack_require__(5)("./" + sceneName).scene;
+            this.scene = scene;
+            this.scene.init(this, this.loadedQuestion);
+        };
+        Presenter.prototype.$release = function () { this.Logger.debug('run $release method'); };
+        return Presenter;
+    }(SceneClass));
+    ReadingEvaluating.Presenter = Presenter;
+})(ReadingEvaluating || (ReadingEvaluating = {}));
+window['AddonReadingEvaluating_create'] = function () {
+    return new ReadingEvaluating.Presenter();
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
+    return { next: verb(0), "throw": verb(1), "return": verb(2) };
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Classroom = (function () {
+    function Classroom() {
+    }
+    Classroom.prototype.init = function (presenter, callback) {
+        callback();
+    };
+    Classroom.prototype.parseModel = function (model) {
+        return __awaiter(this, void 0, void 0, function () {
+            var content, overSecond, questions, i, iLen;
+            return __generator(this, function (_a) {
+                content = model.question_url.questionContent;
+                overSecond = {
+                    word: 3,
+                    sentence: 10,
+                    sections: 60
+                };
+                questions = [];
+                for (i = 0, iLen = content.sections.length; i < iLen; i++) {
+                    questions.push({
+                        sectionId: ClassroomUtils.uuid(),
+                        index: i,
+                        type: content.sectionsType,
+                        overSecond: overSecond[content.sectionsType],
+                        resourceId: content.sections[i].sectionId,
+                        vocabulary: content.sections[i].content,
+                        wordProp: null,
+                        paraphrase: null,
+                        phonogram: null,
+                        standardAudio: content.sections[i].voice,
+                        myRecordAuio: false,
+                        isEvaluatedFail: false,
+                        isEvaluated: false,
+                        scoreLevel: '',
+                        evaluatedContent: '',
+                        evaluatedPhonogram: ''
+                    });
+                }
+                model.questionContent = questions;
+                return [2 /*return*/, model];
+            });
+        });
+    };
+    Classroom.prototype.buildSettings = function (model, _a) {
+        var _b = _a === void 0 ? {} : _a, _c = _b.isWeb, isWeb = _c === void 0 ? false : _c, _d = _b.isPC, isPC = _d === void 0 ? false : _d, _e = _b.isApp, isApp = _e === void 0 ? false : _e;
+        var modules = {
+            layout: 'ObjectiveInteractionLayout',
+            controllers: [
+                {
+                    presenter: 'I18nFilter'
+                }, {
+                    presenter: 'InteractionStateRecoverFilter'
+                }, {
+                    presenter: 'AnswerFlowController',
+                    depends: [
+                        {
+                            property: 'TimerService',
+                            presenter: 'TimerController'
+                        }
+                    ]
+                }
+            ],
+            components: [
+                {
+                    presenter: 'InteractionTimer',
+                    renderTo: 'TopLeftPanel'
+                }, {
+                    presenter: 'ReadingEvaluatingBusiness',
+                    renderTo: 'CenterPanel'
+                }
+            ]
+        };
+        var settings = [
+            {
+                name: 'ObjectiveInteractionLayout',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'questionType',
+                        type: 'string',
+                        value: model.ID
+                    }, {
+                        name: 'orientation',
+                        type: 'string',
+                        value: 'portrait'
+                    }
+                ])
+            }, {
+                name: 'InteractionTimer',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'view_type',
+                        type: 'string',
+                        value: 'new_timer'
+                    }
+                ])
+            }, {
+                name: 'TimerController',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'timer_type',
+                        type: 'string',
+                        value: model.timerType
+                    }, {
+                        name: 'time_limit',
+                        type: 'integer',
+                        value: model.timeLimit
+                    }
+                ])
+            }, {
+                name: 'AnswerFlowController',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'linkQuestionId',
+                        type: 'string',
+                        value: model.questionId
+                    }
+                ])
+            }, {
+                name: 'InteractionSubmitButton',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'can_modify',
+                        type: 'string',
+                        value: true
+                    }, {
+                        name: 'linkQuestionType',
+                        type: 'string',
+                        value: model.ID
+                    }, {
+                        name: 'linkQuestionId',
+                        type: 'string',
+                        value: model.questionId
+                    }, {
+                        name: 'view_type',
+                        type: 'string',
+                        value: 'new_em_button'
+                    }
+                ])
+            }, {
+                name: 'ReadingEvaluatingBusiness',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'id',
+                        type: 'string',
+                        value: model.ID
+                    }, {
+                        name: 'questionId',
+                        type: 'string',
+                        value: model.questionId
+                    }, {
+                        name: 'scene',
+                        type: 'string',
+                        value: 'classroom'
+                    }, {
+                        name: 'questionType',
+                        type: 'string',
+                        value: model.questionType
+                    }, {
+                        name: 'questionContent',
+                        type: 'string',
+                        value: model.questionContent
+                    }
+                ])
+            }
+        ];
+        if (isWeb) {
+            modules.controllers.push({ presenter: 'ObjectiveStatController' });
+            modules.components.push({ presenter: 'ObjectiveStatisticsRemake', renderTo: 'StatisticsPanel' });
+            modules.components.push({ presenter: 'InteractionSubmitButton', renderTo: 'BottomPanel' });
+        }
+        else if (isApp) {
+            modules.components.push({ presenter: 'InteractionSubmitButton', renderTo: 'TopRightPanel' });
+        }
+        else if (isPC) {
+            modules.controllers.push({ presenter: 'ObjectiveStatController' });
+            modules.components.push({ presenter: 'ObjectiveStatisticsRemake', renderTo: 'StatisticsPanel' });
+        }
+        settings.push({ name: 'Components', type: 'json', text: JSON.stringify(modules) });
+        return settings;
+    };
+    return Classroom;
+}());
+exports.scene = new Classroom();
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t;
+    return { next: verb(0), "throw": verb(1), "return": verb(2) };
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Exercise = (function () {
+    function Exercise() {
+        this.questionContent = {};
+    }
+    Exercise.prototype._resolveQuestion = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, envUrl, resourceRoot, questionData, questions, wordPropMapData, _loop_1, _i, questionData_1, q;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this.questionData, envUrl = _a.envUrl, resourceRoot = _a.resourceRoot, questionData = _a.questionData;
+                        questions = [];
+                        wordPropMapData = null;
+                        _loop_1 = function (q) {
+                            var questionUrl, onlineQuestionData, url, items, j, jLen, phonograms, phonogram, standardAudio;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        questionUrl = q.resourceUrl;
+                                        questionUrl = questionUrl.replace(/\$\{ref-path\}/, resourceRoot);
+                                        console.log('请求题目数据', questionUrl);
+                                        onlineQuestionData = null;
+                                        return [4 /*yield*/, $.getJSON(questionUrl).success(function (data) {
+                                                onlineQuestionData = data;
+                                            })];
+                                    case 1:
+                                        _a.sent();
+                                        if (!(q.type === 'word')) return [3 /*break*/, 4];
+                                        url = envUrl + "/v0.6/categories/WS/datas?words=&limit=(0,100)";
+                                        if (!!wordPropMapData) return [3 /*break*/, 3];
+                                        console.log('请求单词词性数据', url);
+                                        return [4 /*yield*/, $.getJSON(url).success(function (data) {
+                                                wordPropMapData = data;
+                                            })];
+                                    case 2:
+                                        _a.sent();
+                                        console.log('请求单词词性数据', JSON.stringify(wordPropMapData));
+                                        _a.label = 3;
+                                    case 3:
+                                        items = wordPropMapData.items;
+                                        for (j = 0, jLen = items.length; j < jLen; j++) {
+                                            if (items[j]['short_name'] === onlineQuestionData.WordProp) {
+                                                onlineQuestionData.WordProp = items[j]['description'];
+                                                break;
+                                            }
+                                        }
+                                        _a.label = 4;
+                                    case 4:
+                                        phonograms = onlineQuestionData.Phonogram;
+                                        phonogram = void 0;
+                                        standardAudio = void 0;
+                                        phonograms && phonograms[0] && phonograms[0].Phonogram && (phonogram = phonograms[0].Phonogram);
+                                        phonograms && phonograms[0] && phonograms[0].AudioPath && (standardAudio = phonograms[0].AudioPath.replace(/\$\{ref-path\}/, resourceRoot));
+                                        questions.push({
+                                            sectionId: ClassroomUtils.uuid(),
+                                            index: q.index,
+                                            type: q.type,
+                                            resourceId: q.resourceId,
+                                            vocabulary: onlineQuestionData.Vocabulary,
+                                            wordProp: onlineQuestionData.WordProp,
+                                            paraphrase: onlineQuestionData.Paraphrase,
+                                            phonogram: phonogram,
+                                            standardAudio: standardAudio,
+                                            myRecordAuio: false,
+                                            isEvaluatedFail: false,
+                                            isEvaluated: false,
+                                            scoreLevel: '',
+                                            evaluatedContent: '',
+                                            evaluatedPhonogram: ''
+                                        });
+                                        return [2 /*return*/];
+                                }
+                            });
+                        };
+                        _i = 0, questionData_1 = questionData;
+                        _b.label = 1;
+                    case 1:
+                        if (!(_i < questionData_1.length)) return [3 /*break*/, 4];
+                        q = questionData_1[_i];
+                        return [5 /*yield**/, _loop_1(q)];
+                    case 2:
+                        _b.sent();
+                        _b.label = 3;
+                    case 3:
+                        _i++;
+                        return [3 /*break*/, 1];
+                    case 4:
+                        console.log('最终题目数据：', JSON.stringify(questions));
+                        return [2 /*return*/, questions];
+                }
+            });
+        });
+    };
+    Exercise.prototype.init = function (presenter, callback) {
+        var _this = this;
+        presenter.addEventListener('requestQuestionDataCallback', PresenterEventType.NATIVE_EVENT, function (data) {
+            console.log('题目地址回调：', JSON.stringify(data));
+            _this.questionData = typeof data === 'string' ? JSON.parse(data) : data;
+            callback();
+        });
+        presenter.dispatchEvent('requestQuestionData', PresenterEventType.NATIVE_EVENT);
+    };
+    Exercise.prototype.parseModel = function (model) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        model.questionId = this.questionData.questionId;
+                        console.log('准备请求题目数据');
+                        _a = model;
+                        return [4 /*yield*/, this._resolveQuestion()];
+                    case 1:
+                        _a.questionContent = _b.sent();
+                        return [2 /*return*/, model];
+                }
+            });
+        });
+    };
+    Exercise.prototype.buildSettings = function (model, _a) {
+        var _b = _a === void 0 ? {} : _a, isWeb = _b.isWeb, isPC = _b.isPC, isApp = _b.isApp;
+        var modules = {
+            layout: 'ObjectiveInteractionLayout',
+            controllers: [
+                {
+                    presenter: 'I18nFilter'
+                }, {
+                    presenter: 'InteractionStateRecoverFilter'
+                }, {
+                    presenter: 'AnswerFlowController',
+                    depends: [
+                        {
+                            property: 'TimerService',
+                            presenter: 'TimerController'
+                        }
+                    ]
+                }
+            ],
+            components: [
+                {
+                    presenter: 'ReadingEvaluatingBusiness',
+                    renderTo: 'CenterPanel'
+                }
+            ]
+        };
+        var settings = [
+            {
+                name: 'ObjectiveInteractionLayout',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'questionType',
+                        type: 'string',
+                        value: model.ID
+                    }, {
+                        name: 'specialTemplate',
+                        type: 'string',
+                        value: 'true'
+                    }, {
+                        name: 'orientation',
+                        type: 'string',
+                        value: 'portrait'
+                    }
+                ])
+            }, {
+                name: 'AnswerFlowController',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'linkQuestionId',
+                        type: 'string',
+                        value: model.questionId
+                    }
+                ])
+            }, {
+                name: 'ReadingEvaluatingBusiness',
+                type: 'string',
+                value: JSON.stringify([
+                    {
+                        name: 'id',
+                        type: 'string',
+                        value: model.ID
+                    }, {
+                        name: 'scene',
+                        type: 'string',
+                        value: 'exercise'
+                    }, {
+                        name: 'questionId',
+                        type: 'string',
+                        value: model.questionId
+                    }, {
+                        name: 'questionType',
+                        type: 'string',
+                        value: model.questionType
+                    }, {
+                        name: 'questionContent',
+                        type: 'string',
+                        value: model.questionContent
+                    }
+                ])
+            }
+        ];
+        settings.push({ name: 'Components', type: 'json', text: JSON.stringify(modules) });
+        return settings;
+    };
+    return Exercise;
+}());
+exports.scene = new Exercise();
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: Error: Typescript emitted no output for x:\\Workspace\\nd\\ParticleDevelopENV\\presenters\\ReadingEvaluatingSolution\\ReadingEvaluating\\src\\types\\adapter.d.ts.\n    at Object.loader (x:\\Workspace\\nd\\ParticleDevelopENV\\node_modules\\ts-loader\\dist\\index.js:33:15)");
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+throw new Error("Module build failed: Error: Typescript emitted no output for x:\\Workspace\\nd\\ParticleDevelopENV\\presenters\\ReadingEvaluatingSolution\\ReadingEvaluating\\src\\types\\index.d.ts.\n    at Object.loader (x:\\Workspace\\nd\\ParticleDevelopENV\\node_modules\\ts-loader\\dist\\index.js:33:15)");
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var map = {
+	"./classroom": 1,
+	"./classroom.ts": 1,
+	"./exercise": 2,
+	"./exercise.ts": 2,
+	"./presenter": 0,
+	"./presenter.ts": 0,
+	"./types/adapter.d": 3,
+	"./types/adapter.d.ts": 3,
+	"./types/index.d": 4,
+	"./types/index.d.ts": 4
+};
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
+};
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 5;
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=presenter.js.map]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/scene/config.json' />
+<file src='./resources/scene/style/classroom/classroom.css' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-example-active.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-example.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-myrecord-active.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-myrecord.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-active.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-active1.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-active2.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-active3.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-voice1.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-voice2.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record-voice3.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/btn-record.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/guide-arrow-a.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/guide-arrow-b.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/guide-arrow-c.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/guide-arrow-d.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score-a.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score-b.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score-c.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score-d.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score1.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-score2.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-tip-arrow.png' />
+<file src='./resources/scene/style/classroom/resources/mobile/images/person-tip.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/afu.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bar.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bar_in.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_bot2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_botleft2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_botright2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_left2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_mainboard.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_right2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_top2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_topleft2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/bg_topright2.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_bg01_narmal.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_bg01_press.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_bg02_narmal.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_bg02_press.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_bg03_press.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon01.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon01_none.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon02.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon02_none.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon03.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon03_none.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon04.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon04_none.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon05.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon05_none.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_iconl.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_iconr.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/btn_icon_04_press.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/contral_bg.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/dialog_bg01.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/dialog_bg02.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/icon_close.png' />
+<file src='./resources/scene/style/classroom/resources/wood/images/wholebg_wood.jpg' />
+<file src='./resources/scene/style/classroom/resources/wood/images/wholebg_wood2.jpg' />
+<file src='./resources/scene/style/exercise/exercise.css' />
+
+
+</resources>
+
+</addon>

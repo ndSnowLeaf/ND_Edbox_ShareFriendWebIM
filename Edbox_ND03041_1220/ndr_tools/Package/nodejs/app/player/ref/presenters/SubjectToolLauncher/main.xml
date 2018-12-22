@@ -1,0 +1,270 @@
+<?xml version='1.0' encoding='UTF-8'?><addon id="templateid"><properties><property name="toolName" displayName="启动工具名称" type="string" isLocalized="false"/><property name="initModel" displayName="工具初始模型" type="json" isLocalized="false"/></properties><dependencies><jsDependency/></dependencies><css/><view/><presenter><![CDATA['use strict';
+
+(function () {
+  var pluginConfig = {
+    'viewer': ['I18nFilter'],
+    'editor': ['I18nFilter', 'SubjectToolEditorController']
+  };
+  var Presenter = BasicPresenter.extend({
+    metaInfo: {
+      name: 'SubjectToolLauncher',
+      type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function $init() {
+      this._super();
+      var self = this;
+      // 数据模型
+      this.model = {};
+      // 定义要启动的学科工具的名称
+      this.launchTool = undefined;
+      this.toolModel = undefined;
+      // 编辑模式
+      this.editMode = false;
+      // 学科工具的服务对象
+      this.subjectToolService = null;
+      this.subjectToolState = null;
+      // 标记是否已经加载过
+      this.toolHasLoaded = false;
+      // 标记是否在Page下也使用AddTool的方式调用
+      this.loadAsToolInPage = true;
+      this.__interface = {
+        // 实现对加载对象获取的方法
+        processBeforeRun: self._createDelegate(self._processBeforeRun, [], true, self),
+        processAfterRun: self._createDelegate(self._processAfterRun, [], true, self)
+      };
+      this.loadComponents = [];
+      // 定义日志
+      this.logger.appendHandler(function (message) {
+        console.info(message);
+      }, { level: Logger.DEBUG });
+    },
+    /** **以下开始为icPlayer的生命周期方法*****/
+    run: function run(view, model) {
+      var self = this;
+      var defer = $.Deferred();
+      this.$view = $(view);
+      this.model = model;
+      if (this.urlParams['is_modify'] != undefined) {
+        this.editMode = true;
+      }
+      if (this.editMode) {
+        this.loadComponents = pluginConfig['editor'];
+      } else {
+        this.loadComponents = pluginConfig['viewer'];
+      }
+      // 要启动的工具名称
+      // 启动的对象
+      this.launchTool = this.model.toolKey || this.model.toolName;
+      // 启动工具的初始参数
+      if (this.model.initModel) {
+        this.toolModel = this.model.initModel;
+      }
+      if (this.model.loadAsToolInPage != undefined && this.model.loadAsToolInPage == false) {
+        this.loadAsToolInPage = false;
+      }
+      // 作为工具的启动方法
+      this.__interface.execute = self._createDelegate(self._execute, [], true, self);
+      // 如果是PPTShell的场景,增加发题所需的三个方法
+      if (this.isPPTShell) {
+        this.__interface.getExerciseData = self._createDelegate(self._getExerciseData, [], true, self);
+        this.__interface.exerciseToolStartSuccess = self._createDelegate(self._exerciseStartSuccess, [], true, self);
+        this.__interface.exerciseToolStartFail = self._createDelegate(self._exerciseStartFailure, [], true, self);
+      }
+      // 启动定义的学科工具
+      if (this.launchTool === undefined) {
+        defer.resolve();
+        throw Error('property toolName not defined!');
+      }
+      // 作为颗粒进行加载时,将要加载对象以工具的形式启动;不会加载额为的插件
+      if (self.model.$.scope == 'page' && self.loadAsToolInPage === true) {
+        if (player === undefined || player.addTool === undefined) {
+          self.logger.error('object Player or method addTool is undefined!');
+        } else {
+          var toolOption = self.editMode ? { __sys: { hide: ['header', 'toolbar'] } } : {
+            __sys: {
+              width: '100%',
+              disabled: ['min', 'move', 'close', 'full'],
+              selfBorder: true
+            }
+          }; // 隐藏顶部和工具条
+          if (self.model.initModel) {
+            toolOption.__initModel = self.model.initModel;
+            player.addTool('../tools/' + self.launchTool + '/tool.xml', toolOption).then(function () {
+              self.playerController.getPlayerEvent().dispatch('PLAYER.PRINTSCREEN');
+            });
+          } else {
+            player.addTool('../tools/' + self.launchTool + '/tool.xml', toolOption);
+          }
+        }
+        defer.resolve();
+      } else {
+        // 加载扩展组件
+        var deferredList = this._loadPlugin();
+        $.when.apply(this, deferredList).done(function () {
+          if (self.model.$.scope == 'page') {
+            // 如果是Page范围
+            if (self.loadAsToolInPage === false) {
+              // 加载学科工具对象
+              self.$requireComponent(self.launchTool, self.toolModel != undefined ? self.toolModel : [], self.$view).done(function () {
+                defer.resolve();
+              });
+            }
+          } else if (self.model.$.scope == 'tool') {
+            // 如果是工具的范围,不进行直接加载;
+            defer.resolve();
+          }
+        });
+      }
+      return defer.promise();
+    },
+    destroy: function destroy() {
+      this.toolHasLoaded = false;
+    },
+    setState: function setState(state) {
+      if (this.subjectToolService && this.subjectToolService.setState) {
+        this.subjectToolService.setState(state);
+      } else {
+        this.subjectToolState = state;
+      }
+    },
+    getState: function getState() {
+      if (this.subjectToolService && this.subjectToolService.getState) {
+        return this.subjectToolService.getState();
+      }
+      return null;
+    },
+    /** 实现控制器的关键方法**/
+    _processBeforeRun: function _processBeforeRun(presenter) {
+      var self = this;
+      // 如果已经设置就不需要再设置了
+      if (self.subjectToolService != null) {
+        return;
+      }
+      if (presenter.getService) {
+        // 如果Presenter对象中包含getService对象, 从Service对象中获取对外服务对象
+        var result = presenter.getService();
+        if (result['then']) {
+          result.then(function () {
+            if (self._checkInterfaceImplement(presenter._service_)) {
+              self.subjectToolService = presenter._service_;
+            }
+          });
+        } else {
+          if (self._checkInterfaceImplement(result)) {
+            self.subjectToolService = result;
+          }
+        }
+      } else {
+        // 如果没有Service方法,直接在Presenter对象上查找
+        if (self._checkInterfaceImplement(presenter)) {
+          self.subjectToolService = presenter;
+        }
+      }
+    },
+    _processAfterRun: function _processAfterRun(presenter) {
+      if (this.subjectToolService && this.subjectToolState) {
+        this.subjectToolService.setState(this.subjectToolState);
+        this.subjectToolState = null;
+      }
+    },
+    /** 以下开始为私有方法**/
+    _execute: function _execute(options) {
+      // 如果工具已经加载过,就不需要再加载一次了
+      if (this.toolHasLoaded === true) {
+        return;
+      }
+      // 将Options作为全新的对象加入到要启动工具的model中
+      if (this.toolModel == undefined) {
+        // 保证toolModel不为空
+        this.toolModel = [];
+      }
+      if (options.__initModel !== undefined) {
+        // 教师端用
+        this.toolModel = options.__initModel;
+      } else if (options.__extendModel !== undefined) {
+        // 加入options中的额外对象, 学生端用
+        this.toolModel.push({
+          name: '__ExtendModel',
+          type: 'json',
+          text: JSON.stringify(options.__extendModel)
+        });
+      }
+      if (options.__sys !== undefined) {
+        this.toolModel.push({
+          name: '__sys',
+          type: 'json',
+          text: JSON.stringify(options.__sys)
+        });
+      }
+      if (options.__option !== undefined) {
+        this.toolModel.push({
+          name: '__option',
+          type: 'json',
+          text: JSON.stringify(options.__option)
+        });
+      }
+      var self = this;
+      // 加载学科工具对象
+      return this.$requireComponent(this.launchTool, this.toolModel != undefined ? this.toolModel : [], this.$view).done(function (presenter) {
+        self._processBeforeRun(presenter);
+        self.toolHasLoaded = true;
+        // 处理尺类工具需要实现getCanvas类的方法
+        if (presenter.__interface != undefined) {
+          if (presenter.__interface.isPointInPath && $.isFunction(presenter.__interface.isPointInPath)) {
+            self.__interface.isPointInPath = $.proxy(presenter.__interface.isPointInPath, presenter);
+          }
+          if (presenter.__interface.sync && $.isFunction(presenter.__interface.sync)) {
+            self.__interface.sync = $.proxy(presenter.__interface.sync, presenter);
+          }
+          if (presenter.__interface.resizeScreen && $.isFunction(presenter.__interface.resizeScreen)) {
+            self.__interface.resizeScreen = $.proxy(presenter.__interface.resizeScreen, presenter);
+          }
+        }
+      });
+    },
+    _getExerciseData: function _getExerciseData(data) {
+      var extraData = {
+        toolKey: this.launchTool,
+        toolOptions: {}
+      };
+      extraData.toolOptions.__extendModel = this.subjectToolService.getExtendData();
+      // 添加全屏100%的参数
+      $.extend(extraData.toolOptions, { width: '100%' });
+      data.questionInfo = this.subjectToolService.getQuestionInfo();
+      data.extraData = extraData;
+    },
+    _exerciseStartSuccess: function _exerciseStartSuccess() {
+      this.logger.info('start tool successful!');
+    },
+    _exerciseStartFailure: function _exerciseStartFailure() {
+      this.logger.info('start tool failure!');
+    },
+    _checkInterfaceImplement: function _checkInterfaceImplement(service) {
+      if (service.getQuestionInfo != undefined) {
+        return !!(this.model.$.scope == 'tool' && service.getExtendData != undefined);
+      }
+      return false;
+    },
+    /**
+     * 加载插件
+     * @private
+     */
+    _loadPlugin: function _loadPlugin() {
+      var deferredList = [];
+      var self = this;
+      $.each(this.loadComponents, function (index, item) {
+        var deferred = self.$requireComponent(item, []);
+        deferredList.push(deferred);
+      });
+      return deferredList;
+    }
+  }, 'SubjectToolLauncher');
+
+  window.AddonSubjectToolLauncher_create = function () {
+    return new Presenter();
+  };
+})();]]></presenter><resources/></addon>

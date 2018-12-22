@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='AnswerProgressController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="js-md5" version="2.3.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "AnswerProgressController",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.services = {
+                ICanReportQuestion: null,
+                IProgressDataAdapter: null
+            };
+            this.questionInfo = {};
+            this.questionMD5Cache = [];
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {level: Logger.DEBUG});
+        },
+        //定义作答流程中需要实现的接口
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "ICanReportQuestion",
+                methods: ["getQuestionInfo", "getResult"]
+            },{
+                interface: "IProgressDataAdapter",
+                methods: ["convertProgressData"]
+            }];
+        },
+        //在Presenter执行完run方法后,将符合ICanReportQuestion标准的服务对象(第一个)
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            if (interfaceName == 'ICanReportQuestion' && this.services.ICanReportQuestion === null) {
+                this.services.ICanReportQuestion = service;
+                this.questionInfo = service.getQuestionInfo();
+                if(this.questionInfo.specialProgressData !== undefined && this.questionInfo.specialProgressData === true) {
+                    this.hasSpecialProgressData = true;
+                }
+            } else if(interfaceName == 'IProgressDataAdapter' && this.services.IProgressDataAdapter === null) {
+                this.services.IProgressDataAdapter = service;
+            }
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            if(this.isApp || this.isStudent) {
+                this.__interface.exerciseProgressDataParse = this._createDelegate(this._exerciseProgressDataParse, [], true, this);
+            }
+            this._bindEvent();
+        },
+        destroy: function () {
+            this._unbindEvent();
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+        },
+        _unbindEvent: function () {
+        },
+        _exerciseProgressDataParse: function (parseData) {
+            var deffer = $.Deferred(), self = this;
+            //设置参数并进行转换
+            var params = {};
+            try {
+                if(parseData.params !== undefined && parseData.params !== "") {
+                    params = JSON.parse(parseData.params);
+                }
+            } catch(e) {
+                self.logger.error("参数转换错误", parseData.params);
+            }
+            self.logger.debug("获取数据的参数", params);
+            this._getResultMD5(params).done(function (value) {
+                if(value.isDirect) {
+                    //如果MD5由控制器计算的
+                    parseData.summary = value.datas.md5;
+                    parseData.data = value.datas.data;
+                } else {
+                    parseData.summary = '';
+                    parseData.data = [];
+                    //如果MD5是题型计算的
+                    _.each(value.datas, function (item) {
+                        parseData.summary += (item.md5 + ',');
+                        parseData.data.push(item.data !== null ? item.data : '');
+                    });
+                }
+                //TODO:Fix Me
+                if($.isArray(parseData.data) && parseData.data.length === 1 && parseData.data[0] === '') {
+                    parseData.data = [];
+                }
+                self.logger.debug("传出的数据Summary", parseData.summary);
+                self.logger.debug("传出的数据Data", parseData.data);
+                deffer.resolve();
+            });
+            return deffer.promise();
+        },
+        _getResultMD5: function (options) {
+            var self = this;
+            var def = $.Deferred();
+            var md5Value = 'Unknown';
+            var answerData = null;
+            if(this.services.ICanReportQuestion === null) {
+                this.logger.debug("没有QuestionService对象,MD5值", md5Value);
+                //这里将对象修改为对象数组
+                def.resolve({
+                    isDirect: true,
+                    datas: {md5: md5Value, data: answerData}
+                });
+            } else {
+                var temp = this.services.ICanReportQuestion.getResult();
+                if (temp.answer.user_response.length === 1 && temp.answer.user_response[0].then) {
+                    //获取作答结果, 如果结果需要异步获取
+                    temp.answer.user_response[0].then(function (data) {
+                        //如果data数据中包含MD5数据,则表示由题型自行计算变化情况
+                        temp.answer.user_response[0] = data;
+                        //先判断改题型是否存在转换过程数据的函数
+                        if(self.services.IProgressDataAdapter !== null) {
+                            var retData;
+                            //将转换数据先算出来
+                            answerData = self.services.IProgressDataAdapter.convertProgressData(temp);
+                            retData = self._getResultData.call(self, answerData, options);
+                            if(retData !== undefined) {
+                                def.resolve({
+                                    isDirect: false,
+                                    datas: retData
+                                });
+                                self.logger.debug("当前的Cache的MD5为", self.questionMD5Cache);
+                                return;
+                            }
+                        }
+                        //计算结果的MD5值
+                        md5Value = md5(JSON.stringify(temp));
+                        def.resolve({
+                            isDirect: true,
+                            datas: {md5: md5Value, data: answerData}
+                        });
+                        self.logger.debug("获取到延迟答案,MD5值", md5Value);
+                    });
+                } else {
+                    //TODO:返回结果非延迟对象的,暂时没有做MD5的判断
+                    //延迟对象马上进行resolve
+                    //计算结果的MD5值
+                    md5Value = md5(JSON.stringify(temp));
+                    //如果需要进行特殊处理
+                    if(this.services.IProgressDataAdapter !== null) {
+                        answerData = this.services.IProgressDataAdapter.convertProgressData(temp);
+                        var retData;
+                        retData = self._getResultData.call(self, answerData, options);
+                        if(retData !== undefined) {
+                            def.resolve({
+                                isDirect: false,
+                                datas: retData
+                            });
+                            //当前的Cache数据为
+                            this.logger.debug("当前的Cache的MD5为", this.questionMD5Cache);
+                            return;
+                        }
+                    }
+                    def.resolve({
+                        isDirect: true,
+                        datas: {md5: md5Value, data: answerData}
+                    });
+                    this.logger.debug("获取到非延迟答案,MD5值", md5Value);
+                }
+            }
+            return def.promise();
+        },
+        _getResultData: function (answerData, options) {
+            var retData;
+            if($.isArray(answerData) && answerData.length > 0) {
+                //如果是一个数组
+                if(answerData[0].md5 !== undefined) {
+                    //如果已经包含计算好的MD5值
+                    retData = this._checkInModify(answerData, options);
+                }
+            } else {
+                //如果结果不是一个数组
+                if(answerData.md5 !== undefined) {
+                    //如果已经包含计算好的MD5值
+                    retData = this._checkInModify([answerData], options);
+                }
+            }
+            return retData;
+        },
+        _checkInModify: function (answerData, options) {
+            var self = this;
+            var resultSet = [], pages = [];
+            if(options.page !== undefined && $.isArray(options.page)) {
+                pages = options.page;
+            }
+            $.each(answerData, function (index, item) {
+                if(self.questionMD5Cache[index] === undefined || (options.getall !== undefined && options.getall === true)) {
+                    //如果当前索引的数据没有缓存, 或是配置项目中要求全部获取时
+                    resultSet.push({md5: item.md5, data: item});
+                } else {
+                    if(pages.length === 0) {
+                        //如果Page的配置为空,又没有getall的配置, 按照当前索引的数据有缓存, 判断缓存的MD5与当前MD5是否一致
+                        if(self.questionMD5Cache[index] === item.md5) {
+                            //一致场景
+                            resultSet.push({md5: item.md5, data: {}});
+                        } else {
+                            //不一致场景
+                            resultSet.push({md5: item.md5, data: item});
+                        }
+                    } else {
+                        //反之, 如有要求获取特定的page信息
+                        if(_.indexOf(pages, index) != -1) {
+                            //如果是需要获取的页码, 无论相同与否都会设置
+                            resultSet.push({md5: item.md5, data: item});
+                        }
+                    }
+                }
+            });
+            //更新缓存的MD5值
+            self.questionMD5Cache = [];
+            _.each(resultSet, function (item) {
+                self.questionMD5Cache.push(item.md5);
+            });
+            return resultSet;
+        }
+    }, "AnswerProgressController");
+
+    window.AddonAnswerProgressController_create = function () {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,1466 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/><property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="out_frame" version="1.0.8"/><javaScript name="knockout" version="3.3.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .touchball_box_edit_pop .ui_btn_handle,.exam_skin_wood .ui_btn_handle{display:inline-block;margin:0 .75em;padding:0 1.41667em;height:3.16667em;line-height:3.16667em;border:1px solid #397274;background:-webkit-linear-gradient(bottom,#e9e9e9,#fff);background:linear-gradient(0deg,#e9e9e9 0,#fff);text-align:center;vertical-align:middle;border-radius:.41667em}.exam_skin_wood .ui_btn_handle .ui_btn_handle_text{font-size:1.5em;color:#384650}.exam_skin_wood .ui_btn_handle:active{background:-webkit-linear-gradient(bottom,#76b8ba,#89c5c7);background:linear-gradient(0deg,#76b8ba 0,#89c5c7)}.exam_skin_wood .ui_btn_handle:active .ui_btn_handle_text{color:#fff}.exam_skin_wood .ui_btn_handle.ui_btn_disabled{border-color:#93989a;background:-webkit-linear-gradient(top,#c8d1d7,#c1c8cc);background:linear-gradient(180deg,#c8d1d7 0,#c1c8cc);cursor:default}.exam_skin_wood .ui_btn_handle.ui_btn_disabled .ui_btn_handle_text{color:#969fa4}.exam_skin_wood .touchball_box{position:relative;overflow:hidden;width:100%;height:100%;background:#bfd3e2}.exam_skin_wood .touchball_box .touchball_box_wrap{position:absolute;left:50%;top:50%;margin-left:-33.375em;margin-top:-18.75em;width:66.75em;height:35.91667em}.exam_skin_wood .touchball_box .icon_ball{position:relative;display:inline-block;width:4.29167em;height:3.95833em;background:url(resources/wood/images/bg_ball_shadow.png) no-repeat center 2.75em;background-size:100% auto}.exam_skin_wood .touchball_box .icon_ball:before{content:"";display:inline-block;position:absolute;left:.20833em;top:0;width:3.91667em;height:3.95833em}.exam_skin_wood .touchball_box .icon_ball.red:before{background:url(resources/wood/images/red_ball.png) no-repeat 50%;background-size:100% auto}.exam_skin_wood .touchball_box .icon_ball.yellow:before{background:url(resources/wood/images/yellow_ball.png) no-repeat 50%;background-size:100% auto}.exam_skin_wood .touchball_box .icon_ball.blue:before{background:url(resources/wood/images/bule_ball.png) no-repeat 50%;background-size:100% auto}.exam_skin_wood .touchball_box .icon_ball.green:before{background:url(resources/wood/images/green_ball.png) no-repeat 50%;background-size:100% auto}.exam_skin_wood .touchball_box .boxwrap{position:absolute;top:0;bottom:0;width:41.75em;padding:1.04167em 1.04167em 5.41667em;background:#b4c9d9;border-radius:.41667em}.exam_skin_wood .touchball_box .boxwrap .com_btn_square_ball{margin:0 2.75em}.exam_skin_wood .touchball_box .boxwrap .icon_ball{position:absolute;background-image:none;z-index:9}.exam_skin_wood .touchball_box .boxwrap .box{position:absolute;left:50%;top:50%;margin-left:-13.83333em;margin-top:-10.83333em;width:27.66667em;height:20em;vertical-align:top;text-align:center}.exam_skin_wood .touchball_box .boxwrap .box:after{content:"";position:absolute;left:0;bottom:0;width:27.66667em;height:6.20833em;background:url(resources/wood/images/box_opacity_after.png) no-repeat 50%;background-size:100% auto;z-index:9}.exam_skin_wood .touchball_box .boxwrap .box .board_top{display:inline-block;position:relative;width:27.66667em;height:2.91667em;background:url(resources/wood/images/box_opacity_behind.png) no-repeat 50%;background-size:100% auto;z-index:11;vertical-align:top}.exam_skin_wood .touchball_box .boxwrap .box .borad_wrap{display:inline-block;margin-top:-1px;position:relative;width:27.66667em;height:17.125em;background:url(resources/wood/images/box_opacity.png) no-repeat 50%;background-size:100% auto;z-index:14;vertical-align:top}.exam_skin_wood .touchball_box .boxwrap .box .cole{position:absolute;left:8.83333em;top:1.75em;width:10em;height:1.875em;background:url(resources/wood/images/cole2.png) no-repeat 50%;background-size:8.08333em auto;z-index:12}.exam_skin_wood .touchball_box .boxwrap .box .hand{position:absolute;left:50%;top:-6.25em;width:7.5em;height:7.5em;margin-left:-3.75em;background:url(resources/wood/images/hands.png) no-repeat 50%;background-position:0 0;background-size:100% auto;z-index:13}.exam_skin_wood .touchball_box .boxwrap .box .hand .icon_ball{opacity:0;top:auto;bottom:1.45833em;left:1.08333em}.exam_skin_wood .touchball_box .boxwrap .box .hand .yellow:before{background-image:url(resources/wood/images/yellow_ball2.png)}.exam_skin_wood .touchball_box .boxwrap .box .hand .blue:before{background-image:url(resources/wood/images/blue_ball2.png)}.exam_skin_wood .touchball_box .boxwrap .box .hand .red:before{background-image:url(resources/wood/images/red_ball2.png)}.exam_skin_wood .touchball_box .boxwrap .box .hand .green:before{background-image:url(resources/wood/images/green_ball2.png)}.exam_skin_wood .touchball_box .boxwrap .insideball{position:absolute;left:0;bottom:0;width:100%;height:100%;z-index:10}.exam_skin_wood .touchball_box .boxwrap .insideball .on{opacity:.5}.exam_skin_wood .touchball_box .boxwrap .board{position:absolute;left:0;bottom:0;width:27.66667em;height:13.875em;background:url(resources/wood/images/board_front.png) no-repeat 50%;background-size:100% auto;z-index:16}.exam_skin_wood .touchball_box .boxwrap .box_shadow{position:absolute;left:-1.16667em;bottom:-1.25em;width:30em;height:8.79167em;background:url(resources/wood/images/bg_board_shadow.png) no-repeat 50%;background-size:100% auto;z-index:0}.exam_skin_wood .touchball_box .boxwrap .box_opacity .cole{background-image:url(resources/wood/images/cole.png)}.exam_skin_wood .touchball_box .boxwrap .box_opacity .board{opacity:0;-webkit-transform:translate3d(0,-3.33333em,0);transform:translate3d(0,-3.33333em,0)}.exam_skin_wood .touchball_box .boxwrap .box.animate_shake{-webkit-animation:shake 2s ease-out .5s;animation:shake 2s ease-out .5s}.exam_skin_wood .touchball_box .boxwrap .box_opacity.animate_shake{-webkit-animation:shake 2s ease-out 1s;animation:shake 2s ease-out 1s}.exam_skin_wood .touchball_box .boxwrap .box_opacity.animate_shake .board{-webkit-animation:boardshow 1s forwards,boardmove 2s 1s,boardhide .6s 3s;animation:boardshow 1s forwards,boardmove 2s 1s,boardhide .6s 3s}.exam_skin_wood .touchball_box .boxwrap .box_opacity.animate_shake .board:after{-webkit-animation:boardshow .6s .4s,boardmove 2s 1s,boardhide .9s 3s;animation:boardshow .6s .4s,boardmove 2s 1s,boardhide .9s 3s}.exam_skin_wood .touchball_box .boxwrap .hand.animate_getball{-webkit-animation:getball 3s ease-out .5s;animation:getball 3s ease-out .5s}.exam_skin_wood .touchball_box .boxwrap .hand.animate_getball .icon_ball{-webkit-animation:ballmove 3s ease-out .5s;animation:ballmove 3s ease-out .5s}.exam_skin_wood .touchball_box .countwrap{position:absolute;right:0;width:23.91667em;top:0;bottom:0;padding:0 1.66667em 5.41667em;background:#b4c9d9;border-radius:.41667em}.exam_skin_wood .touchball_box .countwrap:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .touchball_box .countwrap .count_head{padding-left:.83333em;height:3.16667em;line-height:3.16667em;text-align:left;color:#333}.exam_skin_wood .touchball_box .countwrap .count_head .text{font-size:1.5em}.exam_skin_wood .touchball_box .countwrap .count_head .num_a{margin:0 .08333em;font-size:1.3em;color:#fc3b00}.exam_skin_wood .touchball_box .countwrap .count_head .num_s{margin:0 .08333em;font-size:1.3em;color:#0072fc}.exam_skin_wood .touchball_box .countwrap_center_box{display:inline-block;vertical-align:middle;max-width:98%}.exam_skin_wood .touchball_box .count_boxwrap{position:relative}.exam_skin_wood .touchball_box .count_boxwrap:after{content:"";display:inline-block;position:absolute;left:50%;margin-left:-11em;bottom:-1.25em;width:22em;height:2.70833em;background:url(resources/wood/images/bg_result_shadow.png) no-repeat 50%;background-size:100% auto;z-index:1}.exam_skin_wood .touchball_box .count_box{position:relative;margin:0 auto;padding:.41667em;width:19.375em;background:#fff;box-shadow:0 3px 8px 0 rgba(49,114,151,.46);border-radius:.70833em;z-index:2}.exam_skin_wood .touchball_box .box_border{width:100%;background:#f2f7f7;box-shadow:inset 0 1px 8px 3px rgba(145,181,183,.75);border-radius:.70833em}.exam_skin_wood .touchball_box .box_border table{table-layout:fixed}.exam_skin_wood .touchball_box .box_border th{padding:1em 0;line-height:2.08333em;word-break:break-all}.exam_skin_wood .touchball_box .box_border th:first-child{width:7em;border-right:1px solid #d2e1e3}.exam_skin_wood .touchball_box .box_border th:nth-child(2){display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center}.exam_skin_wood .touchball_box .box_border th:nth-child(2) .text{display:inline-block;overflow:hidden;max-height:3em;-webkit-box-flex:1;-ms-flex:1;flex:1}.exam_skin_wood .touchball_box .box_border td{border-top:2px solid #d2e1e3;line-height:7.91667em;text-align:center;vertical-align:middle}.exam_skin_wood .touchball_box .box_border td:first-child{width:7em;border-right:1px solid #d2e1e3}.exam_skin_wood .touchball_box .box_border td .icon_ball{vertical-align:middle}.exam_skin_wood .touchball_box .box_border .text{font-size:1.5em;color:#2e2e2e;font-weight:400}.exam_skin_wood .touchball_box .count_box_3 .box_border th{padding:.66667em 0}.exam_skin_wood .touchball_box .count_box_3 .box_border td{line-height:5.41667em}.exam_skin_wood .touchball_box .count_box_4 .box_border th{padding:.33333em 0}.exam_skin_wood .touchball_box .count_box_4 .box_border td{line-height:4.41667em}.exam_skin_wood .touchball_box .btnwrap{position:absolute;left:0;right:0;bottom:0;height:5.41667em;text-align:center}.exam_skin_wood .touchball_box.touchball_box_student .touchball_box_wrap{margin-left:-35.54167em;margin-top:-18.75em;width:71.08333em;height:39.16667em}.exam_skin_wood .touchball_box.touchball_box_student .boxwrap{width:40.58333em}.exam_skin_wood .touchball_box.touchball_box_student .countwrap{width:30em}.exam_skin_wood .touchball_box.touchball_box_student .touchball_box_editbar{display:none}@-webkit-keyframes shake{0%,to{-webkit-transform:translateZ(0)}20%{-webkit-transform:translate3d(0,-2.08333em,0)}80%{-webkit-transform:translate3d(0,-2.08333em,0)}25%,45%,65%{-webkit-transform:translate3d(-2.08333em,-2.08333em,0) rotate(-2deg)}35%,55%{-webkit-transform:translate3d(2.08333em,-2.08333em,0) rotate(2deg)}}@keyframes shake{0%,to{-webkit-transform:translateZ(0);transform:translateZ(0)}20%{-webkit-transform:translate3d(0,-2.08333em,0);transform:translate3d(0,-2.08333em,0)}80%{-webkit-transform:translate3d(0,-2.08333em,0);transform:translate3d(0,-2.08333em,0)}25%,45%,65%{-webkit-transform:translate3d(-2.08333em,-2.08333em,0) rotate(-2deg);transform:translate3d(-2.08333em,-2.08333em,0) rotate(-2deg)}35%,55%{-webkit-transform:translate3d(2.08333em,-2.08333em,0) rotate(2deg);transform:translate3d(2.08333em,-2.08333em,0) rotate(2deg)}}@-webkit-keyframes boardshow{0%{opacity:0;-webkit-transform:translateZ(0)}1%{opacity:0;-webkit-transform:translate3d(0,-3.33333em,0)}50%{opacity:1}to{opacity:1;-webkit-transform:translateZ(0)}}@keyframes boardshow{0%{opacity:0;-webkit-transform:translateZ(0)}1%{opacity:0;-webkit-transform:translate3d(0,-3.33333em,0)}50%{opacity:1}to{opacity:1;-webkit-transform:translateZ(0);transform:translateZ(0)}}@-webkit-keyframes boardmove{0%,to{opacity:1}}@keyframes boardmove{0%,to{opacity:1}}@-webkit-keyframes boardhide{0%{opacity:1;-webkit-transform:translateZ(0)}to{opacity:0;-webkit-transform:translate3d(0,-3.33333em,0)}}@keyframes boardhide{0%{opacity:1;-webkit-transform:translateZ(0);transform:translateZ(0)}to{opacity:0;-webkit-transform:translate3d(0,-3.33333em,0);transform:translate3d(0,-3.33333em,0)}}@-webkit-keyframes getball{0%,to{-webkit-transform:translateZ(0)}10%,90%{-webkit-transform:translateZ(0)}30%{background-position:0 0}34%{background-position:0 0}35%{-webkit-transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}45%{-webkit-transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}49%{-webkit-transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}50%{-webkit-transform:translate3d(0,12.5em,0);background-position:0 -16.66667em}to{background-position:0 -16.66667em}}@keyframes getball{0%,to{-webkit-transform:translateZ(0);transform:translateZ(0)}10%,90%{-webkit-transform:translateZ(0);transform:translateZ(0)}30%{background-position:0 0}34%{background-position:0 0}35%{-webkit-transform:translate3d(0,12.5em,0);transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}45%{-webkit-transform:translate3d(0,12.5em,0);transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}49%{-webkit-transform:translate3d(0,12.5em,0);transform:translate3d(0,12.5em,0);background-position:0 -8.33333em}50%{-webkit-transform:translate3d(0,12.5em,0);transform:translate3d(0,12.5em,0);background-position:0 -16.66667em}to{background-position:0 -16.66667em}}@-webkit-keyframes ballmove{0%{opacity:0}48%{opacity:0}49%{opacity:1}to{opacity:1}}@keyframes ballmove{0%{opacity:0}48%{opacity:0}49%{opacity:1}to{opacity:1}}.exam_skin_wood .tool_com_masklayer{position:absolute;width:100%;height:100%;background-color:#000;opacity:.5;z-index:1000;display:none}.exam_skin_wood .tool_com_masklayer.on{display:block}.exam_skin_wood .touchball_box_editbar{position:absolute;bottom:0;width:100%;height:4.5em;background:#cfdee9}.exam_skin_wood .touchball_box_editbar .btn_edit{position:absolute;display:inline-block;top:.375em;right:10%;min-width:2.20833em;height:3.83333em;text-align:center}.exam_skin_wood .touchball_box_editbar .btn_edit .icon_edit{display:inline-block;min-width:2.20833em;height:2.41667em;background:url(resources/wood/images/icon_edit.png) no-repeat;background-size:100% auto}.exam_skin_wood .touchball_box_editbar .btn_edit .text_edit{display:block;min-width:2.20833em;color:#000;white-space:nowrap}.exam_skin_wood .touchball_box_edit_pop{position:absolute;left:-34.375em;margin-left:50%;bottom:5.75em;width:68.75em;height:14.83333em;border:.20833em solid #fff;border-radius:.20833em;background:#dae6ef;z-index:3000;display:none}.exam_skin_wood .touchball_box_edit_pop.on{display:block}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table{width:100%;height:11em;font-style:16px;table-layout:fixed}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table tr{height:4.83333em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td{text-align:center;min-width:6.25em;text-overflow:ellipsis;overflow:hidden;white-space:nowrap}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:first-child,.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(2),.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(3),.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(4){padding-right:4.16667em;width:17%}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(4){padding-right:0}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table tr:first-child td{padding-top:1.25em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table tr:nth-child(2) td{height:1.66667em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table tr td:nth-child(5){max-width:20.83333em!important;padding-right:.83333em;text-align:right;font-weight:400}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table tr td:nth-child(6){width:14.58333em!important;min-width:12.5em!important;text-align:left}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .transparent_text{display:inline-block;width:100%;height:80%;float:right}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .transparent_text:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_num_span,.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_span{display:inline-block;width:3.91667em;height:3.91667em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_num_span input,.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_span input{height:100%;width:100%;font-size:1.66667em;text-align:center;outline:0;border:none;display:inline-block;background:url(resources/wood/images/num_input.png) no-repeat;background-size:100% auto}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_num_span{width:4em;height:3.08333em;line-height:.16667em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .edit_input_num_span input{height:100%;width:100%;font-size:1.33333em;text-align:center;outline:0;border:none;background:url(resources/wood/images/frequency_input.png) no-repeat;background-size:100% auto}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .btn_switch{position:absolute;top:2.70833em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .applicationset-switch{background:url(resources/wood/images/btn_transparent.png);display:inline-block;width:12.125em;height:2.66667em;line-height:normal;position:relative;cursor:pointer;-webkit-transition:left .3s,background .3s;transition:left .3s,background .3s;background-size:100% auto}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .applicationset-switch:before{-webkit-transition:left .3s;transition:left .3s;content:"";width:6em;height:2.04167em;position:absolute;left:5.625em;top:.41667em;background:url(resources/wood/images/btn_not_transparent.png);display:inline-block;background-size:100% auto}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .checked:before{left:.41667em}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .applicationset-switch input[type=checkbox]{cursor:pointer;position:relative;-webkit-appearance:none;opacity:0}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .set_transparent_text_left{position:absolute;line-height:2.66667em;color:#8f8f8f;left:1.58333em;min-width:3.23em;display:inline-block;text-align:center}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .set_transparent_text_left.on{color:#000}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .set_transparent_text_right{position:absolute;right:2.29167em;line-height:2.66667em;color:#8f8f8f;min-width:1.487em;display:inline-block;text-align:center}.exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table .set_transparent_text_right.on{color:#000}.exam_skin_wood .touchball_box_edit_pop .ui_btn_handle{position:absolute;right:2.70833em;padding:0;margin:0;min-width:6em;height:2.375em;line-height:1.95833em;padding:0 .5em}.exam_skin_wood .touchball_box_edit_pop .ui_btn_handle_text{display:inline-block;font-size:1.04167em!important;margin-top:.20833em;white-space:nowrap}.exam_skin_wood .touchball_box_edit_pop:after{position:absolute;right:4%;bottom:-.83333em;content:"";display:inline-block;width:1.04167em;height:.83333em;background:url(resources/wood/images/icon_triangle.png) no-repeat;background-size:100% auto}.exam_skin_wood .com_dialog_wrapper{min-width:15em;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);z-index:99999999;background-color:rgba(47,47,47,.8);border-radius:.41667em;padding:1.25em;color:#fff;max-width:80%}.exam_skin_wood .com_dialog_wrapper .com_dialog_content{font-size:1.33333em;line-height:1.66667em}.exam_skin_wood .com_dialog_wrapper .com_dialog_content .txt{text-align:center}.exam_skin_wood .com_dialog_wrapper .com_dialog_btn{text-align:center;padding:1.875em 0 0}.exam_skin_wood .com_dialog_wrapper .com_dialog_btn a{font-size:1.08333em;display:inline-block;padding:0 1em;margin:0 1.66667em;height:2.08333em;line-height:2.08333em;min-width:4.5em;background:#11b0b6;cursor:pointer;color:#fff}.exam_skin_wood .com_dialog_wrapper .com_dialog_btn a:active{background:#62999b}.exam_skin_wood .com_dialog_wrapper .com_dialog_btn a b{font-weight:400}.typefaces_long .exam_skin_wood .touchball_box .countwrap{padding:0 1.66667em 4.16667em}.typefaces_long .exam_skin_wood .touchball_box .countwrap .count_head{overflow:hidden;height:auto;max-height:5.5em;line-height:2.5em;text-align:center}.typefaces_long .exam_skin_wood .touchball_box .countwrap .count_head .text{display:block}.typefaces_long .exam_skin_wood .touchball_box .countwrap .count_boxwrap{margin-top:.41667em}.typefaces_long .exam_skin_wood .touchball_box .countwrap .btnwrap .ui_btn_handle{margin:0 .2em;padding:.08333em 0 0;width:11em;line-height:1.5em}.typefaces_long .exam_skin_wood .touchball_box .countwrap .btnwrap .ui_btn_handle .ui_btn_handle_text{letter-spacing:-.08333em}.typefaces_long .exam_skin_wood .touchball_box .box_border .text{font-size:1.33333em}.typefaces_long .exam_skin_wood .touchball_box .count_box_4 .box_border th{padding:.41667em 0}.typefaces_long .exam_skin_wood .touchball_box .boxwrap .btnwrap .ui_btn_handle{padding:.20833em .20833em 0;line-height:1.33333em}.typefaces_long .exam_skin_wood .touchball_box .boxwrap .btnwrap .ui_btn_handle .ui_btn_handle_text{font-size:1.16667em}.typefaces_long .exam_skin_wood .touchball_box .btnwrap{height:4.16667em}.typefaces_long .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle{overflow:hidden;margin:0 1.5em;width:12.08333em}.typefaces_long .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_long .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle .ui_btn_handle_text{display:inline-block;overflow:hidden;max-height:100%;width:98%;vertical-align:middle}.typefaces_long .exam_skin_wood .touchball_box_edit_pop .ui_btn_handle{max-width:16.66667em}.typefaces_long .exam_skin_wood .touchball_box_edit_pop .ui_btn_handle .ui_btn_handle_text{overflow:hidden;width:100%}.typefaces_long .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:first-child,.typefaces_long .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(2),.typefaces_long .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(3),.typefaces_long .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(4){padding-right:2em;width:13%}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap{padding:0 1.66667em 4.16667em}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap .count_head{overflow:hidden;height:auto;max-height:5.5em;line-height:2.5em;text-align:center}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap .count_head .text{display:block}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap .count_boxwrap{margin-top:.41667em}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap .btnwrap .ui_btn_handle{margin:0 .2em;padding:.08333em 0 0;width:11em;line-height:1.5em}.typefaces_ru_RU .exam_skin_wood .touchball_box .countwrap .btnwrap .ui_btn_handle .ui_btn_handle_text{letter-spacing:-.08333em}.typefaces_ru_RU .exam_skin_wood .touchball_box .box_border .text{font-size:1.33333em}.typefaces_ru_RU .exam_skin_wood .touchball_box .count_box_4 .box_border th{padding:.41667em 0}.typefaces_ru_RU .exam_skin_wood .touchball_box .boxwrap .btnwrap .ui_btn_handle{padding:.20833em .20833em 0;line-height:1.33333em}.typefaces_ru_RU .exam_skin_wood .touchball_box .boxwrap .btnwrap .ui_btn_handle .ui_btn_handle_text{font-size:1.16667em}.typefaces_ru_RU .exam_skin_wood .touchball_box .btnwrap{height:4.16667em}.typefaces_ru_RU .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle{overflow:hidden;margin:0 1.5em;width:12.08333em}.typefaces_ru_RU .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .touchball_box .btnwrap .ui_btn_handle .ui_btn_handle_text{display:inline-block;overflow:hidden;max-height:100%;width:98%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .ui_btn_handle{max-width:16.66667em}.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .ui_btn_handle .ui_btn_handle_text{overflow:hidden;width:100%}.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:first-child,.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(2),.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(3),.typefaces_ru_RU .exam_skin_wood .touchball_box_edit_pop .touchball_box_edit_pop_table td:nth-child(4){padding-right:2em;width:13%}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="touchball_box"><div class="touchball_box_wrap"><div class="boxwrap"><div class="box js_box" id="box_animate_shake"><span class="board_top"></span> <span class="borad_wrap"></span> <span class="cole"></span> <span class="board"></span> <span class="hand js_hand"><em class="icon_ball yellow js_hand_ball" id="hand_ball"></em> </span><span class="box_shadow"></span><div class="insideball js_insideball" id="tb_insideball"></div></div><div class="btnwrap"><a class="ui_btn_handle js_touch_all_ball" href="javascript:;" id="touch_all_ball"><span class="ui_btn_handle_text" data-bind="text:catchball_quick"></span> </a><a class="ui_btn_handle js_touch_a_ball" href="javascript:;" id="touch_one"><span class="ui_btn_handle_text" data-bind="text:catchball_one_time"></span></a></div></div><div class="countwrap"><div class="countwrap_center_box"><div class="countwrap_center"><p class="count_head"><span class="text js_touching" data-bind="text:touching">摸球中...</span> <span class="text js_touched" data-bind="html:catchBall_record">已摸球<em class="num_a _touch_count" id="tb_touch_count">0</em>次，还剩<em class="num_s _left_count" id="tb_other_count">0</em>次</span></p><div class="count_boxwrap"><div class="count_box js_count_box"><div class="box_border"><table width="100%" cellspacing="0" cellpadding="0"><thead><tr><th></th><th><span class="text" data-bind="text:times"></span></th></tr></thead><tbody><tr class="js_tr_red"><td><span class="icon_ball red"></span></td><td><span class="text js_text js_red_count">0</span></td></tr><tr class="js_tr_yellow"><td><span class="icon_ball yellow"></span></td><td><span class="text js_text js_yellow_count">0</span></td></tr><tr class="js_tr_blue"><td><span class="icon_ball blue"></span></td><td><span class="text js_text js_blue_count">0</span></td></tr><tr class="js_tr_green"><td><span class="icon_ball green"></span></td><td><span class="text js_text js_green_count">0</span></td></tr></tbody></table></div></div></div></div><div class="btnwrap"><a class="ui_btn_handle js_clear_touch" href="javascript:;" id="clearTouchBall"><span class="ui_btn_handle_text" data-bind="text:restart"></span></a></div></div></div></div><div class="touchball_box_editbar js_touchball_box_editbar"><a class="btn_edit js_editbar_btn_edit" href="###"><span class="icon_edit"></span> <span class="text_edit" data-bind="text:edit">编辑</span></a></div><div class="touchball_box_edit_pop js_touchball_box_edit_pop"><table class="touchball_box_edit_pop_table"><tr><td><span class="icon_ball red"></span></td><td><span class="icon_ball yellow"></span></td><td><span class="icon_ball blue"></span></td><td><span class="icon_ball green"></span></td><td class="transparent_text"><span data-bind="text:transparency">盒子透明度:</span></td><td><span class="btn_switch"><label class="applicationset-switch js_applicationset_switch"><span class="set_transparent_text_left js_set_transparent_text_left" data-bind="text:opaque">不透明</span> <input type="checkbox" class="js_btn_switch_value" value="1"> <span class="set_transparent_text_right js_set_transparent_text_right on" data-bind="text:transparent">透明</span></label></span></td></tr><tr><td><span class="edit_input_span"><input type="text" maxlength="2" size="2" class="js_input_ball_count js_input_red_ball_count" value="8" style="ime-mode:Disabled"></span></td><td><span class="edit_input_span"><input type="text" maxlength="2" size="2" class="js_input_ball_count js_input_yellow_ball_count" value="2" onkeyup="value=this.value.replace(/\D+/g,'')" onpaste="return false" o ncontextmenu="return false;" style="ime-mode:disabled"></span></td><td><span class="edit_input_span"><input type="text" maxlength="2" size="2" class="js_input_ball_count js_input_blue_ball_count" value="0" onkeyup="value=this.value.replace(/\D+/g,'')" onpaste="return false" oncontextmenu="return false;" style="ime-mode:disabled"></span></td><td><span class="edit_input_span"><input type="text" maxlength="2" size="2" class="js_input_ball_count js_input_green_ball_count" value="0" onkeyup="value=this.value.replace(/\D+/g,'')" onpaste="return false" oncontextmenu="return false;" style="ime-mode:disabled"></span></td><td><span data-bind="text:extraction_times">抽取次数:</span></td><td><span class="edit_input_num_span"><input type="text" maxlength="2" size="2" class="js_edit_input_num" value="20" onkeyup="value=this.value.replace(/\D+/g,'')" onpaste="return false" oncontextmenu="return false;" style="ime-mode:disabled"></span></td></tr></table><a class="ui_btn_handle js_submit_data" href="javascript:;"><span class="ui_btn_handle_text" data-bind="text:definite">确定</span></a></div><div class="tool_com_masklayer js_tool_com_masklayer"></div></div><div class="com_dialog_wrapper js_com_dialog_wrapper" style="display: none"><div class="com_dialog_content"><div class="txt js_com_dialog_content_txt">信息提信息提信息提</div></div><div class="com_dialog_btn"><a href="#" class="dia_btn js_dia_btn" data-bind="text:definite"><b>确定</b></a></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+function AddonCatchBall_create() {
+    var bridgeListener = {};
+    var $view, content, recordArr, intervalFun;
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var isApp,
+        isWeb,
+        isPC,
+        isProjector,
+        isSdudent,
+        isTeacher,
+        isEditState = false;
+    /**静态数据**/
+    var max_count = 21,
+        TOTAL_BALLS_COUNT = 60,
+        INTO_TIME = 0;
+    var BALLS_ONE_TIMES_ARR = [[7, 3, 8, 1, 10, 18, 17, 19, 4, 6, 13, 11, 15, 0, 20, 12, 14, 16, 9, 5, 2], [6, 1, 8, 13, 17, 18, 15, 19, 11, 16, 3, 0, 2, 7, 20, 5, 12, 14, 9, 4, 10], [7, 11, 1, 4, 0, 15, 16, 18, 6, 2, 5, 14, 10, 8, 9, 12, 13, 3, 17, 20, 19]];
+    var CIRCLE_RANGE = 3,
+        RADIS = 60;
+    var points = [{ x: 5, y: 26 + 5 }, { x: 340 - 60, y: 10 + 5 }, { x: 457 - 60, y: 64 - 10 }, { x: 122, y: 90 - 10 }];
+
+    var audioMoqiu, audioYaoqiu, audioJilu;
+    var $touchOne, $touchAllBall, $clearTouchBal;
+    var timeout = [];
+    var i18nModel = {}; //国际化数据模型
+    var my_ball_count = { red: 8, yellow: 2, green: 0, blue: 0, catch_times: 20, transparent_box: 1 };
+    var last_num = { last_red: 8, last_yellow: 2, last_blue: 0, last_green: 0 };
+    var right_col = { red_count: 0, yellow_count: 0, blue_count: 0, green_count: 0 };
+
+    var js_box = null,
+        js_hand = null,
+        js_hand_ball = null,
+        js_insideball = null,
+        js_touch_all_ball = null,
+        js_touch_a_ball = null,
+        _touch_count = null,
+        _left_count = null,
+        js_count_box = null,
+        js_tr_red = null,
+        js_tr_yellow = null,
+        js_tr_blue = null,
+        js_tr_green = null,
+        js_red_count = null,
+        js_yellow_count = null,
+        js_blue_count = null,
+        js_green_count = null,
+        js_clear_touch = null,
+        js_submit_data = null,
+        js_touchball_box_edit_pop = null,
+        js_editbar_btn_edit = null,
+        js_tool_com_masklayer = null,
+        js_input_red_ball_count = null,
+        js_input_yellow_ball_count = null,
+        js_input_blue_ball_count = null,
+        js_input_green_ball_count = null,
+        js_set_transparent_text_left = null,
+        js_set_transparent_text_right = null,
+        js_edit_input_num = null,
+        js_input_ball_count = null,
+        js_applicationset_switch = null,
+        js_touchball_box_editbar = null,
+        js_btn_switch_value = null,
+        js_touching = null,
+        js_touched = null,
+        js_com_dialog_wrapper = null,
+        js_com_dialog_content_txt = null,
+        js_dia_btn = null;
+
+    //记录当前状态
+    var cur_randomArr = [],
+        cur_colorArr = [],
+        cur_content = {},
+        cur_num = null,
+        cur_color = "",
+        touchall_randomArr = [],
+        last_randomArr = cur_randomArr,
+        last_colorArr = cur_colorArr,
+        touchone_randomArr = [],
+        touchone_colorArr = [],
+        isOneTouching = false,
+        isAllTouching = false,
+        isReseting = false,
+        isShaking = true,
+        initPushTime = 0;
+
+    switch (currentRuntime) {
+        case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+            isProjector = true;
+            break;
+        case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+            isTeacher = true;
+            break;
+        case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+            isSdudent = true;
+            break;
+        case icCreatePlayer.RUNTIME.WEB:
+            isWeb = true;
+            break;
+        case icCreatePlayer.RUNTIME.TEACHER_PC:
+            isPC = true;
+            break;
+        default:
+            isApp = false;
+            isWeb = false;
+            isSdudent = false;
+            isPC = false;
+            isProjector = false;
+    }
+    if (currentRuntime === icCreatePlayer.RUNTIME.PROJECTION_MOBILE || currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE || currentRuntime === icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+        isApp = true;
+    }
+
+    function $find(sel) {
+        return $view.find(sel);
+    }
+
+    var callNative = function callNative(eventName, data) {
+        if (isApp && Bridge && Bridge.callNative) {
+            return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+        }
+        return false;
+    };
+    var registerNativeListener = function registerNativeListener(key, callback) {
+        if (isApp && Bridge && Bridge.registerListener) {
+            bridgeListener[key] = Bridge.registerListener(key, callback);
+        }
+    };
+    var userInput = function userInput(item, value) {
+        if (isProjector) {
+            return;
+        }
+        callNative('sendEvent', {
+            "eventName": "UserInput",
+            "eventData": {
+                "source": presenter.moduleId,
+                "item": item,
+                "value": value
+            }
+        });
+    };
+    /**
+     * 初始化数据
+     */
+    var initData = function initData(view, model) {
+        presenter.model = model;
+        presenter.moduleId = model.ID;
+        presenter.questionId = model.question_id;
+        presenter.questionInfo = presenter.url = model.question_url.content;
+        cur_content = model.question_url.content;
+        $view = $(view);
+        js_box = $view.find(".js_box");
+        js_hand = $view.find(".js_hand");
+        js_hand_ball = $view.find(".js_hand_ball");
+        js_insideball = $view.find(".js_insideball");
+        js_touch_all_ball = $view.find(".js_touch_all_ball");
+        js_touch_a_ball = $view.find(".js_touch_a_ball");
+        _touch_count = $view.find("._touch_count");
+        _left_count = $view.find("._left_count");
+        js_count_box = $view.find(".js_count_box");
+        js_tr_red = $view.find(".js_tr_red");
+        js_tr_yellow = $view.find(".js_tr_yellow");
+        js_tr_blue = $view.find(".js_tr_blue");
+        js_tr_green = $view.find(".js_tr_green");
+        js_red_count = $view.find(".js_red_count");
+        js_yellow_count = $view.find(".js_yellow_count");
+        js_blue_count = $view.find(".js_blue_count");
+        js_green_count = $view.find(".js_green_count");
+        js_clear_touch = $view.find(".js_clear_touch");
+        js_submit_data = $view.find(".js_submit_data");
+        js_touchball_box_edit_pop = $view.find(".js_touchball_box_edit_pop");
+        js_editbar_btn_edit = $view.find(".js_editbar_btn_edit");
+        js_tool_com_masklayer = $view.find(".js_tool_com_masklayer");
+        js_input_red_ball_count = $view.find(".js_input_red_ball_count");
+        js_input_yellow_ball_count = $view.find(".js_input_yellow_ball_count");
+        js_input_blue_ball_count = $view.find(".js_input_blue_ball_count");
+        js_input_green_ball_count = $view.find(".js_input_green_ball_count");
+        js_set_transparent_text_right = $view.find(".js_set_transparent_text_right");
+        js_set_transparent_text_left = $view.find(".js_set_transparent_text_left");
+        js_edit_input_num = $view.find(".js_edit_input_num");
+        js_input_ball_count = $view.find(".js_input_ball_count");
+        js_applicationset_switch = $view.find(".js_applicationset_switch input[type='checkbox']");
+        js_touchball_box_editbar = $view.find(".js_touchball_box_editbar");
+        js_btn_switch_value = $view.find(".js_btn_switch_value");
+        js_touching = $view.find(".js_touching");
+        js_touched = $view.find(".js_touched");
+        js_com_dialog_wrapper = $view.find(".js_com_dialog_wrapper");
+        js_com_dialog_content_txt = $view.find(".js_com_dialog_content_txt");
+        js_dia_btn = $view.find(".js_dia_btn");
+    };
+
+    /*摸球presenter*/
+    var presenter = function presenter() {};
+
+    var service = {};
+    service.setLocationProperties = function (properties) {
+        i18nModel = properties;
+    };
+    //实现这个接口学生端可用
+    service.getQuestionInfo = function () {
+        var url = '';
+        try {
+            url = JSON.stringify(presenter.url);
+        } catch (e) {
+            console.log('json stringify failed');
+        }
+        return {
+            'id': presenter.questionId,
+            'type_code': 'catchball',
+            'type_name': i18nModel.catchBall_catchBall_tool,
+            'statistics_type': 'no_need',
+            'url': '"' + url + '"',
+            'notExistStatistics': true,
+            'noNeedQuizProgress': true
+        };
+    };
+
+    service.getExtendData = function () {
+        // !!isEditState && editData();
+        //editData();
+        //js_clear_touch.removeClass('ui_btn_disabled');
+        //toggleTouchButton('on');
+        //showAndHideEditPop();
+        //if(js_com_dialog_wrapper.is(':visible')){
+        //    js_touchball_box_edit_pop.addClass('on');
+        //    js_tool_com_masklayer.addClass('on');
+        //}else {
+        //    js_touchball_box_edit_pop.toggleClass('on');
+        //    js_tool_com_masklayer.toggleClass('on');
+        //}
+        var options = {
+            width: '100%',
+            catchBallState: {
+                "randomArr": cur_randomArr,
+                "colorArr": cur_colorArr,
+                "last_randomArr": last_randomArr,
+                "last_colorArr": last_colorArr,
+                "touchall_randomArr": touchall_randomArr,
+                "touchone_randomArr": touchone_randomArr,
+                "touchone_colorArr": touchone_colorArr,
+                "cur_color": cur_color,
+                "cur_num": cur_num,
+                "red_count": right_col.red_count,
+                "yellow_count": right_col.yellow_count,
+                "blue_count": right_col.blue_count,
+                "green_count": right_col.green_count,
+                //"cur_red_count": parseInt(js_red_count.text()),
+                //"cur_yellow_count": parseInt(js_yellow_count.text()),
+                //"cur_blue_count": parseInt(js_blue_count.text()),
+                //"cur_green_count": parseInt(js_green_count.text()),
+                "catch_times": parseInt(my_ball_count.catch_times),
+                "balls_red": parseInt(my_ball_count.red),
+                "balls_yellow": parseInt(my_ball_count.yellow),
+                "balls_blue": parseInt(my_ball_count.blue),
+                "balls_green": parseInt(my_ball_count.green),
+                "transparent_box": parseInt(my_ball_count.transparent_box),
+                "isOneTouching": isOneTouching,
+                "isAllTouching": isAllTouching,
+                "isReseting": isReseting,
+                "isShaking": isShaking
+            }
+        };
+        options.catchBallState.balls = [{ color: 'red', count: options.catchBallState.balls_red }, { color: 'yellow', count: options.catchBallState.balls_yellow }, { color: 'blue', count: options.catchBallState.balls_blue }, { color: 'green', count: options.catchBallState.balls_green }];
+        //console.log('options:',options);
+        return options;
+    };
+    //重要,必须实现
+    presenter.metaInfo = {
+        name: "CatchBall",
+        type: PresenterType.PRESENTER_COMPONENT
+    };
+    //重要,必须实现
+    presenter.getService = function () {
+        return service;
+    };
+
+    presenter.setUrlParams = function (params) {
+        isEditState = params && params['is_modify'] == 'true';
+    };
+    /**
+     * Module的逻辑
+     * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+     * @param model 模型对象
+     * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+     */
+    var presenterLogic = function presenterLogic(view, model, isPreview) {
+        initData(view, model);
+    };
+
+    /**
+     * 编辑环境下, 创建/刷新预览视图的方法;
+     * Module在编辑环境下,model改变; 位置改变; DOM结构改变时都会促发该方法
+     * @param view 预览视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     */
+    presenter.createPreview = function (view, model) {
+        //Todo: 在此处一般进行model的数据有效性验证
+        presenterLogic(view, model, true);
+    };
+
+    /**
+     * 运行环境下, 初始化Module的方法
+     * @param view 运行视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+     */
+    presenter.run = function (view, model) {
+        if (model.__ExtendModel && !$.isEmptyObject(model.__ExtendModel)) {
+            model.question_url.content = model.__ExtendModel.catchBallState;
+        }
+        //console.log(model.question_url.content) ;
+        /*测试代码*/
+        //debugger;
+        //国际化语言
+        setI18n(i18nModel, view);
+        presenterLogic(view, model, false);
+        //后来模型数据
+        content = model.question_url.content;
+        //初始化次数
+        _left_count.html(content.catch_times);
+        //隐藏手
+        js_hand.css({ 'display': 'none' });
+        //隐藏摸球中
+        js_touching.css({ 'display': 'none' });
+        //初始右侧计数栏
+        initRightTable();
+        //初始化左边箱子
+        initLeftBox();
+        //获取球的固定位置，并随机浮动存放
+        recordArr = getBallsPosition();
+        //初始化音频地址
+        audioMoqiu = new Audio(presenter.basePath + 'resources/media/moqiu.mp3');
+        audioYaoqiu = new Audio(presenter.basePath + 'resources/media/yaoqiu.mp3');
+        audioJilu = new Audio(presenter.basePath + 'resources/media/jilu.mp3');
+        /*        $find('[data-oper="moqiu_audio"] audio source').each(function(){
+         var src =  presenter.basePath+'resources/media/'+$(this).data('src');
+         $(this).attr('src',src) ;
+         });*/
+        //初始化标题
+        //如果是学生端，隐藏编辑栏
+        !!isSdudent && js_touchball_box_editbar.css({ 'display': 'none' });
+        $find('[data-oper="title"]').text(model.question_url.title);
+        if (model.__ExtendModel && !$.isEmptyObject(model.__ExtendModel)) {
+            //初始右侧计数栏
+            var stuRightTable = function stuRightTable() {
+                var js_balls_sort = content.balls.length;
+                if (jQuery.inArray('red', catchBallState.colorArr) == -1) {
+                    js_count_box.find(".js_tr_red").css({ 'display': 'none' });
+                    --js_balls_sort;
+                }
+                if (jQuery.inArray('yellow', catchBallState.colorArr) == -1) {
+                    js_count_box.find(".js_tr_yellow").css({ 'display': 'none' });
+                    --js_balls_sort;
+                }
+                if (jQuery.inArray('blue', catchBallState.colorArr) == -1) {
+                    js_count_box.find(".js_tr_blue").css({ 'display': 'none' });
+                    --js_balls_sort;
+                }
+                if (jQuery.inArray('green', catchBallState.colorArr) == -1) {
+                    js_count_box.find(".js_tr_green").css({ 'display': 'none' });
+                    --js_balls_sort;
+                }
+                js_count_box.addClass('count_box_' + js_balls_sort);
+            };
+
+            //if(!!isEditState && !!isPC) {
+            //    initPushTime++;
+            //}
+            initPushTime++;
+            var catchBallState = model.__ExtendModel.catchBallState;
+            var balls = catchBallState.balls;
+            //初始化数组
+            cur_randomArr = catchBallState.randomArr;
+            cur_colorArr = catchBallState.colorArr;
+            last_randomArr = catchBallState.last_randomArr;
+            last_colorArr = catchBallState.last_colorArr;
+            touchall_randomArr = catchBallState.touchall_randomArr;
+            touchone_randomArr = catchBallState.touchone_randomArr;
+            touchone_colorArr = catchBallState.touchone_colorArr;
+            cur_color = catchBallState.cur_color;
+            cur_num = catchBallState.cur_num;
+            //教师端侧边栏初始化数据
+            my_ball_count.red = balls[0].count;
+            my_ball_count.yellow = balls[1].count;
+            my_ball_count.blue = balls[2].count;
+            my_ball_count.green = balls[3].count;
+            my_ball_count.catch_times = catchBallState.catch_times;
+            my_ball_count.transparent_box = catchBallState.transparent_box;
+            //学生端初始化数据
+            content.catch_times = catchBallState.catch_times;
+            //var sumCount = 0;
+            //if(isEditState || isPC){
+            //    //编辑端
+            //    js_red_count.text(catchBallState.cur_red_count);
+            //    js_yellow_count.text(catchBallState.cur_yellow_count);
+            //    js_blue_count.text(catchBallState.cur_blue_count);
+            //    js_green_count.text(catchBallState.cur_green_count);
+            //    sumCount = catchBallState.cur_red_count + catchBallState.cur_yellow_count + catchBallState.cur_blue_count + catchBallState.cur_green_count;
+            //}else {
+            js_red_count.text(catchBallState.red_count);
+            js_yellow_count.text(catchBallState.yellow_count);
+            js_blue_count.text(catchBallState.blue_count);
+            js_green_count.text(catchBallState.green_count);
+            var sumCount = catchBallState.red_count + catchBallState.yellow_count + catchBallState.blue_count + catchBallState.green_count;
+            //}
+            _touch_count.html(sumCount);
+            _left_count.html(content.catch_times - sumCount);
+            content.ball_count = catchBallState.colorArr.length;
+            content.balls[0].count = parseInt(catchBallState.balls_red);
+            content.balls[1].count = parseInt(catchBallState.balls_yellow);
+            content.balls[2].count = parseInt(catchBallState.balls_blue);
+            content.balls[3].count = parseInt(catchBallState.balls_green);
+            //初始化按钮
+            isOneTouching = catchBallState.isOneTouching;
+            isAllTouching = catchBallState.isAllTouching;
+            isReseting = catchBallState.isReseting;
+            isShaking = catchBallState.isShaking;
+            //初始右侧计数栏
+            js_count_box.find(".js_tr_red").css({ 'display': '' });
+            js_count_box.find(".js_tr_yellow").css({ 'display': '' });
+            js_count_box.find(".js_tr_blue").css({ 'display': '' });
+            js_count_box.find(".js_tr_green").css({ 'display': '' });
+            //初始化左边箱子
+            initLeftBox();
+            stuRightTable();
+            //控制箱子透明与否
+            content.transparent_box = catchBallState.transparent_box;
+            if (content.transparent_box == false) {
+                js_btn_switch_value.prop("checked", true);
+                js_btn_switch_value.parent().addClass("checked");
+                js_set_transparent_text_left.addClass('on');
+                js_set_transparent_text_right.removeClass('on');
+                content.transparent_box = false;
+                js_box.removeClass('box_opacity');
+            } else if (content.transparent_box == true) {
+                js_btn_switch_value.parent().removeClass("checked");
+                js_set_transparent_text_left.removeClass('on');
+                js_set_transparent_text_right.addClass('on');
+                content.transparent_box = true;
+                js_box.addClass('box_opacity');
+            }
+            //resetBalls(cur_randomArr, cur_colorArr);
+            if (sumCount == content.catch_times) {
+                js_touch_all_ball.addClass("ui_btn_disabled");
+                js_touch_a_ball.addClass("ui_btn_disabled");
+            }
+            //学生端初始状态去掉摇晃
+            //js_box.removeClass("animate_shake");
+            //编辑端特殊处理
+            //if(isEditState || isPC){
+            //    resetBalls(last_randomArr, last_colorArr);
+            //}else {
+            //判断进行哪个动画
+            if (isAllTouching) {
+                resetBalls(cur_randomArr, cur_colorArr);
+                touchAllClick('', touchall_randomArr);
+            } else if (isOneTouching) {
+                resetBalls(cur_randomArr, cur_colorArr);
+                touchOneClick('', cur_num, cur_color, touchone_randomArr, touchone_colorArr);
+            } else if (isReseting) {
+                resetBalls(last_randomArr, last_colorArr);
+                resetTouchBall('', cur_randomArr, cur_colorArr);
+            } else {
+                resetBalls(cur_randomArr, cur_colorArr);
+            }
+            //}
+            if (content.transparent_box) {
+                js_box.addClass('box_opacity');
+            }
+        } else {
+            resetBalls();
+            setTimeout(function () {
+                //设置盒子是否透明
+                if (content.transparent_box) {
+                    js_box.addClass('box_opacity');
+                }
+                //初始化页面
+                js_box.removeClass("animate_shake");
+            }, 3500);
+        }
+    };
+
+    //整齐排列的位置
+    function getBallsPosition() {
+        var recordArr = [];
+        //每层起始点
+        var startPoints = [{ x: 0, y: 0 }, { x: 0, y: 2.8 }, { x: 0, y: 5.6 }];
+        //每排间距
+        var xSpaces = [3.8, 3.5, 3.2];
+        var levelSpace = [{ x: 0, y: 0 }, { x: 0.8, y: 1 }, { x: 0.7, y: .8 }];
+        var tempArr = [],
+            startP = null,
+            temp = null,
+            left = 0;
+        var i = 0,
+            j = 0,
+            k = 0;
+        for (k = 0; k < startPoints.length; k++) {
+            tempArr = [];
+            startP = startPoints[k]; //获取每一层的左下第一个球的初始位置
+            for (i = 0; i < 3; i++) {
+                startP.x += levelSpace[i].x;
+                startP.y += levelSpace[i].y;
+                for (j = 0; j < 7; j++) {
+                    if (j == 7) {
+                        left = startP.x + j * xSpaces[i] - 2;
+                    } else {
+                        left = startP.x + j * xSpaces[i] + 1;
+                    }
+                    temp = {
+                        left: left,
+                        bottom: startP.y,
+                        z: 3 - i + k * 3
+                    };
+                    tempArr.push(temp);
+                }
+            }
+            recordArr.push(tempArr);
+        }
+        //记录目前的随机数
+        //console.log(recordArr);
+        return recordArr;
+    }
+
+    /**
+     * 运行环境下, 销毁Module时执行的方法
+     * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+     */
+    presenter.destroy = function () {
+        //解除绑定的Module事件
+        unBindEvent();
+        //ToDo:释放Module占用的内存对象
+        releaseObject();
+        $view = null;
+        js_touch_a_ball = null;
+        js_touch_all_ball.remove();
+        js_touch_all_ball = null;
+        js_clear_touch = null;
+        content = null;
+        js_submit_data = null;
+        js_editbar_btn_edit = null;
+        js_set_transparent_text_left = null;
+        js_set_transparent_text_right = null;
+        js_tool_com_masklayer = null;
+    };
+
+    presenter.pageShow = function () {
+        bindEvent();
+        bindNativeEvent();
+        //isAllTouching = false;
+        //isOneTouching = false;
+        //isReseting = false;
+    };
+    presenter.pageLeave = function () {
+        for (var i = 0, l = timeout.length; i < l; i++) {
+            clearTimeout(timeout[i]);
+        }
+        unBindEvent();
+        unbindNativeListener();
+        window.clearInterval(intervalFun);
+
+        releaseObject();
+    };
+    /**
+     * 获得当前Module的状态信息;
+     * 可用于Module的状态恢复和保存
+     */
+    presenter.getState = function () {
+        //TODO: 添加符合Module需求的状态对象
+        var moduleState = JSON.stringify({
+            module_id: presenter.model.ID
+        });
+        return moduleState;
+    };
+    /**
+     * 设置Module当前状态
+     * @param state Module状态对象
+     */
+    presenter.setState = function (state) {
+        var currentState;
+        if (state) {
+            currentState = JSON.parse(state);
+            //ToDo:处理Module的状态恢复
+        }
+    };
+    //获取项目跟路径
+    presenter.setBasePath = function (path) {
+        presenter.basePath = path;
+    };
+    /**
+     * 实现Module多语言适配的方法, 如Module存在i18n的支持, 请务必实现此方法
+     * icplayer会加载当前i18n的配置信息,并通过location参数传入
+     * @param location 表示当前语言环境的配置信息, 为JSON数组的键值对
+     */
+    //presenter.setLocationProperties = function (location) {
+    //    i18nModel = location;
+    //};
+    /**
+     *国际化数据绑定
+     * model 数据模型
+     * view 需要绑定的视图
+     */
+    function setI18n(model, view) {
+        ko.applyBindings(model, view);
+    }
+    /**
+     * 绑定事件的方法
+     */
+    function bindEvent() {
+        //一次摸球
+        js_touch_a_ball.on('click', touchOneClick);
+        //一键摸球
+        js_touch_all_ball.on('click', touchAllClick);
+        //重新开始摸球
+        js_clear_touch.on('click', resetTouchBall);
+        //点击编辑按钮，弹窗和遮罩层的出现与隐藏
+        js_editbar_btn_edit.on('click', controlEdit);
+        //点击确定按钮，提交编辑数据
+        js_submit_data.on('click', submitData);
+        //点击透明按钮和不透明按钮，按钮的显示和隐藏
+        js_set_transparent_text_left.on('click', transparentBtnSlide);
+        js_set_transparent_text_right.on('click', transparentBtnSlide);
+        //点击遮罩层，编辑弹窗隐藏
+        js_tool_com_masklayer.on('click', showAndHideEditPop);
+        //点击确定，隐藏小球个数和编辑次数提示框
+        js_dia_btn.on('click', hideDiapop);
+        //判断小球个数合不合格
+        js_input_ball_count.on('blur', judgeBallCount);
+        //判断抽取次数合不合格
+        js_edit_input_num.on('blur', judgeCathchTimes);
+        js_input_red_ball_count.on("onpropertychange input", function (event) {
+            var that = this;
+            isNum.apply(that, [this.value]);
+        });
+
+        js_input_yellow_ball_count.on("onpropertychange input", function (event) {
+            var that = this;
+            isNum.apply(that, [this.value]);
+        });
+
+        js_input_blue_ball_count.on("onpropertychange input", function (event) {
+            var that = this;
+            isNum.apply(that, [this.value]);
+        });
+
+        js_input_green_ball_count.on("onpropertychange input", function (event) {
+            var that = this;
+            isNum.apply(that, [this.value]);
+        });
+
+        js_edit_input_num.on("onpropertychange input", function (event) {
+            var that = this;
+            isNum.apply(that, [this.value]);
+        });
+    }
+
+    /**
+     * 解除事件绑定的方法
+     */
+    function unBindEvent() {
+        js_touch_a_ball.off('click');
+        js_touch_all_ball.off('click');
+        js_clear_touch.off('click');
+        js_submit_data.off('click');
+        js_editbar_btn_edit.off('click');
+        js_set_transparent_text_left.off('click');
+        js_set_transparent_text_right.off('click');
+        js_dia_btn.off('click');
+        js_input_ball_count.off('blur');
+        js_edit_input_num.off('blur');
+    }
+
+    function releaseObject() {
+        if (audioJilu != null) {
+            audioJilu.pause();
+            //delete audioJilu;
+            audioJilu = null;
+        }
+        if (audioMoqiu != null) {
+            //delete audioMoqiu;
+            audioMoqiu = null;
+        }
+        if (audioYaoqiu != null) {
+            //delete audioYaoqiu;
+            audioYaoqiu = null;
+        }
+        isAllTouching = false;
+        isOneTouching = false;
+        isReseting = false;
+    }
+    function bindNativeEvent() {
+        registerNativeListener('TriggerUserInput', triggerUserInput);
+    }
+
+    function unbindNativeListener(key) {
+        if (isApp && Bridge && Bridge.unRegisterListener) {
+            if (!key) {
+                $.each(bridgeListener, function (k, v) {
+                    Bridge.unRegisterListener(k, bridgeListener[k]);
+                });
+                bridgeListener = null;
+            } else {
+                Bridge.unRegisterListener(key, bridgeListener[key]);
+            }
+        }
+    }
+
+    function triggerUserInput(eventData) {
+        var data = eventData;
+        if (data.source === presenter.moduleId) {
+            switch (data.item) {
+                case 'touchOneClick':
+                    //一次取球
+                    touchOneClick('', data.value.randomNum, data.value.color);
+                    break;
+                case 'touchAllClick':
+                    //一次全取
+                    touchAllClick('', data.value.randomArr);
+                    break;
+                case 'resetTouchBall':
+                    //
+                    resetTouchBall('', data.value.randomArr, data.value.colorArr);
+                    break;
+                case 'resetBalls':
+                    //
+                    resetBalls(data.value.randomArr, data.value.colorArr);
+                    break;
+                default:
+                    console.log('triggerUserInput');
+            }
+        }
+    }
+
+    //初始化左边箱子
+    function initLeftBox() {
+        var tempStr = '';
+        for (var i = 0; i < content.ball_count; i++) {
+            tempStr += '<span class="icon_ball"></span>';
+        }
+        js_insideball.append(tempStr);
+        if (isShaking) {
+            setTimeout(function () {
+                js_box.addClass("animate_shake");
+            }, 500);
+            js_touch_a_ball.addClass('ui_btn_disabled');
+            js_touch_all_ball.addClass('ui_btn_disabled');
+            js_clear_touch.addClass('ui_btn_disabled');
+            setTimeout(function () {
+                isShaking = false;
+                if (!isAllTouching && !isOneTouching && !isReseting) {
+                    js_box.removeClass("animate_shake");
+                    js_touch_a_ball.removeClass('ui_btn_disabled');
+                    js_touch_all_ball.removeClass('ui_btn_disabled');
+                    js_clear_touch.removeClass('ui_btn_disabled');
+                }
+                if (parseInt(_left_count.text()) === 0) {
+                    js_touch_a_ball.addClass('ui_btn_disabled');
+                    js_touch_all_ball.addClass('ui_btn_disabled');
+                }
+            }, 3500);
+        } else {
+            setTimeout(function () {
+                js_box.removeClass("animate_shake");
+            }, 500);
+            js_touch_a_ball.removeClass('ui_btn_disabled');
+            js_touch_all_ball.removeClass('ui_btn_disabled');
+            js_clear_touch.removeClass('ui_btn_disabled');
+        }
+    }
+
+    //初始右侧计数栏
+    function initRightTable() {
+        var js_balls_sort = content.balls.length;
+        for (var i = 0, l = content.balls.length; i < l; i++) {
+            if (content.balls[i].count === 0 || !content.balls[i].count) {
+                --js_balls_sort;
+
+                if (js_balls_sort == 1) {
+                    js_balls_sort = 2;
+                }
+            }
+        }
+
+        js_count_box.removeClass('count_box_1');
+        js_count_box.removeClass('count_box_2');
+        js_count_box.removeClass('count_box_3');
+        js_count_box.removeClass('count_box_4');
+        js_count_box.addClass('count_box_' + js_balls_sort);
+        for (var i = 0, l = content.balls.length; i < l; i++) {
+            if (content.balls[i].count === 0 || !content.balls[i].count) {
+                js_count_box.find(".js_tr_" + content.balls[i].color).css({ 'display': 'none' });
+            }
+        }
+    }
+    //摇箱子动画
+    function yaoqiuAnimate() {
+        js_box.addClass('animate_shake');
+        js_hand.removeClass('animate_getball');
+        timeout[0] = setTimeout(function () {
+            try {
+                audioYaoqiu.play();
+            } catch (e) {
+                console.log(e);
+            }
+            //$find('#yaoqiu_audio')[0].play();
+        }, 1000);
+    }
+
+    //一键摸球
+    function touchAllClick(event, randomArr) {
+        if (js_touch_all_ball.hasClass('ui_btn_disabled') || isShaking) {
+            return;
+        }
+        //先去掉动画
+        js_box.removeClass("animate_shake");
+        isAllTouching = true;
+        isOneTouching = false;
+        isReseting = false;
+        //摸球中这几个字出现
+        js_touching.css({ 'display': 'block' });
+        js_touched.css({ 'display': 'none' });
+        //摸球前准备动作 ,按钮变灰 ，解除绑定
+        js_clear_touch.addClass('ui_btn_disabled');
+        toggleTouchButton('off');
+        var count = parseInt(_left_count.html());
+        if (!randomArr || randomArr.length <= 0) {
+            randomArr = [];
+            for (var i = 0; i < count; i++) {
+                var num = getRandom(0, content.ball_count);
+                randomArr[i] = num;
+            }
+            userInput('touchAllClick', {
+                randomArr: randomArr
+            });
+        }
+        touchall_randomArr = randomArr;
+        //一键摸球动画
+        touchAllAnimate();
+    }
+    //一键摸球动画
+    function touchAllAnimate() {
+        var count = parseInt(_left_count.html());
+        var addTime = 200;
+        if (count > 50 && count <= 100) {
+            addTime = 100;
+        } else if (count > 100) {
+            addTime = 50;
+        }
+        var colorArr = [],
+            intervalIndex = 0;
+        for (var i = 0; i < count; i++) {
+            var num = touchall_randomArr[i];
+            var $span = js_insideball.find("span").eq(num);
+            colorArr.push($span.attr("data-color"));
+            //console.log('num'+num+'$span'+$span);
+            $span = null;
+        }
+        intervalFun = setInterval(function () {
+            addBallByColor(colorArr[intervalIndex]);
+            intervalIndex++;
+            if (intervalIndex === count) {
+                window.clearInterval(intervalFun);
+                colorArr = [];
+                //摸球中这几个字消失
+                js_touching.css({ 'display': 'none' });
+                js_touched.css({ 'display': 'block' });
+                js_clear_touch.removeClass('ui_btn_disabled');
+                isAllTouching = false;
+                //保存右边栏数据
+                saveRightColNum();
+            }
+        }, addTime);
+    }
+    //一次摸球的点击行为
+    function touchOneClick(event, num, color, randomArr, colorArr) {
+        if (js_touch_a_ball.hasClass('ui_btn_disabled') || isShaking) {
+            return;
+        }
+        //先去掉动画
+        js_box.removeClass("animate_shake");
+        isOneTouching = true;
+        isAllTouching = false;
+        isReseting = false;
+        //让手出现
+        js_hand.css({ 'display': 'block' });
+        //让摸球中出现
+        js_touching.css({ 'display': 'block' });
+        js_touched.css({ 'display': 'none' });
+        //摸球前准备动作 ,按钮变灰 ，解除绑定
+        toggleTouchButton('off');
+        js_clear_touch.addClass('ui_btn_disabled');
+        if (parseInt(_left_count.html()) <= 0) {
+            return;
+        }
+        var flag = true;
+        if (num !== 0 && !num) {
+            num = getRandom(0, content.ball_count);
+            flag = false;
+        }
+        //console.log('num',num);
+        var $spans = js_insideball.find("span");
+        var $span = $spans.eq(num);
+        if ($span.length > 0) {
+            if (flag === false) {
+                color = $span.attr("data-color");
+                userInput('touchOneClick', {
+                    randomNum: num,
+                    color: color
+                });
+            }
+            //console.log("num||color",num,color);
+            cur_color = color;
+            cur_num = num;
+
+            var count = content.ball_count;
+            var remarkArr = [];
+            //console.log(colorArr)
+            var i = 0;
+            if (!randomArr || randomArr.length <= 0) {
+                randomArr = [];
+                while (i * max_count <= count) {
+                    randomArr[i] = getRandomArr(max_count);
+                    i++;
+                }
+                colorArr = [];
+                for (var i = 0, l = content.balls.length; i < l; i++) {
+                    for (var j = 0; j < content.balls[i].count; j++) {
+                        colorArr.push(content.balls[i].color);
+                    }
+                }
+                colorArr.sort(function (a, b) {
+                    return Math.random() - 0.5;
+                });
+
+                userInput('touchOneClick', {
+                    randomArr: randomArr,
+                    colorArr: colorArr
+                });
+            } else {
+                //console.log(randomArr,colorArr);
+            }
+            touchone_randomArr = randomArr;
+            touchone_colorArr = colorArr;
+            touchOneClickAnimate();
+        } else {
+            return false;
+        }
+    }
+
+    //一次摸球动画
+    function touchOneClickAnimate() {
+        var $spans = js_insideball.find("span");
+        var $span = $spans.eq(cur_num);
+        //找到最外侧的球，
+        $spans = $spans.sort(function (a, b) {
+            if ($(a).hasClass(cur_color) && $(b).hasClass(cur_color)) {
+                return $(b).css("z-index") - $(a).css("z-index");
+            } else if ($(a).hasClass(cur_color)) {
+                return -1;
+            } else if ($(b).hasClass(cur_color)) {
+                return 1;
+            }
+            return $(b).css("z-index") - $(a).css("z-index");
+        });
+        //摸球动画(3.5s)
+        js_hand_ball.removeClass('blue red green yellow');
+        js_hand_ball.addClass(cur_color);
+        js_hand.removeClass('animate_getball');
+        timeout[2] = setTimeout(function () {
+            js_hand.addClass('animate_getball');
+        }, 100);
+        //找到最外侧的球，并逐渐消失
+        timeout[3] = setTimeout(function () {
+            $span = null;
+            $span = $spans.eq(0);
+            $span.animate({
+                opacity: 0
+            }, 3000);
+        }, 2000);
+        try {
+            audioMoqiu.play();
+        } catch (e) {
+            console.log(e);
+        }
+        //$find("#moqiu_audio")[0].play() ;  //摸球声音播放
+        //移除摇球动画效果
+        //js_box.removeClass('animate_shake');
+        timeout[4] = setTimeout(function () {
+            try {
+                audioJilu.play();
+            } catch (e) {
+                console.log(e);
+            }
+            //$find('#jilu_audio')[0].play();
+            addBallByColor(cur_color);
+            yaoqiuAnimate();
+            js_touching.css({ 'display': 'none' });
+            js_touched.css({ 'display': 'block' });
+            js_hand.css({ 'display': 'none' });
+        }, 4500);
+        var showTime = 3000;
+        if (!isProjector) {
+            timeout[5] = setTimeout(function () {
+                //console.log("一次摸球"+touchone_randomArr+"颜色"+touchone_colorArr);
+                resetBalls(touchone_randomArr, touchone_colorArr);
+            }, 5500);
+        } else {
+            showTime = 1500;
+        }
+        timeout[6] = setTimeout(function () {
+            //摸球后按钮肯普恢复，重新绑定
+            js_clear_touch.removeClass('ui_btn_disabled');
+            toggleTouchButton('on');
+            js_hand.removeClass('animate_getball');
+            js_box.removeClass('animate_shake');
+            isOneTouching = false;
+            //保存右边栏数据
+            saveRightColNum();
+        }, showTime + 4500);
+    }
+
+    //重置摸球
+    function resetTouchBall(event, randomArr, colorArr) {
+        if (js_clear_touch.hasClass('ui_btn_disabled') || isShaking) {
+            return;
+        }
+        //先去掉动画
+        js_box.removeClass("animate_shake");
+        last_randomArr = cur_randomArr;
+        last_colorArr = cur_colorArr;
+        isReseting = true;
+        isAllTouching = false;
+        isOneTouching = false;
+        //console.log('重置前'+ last_colorArr+"isreseting"+ isReseting);
+        //摸球前准备动作 ,按钮变灰 ，解除绑定
+        toggleTouchButton('off');
+        js_clear_touch.addClass('ui_btn_disabled');
+        //清除定时添加摸球统计栏的函数
+        window.clearInterval(intervalFun);
+        js_box.removeClass('animate_shake');
+        var i = 0,
+            count = content.ball_count;
+        if (!randomArr || randomArr.length <= 0) {
+            randomArr = [];
+            while (i * max_count <= count) {
+                randomArr[i] = getRandomArr(max_count);
+                i++;
+            }
+            colorArr = [];
+            for (var i = 0, l = content.balls.length; i < l; i++) {
+                for (var j = 0; j < content.balls[i].count; j++) {
+                    colorArr.push(content.balls[i].color);
+                }
+            }
+            colorArr.sort(function (a, b) {
+                return Math.random() - 0.5;
+            });
+            userInput('resetTouchBall', {
+                randomArr: randomArr,
+                colorArr: colorArr
+            });
+        }
+        cur_randomArr = randomArr;
+        cur_colorArr = colorArr;
+        //重置摸球动画
+        resetTouchBallAnimate();
+    }
+
+    //重置摸球动画
+    function resetTouchBallAnimate() {
+        timeout[7] = setTimeout(function () {
+            yaoqiuAnimate();
+            _touch_count.html(0);
+            _left_count.html(content.catch_times);
+            js_count_box.find(".js_text").each(function () {
+                $(this).html(0);
+            });
+        }, 1500);
+        timeout[8] = setTimeout(function () {
+            resetBalls(cur_randomArr, cur_colorArr);
+            toggleTouchButton('on');
+            js_clear_touch.removeClass('ui_btn_disabled');
+            js_hand.removeClass('animate_getball');
+            js_box.removeClass('animate_shake');
+            isReseting = false;
+        }, 4500);
+        //让摸球中出现
+        js_touching.css({ 'display': 'none' });
+        js_touched.css({ 'display': 'block' });
+        //保存右边栏数据
+        saveRightColNum();
+    }
+
+    //添加一个摸球数据，改变右侧的计数栏
+    function addBallByColor(color) {
+        var $tr = js_count_box.find('.js_tr_' + color);
+        //移除取球动画
+        //$find(' .box > .hand').removeClass('animate_getball');
+        //表格对应行高亮(3s)
+        $tr.addClass('animate_light');
+        //表格数字增加(3s)
+        //表格对应行高亮(3s)
+        timeout[9] = setTimeout(function () {
+            $tr.removeClass('animate_light');
+        }, 3000);
+        //+1音效
+        var count = parseInt($tr.find('.js_text').text());
+        var last = parseInt(_touch_count.text());
+        var total = parseInt(_left_count.text());
+        $tr.find('.js_text').text(count + 1);
+        _touch_count.text(last + 1);
+        _left_count.html(total - 1);
+    }
+
+    //一键摸球与一次摸球按钮的开关方法
+    function toggleTouchButton(flag) {
+        if (flag === 'on') {
+            if (parseInt(_left_count.html()) <= 0) {
+                return;
+            }
+            js_touch_a_ball.removeClass('ui_btn_disabled');
+            js_touch_all_ball.removeClass('ui_btn_disabled');
+        } else {
+            js_touch_a_ball.addClass('ui_btn_disabled');
+            js_touch_all_ball.addClass('ui_btn_disabled');
+        }
+    }
+    //重置小球的位置和颜色
+    function resetBalls(randomArr, colorArr) {
+        var count = content.ball_count;
+        var remarkArr = [];
+        //console.log(colorArr)
+        var i = 0;
+        if (!randomArr || randomArr.length <= 0) {
+            randomArr = [];
+            while (i * max_count <= count) {
+                randomArr[i] = getRandomArr(max_count);
+                i++;
+            }
+            colorArr = [];
+            for (var i = 0, l = content.balls.length; i < l; i++) {
+                for (var j = 0; j < content.balls[i].count; j++) {
+                    colorArr.push(content.balls[i].color);
+                }
+            }
+            colorArr.sort(function (a, b) {
+                return Math.random() - 0.5;
+            });
+
+            userInput('resetBalls', {
+                randomArr: randomArr,
+                colorArr: colorArr
+            });
+        } else {
+            //console.log(randomArr,colorArr);
+        }
+        i = 0;
+        while (i * max_count < count) {
+            var arr = randomArr[i];
+            for (var j = 0; j < max_count; j++) {
+                if (i * max_count + j + 1 > count) {
+                    break;
+                }
+                var tempP = recordArr[i][arr[j]];
+                var $span = js_insideball.find("span").eq(i * max_count + j);
+                $span.removeClass('blue red green yellow');
+                $span.addClass(colorArr[i * max_count + j]);
+                $span.css({
+                    'display': 'block',
+                    'left': tempP.left + getRandom(0, 1) - 1 + 'em',
+                    'bottom': tempP.bottom + 'em',
+                    'z-index': tempP.z,
+                    'opacity': 1
+                });
+                $span.attr("data-color", colorArr[i * max_count + j]);
+            }
+            i++;
+        }
+        //第一次推送到学生端不记录
+        if (initPushTime === 1) {
+            initPushTime++;
+        } else {
+            //记录当前箱子里的球状态
+            cur_randomArr = randomArr;
+            cur_colorArr = colorArr;
+        }
+        saveRightColNum();
+    }
+
+    //判断点是否在多边形内部
+    function isPointInsidePoly(point, poly) {
+        var length = poly.length;
+        for (var c = false, i = -1, j = length - 1; ++i < length; j = i) {
+            (poly[i].y <= point.y && point.y < poly[j].y || poly[j].y <= point.y && point.y < poly[i].y) && point.x < (poly[j].x - poly[i].x) * (point.y - poly[i].y) / (poly[j].y - poly[i].y) + poly[i].x && (c = !c);
+        }
+        return c;
+    }
+
+    //获取随机数数组
+    function getRandomArr(count) {
+        var i,
+            l,
+            randomArr = [];
+        for (i = 0, l = count; i < l; i++) {
+            randomArr[i] = i;
+        }
+        randomArr.sort(function (a, b) {
+            return Math.random() - 0.5;
+        });
+        return randomArr;
+    }
+
+    //获取随机数
+    function getRandom(a, b) {
+        if (a > b) {
+            var temp = a;
+            a = b;
+            b = temp;
+        }
+        return Math.floor(Math.random() * (b - a) + a);
+    }
+
+    //存储右边栏小球个数
+    function saveRightColNum() {
+        right_col.red_count = parseInt(js_red_count.text());
+        right_col.yellow_count = parseInt(js_yellow_count.text());
+        right_col.blue_count = parseInt(js_blue_count.text());
+        right_col.green_count = parseInt(js_green_count.text());
+    }
+
+    //点击编辑按钮，控制弹窗和遮罩层
+    function controlEdit() {
+        js_touchball_box_edit_pop.toggleClass('on');
+        js_tool_com_masklayer.toggleClass('on');
+        js_com_dialog_wrapper.css('display', 'none');
+        //初始化编辑框里的值
+        //ininInput();
+        js_input_red_ball_count.val(my_ball_count.red);
+        js_input_yellow_ball_count.val(my_ball_count.yellow);
+        js_input_blue_ball_count.val(my_ball_count.blue);
+        js_input_green_ball_count.val(my_ball_count.green);
+        js_edit_input_num.val(my_ball_count.catch_times);
+        js_btn_switch_value.val(my_ball_count.transparent_box);
+    }
+
+    function ininInput() {
+        js_input_red_ball_count.val(my_ball_count.red);
+        js_input_yellow_ball_count.val(my_ball_count.yellow);
+        js_input_blue_ball_count.val(my_ball_count.blue);
+        js_input_green_ball_count.val(my_ball_count.green);
+        js_edit_input_num.val(my_ball_count.catch_times);
+        js_btn_switch_value.val(my_ball_count.transparent_box);
+        if (js_btn_switch_value.val() == 0) {
+            js_btn_switch_value.prop("checked", true);
+            js_btn_switch_value.parent().addClass("checked");
+            js_set_transparent_text_left.addClass('on');
+            js_set_transparent_text_right.removeClass('on');
+        } else if (js_btn_switch_value.val() == 1) {
+            js_btn_switch_value.prop("checked", false);
+            js_btn_switch_value.parent().removeClass("checked");
+            js_set_transparent_text_left.removeClass('on');
+            js_set_transparent_text_right.addClass('on');
+        }
+    }
+
+    //隐藏小球个数和编辑次数提示框
+    function hideDiapop() {
+        js_com_dialog_wrapper.css('display', 'none');
+        js_touchball_box_edit_pop.addClass('on');
+        js_tool_com_masklayer.addClass('on');
+        js_tool_com_masklayer.css({ 'z-index': '1000' });
+    }
+    function isNum() {
+        this.value = this.value.replace(/\D+/g, "");
+    }
+
+    //透明按钮和不透明按钮的显示与隐藏
+    function transparentBtnSlide() {
+        js_applicationset_switch.on("click", function () {
+            var $this = $(this);
+            if ($this.prop('checked')) {
+                $this.parent().addClass("checked");
+                js_set_transparent_text_left.addClass('on');
+                js_set_transparent_text_right.removeClass('on');
+                js_btn_switch_value.val('0');
+            } else {
+                $this.parent().removeClass("checked");
+                js_set_transparent_text_left.removeClass('on');
+                js_set_transparent_text_right.addClass('on');
+                js_btn_switch_value.val('1');
+            }
+        });
+    }
+
+    //点击遮罩层，编辑弹窗隐藏
+    function showAndHideEditPop() {
+
+        if (js_com_dialog_wrapper.is(':visible')) {
+            js_touchball_box_edit_pop.addClass('on');
+            js_tool_com_masklayer.addClass('on');
+        } else {
+            js_touchball_box_edit_pop.toggleClass('on');
+            js_tool_com_masklayer.toggleClass('on');
+            //初始化编辑框里的值
+            ininInput();
+        }
+    }
+    //编辑数据
+    function editData() {
+        //将编辑窗输入的值赋给content
+        content.balls[0].count = parseInt(js_input_red_ball_count.val());
+        content.balls[1].count = parseInt(js_input_yellow_ball_count.val());
+        content.balls[2].count = parseInt(js_input_blue_ball_count.val());
+        content.balls[3].count = parseInt(js_input_green_ball_count.val());
+        content.ball_count = parseInt(content.balls[0].count) + parseInt(content.balls[1].count) + parseInt(content.balls[2].count) + parseInt(content.balls[3].count);
+        content.catch_times = parseInt(js_edit_input_num.val());
+
+        //初始化次数
+        _left_count.html(content.catch_times);
+        _touch_count.text(0);
+        //初始右侧计数栏
+
+        var js_balls_sort = content.balls.length;
+        for (var i = 0, l = content.balls.length; i < l; i++) {
+            if (content.balls[i].count === 0 || !content.balls[i].count) {
+                --js_balls_sort;
+            }
+        }
+
+        js_count_box.removeClass('count_box_1');
+        js_count_box.removeClass('count_box_2');
+        js_count_box.removeClass('count_box_3');
+        js_count_box.removeClass('count_box_4');
+        js_count_box.addClass('count_box_' + js_balls_sort);
+        for (var i = 0, l = content.balls.length; i < l; i++) {
+            if (content.balls[i].count === 0 || !content.balls[i].count) {
+                js_count_box.find(".js_tr_" + content.balls[i].color).css({ 'display': 'none' });
+            } else {
+                js_count_box.find(".js_tr_" + content.balls[i].color).css({ 'display': '' });
+                js_count_box.find(".js_tr_" + content.balls[i].color).find('.text').text(0);
+            }
+        }
+
+        //初始化左边箱子
+        js_insideball.empty();
+        isShaking = true;
+        initLeftBox();
+        //重置小球
+        resetBalls();
+        js_clear_touch.removeClass('ui_btn_disabled');
+        toggleTouchButton('on');
+        setTimeout(function () {
+            //判断箱子透明和不透明
+            if (js_btn_switch_value.val() == 0) {
+                content.transparent_box = false;
+                js_box.removeClass('box_opacity');
+            } else if (js_btn_switch_value.val() == 1) {
+                content.transparent_box = true;
+                js_box.addClass('box_opacity');
+            }
+            //初始化页面
+            js_box.removeClass("animate_shake");
+        }, 3500);
+        //初始化编辑框里的值
+        my_ball_count.red = js_input_red_ball_count.val();
+        my_ball_count.yellow = js_input_yellow_ball_count.val();
+        my_ball_count.blue = js_input_blue_ball_count.val();
+        my_ball_count.green = js_input_green_ball_count.val();
+        my_ball_count.catch_times = js_edit_input_num.val();
+        my_ball_count.transparent_box = js_btn_switch_value.val();
+    }
+
+    //判断小球个数合不合格
+    function judgeBallCount() {
+        if ($(this).val() == '') {
+            js_tool_com_masklayer.css({ 'z-index': '4000' });
+            js_com_dialog_wrapper.css('display', 'block');
+            js_com_dialog_content_txt.text(i18nModel.pop2);
+            if ($(this).hasClass('js_input_red_ball_count')) {
+                $(this).val(content.balls[0].count);
+                js_input_red_ball_count.focus();
+            } else if ($(this).hasClass('js_input_yellow_ball_count')) {
+                $(this).val(content.balls[1].count);
+                js_input_yellow_ball_count.focus();
+            } else if ($(this).hasClass('js_input_blue_ball_count')) {
+                $(this).val(content.balls[2].count);
+                js_input_blue_ball_count.focus();
+            } else if ($(this).hasClass('js_input_green_ball_count')) {
+                $(this).val(content.balls[3].count);
+                js_input_green_ball_count.focus();
+            }
+        } else if ($(this).val() > 10) {
+            js_tool_com_masklayer.css({ 'z-index': '4000' });
+            js_com_dialog_wrapper.css('display', 'block');
+            js_com_dialog_content_txt.text(i18nModel.pop1);
+            if ($(this).hasClass('js_input_red_ball_count')) {
+                $(this).val(content.balls[0].count);
+                js_input_red_ball_count.focus();
+            } else if ($(this).hasClass('js_input_yellow_ball_count')) {
+                $(this).val(content.balls[1].count);
+                js_input_yellow_ball_count.focus();
+            } else if ($(this).hasClass('js_input_blue_ball_count')) {
+                $(this).val(content.balls[2].count);
+                js_input_blue_ball_count.focus();
+            } else if ($(this).hasClass('js_input_green_ball_count')) {
+                $(this).val(content.balls[3].count);
+                js_input_green_ball_count.focus();
+            }
+        }
+
+        //判断小球种类长度
+        var _balls_sort = 4;
+        if (parseInt(js_input_red_ball_count.val()) === 0 || js_input_red_ball_count.val() == '') {
+            --_balls_sort;
+        }
+        if (parseInt(js_input_yellow_ball_count.val()) === 0 || js_input_yellow_ball_count.val() == '') {
+            --_balls_sort;
+        }
+        if (parseInt(js_input_blue_ball_count.val()) === 0 || js_input_blue_ball_count.val() == '') {
+            --_balls_sort;
+        }
+        if (parseInt(js_input_green_ball_count.val()) === 0 || js_input_green_ball_count.val() == '') {
+            --_balls_sort;
+        }
+
+        if (_balls_sort < 2) {
+            js_tool_com_masklayer.css({ 'z-index': '4000' });
+            js_com_dialog_wrapper.css('display', 'block');
+            js_com_dialog_content_txt.text(i18nModel.pop3);
+            js_input_red_ball_count.val(last_num.last_red);
+            js_input_yellow_ball_count.val(last_num.last_yellow);
+            js_input_blue_ball_count.val(last_num.last_blue);
+            js_input_green_ball_count.val(last_num.last_green);
+        }
+        last_num.last_red = js_input_red_ball_count.val();
+        last_num.last_yellow = js_input_yellow_ball_count.val();
+        last_num.last_blue = js_input_blue_ball_count.val();
+        last_num.last_green = js_input_green_ball_count.val();
+    }
+
+    //判断抽取次数合不合格
+    function judgeCathchTimes() {
+        if ($(this).val() == '') {
+            js_tool_com_masklayer.css({ 'z-index': '4000' });
+            js_com_dialog_wrapper.css('display', 'block');
+            js_com_dialog_content_txt.text(i18nModel.pop4);
+            js_edit_input_num.focus();
+            js_edit_input_num.val(content.catch_times);
+        } else if ($(this).val() < 2) {
+            js_tool_com_masklayer.css({ 'z-index': '4000' });
+            js_com_dialog_wrapper.css('display', 'block');
+            js_com_dialog_content_txt.text(i18nModel.pop5);
+            js_edit_input_num.focus();
+            js_edit_input_num.val(content.catch_times);
+        }
+    }
+    //提交确定按钮，显示编辑后的数据
+    function submitData() {
+        //编辑窗的显示与隐藏
+        js_touchball_box_edit_pop.toggleClass('on');
+        js_tool_com_masklayer.toggleClass('on');
+        editData();
+    }
+    return presenter;
+}]]></presenter><resources><file src="./resources/locations/bo_CN/lang.json"/><file src="./resources/locations/bo_CN/lang.po"/><file src="./resources/locations/bo/lang.json"/><file src="./resources/locations/bo/lang.po"/><file src="./resources/locations/zh_CN/lang.json"/><file src="./resources/locations/zh_CN/lang.po"/><file src="./resources/locations/zh/lang.json"/><file src="./resources/locations/zh/lang.po"/><file src="./resources/media/jilu.mp3"/><file src="./resources/media/moqiu.mp3"/><file src="./resources/media/yaoqiu.mp3"/><file src="./resources/wood/images/bg_ball_shadow.png"/><file src="./resources/wood/images/bg_board_shadow.png"/><file src="./resources/wood/images/bg_result_shadow.png"/><file src="./resources/wood/images/blue_ball2.png"/><file src="./resources/wood/images/board_front.png"/><file src="./resources/wood/images/box_opacity_after.png"/><file src="./resources/wood/images/box_opacity_behind.png"/><file src="./resources/wood/images/box_opacity.png"/><file src="./resources/wood/images/btn_not_transparent.png"/><file src="./resources/wood/images/btn_transparent.png"/><file src="./resources/wood/images/bule_ball.png"/><file src="./resources/wood/images/cole.png"/><file src="./resources/wood/images/cole2.png"/><file src="./resources/wood/images/frequency_input.png"/><file src="./resources/wood/images/green_ball.png"/><file src="./resources/wood/images/green_ball2.png"/><file src="./resources/wood/images/hands.png"/><file src="./resources/wood/images/icon_edit.png"/><file src="./resources/wood/images/icon_triangle.png"/><file src="./resources/wood/images/num_input.png"/><file src="./resources/wood/images/red_ball.png"/><file src="./resources/wood/images/red_ball2.png"/><file src="./resources/wood/images/yellow_ball.png"/><file src="./resources/wood/images/yellow_ball2.png"/></resources></addon>

@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("ndimage","zh-cn",{button:"插入图片",base:"基础设置",imageurl:"图片地址",alttext:"替换文本",imagelib:"图片库",upload:"上传",title:"图片属性",selectfile:"选择上传的文件",searchlib:"搜索图片库",title:"素材标题",description:"素材说明",filename:"文件名称"});

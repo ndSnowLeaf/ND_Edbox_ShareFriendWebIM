@@ -1,0 +1,39 @@
+<li class="word_list" ng-class="isEdit === true? 'edit': ''">
+<!-- 点中拖动的li添加类名  word_list_active -->
+<!-- 进入编辑状态，加edit 并且 sentence 的属性 设置 true-->
+    <div class="role_reading_new_user">
+        <!-- 切换好图标user_pic对应出现
+        男孩 user_b
+        女孩 user_g
+        父亲 user_f
+        母亲 user_m -->
+        <div class="user_pic user_default"><img ng-src="{{getRoleImg()}}" alt="" /></div>
+        <!-- 点击修改头像的时候icon_change_user 加类名 ui_open -->
+        <a class="icon_change_user ui_open" ng-click="toggleUl()"></a>
+        <ul class="change_user_list" ng-show="showRolesUl===true">
+            <!-- 选中的人物li上加类名 ui_on -->
+            <li class="user_b" ng-repeat="role in roles" ng-if="role && role.id != -1" ng-class="role.id === section.role? 'ui_on': ''" ng-click="setRole(role.id); toggleUl()">
+                <div class="user_pic"><img ng-src="{{role.picture}}" alt="" /></div>
+                <span class="icon_l_tick"></span>
+            </li>
+        </ul>
+    </div>
+    <div class="listbox">
+        <div class="sortHand"></div>
+        <div class="sentencebox clearfix">
+            <div class="sentence" ng-show="isEdit === true" contenteditable="true" contenteditable-section ng-model="section.content"></div>
+            <div class="sentence" ng-show="isEdit === false">{{section.content}}<a class="icon_edit" ng-click="changeEdit(true)"></a></div>
+        </div>
+        <div class="contbox" ng-show="section.voice !== ''">
+            <span class="name" ng-bind="section.voiceName"></span>
+            <a class="btn" ng-click="playPause()" translate="testVoice"></a>
+            <a class="btn" ng-click="selectThis()" translate="selectAgain"></a>
+            <a class="btn" ng-click="setVoice('', true)" translate="deleteVoice"></a>
+        </div>
+        <div class="contbox" ng-show="section.voice === ''">
+            <a class="btn" ng-click="selectThis()" translate="addVoice"></a>
+        </div>
+        <a class="icon_del" ng-click="delete()"></a>
+    </div>
+    <audio controls="controls" ng-src="{{sce(section.voice)}}" style="display: none">don't support</audio>
+</li>

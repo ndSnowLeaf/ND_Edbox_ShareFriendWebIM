@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SendQuestionComponent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<a class="send_to_student js_send_to" href="javascript:;" data-bind="css: {std_turn_left: leftVisibility, click_disabled: sending}, visible: (visibility() == true) && (leftVisibility == true)"><i class="com_sdt_pic"></i> <em class="com_sdt_word" data-bind="text: buttonText"></em> </a><a class="send_to_student js_send_to" href="javascript:;" data-bind="css: {std_turn_right: rightVisibility, click_disabled: sending}, visible: (visibility() == true) && (rightVisibility == true || isSingle == true)"><i class="com_sdt_pic"></i> <em class="com_sdt_word" data-bind="text: buttonText"></em></a>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+(function () {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "SendQuestionComponent",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.UTILITY_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.flowEvents = {
+                'getExerciseData': {fn: null, scope: null},
+                'exerciseStartSuccess': {fn: null, scope: null},
+                'exerciseStartFailure': {fn: null, scope: null},
+                'beforeSendQuestion': {fn: null, scope: null},
+                'afterSendQuestion': {fn: null, scope: null}
+            };
+            this.isTool = false; //表示为工具发送,默认不是
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        service: Class.extend({
+            $init: function (parent) {
+                this.presenter = parent;
+            },
+            /**
+             * 注冊發送題目過程所需的事件
+             * @param name  事件名稱
+             * @param fn    回調函數
+             * @param scope 執行對象
+             */
+            registerSendQuestionEvent: function (name, fn, scope) {
+                if (name != 'getExerciseData' && name != 'exerciseStartSuccess' && name != 'exerciseStartFailure' &&
+                    name != 'beforeSendQuestion' && name != 'afterSendQuestion') {
+                    throw Error('error event name!');
+                }
+                this.presenter.flowEvents[name].fn = fn;
+                this.presenter.flowEvents[name].scope = scope == undefined ? window : scope;
+            },
+            /**
+             * 设置发送题目按钮可见性
+             */
+            setVisible: function (visible) {
+                this.presenter.viewModel.visibility(visible);
+            },
+            /**
+             * 设置要发送的题目的信息
+             * @param data 题目信息
+             */
+            setSendQuestionInfo: function (data) {
+                this.presenter.sendQuestionInfo = data;
+                //如果QuestionInfo中包含isTool字段, 且该字段为true
+                if(data.isTool != undefined && data.isTool == true) {
+                    this.presenter.isTool = true;
+                    this.presenter.__interface = {
+                        //以下三个方法实现发送题目流程中需要实现的方法
+                        getExerciseData: this.presenter._createDelegate(this.presenter._getExerciseData, [], true, this.presenter),
+                        exerciseToolStartSuccess: this.presenter._createDelegate(this.presenter._exerciseStartSuccess, [], true, this.presenter),
+                        exerciseToolStartFail: this.presenter._createDelegate(this.presenter._exerciseStartFailure, [], true, this.presenter)
+                    };
+                } else{
+                    this.presenter.isTool = false;
+                    this.presenter.__interface = {
+                        //以下三个方法实现发送题目流程中需要实现的方法
+                        getExerciseData: this.presenter._createDelegate(this.presenter._getExerciseData, [], true, this.presenter),
+                        exerciseStartSuccess: this.presenter._createDelegate(this.presenter._exerciseStartSuccess, [], true, this.presenter),
+                        exerciseStartFail: this.presenter._createDelegate(this.presenter._exerciseStartFailure, [], true, this.presenter)
+                    };
+                }
+            },
+            /**
+             * 获取按钮当前状态
+             * @returns {*}
+             */
+            getCurrentState: function () {
+                if(this.presenter.viewModel.sending() === true) {
+                    //發送狀態
+                    return 'sending';
+                } else {
+                    //正常狀態
+                    return 'normal';
+                }
+            }
+        }),
+        getService: function () {
+            //加載對外的Service模塊
+            var self = this;
+            if (!this._service_) {
+                this._service_ = new this.service(self);
+            }
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            var self = this;
+            this.$view = $(view);
+            this.model = model;
+            this.referenceModule = this.model.referenceModule == undefined ?
+                this.model.$.unqiueId : this.model.referenceModule;
+            this.currentScope = this.model.$.scope;
+            //发送题目的显示方式
+            //Single: 只显示一个按钮(默认); Left: 显示左侧按钮; Right: 显示右侧按钮; Both: 显示两侧按钮
+            var showMode = this.model.showMode == undefined ? 'Single' : this.model.showMode;
+            var buttonText = this.model.buttonText == undefined ?
+                '发送至学生端' : this.model.buttonText;
+            this.viewModel = {
+                visibility: ko.observable(true),        //按钮是否可见
+                sending: ko.observable(false),          //是否处于发送状态
+                buttonText: buttonText,                 //按钮文本信息
+                isSingle: showMode === 'Single',              //单边可见
+                rightVisibility: (showMode === 'Right' || showMode === 'Both'),  //右侧可见
+                leftVisibility: (showMode === 'Left' || showMode === 'Both')    //左侧可见
+            };
+            //绑定数据
+            ko.applyBindings(this.viewModel, this.$view[0]);
+        },
+        pageShow: function () {
+            this._bindEvent();
+        },
+        pageLeave: function () {
+            this._unbindEvent();
+        },
+        destroy: function () {
+            ko.cleanNode(this.$view[0]);
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+            if(this.isPPTShell || this.isPC) {
+                this.$view.find('.js_send_to')
+                    .on('click', {self: this}, this._onSendToStudent)
+                    .on('mouseover', function (e) {
+                        $(e.target).addClass('ui_btn_hover');
+                    })
+                    .on('mouseleave', function (e) {
+                        $(e.target).removeClass('ui_btn_hover')
+                    })
+                    .on('mousedown', function (e) {
+                        $(e.target).addClass('ui_btn_active');
+                    })
+                    .on('mouseup', function (e) {
+                        $(e.target).removeClass('ui_btn_active');
+                    });
+            }
+        },
+        _unbindEvent: function () {
+            if(this.isPPTShell || this.isPC) {
+                this.$view.find('.js_send_to').off();
+            }
+        },
+        _onSendToStudent: function (eventData) {
+            var self = eventData.data.self;
+            //發題過程不會響應
+            if(self.viewModel.sending() === true) {
+                return;
+            }
+            self.viewModel.sending(true);
+            //調用發送前方法
+            if(self.flowEvents.beforeSendQuestion.fn != null) {
+                var extraData = {sourcePresenter: undefined};
+                self.flowEvents.beforeSendQuestion.fn.call(self.flowEvents.beforeSendQuestion.scope, extraData);
+                //发送前在确认一下是否需要修改sourcePresenter参数
+                if(extraData.sourcePresenter != undefined) {
+                    this.referenceModule = extraData.sourcePresenter;
+                }
+            }
+            //調用發題流程
+            if(self.isTool) {
+                //如果是工具
+                self.playerController.startFlow('exerciseToolStart', {scope: [self.currentScope, 'common'], sourcePresenterUnqiueId: self.referenceModule});
+            } else {
+                //如果不是工具
+                self.playerController.startFlow('exerciseStart', {scope:[self.currentScope, 'common'], sourcePresenterUnqiueId: self.referenceModule});
+            }
+            self.$dispatchEvent('SendQuestionToStudent', PresenterEventType.IC_PLAYER_EVENT, {status: 'sending'});
+        },
+        /**********被代理的事件**************/
+        _getExerciseData: function (data) {
+            //調用發送后方法(因为在没有互动课堂场景下,流程会被同步调用;故将这个方法改到这里进行调用)
+            if(this.flowEvents.afterSendQuestion.fn != null) {
+                this.flowEvents.afterSendQuestion.fn.call(this.flowEvents.afterSendQuestion.scope);
+            }
+            if (this.flowEvents.getExerciseData.fn != null) {
+                //具體組件的實現
+                return this.flowEvents.getExerciseData.fn.call(this.flowEvents.getExerciseData.scope, data);
+            }
+        },
+        _exerciseStartSuccess: function () {
+            this.viewModel.sending(false);
+            this.viewModel.visibility(false);
+            if (this.flowEvents.exerciseStartSuccess.fn != null) {
+                this.flowEvents.exerciseStartSuccess.fn.call(this.flowEvents.exerciseStartSuccess.scope);
+            }
+            this.$dispatchEvent('SendQuestionToStudent', PresenterEventType.IC_PLAYER_EVENT, {status: 'success'});
+        },
+        _exerciseStartFailure: function () {
+            this.viewModel.sending(false);
+            if (this.flowEvents.exerciseStartFailure.fn != null) {
+                this.flowEvents.exerciseStartFailure.fn.call(this.flowEvents.exerciseStartFailure.scope);
+            }
+            this.$dispatchEvent('SendQuestionToStudent', PresenterEventType.IC_PLAYER_EVENT, {status: 'failure'});
+        }
+    }, "SendQuestionComponent");
+    window.AddonSendQuestionComponent_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

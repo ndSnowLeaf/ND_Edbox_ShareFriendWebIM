@@ -1,0 +1,98 @@
+<div class="llkwrapper"><div class="llk_mainboard"><div class="header clearfix"><time-box></time-box><h1 class="inptit"><textarea editbox title="model.title" max-length="100" max-size="30" class="inp" placeholder="{{'highlightmark.placeholder.title' | translate }}" rows="2" style="overflow: hidden; padding-top: 10px; border-radius:14px" ng-model="model.title">
+            </h1>
+        </div>
+        <div class="container clearfix">
+             <div class="highlightmark_container">
+                 <div class="highlightmark_leftSide">
+                 	<h1 translate="highlightmark.content"></h1>
+                    <div class="highlightmark_content">
+                        <textarea id="highlightmark_text"></textarea>
+                    </div>
+                </div>
+                <div class="highlightmark_rightSide">
+                	<div class="highlightmark_list">
+                    	<h2 translate="highlightmark.question.stem"></h2>
+                        <ul id="highlightmark_ul">
+                            <li ng-repeat="marker in model.content.markers">
+                                <div>
+                                    <div class="title">
+                                        <p class="left">{{"highlightmark.question.stem" | translate}}：</p>
+                                        <p class="right">
+                                            <input type="text" placeholder="{{'highlightmark.title.input' | translate}}" class="highlightmark_input" ng-model="marker.marker_title" required maxlength="50" ng-keydown="handle.checkLength(marker.marker_title)">
+                                        </p>
+                                    </div>
+                                   <div>
+                                        <div class="left">{{"highlightmark.color" | translate}}：</div>
+                                        <div class="right highlightmark_selectedBox">
+                                            <div ng-click="marker.showOptions = !marker.showOptions">
+                                                <div ng-if="marker.showHolder" class="highlightmark_li highlightmark_selectedColor">
+                                                    <span style="background-color:{{marker.marker_color.cValue}}"></span>
+                                                    <p>{{marker.marker_color.name}}</p>
+                                                </div>
+                                                <div ng-if="!marker.showHolder">
+                                                    <p translate="highlightmark.color.select"></p>
+                                                </div>
+                                            </div>
+                                            <ul class="highlightmark_options" ng-show="marker.showOptions">
+                                                <li ng-repeat="x in colors" class="highlightmark_li" ng-click="change(x,marker)">
+                                                    <span style="background-color:{{x.cValue}}"></span><p>{{x.name}}</p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="highlightmark_del">
+                                    	<a href="javascript:void(0)" ng-click="remove($event)" ng-show="view.showDelBtn" translate="app.delete"></a>
+                                    </div>
+                                    </div>
+                            </li>
+                        </ul>
+                        <div class="highlightmark_add">
+                            <a href="javascript:void(0)" id="highlightmark_add" ng-click="addDesc()" ng-show="view.showAddBtn" translate="app.add"></a>
+                        </div>
+                    </div>
+                    <div class="highlightmark_info">
+                    <h2 translate="highlightmark.info"></h2>
+                        <p>
+                            <label for="highlightmark_title">{{"highlightmark.title" | translate}}：</label>
+                            <input type="text" placeholder="{{'highlightmark.title.input' | translate}}" id="highlightmark_title" ng-model="model.content.content.title" class="highlightmark_input">
+                        </p>
+                        <p>
+                            <label for="highlightmark_author">{{"highlightmark.author" | translate}}：</label>
+                            <input type="text" placeholder="{{'highlightmark.author.input' | translate}}" id="highlightmark_author" ng-model="model.content.content.author" class="highlightmark_input">
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="llk_toolbar clearfix">
+        <ul class="toolleft">
+            <li class="skin">
+                <select-skin></select-skin>
+            </li>
+            <li class="desprtion"><a href="javascript:;" class="mainlink" poptipbox-placement-disabled="true" poptipbox-class="toolpop" poptipbox-templateid="linkup_toolpop_describe" translate="highlightmark.topic.titile"></a>
+                <script type="text/ng-template" id="linkup_toolpop_describe">
+                    <div class="popheader">
+                        <h2 class="poptit" translate="highlightmark.topic.title"></h2>
+                    </div>
+                    <div class="popbody">
+						<question-guide image-root="interaction/highlightmark/assets/guide"
+                           image-prefix="hjt" image-suffix=".jpg" image-amount="5" auto-switch="true"></question-guide>
+                        <p class="introtxt" translate="highlightmark.topic.text"></p>
+                    </div>
+                    <div class="popfooter">
+                        <a href="javascript:;" class="btn_main" ng-click="$parent.hide()">{{'highlightmark.topic.know' |
+                            translate}}</a>
+                    </div>
+                </script>
+            </li>
+            <li class="time" ng-class="{ 'btn_fresh': model.timer.timer_type=='countdown' }">
+                <!--选择倒计时时，此处添加类名：btn_fresh-->
+                <time-setting-btn></time-setting-btn>
+            </li>
+        </ul>
+        <save-buttons class="toolright" post-data="model" encode-data="encodeData" decode-data="decodeData" valid-data="validPostData" version="v2"></save-buttons>
+    </div>
+</div>
+<error-tip error-data="errorModel"></error-tip>

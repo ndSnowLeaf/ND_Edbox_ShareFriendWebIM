@@ -1,0 +1,1 @@
+CKEDITOR.dialog.add("audio",create_media_dialog("audio"));

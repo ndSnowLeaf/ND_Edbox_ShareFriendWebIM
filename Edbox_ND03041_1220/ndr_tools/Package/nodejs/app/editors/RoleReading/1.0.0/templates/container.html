@@ -1,0 +1,293 @@
+<div class="exam_wood ui_dev_layout">
+	<div class="com_layout com_layout_large">
+	    <div class="com_lay_main">
+	        <div class="com_lay_header">
+	            <!-- <div class="com_u_timebox">
+	                <span class="time_1">05</span>
+	                <span class="time_2">:</span>
+	                <span class="time_1">21</span>
+	            </div> -->
+	            <!--<div class="com_lay_toptool">
+	                <a href="###" class="com_u_btn1">提交</a>
+	            </div> -->
+	            <div class="ui_layout_operationTips" ng-if="!isPreview">
+				  
+				    <a class="nes_btn_pt nes_example ui_has_bf_line" href="javascript:" ng-click="openSample();" translate="sample"></a>
+				</div>
+	        </div>
+	        <div class="com_lay_contain role_reading allscreen"> <!-- 左侧一列全屏com_lay_contain添加类名 allscreen -->
+	            <div class="com_lay_mboard">
+	                <div class="com_lay_boardtit">
+	                    <h2 class="com_u_boardtit">
+	                        <!-- 小字号 添加类名 s_tit -->
+	                        <!--  <p class="tit" contenteditable="true" maxlength="70" ng-class="{'s_tit':panelTitle.length>40}" ng-model="panelTitle"></p> -->
+	                         <!--此处建议使用p标签配合contenteditable属性的形式，也可换成input-->
+
+	                    <textarea class="tit" maxlength="70" ng-class="{' tit_row2':panelTitle.length>40, ' tit_row1':!panelTitle || panelTitle.length<=40}" ng-model="panelTitle" placeholder = "请输入70字以内的标题" onblur="this.placeholder = '请输入70字以内的标题'" onfocus="this.placeholder = ''"  rows="5"></textarea>
+	                    </h2>
+	                    <a class="btn_clean" ng-class="{'click_disabled': sections.length === 0}" ng-click="changeCleAllBox(true)" translate="clearAll"></a>
+	                </div>
+	                <div class="com_lay_board" style="display:none;"><!-- 未添加单词时 -->
+	                    <p class="nothing_text" translate="addSecFromRight"></p>
+	                </div>
+	                <div class="com_lay_board"><!-- 添加单词之后 -->
+	                    <p class="add_mun"><em translate="compVoiceTip"></em>
+	                    <!-- <a class="add_mun_experience" href="http://demo.chivox.com/aitts/tts_en_sent.html" translate="compVoiceTestEn"></a> -->
+	                    </p>
+	                    <div class="role_reading_add_contain comui_wood_scrollbar">
+	                        <div class="role_reading_add_user">
+	                     
+	                            <a class="icon_add_user" ng-class="roles.length>=5? 'click_disabled': ''" ng-click="changeSelRoleBox(true)"></a>
+	                             <!-- 提示窗体 -->
+	                            <div class="role_reading_tips ">
+	                                <div class="role_reading_tips_bg"></div>
+	                                <span class="role_reading_tips_text" translate="maxRole4"></span>
+	                            </div>
+	                            <!-- 提示窗体 -->
+	                            <ul class="add_user_list">
+	                            	<role ng-repeat="role in roles track by $index" role-data="role" index="$index" delete-role="deleteRole(index)" change-del-role-box="changeDelRoleBox(visibility, roleIndex)"></role>
+	                                <!-- <li class="user_b"><div class="user_pic"> <img src="wood/images/icons_by.png" alt="" /> </div></li>-->
+	                            </ul>
+	                        </div>
+	                        <ul sectionsmain ui-sortable="sortableOptions" ng-model="sections" class="word_box"  ng-transclude>	
+								<li section ng-repeat="section in sections track by $index" section-data="section" roles-data="roles" index="$index" delete-section="deleteSection(secItem)" change-sel-box="changeSelBox(visibility)" default-role="defaultRole" no-role-tip="noRoleTip()">
+								</li>
+							</ul>
+	                        <!-- <ul class="word_box"> -->
+	                            <!-- 点中拖动的li添加类名  word_list_active -->
+	                            <!-- <li class="word_list edit"> --><!-- 进入编辑状态，加edit 并且 sentence 的属性 设置 true-->
+	                                <!-- <div class="role_reading_new_user"> -->
+	                                    <!-- 切换好图标user_pic对应出现
+	                                    男孩 user_b
+	                                    女孩 user_g
+	                                    父亲 user_f
+	                                    母亲 user_m -->
+	                                    <!-- <div class="user_pic user_default"><img src="wood/images/icons_df.png" alt="" /></div> -->
+	                                    <!-- 点击修改头像的时候icon_change_user 加类名 ui_open -->
+	                                    <!-- <a href="###" class="icon_change_user ui_open"></a>
+	                                    <ul class="change_user_list"> -->
+	                                        <!-- 选中的人物li上加类名 ui_on -->
+	                                       <!--  <li class="user_b">
+	                                            <div class="user_pic"><img src="wood/images/icons_by.png" alt="" /></div>
+	                                            <span class="icon_l_tick"></span>
+	                                        </li><li class="user_g">
+	                                            <div class="user_pic"><img src="wood/images/icons_gl.png" alt="" /></div>
+	                                            <span class="icon_l_tick"></span>
+	                                        </li><li class="user_f">
+	                                            <div class="user_pic"><img src="wood/images/icons_fr.png" alt="" /></div>
+	                                            <span class="icon_l_tick"></span>
+	                                        </li><li class="user_m ui_on">
+	                                            <div class="user_pic"><img src="wood/images/icons_mr.png" alt="" /></div>
+	                                            <span class="icon_l_tick"></span>
+	                                        </li> -->
+	                                    <!-- </ul>
+	                                </div>
+	                                <div class="listbox">
+	                                    <div class="sentencebox clearfix">
+	                                        <div class="sentence" contenteditable="true">Where are you from?<a href="###" class="icon_edit"></a></div>
+	                                        
+	                                    </div>
+	                                    <div class="contbox">
+	                                        <span class="name">2015231312331.wav</span>
+	                                        <a href="###" class="btn">试听</a>
+	                                        <a href="###" class="btn">重新添加</a>
+	                                        <a href="###" class="btn">删除</a>
+	                                    </div>
+	                                    <a href="###" class="icon_del"></a>
+	                                </div>
+	                            </li> -->
+	                           
+	                        <!-- </ul> -->
+	                    </div>
+	                    <!-- 添加句子的按钮 上面容器没出现滚动条的时候 word_list_add 添加类名 box_margin_ajust -->
+	                    <div class="word_list_add" ng-click="addSection()">
+	                            <a class="icon_add"></a>
+	                    </div>
+	                    <div class="role_reading_txt_tips"><span class="role_reading_stxt" translate="voiceTime"></span><span class="role_reading_stxt" ng-bind="countTotalTime()"></span></div>
+	                </div>
+	            </div>
+	            <div class="com_m_sideboard_1">
+	                <div class="com_m_sidehead">
+	                    <p class="title" translate="sectionList"></p>
+	                </div>
+	                <div class="com_m_sidecon">
+	                    <div class="coursebox">
+	                        <div class="titleSelect"><!-- 点击下拉titleSelect 加类名 on -->
+	                            <a href="###" class="title">
+	                                <span class="text">Unit 1:  My name is Cool</span>
+	                                <span class="num">20</span>
+	                                <i class="icon"></i>
+	                            </a>
+	                            <div class="unit_box scrollbar_style_gray">
+	                                <a href="###" class="title">
+	                                    <span class="text">Unit 2:  My name is Cool</span>
+	                                    <span class="num">20</span>
+	                                </a>
+	                                <a href="###" class="title">
+	                                    <span class="text">Unit 3:  My name is Cool</span>
+	                                    <span class="num">20</span>
+	                                </a>
+	                            </div>
+	                        </div>
+	                        <div class="word_dl_box scrollbar_style_gray">
+	                            <p class="word_dl click">
+	                                <span class="text">1.Where are you from?</span>
+	                            </p>
+	                            <p class="word_dl"><!-- 已经选择的单词去掉 click -->
+	                                <span class="text" title="Where are you from?Where are you from?">1.Where are you from?Where are you from?</span>
+	                            </p>
+	                            <a href="###" class="addall"><i class="icon"></i><span class="text" translate="addSectionList"></span></a>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+
+				<!--弹窗start-->
+	            <!--弹窗：选择添加音频方式-->
+	            <div class="comui_big_pop pop_w_samll" ng-show="showSelBox === true">
+				    <div class="comui_pop_bg ">
+
+				        <!-- 弹窗内容区  -->
+				        <div class="comui_pop_main" >
+
+			                <!-- 弹窗自定义主体 -->
+			                <div class="role_reading_txt"><span class="span_txt" translate="selectMed"></span></div>
+				            
+
+				            <div class="comui_pop_main_ft  ">
+				                <!-- 没有上一步操作时不显示上一步按钮 -->
+				                <a class="comui_light_btn" href="javascript:;" ng-click="selectAudio()">    
+				                    <span class="comui_light_btn_txt " translate="selectAudio"></span>
+				                </a>
+				                <!-- 按钮不可点击添加类名 .click_disabled -->
+				                <a class="comui_light_btn" href="javascript:;" ng-click="changeRecBox(true)">    
+				                    <span class="comui_light_btn_txt" translate="selectRecord"></span>
+				                </a>
+				            </div>
+				                
+				        </div>
+				        <!-- /弹窗内容区 -->
+
+				        <!-- 右边关闭按钮 -->
+				        <a href="###" class="comui_btn_close comui_btn_rb" ng-click="changeSelBox(false)"><span></span></a>
+				        <!-- /右边关闭按钮 -->
+
+				        <!-- 左边关闭按钮 -->
+				        <a href="###" class="comui_btn_close comui_btn_lb comui_btn_hide"><span></span></a>
+				        <!-- /左边关闭按钮 -->
+				    </div>
+				</div>
+
+	            <!--弹窗结束-->
+	            <!-- 录音的弹窗 -->
+				 <record ng-show="showRecordBox === true"></record>
+				<!-- /录音的弹窗结束 -->
+            	<!-- 选择头像的弹窗 -->
+				<div class="comui_big_pop pop_w_mid" ng-show="showSelRoleBox === true">
+				    <div class="comui_pop_bg">
+
+				        <!-- 弹窗内容区 -->
+				        <div class="comui_pop_main" >
+				            
+				            <div class="comui_pop_userpic_main">
+				                <div class="comui_pop_userpic_hd">
+				                    <span class="comui_txt" translate="selectRolePor"></span>
+				                </div>
+				                <div class="comui_pop_userpic_bd">
+				                    <ul class="add_user_list">
+				                        <!-- 选中的li上添加类名 ui_on -->
+				                        <li class="user_b" ng-repeat="value in presetRoles track by $index" ng-click="addRole(value)" ng-class="isExistRole(value)? 'ui_on': ''">
+				                            <div class="user_pic"><img ng-src="{{value.picture}}" alt="" /></div>
+				                            <span class="icon_l_tick"></span>
+				                        </li>		           
+				                    </ul>
+				                </div>
+				            </div>  
+				            <div class="comui_pop_main_ft  ">
+				                <!-- 按钮不可点击添加类名 .click_disabled -->
+				                <a class="comui_light_btn" ng-click="selectImage()">    
+				                    <span class="comui_light_btn_txt" translate="imgUpload"></span>
+				                </a>
+				            </div>            
+				        </div>
+				        <!-- /弹窗内容区 -->        
+
+				        <!-- 右边关闭按钮 -->
+				        <a class="comui_btn_close comui_btn_rb" ng-click="changeSelRoleBox(false)"><span></span></a>
+				        <!-- /右边关闭按钮 -->
+
+				        <!-- 左边关闭按钮 -->
+				        <a href="javascript:;" class="comui_btn_close comui_btn_lb comui_btn_hide"><span></span></a>
+				        <!-- /左边关闭按钮 -->
+				    </div>
+				</div>
+				<!-- /选择头像的弹窗结束 -->
+				<!-- 删除角色的弹窗 -->
+				<div class="comui_big_pop pop_w_mid" ng-show="showDelRoleBox === true">
+
+				    <div class="comui_pop_notebook_bg ">
+				        <div class="comui_pop_notebook_bg_papper ">
+				            <!-- 弹窗内容区 -->
+				            <div class="comui_pop_papper_main">
+				                <div class="comui_pop_warning_title">
+				                    <span class="comui_txt" translate="confirmDelRole"></span>
+				                </div>
+				                <div class="comui_pop_userpic_bd">
+				                    <ul class="add_user_list">
+				                        <li class="user_g ">				                
+				                            <div class="user_pic"><img ng-src="{{roles[delRoleIndex] && roles[delRoleIndex].picture}}" alt="" /></div>
+				                        </li>
+				                    </ul>
+				                    <div class="comui_pop_warning_txt">
+				                        <span class="comui_txt" translate="curHasSecWidthRole" translate-values=" {count:secWidthRoleCount} ">
+				                       <!--  当前有<span ng-bind="secWidthRoleCount"></span>个句子在使用该角色，删除后需要重新分配角色。 -->
+				                        </span>
+				                    </div>
+				                </div>
+				                <div class="comui_pop_main_ft  ">
+				                    <!-- 按钮不可点击添加类名 .click_disabled -->
+				                    <a class="comui_light_btn" href="javascript:;" ng-click="changeDelRoleBox(false, -1)">    
+				                        <span class="comui_light_btn_txt " translate="confirmN"></span>
+				                    </a>
+				                    <a class="comui_light_btn" href="javascript:;" ng-click="deleteRole(delRoleIndex); changeDelRoleBox(false, -1)">    
+				                        <span class="comui_light_btn_txt" translate="confirmYRole"></span>
+				                    </a>
+				                </div>  
+				            </div>
+				            <!-- /弹窗内容区 -->
+				        </div>
+				    </div>
+				</div>
+				<!-- /删除角色的弹窗结束 -->
+				<!--清空内容的弹窗-->
+				<div class="comui_big_pop pop_w_mid" ng-show="showCleAllBox === true">
+
+				    <div class="comui_pop_notebook_bg ">
+				        <div class="comui_pop_notebook_bg_papper ">
+				            <!-- 弹窗内容区 -->
+				            <div class="comui_pop_papper_main">
+				                <div class="comui_pop_warning_title">
+				                    <span class="comui_txt" translate="confirmClearAllSec"></span>
+				                </div>			              
+				                <div class="comui_pop_main_ft  ">
+				                    <!-- 按钮不可点击添加类名 .click_disabled -->
+				                    <a class="comui_light_btn" href="javascript:;" ng-click="changeCleAllBox(false)">    
+				                        <span class="comui_light_btn_txt " ng-click="changeCleAllBox(false)" translate="confirmN"></span>
+				                    </a>
+				                    <a class="comui_light_btn" href="javascript:;"  ng-click="deleteAllSection(); changeCleAllBox(false)">    
+				                        <span class="comui_light_btn_txt" translate="confirmY"></span>
+				                    </a>
+				                </div>  
+				            </div>
+				            <!-- /弹窗内容区 -->
+				        </div>
+				    </div>
+				</div>
+				<!--清空内容的弹窗结束-->
+	        </div>
+	    </div>
+	    
+	</div>
+</div>
+
+

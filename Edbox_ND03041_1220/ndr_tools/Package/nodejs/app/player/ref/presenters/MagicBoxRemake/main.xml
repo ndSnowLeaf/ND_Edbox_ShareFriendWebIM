@@ -1,0 +1,867 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='MagicBoxRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .manage{position:relative;width:100%;height:100%}.exam_skin_wood .manage .com_layout_main{text-align:center}.exam_skin_wood .manage .com_m_sideboard_1{position:relative;width:31.66667em;height:100%;padding:4.20833em 0 1.45833em;margin-left:1.45833em;margin-right:3.20833em}.exam_skin_wood .manage .com_m_sideboard_1 .com_m_sidehead{position:absolute;left:0;top:1.45833em;right:0;height:2.75em;background:url(resources/wood/images/bg_sidetit1.png) repeat-x;background-size:auto 100%;border-top-left-radius:.75em;border-top-right-radius:.75em}.exam_skin_wood .manage .com_m_sideboard_1 .com_m_sidecon{height:100%;border-bottom:.375em solid transparent;background-image:url(resources/wood/images/decl_sidecon.png),url(resources/wood/images/decr_sidecon.png),url(resources/wood/images/decm_sidecon.png),url(resources/wood/images/bg_sidecon1.png);background-repeat:no-repeat,no-repeat,repeat-x,repeat;background-position:left bottom,right bottom,center bottom,left top;background-size:.875em auto,.875em auto,.375em auto,2.70833em auto;background-origin:border-box,border-box,border-box,content-box;box-shadow:.0625em .10825em .79167em 0 rgba(75,40,0,.75);border-bottom-left-radius:.75em;border-bottom-right-radius:.75em}.exam_skin_wood .manage .com_m_mainboard_1{position:relative;height:100%;overflow:hidden}.exam_skin_wood .manage .cellMiddle{white-space:nowrap}.exam_skin_wood .manage .cellMiddle:after{content:'';display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .manage .manage_right{display:inline-block;vertical-align:middle;margin:0 1.5em 0 0;float:right}.exam_skin_wood .manage .com_m_sidehead{text-align:center;z-index:5}.exam_skin_wood .manage .tip_box{position:relative;height:100%;margin-right:.08333em;padding:1em 1.66667em 0 1.5em;text-align:left;overflow:auto}.exam_skin_wood .manage .tip_normal{position:relative;padding:0 .5em;line-height:1.5;margin:0 1.66667em 1em 0;color:#2e2e2e}.exam_skin_wood .manage .tip_normal .num,.exam_skin_wood .manage .tip_normal .word{word-wrap:break-word;break-word:break-all;font-style:normal;font-size:1.5em;line-height:1.4}.exam_skin_wood .manage .tip_normal .point{padding-right:.5em}.exam_skin_wood .manage .tip_normal.correct{background-color:#e0e0e0;color:#5c5c5c}.exam_skin_wood .manage .tip_normal.correct:after{content:'';position:absolute;top:.20833em;right:-2.5em;width:1.70833em;height:1.75em;background:url(resources/wood/images/correct.png) center center no-repeat;background-size:100% auto}.exam_skin_wood .manage .com_m_sidecon{box-shadow:none!important}.exam_skin_wood .manage .manage_right_tit{color:#fff6e4;line-height:1.65;font-size:1.5em}.exam_skin_wood .manage .manage_left{display:inline-block;vertical-align:middle;text-align:center}.exam_skin_wood .manage .manage_box{display:inline-block;position:relative;left:.625em;vertical-align:middle;border-left:1px solid #9d866a}.exam_skin_wood .manage .manage_box .normal{float:left;background-color:#fff8e6;border:1px solid #9d866a;margin:-1px 0 0 -1px;color:#494136;text-align:center}.exam_skin_wood .manage .manage_box .normal.correct{background-color:#a8dd55}.exam_skin_wood .manage .manage_box .normal.correct_x{background-color:#a6d5e7}.exam_skin_wood .manage .manage_box .normal.correct_y{background-color:#cfe269}.exam_skin_wood .manage .manage_box .normal.correct_fix{background-color:#b1b153}.exam_skin_wood .manage .manage_box .normal.on{background-color:#d4b9c8}.exam_skin_wood .manage .manage_box .normal .manage_text{font-style:normal}.exam_skin_wood .manage .largeBox{max-width:32.04167em}.exam_skin_wood .manage .largeBox.large_5{width:26.91667em}.exam_skin_wood .manage .largeBox.large_6{width:32.04167em}.exam_skin_wood .manage .largeBox .normal{width:5.16667em;height:5.16667em;line-height:5.16667em}.exam_skin_wood .manage .largeBox .normal .manage_text{font-size:2.5em}.exam_skin_wood .manage .normalBox{max-width:31.625em}.exam_skin_wood .manage .normalBox.normal_5{width:20em}.exam_skin_wood .manage .normalBox.normal_6{width:23.875em}.exam_skin_wood .manage .normalBox.normal_7{width:27.75em}.exam_skin_wood .manage .normalBox.normal_8{width:31.625em}.exam_skin_wood .manage .normalBox .normal{width:3.875em;height:3.875em;line-height:3.875em}.exam_skin_wood .manage .normalBox .normal .manage_text{font-size:2em}.exam_skin_wood .manage .smallBox{max-width:31.75em}.exam_skin_wood .manage .smallBox.small_5{width:16em}.exam_skin_wood .manage .smallBox.small_6{width:19.125em}.exam_skin_wood .manage .smallBox.small_7{width:22.25em}.exam_skin_wood .manage .smallBox.small_8{width:25.375em}.exam_skin_wood .manage .smallBox.small_9{width:28.5em}.exam_skin_wood .manage .smallBox.small_10{width:31.75em}.exam_skin_wood .manage .smallBox .normal{width:3.125em;height:3.125em;line-height:3.125em}.exam_skin_wood .manage .smallBox .normal .manage_text{font-size:1.66667em}.exam_skin_wood .manage .tip_normal .num.green{color:green}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content manage _manage"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _tit"></h2></div><div class="com_layout_main"><div class="com_m_mainboard_1 manage_left cellMiddle"><ul class="manage_box _manage_box"></ul></div><div class="com_m_sideboard_1 manage_right"><div class="com_m_sidehead"><span class="manage_right_tit _languageDom" data-language="hint"></span></div><div class="com_m_sidecon"><ul class="tip_box scrollbar_style_gray _tip_box"></ul></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+    var MagicBox = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        this.$main = null;
+        //标题
+        this.title = '';
+        this.border = null;
+        this.words = null;
+        this.chars = null;
+        //正确答案
+        this.correctAnswer = [];
+        this.correctAnswerMap = [];
+        this.userAnswer = []; /*键值对形式*/
+        this.startRow = 0;
+        this.startCol = 0;
+        this.answord = null;
+        this.showResult = false;
+
+        this.$option_box = null;
+        this.$tip_box = null;
+        this.numDom = null;
+        //每块的区域
+        this.liDom = null;
+        this.ansTips = null;
+        this.areas = [];
+        this.admitPass = [];
+        this.path = [];
+
+        this.startX = 0;
+        this.startY = 0;
+        this.endX = 0;
+        this.endY = 0;
+
+        this.i18Model = {};
+    };
+    MagicBox.prototype = {
+        init: function(view, model, presenter) { /*初始化数据*/
+            this.questionId = model.question_id;
+            var question_url = model.question_url;
+            this.title = question_url.title;
+            this.border = question_url.border;
+            this.words = question_url.words;
+            this.chars = question_url.chars;
+            this.presenter = presenter;
+            this.$view = $(view);
+        },
+        _maxNum: function(a, b) {
+            return a > b ? a : b;
+        },
+        initView: function() { /*初始化视图*/
+            var that = this;
+            //国际化语言
+            var _languageDoms = that.$view.find("._languageDom");
+            var lan = 0,
+                dataLan = "";
+            for (var lan = 0; lan < _languageDoms.length; lan++) {
+                dataLan = _languageDoms.eq(lan).attr("data-language");
+                _languageDoms.eq(lan).html(that.i18Model[dataLan]);
+            }
+
+            that.$main = that.$view.find('._manage');
+            /*头部标题*/
+            var $title = that.$view.find('._tit');
+            if (that.title.length > 35) {
+                $title.addClass('s_tit');
+            } else {
+                $title.removeClass('s_tit');
+            }
+            $title.html(that.title);
+            that.$option_box = this.$view.find("._manage_box");
+            var className = '',
+                className_wid = '';
+            switch (that._maxNum(that.border.width, that.border.height)) {
+                case 5:
+                case 6:
+                    className = "largeBox";
+                    className_wid = "large";
+                    break;
+                case 7:
+                case 8:
+                    className = "normalBox";
+                    className_wid = "normal";
+                    break;
+                case 9:
+                case 10:
+                    className = "smallBox";
+                    className_wid = "small";
+                    break;
+            }
+            // switch (that.border.width){    case 5: className = 'smallBox less';break;    case 6: className = 'smallBox
+            // many';break;    case 7: className = 'normalBox less';break;    case 8: className = 'normalBox many';break;    case 9:
+            // className = 'largeBox less';break;    case 10:className = 'largeBox many';break; }
+            className += ' ' + className_wid + '_' + that.border.width;
+            $(that.$option_box).addClass(className);
+            //初始化页面
+            var i = 0,
+                html = [];
+            for (i = 0; i < that.border.width * that.border.height; i++) {
+                html.push('<li class="normal _option"><em class="manage_text">' + that.chars[i] +
+                    '</em></li>');
+                var colNum = i % that.border.width + 1;
+                var rowNum = Math.floor(i / that.border.width) + 1;
+                var area = {
+                    col: colNum,
+                    row: rowNum,
+                    admitPass: [{
+                        col: colNum + 1,
+                        row: rowNum
+                    }, {
+                        col: colNum - 1,
+                        row: rowNum
+                    }, {
+                        col: colNum,
+                        row: rowNum + 1
+                    }, {
+                        col: colNum,
+                        row: rowNum - 1
+                    }],
+                    text: that.chars[i],
+                    isPass: false
+                };
+                that.areas.push(area);
+            }
+            that.$option_box.append(html.join(''));
+
+            that.$tip_box = that.$view.find("._tip_box");
+
+            var j = 0,
+                html1 = [];
+            for (j = 0; j < that.words.length; j++) {
+                html1.push('<li class="tip_normal _ans_tip"><em class="num _num" data-num="' + j + '">' + (
+                    j + 1) + '.</em><em class="word">' + that.words[j].hint + '</em></li>');
+                that.correctAnswer[j] = that.words[j].word;
+                var startLiNo = (that.words[j].x - 1) * that.border.width + (that.words[j].y - 1);
+                var ansPath = [];
+                var k = 0;
+                var optionNo;
+                for (k = 0; k < that.words[j].word.length; k++) {
+                    if (that.words[j].direction == 'horizontal') {
+                        optionNo = startLiNo + k;
+                    } else {
+                        optionNo = startLiNo + k * that.border.width;
+                    }
+                    ansPath.push(optionNo);
+                }
+                that.correctAnswerMap[j] = {
+                    x: that.words[j].x,
+                    y: that.words[j].y,
+                    word: that.words[j].word,
+                    liNo: j,
+                    path: ansPath,
+                    direction: that.words[j].direction
+                };
+            }
+            that.$tip_box.append(html1.join(''));
+
+            that.liDom = that.$option_box.find('._option');
+            that.ansTips = that.$tip_box.find("._ans_tip");
+            that.numDom = that.$view.find('._num');
+
+            that.startX = that.$main.offset().left;
+            that.startY = that.$main.offset().top;
+            that.endX = that.startX + that.$main.innerWidth();
+            that.endY = that.startY + that.$main.innerHeight();
+            console.log('startX = ' + that.startX + ', startY = ' + that.startY + ', endX = ' + that.endX +
+                ', endY = ' + that.endY);
+
+            /*mouseDown事件*/
+            $(that.liDom).on('mousedown', function(event) {
+                that.startY = that.$main.offset().top;
+                that.endY = that.startY + that.$main.innerHeight();
+                that.mouseDownHandler(this, event);
+                $(document).on('mousemove', that.$option_box, function(event) {
+                    var ev = event;
+                    var target;
+                    var x = ev.pageX;
+                    var y = ev.pageY;
+                    target = (ev.target.nodeName).toLowerCase() == 'li' ? ev.target : ev.target
+                        .parentNode;
+                    var index = $(target).index();
+                    console.log('startX = ' + that.startX + ' ,startY = ' + that.startY +
+                        ' ,endX = ' + that.endX + ' , endY = ' + that.endY +
+                        ' pageX = ' + ev.pageX + '. pageY = ' + ev.pageY);
+                    that.mouseMoveHandler(index, event, x, y);
+                });
+                $(document).on('mouseup', function(event) {
+                    that.mouseUpHandler(event);
+                });
+                return false;
+            });
+            $(that.liDom).on('touchstart', function(event) {
+                that.startY = that.$main.offset().top;
+                that.endY = that.startY + that.$main.innerHeight();
+                that.mouseDownHandler(this, event);
+                $(document).on('touchmove', that.$option_box, function(event) {
+                    var ev = event;
+                    var target;
+                    var x = ev.originalEvent.changedTouches[0].pageX;
+                    var y = ev.originalEvent.changedTouches[0].pageY;
+                    var targetNode = document.elementFromPoint(x, y);
+                    target = (targetNode.nodeName).toLowerCase() == 'li' ? targetNode :
+                        targetNode.parentNode;
+                    var index = $(target).index();
+                    console.log(index);
+                    that.mouseMoveHandler(index, event, x, y);
+
+                });
+                $(document).bind('touchend', function(event) {
+                    that.mouseUpHandler(event);
+                    event.preventDefault();
+                });
+                event.preventDefault();
+            });
+        },
+        mouseDownHandler: function(obj, ev) {
+            var that = this;
+            if (!that.locked) {
+                var ev = ev || event;
+                var self = $(obj);
+                var index = self.index();
+                $(that.liDom).removeClass('on');
+                self.addClass('on');
+                that.areas[index].isPass = true;
+                that.admitPass = that.areas[index].admitPass;
+                that.startRow = that.areas[index].row;
+                that.startCol = that.areas[index].col;
+                that.answord = that.areas[index].text;
+                that.path.push(index);
+            }
+        },
+        mouseMoveHandler: function(index, ev, x, y) {
+            var that = this;
+            if (!that.locked) {
+                var ev = ev || event;
+                var pageX = x,
+                    pageY = y;
+                if (pageX >= that.startX && pageX <= that.endX && pageY >= that.startY && pageY <= that.endY) { // 在该presenter范围内
+                    var i = 0;
+                    if (!that.areas[index].isPass) {
+                        for (i = 0; i < that.admitPass.length; i++) {
+                            if (that.areas[index].col == that.admitPass[i].col && that.areas[index].row ==
+                                that.admitPass[i].row) {
+                                that.areas[index].isPass = true;
+                                $(that.liDom[index]).addClass('on');
+                                that.admitPass = that.areas[index].admitPass;
+                                that.answord += that.areas[index].text;
+                                that.path.push(index);
+                                console.log(that.answord);
+                                break;
+                            }
+                        }
+                    }
+                } else { // 超过范围执行mouseup事件
+                    $(that.liDom).removeClass('on');
+                    var j = 0;
+                    for (j = 0; j < that.areas.length; j++) {
+                        that.areas[j].isPass = false;
+                    }
+
+                    that.path = [];
+                    that.startRow = 0;
+                    that.startCol = 0;
+                    that.answord = null;
+
+                    $(document).unbind('mousemove');
+                    $(document).unbind('mouseup');
+                    $(document).unbind('touchmove');
+                    $(document).unbind('touchend');
+                }
+            }
+        },
+        mouseUpHandler: function(ev) {
+            var that = this;
+            if (!that.locked) {
+                var ev = ev || event;
+                $(document).unbind('mousemove');
+                $(document).unbind('mouseup');
+                $(document).unbind('touchmove');
+                $(document).unbind('touchend');
+                /*判断当前连接的答案是否正确*/
+                var i = 0;
+                for (i = 0; i < that.correctAnswer.length; i++) {
+                    console.log(that.correctAnswerMap[i]);
+                    if (that.startRow == that.correctAnswerMap[i].x && that.startCol == that.correctAnswerMap[
+                            i].y && that.answord == that.correctAnswerMap[i].word) {
+                        that.userAnswer[i] = that.answord;
+                        $(that.ansTips[that.correctAnswerMap[i].liNo]).addClass('correct');
+                        var j = 0;
+                        for (j = 0; j < that.correctAnswerMap[i].path.length; j++) {
+                            if (that.correctAnswerMap[i].direction == 'horizontal') {
+                                if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_y')) {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix')
+                                        .removeClass('correct_y');
+                                } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                        'correct_fix')) {} else {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_x');
+                                }
+                            } else {
+                                if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_x')) {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix')
+                                        .removeClass('correct_x');
+                                } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                        'correct_fix')) {} else {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_y');
+                                }
+                            }
+                        }
+
+                        //通知题目答题状态
+                        that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+                        var k = 0,
+                            autoSubmit = true;
+                        for (k = 0; k < that.correctAnswer.length; k++) {
+                            if (!that.userAnswer[k]) {
+                                autoSubmit = false;
+                                break;
+                            }
+                        }
+                        if (autoSubmit) {
+                            that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].AUTO_SEND_ANSWER,
+                                PresenterEventType.IC_PLAYER_EVENT, {
+                                    question_id: that.questionId,
+                                    question_type: 'magicbox'
+                                });
+                        }
+
+                        break;
+                    }
+                }
+                console.log("this.userAnswer=" + this.userAnswer);
+                $(that.liDom).removeClass('on');
+                var j = 0;
+                for (j = 0; j < that.areas.length; j++) {
+                    that.areas[j].isPass = false;
+                }
+
+                that.path = [];
+                that.startRow = 0;
+                that.startCol = 0;
+                that.answord = null;
+
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+
+            }
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*供外部两个就接口调用。*/
+            var that = this;
+            var i = 0,
+                j = 0;
+            if (commitedAnswer) {
+                that.userAnswer = commitedAnswer.answer.user_response;
+                $(that.liDom).removeClass('correct_x').removeClass('correct_y').removeClass('correct_fix');
+                $(that.ansTips).removeClass('correct');
+
+                for (i = 0; i < that.correctAnswer.length; i++) {
+                    if (that.userAnswer[i]) {
+                        $(that.ansTips[that.correctAnswerMap[i].liNo]).addClass('correct');
+                        var j = 0;
+                        for (j = 0; j < that.correctAnswerMap[i].path.length; j++) {
+                            if (that.correctAnswerMap[i].direction == 'horizontal') {
+                                if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_y')) {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix')
+                                        .removeClass('correct_y');
+                                } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                        'correct_fix')) {} else {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_x');
+                                }
+                            } else {
+                                if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_x')) {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix')
+                                        .removeClass('correct_x');
+                                } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                        'correct_fix')) {} else {
+                                    $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_y');
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (showAnswerType === 'user') {
+                that.showResult = true;
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    /*先通知状态变化再修改dom结构*/
+                    PresenterEventType.IC_PLAYER_EVENT);
+            } else {
+                //统计页面显示正确答案 清除用户作答
+                that.resetQuestion();
+                //    that.locked = true;
+                that.$main.addClass('show_number');
+
+                for (i = 0; i < that.correctAnswer.length; i++) {
+                    $(that.ansTips[that.correctAnswerMap[i].liNo]).addClass('correct');
+                    for (j = 0; j < that.correctAnswerMap[i].path.length; j++) {
+                        if (that.correctAnswerMap[i].direction == 'horizontal') {
+                            if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_y')) {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix').removeClass(
+                                    'correct_y');
+                            } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                    'correct_fix')) {} else {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_x');
+                            }
+                        } else {
+                            if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_x')) {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix').removeClass(
+                                    'correct_x');
+                            } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                    'correct_fix')) {} else {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_y');
+                            }
+                        }
+                    }
+                }
+            }
+            that.lockQuestion();
+        },
+        getState: function() { /*状态恢复用*/
+            var state = {
+                userAnswer: this.userAnswer,
+                /*学生端状态只有两种，用户作答 和 是否已提交*/
+                showResult: this.showResult,
+                isLock: this.locked
+            };
+            return state;
+        },
+        //恢复用户状态
+        setState: function(state) { /*状态恢复用*/
+            var that = this;
+            that.resetQuestion();
+            that.showResult = state.showResult;
+            that.userAnswer = state.userAnswer;
+            that.locked = state.isLock;
+
+            var i = 0,
+                j = 0;
+            for (i = 0; i < that.correctAnswer.length; i++) {
+                if (that.userAnswer[i]) {
+                    $(that.ansTips[that.correctAnswerMap[i].liNo]).addClass('correct');
+                    for (j = 0; j < that.correctAnswerMap[i].path.length; j++) {
+                        if (that.correctAnswerMap[i].direction == 'horizontal') {
+                            if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_y')) {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix').removeClass(
+                                    'correct_y');
+                            } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                    'correct_fix')) {} else {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_x');
+                            }
+                        } else {
+                            if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass('correct_x')) {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_fix').removeClass(
+                                    'correct_x');
+                            } else if ($(that.liDom[that.correctAnswerMap[i].path[j]]).hasClass(
+                                    'correct_fix')) {} else {
+                                $(that.liDom[that.correctAnswerMap[i].path[j]]).addClass('correct_y');
+                            }
+                        }
+                    }
+                }
+            }
+
+        },
+        resetQuestion: function() { /*重新作答时调用*/
+            var that = this;
+            //    that.locked = false;
+            that.$main.removeClass('show_number');
+            that.numDom.removeClass('green');
+            $(that.liDom).removeClass('correct_x').removeClass('correct_y').removeClass('correct_fix');
+            $(that.ansTips).removeClass('correct');
+            var i = 0;
+            for (i = 0; i < that.areas.length; i++) {
+                that.areas[i].isPass = false;
+            }
+            that.path = [];
+            that.userAnswer = [];
+
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        lockQuestion: function() {
+            this.locked = true;
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        unlockQuestion: function() {
+            this.locked = false;
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        startStatistics: function() { /*结束答题开始统计数据*/
+            var that = this;
+            that.$main.addClass('show_number'); /*统计要加标号*/
+            that.numDom.click(function() {
+                if (that.$main.hasClass('show_number')) {
+                    var self = $(this);
+                    that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                        service: "statistic",
+                        method: "clickItem",
+                        args: [self.data('num'), 'B']
+                    });
+                    that.numDom.removeClass('green');
+                    self.addClass("green");
+                }
+            });
+        },
+        convertDataForStatistics: function(oriData) { /*把统计数据转化为string，传出去。  oriData是101ppt产生的*/
+            var that = this;
+            var i,
+                j,
+                k,
+                m;
+            var value = oriData.value;
+            var onlineNum = 0;
+            var correctAnswer,
+                item_key = [],
+                percent = [],
+                stuAnswerStat = [];
+            var convertedData = {};
+            convertedData["allrightStu"] = [];
+
+            var answer;
+            if (value.answers) {
+                for (i = 0; i < value.answers.length; i++) {
+                    if (!$.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length > 0) {
+                        for (j = 0; j < value.answers[i].length; j++) {
+                            answer = value.answers[i][j].answer;
+                            if (answer && (typeof answer) == "string") {
+                                answer = JSON.parse(answer);
+
+                                if (!correctAnswer) { //获取正确答案并设置编号
+                                    correctAnswer = answer.correct_response;
+                                    if (correctAnswer && $.isArray(correctAnswer)) {
+                                        for (k = 0; k < correctAnswer.length; k++) {
+                                            item_key.push(k + 1);
+                                            stuAnswerStat.push({
+                                                "rightNum": 0,
+                                                "right_userIds": [],
+                                                "wrong_userIds": [],
+                                                "unfinished_userIds": value.unfinishedUserIds,
+                                                "ref_key": (k + 1)
+                                            });
+                                        }
+                                    }
+                                }
+
+                                if (correctAnswer && answer.user_response) {
+                                    var judgeIsCorrect = true;
+                                    for (k = 0; k < correctAnswer.length; k++) {
+                                        if (correctAnswer[k] == answer.user_response[k]) {
+                                            for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                                stuAnswerStat[k]["rightNum"] = ((typeof stuAnswerStat[k][
+                                                        "rightNum"
+                                                    ]) == "number") ? (stuAnswerStat[k]["rightNum"] + 1) :
+                                                    1;
+                                                stuAnswerStat[k]["right_userIds"].push(value.answers[i][j].userIds[
+                                                    m]);
+                                            }
+                                        } else {
+                                            judgeIsCorrect = false;
+                                            for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                                stuAnswerStat[k]["wrong_userIds"].push(value.answers[i][j].userIds[
+                                                    m]);
+                                            }
+                                        }
+                                    }
+                                    answer.isCorrect = judgeIsCorrect;
+                                    if (answer.isCorrect) {
+                                        convertedData["allrightStu"] = convertedData["allrightStu"].concat(
+                                            value.answers[i][j].userIds);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        $.each(value.correctAnswerTeacher.correct_response, function(k, item) {
+                            if (!stuAnswerStat[k]) {
+                                stuAnswerStat[k] = {
+                                    rightNum: 0,
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k + 1)
+                                };
+                                item_key.push(k + 1);
+                            }
+                        });
+                        convertedData["allrightStu"] = [];
+                    }
+                }
+
+            }
+            onlineNum = value.finishedNum + value.unfinishedNum;
+            /**计算正确率**/
+            for (i = 0; i < stuAnswerStat.length; i++) {
+                percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+            }
+
+            convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+            convertedData["submit_count"] = onlineNum;
+            convertedData["answers"] = value.answers;
+            convertedData["item_key"] = item_key;
+            convertedData["percent"] = percent;
+            convertedData["unfinishedNum"] = value.unfinishedNum;
+            convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+            convertedData["stuAnswerStat"] = stuAnswerStat;
+            value['convertedData'] = convertedData;
+            return oriData;
+        },
+        getResult: function() { /*统计控制器调用*/
+            console.log("this.userAnswer=" + this.userAnswer);
+            var answerState = 'NO_ANSWER';
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: $.extend(true, [], this.userAnswer),
+                answer_result: true
+            };
+            var i = 0,
+                count = 0;;
+            for (i = 0; i < this.correctAnswer.length; i++) {
+                if (this.correctAnswer[i] == answer.user_response[i]) {
+                    count++;
+                }
+            }
+            if (count == 0) {
+                answerState = 'NO_ANSWER';
+                answer.answer_result = false;
+            } else if (count == this.correctAnswer.length) {
+                answerState = 'COMPLETE';
+                answer.answer_result = true;
+            } else {
+                answerState = 'NO_COMPLETE';
+                answer.answer_result = false;
+            }
+
+            var result = {
+                answer: answer,
+                answerState: answerState,
+                questionId: this.questionId
+            };
+            return result;
+        },
+        destroy: function() {
+            this.$view = null;
+            this.areas = null;
+        },
+        popTip: function(text, time) { /*提示框*/
+            $(".notice_tip_text").html(text);
+            $(".notice_tip_box").css("display", "block");
+            setTimeout(function() {
+                $(".notice_tip_box").css("display", "none");
+            }, time);
+        },
+        showResultHint: function(option) {
+            var result = this.getResult();
+            // if(option.trigger == 'timmer'){    if(option.notSubmit){        this.popTip("时间到了，下次加油哦！",3000);    }else{
+            // this.popTip("这道题没有做对，下次加油哦！",3000);    } }else{    if(result.answerState == 'COMPLETE' &&
+            // result.answer.answer_result){        this.popTip("太棒了，您答对了！",3000);    }else{ this.popTip("这道题没有做对，下次加油哦！",3000); } }
+            if (result.answerState == 'COMPLETE' && result.answer.answer_result) {
+                this.popTip(this.i18Model.correctTip, 3000);
+            } else {
+                this.popTip(this.i18Model.errorTip, 3000);
+            }
+        }
+    };
+
+    //对外提供服务
+    var Service = function(_MagicBox) {
+        this.questionId = null;
+        this._MagicBox = _MagicBox;
+    };
+    Service.prototype = {
+        init: function(model, MagicBox) {
+            this.questionId = model.question_id;
+            this._MagicBox = MagicBox;
+            this.parent = this._MagicBox.presenter;
+            this.status = {};
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: '_magicbox',
+                type_name: '魔方盒题',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._MagicBox.getResult();
+        },
+        _getState: function() {
+            var state = this._MagicBox.getState();
+            console.log("getState=" + state);
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent
+                    .metaInfo.name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            console.log("setState=" + state);
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._MagicBox.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this
+                    .parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*老师端和学生端调用的都是这个函数*/
+            return this._MagicBox.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) { /*只有学生端调用的*/
+            this._MagicBox.showResultHint(option);
+        },
+        resetQuestion: function() {
+            this._MagicBox.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._MagicBox.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._MagicBox.unlockQuestion();
+        },
+        finishQuestion: function() {},
+        getStatisticClass: function() { /*统计类型*/
+            return 'B';
+        },
+        startStatistics: function() { /*结束答题时调用*/
+            this._MagicBox.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) { /*转化统计数据*/
+            return this._MagicBox.convertDataForStatistics(oriData);
+        },
+        //实现国际化
+        setLocationProperties: function(properties) {
+            this._MagicBox.i18Model = properties;
+        }
+    };
+
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'MagicBoxRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._MagicBox = new MagicBox();
+            this._service_ = new Service(this._MagicBox);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据 that._MagicBox = new MagicBox();
+            that._MagicBox.init(view, model, this);
+            that._MagicBox.initView();
+            that._MagicBox.resetQuestion();
+            //初始化服务
+            that._service_.init(model, that._MagicBox);
+        },
+        destroy: function() {
+            if (this._MagicBox) {
+                this._MagicBox.destroy();
+            }
+        },
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        }
+
+    });
+    //实现icplayer入口调用函数
+    window.AddonMagicBoxRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/sky/images/bg_boardleft.jpg' />
+<file src='./resources/sky/images/bg_boardright.jpg' />
+<file src='./resources/sky/images/bg_mainboard.jpg' />
+<file src='./resources/sky/images/bg_sidecon1.png' />
+<file src='./resources/sky/images/bg_sidetit1.png' />
+<file src='./resources/sky/images/decl_sidecon.png' />
+<file src='./resources/sky/images/decm_sidecon.png' />
+<file src='./resources/sky/images/decr_sidecon.png' />
+<file src='./resources/sky/images/icon_s_wood_right.png' />
+<file src='./resources/sky/images/icon_s_wood_wrong.png' />
+<file src='./resources/wood/images/bg_sidecon1.png' />
+<file src='./resources/wood/images/bg_sidetit1.png' />
+<file src='./resources/wood/images/correct.png' />
+<file src='./resources/wood/images/decl_sidecon.png' />
+<file src='./resources/wood/images/decm_sidecon.png' />
+<file src='./resources/wood/images/decr_sidecon.png' />
+
+
+</resources>
+
+</addon>

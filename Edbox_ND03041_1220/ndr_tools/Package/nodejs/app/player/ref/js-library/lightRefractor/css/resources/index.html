@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>反射光路图</title>
+    <link rel="stylesheet" type="text/css" href="../../../common/common.css">
+    <link rel="stylesheet" type="text/css" href="../style.css">
+</head>
+<body>
+<div class="exam_skin_wood" id="layout" style="font-size:24px;">
+    <div class="reflection lightMovement">
+    <div class="reflection_middle">
+        <div class="reflection_mid_container">
+            <!-- 反射区域容器 -->
+            <div class="reflection_main">
+                <!-- 墙,锯齿向左用wall_tl，向右wall_tr。选中墙时，.wall_tl加类on -->
+                <div class="wall_tl rotate_left" style="left: 200px; top: 400px; width:596px;transform: rotate(0deg);"></div>
+                <div class="wall_tl rotate_left on" style="left: 10px; top: 40px; width:596px;"></div>
+                <div class="wall_tr rotate_left" style="left: 10px; top: 70px; width:596px;"></div>
+                <div class="wall_tr rotate_left on" style="left: 10px; top: 100px; width:596px;"></div>
+                <!-- 射光线,入射光蓝色用arrow_blue，反射光arrow_red，二次反射arrow_purple。绕着左边转rotate_left，绕着右边转用rotate_right。选中时加on -->
+                <div class="light_line arrow_blue rotate_right" style="left: 176px; top: 397px; width: 320px;transform: rotate(45deg);">
+                    <div class="light_line_bg"></div>
+                    <div class="line_arrow" style="left: 50%;"></div>
+                </div>
+                <div class="light_line arrow_red rotate_left on" style="left: 498px; top: 397px; width: 320px;transform: rotate(-45deg);">
+                    <div class="light_line_bg"></div>
+                    <div class="line_arrow" style="left: 50%;"></div>
+                </div>
+                <div class="light_line arrow_purple rotate_right" style="left: 10px; top: 220px;">
+                    <div class="light_line_bg"></div>
+                    <div class="line_arrow" style="left: 50%;"></div>
+                </div>
+                <!-- 旋转按钮图标 -->
+                <div class="btn_rotate" style="left: 732px; top: 110px;"></div>
+                <!-- 法线 -->
+                <div class="line_normal" style="left: 500px; top: 401px; width:260px;transform: rotate(-90deg);"></div>
+                <!-- 文字 -->
+                <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <text id="kity_text_34" text-rendering="geometricPrecision" x="0" y="450" style="fill: #d58b22;font-size: 28px;font-weight: bold;">30°</text>
+                    <text id="kity_text_34" text-rendering="geometricPrecision" x="200" y="450" style="fill: #2383cc;font-size: 28px;font-weight: bold;">入射光线</text>
+                    <text id="kity_text_34" text-rendering="geometricPrecision" x="400" y="450" style="fill: #3c8f41;font-size: 28px;font-weight: bold;">入射角30°、反射角30°</text>
+                    <text id="kity_text_34" text-rendering="geometricPrecision" x="0" y="500" style="fill: #cb1f1f;font-size: 28px;font-weight: bold;">反射光线</text>
+                    <text id="kity_text_34" text-rendering="geometricPrecision" x="200" y="500" style="fill: #4d4d4d;font-size: 28px;font-weight: bold;">反射面、法线、N</text>
+                </svg>
+
+            </div>
+            <!-- 右边栏按钮  -->
+            <div class="reflection_aside">
+                <ul class="reflection_mode_list">
+                    <li class="reflection_mode drsgx on"></li>
+                    <li class="reflection_mode dfsgx"></li>
+                    <li class="reflection_mode rfsgx"></li>
+                    <li class="reflection_mode sfsgx"></li>
+                    <li class="reflection_mode sqrsgx"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="reflection_foot">
+        <ul class="reflection_btm_right clearfix">
+            <!-- 选中加on -->
+            <li class="reflection_brbtn_lay">
+                <a href="#" class="reflection_brbtn">
+                    <em class="text">一键完成</em>
+                </a>
+            </li>
+            <li class="reflection_brbtn_lay">
+                <a href="#" class="reflection_brbtn">
+                    <em class="text">逐步画</em>
+                </a>
+            </li>
+        </ul>
+        <ul class="reflection_btm_left clearfix"><!-- 教师端按钮 -->
+            <!-- 按钮不可以用时，加类click_disabled。不同图标，用一个类控制，如btn_ghq表示光与面夹角。click_disabled,hide_angle不同时使用，因为隐藏角度的状态按钮没有灰态 -->
+            <li class="reflection_left_btn btn_ghq">
+                <a href="javascript:;" class="reflection_left_btn_a">
+                    <i class="reflection_lbtn_icon"></i>
+                    <em class="reflection_lbtn_text">光与面夹角</em>
+                </a>
+            </li>
+            <li class="reflection_left_btn btn_ghfx hide_angle"><!-- 可以切换显示和隐藏角度，隐藏角度时，加hide_angle -->
+                <a href="javascript:;" class="reflection_left_btn_a">
+                    <i class="reflection_lbtn_icon"></i>
+                    <em class="reflection_lbtn_text">入/反射角</em>
+                </a>
+            </li>
+            <li class="reflection_left_btn btn_reset click_disabled">
+                <a href="javascript:;" class="reflection_left_btn_a">
+                    <i class="reflection_lbtn_icon"></i>
+                    <em class="reflection_lbtn_text">重置</em>
+                </a>
+            </li>
+            <li class="reflection_left_btn">
+               <a href="javascript:;" class="reflection_left_btn_a">
+                    <span class="btn_switch">
+                        <label class="applicationset-switch">
+                            <input type="checkbox">
+                        </label>
+                    </span>
+                    <em class="reflection_lbtn_text">显示名称</em>
+                </a> 
+                
+             </li>
+        </ul>
+        
+    </div>
+    <!-- /底部按钮 -->
+</div>
+
+
+<!-- 测试代码 start -->
+<script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('.applicationset-switch input[type="checkbox"]').on("click", function() {
+        var $this = $(this);
+        if (($this).prop('checked')) {   
+            $this.parent().addClass("checked");
+        } else {
+            $this.parent().removeClass("checked");
+        }
+    })
+    $(function(){
+        $("#J_left").on("click",function(){
+            alert("点击测试")
+        })
+    })
+})
+</script>
+<!-- 测试代码 end-->
+
+</div>
+<script src="../../../common/resources/common/layout/wood/layout.js"></script>
+</body>
+</html>

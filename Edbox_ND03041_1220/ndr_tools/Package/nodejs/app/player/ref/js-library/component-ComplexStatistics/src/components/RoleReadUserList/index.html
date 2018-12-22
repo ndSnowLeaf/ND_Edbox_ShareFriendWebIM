@@ -1,0 +1,33 @@
+<div class="role_reading_right_list">
+    <div class="role_reading_list">
+        <div class="role_reading_list_th clearfix">
+            <span class="role_reading_list_cols cols_00">&nbsp;</span>
+            <span class="role_reading_list_cols cols_01"><em class="text">姓&nbsp;&nbsp;&nbsp;名</em></span>
+            <span class="role_reading_list_cols cols_02"><em class="text">优秀率</em></span>
+            <span class="role_reading_list_cols cols_03"><em class="text">耗&nbsp;&nbsp;&nbsp;时</em></span>
+            <span class="role_reading_list_cols cols_04"><em class="text">操&nbsp;&nbsp;&nbsp;作</em></span>
+        </div>
+        <ul class="role_reading_list_body scrollbar_style_light" ref="userlist">
+            <li class="role_reading_list_td clearfix" :class="[s.style]" v-for="(s,index) in students">
+                <span class="stu_name_avatar_box"><img class="stu_name_user_avatar" :src="s.headIcon"></span>
+                <span class="role_reading_list_cols cols_01"><em class="text">{{s.studentName}}</em></span>
+                <span class="role_reading_list_cols cols_02"><em class="text">{{s.excellPercent}}</em></span>
+                <span class="role_reading_list_cols cols_03"><em class="text">{{s.time}}</em></span>
+                <span class="role_reading_list_cols cols_04"><em class="text" v-on:click="detail($event,index,s.userId)">查看详情</em></span>
+            </li>
+        </ul>
+    </div>
+    <!-- tab -->
+    <div class="tab_box js_btn_user_type">
+        <!-- tab选中时，加on -->
+        <a v-on:click="toggleUserList($event,'all')" class="btn_tab" :class="{on:mShowingfilter == 'all'}">全部</a>
+        <a v-on:click="toggleUserList($event,'excellent')" class="btn_tab" :class="{on:mShowingfilter == 'excellent'}">优秀</a>
+        <a v-on:click="toggleUserList($event,'improve')" class="btn_tab" :class="{on:mShowingfilter == 'improve'}">需提升</a>
+        <a v-on:click="toggleUserList($event,'undo')" class="btn_tab" :class="{on:mShowingfilter == 'undo'}">未作答</a>
+    </div>
+    <!-- /tab -->
+    <!-- 右下角的收起名单 -->
+    <div class="role_reading_right_btn">
+        <a href="#" class="list_view_btn js_btn_hide_user" v-on:click="hideuser"><em class="text">收起名单</em></a>
+    </div> 
+</div>

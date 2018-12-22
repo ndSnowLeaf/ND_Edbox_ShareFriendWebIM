@@ -1,0 +1,1384 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='IClassroomNav'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_IClassroomNav .pagetext, .addon_IClassroomNav a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent; }
+.addon_IClassroomNav .com_footer {
+  width: 100%; }
+  .addon_IClassroomNav .com_footer .com_pages {
+    text-align: center;
+    position: fixed;
+    z-index: 2501; }
+.addon_IClassroomNav .pagemainnav {
+  display: inline-block;
+  width: 170px;
+  height: 48px;
+  position: fixed  !important;
+  left: 50%;
+  margin-left: -85px;
+  bottom: 20px;
+  z-index: 2501 !important;
+  margin-bottom: 16px;
+  border-radius: 30px;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(1%, rgba(230, 230, 230, 0.15)), color-stop(100%, rgba(4, 0, 0, 0.15)));
+  box-shadow: 0px 5px 5px 0px rgba(4, 0, 0, 0.3);
+  border: 1px solid #eaeaea; }
+  .addon_IClassroomNav .pagemainnav .btn_prev, .addon_IClassroomNav .pagemainnav .btn_next {
+    position: absolute;
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    background-size: 32px;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 10px; }
+    .addon_IClassroomNav .pagemainnav .btn_prev.disable, .addon_IClassroomNav .pagemainnav .btn_next.disable {
+      opacity: 0.5;
+      cursor: default; }
+  .addon_IClassroomNav .pagemainnav .i-class-room-nav {
+    background-image: url('resources/nav.png');
+    background-repeat: no-repeat;
+    box-sizing: content-box; }
+  .addon_IClassroomNav .pagemainnav .btn_prev {
+    left: 0;
+    background-position: 10px -80px; }
+    .addon_IClassroomNav .pagemainnav .btn_prev.active {
+      background-color: rgba(255, 255, 255, 0);
+      background-position: 10px -125px; }
+    .addon_IClassroomNav .pagemainnav .btn_prev.disable.active {
+      background-position: 10px -80px; }
+  .addon_IClassroomNav .pagemainnav .btn_next {
+    right: 0;
+    background-position: 10px 10px; }
+    .addon_IClassroomNav .pagemainnav .btn_next.active {
+      background-color: rgba(255, 255, 255, 0);
+      background-position: 10px -35px; }
+    .addon_IClassroomNav .pagemainnav .btn_next.disable.active {
+      background-position: 10px 10px; }
+  .addon_IClassroomNav .pagemainnav .pagetext {
+    display: inline-block;
+    height: 48px;
+    line-height: 48px;
+    font-size: 20px;
+    color: #666666;
+    vertical-align: middle;
+    cursor: pointer; }
+    .addon_IClassroomNav .pagemainnav .pagetext em {
+      font-size: 22px;
+      color: #ff9c00; }
+.addon_IClassroomNav .com_pages .pagelistwrap {
+  position: fixed  !important;
+  bottom: -120px;
+  left: 0;
+  width: 100%;
+  height: 120px;
+  padding: 0;
+  background: url('resources/footer_listbg.png') repeat-x;
+  background-size: auto 100%;
+  text-align: left;
+  overflow-y: hidden;
+  overflow-x: auto;
+  z-index: 2501 !important; }
+  .addon_IClassroomNav .com_pages .pagelistwrap::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.4); }
+  .addon_IClassroomNav .com_pages .pagelistwrap::-webkit-scrollbar {
+    width: 5px;
+    height: 5px; }
+  .addon_IClassroomNav .com_pages .pagelistwrap::-webkit-scrollbar-track {
+    background-color: #fff; }
+  .addon_IClassroomNav .com_pages .pagelistwrap::-webkit-scrollbar-button {
+    display: none;
+    background-color: transparent; }
+  .addon_IClassroomNav .com_pages .pagelistwrap::-webkit-scrollbar-corner {
+    background-color: black; }
+  .addon_IClassroomNav .com_pages .pagelistwrap .pagelist {
+    margin-top: 25px;
+    white-space: nowrap; }
+  .addon_IClassroomNav .com_pages .pagelistwrap .listcon {
+    position: relative;
+    display: inline-block;
+    width: 96px;
+    height: 70px;
+    margin: 0 23px;
+    border: 3px solid #d8a869;
+    border-radius: 1px;
+    box-shadow: 0px 8px 8px 0px rgba(4, 0, 0, 0.3);
+    background: #ffffff;
+    overflow: hidden; }
+    .addon_IClassroomNav .com_pages .pagelistwrap .listcon img {
+      width: 100%;
+      height: 100%; }
+    .addon_IClassroomNav .com_pages .pagelistwrap .listcon .page_no {
+      display: block;
+      padding: 0 5px;
+      height: 16px;
+      text-align: center;
+      line-height: 16px;
+      font-size: 12px;
+      color: #7e3b13;
+      background: #d8a869;
+      position: absolute;
+      top: -3px;
+      right: 0;
+      z-index: 3; }
+    .addon_IClassroomNav .com_pages .pagelistwrap .listcon .dec_mask {
+      display: block;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.25);
+      z-index: 2; }
+    .addon_IClassroomNav .com_pages .pagelistwrap .listcon.on {
+      border-color: #ff9800; }
+      .addon_IClassroomNav .com_pages .pagelistwrap .listcon.on .page_no {
+        background: #ff9800;
+        color: #ffffff; }
+      .addon_IClassroomNav .com_pages .pagelistwrap .listcon.on .dec_mask {
+        display: none; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_footer">
+  <div class="com_pages">
+
+    <div class="pagemainnav" style="left:50%;width:170px;height:48px;bottom:20px;position: fixed;margin-left:-85px;margin-bottom: 16px;">
+      <a href="#" class="btn_prev disable i-class-room-nav"></a>
+        <span class="pagetext"><em>0</em>/<span class="maxpage">0</span></span>
+        <a href="#" class="btn_next i-class-room-nav"></a>
+    </div>
+
+    <div class="pagelistwrap">
+      <p class="pagelist">
+      </p>
+    </div>
+  </div>
+
+</div>
+]]>
+</view>
+
+
+<preview>
+
+
+
+</preview>
+
+
+<presenter>
+
+<![CDATA[function AddonIClassroomNav_create() {
+
+  var helper = {
+    isMaster: false,
+    isWorking: false,
+    lastMessageIndex: -1,
+    time: null,
+    isShowPanel: false,
+    couldGotoPage: true,
+    isPanelShow: false,
+    isGotoPageNow: true,
+    pptReady: false
+  };
+
+  var isApp = false,
+    isWeb = false,
+    isPC = false;
+  var isTeacher = false,
+    isStudent = false,
+    isProjector = false;
+  var currentRuntime = player.getPlayerServices().getRuntime();
+  switch (currentRuntime) {
+    case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+      isTeacher = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+      isStudent = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+      isProjector = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.WEB:
+      isWeb = true;
+      break;
+    case icCreatePlayer.RUNTIME.TEACHER_PC:
+      isPC = true;
+      break;
+    default:
+      isApp = false;
+      isWeb = false;
+      isPC = false;
+  }
+
+
+  var bridgeListener = {};
+  var isLockLnPPT = false;
+  var isFirstShowIcon = true;
+  var isScroll = false;
+  var imgHasShow = [];
+  var isSupportTouch = "ontouchend" in document ? true : false;
+  /*
+   * 当前将master都设置为true，投影端不转发userInput
+   */
+
+  var language = {
+    tasking: '当前正在进行任务',
+    forcedEnd: '是否强制结束，<br/>进入到新页面？',
+    cancel: '取消',
+    confirm: '确认',
+    defaultImg: 'zh/default.jpg'
+  };
+
+  var lastGotoPageMessageIndex = 0;
+
+  var callNative = function(eventName, data) {
+    if (isApp && Bridge && Bridge.callNative) {
+      return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+    }
+    return false;
+  };
+
+  var registerNativeListener = function(key, callback) {
+    if (isApp && Bridge && Bridge.registerListener) {
+      bridgeListener[key] = Bridge.registerListener(key, callback);
+    }
+  };
+
+  var unbindNativeListener = function(key) {
+    if (isApp && Bridge && Bridge.unRegisterListener) {
+      if (!key) {
+        $.each(bridgeListener, function(k, v) {
+          Bridge.unRegisterListener(k, bridgeListener[k]);
+        });
+        bridgeListener = null;
+      } else {
+        Bridge.unRegisterListener(key, bridgeListener[key]);
+      }
+    }
+  };
+
+  var getLanguageProperty = function(key, value) {
+    var text = language[key];
+    if (!value) {
+      return text;
+    }
+    $.each(value, function(k, v) {
+      text = text.replace(k, v);
+    });
+    return text;
+  };
+
+  var getMaster = function() {
+    //return true;
+    return !isProjector;
+    //return helper.isMaster;
+  };
+  var setMaster = function(isMaster) {
+    helper.isMaster = isMaster;
+  };
+
+  var getGotoPage = function() {
+    return helper.couldGotoPage;
+  };
+  var setGotoPage = function(bool) {
+    helper.couldGotoPage = bool;
+  };
+
+  var isString = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object String]';
+  };
+  var isObject = function(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]';
+  };
+
+  //var presenterLogic = function(view, model, isPreview) {};
+  //
+  var bindPPTTime;
+  var bindEvents = function(ppt) {
+    var messageIndex = 0;
+    helper.lastMessageIndex = -1;
+    presenter.animateCount = undefined;
+    var initPPTData = function(ppt, isOldStyle) {
+      var pptctl = presenter.PPTCtl = ppt.Presentation;
+      var registerEvent = pptctl.RegisterEvent;
+      helper.pptReady = true;
+      //var loading = ppt.loading;
+      registerEvent('OnMovToNxtAnim', function() {
+        if (getMaster()) {
+          var index = presenter.PPTCtl.GetCurrentAnimationIndex();
+          helper.hasDoNext = true;
+          setMaster(false);
+          userInput('pptNavGoToSlide', {
+            forward: 'next',
+            messageIndex: new Date().valueOf(),
+            slideIndex: index + 1,
+            pageIndex: helper.index
+          });
+        }
+      });
+      registerEvent('OnMovToPrvAnim', function() {
+        if (getMaster()) {
+          var index = presenter.PPTCtl.GetCurrentAnimationIndex();
+          setMaster(false);
+          userInput('pptNavGoToSlide', {
+            forward: 'prev',
+            messageIndex: new Date().valueOf(),
+            slideIndex: index,
+            pageIndex: helper.index
+          });
+        }
+      });
+      registerEvent('OnPlayingEnd', function() {
+        helper.isWorking = false;
+      });
+      if (isOldStyle) {
+        setTimeout(function() {
+          presenter.animateCount = presenter.PPTCtl.GetCurrentAnimationCount();
+        }, 150);
+      } else {
+        presenter.animateCount = presenter.PPTCtl.GetCurrentAnimationCount();
+      }
+
+    };
+
+    bindPPTTime = setInterval(function() {
+      try {
+        if (ppt.pptState && ppt.Presentation) { //需要ppt提供isReady的方法判断是否加载完成  // ppt.pptState && ppt.pptState.state === 1
+          if (ppt.pptState.state === 1 && isObject(ppt.Presentation)) {
+            clearInterval(bindPPTTime);
+            bind(ppt);
+            initPPTData(ppt);
+          }
+        } else if (ppt.Presentation && isObject(ppt.Presentation)) { //兼容旧的ppt
+          clearInterval(bindPPTTime);
+          bind(ppt);
+          initPPTData(ppt, true);
+        }
+      } catch(e) {
+        console.log('');
+      }
+    }, 50);
+
+    var touchstart = false;
+    var startPoint = {};
+    var endPoint = {};
+    var nextPage = function() {
+      if (presenter.PPTCtl.GetCurrentAnimationIndex() === presenter.animateCount) {
+        goToPage('next');
+      }
+    };
+    var prevPage = function() {
+      if (presenter.PPTCtl.GetCurrentAnimationIndex() === 0) {
+        if (presenter.animateCount) {
+          if (!helper.hasDoNext) {
+            goToPage('prev');
+          }
+        } else {
+          goToPage('prev');
+        }
+        helper.hasDoNext = false;
+      }
+    };
+    var start = function(e) {
+      var touch = e.touches[0];
+      startPoint.x = touch.screenX;
+      startPoint.y = touch.screenY;
+      setMaster(true);
+      e.preventDefault();
+    };
+    // var move = function(e) {
+    //     //
+    // };
+    var end = function(e) {
+      var touch = e.changedTouches[0];
+      e.stopPropagation();
+      e.preventDefault();
+      endPoint.x = touch.screenX;
+      endPoint.y = touch.screenY;
+      if (endPoint.x - startPoint.x < -100) {
+        nextPage();
+      } else if (endPoint.x - startPoint.x > 100) {
+        prevPage();
+      }
+      hidePanel();
+    };
+    var bind = function(ppt) {
+
+      ppt.document.addEventListener('touchstart', start);
+      // pptDoc.on('touchmove', move);
+      ppt.document.addEventListener('touchend', end);
+      //$pptDoc.on('click', nextPage);
+      ppt.document.addEventListener('mouseup', function() {
+        hidePanel();
+      });
+    };
+
+  };
+
+  unbindPPT = function() {
+    if (helper.ppt) {
+      try {
+        $(helper.ppt.document).off();
+        presenter.PPTCtl = null;
+        helper.ppt = null;
+      } catch(e) {
+        console.log();
+      }
+
+    }
+  };
+
+  var userInput = function(item, value) {
+    callNative('sendEvent', {
+      "eventName": "UserInput",
+      "eventData": {
+        "source": presenter.moduleId,
+        "item": item,
+        "value": value
+      }
+    });
+
+  };
+  var triggerUserInput = function(eventData) {
+    if (eventData.source === presenter.moduleId) {
+      if (eventData.item === 'pptNavGoToPageIndex') {
+        if (lastGotoPageMessageIndex > eventData.value.messageIndex) {
+          return;
+        }
+        lastGotoPageMessageIndex = eventData.value.messageIndex;
+        goToPageIndex(eventData.value.index, {
+          isProjection: true
+        });
+      } else if (eventData.item === 'pptNavGoToSlide') {
+        if (eventData.value.pageIndex !== helper.index) {
+          return;
+        }
+        setMaster(false);
+        goToSlideIndex(eventData.value);
+      }
+    }
+  };
+
+
+  var readyToGoToOtherPageToResetState = function() {
+    unbindPPT();
+    clearInterval(pptTime);
+    clearInterval(bindPPTTime);
+    helper.pptReady = false;
+    presenter.PPTCtl = null;
+  };
+
+  var presenter = function() {};
+
+  presenter.setPlayerController = function(controller) {
+    presenter.playerController = controller;
+    presenter.presentation = controller.getPresentation(); //icplay总页数
+    presenter.commander = controller.getCommands(); //实现不同指令
+    presenter.pageCount = controller.getPresentation().getPageCount();
+    presenter.currentIndex = controller.getCurrentPageIndex();
+    presenter.eventBus = controller.getEventBus();
+    presenter.eventBus.addEventListener('PageToolbar', this);
+    presenter.eventBus.addEventListener('PPTNavMessageBoxButton', this);
+    presenter.eventBus.addEventListener('MessageBoxCallback', this);
+    presenter.eventBus.addEventListener('IClassroomNav', this);
+    presenter.eventBus.addEventListener('PageExamInfo', this);
+  };
+
+  /**
+   * 发送翻页事件
+   * @author linyq
+   * @since 2015-5-9
+   */
+  presenter.sendGoToPageIndexEvent = function(index) {
+    callNative('sendEvent', {
+      "eventName": "GoToPageIndex",
+      "eventData": {
+        "source": presenter.moduleId,
+        "value": index
+      }
+    });
+  };
+
+  function goToPageIndex(index, option) {
+    var isProjection = option && option.isProjection;
+    var button = [{
+      html: '否',
+      target: 'h5',
+      callback: {
+        eventName: 'PPTNavMessageBoxButton',
+        eventData: {
+          source: presenter.moduleId,
+          value: 1,
+          gotoPage: index
+        }
+      }
+    }, {
+      html: '是',
+      style: 'primary',
+      target: 'h5',
+      callback: {
+        eventName: 'PPTNavMessageBoxButton',
+        eventData: {
+          source: presenter.moduleId,
+          value: 2,
+          gotoPage: index
+        }
+      }
+    }];
+    if (!getIsGoToNow()) {
+      if (!isProjector) {
+        ClassroomUtils.showMessageBox(button, '本页有1个习题未发送，<br/>是否立即发送？');
+      }
+    } else {
+      if (!isProjection) {
+        presenter.sendGoToPageIndexEvent(index);
+      }
+      readyToGoToOtherPageToResetState();
+      presenter.commander.gotoPageIndex(index);
+    }
+  }
+
+  var PPTNavMessageBoxButton = function(eventData) {
+    setIsGoToNow(true);
+    if (parseInt(eventData.value) === 1) { //翻页
+      userInput('pptNavGoToPageIndex', {
+        index: parseInt(eventData.gotoPage),
+        messageIndex: new Date().valueOf()
+      });
+      goToPageIndex(parseInt(eventData.gotoPage));
+    } else if (parseInt(eventData.value) === 2) { //发题
+      presenter.eventBus.sendEvent('Exam', {
+        type: "show"
+      });
+    }
+    setGotoPage(true);
+    removeClip(9);
+  };
+
+  presenter.onEventReceived = function(eventName, eventData) {
+    if (eventName == 'PageToolbar') {
+      var value = isString(eventData.value) ? JSON.parse(eventData.value) : eventData.value;
+      if (eventData.type == "update") {
+        presenter.status = value.interactiveState;
+      }
+    }
+    if (eventName == 'PPTNavMessageBoxButton') {
+      PPTNavMessageBoxButton(eventData);
+    }
+    if (eventName == 'MessageBoxCallback') {
+      if (eventData.extradata === 'pptNav') {
+        addClip(null, 9, eventData.value);
+      }
+    }
+
+    if (eventName === 'IClassroomNav') {
+      isShowNav(eventData);
+    }
+
+    if (eventName === 'PageExamInfo') {
+      if (!presenter.isPreviewMode && !isProjector) {
+        checkIsGotoPageNow(eventData);
+      }
+    }
+  };
+
+  function setIsGoToNow(bool) {
+    helper.isGotoPageNow = bool;
+  }
+
+  function getIsGoToNow() {
+    return helper.isGotoPageNow;
+  }
+
+  function checkIsGotoPageNow(data) {
+    var value = data.value || {};
+    var questions = value.questions || [];
+    var pageQuestion = questions[0];
+    if (pageQuestion && pageQuestion.leaveWithoutConfirm) {
+      setIsGoToNow(true);
+      return;
+    }
+    if (pageQuestion && !pageQuestion.isSended) {
+      setIsGoToNow(false);
+    } else {
+      setIsGoToNow(true);
+    }
+  }
+
+  function isShowNav(data) {
+    if (isProjector) {
+      return;
+    }
+    if (!!data.value && data.value.isShow) {
+      presenter.show();
+    } else {
+      presenter.hide();
+      setTimeout(function() {
+        presenter.eventBus.sendEvent("Toolbar", {
+          type: 'Nav',
+          value: {
+            result: true
+          }
+        });
+      }, 301);
+
+    }
+  }
+
+  function goToPage(whereTo, index) {
+    var currentIndex = presenter.playerController.getCurrentPageIndex(); //获取当前页
+    var goToIndex = 0;
+    switch (whereTo) {
+
+      case 'next':
+        if (currentIndex < (presenter.pageCount - 1)) {
+          goToIndex = currentIndex + 1;
+
+        } else {
+          goToIndex = presenter.pageCount - 1;
+        }
+        break;
+
+      case 'prev':
+        if (currentIndex > 0) {
+          goToIndex = currentIndex - 1;
+        } else {
+          goToIndex = 0;
+        }
+        break;
+      case 'other':
+        if ((index >= 0) && (index <= (presenter.pageCount - 1))) {
+          goToIndex = index;
+        } else if (index < 0) {
+          goToIndex = 0;
+        }
+        break;
+    }
+    if (currentIndex === goToIndex) {
+      return;
+    }
+
+
+    //var src = presenter.moduleImg[goToIndex].imgUrl;
+    var tipToast;
+    var text;
+    if (getLanguageProperty('forcedEnd')) {
+      tipToast = getLanguageProperty('tasking') + '<br>' + getLanguageProperty('forcedEnd');
+    } else {
+      tipToast = '<p>' + getLanguageProperty('tasking') + '</p>';
+    }
+    var html = '<div>' + tipToast +
+      '<img src="' + helper.imgs[goToIndex] + '" style="width: 250px;height: 160px;border: 1px solid #666">' +
+      '</div>';
+    var button = [{
+      html: getLanguageProperty('cancel'),
+      target: 'h5',
+      callback: {
+        eventName: 'PPTNavMessageBoxButton',
+        eventData: {
+          source: presenter.moduleId,
+          value: 0,
+          gotoPage: goToIndex
+        }
+      }
+    }, {
+      html: getLanguageProperty('confirm'),
+      style: 'primary',
+      target: 'h5',
+      callback: {
+        eventName: 'PPTNavMessageBoxButton',
+        eventData: {
+          source: presenter.moduleId,
+          value: 1,
+          gotoPage: goToIndex
+        }
+      }
+    }];
+    if (presenter.status) {
+      ClassroomUtils.showMessageBox(button, tipToast, helper.imgs[goToIndex]);
+    } else {
+      if (!getGotoPage() && getMaster()) {
+        return;
+      }
+      setGotoPage(false);
+      if (getIsGoToNow()) {
+        userInput('pptNavGoToPageIndex', {
+          index: goToIndex,
+          messageIndex: new Date().valueOf()
+        });
+      }
+
+      goToPageIndex(goToIndex);
+    }
+  }
+
+  function doNextSlide(data) {
+    clearInterval(helper.time);
+    helper.time = setInterval(function() {
+      if (presenter.PPTCtl == null) {
+        helper.isWorking = false;
+        clearInterval(helper.time);
+      } else {
+        var currentIndex = presenter.PPTCtl.GetCurrentAnimationIndex();
+        var slideIndex = data.slideIndex;
+        if (currentIndex < slideIndex) {
+          if (helper.isWorking) {
+            return;
+          }
+          helper.isWorking = true;
+          presenter.PPTCtl.Next();
+        } else if (currentIndex > slideIndex) {
+          if (helper.isWorking) {
+            return;
+          }
+          presenter.PPTCtl.Prev();
+        } else {
+          helper.isWorking = false;
+          clearInterval(helper.time);
+        }
+      }
+
+
+    }, 30);
+  }
+
+  function goToSlideIndex(data) {
+    if (data.pageIndex !== helper.index) {
+      return;
+    }
+    if (data.messageIndex < helper.lastMessageIndex || !getPPTReady()) {
+      return;
+    }
+    helper.lastMessageIndex = data.messageIndex;
+    doNextSlide(data);
+  }
+
+  function goToSlide(whereTo) {
+    if (whereTo === 'next') {
+      presenter.PPTCtl && presenter.PPTCtl.Next && presenter.PPTCtl.Next();
+    } else if (whereTo === 'prev') {
+      presenter.PPTCtl && presenter.PPTCtl.Prev && presenter.PPTCtl.Prev();
+    }
+  }
+
+
+  function addClip(obj, key, value) {
+
+    if (isStudent || isProjector) {
+      return;
+    }
+    var offset, left, top, right, bottom;
+    if (obj) {
+      offset = obj.offset();
+      left = offset.left;
+      top = offset.top;
+      right = left + obj.outerWidth();
+      bottom = top + obj.outerHeight();
+    } else {
+      left = value.left;
+      top = value.top;
+      right = left + value.width;
+      bottom = top + value.height;
+    }
+
+    removeClip(key);
+    callNative('addClip', {
+      key: key,
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom
+    });
+  }
+
+  function removeClip(key) {
+    if (isStudent || isProjector) {
+      return;
+    }
+    callNative('removeClip', {
+      key: key
+    });
+  }
+
+  function focusPageIcon() {
+    var $pageListWrap = presenter.$view.find(".pagelistwrap");
+    var currentIndex = helper.index;
+    var blockWidth = 148;
+    if (currentIndex >= 5) {
+      $pageListWrap.scrollLeft(blockWidth * (currentIndex + 1 - 5) + 30);
+    } else {
+      $pageListWrap.scrollLeft(0);
+    }
+  }
+
+  function createImgBase64(image) {
+    var canvas = document.createElement("canvas");
+    canvas.width = 100;
+    canvas.height = 70;
+    canvas.getContext("2d").drawImage(image, 0, 0, 100, 70);
+    return canvas.toDataURL();
+  }
+
+  var showImg = function(index) {
+    var $img = $(helper.pics.get(index));
+    var tempImg = new Image();
+    tempImg.onload = function() {
+      var base64;
+      try {
+        base64 = createImgBase64(tempImg);
+      } catch (e) {
+        base64 = $img.attr('data-src');
+      }
+      $img.attr('src', base64);
+    };
+    tempImg.src = $img.attr('data-src');
+  };
+
+  var showImgList = function(index, length) {
+    var max = helper.max;
+    for (var i = index; i < max && i < index + length; i++) {
+      if (imgHasShow[i]) {
+        continue;
+      } else {
+        imgHasShow[i] = true;
+        showImg(i);
+      }
+    }
+  };
+
+  var showPanelImgs = function() {
+    var currentIndex = Math.floor(presenter.$view.find(".pagelistwrap").scrollLeft() / 148);
+    showImgList(currentIndex, helper.maxPages || 10);
+  };
+
+  function showPanel() {
+    if (helper.isPanelShow) {
+      return;
+    }
+    var $pageListWrap = presenter.$view.find(".pagelistwrap");
+    var $pagemain = presenter.$view.find('.pagemainnav');
+    var pagetext = presenter.$view.find(".pagetext");
+    helper.isPanelShow = true;
+    if (pagetext.hasClass('active')) {
+      return;
+    }
+    if (isFirstShowIcon) {
+      isFirstShowIcon = false;
+      showPanelImgs();
+    }
+    helper.isShowPanel = true;
+    pagetext.addClass('active');
+    $pagemain.animate({
+      bottom: 120 + 'px'
+    }, 100);
+    $pageListWrap.animate({
+      bottom: 0
+    }, 100, function() {
+      addClip($pagemain, 7);
+      addClip($pageListWrap, 8);
+    });
+  }
+
+  function hidePanel() {
+    if (!helper.isPanelShow) {
+      return;
+    }
+    var $pageListWrap = presenter.$view.find(".pagelistwrap");
+    var $pagemain = presenter.$view.find('.pagemainnav');
+    var pagetext = presenter.$view.find(".pagetext");
+    helper.isPanelShow = false;
+    if (!pagetext.hasClass('active')) {
+      return;
+    }
+    helper.isShowPanel = false;
+    pagetext.removeClass('active');
+    removeClip(7);
+    removeClip(8);
+    $pagemain.animate({
+      bottom: 20 + 'px'
+    }, 100, function() {
+      addClip($pagemain, 6);
+    });
+    $pageListWrap.animate({
+      bottom: -120 + 'px'
+    }, 100);
+  }
+
+  function initPanel() {
+    var max = helper.max;
+    var imgs = helper.imgs;
+    var pages;
+    var reqFrame = "";
+    var i;
+    var $pageListWrap = presenter.$view.find(".pagelistwrap");
+    var $pagemain = presenter.$view.find('.pagemainnav');
+    var pagetext = presenter.$view.find(".pagetext");
+    var basepath = presenter.basePath + 'resources/locations/' + getLanguageProperty('defaultImg');
+    var isTouchStart = false;
+    var isMouseStart = false;
+    if (!imgs) {
+      imgs = [];
+      pages = presenter.presentation.getTableOfContents();
+      for (i = 0; i < max; i++) {
+        imgs.push(pages.get(i).getPreview() || basepath);
+      }
+      helper.imgs = imgs;
+    }
+    for (i = 0; i < max; i++) {
+      reqFrame += '<a href="#" class="listcon" data-index="' + i + '">';
+      reqFrame += '<span class="page_no">' + (i + 1) + '</span>';
+      reqFrame += '<i class="dec_mask"></i>';
+      reqFrame += '<img src=' + basepath + ' data-src="' + imgs[i] + '" />';
+      reqFrame += '</a>';
+      imgHasShow[i] = false;
+    }
+    presenter.$view.find(".pagelist").append(reqFrame);
+
+    if (isSupportTouch && (isApp || isPC)) {
+      pagetext.on('touchstart', function(e) {
+        pagetext.on('touchend', function(e) {
+          if (pagetext.hasClass('active')) {
+            hidePanel();
+          } else {
+            showPanel();
+          }
+          pagetext.off('touchend');
+          e.preventDefault();
+        });
+      });
+    } else {
+      pagetext.on('click', function() {
+        if (pagetext.hasClass('active')) {
+          hidePanel();
+        } else {
+          showPanel();
+        }
+      });
+    }
+
+    var $listcon = presenter.$view.find(".listcon");
+    var $pagelist = presenter.$view.find('.pagelistwrap');
+    var isStart = false;
+    var timeScroll;
+    helper.pics = $pagelist.find('img');
+
+    $listcon.off();
+    $pagelist.on('scroll', function() {
+      if (isStart) {
+        isStart = false;
+        $listcon.off('touchend');
+      }
+      clearTimeout(timeScroll);
+      timeScroll = setTimeout(function() {
+        showPanelImgs();
+        isScroll = false;
+      }, 250);
+      isScroll = true;
+    });
+    if (isSupportTouch && (isApp || isPC)) {
+      $listcon.on('touchstart', function() {
+        isStart = true;
+        $listcon.on('touchend', function(event) {
+          var index = $(this).attr('data-index');
+          goToPage('other', index);
+          $listcon.off('touchend');
+          event.preventDefault();
+        });
+      });
+    } else {
+      $listcon.click(function() {
+        var index = $(this).attr('data-index');
+        goToPage('other', index);
+      });
+    }
+  }
+
+
+
+  presenter.setBasePath = function(path) {
+    presenter.basePath = path;
+  };
+  var pptTime;
+
+  var panelReset = function() {
+    var $listcon = presenter.$view.find(".pagelist");
+    var currentIndex = helper.index = presenter.playerController.getCurrentPageIndex();
+    var MaxcurrentIndex = helper.max;
+    var $view = presenter.$view;
+    $listcon.find('.listcon').removeClass('on');
+    $listcon.find('[data-index=' + currentIndex + ']').addClass('on');
+    focusPageIcon();
+
+    if (currentIndex + 1 >= MaxcurrentIndex) {
+      $view.find(".btn_next").addClass('disable');
+    } else {
+      $view.find(".btn_next").removeClass('disable');
+    }
+    if (currentIndex <= 0) {
+      $view.find(".btn_prev").addClass('disable');
+    } else {
+      $view.find(".btn_prev").removeClass('disable');
+    }
+
+    $view.find(".maxpage").text(MaxcurrentIndex);
+    $view.find(".pagetext em").text(currentIndex + 1);
+  };
+
+  presenter.pageChange = function() {
+    if (!isStudent) {
+      setGotoPage(true);
+      if (!presenter.hasrun) {
+        helper.pptReady = false;
+        setIsPPTPage(false);
+        isPPTPage();
+        isLockLnPPT = false;
+      }
+      helper.hasDoNext = false;
+      presenter.hasrun = false;
+
+      if (getIsPPTPage()) {
+        var pageDom;
+        if (presenter.playerController.getCurrentPageView) {
+          pageDom = $(presenter.playerController.getCurrentPageView());
+        } else {
+          pageDom = $('.addon_lnPPT_01');
+        }
+        pptTime = setInterval(function() {
+          if (pageDom.find('#ppt-iframe').get(0) && pageDom.find('#ppt-iframe').get(0).contentWindow) {
+            clearInterval(pptTime);
+            helper.ppt = pageDom.find('#ppt-iframe').get(0).contentWindow;
+            bindEvents(helper.ppt);
+          }
+        }, 50);
+      }
+
+      panelReset();
+
+    }
+  };
+
+
+  function getPPTReady() {
+    var isNull = presenter.PPTCtl != null;
+    return helper.pptReady && isNull;
+  }
+
+
+  function setIsPPTPage(bool) {
+    presenter.isPPT = bool;
+  }
+
+  function getIsPPTPage() {
+    return presenter.isPPT;
+  }
+
+  function isPPTPage() {
+    var ps = presenter.playerController;
+    var page = presenter.presentation.getPage(ps.getCurrentPageIndex());
+    var modules = page.getModules();
+    $.each(modules, function(k, v) {
+      var module = ps.getModule(v);
+      if (module && module.isPPTPage) {
+        presenter.isPPT = module.isPPTPage();
+        return false;
+      }
+    });
+    return presenter.isPPT;
+  }
+
+  function isReportable() {
+    var page = presenter.presentation.getPage(presenter.playerController.getCurrentPageIndex());
+    return page.isReportable();
+  }
+
+  function resetSuffixDomain(level) {
+    var myregexp = /^\w+:\/\/([^\/]+)/m;
+    var domainobj = myregexp.exec(document.URL);
+    var domainstr = '';
+    if (domainobj != null) {
+      domainstr = domainobj[0];
+    } else {
+      domainstr = "";
+    }
+    var tmp = domainstr.split('.');
+    if (tmp.length > level) {
+      var str = null;
+      for (var i = 0; i < level; i++) {
+        if (str == null) {
+          str = tmp[tmp.length - i - 1];
+        } else {
+          str = tmp[tmp.length - i - 1] + "." + str;
+        }
+      }
+      try {
+        if (str !== document.domain) {
+          document.domain = str;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  function goNext() {
+    setMaster(true);
+    hidePanel();
+    if (!getIsPPTPage()) {
+      goToPage('next');
+    } else {
+      if (getPPTReady()) {
+        if (presenter.PPTCtl.GetCurrentAnimationIndex() === presenter.animateCount) {
+          goToPage('next');
+        } else if (presenter.PPTCtl.GetCurrentAnimationIndex() < presenter.animateCount) {
+          goToSlide('next');
+        }
+      }
+    }
+    return;
+  }
+
+  function goPre() {
+    setMaster(true);
+    hidePanel();
+    if (!getIsPPTPage()) {
+      goToPage('prev');
+    } else {
+      if (getPPTReady()) {
+        if (presenter.PPTCtl.GetCurrentAnimationIndex() === 0) {
+          goToPage('prev');
+        } else if (presenter.PPTCtl.GetCurrentAnimationIndex() > 0) {
+          goToSlide('prev');
+        }
+      }
+    }
+
+    return;
+  }
+
+  var timeout;
+
+  function addActive(obj) {
+    presenter.btnNext.removeClass('active');
+    presenter.btnPrev.removeClass('active');
+    if (!obj.hasClass('active')) {
+      obj.addClass('active');
+    }
+    clearTimeout(timeout);
+    timeout = setTimeout(function() {
+      obj.removeClass('active');
+    }, 800);
+  }
+
+  var runTimeRole = function() {
+    var res;
+    presenter.isPreviewMode = false;
+    res = callNative('getPlayMode', {});
+    if (res) {
+      presenter.isPreviewMode = res.isPreview;
+    }
+  };
+
+  var initData = function(view, model) {
+    initViewData(view);
+    initModelData(model);
+    helper.maxPages = parseInt($(window).width() / 148) + 1;
+    helper.max = presenter.presentation.getPageCount();
+    presenter.status = false;
+    presenter.hasrun = true;
+  };
+
+  var initViewData = function(view) {
+    presenter.$view = $(view);
+    presenter.btnNext = presenter.$view.find(".btn_next");
+    presenter.btnPrev = presenter.$view.find(".btn_prev");
+  };
+
+  var initModelData = function(model) {
+    presenter.moduleId = model.ID;
+  };
+
+  var bindNativeEvent = function() {
+    registerNativeListener('TriggerUserInput', triggerUserInput);
+    registerNativeListener('ModuleNativeClick', function() {
+      hidePanel();
+    });
+    registerNativeListener('PPTNavMessageBoxButton', PPTNavMessageBoxButton);
+  };
+
+  var bindDomEvent = function() {
+    var btnNext = presenter.btnNext;
+    var btnPrev = presenter.btnPrev;
+    if (isSupportTouch && (isApp || isPC)) {
+      btnNext.on("touchstart", function() {
+        btnNext.on("touchend", function(e) {
+          addActive($(this));
+          goNext();
+          btnNext.off("touchend");
+          e.preventDefault();
+        });
+      });
+      btnPrev.on("touchstart", function() {
+        btnPrev.on("touchend", function(e) {
+          addActive($(this));
+          goPre();
+          btnPrev.off("touchend");
+          e.preventDefault();
+        });
+      });
+    } else {
+      btnNext.on("click", function() {
+        addActive($(this));
+        goNext();
+      });
+      btnPrev.on("click", function() {
+        addActive($(this));
+        goPre();
+      });
+    }
+
+    document.addEventListener('touchend', function(e) {
+      if (!$(e.target).parents('.addon_IClassroomNav').length) {
+        hidePanel();
+      }
+    });
+    document.addEventListener('mouseup', function(e) {
+      if (!$(e.target).parents('.addon_IClassroomNav').length) {
+        hidePanel();
+      }
+    });
+  };
+
+  presenter.run = function(view, model) {
+
+    initData(view, model);
+    setIsPPTPage(false);
+    isPPTPage();
+    runTimeRole();
+    if (!isApp || !isPC) {
+      resetSuffixDomain(2);
+    }
+    var $view = presenter.$view;
+    var MaxcurrentIndex = helper.max;
+
+    if (isStudent) {
+      $view.hide();
+    } else {
+      if (isProjector) {
+        $view.hide();
+      }
+      bindNativeEvent();
+
+      initPanel();
+
+      if (!isProjector) {
+        bindDomEvent();
+        setTimeout(function() {
+          if (!helper.isPanelShow) {
+            addClip($view.find('.pagemainnav'), 6);
+          } else {
+            addClip($view.find('.pagemainnav'), 7);
+          }
+        }, 1000);
+      }
+      presenter.pageChange();
+    }
+  };
+
+  presenter.show = function() {
+    presenter.$view.show();
+  };
+
+  presenter.hide = function() {
+    presenter.$view.hide();
+  };
+
+  presenter.destroy = function() {
+    if (!isStudent) {
+      removeClip(7);
+      removeClip(8);
+      removeClip(9);
+      unbindPPT();
+      presenter.$view.find(".pagetext") && presenter.$view.find(".pagetext").off();
+      presenter.$view.find(".listcon") && presenter.$view.find(".listcon").off();
+      presenter.$view.find('.pagelistwrap') && presenter.$view.find('.pagelistwrap').off();
+      presenter.$view.find(".btn_next") && presenter.$view.find(".btn_next").off();
+      presenter.$view.find(".btn_prev") && presenter.$view.find(".btn_prev").off();
+      unbindNativeListener();
+    }
+  };
+
+  presenter.setState = function(state) {
+    if (state) {
+      helper.isShowPanel = JSON.parse(state).isShowPanel;
+      if (helper.isShowPanel) {
+        showPanel();
+      } else {
+        hidePanel();
+      }
+    }
+  };
+
+  presenter.getState = function() {
+    return JSON.stringify({
+      'isShowPanel': helper.isShowPanel
+    });
+  };
+
+  presenter.setLocationProperties = function(properties) {
+    language = properties;
+  };
+
+  return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/footer_listbg.png' />
+<file src='./resources/footer_next_normal.png' />
+<file src='./resources/footer_next_press.png' />
+<file src='./resources/footer_prev_normal.png' />
+<file src='./resources/footer_prev_press.png' />
+<file src='./resources/locations/es/default.jpg' />
+<file src='./resources/locations/es/lang.json' />
+<file src='./resources/locations/es/lang.po' />
+<file src='./resources/locations/es_EC/default.jpg' />
+<file src='./resources/locations/es_EC/lang.json' />
+<file src='./resources/locations/es_EC/lang.po' />
+<file src='./resources/locations/zh/default.jpg' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+<file src='./resources/locations/zh_CN/default.jpg' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/lang.po' />
+<file src='./resources/nav.png' />
+
+
+</resources>
+
+</addon>

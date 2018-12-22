@@ -1,0 +1,23 @@
+<div class="stat_rolereading_answerdetail role_reading_content">
+    <div class="stat_rolereading_answerdetail role_reading_right_column">
+                <div class="role_reading_right_column_box">
+                    <div class="column_title">答题详情统计：</div>
+                    <div class="role_reading_column_container">
+                        <div class="container_hd role_reading_list_td clearfix">
+                            <span class="hd_title align_right role_reading_list_cols cols_01">优秀率：</span>
+                            <span class="hd_title role_reading_list_cols cols_02" :class='{"active":mOrderType == 0}' v-on:click='changelist(0)'>由高到低</span><!--选中时加active态-->
+                            <span class="hd_title role_reading_list_cols cols_03" :class='{"active":mOrderType == 1}' v-on:click='changelist(1)'>由低到高</span><!--选中时加active态-->
+                        </div>
+                        <ul class="role_reading_list_body scrollbar_style_light_color column_content" :class='{"rank_asc":mOrderType == 1}'>
+                            <!--由低到高时加类rank_asc-->
+                            <li class="role_reading_list_td clearfix list_font_green" v-for="section in sections">
+                                <span class="role_reading_list_cols cols_01"><em class="text">{{section.content}}</em></span>
+                                <span class="role_reading_list_cols cols_02"><em class="text">{{section.excellPercent + '%'}}</em></span>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="column_tips">注：此表中所显示的数值为朗读该句子获得A的学生的比例</div>
+</div>

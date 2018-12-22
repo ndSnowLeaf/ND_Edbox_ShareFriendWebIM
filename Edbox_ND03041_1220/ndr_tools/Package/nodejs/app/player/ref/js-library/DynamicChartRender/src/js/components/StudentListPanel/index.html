@@ -1,0 +1,27 @@
+<div class="chart_pop showavator">
+    <!--显示在.chart_pop上增加类名.chart_pop_show-->
+    <div class="chart_list">
+        <div class="chart_list_th clearfix">
+            <span class="chart_list_cols cols_01"><em class="text" ref="lang_name"></em></span>
+            <span class="chart_list_cols cols_02"><em class="text" ref="lang_accuracy"></em></span>
+            <span class="chart_list_cols cols_03"><em class="text" ref="lang_spend"></em></span>
+            <span class="chart_list_cols cols_04"><em class="text" ref="lang_operation"></em></span>
+        </div>
+        <ul class="chart_list_body">
+            <student-list-item v-for="(student,index) in students" :data="student" ref="studentlist"></student-list-item>
+        </ul>
+    </div>
+    <!-- tab -->
+    <div class="tab_box">
+        <!-- tab选中时，加on -->
+        <a href="javascript:;" class="btn_tab" :class="{'on':currentTab=='all'}" ref="lang_all" @click="toggleUserList('all')"></a>
+        <a href="javascript:;" class="btn_tab" :class="{'on':currentTab=='right'}" ref="lang_right" @click="toggleUserList('right')"></a>
+        <a href="javascript:;" class="btn_tab" ref="lang_wrong" :class="{'on':currentTab=='wrong'}" @click="toggleUserList('wrong')"></a>
+        <a href="javascript:;" class="btn_tab" ref="lang_noAnswer" :class="{'on':currentTab=='undo'}" @click="toggleUserList('undo')"></a>
+    </div>
+    <!-- /tab -->
+    <!-- 右下角的收起名单 -->
+    <div class="chart_right_btn">
+        <panel-btn></panel-btn>
+    </div>
+</div>

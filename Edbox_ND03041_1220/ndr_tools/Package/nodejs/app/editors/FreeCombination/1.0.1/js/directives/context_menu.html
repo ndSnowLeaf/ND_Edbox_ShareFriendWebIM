@@ -1,0 +1,128 @@
+<div class="freecombination_contextmenu" ng-style="wrapperStyle()" ng-show="show || module.showcontextmenu" ng-class="{'popmenu_special_mod':module.template.line}">
+    <ul class="freeCombination_popmenu_general popmenu1" ng-class="{'on':module.type=='shape'}" ><!--popmenu1加类on表示显示，去掉则不显示-->
+        <li class="freeCombination_pg_item freeCombination_fill "  ng-if="!module.template.line"><!--freeCombination_fill加类ui_btn_unavailable表示不可用,加类ui_btn_select表示选中-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_filling"></span>
+            <span class="freeCombination_pg_text">填充</span>
+            <span class="freeCombination_pg_after_icon"></span>
+
+            <ul class="freeCombination_popmenu_second second_menu">
+                <li class="freeCombination_pc_item_title">
+                    <span class="freeCombination_pc_title">颜色</span>
+                </li>
+                <li class="freeCombination_pc_item">
+                    <span class="freeCombination_pci_second_wrapper">
+                        <span class="freeCombination_pci_hover" ng-repeat="color in colors1"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                            <span class="freeCombination_pci_second color{{color}}"  ng-click="selectColor($event,'shape_color')"></span>
+                        </span>
+                    </span>
+                </li>
+                <li class="freeCombination_pc_item">
+                    <span class="freeCombination_pci_second_wrapper">
+                        <span class="freeCombination_pci_hover" ng-repeat="color in colors2">
+                            <span class="freeCombination_pci_second color{{color}}"  ng-click="selectColor($event,'shape_color')"></span>
+                        </span>
+                    </span>
+                </li>
+            </ul>
+        </li>
+        <li class="freeCombination_pg_item freeCombination_contour"><!--freeCombination_contour加类ui_btn_unavailable表示不可用，加类ui_btn_select表示选中-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_contour"></span>
+            <span class="freeCombination_pg_text">轮廓</span>
+            <span class="freeCombination_pg_after_icon"></span>
+            <ul class="freeCombination_popmenu_second second_menu">
+                <li class="freeCombination_pc_item_title">
+                    <span class="freeCombination_pc_title">颜色</span>
+                </li>
+                <li class="freeCombination_pc_item">
+                    <span class="freeCombination_pci_second_wrapper">
+                        <span class="freeCombination_pci_hover" ng-repeat="color in colors1"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                            <span class="freeCombination_pci_second color{{color}}"  ng-click="selectColor($event,'shape_border')"></span>
+                        </span>
+                    </span>
+                </li>
+                <li class="freeCombination_pc_item">
+                    <span class="freeCombination_pci_second_wrapper"><!--
+                        --><span class="freeCombination_pci_hover" ng-repeat="color in colors2">
+                            <span class="freeCombination_pci_second color{{color}}"  ng-click="selectColor($event,'shape_border')"></span>
+                        </span>
+                    </span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!--填充弹窗结束-->
+    <!--剪切弹窗开始-->
+    <ul class="freeCombination_popmenu_general popmenu2 on"> <!--popmenu2加类on表示显示，去掉则不显示-->
+        <li class="freeCombination_pg_item"  ng-click="cut()"  ng-if="module"><!-- freeCombination_pg_item选中加类ui_btn_select-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_scissors"></span>
+            <span class="freeCombination_pg_text">剪切</span>
+        </li>
+        <li class="freeCombination_pg_item" ng-click="copy()"  ng-if="module"><!--freeCombination_pg_item不可用加类ui_btn_unavailable-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_copy"></span>
+            <span class="freeCombination_pg_text">复制</span>
+        </li>
+        <li class="freeCombination_pg_item"  style="cursor:default" ng-class="{'ui_btn_unavailable':pastestatus.disabled}">
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_paste"></span>
+            <span class="freeCombination_pg_text">粘贴选项</span>
+        </li>
+        <li class="freeCombination_pg_item freeCombination_paste_item">
+            <span class="freeCombination_paste_items freeCombination_icon_paste1" ng-class="{'ui_btn_unavailable':pastestatus.disabled}"
+                  ng-click="pastestatus.disabled||paste(1,$event)" ng-if="pastestatus.type=='text'"></span>
+            <span class="freeCombination_paste_items freeCombination_icon_paste2" ng-class="{'ui_btn_unavailable':pastestatus.disabled}"
+                  ng-click="pastestatus.disabled||paste(2,$event)" ng-if="pastestatus.type=='text'"></span>
+            <span class="freeCombination_paste_items freeCombination_icon_paste4" ng-class="{'ui_btn_unavailable':pastestatus.disabled}"
+                  ng-click="pastestatus.disabled||paste(3,$event)" ng-if="pastestatus.type=='text'"></span>
+            <span class="freeCombination_paste_items freeCombination_icon_paste3" ng-class="{'ui_btn_unavailable':pastestatus.disabled}"
+                  ng-click="pastestatus.disabled||paste(4,$event)" ng-if="pastestatus.type=='image'"></span>
+        </li>
+        <li class="freeCombination_pg_item" ng-if="module" ng-class="{'ui_btn_unavailable':!canGroup()}"><!-- .freeCombination_pg_item 选中加类 .ui_btn_select -->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_combination"></span>
+            <span class="freeCombination_pg_text">组合</span>
+            <span class="freeCombination_pg_after_icon"></span>
+            <ul class="freeCombination_popmenu_general freeCombination_pg_next second_menu" ng-if="canGroup()">
+                <li class="freeCombination_pg_item"  ng-click="group()"  ng-class="{'ui_btn_unavailable':!canGroupIntern()}">
+                    <span class="freeCombination_pg_pre_icon fct_icon_cbt1"></span>
+                    <span class="freeCombination_pg_text">组合</span>
+                </li>
+                <li class="freeCombination_pg_item"  ng-click="ungroup()"   ng-class="{'ui_btn_unavailable':!cantGroupIntern()}">
+                    <span class="freeCombination_pg_pre_icon fct_icon_cbt2"></span>
+                    <span class="freeCombination_pg_text">取消组合</span>
+                </li>
+            </ul>
+        </li>
+        <li class="freeCombination_pg_item " ng-if="module"><!-- .freeCombination_pg_item 选中加类 .ui_btn_select-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_top"></span>
+            <span class="freeCombination_pg_text">置于顶层</span>
+            <span class="freeCombination_pg_after_icon"></span>
+            <ul class="freeCombination_popmenu_general freeCombination_pg_next second_menu">
+                <li class="freeCombination_pg_item" ng-click="changeZindex('upfirst')">
+                    <span class="freeCombination_pg_pre_icon fct_icon_top_1"></span>
+                    <span class="freeCombination_pg_text">置于顶层</span>
+                </li>
+                <li class="freeCombination_pg_item" ng-click="changeZindex('up')">
+                    <span class="freeCombination_pg_pre_icon fct_icon_top_2"></span>
+                    <span class="freeCombination_pg_text">上移一层</span>
+                </li>
+            </ul>
+        </li>
+        <li class="freeCombination_pg_item" ng-if="module"><!-- .freeCombination_pg_item 选中加类 .ui_btn_select-->
+            <span class="freeCombination_pg_pre_icon freeCombination_icon_bottom"></span>
+            <span class="freeCombination_pg_text">置于底层</span>
+            <span class="freeCombination_pg_after_icon"></span>
+            <ul class="freeCombination_popmenu_general freeCombination_pg_next second_menu">
+                <li class="freeCombination_pg_item "  ng-click="changeZindex('downlast')">
+                    <span class="freeCombination_pg_pre_icon fct_icon_bottom_1"></span>
+                    <span class="freeCombination_pg_text">置于底层</span>
+                </li>
+                <li class="freeCombination_pg_item"  ng-click="changeZindex('down')">
+                    <span class="freeCombination_pg_pre_icon fct_icon_bottom_2"></span>
+                    <span class="freeCombination_pg_text">下移一层</span>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <!--剪切弹窗结束-->
+
+
+
+</div>

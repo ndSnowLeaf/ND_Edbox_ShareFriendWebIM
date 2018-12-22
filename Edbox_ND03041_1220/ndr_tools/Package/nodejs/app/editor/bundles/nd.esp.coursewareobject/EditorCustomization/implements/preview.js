@@ -1,0 +1,1 @@
+define(["jquery","espEnvironment","espService","espModel","prompter"],function($,espEnvironment,espService,espModel,prompter){return function(config,workbench,coursewareobjectMetadata){workbench.openEditor({type:"coursewareobject",key:coursewareobjectMetadata.identifier,data:coursewareobjectMetadata},"nd.esp.coursewareobject.PreviewEditor",config)}});

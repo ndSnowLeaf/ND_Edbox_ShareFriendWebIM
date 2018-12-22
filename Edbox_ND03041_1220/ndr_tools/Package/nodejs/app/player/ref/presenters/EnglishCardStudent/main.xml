@@ -1,0 +1,2147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='presenter_englishcardstudent'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="vue-libs" version="2.1.10" />
+    <javaScript  name="CanvasWriter" version="1.0.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div id="english_card_container"></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 11);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(window.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+	var sourceMap = obj.sourceMap;
+
+	if (media) {
+		styleElement.setAttribute("media", media);
+	}
+
+	if (sourceMap) {
+		// https://developer.chrome.com/devtools/docs/javascript-debugging
+		// this makes source maps inside style tags work properly in Chrome
+		css += '\n/*# sourceURL=' + sourceMap.sources[0] + ' */';
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(29)
+
+/* script */
+__vue_exports__ = __webpack_require__(7)
+
+/* template */
+var __vue_template__ = __webpack_require__(25)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "F:\\modules\\presenters\\EnglishCard\\presenter_englishcardstudent\\src\\app\\App.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a194c82", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-1a194c82", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] App.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = jQuery;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+            value: true
+});
+
+exports.default = function (App, view) {
+            var isStudent = this.isStudent;
+
+            App.data = function () {
+                        return {
+                                    isActive: true,
+
+                                    imgSrc: _mock2.default.imgSrc,
+
+                                    text: _mock2.default.text,
+
+                                    correctAnswer: _mock2.default.correctAnswer,
+
+                                    //显示答案
+                                    showAnswer: false,
+
+                                    //显示答案按钮
+                                    answerBtn: "显示答案",
+
+                                    //是否显示 显示答案按钮
+                                    showAnswerBtn: false,
+
+                                    //题目类型，单词拼写或者句子拼写
+                                    questionType: 1,
+
+                                    //环境判断
+                                    isStudent: isStudent
+                        };
+            };
+
+            this.$vue = new Vue({
+                        el: view.querySelector("#english_card_container"),
+
+                        render: function render(h) {
+                                    return h(App);
+                        }
+
+            });
+};
+
+var _mock = __webpack_require__(10);
+
+var _mock2 = _interopRequireDefault(_mock);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (presenter) {
+
+    var parent = presenter;
+    var answerUtil = (0, _answerUtil2.default)(presenter);
+
+    return {
+        changeCard: function changeCard(data) {
+
+            console.log("changeCard收到数据 " + JSON.stringify(data));
+            var $deferred = $.Deferred();
+
+            var wordData = $.extend(true, {}, data);
+
+            parent.identify = wordData.identify;
+            parent.cardData = $.extend(true, {}, wordData.cardData);
+
+            //清空
+            answerUtil.clear();
+
+            //设置新的词卡内容
+            answerUtil.init(wordData.cardData);
+
+            //解锁
+            this.unlockQuestion();
+
+            $deferred.resolve();
+
+            return $deferred.promise();
+        },
+        setPosition: function setPosition() {
+            //放空
+        },
+        //作答态接口
+        //获取生字卡的唯一标识
+        getIdentify: function getIdentify() {
+            return parent.identify;
+        },
+        //获取作答结果
+        getResult: function getResult() {
+            var $deferred = $.Deferred();
+
+            var $writingArea = $(parent.view).find(".ec_spell_writting");
+
+            var result = {
+                "questionId": parent.identify,
+                "answerState": 'NO_ANSWER',
+                "answer": {
+                    "answer_result": true,
+                    "correct_response": [],
+                    "user_response": []
+                }
+            };
+
+            //截图区域
+            var screenshotParam = {
+                "left": $writingArea.offset().left,
+                "top": $writingArea.offset().top,
+                "width": $writingArea.outerWidth(),
+                "height": $writingArea.outerHeight(),
+                "outputWidth": 0,
+                "outputHeight": 250
+            };
+
+            //answerState判断,有画过就判断为做完了
+            //App.vue
+            if (parent.hasDraw) {
+                result.answerState = "COMPLETE";
+            }
+
+            //截图
+            if (typeof ClassroomUtils !== 'undefined' && typeof ClassroomUtils.screenShot === 'function') {
+
+                var screentShotArea = {
+                    "left": screenshotParam.left,
+                    "top": screenshotParam.top,
+                    "width": screenshotParam.width,
+                    "height": screenshotParam.height,
+                    "outputWidth": parseInt(screenshotParam.width * (screenshotParam.outputHeight / screenshotParam.height)),
+                    "outputHeight": screenshotParam.outputHeight
+                };
+
+                //打印日志
+                for (var key in screentShotArea) {
+                    console.log("截图区域数据" + key + "：" + screentShotArea[key]);
+                }
+
+                //概率bug105281,获取到的top值会有1000多，暂没有找到原因，强制设置top值
+                //if(screentShotArea.top > 346){
+                //    screentShotArea.top = 346;
+                //}
+
+                ClassroomUtils.screenShot(screentShotArea).done(function (url) {
+                    console.log('截图url:', url);
+
+                    //截图完成
+                    if (url !== null) {
+                        result.answer['user_response'][0] = url;
+                        $deferred.resolve(result);
+                    }
+                }).fail(function (reason) {
+                    console.log("词汇卡截图出错:" + reason);
+                });
+            } else {
+
+                $deferred.resolve(result);
+            }
+
+            return $deferred.promise();
+        },
+
+        //设置手写板的宽高，学生端手写板初始化的时候获取不到容器的宽高，由控制再告知
+        setWriterStyle: function setWriterStyle() {
+            var canvas = parent.view.querySelector("canvas");
+            var container = canvas.parentNode;
+
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+        },
+
+        //显示答案
+        showAnswer: function showAnswer() {
+            if (parent.$vue) {
+                console.log("-------------显示答案-----------------");
+                //App.vue
+                parent.$vue.$children[0].showAnswer = true;
+            }
+        },
+
+        //获取详细作答结果,base64
+        getResultDetail: function getResultDetail() {
+            var writePanel = parent.$vue.$children[0].$refs["write_panel"];
+            var base64Data = writePanel.writer.getState();
+
+            return [{
+                key: "traceData",
+                value: base64Data
+            }];
+        },
+        //不允许操作
+        lockQuestion: function lockQuestion() {
+            parent.$vue.$children[0].isActive = false;
+        },
+        //允许操作
+        unlockQuestion: function unlockQuestion() {
+            parent.$vue.$children[0].isActive = true;
+        },
+        //退出本题时调用
+        finishQuestion: function finishQuestion() {
+            //放空
+
+        },
+        //重置本题
+        resetQuestion: function resetQuestion(param) {
+            if (param.trigger === 'ExitQuestion') {
+                answerUtil.clear();
+            } else if (param.trigger === 'ReAnswer') {
+                answerUtil.reAnswer();
+            }
+        },
+        //国际化语言加载
+        setLocationProperties: function setLocationProperties(i18nModel) {
+            console.log("=======================", i18nModel);
+            parent.i18nModel = i18nModel;
+            parent.$translatorDeferred.resolve();
+        },
+        //判断点击的点是否在自己的view里
+        isPointInDom: function isPointInDom(event) {
+
+            return (0, _domClick2.default)(parent.view, event);
+        }
+    };
+};
+
+var _domClick = __webpack_require__(15);
+
+var _domClick2 = _interopRequireDefault(_domClick);
+
+var _answerUtil = __webpack_require__(12);
+
+var _answerUtil2 = _interopRequireDefault(_answerUtil);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+; /**
+   * Created by Administrator on 2016/11/15.
+   */
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_constant__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_constant___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__utils_constant__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_jquery__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "AnswerPanel",
+
+    props: ["showAnswer", "correctAnswer", "text"],
+
+    data: function () {
+        return {
+            isTwoLine: false,
+            answerStyle: {
+                visibility: 'hidden'
+            }
+        };
+    },
+    watch: {
+        showAnswer: "onShowAnswer"
+    },
+    methods: {
+        onShowAnswer: function (val) {
+            if (val) {
+                this.answerStyle.visibility = 'visible';
+            } else {
+                this.answerStyle.visibility = 'hidden';
+            }
+            let lineHeight = __WEBPACK_IMPORTED_MODULE_1_jquery___default()("#thecorrectAnswer").css('line-height').split('px')[0];
+            let AnswerHeight = __WEBPACK_IMPORTED_MODULE_1_jquery___default()("#thecorrectAnswer").height();
+            if (AnswerHeight > lineHeight) {
+                this.isTwoLine = true;
+            } else {
+                this.isTwoLine = false;
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Describe_vue__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Describe_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Describe_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__WritePanel_vue__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__WritePanel_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__WritePanel_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AnswerPanel_vue__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__AnswerPanel_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__AnswerPanel_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "App",
+
+    props: ["isActive", "imgSrc", "text", "correctAnswer", "showAnswer", "answerBtn", "showAnswerBtn", "type", "cleanDraw"],
+
+    methods: {
+        showAnswerHandler: function () {
+            this.showAnswer = true;
+        },
+        changeState: function () {
+            console.log("App 接收到 drawed事件----------------");
+            this.$emit("drawed");
+        },
+        showAnswerChange: function (val) {
+            this.showAnswer = val;
+        }
+    },
+
+    components: {
+        Describe: __WEBPACK_IMPORTED_MODULE_0__Describe_vue___default.a,
+        WritePanel: __WEBPACK_IMPORTED_MODULE_1__WritePanel_vue___default.a,
+        AnswerPanel: __WEBPACK_IMPORTED_MODULE_2__AnswerPanel_vue___default.a
+    },
+
+    mounted: function () {
+        this.cleanDraw = false;
+    }
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_jquery__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__utils_slideUtil__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "Describe",
+
+    mounted: function () {
+        this.down = false;
+        this.dragDom = this.$el.querySelector(".carousel_content");
+        this.carouselLi = this.dragDom.querySelector(".js_img_carousel");
+        this.startPos = null; //滑动开始时的坐标
+        this.lastPos = null;
+        //当前left值
+        this.currentLeft = 0;
+        //单个li的宽度
+        this.carouselWidth = 0;
+        //left最大值
+        this.maxLeft = 0;
+    },
+
+    data: function () {
+        return {
+            currentIndex: 0
+        };
+    },
+
+    props: ["imgSrc"],
+
+    computed: {
+        wrapperWidth: function () {
+            return this.imgSrc.length * 100 + "%";
+        },
+
+        liWidth: function () {
+            return 100 / this.imgSrc.length + "%";
+        }
+    },
+
+    methods: {
+        start: function (event) {
+            this.down = true;
+
+            this.startPos = __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil___default.a.coordTansform(event);
+            this.lastPos = this.startPos;
+
+            if (!(this.carouselWidth && this.maxLeft)) {
+
+                //在mounted阶段，获取不到dom的
+                //单个li的宽度
+                this.carouselWidth = this.carouselLi.offsetWidth;
+                //left最大值
+                this.maxLeft = this.dragDom.offsetWidth - this.carouselWidth;
+            }
+        },
+
+        move: function (event) {
+            if (!this.down) return;
+
+            //当前坐标
+            var curPos = __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil___default.a.coordTansform(event);
+
+            var distance = __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil___default.a.getSlideParam(curPos, this.lastPos).distance;
+
+            this.currentLeft += distance;
+
+            //如果left值是0，且还要向右滑动，则left不变
+            if (this.currentLeft > 0) {
+                this.currentLeft = 0;
+            }
+
+            //如果已经滑动到最后一张图片
+            if (this.currentLeft < -this.maxLeft) {
+                this.currentLeft = -this.maxLeft;
+            }
+
+            //滚动至currentLeft
+            this.scrollTo();
+
+            this.lastPos = curPos;
+            this.direction = __WEBPACK_IMPORTED_MODULE_1__utils_slideUtil___default.a.getSlideParam(curPos, this.startPos).direction;
+        },
+
+        end: function (event) {
+
+            if (!this.down) return;
+
+            var rate = -this.currentLeft / this.carouselWidth;
+            var intIndex = parseInt(-this.currentLeft / this.carouselWidth);
+            var floatIndex = rate - intIndex;
+
+            if (this.direction == "left") {
+                floatIndex = floatIndex > 0.3 ? 1 : 0;
+            } else {
+                floatIndex = floatIndex < 0.7 ? 0 : 1;
+            }
+
+            //计算松手时应该滚动到第几张图片
+            var curIndex = intIndex + floatIndex;
+
+            this.scrollTo(curIndex);
+
+            this.down = false;
+            this.lastPos = null;
+        },
+
+        //滚动至某一页
+        scrollTo: function (index) {
+            if (index >= 0) {
+                this.currentLeft = -(index * this.carouselWidth);
+                this.currentIndex = index;
+
+                __WEBPACK_IMPORTED_MODULE_0_jquery___default()(this.dragDom).stop().animate({ "left": this.currentLeft + "px" }, "fast");
+            } else {
+                this.dragDom.style.left = this.currentLeft + "px";
+            }
+        }
+    }
+});
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: "WritePanel",
+
+    props: ["isActive", "showAnswer", "cleanDraw"],
+
+    watch: {
+        isActive: "setActive",
+        cleanDraw: "setCleanDraw",
+        showAnswer: "onShowAnswer",
+        showAnswerResult(val) {
+            this.$emit("show-answer-change", val);
+        }
+    },
+
+    data: function () {
+        return {
+            isPenClick: true,
+            lastPenData: "",
+            penData: [],
+            showAnswerResult: this.showAnswer
+        };
+    },
+
+    mounted: function () {
+        this.isPenClick = true;
+        this.writer = new CanvasWriter(this.$el.querySelector(".canvas_container"));
+
+        //当手写板完成一笔书写的时候就发送事件
+        this.writer.setAfterWrite(function () {
+
+            console.log("手写板发送-----drawed事件");
+            this.$emit("drawed");
+        }.bind(this));
+        this.writer.setBeforeWrite(function () {
+            if (this.isPenClick) {
+                if (this.penData != undefined && this.penData.length > 0 && this.penData[this.penData.length - 1] === this.writer.getState()) {
+                    return;
+                }
+                this.penData.push(this.writer.getState());
+            }
+        }.bind(this));
+
+        let self = this;
+        setTimeout(function () {
+            var canvas = self.$el.querySelector("canvas");
+            var container = canvas.parentNode;
+
+            canvas.width = container.offsetWidth;
+            canvas.height = container.offsetHeight;
+        }, 0);
+    },
+
+    methods: {
+        setActive: function (newValue, oldValue) {
+            //设置手写板可用或不可用
+            this.writer.setActive(newValue);
+        },
+        // 点击笔
+        onPenClick: function () {
+            if (this.isActive) {
+                this.isPenClick = true;
+                this.writer.setActive(true);
+            }
+        },
+        // 点击橡皮擦
+        onEraserClick: function () {
+            if (this.isActive) {
+                this.isPenClick = false;
+                this.writer.setActive(false);
+            }
+        },
+        // 点击画板
+        onWriteClick: function (e) {
+            e.preventDefault();
+            if (this.isActive && !this.isPenClick && this.penData != undefined && this.penData.length > 0) {
+                if (this.penData[this.penData.length - 1] === this.writer.getState()) {
+                    this.penData.pop();
+                }
+                let popPen = this.penData.pop();
+                if (popPen != undefined) {
+                    this.writer.setState(popPen);
+                }
+            }
+        },
+        // 老师端的显示答案
+        showAnswerHandler: function () {
+            this.showAnswerResult = true;
+        },
+        onShowAnswer: function (val) {
+            this.showAnswerResult = val;
+        },
+        setCleanDraw: function (val) {
+            this.isPenClick = true;
+            this.writer.setActive(true);
+            this.writer.clear();
+            this.penData.length = 0;
+        }
+    }
+});
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/11/21.
+ */
+exports.default = {
+    imgSrc: ["1", "2", "3", "4"],
+
+    text: "this is a text",
+
+    correctAnswer: "this is correct answer."
+};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _App = __webpack_require__(2);
+
+var _App2 = _interopRequireDefault(_App);
+
+var _service = __webpack_require__(5);
+
+var _service2 = _interopRequireDefault(_service);
+
+var _debug = __webpack_require__(4);
+
+var _debug2 = _interopRequireDefault(_debug);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+Vue.config.devtools = true;
+
+//开发模式，使用mock数据，单独唤起学生端
+/**
+ * Created by Administrator on 2016/11/14.
+ * 2.0.0
+ */
+var debug = false;
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: "EnglishCardStudent",
+        type: "presenterComponent",
+        subtype: "interactionQuestion"
+    },
+
+    $init: function $init() {
+        this._super();
+        this.$vue = null;
+        this.hasDraw = false;
+        this.i18nModel = {};
+    },
+
+    getService: function getService() {
+
+        this._service_ || (this._service_ = (0, _service2.default)(this));
+
+        return this._service_;
+    },
+
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function run(view, model) {
+
+        this.view = view;
+        this.model = model;
+
+        if (debug) {
+            _debug2.default.call(this, _App2.default, view);
+        }
+    },
+
+    pageShow: function pageShow() {},
+
+    pageLeave: function pageLeave() {
+        //
+    },
+
+    destroy: function destroy() {
+        this._service_ = null;
+        this.$vue.$destroy();
+        this.$vue = null;
+    }
+});
+
+window.AddonEnglishCardStudent_create = function () {
+    return new Presenter();
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (presenter) {
+    var parent = presenter;
+
+    return {
+        //清空
+        clear: function clear() {
+            //清空
+            if (parent.$vue) {
+                parent.$vue.$destroy();
+                parent.$vue = null;
+            }
+
+            //清空dom,保留一个div用于挂载vue
+            parent.view.innerHTML = '<div id="english_card_container"></div>';
+        },
+
+        //重新作答
+        reAnswer: function reAnswer() {
+            parent.$vue.$children[0].cleanDraw = !parent.$vue.$children[0].cleanDraw;
+        },
+
+        //初始化，新的词卡
+        init: function init(data) {
+
+            var cardData = (0, _dataModel2.default)(data, parent.i18nModel);
+
+            //App.data = function () {
+            //    return {
+            //        isActive: true,
+            //
+            //        imgSrc: data.files || [],
+            //
+            //        text: data.description,
+            //
+            //        correctAnswer: data.answer,
+            //
+            //        //显示答案
+            //        showAnswer: false,
+            //
+            //        //显示答案按钮
+            //        answerBtn: "显示答案",
+            //
+            //        //是否显示 显示答案按钮
+            //        showAnswerBtn: false,
+            //
+            //        //题目类型，单词拼写或者句子拼写 0 单词拼写 1 句子拼写
+            //        questionType: 0
+            //    }
+            //};
+
+
+            parent.$vue = new _Vue2.default({
+                el: parent.view.querySelector("#english_card_container"),
+
+                mounted: function mounted() {
+                    parent.$translatorDeferred.done(function () {
+                        console.log("======>", parent.i18nModel);
+                        var properties = parent.i18nModel;
+                        var $view = $(parent.view);
+                        for (var k in properties) {
+                            $view.find('[_lang="lang_' + k + '"]').html(properties[k]);
+                        }
+                    });
+                },
+
+                render: function render(h) {
+                    return h(_App2.default, {
+                        on: {
+                            "drawed": function drawed() {
+                                //监听手写板发送的事件
+                                console.log("=====this=====：", this);
+                                //用于getResult时状态的判断
+                                parent.hasDraw = true;
+                                console.log("------------------作答状态改变了,发送questionStateChange----------------------");
+                                parent.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+                            }
+                        },
+
+                        props: cardData
+                    });
+                }
+            });
+        }
+    };
+};
+
+var _Vue = __webpack_require__(32);
+
+var _Vue2 = _interopRequireDefault(_Vue);
+
+var _App = __webpack_require__(2);
+
+var _App2 = _interopRequireDefault(_App);
+
+var _dataModel = __webpack_require__(13);
+
+var _dataModel2 = _interopRequireDefault(_dataModel);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+        value: true
+});
+
+exports.default = function (data, i18nModel) {
+        var type = 0;
+        var text = data.wordprop + "." + data.paraphrase;
+
+        if (data.wordprop == "phrase" || data.wordprop == "") {
+                type = 1;
+                text = data.paraphrase;
+        }
+
+        return {
+                isActive: true,
+
+                imgSrc: data.files || [],
+
+                // description: data.description,
+
+                text: text,
+
+                correctAnswer: data.answer,
+
+                //显示答案
+                showAnswer: false,
+
+                //显示答案按钮
+                answerBtn: i18nModel["correct_answer"] || "显示答案",
+
+                //是否显示 显示答案按钮
+                showAnswerBtn: false,
+
+                //题目类型，单词拼写或者句子拼写 0 单词拼写 1 短语拼写
+                type: type
+        };
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/11/16.
+ * 定义了应用中的常量
+ *
+ */
+
+exports.default = {
+    EVENT: {
+        SUBMIT: "SubmitAnswer"
+    }
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function (dom, event) {
+    var _w = $(dom).width(),
+        _h = $(dom).height();
+    var _A = rotate.getRotateDeg($(dom)[0]); //这里取返就是为了算相对位置直接取旋转前的X,Y，
+    var finalXY = rotate.getRotateXY(event.pageX, event.pageY, _A, $(dom)[0]);
+    var _finalX = finalXY.x,
+        _finalY = finalXY.y;
+    if (_finalX >= 0 && _finalX <= _w && _finalY >= 0 && _finalY <= _h) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
+/**
+ * Created by Administrator on 2016/11/15.
+ * 判断当前点击是否在dom内
+ */
+
+function findOffset(obj) {
+    var curX = 0,
+        curY = 0;
+    if (obj.offsetParent) {
+        do {
+            curX += obj.offsetLeft;
+            curY += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return {
+            x: curX,
+            y: curY
+        };
+    } else return {
+        "x": 0,
+        "y": 0
+    };
+}
+
+var rotate = {
+    //获取元素的旋转的角度
+    getRotateDeg: function getRotateDeg(dom) {
+        var me = $(dom),
+            angle;
+        var matrix = me.css("-webkit-transform") || me.css("-moz-transform") || me.css("-ms-transform") || me.css("-o-transform") || me.css("transform");
+        if (typeof matrix === 'string' && matrix !== 'none' && matrix !== '') {
+            var values = matrix.split('(')[1].split(')')[0].split(',');
+            var a = values[0];
+            var b = values[1];
+            angle = (Math.atan2(b, a) * (180 / Math.PI)).toFixed(3);
+        } else {
+            angle = 0;
+        }
+        return angle;
+    },
+    getRotateOriginXY: function getRotateOriginXY(dom) {
+        var str = $(dom).css('transform-origin');
+        return str ? {
+            x: parseFloat(str.split(' ')[0], 10),
+            y: parseFloat(str.split(' ')[1], 10)
+        } : {
+            x: 0,
+            y: 0
+        };
+    },
+    getRotateXY: function getRotateXY(x, y, angle, dom) {
+        var p = findOffset(dom);
+        var t = this.getRotateOriginXY(dom);
+
+        x = x - parseInt(p.x) - t.x;
+        y = y - parseInt(p.y) - t.y;
+        if (angle < 0) {
+            angle = 360 + angle % 360; //3个限项 0-90 90-180 180-270 270-360
+        } else {
+            angle = angle % 360; //3个限项 0-90 90-180 180-270 270-360
+        }
+        var goalX = x * Math.cos(angle * Math.PI / 180) + y * Math.sin(angle * Math.PI / 180);
+        var goalY = y * Math.cos(angle * Math.PI / 180) - x * Math.sin(angle * Math.PI / 180);
+        return {
+            x: goalX + t.x,
+            y: goalY + t.y
+        };
+    }
+};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+/**
+ * Created by Administrator on 2016/11/21.
+ * 事件中的坐标处理
+ */
+
+exports.default = {
+
+    //返回坐标
+    coordTansform: function coordTansform(event) {
+        var x = 0,
+            y = 0;
+
+        switch (event.type) {
+            case "mousedown":
+            case "mousemove":
+            case "mouseup":
+                x = event.clientX;
+                y = event.clientY;
+                break;
+            case "touchstart":
+            case "touchmove":
+                x = event.touches[0].clientX;
+                y = event.touches[0].clientY;
+            case "touchend":
+                x = event.changedTouches[0].clientX;
+                y = event.changedTouches[0].clientY;
+                break;
+        }
+
+        return {
+            x: x,
+            y: y
+        };
+    },
+
+    //滑动方向和距离
+    getSlideParam: function getSlideParam(curPosition, lastPosition) {
+
+        var distance = curPosition.x - lastPosition.x;
+        var direction = distance > 0 ? "right" : "left";
+
+        return {
+            direction: direction,
+            distance: distance
+        };
+    }
+
+};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"Describe.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"App.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"AnswerPanel.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)();
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", "", {"version":3,"sources":[],"names":[],"mappings":"","file":"WritePanel.vue","sourceRoot":"webpack://"}]);
+
+// exports
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(30)
+
+/* script */
+__vue_exports__ = __webpack_require__(6)
+
+/* template */
+var __vue_template__ = __webpack_require__(26)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "F:\\modules\\presenters\\EnglishCard\\presenter_englishcardstudent\\src\\app\\AnswerPanel.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b388e072", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-b388e072", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] AnswerPanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(28)
+
+/* script */
+__vue_exports__ = __webpack_require__(8)
+
+/* template */
+var __vue_template__ = __webpack_require__(24)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "F:\\modules\\presenters\\EnglishCard\\presenter_englishcardstudent\\src\\app\\Describe.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-022cb93a", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-022cb93a", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] Describe.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var __vue_exports__, __vue_options__
+var __vue_styles__ = {}
+
+/* styles */
+__webpack_require__(31)
+
+/* script */
+__vue_exports__ = __webpack_require__(9)
+
+/* template */
+var __vue_template__ = __webpack_require__(27)
+__vue_options__ = __vue_exports__ = __vue_exports__ || {}
+if (
+  typeof __vue_exports__.default === "object" ||
+  typeof __vue_exports__.default === "function"
+) {
+if (Object.keys(__vue_exports__).some(function (key) { return key !== "default" && key !== "__esModule" })) {console.error("named exports are not supported in *.vue files.")}
+__vue_options__ = __vue_exports__ = __vue_exports__.default
+}
+if (typeof __vue_options__ === "function") {
+  __vue_options__ = __vue_options__.options
+}
+__vue_options__.__file = "F:\\modules\\presenters\\EnglishCard\\presenter_englishcardstudent\\src\\app\\WritePanel.vue"
+__vue_options__.render = __vue_template__.render
+__vue_options__.staticRenderFns = __vue_template__.staticRenderFns
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-e189fdd8", __vue_options__)
+  } else {
+    hotAPI.reload("data-v-e189fdd8", __vue_options__)
+  }
+})()}
+if (__vue_options__.functional) {console.error("[vue-loader] WritePanel.vue: functional components are not supported and should be defined in plain js files using render functions.")}
+
+module.exports = __vue_exports__
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.imgSrc == undefined || _vm.imgSrc == _vm.imgSrc.length == 0),
+      expression: "imgSrc == undefined || imgSrc == imgSrc.length == 0"
+    }],
+    staticClass: "ec_explain_area_left"
+  }, [_c('div', {
+    staticClass: "ec_com_media_carousel only_carousel"
+  }, [_c('div', {
+    staticClass: "ec_carousel"
+  }, [_c('div', {
+    staticClass: "carousel_content",
+    style: ({
+      width: _vm.wrapperWidth
+    }),
+    on: {
+      "mousedown": function($event) {
+        _vm.start($event)
+      },
+      "touchstart": function($event) {
+        _vm.start($event)
+      },
+      "mousemove": function($event) {
+        _vm.move($event)
+      },
+      "touchmove": function($event) {
+        _vm.move($event)
+      },
+      "mouseup": function($event) {
+        _vm.end($event)
+      },
+      "touchend": function($event) {
+        _vm.end($event)
+      },
+      "mouseout": function($event) {
+        _vm.end($event)
+      },
+      "touchcancel": function($event) {
+        _vm.end($event)
+      }
+    }
+  }, [_c('ul', _vm._l((_vm.imgSrc), function(item) {
+    return _c('li', {
+      staticClass: "js_img_carousel",
+      style: ({
+        width: _vm.liWidth
+      })
+    }, [_c('img', {
+      attrs: {
+        "src": item,
+        "alt": ""
+      }
+    })])
+  }))]), _vm._v(" "), _c('div', {
+    staticClass: "carousel_points_group"
+  }, _vm._l((_vm.imgSrc), function(item, index) {
+    return _c('a', {
+      class: {
+        on: _vm.currentIndex === index
+      },
+      on: {
+        "click": function($event) {
+          _vm.scrollTo(index)
+        }
+      }
+    })
+  }))]), _vm._v(" "), _vm._m(0), _vm._v(" "), _vm._m(1)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ec_video hide_dom"
+  }, [_c('video')])
+},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "media_switch"
+  }, [_c('a', {
+    staticClass: "switch_carousel"
+  }, [_c('span')]), _c('a', {
+    staticClass: "switch_video"
+  }, [_c('span')])])
+}]}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-022cb93a", module.exports)
+  }
+}
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "com_layout_exam_content notit"
+  }, [_c('div', {
+    staticClass: "en_card_main",
+    class: [_vm.type === 1 ? 'ec_sentence_spell' : 'ec_word_spell']
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showAnswerBtn),
+      expression: "showAnswerBtn"
+    }],
+    staticClass: "ec_see_answer"
+  }, [_c('a', {
+    staticClass: "com_btn_round ",
+    attrs: {
+      "href": "javascript:;"
+    },
+    on: {
+      "click": _vm.showAnswerHandler
+    }
+  }, [_c('span', {
+    staticClass: "text_box"
+  }, [_vm._v(_vm._s(_vm.answerBtn))])])]), _vm._v(" "), _c('div', {
+    staticClass: "ec_explain_area"
+  }, [_c('describe', {
+    attrs: {
+      "img-src": _vm.imgSrc
+    }
+  }), _vm._v(" "), _c('answer-panel', {
+    attrs: {
+      "show-answer": _vm.showAnswer,
+      "text": _vm.text,
+      "correct-answer": _vm.correctAnswer,
+      "type": _vm.type
+    }
+  })], 1), _vm._v(" "), _c('write-panel', {
+    ref: "write_panel",
+    attrs: {
+      "clean-draw": _vm.cleanDraw,
+      "is-active": _vm.isActive,
+      "show-answer": _vm.showAnswer,
+      "answer-btn": _vm.answerBtn
+    },
+    on: {
+      "drawed": _vm.changeState,
+      "show-answer-change": _vm.showAnswerChange
+    }
+  })], 1)])
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1a194c82", module.exports)
+  }
+}
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "ec_explain_area_right"
+  }, [_c('div', {
+    staticClass: "ec_spell_info"
+  }, [_c('span', [_vm._v(_vm._s(_vm.text))])]), _vm._v(" "), _c('div', {
+    staticClass: "ec_spell_answer_writting",
+    class: {
+      'two_line': _vm.isTwoLine
+    },
+    style: (_vm.answerStyle)
+  }, [_c('em', {
+    attrs: {
+      "id": "thecorrectAnswer"
+    }
+  }, [_vm._v(_vm._s(_vm.correctAnswer))])])])
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b388e072", module.exports)
+  }
+}
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('div', {
+    staticClass: "ec_spell_writting",
+    on: {
+      "touchend": _vm.onWriteClick,
+      "mouseup": _vm.onWriteClick
+    }
+  }, [_c('div', {
+    staticClass: "rowOne"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "rowTwo"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "canvas_container"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "ec_btmtool clearfix"
+  }, [_c('div', {
+    staticClass: "write_tool_list clearfix"
+  }, [_c('a', {
+    class: {
+      'write_tool on': _vm.isPenClick, 'write_tool': !_vm.isPenClick
+    },
+    on: {
+      "click": _vm.onPenClick
+    }
+  }, [_c('i', {
+    staticClass: "write_tool_icon icon_hb"
+  }), _vm._v(" "), _c('i', {
+    staticClass: "uedc_preload_img_wordcard_01"
+  }), _vm._v(" "), _c('em', {
+    staticClass: "word",
+    attrs: {
+      "_lang": "lang_btn_pencil"
+    }
+  }, [_vm._v("画笔")])]), _vm._v(" "), _c('a', {
+    class: {
+      'write_tool on': !_vm.isPenClick, 'write_tool': _vm.isPenClick
+    },
+    on: {
+      "click": _vm.onEraserClick
+    }
+  }, [_c('i', {
+    staticClass: "write_tool_icon icon_xpc"
+  }), _vm._v(" "), _c('i', {
+    staticClass: "uedc_preload_img_wordcard_02"
+  }), _vm._v(" "), _c('em', {
+    staticClass: "word",
+    attrs: {
+      "_lang": "lang_btn_eraser"
+    }
+  }, [_vm._v("橡皮擦")])])]), _vm._v(" "), _c('a', {
+    staticClass: "ec_answer_btn",
+    class: {
+      'com_btn_disabled': _vm.showAnswerResult
+    },
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": _vm.showAnswerHandler
+    }
+  }, [_c('em', {
+    staticClass: "word",
+    attrs: {
+      "_lang": "correct_answer"
+    }
+  }, [_vm._v("正确答案")])])])])
+},staticRenderFns: []}
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-e189fdd8", module.exports)
+  }
+}
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(17);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-022cb93a!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Describe.vue", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-022cb93a!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Describe.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(18);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-1a194c82!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-1a194c82!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./App.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(19);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-b388e072!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AnswerPanel.vue", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-b388e072!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AnswerPanel.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(20);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e189fdd8!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./WritePanel.vue", function() {
+			var newContent = require("!!../node_modules/css-loader/index.js?sourceMap!../node_modules/vue-loader/lib/style-rewriter.js?id=data-v-e189fdd8!../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./WritePanel.vue");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=presenter.js.map
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

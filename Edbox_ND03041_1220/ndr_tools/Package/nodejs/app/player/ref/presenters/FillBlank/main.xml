@@ -1,0 +1,293 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='FillBlank'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_title" displayName="题目标题" type="string" isLocalized="false" />
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="时间" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="5.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_FillBlank .homework{padding:18px!important}.addon_FillBlank .exam_wood .com_layout .com_lay_contain .com_lay_board{overflow-y:hidden}.addon_FillBlank .exam_wood .com_m_sideboard_1{position:static;height:calc(100% - 70px);padding:23.33px 0}.addon_FillBlank .exam_wood .com_m_sideboard_1 .com_m_sidecon{overflow:auto;padding-top:1px}.addon_FillBlank .exam_wood .com_m_sideboard_1 .com_m_sidehead{position:static}.addon_FillBlank .exam_wood .com_lay_contain{position:relative}.addon_FillBlank .exam_wood .com_lay_contain .pptshell_mask{position:absolute;top:0;left:0;width:100%;height:100%;z-index:999;display:none}.addon_FillBlank .exam_wood .com_lay_contain .pptshell_mask.show{display:block}.addon_FillBlank .exam_wood .com_layout .web_mask{display:none;position:absolute;top:0;left:0;z-index:99;width:100%;height:100%}.addon_FillBlank .com_lay_header .pptshell_btn{text-align:center}.addon_FillBlank .fillblank_left p{margin:20px 65px;color:#2e2e2e;font:16px/32px 'Microsoft YaHei';text-indent:32px;word-break:break-all}.addon_FillBlank .fillblank_right .tiankong-oper .btn_reset{display:inline-block;width:130px;height:50px;line-height:50px;font-size:20px;text-align:center;letter-spacing:8px;background:url(resources/images/btn.png) no-repeat;background-size:100% 100%;color:#585858;text-decoration:none;-webkit-tap-highlight-color:transparent}.addon_FillBlank .fillblank_left p .word_empty{display:inline-block;width:66px;height:22px;background:#99999a;color:#fff;line-height:20px;text-align:center;text-indent:0;margin:0 3px;border:2px solid transparent}.addon_FillBlank .fillblank_left p .word_empty.on{display:inline-block;background:#fff6eb;color:#6bc3f6;line-height:18px;vertical-align:middle;margin:0 5px;border:2px solid #6bc3f6;font:700 16px/18px 'Microsoft YaHei';text-align:center;text-indent:0}.addon_FillBlank .fillblank_left p .word_full{display:inline-block;background:#41a22b;color:#fff;margin:2px 0;padding:0 1px;border:2px solid transparent;text-align:center;text-indent:0}.addon_FillBlank .fillblank_left p .word_right{color:#41a22b}.addon_FillBlank .fillblank_left p .word_wrong{color:#ee3f08}.addon_FillBlank .fillblank_left p .word_full.on{border-color:#6bc3f6}.addon_FillBlank .fillblank_right h2{margin-top:65px;color:#333;font-size:14px}.addon_FillBlank .fillblank_right .tip{color:#333;font-size:20px}.addon_FillBlank .fillblank_right .des em{margin:0 5px;color:red}.addon_FillBlank .fillblank_right .move{z-index:10}.addon_FillBlank .fillblank_right .moveSpan{background:#fff}.addon_FillBlank .fillblank_right .word_take{display:inline-block;margin:30px 15px 0 0;padding:2px;border:2px solid #f0d7b3;border-radius:10px;background:#966f3a;color:#2e2e2e;font-size:16px;text-decoration:none}.addon_FillBlank .fillblank_right .word_take span{margin:0!important;display:block!important;padding:5px 10px!important;background:#f5e0c2!important;border-radius:6px!important;border:none!important}.addon_FillBlank .fillblank_right .main{margin-top:65px;height:calc(100% - 65px);display:flex;flex-direction:column}.addon_FillBlank .fillblank_right .main .tiankong-tit{flex-grow:1}.addon_FillBlank .fillblank_right .main .tiankong-content{overflow:auto;flex-grow:17}.addon_FillBlank .fillblank_right .tiankong-right .img{margin:80px auto 0;width:452px;height:265px;background:url(resources/images/tiankong-zan.png) no-repeat;background-size:100% auto}.addon_FillBlank .fillblank_right .tiankong-oper{flex-grow:2;margin-bottom:5%;text-align:center}.addon_FillBlank .fillblank_right .tiankong-oper .btn_reset:active{background:url(resources/images/btn_active.png) no-repeat;background-size:100% 100%}.addon_FillBlank #left_2_right{position:absolute;top:0;left:0;visibility:hidden;font:16px/32px 'Microsoft YaHei';background:#41a22b;color:#fff;margin:2px 0;padding:0 3px;text-align:center;text-indent:0}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="exam_wood" style="width: 100%;height: 100%"><div class="com_layout"><div class="web_mask"></div><div class="com_lay_header"><div class="com_u_timebox"></div><div class="com_lay_toptool"></div></div><div class="com_lay_contain"><div class="pptshell_mask"></div><div class="com_lay_mboard"><div class="com_lay_boardtit"><h2 class="com_u_boardtit" data-bind="html:title"></h2></div><div class="com_lay_board"><div class="com_m_sideboard_1 com_grid_5"><div class="com_m_sidehead"></div><div class="com_m_sidecon fillblank_left" id="blanks"><p data-bind="html:article"></p></div></div><div class="com_m_mainboard_1 fillblank_right"><div class="main" data-bind="visible:showType() == ''"><div class="tiankong-tit tip" data-bind="html:translations.blank_candidates"></div><div class="tiankong-content"><a href="#" class="tihuan-words word_take"></a><div id="choices" class="tiankong-candidate" data-bind="foreach:candidates"><a href="#" class="word_take"><span data-bind="html:value"></span></a></div></div><div class="tiankong-oper"><a class="btn_reset" id="fillReset" href="javascript:void(0)" data-bind="visible:resetBtnShow, html:translations.reset, event:{click:$root.answerReset}"></a></div></div><div class="main" data-bind="visible:showType() == 'correct'"><div class="tiankong-right"><p class="des" data-bind="html:translations.answer_correct"></p><p class="img"></p></div></div><div class="main" data-bind="visible:showType() == 'wrong'"><div class="tiankong-wrong"><p class="des tip"><span data-bind="html:translations.answer_wrong_1"></span> <em data-bind="text:userWrongTotal"></em> <span data-bind="html:translations.answer_wrong_2"></span></p><p class="wrong-result" data-bind="foreach:rightAnswers"><a href="#" class="word_take"><span data-bind="html:correctAnswer"></span></a></p></div></div></div><span id="left_2_right"></span></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+            this.util = {
+                model: [],
+                componentSetting: {},
+                presenterModel: {}
+            };
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            var self = this;
+            //将View的width和height设置为0
+            view.style['width'] = 0;
+            view.style['height'] = 0;
+            self.util.presenterModel = model;
+
+            //组件配置
+            self._configComponents();
+            //拆分原始model数据，目的让各组件拿到自己所需的数据
+            self._adaptedOriginData(model);
+            //记录日志，写入model数据
+            self.logger.debug(new Date() + "FillBlank model " + JSON.stringify(model));
+            //组件加载
+            return self.$requireComponent('ComponentLoader', self.util.model, view, {
+                left: 0,
+                top: 0,
+                width: 0,
+                height: 0
+            });
+        },
+        destroy: function () {
+            //释放对象
+            this.util = null;
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _adaptedOriginData: function (model) {
+            var self = this,
+                modelArray = [
+                    {
+                        name: 'ClassroomStatusController',
+                        type: 'string',
+                        value: JSON.stringify([
+                            {
+                                name: 'questionId',
+                                type: 'string',
+                                value: model.question_id
+                            }
+                        ])
+                    }, {
+                        "name": "questionType",
+                        "type": "string",
+                        "value": "FillBlankRemake"
+                    }, {
+                        name: "TimerController",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                name: "timer_type",
+                                type: "string",
+                                value: model.timer_type
+                            }, {
+                                name: "time_limit",
+                                type: "string",
+                                value: model.time_limit
+                            }, {
+                                name: "isPauseOnSubmit",
+                                type: "boolean",
+                                value: "false"
+                            }
+                        ])
+                    }, {
+                        name: "InteractionSubmitButton",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                name: "can_modify",
+                                type: "string",
+                                value: true
+                            }, {
+                                name: "linkQuestionType",
+                                type: "string",
+                                value: "fillblank"
+                            }, {
+                                name: "linkQuestionId",
+                                type: "string",
+                                value: model['question_id']
+                            }, {
+                                name: "view_type",
+                                type: "string",
+                                value: "new_em_button"
+                            }
+                        ])
+                    }, {
+                        name: "InteractionTimer",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                "name": "view_type",
+                                "type": "string",
+                                "value": "new_timer"
+                            }
+                        ])
+                    }, {
+                        name: "FillBlankRemake",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                "name": "question_id",
+                                "type": "string",
+                                "value": model.question_id
+                            }, {
+                                name: "question_url",
+                                type: "string",
+                                value: model['question_url']
+                            }
+                        ])
+                    }, {
+                        name: "ObjectiveInteractionLayout",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                name: "questionType",
+                                type: "string",
+                                value: "FillBlank"
+                            }, {
+                                name: "specialTemplate",
+                                type: "string",
+                                value: "false"
+                            }
+                        ])
+                    }, {
+                        name: "AnswerFlowController",
+                        type: "string",
+                        value: JSON.stringify([
+                            {
+                                name: "showResultOnSubmit",
+                                type: "string",
+                                value: "false"
+                            }
+                        ])
+                    }, {
+                        name: "ObjectiveStatisticsRemake",
+                        type: "string",
+                        value: JSON.stringify([])
+                    }, {
+                        name: "Components",
+                        type: "json",
+                        text: JSON.stringify(self.util.componentSetting)
+                    }
+                ];
+
+            this.util.model = modelArray;
+        },
+        _configComponents: function () {
+            var additionalSetting = [],
+                //基本配置
+                componentSetting = {
+                    controllers: [
+                        {
+                            presenter: "InteractionStateRecoverFilter"
+                        }, {
+                            presenter: 'I18nFilter'
+                        }, {
+                            presenter: "AnswerFlowController",
+                            depends: [
+                                {
+                                    property: "TimerService",
+                                    presenter: "TimerController"
+                                }
+                            ]
+                        }, {
+                            presenter: 'ClassroomStatusController'
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [
+                        {
+                            presenter: "InteractionTimer",
+                            renderTo: "TopLeftPanel"
+                        }, {
+                            presenter: "FillBlankRemake",
+                            renderTo: "CenterPanel"
+                        }
+                    ]
+                };
+
+            //根据不同的运行场景定义需要加载的组件,主要是提交和统计
+            if (this.isPPTShell || this.currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                //如果是PPTShell的场景
+                componentSetting.controllers.push({presenter: "ObjectiveStatController"});
+                additionalSetting = [
+                    {
+                        presenter: "InteractionSubmitButton",
+                        renderTo: "BottomPanel"
+                    }, {
+                        presenter: "ObjectiveStatisticsRemake",
+                        renderTo: "StatisticsPanel"
+                    }
+                ];
+            } else if (this.currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                componentSetting.controllers.push({presenter: "AnswerProgressController"})
+                //如果是学生端Pad或Web的场景
+                additionalSetting = [
+                    {
+                        presenter: "InteractionSubmitButton",
+                        renderTo: "TopRightPanel"
+                    }
+                ];
+            }
+            componentSetting.components = componentSetting.components.concat(additionalSetting);
+            this.util.componentSetting = $.extend(true, {}, componentSetting);
+        }
+    }, "FillBlank");
+
+    window.AddonFillBlank_create = function () {
+        return new Presenter();
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/fillblank.json' />
+<file src='./resources/images/btn.png' />
+<file src='./resources/images/btn_active.png' />
+<file src='./resources/images/tiankong-zan.png' />
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/bo/lang.po' />
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/bo_CN/lang.po' />
+<file src='./resources/locations/es/lang.json' />
+<file src='./resources/locations/es/lang.po' />
+<file src='./resources/locations/es_EC/lang.json' />
+<file src='./resources/locations/es_EC/lang.po' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/lang.po' />
+
+
+</resources>
+
+</addon>

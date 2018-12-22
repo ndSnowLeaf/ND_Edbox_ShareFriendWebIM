@@ -1,0 +1,1 @@
+define(function(n){return["$i18n",function(e){var i=e.getLanguage();i&&n.async("lib/plu/i18n/"+i.replace("-","_")+".js")}]});

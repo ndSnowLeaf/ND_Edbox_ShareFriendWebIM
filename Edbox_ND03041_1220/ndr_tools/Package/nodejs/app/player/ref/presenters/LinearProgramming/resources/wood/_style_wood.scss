@@ -1,0 +1,612 @@
+.linearProgramming_wrapper {
+    width: 100%;
+    height: 100%;
+    background-color: #b1c6d7;
+    .linearProgramming_main {
+        width: 100%;
+        height: 100%;
+        padding: pxToEm(106px) pxToEm(110px) pxToEm(50px);
+    }
+    .lp_axis_left {
+        float: left;
+        width: pxToEm(922px);
+        height: 100%;
+        background-color: #bfd3e2;
+    }
+    .lp_data_right {
+        float: left;
+        width: pxToEm(776px);
+        height: 100%;
+    }
+}
+
+.lp_data_right {
+    text-align: center;
+    position: relative;
+    .lp_constraint_box {
+        position: relative;
+        height: pxToEm(486px);
+        width: 100%;
+    }
+    .lp_objectfun_wrap {
+        position: absolute;
+        width: 100%;
+        bottom: pxToEm(-10px);
+        left: 0;
+    }
+    .lp_objectfun_box {
+        margin-top: pxToEm(10px);
+        position: relative;
+        height: pxToEm(440px);
+        width: 100%;
+    }
+    .lp_input_x,
+    .lp_input_y,
+    .lp_input_c {
+        float: left;
+        .lp_drop_num {
+            position: relative;
+            display: inline-block;
+            width: pxToEm(120px);
+            height: pxToEm(68px);
+            overflow: hidden;
+            text-align: center;
+            vertical-align: middle;
+            border: 1px solid #8b8b8b;
+            border-radius: 0.58333em;
+            background: -webkit-linear-gradient(bottom, white 0%, #e9e9e9 100%);
+            background: linear-gradient(to top, white 0%, #e9e9e9 100%);
+            &:after {
+                display: inline-block;
+                width: 0;
+                height: 100%;
+                content: "center";
+                vertical-align: middle;
+                overflow: hidden;
+            }
+            .num_input {
+                display: inline-block;
+                vertical-align: middle;
+                .num_input_text {
+                    font-size: pxToEm(40px);
+                    font-family: "Microsoft yahei";
+                    color: #4d4d4d;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+    .lp_icon_x,
+    .lp_icon_y,
+    .lp_icon_add,
+    .lp_icon_zero,
+    .lp_icon_equal,
+    .lp_icon_z {
+        float: left;
+        width: pxToEm(38px);
+        height: pxToEm(46px);
+        margin: pxToEm(11px) pxToEm(3px);
+        background: url(resources/wood/images/icon_xy.png) no-repeat center;
+        background-size: 100% auto;
+    }
+    .lp_icon_x {
+        background-position: left top;
+    }
+    .lp_icon_y {
+        background-position: left pxToEm(-56px);
+    }
+    .lp_icon_zero {
+        background-position: left pxToEm(-112px);
+    }
+    .lp_icon_add {
+        background-position: left pxToEm(-168px);
+    }
+    .lp_icon_equal {
+        background-position: left pxToEm(-224px);
+    }
+    .lp_icon_z {
+        background-position: left bottom;
+    }
+    .lp_icon_zmax,
+    .lp_icon_zmin {
+        float: left;
+        width: pxToEm(82px);
+        height: pxToEm(38px);
+        margin: pxToEm(11px) 0;
+        background: url(resources/wood/images/z.png) no-repeat center;
+        background-size: 100% auto;
+    }
+    .lp_constraint_text {
+        position: absolute;
+        left: pxToEm(10px);
+        top: 0;
+        .txt {
+            color: #333333;
+            font-family: "Microsoft yahei";
+            font-size: pxToEm(48px);
+            font-weight: bold;
+        }
+    }
+    .lp_drop_select {
+        white-space: normal;
+        z-index: 100;
+        position: absolute;
+        pointer-events: none;
+        .lp_numselect_wrap {
+            border: 1px solid #686868;
+            padding: pxToEm(10px) pxToEm(10px);
+            background-color: #ebebeb;
+            text-align: center;
+            display: inline-block;
+            pointer-events: auto;
+        }
+        &.hide_dom {
+            display: none;
+        }
+        a {
+            display: inline-block;
+            width: pxToEm(88px);
+            height: pxToEm(54px);
+            line-height: pxToEm(54px);
+            color: #4d4d4d;
+            background: #ffffff;
+            text-align: center;
+            border-radius: pxToEm(4px);
+            border: 1px solid #9c9c9c;
+            margin: pxToEm(5px);
+            &:active,
+            &.ui_btn_active {
+                background: #31b0ee;
+                color: #fff;
+                border-color: #007ab6;
+                .icon_cancel {
+                    background-position: left bottom;
+                }
+                .icon_dd {
+                    background-position: left pxToEm(-170px);
+                }
+                .icon_d {
+                    background-position: left pxToEm(-102px);
+                }
+                .icon_xd {
+                    background-position: left bottom;
+                }
+                .icon_x {
+                    background-position: left pxToEm(-34px);
+                }
+                .icon_cancel {
+                    background-position: left bottom;
+                }
+                .icon_back {
+                    background-position: left bottom;
+                }
+                .icon_line {
+                    background-position: left bottom;
+                }
+                .icon_ensure {
+                    background-position: left bottom;
+                }
+            }
+            &.click_disabled {
+                pointer-events: none;
+                background: #a9b6c0;
+                color: #899299;
+                border-color: #9c9c9c;
+            }
+            .icon_enter {
+                font-size: pxToEm(30px);
+                font-family: "Microsoft yahei";
+            }
+            span {
+                display: inline-block;
+                font-size: pxToEm(36px);
+                font-family: "Microsoft yahei";
+                vertical-align: top;
+            }
+        }
+    }
+    .lp_drop_select_sign {
+        a {
+            span {
+                margin-top: pxToEm(15px);
+                font-size: 1em;
+                width: pxToEm(24px);
+                height: pxToEm(24px);
+                background: url(resources/wood/images/icon_sign.png) no-repeat;
+                background-size: 100% auto;
+            }
+            .icon_dd {
+                background-position: left pxToEm(-136px);
+            }
+            .icon_d {
+                background-position: left pxToEm(-68px);
+            }
+            .icon_xd {
+                background-position: left pxToEm(-204px);
+            }
+            .icon_x {
+                background-position: left top;
+            }
+        }
+    }
+    .lp_drop_select_num {
+        .icon_back {
+            margin-top: pxToEm(12px);
+            font-size: 1em;
+            width: pxToEm(38px);
+            height: pxToEm(30px);
+            background: url(resources/wood/images/icon_back.png) no-repeat;
+            background-size: 100% auto;
+            background-position: left top;
+        }
+        .icon_line {
+            margin-top: pxToEm(10px);
+            font-size: 1em;
+            width: pxToEm(18px);
+            height: pxToEm(34px);
+            background: url(resources/wood/images/icon_line.png) no-repeat;
+            background-size: 100% auto;
+            background-position: left top;
+        }
+    }
+    .lp_constraint_table {
+        display: flex;
+        position: absolute;
+        z-index: 22;
+        top: pxToEm(60px);
+        left: 50%;
+        margin-left: pxToEm(-374px);
+        width: pxToEm(745px);
+        height: pxToEm(320px);
+        background-color: #bfd3e2;
+        overflow: hidden;
+        .lp_constraint_main {
+            flex: 1;
+            position: relative;
+        }
+    }
+    .lp_constraint_bd {
+        overflow-y: scroll;
+        position: absolute;
+        left: 0;
+        right: pxToEm(10px);
+        top: pxToEm(10px);
+        bottom: pxToEm(10px);
+    }
+    .lp_condition_list {
+        .lp_li_item {
+            position: relative;
+            padding-left: pxToEm(43px);
+            height: pxToEm(102px);
+            width: pxToEm(705px);
+            border-bottom: pxToEm(4px) solid #b0c7d8;
+            &:after {
+                display: inline-block;
+                width: 0;
+                height: 100%;
+                content: "center";
+                vertical-align: middle;
+                overflow: hidden;
+            }
+            .lp_li_item_wrap {
+                // position: relative;
+                display: inline-block;
+                vertical-align: middle;
+                height: pxToEm(70px);
+            }
+            .lp_icon_arrow {
+                cursor: pointer;
+                position: absolute;
+                left: 0;
+                top: 50%;
+                margin-top: pxToEm(-31px);
+                width: pxToEm(32px);
+                height: pxToEm(62px);
+                background: url(resources/wood/images/icon_arrow.png) no-repeat center;
+                background-size: 100% auto;
+                background-position: left top;
+            }
+            .lp_icon_box {
+                position: absolute;
+                z-index: 5;
+                // left: pxToEm(-32px);
+                left: 0;
+                top: 50%;
+                margin-top: pxToEm(-40px);
+                height: pxToEm(80px);
+                background-color: #b0c7d8;
+                .lp_icon_eye_box,
+                .lp_icon_delete_box {
+                    float: left;
+                    display: inline-block;
+                    height: 100%;
+                    background-color: #fff;
+                    text-align: center;
+                    cursor: pointer;
+                    &:after {
+                        display: inline-block;
+                        width: 0;
+                        height: 100%;
+                        content: "center";
+                        vertical-align: middle;
+                        overflow: hidden;
+                    }
+                    .icon {
+                        display: inline-block;
+                        vertical-align: middle;
+                    }
+                }
+                .lp_icon_eye_box {
+                    margin-right: pxToEm(2px);
+                    width: pxToEm(102px);
+                    .icon {
+                        width: pxToEm(44px);
+                        height: pxToEm(30px);
+                        background: url(resources/wood/images/icon_eye.png) no-repeat center;
+                        background-size: 100% auto;
+                        background-position: left top;
+                        &.click_disabled {
+                            background-position: left bottom;
+                        }
+                    }
+                }
+                .lp_icon_delete_box {
+                    width: pxToEm(92px);
+                    .icon {
+                        width: pxToEm(34px);
+                        height: pxToEm(38px);
+                        background: url(resources/wood/images/icon_delete.png) no-repeat center;
+                        background-size: 100% auto;
+                        background-position: left top;
+                        &.click_disabled {
+                            background-position: left pxToEm(-48px);
+                        }
+                    }
+                }
+                .lp_icon_arrow {
+                    background-position: left bottom;
+                    left: 100%;
+                    margin-left: pxToEm(-1px);
+                }
+            }
+            .lp_input_sign {
+                float: left;
+                margin-left: pxToEm(10px);
+                .lp_drop_num {
+                    position: relative;
+                    display: inline-block;
+                    width: pxToEm(62px);
+                    height: pxToEm(68px);
+                    overflow: hidden;
+                    text-align: center;
+                    vertical-align: middle;
+                    border: 1px solid #8b8b8b;
+                    border-radius: 0.58333em;
+                    background: -webkit-linear-gradient(bottom, white 0%, #e9e9e9 100%);
+                    background: linear-gradient(to top, white 0%, #e9e9e9 100%);
+                    &:after {
+                        display: inline-block;
+                        width: 0;
+                        height: 100%;
+                        content: "center";
+                        vertical-align: middle;
+                        overflow: hidden;
+                    }
+                    .num_input {
+                        display: inline-block;
+                        vertical-align: middle;
+                        .num_input_text {
+                            font-size: pxToEm(40px);
+                            font-family: "Microsoft yahei";
+                            color: #4d4d4d;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .lp_show_space {
+        position: absolute;
+        left: 50%;
+        bottom: pxToEm(15px);
+        margin-left: pxToEm(-124px);
+        min-width: pxToEm(248px);
+    }
+    .lp_objectfun_box {
+        position: relative;
+        padding-top: pxToEm(60px);
+        .lp_function_main {
+            position: absolute;
+            left: 50%;
+            margin-left: pxToEm(-374px);
+            height: pxToEm(98px);
+            width: pxToEm(745px);
+            background-color: #bfd3e2;
+            &:after {
+                display: inline-block;
+                width: 0;
+                height: 100%;
+                content: "center";
+                vertical-align: middle;
+                overflow: hidden;
+            }
+            .lp_function_wrap {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+        .lp_function_wrap {
+            .lp_btn_delete {
+                height: pxToEm(68px);
+                width: pxToEm(98px);
+                padding: 0;
+                text-align: center;
+                &:active,
+                &.ui_btn_active {
+                    .icon_delete {
+                        background-position: left pxToEm(-96px);
+                    }
+                }
+                &.click_disabled {
+                    .icon_delete {
+                        background-position: left bottom;
+                    }
+                }
+            }
+            .icon_delete {
+                margin-top: pxToEm(15px);
+                margin-left: pxToEm(11px);
+                width: pxToEm(34px);
+                height: pxToEm(38px);
+                background: url(resources/wood/images/icon_delete.png) no-repeat center;
+                background-size: 100% auto;
+                background-position: left top;
+            }
+        }
+        .lp_solution_group {
+            width: pxToEm(745px);
+            position: absolute;
+            left: 50%;
+            margin-left: pxToEm(-374px);
+            .lp_item {
+                height: 100%;
+                // display: inline-block;
+                float: left;
+                background-color: #bfd3e2;
+                &:after {
+                    display: inline-block;
+                    width: 0;
+                    height: 100%;
+                    content: "center";
+                    vertical-align: middle;
+                    overflow: hidden;
+                }
+                .text_box {
+                    display: inline-block;
+                    vertical-align: middle;
+                    height: pxToEm(40px);
+                    text-align: center;
+                    .txt {
+                        font-family: "Microsoft yahei";
+                        color: #333333;
+                    }
+                }
+            }
+            .lp_item_1 {
+                width: pxToEm(268px);
+                // margin-left: pxToEm(-15px);
+            }
+            .lp_item_2 {
+                width: pxToEm(340px);
+                margin-left: pxToEm(4px);
+            }
+            .lp_item_3 {
+                width: pxToEm(128px);
+                margin-left: pxToEm(4px);
+            }
+        }
+        .lp_solution_title {
+            top: pxToEm(163px);
+            height: pxToEm(66px);
+            .txt {
+                font-size: pxToEm(36px);
+                font-weight: normal;
+            }
+        }
+        .lp_solution_1 {
+            top: pxToEm(233px);
+        }
+        .lp_solution_2 {
+            top: pxToEm(333px);
+        }
+        .lp_solution_1,
+        .lp_solution_2 {
+            height: pxToEm(96px);
+            .lp_bracket_box {
+                position: relative;
+                display: flex;
+                &:before {
+                    content: '(';
+                    // position: absolute;
+                    left: 0;
+                    font-size: pxToEm(45px);
+                    font-family: "Microsoft yahei";
+                    color: #4d4d4d;
+                }
+                &:after {
+                    content: ')';
+                    // position: absolute;
+                    height: pxToEm(44px);
+                    margin-top: pxToEm(-22px);
+                    right: 0;
+                    font-size: pxToEm(45px);
+                    font-family: "Microsoft yahei";
+                    color: #4d4d4d;
+                }
+            }
+            .text_box {
+                display: inline-block;
+                height: 100%;
+                line-height: 0.95;
+                .txt {
+                    font-size: pxToEm(45px);
+                    font-weight: bold;
+                }
+            }
+            .lp_item_1 {
+                position: relative;
+                padding-left: pxToEm(100px);
+            }
+            .lp_item_2 {
+                position: relative;
+            }
+            .lp_icon_zmax {
+                display: inline-block;
+                margin-top: pxToEm(5px);
+                background-position: left top;
+            }
+            .lp_icon_zmin {
+                display: inline-block;
+                margin-top: pxToEm(5px);
+                background-position: left bottom;
+            }
+            .lp_icon_zmax,
+            .lp_icon_zmin {
+                position: absolute;
+                left: pxToEm(5px);
+                top: 50%;
+                margin-top: pxToEm(-19px);
+            }
+            .lp_icon_equal {
+                position: absolute;
+                left: pxToEm(85px);
+                top: 50%;
+                margin-top: pxToEm(-9px);
+                width: pxToEm(28px);
+                height: pxToEm(18px);
+                background: url(resources/wood/images/icon_equal.png) no-repeat center;
+                background-size: 100% auto;
+                background-position: left top;
+            }
+            .lp_int_solution {
+                display: inline-block;
+                vertical-align: middle;
+            }
+        }
+    }
+}
+
+// 界面滚动条
+.lp_light_scrollbar {
+    &::-webkit-scrollbar {
+        width: pxToEm(16px);
+        height: pxToEm(12px);
+        background: #b0c7d8;
+        border-radius: pxToEm(6px);
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #91afc5;
+        border-radius: pxToEm(6px);
+    }
+}

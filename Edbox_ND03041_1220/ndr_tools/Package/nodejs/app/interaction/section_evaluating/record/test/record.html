@@ -1,0 +1,149 @@
+<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>Live input record and playback</title><style>@charset "UTF-8";
+  /*****************************************
+  * reset: html4
+  *****************************************/
+  * {
+    box-sizing: border-box;
+    vertical-align: baseline; }
+
+  body, dl, dd, h1, h2, h3, h4, h5, h6, p, form {
+    margin: 0; }
+
+  html, body, fieldset, img, iframe, abbr {
+    border: 0; }
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0; }
+
+  ins {
+    text-decoration: none; }
+
+  del {
+    text-decoration: line-through; }
+
+  input, select {
+    vertical-align: middle; }
+
+  input, textarea, select {
+    font: 12px 'Microsoft YaHei', Helvetica, Arial, sans-serif; }
+
+  input:focus {
+    outline: none; }
+
+  textarea {
+    resize: none; }
+
+  fieldset, img {
+    border: 0; }
+
+  img {
+    border: none;
+    vertical-align: top; }
+
+  address, code, caption, th, cite, dfn, em, i {
+    font-style: normal; }
+
+  ol, ul {
+    margin: 0;
+    padding: 0;
+    list-style: none; }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal; }
+
+  q:before, q:after {
+    content: ""; }
+
+  legend {
+    display: none; }
+
+  a {
+    text-decoration: none;
+    outline: none; }
+
+  a:hover {
+    text-decoration: none; }
+
+  .clearfix:after {
+    display: block;
+    content: "";
+    height: 0;
+    visibility: hidden;
+    clear: both; }
+
+  .clearfix {
+    zoom: 1; }
+
+  .clear {
+    clear: both; }
+
+  html, body {
+    height: 100%; }
+
+  .com_m_sidecon {
+    height: 100%;
+    border-bottom: 3.68098px solid transparent;
+    background-image: url(images/decl_sidecon.png), url(images/decr_sidecon.png), url(images/decm_sidecon.png), url(images/bg_sidecon1.png);
+    background-repeat: no-repeat, no-repeat, repeat-x, repeat;
+    background-position: left bottom,
+    right bottom,
+    center bottom,
+    left top;
+    background-size: 12.88344px auto, 12.88344px auto, 5.52147px auto, 39.8773px auto;
+    background-origin: border-box, border-box, border-box, content-box;
+    box-shadow: 1.5px 2.598px 19px 0px rgba(75, 40, 0, 0.75);
+    border-bottom-left-radius: 9.81595px;
+    border-bottom-right-radius: 9.81595px;
+    overflow: auto;
+    z-index: 1;
+  }
+  .content {
+    position: relative;
+    height: 100%;
+    padding: 12.26994px 0 42.94479px;
+    padding-bottom: 71.56607px;
+  }
+  .content .text {
+    height: 100%;
+    padding: 0 30.67485px;
+    font-size: 11.04294px;
+    line-height: 13.49693px;
+    color: #333;
+    overflow-y: auto;
+  }
+  .content .btn_box {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 12.26994px;
+    text-align: center;
+  }
+  .content .barbox{
+    position: absolute;
+    bottom: 52.20228px;
+    left: 0;
+    right: 0;
+    display: inline-block;
+    height: 24.46982px;
+    text-align: center;
+    vertical-align: top;
+  }
+
+ .content .com_u_btn4 {
+    margin: 0 21.47239px;
+    display: inline-block;
+    padding: 0;
+    min-width: 65.03067px;
+    height: 24.53988px;
+    line-height: 24.53988px;
+    font-weight: bold;
+    font-size: 9.81595px;
+    color: #825318;
+    border-radius: 3.06748px;
+    text-shadow: 0.5px 0.866px 0px rgba(255, 255, 255, 0.51);
+    box-shadow: 0 1px 3.06748px 0px rgba(164, 115, 38, 0.75), inset 0.5px 0.866px 0px 0px rgba(255, 243, 228, 0.5);
+    background: url(images/btn4_hover.png) repeat-x left center;
+    background-size: auto 100%;
+  }</style></head><body><div class="com_m_sidecon"><div class="content"><p class="text" id="sentenceText"></p><p class="btn_box"><!-- 开始录制 --> <a href="javascript:void(0)" onclick='record("start")' id="startRecord" ondragstart="return!1" class="com_u_btn4">开始录制</a></p><div class="tape" data-oper="recording" style="display:none"><!-- 录音 --><div class="barbox"><span class="bar_time" id="record_time">00:00</span><!--<p class="bar"><span  id="record_bar" class="in" style="width: 0%;"></span></p>--></div><p class="btn_box"><a href="javascript:void(0);" ondragstart="return!1" onclick='record("reset")' class="com_u_btn4">重新开始</a> <a href="javascript:void(0);" ondragstart="return!1" onclick='record("complete")' class="com_u_btn4">完成</a></p></div></div></div><script src="recorder.js"></script><script src="messenger.js"></script><script src="jquery.js"></script><script>function record(e){if("complete"===e)stopRecording(),recordTimeStop();else{var r=$('[data-oper="recording"]'),o=$("#startRecord");"start"===e?(r.css({display:"inline-block"}),o.css({display:"none"}),recordTimeRun(),startRecording()):"reset"===e&&(r.css({display:"none"}),o.css({display:"inline-block"}),recordTimeStop())}}function pad(e,r){return Array(Math.max(0,r+1-(""+e).length)).join(0)+e}function recordTimeRun(){timeSeconds=0,$("#record_time").html("00:00"),timeoutTemp=setInterval(function(){timeSeconds++;var e=parseInt(timeSeconds/60),r=timeSeconds%60,o=pad(e,2)+":"+pad(r,2);$("#record_time").html(o)},1e3)}function recordTimeStop(){clearInterval(timeoutTemp)}function startUserMedia(e){var r=audio_context.createMediaStreamSource(e);console.log("Media stream created."),recorder=new Recorder(r),console.log("Recorder initialised.")}function startRecording(){messenger.targets.parent.send({oper:"start",errorStatus:errorStatus}),0===errorStatus&&recorder&&recorder.record(),console.log("Recording...")}function stopRecording(){recorder&&recorder.stop(),console.log("Stopped recording."),createDownloadLink(),recorder.clear()}function createDownloadLink(){recorder&&recorder.exportWAV(function(e){messenger.targets.parent.send({oper:"complete",blob:e})})}var timeSeconds,timeoutTemp,audio_context,recorder,messenger=new Messenger("sentence_evaluat_children");messenger.addTarget(window.parent,"parent"),messenger.listen(function(e){"init"===e.type&&(window.document.getElementById("sentenceText").innerHTML=e.data||"您还未填写句子内容")});var errorStatus=0;window.onload=function(){try{window.AudioContext=window.AudioContext||window.webkitAudioContext,navigator.getUserMedia=navigator.getUserMedia||navigator.webkitGetUserMedia,window.URL=window.URL||window.webkitURL,audio_context=new AudioContext,console.log("Audio context set up."),console.log("navigator.getUserMedia "+(navigator.getUserMedia?"available.":"not present!"))}catch(e){errorStatus=1}var e=navigator.getUserMedia({audio:!0},startUserMedia,function(e){errorStatus=2,console.log("No live audio input: "+e)});console.log(e)}</script></body></html>

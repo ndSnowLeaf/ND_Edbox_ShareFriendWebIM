@@ -1,0 +1,1460 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TableRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="NDMediaPlayer" version="1.0.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.exam_skin_wood .com_wrapper_board .classifiedtable{height:38.33333em}.exam_skin_wood .com_wrapper_board .classifiedtable .com_layout_container{height:31.66667em!important}.exam_skin_wood .com_wrapper_board .classifiedtable .com_m_sideboard_1{position:absolute;left:.20833em;top:0;height:34.41667em}.exam_skin_wood .com_wrapper_board .classifiedtable .table_footer{top:32.33333em}.exam_skin_wood .classifiedtable{position:relative;padding-left:26.25em;padding-bottom:6.5em;clear:both}.exam_skin_wood .classifiedtable .com_layout_main{top:2.83333em}.exam_skin_wood .classifiedtable .com_layout_container{position:absolute;left:26.54167em;right:0;width:auto!important;height:32.66667em!important}.exam_skin_wood .classifiedtable .com_m_sideboard_1{position:absolute;left:.20833em;top:0;width:25.625em;height:36.25em;padding:4.20833em 0 1.45833em;margin-top:-1.33333em}.exam_skin_wood .classifiedtable .com_m_sidehead{position:absolute;left:0;top:1.45833em;right:0;height:2.75em}.exam_skin_wood .classifiedtable .com_m_sidecon{height:100%;overflow:auto}.exam_skin_wood .classifiedtable .coursebox{position:relative;height:99%;overflow:hidden;margin-top:.5%}.exam_skin_wood .classifiedtable .text_main_box{position:absolute;top:.625em;left:.83333em;right:.83333em}.exam_skin_wood .classifiedtable .text_main_box:before{position:absolute;top:0;left:0;content:"";border:.16667em solid rgba(153,153,153,.5);border-bottom:none;border-right:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .text_main_box:after{position:absolute;bottom:0;left:0;content:"";border:.16667em solid rgba(153,153,153,.5);border-top:none;border-right:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .text_main_bg{position:relative;overflow-y:auto;text-align:left;font-size:1.25em;padding:.41667em;width:100%;height:7.25em}.exam_skin_wood .classifiedtable .text_main_bg:before{position:absolute;top:0;right:0;content:"";border:.16667em solid rgba(153,153,153,.5);border-bottom:none;border-left:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .text_main_bg:after{position:absolute;bottom:0;right:0;content:"";border:.16667em solid rgba(153,153,153,.5);border-top:none;border-left:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .text_main_bg .text_titi_box{display:table;height:6.41667em;width:100%}.exam_skin_wood .classifiedtable .text_main_bg .text_titinp{display:table-cell;line-height:1.3;font-size:1.5em;text-align:center;word-wrap:break-word;word-break:break-all;vertical-align:middle;outline:0}.exam_skin_wood .classifiedtable .text_main_bg .text_titinp.text_s{line-height:1.16667em;font-size:.83333em}.exam_skin_wood .classifiedtable .text_main_bg .text_titinp.style_tips{font-size:.83333em;color:#878787;text-align:center}.exam_skin_wood .classifiedtable .insert_mvp{position:absolute;top:10.20833em;left:.83333em;right:.83333em;bottom:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_pic_bg{height:100%;overflow:auto;position:relative}.exam_skin_wood .classifiedtable .insert_mvp .insert_pic_box{position:absolute;overflow:hidden}.exam_skin_wood .classifiedtable .insert_mvp .insert_pic_box img{max-width:100%}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box{position:relative;height:100%}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .vidio_wrap{position:relative;height:100%;background:#010101}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .vidio_wrap .video_loading{position:absolute;text-align:center;left:50%;top:50%;color:#999;width:4.16667em;height:1.16667em;line-height:1.16667em;margin:-.58333em 0 0 -2.08333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap{background:rgba(0,0,0,.7);text-align:center;position:absolute;bottom:0;left:0;width:100%;padding:1.33333em 3.75em}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .btn_play{position:absolute;left:.41667em;top:50%;margin-top:-1.16667em;width:2.375em;height:2.375em;background:url(resources/wood/images/paixu_voice_pause.png) center center no-repeat;background-size:80% auto}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .btn_play:active{opacity:.9}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .btn_pause{background:url(resources/wood/images/paixu_voice_play.png) center center no-repeat;background-size:80% auto}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .probar{position:relative;height:.16667em;border-radius:.125em;background:#979799;vertical-align:middle}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .probar .bar{position:absolute;left:0;top:0;width:0;height:100%;border-top-left-radius:.125em;border-bottom-left-radius:.125em;background:#fbbe46}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .probar .buffer{position:absolute;left:0;top:0;width:0;height:100%;border-top-left-radius:.125em;border-bottom-left-radius:.125em;background:#ccc}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .probar .bar .btn_dot{position:absolute;top:-.16667em;left:0;width:.5em;height:.5em;background:#fbbe46;border-radius:50%;box-shadow:0 0 .20833em rgba(0,0,0,.3)}.exam_skin_wood .classifiedtable .insert_mvp .insert_video_box .playcolwrap .time{position:absolute;right:.41667em;top:50%;height:2.375em;line-height:2.375em;margin-top:-1.16667em;display:inline-block;font-size:.58333em;color:#88888f}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box{position:absolute;left:0;right:0;bottom:0;top:0;background:rgba(122,122,122,.1)}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box:before{position:absolute;top:0;left:0;content:"";border:2px solid rgba(153,153,153,.5);border-bottom:none;border-right:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box:after{position:absolute;bottom:0;left:0;content:"";border:2px solid rgba(153,153,153,.5);border-top:none;border-right:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box .insert_mt_bg{position:relative;height:100%;overflow-y:auto;text-align:left;font-size:.83333em;padding:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box .insert_mt_bg:before{position:absolute;top:0;right:0;content:"";border:2px solid rgba(153,153,153,.5);border-bottom:none;border-left:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box .insert_mt_bg:after{position:absolute;bottom:0;right:0;content:"";border:2px solid rgba(153,153,153,.5);border-top:none;border-left:none;height:.83333em;width:.83333em}.exam_skin_wood .classifiedtable .insert_mvp .insert_mt_box .vidio_wrap{height:80%;background:url(resources/wood/images/icobg_voice.png) center center no-repeat;background-size:contain}.exam_skin_wood .classifiedtable .table_main{position:relative;float:left;width:100%;height:100%}.exam_skin_wood .classifiedtable .com_layout_tit{line-height:2.16667em}.exam_skin_wood .classifiedtable .title_hang{height:4.875em;z-index:10;padding-right:.66667em}.exam_skin_wood .classifiedtable .table_box{float:left;padding-right:.75em;height:91%;text-align:center;vertical-align:middle}.exam_skin_wood .classifiedtable .table_box:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .classifiedtable .table_box:last-child{padding-right:0}.exam_skin_wood .classifiedtable .main_hang01 .table_box,.exam_skin_wood .classifiedtable .main_hang01 .table_cell{width:100%}.exam_skin_wood .classifiedtable .main_hang02 .table_box,.exam_skin_wood .classifiedtable .main_hang02 .table_cell{width:50%}.exam_skin_wood .classifiedtable .main_hang03 .table_box,.exam_skin_wood .classifiedtable .main_hang03 .table_cell{width:33.3%}.exam_skin_wood .classifiedtable .main_hang04 .table_box,.exam_skin_wood .classifiedtable .main_hang04 .table_cell{width:25%}.exam_skin_wood .classifiedtable .main_hang05 .table_box,.exam_skin_wood .classifiedtable .main_hang05 .table_cell{width:20%}.exam_skin_wood .classifiedtable .table_main .table_btn{position:relative;display:inline-block;height:3.08333em;line-height:1;vertical-align:middle;border:1px solid #8e5c1f;border-radius:.33333em;text-align:center;overflow:hidden;color:#5d390d;background-image:-webkit-linear-gradient(top,#f4bf7c,#daa055);background-image:linear-gradient(to bottom,#f4bf7c,#daa055)}.exam_skin_wood .classifiedtable .table_main .table_btn:after{content:"";display:inline-block;vertical-align:middle;width:0;height:100%}.exam_skin_wood .classifiedtable .table_main .table_btn .table_btn_text{display:inline-block;padding:.04167em .16667em;vertical-align:middle;word-wrap:break-word;word-break:break-all;text-align:left;line-height:1.5;font-size:1.5em}.exam_skin_wood .classifiedtable .table_main .table_btn .text_s{line-height:1.2;font-size:.75em}.exam_skin_wood .classifiedtable .table_lie_side{z-index:10;position:absolute;top:3.45833em;bottom:-.25em;left:-.70833em;width:6.33333em;border-bottom-left-radius:.58333em;background:url(resources/wood/images/table_lie_bg.png) repeat-y;background-size:100% auto}.exam_skin_wood .classifiedtable .table_main .table_boxl{padding-bottom:.58333em;text-align:center}.exam_skin_wood .classifiedtable .table_main .table_boxl:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .classifiedtable .main_lie01 .table_boxl,.exam_skin_wood .classifiedtable .main_lie01 .table_lie_box{height:100%}.exam_skin_wood .classifiedtable .main_lie02 .table_boxl,.exam_skin_wood .classifiedtable .main_lie02 .table_lie_box{height:50%}.exam_skin_wood .classifiedtable .main_lie03 .table_boxl,.exam_skin_wood .classifiedtable .main_lie03 .table_lie_box{height:33.3%}.exam_skin_wood .classifiedtable .main_lie04 .table_boxl,.exam_skin_wood .classifiedtable .main_lie04 .table_lie_box{height:25%}.exam_skin_wood .classifiedtable .main_lie05 .table_boxl,.exam_skin_wood .classifiedtable .main_lie05 .table_lie_box{height:20%}.exam_skin_wood .classifiedtable .table_lie_side .table_lie_btn{width:5.83333em;vertical-align:middle}.exam_skin_wood .classifiedtable .table_lie_side .table_lie_btn .table_btn_text{padding:.04167em .08333em}.exam_skin_wood .classifiedtable .table_lie{z-index:13;position:absolute;top:3.5em;left:5.625em;right:.125em;bottom:-.16667em;background:url(resources/wood/images/bg_mainboard.jpg)}.exam_skin_wood .classifiedtable .table_lie:after,.exam_skin_wood .classifiedtable .table_lie:before{z-index:9;content:"";position:absolute;right:0;left:0;top:0;display:inline-block}.exam_skin_wood .classifiedtable .table_lie .table_lie_box{background-image:url(resources/wood/images/table_hang_l.png),url(resources/wood/images/table_hang_r.png),url(resources/wood/images/table_hang.png);background-size:.66667em .95833em,.66667em .95833em,auto .95833em;background-repeat:no-repeat,no-repeat,repeat-x;background-position:bottom left,bottom right,bottom center}.exam_skin_wood .classifiedtable .table_lie .table_lie_box:last-child{background:0 0}.exam_skin_wood .classifiedtable .table_lie .table_lie_box:last-child .cell_on:before{bottom:0}.exam_skin_wood .classifiedtable .table_lie:after{bottom:0;background:url(resources/wood/images/bg_mainboard_shadow.png) center center no-repeat;background-size:100% 100%}.exam_skin_wood .classifiedtable .table_lie:before{bottom:0;background:url(resources/wood/images/wholebg_wood_shadow.png) center center no-repeat;background-size:100% 100%}.exam_skin_wood .classifiedtable .table_lie .table_cell{z-index:10;position:relative;display:inline-block;float:left;padding:0 .66667em .625em 0;height:100%;background-image:url(resources/wood/images/table_lie.png);background-size:.58333em auto;background-repeat:repeat-y;background-position:center right}.exam_skin_wood .classifiedtable .table_lie .table_cell.cell_on:before{content:'';position:absolute;left:0;top:0;right:.54167em;bottom:.95833em;background:-webkit-linear-gradient(top,#efd097,#eac581);background:linear-gradient(to bottom,#efd097,#eac581)}.exam_skin_wood .classifiedtable .table_lie .table_cell:last-child{background:0 0}.exam_skin_wood .classifiedtable .table_lie .table_cell:last-child.cell_on:before{right:0}.exam_skin_wood .classifiedtable .table_lie .table_cell .list{display:inline-block;position:relative;overflow:hidden;width:100%;height:100%;z-index:12}.exam_skin_wood .classifiedtable .table_lie .table_cell .list:after{display:inline-block;content:'';width:0;height:100%;vertical-align:bottom}.exam_skin_wood .classifiedtable .table_lie .table_cell .list li{display:inline-block;width:6.75em;min-height:4.66667em;vertical-align:top}.exam_skin_wood .classifiedtable .table_lie .table_cell .list.image_overlap li{margin-right:-1.8em}.exam_skin_wood .classifiedtable .table_list{display:inline-block;width:6.25em;height:4.375em;border:.04167em solid #a9845e}.exam_skin_wood .classifiedtable .table_list img{width:100%;height:100%}.exam_skin_wood .classifiedtable .table_img{position:absolute;width:6.25em;height:4.375em;border:1px solid #a9845e}.exam_skin_wood .classifiedtable .table_text{position:absolute;display:inline-block;width:6.25em;max-height:4.375em;padding:.25em .54167em;border:1px solid #a9845e;background:#ffebce;overflow:hidden}.exam_skin_wood .classifiedtable .table_text .text{line-height:1.5;font-size:1.16667em}.exam_skin_wood .classifiedtable .table_footer{position:absolute;top:33.95833em;left:.20833em;right:.20833em;min-height:5.91667em;overflow:hidden}.exam_skin_wood .classifiedtable .table_footer .com_bottom_box_btn{height:5.83333em;margin-top:-2.91667em}.exam_skin_wood .classifiedtable .table_footer .list_container{position:relative;display:inline-block;width:100%;min-height:5.91667em;background:rgba(120,65,8,.7);overflow:hidden}.exam_skin_wood .classifiedtable .table_footer .list{height:100%;white-space:nowrap;text-align:left}.exam_skin_wood .classifiedtable .list_box{display:inline-block;margin-right:.5em;overflow:hidden;vertical-align:middle;position:relative}.exam_skin_wood .classifiedtable .list_box.correct a{border:.08333em solid #5dad2c}.exam_skin_wood .classifiedtable .list_box.error a{border:.08333em solid #ff3e02}.exam_skin_wood .classifiedtable .list_a{display:inline-block;width:6.66667em;height:4.5em;border:2px solid rgba(106,70,22,.2);border-radius:.125em;color:#2e2e2e;background:#ffebce;overflow:hidden;text-align:center;white-space:normal}.exam_skin_wood .classifiedtable .list_a img{width:100%;height:100%}.exam_skin_wood .classifiedtable .list_a .text{display:inline-block;padding:0 0 0 .33333em;text-align:left;word-wrap:break-word;word-break:break-all;overflow:hidden;line-height:1.2;font-size:1.16667em;vertical-align:middle}.exam_skin_wood .classifiedtable .list_a:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .classifiedtable .list_a.list_move{border-color:#ff3f01}.exam_skin_wood .classifiedtable .table_footer .list_container{padding:0 .75em}.exam_skin_wood .classifiedtable .table_footer .list{padding:.66667em 0 0;display:inline-block}.exam_skin_wood .classifiedtable .table_lie_side .table_lie_btn{margin:0}.exam_skin_wood .com_wrapper_board .classifiedtable{width:100%}.exam_skin_wood .classifiedtable .table_main .table_btn{width:6em;word-break:break-all}.exam_skin_wood .classifiedtable .stat_number{display:none;text-align:center;font-size:.66667em;line-height:1.5;color:#333;position:absolute;left:0;bottom:0;background:#fff;border-radius:.4em;min-width:2em}.exam_skin_wood .classifiedtable .stat_number.green{display:none;line-height:1.5;color:#fff;background:green}.exam_skin_wood .classifiedtable.show_number .stat_number{display:block}.exam_skin_wood .classifiedtable .move_container{position:absolute;z-index:19}.exam_skin_wood .classifiedtable .list_box:last-child{margin-right:0}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content classifiedtable _classifiedtable"><div class="com_layout_main_exam"><div class="com_lay_mboard table_main _table_main"><div class="com_layout_tit title_hang _title_hang"></div><div class="table_lie_side clearfix _table_lie_side"></div><div class="table_lie clearfix _table_lie"></div></div></div><div class="com_m_sideboard_1"><div class="com_m_sidehead"></div><div class="com_m_sidecon"><div class="coursebox"><div class="text_main_box"><div class="text_main_bg"><div class="text_titi_box"><div class="text_titinp _text_titinp"></div></div></div></div><div class="insert_mvp _insert_mvp"></div></div></div></div><div class="table_footer"><div class="list_container _list_container"><ul class="list _listUl scrollbar_style_gray"></ul></div><a href="javascript:;" class="com_bottom_box_btn btn_left _icon_left"></a> <a href="javascript:;" class="com_bottom_box_btn btn_right _icon_right"></a></div><div class="move_container _move_container"><ul class="list _listMove"></ul></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+    var Table = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        //标题
+        this.title = '';
+
+        //正确答案
+        this.correctAnswer = { /*键值对形式*/
+            //            p1: 'p2'
+        };
+        this.userAnswer = {}; /*键值对形式*/
+        this.showResult = false;
+
+        //题型特有
+        this.$main = null;
+        this._table_lie = null;
+        this._listUl = null;
+        this._listUlRes = null;
+        this._listMove = null;
+        this._move_container = null;
+
+        this.leftTxt = '';
+        this.asset_type = '';
+        this.asset = '';
+        this.horizontal_items = 0;
+        this.vertical_items = 0;
+        this.items = [];
+
+        this.areas = {};
+
+        this.currMoveDom = null;
+        this.currMoveDomType = ''; //记录开始拖动时点击区域是底部或者答题区
+        this.optionMaps = {};
+
+        this.startX = 0;
+        this.startY = 0;
+        this.endX = 0;
+        this.endY = 0;
+
+        this._listUlxMin = 0;
+        this._listUlxMax = 0;
+        this._listUlyMin = 0;
+        this._listUlyMax = 0;
+
+        this.maxNum = 0; //答题框中能放的最大数
+        this.overlapMaxBum = 0; //答题框中开始重叠的最大数
+        this.bottomListNum = 9; //底部放置li的最大数
+
+        //音频视频
+        this._myMedia = null;
+        this._myMediaBtn = null;
+        this._probar = null;
+        this._myMediaBar = null;
+        this._myMediaBtnDot = null;
+        this._myMediaTime = null;
+        this._vedioWrap = null;
+        this._buffer = null;
+        this._playcolwrap = null;
+        this._video_loading = null;
+        this._icon_left = null;
+        this._icon_right = null;
+        this._list_container = null;
+
+        this.basePath = '';
+        this.touchFeg = false;
+        this.isSetState = false;
+
+        this.i18Model = {};
+    };
+    Table.prototype = {
+        init: function(view, model, basePath, presenter) { /*初始化数据*/
+            this.questionId = model.question_id;
+            var question_url = model.question_url;
+            this.presenter = presenter;
+            this.$view = $(view);
+
+            this.leftTxt = question_url.description.text;
+            this.asset_type = question_url.description.asset_type;
+            this.asset = question_url.description.asset;
+            this.horizontal_items = question_url.horizontal_items;
+            this.vertical_items = question_url.vertical_items;
+            this.items = question_url.items;
+
+            this.basePath = basePath;
+            this.playProgress = {};
+
+            //this.i18Model = {    corrrectTip: "太棒了，您答对了！",    errorTip: "这道题没有做对，下次加油哦！" };
+
+        },
+        initView: function() { /*初始化视图*/
+            var that = this;
+            var i = 0,
+                titleCla = '',
+                j = 0,
+                tableLieHtml = '',
+                k = 0,
+                optionHtml = '';
+            that.$main = that.$view.find("._classifiedtable");
+            var _text_titinp = that.$view.find("._text_titinp");
+            var _insert_mvp = that.$view.find("._insert_mvp");
+            var _table_main = that.$view.find("._table_main");
+            var _title_hang = that.$view.find("._title_hang");
+            var _table_lie_side = that.$view.find("._table_lie_side");
+            that._table_lie = that.$view.find("._table_lie");
+            that._listUl = that.$view.find("._listUl");
+            that._listMove = that.$view.find("._listMove");
+
+            that._move_container = that.$view.find("._move_container");
+            that._list_container = that.$view.find("._list_container");
+            //左边区域文字
+            if (that.leftTxt.length > 50) {
+                _text_titinp.addClass('text_s');
+            }
+            _text_titinp.html(that.leftTxt);
+
+            //左边区域图片音频视频
+            switch (that.asset_type) {
+                case 'image':
+                    _insert_mvp.html(
+                        '<div class="insert_pic_bg scrollbar_style_gray"><div class="insert_pic_box" style="left:0px;right:0px;top:0px;"><img src' +
+                        '="' + that.asset + '"></div></div>');
+                    break;
+                case 'vedio':
+                    _insert_mvp.html(
+                        '<div class="insert_video_box"><div class="_vedioWrap"><video id="_myMedia" preload="auto" controls="controls" style="wid' +
+                        'th: 100%; height: 100%;"><source src="' + that.asset + '" type="video/' + that
+                        .asset.substring(that.asset.length - 3) +
+                        '">vedio</source>  <p>Your browser does not support the video tag.</p></video></div></div>'
+                    );
+                    break;
+                case 'audio':
+                    _insert_mvp.html(
+                        '<div class="insert_video_box"><div class="_vedioWrap"><audio id="_myMedia" preload="auto" controls="controls" style="dis' +
+                        'play:none;"><source src="' + that.asset + '" type="audio/' + that.asset.substring(
+                            that.asset.length - 3) +
+                        '"><p>Your browser does not support the video tag.</p></audio></div></div>');
+                    break;
+                case 'default':
+                    _insert_mvp.html(
+                        '<div class="insert_pic_bg scrollbar_style_gray"><div class="insert_pic_box" style="left:0px;right:0px;top:-40px;"><img s' +
+                        'rc="' + that.basePath + '/resources/wood/images/default.png"></div></div>');
+                    break;
+            }
+
+            //设置NDMediaPlayer参数选项
+            var ndMediaPlayerOpt = {
+                containerId: '._insert_mvp',
+                autoAdaptSize: true,
+                video: {
+                    render: that.asset_type === 'vedio',
+                    width: _insert_mvp.width(),
+                    height: _insert_mvp.height(),
+                    supportFullscreen: false,
+                    showPlayBtnInVideo: false,
+                    showFullscreenBtn: false
+                },
+                audio: {
+                    render: that.asset_type === 'audio',
+                    width: _insert_mvp.width(),
+                    height: _insert_mvp.height()
+                },
+                onTimeUpdate: function(o) {
+                    that.playProgress = o;
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                    console.log(that.playProgress);
+                }
+            };
+            NDMediaPlayer.render(_insert_mvp, ndMediaPlayerOpt);
+
+            that._myMedia = document.getElementById('_myMedia');
+            that._myMediaBtn = that.$view.find('._myMediaBtn');
+            that._probar = that.$view.find('._probar');
+            that._myMediaBar = that.$view.find('._myMediaBar');
+            that._myMediaBtnDot = that.$view.find('._myMediaBtnDot');
+            that._myMediaTime = that.$view.find('._myMediaTime');
+            that._vedioWrap = that.$view.find("._vedioWrap");
+            that._buffer = that.$view.find("._buffer");
+            that._playcolwrap = that.$view.find("._playcolwrap");
+            that._video_loading = that.$view.find("._video_loading");
+
+            //主要部分 答题区
+            _table_main.addClass('main_hang0' + that.horizontal_items.length + ' main_lie0' + that.vertical_items
+                .length);
+
+            for (i = 0; i < that.horizontal_items.length; i++) {
+                //行标题
+                titleCla = '';
+                if (that.horizontal_items[i].length > 3) {
+                    titleCla = 'text_s'
+                }
+                _title_hang.append(
+                    '<div class="table_box"><span class="table_btn"><em class="table_btn_text ' +
+                    titleCla + '">' + that.horizontal_items[i] + '</em></span></div>');
+            }
+
+            for (i = 0; i < that.vertical_items.length; i++) {
+                //列标题
+                titleCla = '';
+                if (that.vertical_items[i].length > 3) {
+                    titleCla = 'text_s'
+                }
+                _table_lie_side.append(
+                    '<div class="table_boxl"><span class="table_btn table_lie_btn"><em class="table_btn_text ' +
+                    titleCla + '">' + that.vertical_items[i] + '</em></span></div>');
+
+                //每行的表格
+                tableLieHtml += '<div class="table_lie_box">';
+                for (j = 0; j < that.horizontal_items.length; j++) {
+                    tableLieHtml += '<div class="table_cell"><ul class="list _listUlRes" data-cid = "G' + (
+                        i + 1) + '_' + (j + 1) + '"></ul></div>';
+                }
+                tableLieHtml += '</div>';
+            }
+            that._table_lie.html(tableLieHtml);
+
+            //主要部分 选项区
+
+            for (k = 0; k < that.items.length; k++) {
+                if (that.items[k].content_type == 'image') {
+                    optionHtml += '<li class="list_box _list_box" data-id="p' + (k + 1) +
+                        '"><a href="javascript:;" class="list_a"><img src="' + that.items[k].content +
+                        '" alt=""/></a><em class="stat_number _stat_number" data-num="' + k + '">(' + (k +
+                            1) + ')</em></li>';
+                } else {
+                    optionHtml += '<li class="list_box _list_box" data-id="p' + (k + 1) +
+                        '"><a href="javascript:;" class="list_a"><span class="text">' + that.items[k].content +
+                        '</span></a><em class="stat_number _stat_number" data-num="' + k + '">(' + (k + 1) +
+                        ')</em></li>';
+                }
+                var optionCid = 'G' + (that.items[k].horizontal_index + 1) + '_' + (that.items[k].vertical_index +
+                    1);
+                that.correctAnswer['p' + (k + 1)] = optionCid;
+                var optionMap = {
+                    content_type: that.items[k].content_type,
+                    content: that.items[k].content,
+                    id: 'p' + (k + 1),
+                    num: k + 1,
+                    statNumCla: ''
+                };
+                that.optionMaps['p' + (k + 1)] = optionMap;
+            }
+            that._listUl.html(optionHtml);
+            that._icon_left = that.$view.find("._icon_left");
+            that._icon_right = that.$view.find("._icon_right");
+            if (that.items.length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+
+            that._listUlRes = that.$view.find("._listUlRes");
+
+            //每个小格可以放的最大个数
+            switch (that.horizontal_items.length) {
+                case 1:
+                    switch (that.vertical_items.length) {
+                        case 2:
+                            that.maxNum = 14;
+                            that.overlapMaxBum = 8;
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            that.maxNum = 7;
+                            that.overlapMaxBum = 4;
+                            break;
+                    }
+                    break;
+                case 2:
+                    switch (that.vertical_items.length) {
+                        case 2:
+                            that.maxNum = 6;
+                            that.overlapMaxBum = 4;
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            that.maxNum = 3;
+                            that.overlapMaxBum = 2;
+                            break;
+                    }
+                    break;
+                case 3:
+                    switch (that.vertical_items.length) {
+                        case 2:
+                            that.maxNum = 4;
+                            that.overlapMaxBum = 2;
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            that.maxNum = 2;
+                            that.overlapMaxBum = 1;
+                            break;
+                    }
+                    break;
+                case 4:
+                case 5:
+                    switch (that.vertical_items.length) {
+                        case 2:
+                            that.maxNum = 2;
+                            that.overlapMaxBum = 1;
+                            break;
+                        case 3:
+                        case 4:
+                        case 5:
+                            that.maxNum = 1;
+                            that.overlapMaxBum = 1;
+                            break;
+                    }
+                    break;
+            }
+        },
+        _countArea: function(){
+            var that = this;
+            //区域
+            var offset,
+            width,
+            height,
+            cid,
+            area;
+            for (i = 0; i < that._listUlRes.length; i++) {
+                offset = that._listUlRes.eq(i).offset();
+                width = that._listUlRes.eq(i).innerWidth();
+                height = that._listUlRes.eq(i).innerHeight();
+                cid = that._listUlRes.eq(i).data('cid');
+                area = {
+                    box: that._listUlRes.eq(i),
+                    xMin: offset.left,
+                    yMin: offset.top,
+                    xMax: offset.left + width,
+                    yMax: offset.top + height
+                }
+                that.areas[cid] = area;
+            }
+
+            //可移动区域
+            var mainOffset = that.$main.offset();
+            that.startX = mainOffset.left;
+            that.startY = mainOffset.top;
+            that.endX = mainOffset.left + that.$main.innerWidth();
+            that.endY = mainOffset.top + that.$main.innerHeight();
+
+            that._listUlxMin = that._listUl.offset().left;
+            that._listUlxMax = that._listUl.offset().left + that._listUl.innerWidth();
+            that._listUlyMin = that._listUl.offset().top;
+            that._listUlyMax = that._listUl.offset().top + that._listUl.innerHeight();
+        },
+        _createLi: function(aOptionMap) {
+            var optionHtml = '';
+            if (aOptionMap.content_type == 'image') {
+                optionHtml += '<li class="list_box _list_box" data-id="' + aOptionMap.id +
+                    '"><a href="javascript:;" class="list_a"><img src="' + aOptionMap.content +
+                    '" alt=""/></a><em class="stat_number _stat_number ' + aOptionMap.statNumCla +
+                    '" data-num="' + (aOptionMap.num - 1) + '">(' + aOptionMap.num + ')</em></li>';
+            } else {
+                optionHtml += '<li class="list_box _list_box" data-id="' + aOptionMap.id +
+                    '"><a href="javascript:;" class="list_a"><span class="text">' + aOptionMap.content +
+                    '</span></a><em class="stat_number _stat_number ' + aOptionMap.statNumCla +
+                    '" data-num="' + (aOptionMap.num - 1) + '">(' + aOptionMap.num + ')</em></li>';
+            }
+            return optionHtml;
+        },
+        _downHandler: function(moveDom, x, y) {
+            var that = this;
+            if (!that.locked) {
+                that._countArea();
+                that.currMoveDom = moveDom;
+                that.currMoveDomType = moveDom.closest('ul');
+
+                that._listMove.append(moveDom);
+
+                //统计界面 作答区域坐标变化
+
+                var newstartY = that.$main.offset().top;
+                if (newstartY != that.startY) {
+                    var diff = newstartY - that.startY;
+                    for (var cid in that.areas) {
+                        that.areas[cid].yMin += diff;
+                        that.areas[cid].yMax += diff;
+                    }
+                    that.startY = newstartY;
+                    that.endY = that.startY + that.$main.innerHeight();
+                }
+                that._move_container.css({
+                    left: x - that.startX,
+                    top: y - that.startY
+                }).show();
+            }
+        },
+        _moveHandler: function(x, y) {
+            var that = this;
+            if (!that.locked) {
+                //是否移除main区域
+                if (x >= that.startX && x <= that.endX && y >= that.startY && y <= that.endY) {
+                    that._move_container.css({
+                        left: x - that.startX - that._move_container.innerWidth() / 2,
+                        top: y - that.startY - that._move_container.innerHeight() / 2
+                    });
+                } else {
+                    if (that.currMoveDomType.hasClass('_listUl')) {
+                        delete that.userAnswer[that.currMoveDom];
+                    }
+                    that.currMoveDomType.append(that.currMoveDom);
+                    that._move_container.hide();
+                    that.currMoveDom = null;
+                    that.currMoveDomType = '';
+                    var id,
+                        canSubmit = false;
+                    for (id in that.userAnswer) {
+                        if (that.userAnswer[id]) {
+                            canSubmit = true;
+                        }
+                    }
+                    if (canSubmit === false) {
+                        //通知题目答题状态
+                        that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT, { canSubmit: false });
+                    }
+                    $(document).off('mousemove');
+                    $(document).off('mouseup');
+
+                }
+            }
+        },
+        _upHandler: function(x, y) {
+            var that = this;
+            if (!that.locked) {
+                if (that.currMoveDom) {
+                    var cid,
+                        box = null,
+                        optionCid,
+                        resCid;
+                    optionCid = that.currMoveDom.data('id');
+                    for (cid in that.areas) {
+                        var area = that.areas[cid];
+                        if (x >= area.xMin && x <= area.xMax && y >= area.yMin && y <= area.yMax) {
+                            box = area.box;
+                            resCid = cid;
+                            break;
+                        }
+                    }
+
+                    if (box && box.find('._list_box').length < that.maxNum) {
+                        if (box.find('._list_box').length >= that.overlapMaxBum) {
+                            box.addClass('image_overlap');
+                        } else {
+                            box.removeClass('image_overlap');
+                        }
+                        box.append(that.currMoveDom);
+                        that.userAnswer[optionCid] = resCid;
+
+                        //通知题目答题状态
+                        that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+                    } else {
+                        //移到底部
+                        if (x >= that._listUlxMin && x <= that._listUlxMax && y >= that._listUlyMin && y <=
+                            that._listUlyMax) {
+                            delete that.userAnswer[optionCid];
+                            that._listUl.append(that.currMoveDom);
+                        } else {
+                            that.currMoveDomType.append(that.currMoveDom);
+                        }
+
+                        var id,
+                            canSubmit = false;
+                        for (id in that.userAnswer) {
+                            if (that.userAnswer[id]) {
+                                canSubmit = true;
+                            }
+                        }
+                        if (canSubmit == false) {
+                            //通知题目答题状态
+                            that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT, { canSubmit: false });
+                        }
+                    }
+                    if (that.currMoveDomType.hasClass('_listUlRes') && that.currMoveDomType.find(
+                            '._list_box').length <= that.overlapMaxBum) {
+                        that.currMoveDomType.removeClass('image_overlap');
+                    }
+                    if (that._listUl.find('._list_box').length <= that.bottomListNum) {
+                        that._icon_left.hide();
+                        that._icon_right.hide();
+                    } else {
+                        that._icon_left.show();
+                        that._icon_right.show();
+                    }
+                    that._move_container.hide();
+                    that.currMoveDom = null;
+                    that.currMoveDomType = '';
+                    //通知状态变化
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                }
+            }
+            $(document).off('mousemove');
+            $(document).off('mouseup');
+
+        },
+        _calcTime: function(time) {
+            //var hour;
+            var minute;
+            var second;
+            // hour=String(parseInt(time/3600,10)); if (hour.length == 1)   hour   = '0' + hour;
+            minute = String(parseInt((time % 3600) / 60, 10));
+            if (minute.length == 1)
+                minute = '0' + minute;
+            second = String(parseInt(time % 60, 10));
+            if (second.length == 1)
+                second = '0' + second;
+
+            //return hour+":"+minute+":"+second;
+            return minute + ":" + second;
+
+        },
+        _startBuffer: function() {
+            var that = this;
+            var currentBuffer = that._myMedia.buffered.end(0);
+            var maxduration = that._myMedia.duration;
+            var perc = 100 * currentBuffer / maxduration;
+            that._buffer.css('width', perc + '%');
+
+            if (currentBuffer < maxduration) {
+                setTimeout(function() {
+                    that._startBuffer();
+                }, 500);
+            }
+        },
+
+        _mediaUpdataPro: function() {
+            var that = this;
+            if (that._myMedia.currentTime > Math.floor(that._myMedia.duration)) {
+                that._mediaEnded();
+            } else {
+                var value = Math.round((Math.floor(that._myMedia.currentTime) / Math.floor(that._myMedia.duration)) *
+                    100, 0);
+                // console.log('currTi='+that._myMedia.currentTime + '    value='+value+'  proW='+that._probar.width());
+                that._myMediaBar.css('width', value * that._probar.width() / 100);
+                that._myMediaBtnDot.css('left', value * that._probar.width() / 100);
+
+                // that._myMediaTime.html(that._calcTime(Math.floor(that._myMedia.currentTime))+'/'+that._calcTime(Math.floor(that._myMe
+                // d ia.duration)));
+                that._myMediaTime.html(that._calcTime(Math.floor(that._myMedia.currentTime)));
+            }
+        },
+        _mediaEnded: function() {
+            var that = this;
+            that._myMedia.currentTime = 0;
+            that._myMedia.pause();
+        },
+        _mediaPlay: function() {
+            var that = this;
+            that._myMediaBtn.removeClass('btn_pause');
+        },
+        _mediaPause: function() {
+            var that = this;
+            that._myMediaBtn.addClass('btn_pause');
+        },
+        _proEvent: function(evX) {
+            var that = this;
+            var x = evX - that._probar.offset().left;
+            if (x < 0) {
+                x = 0;
+            }
+            if (x > that._probar.width()) {
+                x = that._probar.width();
+            }
+            var per = Math.round(x / that._probar.width() * 100, 0);
+            if (per > 100) {
+                per = 100;
+            }
+            if (per < 0) {
+                per = 0;
+            }
+            that._myMediaBar.css('width', x);
+            that._myMediaBtnDot.css('left', x);
+            that._myMedia.currentTime = Math.floor(that._myMedia.duration * per / 100);
+        },
+        //音频视频
+        _mediaEvent: function() {
+            var that = this;
+            if (that._myMedia) {
+                that._myMedia.addEventListener('loadedmetadata', function() {
+                    that._video_loading.hide();
+                    that._myMediaTime.html('00:00');
+                    //$('.duration').text(timeFormat(video[0].duration)); start to get video buffering data
+                    setTimeout(function() {
+                        that._startBuffer();
+                    }, 150);
+                    if (that._vedioWrap) {
+                        that._myMedia.removeAttribute("controls");
+                        that._playcolwrap.hide();
+                        that._vedioWrap.on('click', function() {
+                            if (!that.locked) {
+                                if (that._myMedia.paused) {
+                                    that._myMedia.play();
+                                } else {
+                                    that._myMedia.pause();
+                                }
+                            }
+                        }).on('mouseover', function() {
+
+                            that._playcolwrap.show();
+
+                        }).on('mouseout', function() {
+
+                            that._playcolwrap.hide();
+
+                        });
+                        that._playcolwrap.on('mouseover', function() {
+
+                            that._playcolwrap.show();
+
+                        }).on('mouseout', function() {
+
+                            that._playcolwrap.hide();
+
+                        });
+                    }
+
+                });
+
+                that._myMedia.addEventListener('ended', function() {
+                    that._mediaEnded();
+                }, false);
+                that._myMedia.addEventListener('play', function() {
+                    that._mediaPlay();
+                }, false);
+                that._myMedia.addEventListener('pause', function() {
+                    that._mediaPause();
+                }, false);
+                that._myMedia.addEventListener('timeupdate', function() {
+                    that._mediaUpdataPro();
+                }, false);
+                that._myMediaBtn.on('click', function() {
+                    if (!that.locked) {
+                        if (that._myMedia.paused) {
+                            that._myMedia.play();
+                        } else {
+                            that._myMedia.pause();
+                        }
+                    }
+                });
+                //进度条点击
+                that._probar.on('click', function(event) {
+                    if (!that.locked) {
+                        var x = event.pageX;
+                        that._proEvent(x);
+                    }
+                    return false;
+                });
+                //拖拽进度条
+                that._myMediaBtnDot.on('mousedown', function(event) {
+                    $(document).on('mousemove', function(event) {
+                        if (!that.locked) {
+                            var x = event.pageX;
+                            that._proEvent(x);
+                        }
+                    });
+                    $(document).on('mouseup', function(event) {
+                        $(document).off('mousemove');
+                        $(document).off('mouseup');
+
+                    });
+                    event.preventDefault();
+                });
+                that._myMediaBtnDot.on('touchstart', function(event) {
+                    $(document).on('touchmove', function(event) {
+                        if (!that.locked) {
+                            var x = event.originalEvent.changedTouches[0].pageX;
+                            that._proEvent(x);
+                        }
+                    });
+                    $(document).on('touchend', function(event) {
+                        $(document).off('touchmove');
+                        $(document).off('touchup');
+                    });
+                    event.preventDefault();
+                });
+            }
+        },
+        _bindEvent: function() {
+            var that = this;
+            that.$main.on('mousedown', '._list_box', function(e) {
+                var self = $(this);
+                var event = e || event;
+                var x = event.pageX - self.innerWidth() / 2,
+                    y = event.pageY - self.innerHeight() / 2;
+                that._downHandler(self, x, y);
+                $(document).on('mousemove', function(e) {
+                    var event = e || event;
+                    var xMove = event.pageX,
+                        yMove = event.pageY;
+                    that._moveHandler(xMove, yMove);
+                });
+                $(document).on('mouseup', function(e) {
+                    var event = e || event;
+                    var xUp = event.pageX,
+                        yUp = event.pageY;
+                    that._upHandler(xUp, yUp);
+                });
+                event.preventDefault();
+            });
+
+            //触屏滑动
+            that.$main.on('touchstart', '._list_box', function(e) {
+                var self = $(this);
+                var event = e || event;
+                if (!that.touchFeg) {
+                    that.touchFeg = true;
+                    var x = event.originalEvent.changedTouches[0].pageX - self.innerWidth() / 2,
+                        y = event.originalEvent.changedTouches[0].pageY - self.innerHeight() / 2;
+                    that._downHandler(self, x, y);
+                    $(document).on('touchmove', function(e) {
+                        var event = e || event;
+                        var xMove = event.originalEvent.changedTouches[0].pageX,
+                            yMove = event.originalEvent.changedTouches[0].pageY;
+                        that._moveHandler(xMove, yMove);
+                    });
+                    $(document).on('touchend', function(e) {
+                        $(document).off('touchmove');
+                        $(document).off('touchup');
+                        var event = e || event;
+                        var xUp = event.originalEvent.changedTouches[0].pageX,
+                            yUp = event.originalEvent.changedTouches[0].pageY;
+                        that._upHandler(xUp, yUp);
+                        that.touchFeg = false;
+
+                    });
+                }
+                event.preventDefault();
+            });
+
+            //底部滾動*
+
+            if (that._icon_left) {
+                that._list_container.scrollLeft(0);
+                var FourOptionW = that.$view.find('._list_box').eq(0).width() * 5;
+                that._icon_right.on('click', function() {
+                    if (that._list_container.scrollLeft() + FourOptionW >= that._listUl.width()) {
+                        //that._list_container.scrollLeft(that._listUl.width());
+                        that._list_container.animate({
+                            scrollLeft: that._listUl.width()
+                        }, 300);
+                    } else {
+                        //that._list_container.scrollLeft(that._list_container.scrollLeft() + FourOptionW);
+                        that._list_container.animate({
+                            scrollLeft: that._list_container.scrollLeft() + FourOptionW
+                        }, 300);
+                    }
+                    return false;
+                });
+                that._icon_left.on('click', function() {
+                    if (that._list_container.scrollLeft() - FourOptionW <= 0) {
+                        // that._list_container.scrollLeft(0);
+                        that._list_container.animate({
+                            scrollLeft: 0
+                        }, 300);
+                    } else {
+                        //that._list_container.scrollLeft(that._list_container.scrollLeft() - FourOptionW);
+                        that._list_container.animate({
+                            scrollLeft: that._list_container.scrollLeft() - FourOptionW
+                        }, 300);
+                    }
+                    return false;
+                });
+            }
+
+            //标号点击事件
+            that.$main.on('mousedown', '._stat_number', function(event) {
+                //that.$view.find('._stat_number').on('mousedown',function(event){
+                if (that.$main.hasClass('show_number')) {
+                    var self = $(this);
+                    that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                        service: "statistic",
+                        method: "clickItem",
+                        args: [self.data('num'), 'B']
+                    });
+                    that.$view.find('._stat_number').removeClass('green');
+                    self.addClass("green");
+                    for (var myoptionId in that.optionMaps) {
+                        that.optionMaps[myoptionId].statNumCla = '';
+                    }
+                    var nowoptionId = self.closest('li').data('id');
+                    that.optionMaps[nowoptionId].statNumCla = 'green';
+                    return false;
+                }
+            });
+            /*修改bug92981*/
+            that.$main.on('touchstart', '._stat_number', function(event) {
+                //that.$view.find('._stat_number').on('mousedown',function(event){
+                if (that.$main.hasClass('show_number')) {
+                    var self = $(this);
+                    that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                        service: "statistic",
+                        method: "clickItem",
+                        args: [self.data('num'), 'B']
+                    });
+                    that.$view.find('._stat_number').removeClass('green');
+                    self.addClass("green");
+                    for (var myoptionId in that.optionMaps) {
+                        that.optionMaps[myoptionId].statNumCla = '';
+                    }
+                    var nowoptionId = self.closest('li').data('id');
+                    that.optionMaps[nowoptionId].statNumCla = 'green';
+                    return false;
+                }
+            });
+
+        },
+
+        showAnswer: function(showAnswerType, commitedAnswer) { /*供外部两个就接口调用。*/
+            var that = this;
+            //媒体复原
+            if (this._myMedia) {
+                this._myMedia.pause();
+                this._myMedia.currentTime = 0;
+                this._myMediaBar.css('width', '0');
+                this._myMediaBtnDot.css('left', '0');
+            }
+            var cid,
+                area,
+                i,
+                resLi,
+                id;
+            if (commitedAnswer) {
+                that.userAnswer = commitedAnswer.answer.user_response;
+                //清空作答区域
+                that._listUlRes.html('');
+                //清空选项 that._listUl.html(''); 渲染作答区域
+                var id,
+                    aOptionMap,
+                    box;
+                for (id in that.userAnswer) {
+                    aOptionMap = that.optionMaps[id];
+                    box = that.areas[that.userAnswer[id]].box;
+                    box.append(that._createLi(aOptionMap));
+                    if (box.find('._list_box').length <= that.overlapMaxBum) {
+                        box.removeClass('image_overlap');
+                    } else {
+                        box.addClass('image_overlap');
+                    }
+                }
+                //渲染候选区域
+                that._listUl.html('');
+                var id1,
+                    optionLi,
+                    optionId,
+                    optionsHtml = '';
+                for (id1 in that.optionMaps) { /*选项区*/
+                    optionId = that.optionMaps[id1].id;
+                    if (!that.userAnswer[optionId]) {
+                        that._listUl.append(that._createLi(that.optionMaps[id1]));
+                    }
+                }
+                if (that._listUl.find('._list_box').length <= that.bottomListNum) {
+                    that._icon_left.hide();
+                    that._icon_right.hide();
+                } else {
+                    that._icon_left.show();
+                    that._icon_right.show();
+                }
+            }
+            if (showAnswerType == 'user') {
+                that.showResult = true;
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    /*先通知状态变化再修改dom结构*/
+                    PresenterEventType.IC_PLAYER_EVENT);
+
+                for (cid in that.areas) {
+                    area = that.areas[cid];
+                    resLi = area.box.find('._list_box');
+                    for (i = 0; i < resLi.length; i++) {
+                        if (that.correctAnswer[resLi.eq(i).data('id')] == cid) {
+                            resLi.eq(i).addClass('correct');
+                        } else {
+                            resLi.eq(i).addClass('error');
+                        }
+                    }
+                }
+                /*如果正在移动则还原*/
+                that._move_container.hide();
+                //if(that.currMoveDom){    that.currMoveDomType.append(that.currMoveDom);
+                //
+                //}
+
+            } else {
+                //统计页面显示正确答案 清除用户作答      that.locked = true;
+                that._listUlRes.html('');
+                //清除选项
+                that._listUl.html('');
+                //显示正确答案
+                for (id in that.optionMaps) {
+                    var aOptionMap = that.optionMaps[id];
+                    var resCid = that.correctAnswer[aOptionMap.id];
+                    that.areas[resCid].box.append(that._createLi(aOptionMap));
+                    if (that.areas[resCid].box.find('._list_box').length <= that.overlapMaxBum) {
+                        that.areas[resCid].box.removeClass('image_overlap');
+                    } else {
+                        that.areas[resCid].box.addClass('image_overlap');
+                    }
+                }
+
+            }
+            that.lockQuestion();
+        },
+        getState: function() { /*状态恢复用*/
+            var state = {
+                userAnswer: this.userAnswer,
+                /*学生端状态只有两种，用户作答 和 是否已提交*/
+                showResult: this.showResult,
+                isLock: this.locked,
+                playProgress: this.playProgress
+            };
+            return state;
+        },
+        //恢复用户状态
+        setState: function(state) { /*状态恢复用*/
+            var that = this;
+            that.showResult = state.showResult;
+            that.userAnswer = state.userAnswer;
+            that.locked = state.isLock;
+            that.playProgress = state.playProgress;
+            //清空选项
+            that._listUl.html('');
+            //渲染作答区域
+            var id,
+                aOptionMap,
+                box;
+            for (id in that.userAnswer) {
+                aOptionMap = that.optionMaps[id];
+                box = that.areas[that.userAnswer[id]].box;
+                box.append(that._createLi(aOptionMap));
+                if (box.find('._list_box').length <= that.overlapMaxBum) {
+                    box.removeClass('image_overlap');
+                } else {
+                    box.addClass('image_overlap');
+                }
+            }
+
+            //渲染候选区域
+            var id1,
+                optionLi,
+                optionId,
+                optionsHtml = '';
+            for (id1 in that.optionMaps) { /*选项区*/
+                optionId = that.optionMaps[id1].id;
+                if (!that.userAnswer[optionId]) {
+                    that._listUl.append(that._createLi(that.optionMaps[id1]));
+                }
+            }
+            if (that._listUl.find('._list_box').length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+            //答题显示正误
+            if (that.showResult) {
+                var cid,
+                    area,
+                    i,
+                    resLi;
+                for (cid in that.areas) {
+                    area = that.areas[cid];
+                    resLi = area.box.find('._list_box');
+                    for (i = 0; i < resLi.length; i++) {
+                        if (that.correctAnswer[resLi.eq(i).data('id')] == cid) {
+                            resLi.eq(i).addClass('correct');
+                        } else {
+                            resLi.eq(i).addClass('error');
+                        }
+                    }
+                }
+            }
+            that.isSetState = true;
+
+            //恢复播放进度
+            if (!$.isEmptyObject(that.playProgress)) {
+                that.playProgress.currentTime = that.playProgress.currentTime - 1 > 0 ? that.playProgress.currentTime -
+                    1 : 0;
+                NDMediaPlayer.mediaSkip(that.playProgress.mediaType, that.playProgress.index, that.playProgress
+                    .currentTime);
+            }
+        },
+        resetQuestion: function() {
+            var that = this;
+            var k;
+            //    that.locked = false;
+            that.currMoveDom = null;
+            that.currMoveDomType = null;
+            that.$main.removeClass('show_number');
+            if (this._myMedia) {
+                this._myMedia.pause();
+                this._myMedia.currentTime = 0;
+                this._myMediaBar.css('width', '0');
+                this._myMediaBtnDot.css('left', '0');
+            }
+            //清除用户作答
+            that._listUlRes.html('');
+            that.userAnswer = {};
+            that.showResult = false;
+            //清除选项
+            that._listUl.html('');
+            //重新渲染选项
+            var id;
+            for (id in that.optionMaps) { /*选项区*/
+                that._listUl.append(that._createLi(that.optionMaps[id]));
+            }
+            if (that._listUl.find('._list_box').length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+            //标号
+            for (var myoptionId in that.optionMaps) {
+                that.optionMaps[myoptionId].statNumCla = '';
+            }
+            //通知保存状态
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+
+        },
+        lockQuestion: function() {
+            this.locked = true;
+            //媒体复原
+            if (this._myMedia) {
+                this._myMedia.pause();
+                this._myMedia.currentTime = 0;
+                this._myMediaBar.css('width', '0');
+                this._myMediaBtnDot.css('left', '0');
+            }
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        unlockQuestion: function() {
+            this.locked = false;
+            //媒体复原
+            if (this._myMedia) {
+                this._myMedia.pause();
+                this._myMedia.currentTime = 0;
+                this._myMediaBar.css('width', '0');
+                this._myMediaBtnDot.css('left', '0');
+            }
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        startStatistics: function() { /*结束答题开始统计数据*/
+            var that = this;
+            // this.resetQuestion(); this.lockQuestion();
+            that.$main.addClass('show_number'); /*统计要加标号*/
+        },
+        convertDataForStatistics: function(oriData) { /*把统计数据转化为string，传出去。  oriData是101ppt产生的*/
+            var that = this;
+            var i,
+                j,
+                k,
+                m,
+                n;
+            var value = oriData.value;
+            var onlineNum = 0;
+            var correctAnswer,
+                item_key = [],
+                percent = [],
+                stuAnswerStat = []; /*最主要的就是stuAnswerStat和 convertedData*/
+            var convertedData = {};
+            convertedData['allrightStu'] = [];
+            var answer,
+                answerResMy = {}; //answerResMy用我的答案的结构
+            //获取正确答案并设置编号
+            if (!correctAnswer && value.correctAnswerTeacher && value.correctAnswerTeacher.correct_response) {
+                correctAnswer = value.correctAnswerTeacher.correct_response;
+                if (correctAnswer) {
+                    for (k in correctAnswer) {
+                        item_key.push(that.optionMaps[k].num);
+                        stuAnswerStat.push({
+                            "rightNum": 0,
+                            "right_userIds": [],
+                            "wrong_userIds": [],
+                            "unfinished_userIds": value
+                                .unfinishedUserIds,
+                            "ref_key": that.optionMaps[k].num
+                        });
+                    }
+                }
+
+            }
+
+            if (value.answers) {
+                for (i = 0; i < value.answers.length; i++) {
+                    if ($.isArray(value.answers[i])) {
+                        for (j = 0; j < value.answers[i].length; j++) {
+                            answer = value.answers[i][j].answer;
+                            if (answer && (typeof answer) == "string") {
+                                answer = JSON.parse(answer);
+                                // for(var userResKey in answer.user_response) {    if (correctAnswer && answer.user_response[userResKey]) { for(n = 0;
+                                // n < answer.user_response[userResKey].value.length; n++){            var valueSp =
+                                // answer.user_response[userResKey].value[n].split(' ');            answerResMy[valueSp[0]] = valueSp[1] ==
+                                // 'unknown'?'':valueSp[1];        }
+
+                                var judgeIsCorrect = true;
+                                for (k in correctAnswer) {
+                                    if (answer.user_response[k] && correctAnswer[k] == answer.user_response[
+                                            k]) {
+                                        // stuAnswerStat[k]["rightNum"] = ((typeof stuAnswerStat[k]["rightNum"]) == "number") ? (stuAnswerStat[k]["rightNum"] +
+                                        // 1) : 1;
+                                        for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                            stuAnswerStat[that.optionMaps[k].num - 1]["rightNum"] = ((
+                                                typeof stuAnswerStat[that.optionMaps[k].num - 1][
+                                                    "rightNum"
+                                                ]) == "number") ? (stuAnswerStat[that.optionMaps[k].num -
+                                                1]["rightNum"] + 1) : 1;
+                                            stuAnswerStat[that.optionMaps[k].num - 1]["right_userIds"].push(
+                                                value.answers[i][j].userIds[m]);
+                                        }
+                                    } else {
+                                        judgeIsCorrect = false;
+                                        for (m = 0; m < value.answers[i][j].userIds.length; m++) {
+                                            stuAnswerStat[that.optionMaps[k].num - 1]["wrong_userIds"].push(
+                                                value.answers[i][j].userIds[m]);
+                                        }
+                                    }
+                                }
+                                answer.isCorrect = judgeIsCorrect;
+                                if (answer.isCorrect) {
+                                    convertedData["allrightStu"] = convertedData["allrightStu"].concat(
+                                        value.answers[i][j].userIds);
+                                }
+                                // } }
+
+                            }
+                        }
+                    }
+                }
+            }
+
+            onlineNum = value.finishedNum + value.unfinishedNum;
+
+            /**计算正确率**/
+            for (i = 0; i < stuAnswerStat.length; i++) {
+                percent[i] = (onlineNum > 0) ? (stuAnswerStat[i]["rightNum"] / onlineNum).toFixed(2) : 0;
+            }
+
+            convertedData['spend_time'] = value.elapsedTime ? value.elapsedTime : 0; /*数据传回去*/
+            convertedData['submit_count'] = onlineNum;
+            convertedData['answers'] = value.answers;
+            convertedData['item_key'] = item_key;
+            convertedData['percent'] = percent;
+            convertedData['unfinishedNum'] = value.unfinishedNum;
+            convertedData['unfinishedUserIds'] = value.unfinishedUserIds;
+            convertedData['stuAnswerStat'] = stuAnswerStat;
+            value['convertedData'] = convertedData;
+            return oriData;
+        },
+        getResult: function() { /*统计控制器调用*/
+            var answerState = 'NO_ANSWER';
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: $.extend(true, {}, this.userAnswer),
+                answer_result: true
+            };
+
+            //判断是否作答
+            var id,
+                answerNum = 0;
+            for (id in this.userAnswer) {
+                if (this.userAnswer[id]) {
+                    answerNum++;
+                }
+            }
+            var id1,
+                correctAnswerNum = 0;
+            for (id1 in this.correctAnswer) {
+                correctAnswerNum++;
+            }
+            if (answerNum == 0) {
+                answerState = 'NO_ANSWER';
+            } else if (answerNum == correctAnswerNum) {
+                answerState = 'COMPLETE';
+            } else {
+                answerState = 'NO_COMPLETE';
+            }
+            //判断作答是否正确
+            var id2;
+            for (id2 in this.correctAnswer) {
+                if (!this.userAnswer[id2] || this.correctAnswer[id2] != this.userAnswer[id2]) {
+                    answer.answer_result = false;
+                    break;
+                }
+            }
+
+            var result = {
+                answer: answer,
+                answerState: answerState,
+                questionId: this.questionId
+            };
+            return result;
+        },
+        destroy: function() {
+            // 销毁NDMediaPlayer
+            NDMediaPlayer.destroy(this.$view.find("._insert_mvp")[0]);
+            this.$view = null;
+            this.$main = null;
+
+            //正确答案
+            this.correctAnswer = { /*键值对形式*/
+                //            p1: 'p2'
+            };
+            this.userAnswer = {}; /*键值对形式*/
+            //题型特有
+            this.items = [];
+            this.areas = {};
+            this.optionMaps = {};
+
+        },
+        popTip: function(text, time) { /*提示框*/
+            $(".notice_tip_text").html(text);
+            $(".notice_tip_box").css("display", "block");
+            setTimeout(function() {
+                $(".notice_tip_box").css("display", "none");
+            }, time);
+        },
+        showResultHint: function(option) {
+            //if(this.isSetState && this.showResult) {
+            //
+            // }else{    var result = this.getResult();    if (result.answerState == 'COMPLETE' && result.answer.answer_result) {
+            // this.popTip("太棒了，您答对了！", 3000);    } else {        this.popTip("这道题没有做对，下次加油哦！", 3000);    } }
+            var result = this.getResult();
+            if (result.answerState == 'COMPLETE' && result.answer.answer_result) {
+                this.popTip(this.i18Model.correctTip, 3000);
+            } else {
+                this.popTip(this.i18Model.errorTip, 3000);
+            }
+        }
+    };
+
+    //对外提供服务
+    var Service = function(_Table) {
+        this.questionId = null;
+        this.status = {};
+        this._Table = _Table;
+    };
+    Service.prototype = {
+        init: function(model, _Table) {
+            this.questionId = model.question_id;
+            this._Table = _Table;
+            this.parent = this._Table.presenter;
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: 'table',
+                type_name: '分类表格题',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._Table.getResult();
+        },
+        _getState: function() {
+            var state = this._Table.getState();
+
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent
+                    .metaInfo.name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._Table.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this
+                    .parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*老师端和学生端调用的都是这个函数*/
+            return this._Table.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) { /*只有学生端调用的*/
+            this._Table.showResultHint(option);
+        },
+        resetQuestion: function() {
+            this._Table.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._Table.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._Table.unlockQuestion();
+        },
+        finishQuestion: function() {},
+        getStatisticClass: function() { /*统计类型*/
+            return 'B';
+        },
+        startStatistics: function() { /*结束答题时调用*/
+            this._Table.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) { /*转化统计数据*/
+            return this._Table.convertDataForStatistics(oriData);
+        },
+        //实现国际化
+        setLocationProperties: function(properties) {
+            this._Table.i18Model = properties;
+        }
+    };
+
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'TableRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._Table = new Table();
+            this._service_ = new Service(this._Table);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据 that._Table = new Table();
+            that._Table.init(view, model, that.basePath, this);
+            that._Table.initView();
+            that._Table.resetQuestion();
+            //绑定交互事件
+            that._Table._bindEvent();
+            // that._Table._mediaEvent(); 初始化服务
+            that._service_.init(model, that._Table);
+        },
+        destroy: function() {
+            if (this._Table) {
+                this._Table.destroy();
+            }
+        },
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        }
+
+    });
+    //实现icplayer入口调用函数
+    window.AddonTableRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/sky/images/bg_boardleft.jpg' />
+<file src='./resources/sky/images/bg_boardright.jpg' />
+<file src='./resources/sky/images/bg_mainboard.jpg' />
+<file src='./resources/sky/images/bg_sidecon1.png' />
+<file src='./resources/sky/images/bg_sidetit1.png' />
+<file src='./resources/sky/images/decl_sidecon.png' />
+<file src='./resources/sky/images/decm_sidecon.png' />
+<file src='./resources/sky/images/decr_sidecon.png' />
+<file src='./resources/sky/images/icon_close.png' />
+<file src='./resources/sky/images/icon_s_sky_right.png' />
+<file src='./resources/sky/images/icon_s_sky_wrong.png' />
+<file src='./resources/wood/images/bg_fboard.png' />
+<file src='./resources/wood/images/bg_fboardleft.png' />
+<file src='./resources/wood/images/bg_mainboard.jpg' />
+<file src='./resources/wood/images/bg_mainboard_shadow.png' />
+<file src='./resources/wood/images/default.png' />
+<file src='./resources/wood/images/icobg_voice.png' />
+<file src='./resources/wood/images/icon_paixu_re_r.png' />
+<file src='./resources/wood/images/paixulist.png' />
+<file src='./resources/wood/images/paixu_voice_pause.png' />
+<file src='./resources/wood/images/paixu_voice_play.png' />
+<file src='./resources/wood/images/table_hang.png' />
+<file src='./resources/wood/images/table_hang_l.png' />
+<file src='./resources/wood/images/table_hang_r.png' />
+<file src='./resources/wood/images/table_icon_left.png' />
+<file src='./resources/wood/images/table_icon_left1.png' />
+<file src='./resources/wood/images/table_icon_right.png' />
+<file src='./resources/wood/images/table_lie.png' />
+<file src='./resources/wood/images/table_lie_bg.png' />
+<file src='./resources/wood/images/wholebg_wood_shadow.png' />
+
+
+</resources>
+
+</addon>

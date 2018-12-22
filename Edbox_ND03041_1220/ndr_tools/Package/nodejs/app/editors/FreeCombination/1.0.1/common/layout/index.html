@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../common_wood.scss">
+</head>
+<body class="exam_wood">
+
+<div class="com_layout">
+	<div class="com_lay_main">
+		<a href="###" class="com_u_btn4">退出</a>
+		<!--时间-->
+		<div class="com_lay_toptool">
+			<!--提交按钮-->
+		</div>
+	</div>
+	<div class="com_lay_contain">
+		<div class="com_lay_mboard">
+			<div class="com_lay_boardtit">
+				<!--主栏标题-->
+			</div>
+			<div class="com_lay_board">
+				<!--正文-->
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src="http://cdn.bootcss.com/jquery/1.11.2/jquery.min.js"></script>
+<script>
+    var $wap = $('#wrapper');
+    var winHeight, winWidth;
+    var ratio = 3/2;
+    var maxWidth = 1680;
+    var maxHeight = maxWidth/ratio;
+    var minWidth = 960;
+    var minHeight = minWidth/ratio;
+
+    function getWinSize(){
+        winHeight = $(window).height();
+        winWidth = $(window).width();
+    }
+    function setWapSize(w, h){
+        $wap.css({
+            width:w,
+            height:h,
+            marginTop:winHeight - h > 0 ? (winHeight - h)/2 : 0
+        });
+    }
+
+    function wapRePosition(){
+        if(winWidth / winHeight > ratio){
+            if(winHeight >= maxHeight){
+                setWapSize(maxWidth, maxHeight);
+            }else if(winHeight <= minHeight){
+                setWapSize(minWidth, minHeight);
+            }else{
+                setWapSize(winHeight*ratio, winHeight);
+            }
+        }else{
+            if(winWidth >= maxWidth){
+                setWapSize(maxWidth, maxHeight);
+            }else if(winWidth <= minWidth){
+                setWapSize(minWidth, minHeight);
+            }else{
+                setWapSize(winWidth, winWidth/ratio);
+            }
+        }
+    }
+
+    getWinSize();
+    wapRePosition();
+
+    $(window).bind('resize', function(){
+        getWinSize();
+        wapRePosition();
+    })
+
+</script>
+
+</body>
+</html>

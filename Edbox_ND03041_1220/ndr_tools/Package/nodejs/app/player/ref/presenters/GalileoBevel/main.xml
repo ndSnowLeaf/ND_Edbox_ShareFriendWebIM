@@ -1,0 +1,1368 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="undefined"/><property name="question_url" displayName="undefined" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="kitty" version="2.0.4.1"/></jsDependency></dependencies><css><![CDATA[.addon_GalileoBevel .exam_skin_wood{height:100%}.addon_GalileoBevel .grm_svg{overflow:hidden}.addon_GalileoBevel .grm_svg .container{position:relative;width:100%;height:100%;-webkit-transform:translateZ(0);transform:translateZ(0)}.addon_GalileoBevel svg{overflow:visible;position:absolute;left:0;bottom:0;width:100%;height:30.41667em}.addon_GalileoBevel svg .bevel_rotate{display:inline-block;width:100%;height:100%;cursor:pointer;background:url(resources/wood/images/icon_rotate_normal.png);background-size:100% 100%;-webkit-tap-highlight-color:transparent}.addon_GalileoBevel svg .bevel_rotate.rotate_active{background:url(resources/wood/images/icon_rotate_active.png);background-size:100% 100%}.addon_GalileoBevel svg .ball_bg{display:inline-block;width:100%;height:100%;background:url(resources/wood/images/redball.png);background-size:100% 100%;-webkit-tap-highlight-color:transparent}.exam_skin_wood .galileoramp_wrapper{width:100%;height:100%;position:relative;background:#bfd3e2}.exam_skin_wood .galileoramp_wrapper.galileoramp_wrapper_student .grm_svg{height:34.58333em}.exam_skin_wood .galileoramp_wrapper .gr_main_wrapper{position:absolute;top:0;left:0;right:0;bottom:5.66667em}.exam_skin_wood .galileoramp_wrapper .grm_tip{display:inline-block;position:absolute;top:4.79167em;right:5.66667em}.exam_skin_wood .galileoramp_wrapper .grm_tip span{font-size:1.5em}.exam_skin_wood .galileoramp_wrapper .grm_board{display:inline-block;width:100%;height:1.25em;position:absolute;bottom:0;left:0;background:url(resources/wood/images/bg_board.png) repeat-x}.exam_skin_wood .galileoramp_wrapper .grm_svg{display:inline-block;width:100%;height:30.41667em;position:absolute;bottom:1.25em;left:0}.exam_skin_wood .galileoramp_wrapper .gr_bottom_wrapper{position:absolute;left:0;bottom:0;width:100%;height:5.75em;text-align:right}.exam_skin_wood .galileoramp_wrapper .grb_pause_btn,.exam_skin_wood .galileoramp_wrapper .grb_restore_btn,.exam_skin_wood .galileoramp_wrapper .grb_start_btn{margin-right:1.25em!important}.exam_skin_wood .galileoramp_wrapper .grb_reset_btn{margin-right:5.95833em!important}.exam_skin_wood .galileoramp_wrapper .com_btns{display:inline-block;margin:1.25em .75em;padding:0 1.41667em;min-width:8.70833em;height:3.16667em;line-height:3.16667em;text-align:center;vertical-align:middle;border-radius:.41667em}.exam_skin_wood .galileoramp_wrapper .com_btns .btns-primary-txt{font-size:1.5em;color:#384650}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary{border:1px solid #397274;background:-webkit-linear-gradient(bottom,#e9e9e9 0,#fff 100%);background:linear-gradient(to top,#e9e9e9 0,#fff 100%)}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary .btns-primary-icon{display:inline-block;height:3em;vertical-align:top;margin-right:.33333em;background-position:center top;background-repeat:no-repeat;background-size:100% auto}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.ui_btn_active,.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary:active{background:-webkit-linear-gradient(bottom,#76b8ba 0,#89c5c7 100%);background:linear-gradient(to top,#76b8ba 0,#89c5c7 100%)}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.ui_btn_active .btns-primary-txt,.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary:active .btns-primary-txt{color:#fff}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.ui_btn_active .btns-primary-icon,.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary:active .btns-primary-icon{background-position:center bottom}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.click_disabled{border-color:#93989a;background:-webkit-linear-gradient(top,#c8d1d7 0,#c1c8cc 100%);background:linear-gradient(to bottom,#c8d1d7 0,#c1c8cc 100%);cursor:default}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.click_disabled .btns-primary-txt{color:#969fa4}.exam_skin_wood .galileoramp_wrapper .com_btns.btns-primary.click_disabled .btns-primary-icon{background-position:center center}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="galileoramp_wrapper @@studentClassName"><div class="gr_main_wrapper"><span class="grm_tip"><span>本工具为理想实验状态</span></span><div class="grm_svg"><div class="container"></div></div><span class="grm_board"></span></div><div class="gr_bottom_wrapper"><a class="com_btns btns-primary grb_start_btn start_state" href="javascript:;"><span class="btns-primary-txt">开始演示</span> </a><a class="com_btns btns-primary grb_reset_btn click_disabled" href="javascript:;"><span class="btns-primary-txt">重置</span></a></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(5);
+	__webpack_require__(2);
+	__webpack_require__(4);
+	module.exports = __webpack_require__(3);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _GalileoBevel = __webpack_require__(2);
+
+	var _GalileoBevel2 = _interopRequireDefault(_GalileoBevel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var i18nModel = {
+	    gb_begin_txt: '开始演示',
+	    gb_pause_txt: '暂停演示',
+	    gb_resume_txt: '恢复演示',
+	    gb_reset_txt: '重置',
+	    gb_explain_txt: '本工具为理想实验状态'
+	  };
+
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'GalileoBevel',
+	      type: '',
+	      subtype: ''
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	    },
+	    /**
+	     * Presenter对外暴露的方法
+	     */
+	    _service_: {
+	      constructor: function constructor(parent) {
+	        this.parent = parent;
+	      },
+	      getQuestionInfo: function getQuestionInfo() {
+	        return {
+	          id: '',
+	          type_code: 'GalileoBevel',
+	          type_name: '伽利略斜面',
+	          url: '',
+	          notExistStatistics: true,
+	          noNeedQuizProgress: true
+	        };
+	      },
+	      setLocationProperties: function setLocationProperties(data) {
+	        $.extend(i18nModel, data || {});
+	      },
+	      getExtendData: function getExtendData() {
+	        return this.parent.gb.getCurrentState();
+	      }
+	    },
+	    getService: function getService() {
+	      this._service_.constructor(this);
+	      return this._service_;
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      this.model = model;
+	      this._initMultiLanguage(view);
+	      var data = this.isStudent ? this.model.__ExtendModel : {};
+	      this.gb = new _GalileoBevel2.default(i18nModel, this.isStudent, data);
+	      this.gb.init(view, model);
+	      var that = this;
+	      this.__interface = {
+	        resizeScreen: function resizeScreen(data) {
+	          that.gb.setMotionScale(data.ratio);
+	        }
+	      };
+	    },
+	    pageShow: function pageShow() {
+	      this._bindEvent();
+	    },
+	    pageLeave: function pageLeave() {
+	      this._unbindEvent();
+	    },
+	    destroy: function destroy() {},
+	    /** 如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	    getState: function getState() {},
+	    setState: function setState(state, options) {},
+	    /** **以下开始为Presenter的私有方法*****/
+	    _initMultiLanguage: function _initMultiLanguage(view) {
+	      var $view = $(view);
+	      $view.find('.grb_start_btn').find('span').text(i18nModel.gb_begin_txt);
+	      $view.find('.grb_reset_btn').find('span').text(i18nModel.gb_reset_txt);
+	      $view.find('.grm_tip').find('span').text(i18nModel.gb_explain_txt);
+	    },
+	    _bindEvent: function _bindEvent() {},
+	    _unbindEvent: function _unbindEvent() {}
+	  });
+
+	  window.AddonGalileoBevel_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _utils = __webpack_require__(3);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _motionAnime = __webpack_require__(4);
+
+	var _motionAnime2 = _interopRequireDefault(_motionAnime);
+
+	var _config = __webpack_require__(5);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var GalileoBevel = function () {
+	    function GalileoBevel(i18nModel, isStudent, initData) {
+	        _classCallCheck(this, GalileoBevel);
+
+	        this.data = {
+	            curTransform: '',
+	            stepTransform: '',
+	            step: 0,
+	            time: 0,
+	            isAnimated: false,
+	            isPaused: false,
+	            curViewLen: 0,
+	            deg: _config.numConfig.deg,
+	            moveViewPercent: 0,
+	            rightDashBallVisible: 'none'
+	        };
+	        $.extend(this.data, initData || {});
+	        this.curDeg = this.data.deg;
+	        this.isStudent = isStudent;
+	        this.i18nModel = i18nModel;
+	    }
+
+	    /**
+	     * 初始化
+	     * @param view
+	     * @param model
+	     */
+
+
+	    _createClass(GalileoBevel, [{
+	        key: 'init',
+	        value: function init(view, model) {
+	            this.$view = $(view);
+	            this.model = model;
+	            this.container = this.$view.find("div.container");
+	            this.panel = this.$view.find("div.galileoramp_wrapper");
+	            // 旋转按钮可以移动的上边界
+	            this.topLimit = 0;
+	            if (this.isStudent) {
+	                this.panel.addClass("galileoramp_wrapper_student");
+	                this.topLimit = -100;
+	            }
+	            this.startBtn = this.$view.find("a.grb_start_btn");
+	            this.resetBtn = this.$view.find("a.grb_reset_btn");
+	            this._initView();
+	            this._bindDom();
+	            //创建动画对象
+	            this.data.curViewLen = this.data.moveViewPercent * this.viewMoveLen;
+	            this.motionAnime = new _motionAnime2.default(this.ball, this.rightDashBall, this.container, this.ratio, this.data);
+	            this.motionAnime.setMotionParams({
+	                lx: this.leftMotionData,
+	                ly: this.leftMotionData,
+	                arc: this.arcMotionPath,
+	                rx: this.rightMotionDataX,
+	                ry: this.rightMotionDataY,
+	                bevelAngle: this.curDeg,
+	                lt: _config.numConfig.lt,
+	                arct: _config.numConfig.arct,
+	                rt: this.rightMotionTime
+	            });
+	            if (this.data.isPaused) {
+	                this.startBtn.removeClass("pause_state").addClass("start_state").find("span").text(this.i18nModel.gb_resume_txt);
+	                this.resetBtn.removeClass("click_disabled");
+	                this.$rotation.hide();
+	                this.isFirstClick = false;
+	            }
+	            if (this.data.isAnimated) {
+	                this.startBtn.removeClass("start_state").addClass("pause_state").find("span").text(this.i18nModel.gb_pause_txt);
+	                this.resetBtn.removeClass("click_disabled");
+	                this.$rotation.hide();
+	                this.isFirstClick = false;
+	                this.motionAnime.start();
+	            }
+	            this.rightDashBall.setStyle("display", this.data.rightDashBallVisible);
+	        }
+
+	        /**
+	         * 初始化视图
+	         * @private
+	         */
+
+	    }, {
+	        key: '_initView',
+	        value: function _initView() {
+	            var that = this;
+	            this.paper = new kity.Paper(this.container.get(0)).pipe(function () {
+	                this.setWidth("100%");
+	                this.setHeight("100%");
+	                this.setViewBox(0, 0, _config.numConfig.viewBoxW, _config.numConfig.viewBoxH);
+	            });
+	            this.svg = this.container.find("svg");
+	            this.svgDom = this.svg[0];
+	            this.cWidth = this.container.width();
+	            this.cHeight = this.container.height();
+	            // 坐标转化系数获取
+	            this.scaleX = this.cWidth / _config.numConfig.viewBoxW;
+	            this.scaleY = this.cHeight / _config.numConfig.viewBoxH;
+	            this.ratio = Math.min(this.scaleX, this.scaleY);
+	            //各个线段、弧线控制点、小球数据
+	            var LFInfo = {
+	                x1: 550,
+	                y1: 405,
+	                x2: 920,
+	                y2: 405
+	            };
+	            this.leftPoint = {
+	                x: LFInfo.x1 + Math.cos(_config.numConfig.deg * _config.numConfig.radRatio) * (LFInfo.x2 - LFInfo.x1),
+	                y: LFInfo.y1 + Math.sin(_config.numConfig.deg * _config.numConfig.radRatio) * (LFInfo.x2 - LFInfo.x1)
+	            };
+	            this.rightPoint = {
+	                x: that.leftPoint.x + 250,
+	                y: that.leftPoint.y
+	            };
+	            var RLInfo = {
+	                x1: that.leftPoint.x + 250,
+	                y1: that.leftPoint.y,
+	                x2: that.leftPoint.x + 900,
+	                y2: that.leftPoint.y
+	            };
+	            this.controlCircle = {
+	                cx: (that.leftPoint.x + that.rightPoint.x) / 2,
+	                cy: that.leftPoint.y + 56,
+	                r: Math.sqrt(Math.pow((that.leftPoint.x - that.rightPoint.x) / 2, 2) + Math.pow(30, 2))
+	            };
+	            this.leftControlPoint = {
+	                x: this.controlCircle.cx - this.controlCircle.r / 2,
+	                y: this.controlCircle.cy
+	            };
+	            this.rightControlPoint = {
+	                x: this.controlCircle.cx + this.controlCircle.r / 2,
+	                y: this.controlCircle.cy
+	            };
+	            this.ballData = {
+	                cx: LFInfo.x1 + (_config.numConfig.strokeWidth / 2 + _config.numConfig.ballR) * Math.cos(_config.numConfig.deg * Math.PI / 180),
+	                cy: LFInfo.y1 - (_config.numConfig.strokeWidth / 2 + _config.numConfig.ballR) * Math.cos(_config.numConfig.deg * Math.PI / 180),
+	                r: _config.numConfig.ballR
+	            };
+
+	            //白色虚线绘制
+	            this.dashLine = new kity.Line(-500, this.ballData.cy, _config.numConfig.viewBoxW, this.ballData.cy).pipe(function () {
+	                this.stroke("#fff");
+	                this.setAttr("stroke-width", 5);
+	                this.setAttr("stroke-dasharray", [17, 18]);
+	                that.paper.addShape(this);
+	            });
+
+	            this.g1 = new kity.Group();
+
+	            // 设置初始样式
+	            var setInitStyle = function setInitStyle(name, color, offsetSize) {
+	                this.stroke(color);
+	                this.setAttr("stroke-width", _config.numConfig.strokeWidth + offsetSize);
+	                switch (name) {
+	                    case 'left':
+	                        this.setRotate(_config.numConfig.deg, LFInfo.x1, LFInfo.y1);
+	                        break;
+	                    case 'right':
+	                        this.setRotate(360 - _config.numConfig.deg, RLInfo.x1, RLInfo.y1);
+	                        break;
+	                }
+	                that.g1.addShape(this);
+	            };
+
+	            //画三个弧线段来完成UI样式
+	            var pathStr = this._getArcPathStr(this.rightPoint.x, this.rightPoint.y);
+	            this.arcPath = new kity.Path(pathStr).pipe(function () {
+	                setInitStyle.call(this, 'arc', "#585c5d", 0);
+	            });
+	            this.arcInnerPath = new kity.Path(pathStr).pipe(function () {
+	                setInitStyle.call(this, 'arc', "#a8aaa9", -2);
+	            });
+	            this.arcInnerPath2 = new kity.Path(pathStr).pipe(function () {
+	                setInitStyle.call(this, 'arc', "#6b6b6b", -4);
+	            });
+	            this.arcPaths = [this.arcPath, this.arcInnerPath, this.arcInnerPath2];
+
+	            //画三个线段来完成UI样式
+	            this.leftLine = new kity.Line(LFInfo.x1 - 100, LFInfo.y1, LFInfo.x2, LFInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'left', "#585c5d", 0);
+	            });
+	            this.leftInnerLine = new kity.Line(LFInfo.x1 - 100, LFInfo.y1, LFInfo.x2, LFInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'left', "#a8aaa9", -2);
+	            });
+	            this.leftInnerLine2 = new kity.Line(LFInfo.x1 - 100, LFInfo.y1, LFInfo.x2 + 2, LFInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'left', "#6b6b6b", -4);
+	            });
+
+	            //画三个线段来完成UI样式
+	            this.rightLine = new kity.Line(RLInfo.x1, RLInfo.y1, RLInfo.x2, RLInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'right', "#585c5d", 0);
+	            });
+	            this.rightInnerLine = new kity.Line(RLInfo.x1, RLInfo.y1, RLInfo.x2, RLInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'right', "#a8aaa9", -2);
+	            });
+	            this.rightInnerLine2 = new kity.Line(RLInfo.x1 - 1, RLInfo.y1, RLInfo.x2, RLInfo.y2).pipe(function () {
+	                setInitStyle.call(this, 'right', "#6b6b6b", -4);
+	            });
+	            this.rightLines = [this.rightLine, this.rightInnerLine, this.rightInnerLine2];
+
+	            this.paper.addShape(this.g1);
+
+	            //虚线小球样式
+	            var setDashBallStyle = function setDashBallStyle() {
+	                this.stroke("#c90200");
+	                this.setAttr("stroke-width", 6);
+	                this.setAttr("stroke-dasharray", 11);
+	                that.paper.addShape(this);
+	            };
+	            //虚线小球的绘制
+	            this.leftDashBall = new kity.Circle(this.ballData.r - 4, this.ballData.cx, this.ballData.cy).pipe(function () {
+	                setDashBallStyle.call(this);
+	            });
+	            this.rightDashBall = new kity.Circle(this.ballData.r - 4, this.ballData.cx, this.ballData.cy).pipe(function () {
+	                this.setStyle("display", "none");
+	                setDashBallStyle.call(this);
+	            });
+	            // 小球的绘制
+	            this.radialBrush = new kity.RadialGradient(this.paper).pipe(function () {
+	                this.addStop(0, "#fdd9b5");
+	                this.addStop(0.3, "#cb4228");
+	                this.addStop(0.35, "#be2b1b");
+	                this.addStop(1, "#92302f");
+	                this.setFocal(0.7, 0.18);
+	                this.setRadius(1);
+	            });
+	            this.setBallStyle = function () {
+	                this.fill(that.radialBrush);
+	                this.setAttr("stroke-width", 2);
+	                this.stroke("#743c47");
+	                that.paper.addShape(this);
+	            };
+	            this.ball = new kity.Circle(this.ballData.r, this.ballData.cx, this.ballData.cy).pipe(function () {
+	                that.setBallStyle.call(this);
+	            });
+
+	            // 小球左边运动数据
+	            this.leftMotionData = (LFInfo.x2 - LFInfo.x1) / 2 * Math.sqrt(2);
+	            // 调整右侧斜面的角度同时获取右边斜面运动数据
+	            this._adjustRightBevel(this.curDeg);
+	            // 获取小球在弧线段处运动路径
+	            this._adjustMotionPath();
+	            // 小球在右侧的运动时间
+	            this.rightMotionTime = this.rightMotionLen * 10 * 0.8;
+	            // 增加斜面角度调整图标
+	            this._addRotation();
+	            // 对图标位置进行定位
+	            this._rotationLocate();
+	            this.dashLineLen = Math.min(_config.numConfig.viewBoxW + this.rightMotionLen * Math.cos(this.curDeg * _config.numConfig.radRatio), 500000);
+	            this.dashLine.setPoint2(this.dashLineLen, this.ballData.cy);
+	            this._setRightMotionTime(this.curDeg);
+	            this.isFirstClick = true;
+	        }
+
+	        /**
+	         * 获取当前状态用于推送
+	         * @returns {{step, time, curTransform, stepTransform, curViewLen, isAnimated, isPaused}|*}
+	         */
+
+	    }, {
+	        key: 'getCurrentState',
+	        value: function getCurrentState() {
+	            var data = this.motionAnime.getAnimeData();
+	            data.deg = 360 - _utils2.default.calculateAngle(this.rightPoint.x, this.rightPoint.y, this.rightControlPoint.x, this.rightControlPoint.y);
+	            data.moveViewPercent = data.curViewLen / this.viewMoveLen;
+	            return data;
+	        }
+	    }, {
+	        key: 'setMotionScale',
+	        value: function setMotionScale(scale) {
+	            this.motionAnime.scale = eval(scale) * this.motionAnime.scale;
+	            this.motionAnime.adjustView(eval(scale));
+	        }
+
+	        /**
+	         * 增加斜面角度调整图标
+	         * @private
+	         */
+
+	    }, {
+	        key: '_addRotation',
+	        value: function _addRotation() {
+	            var that = this;
+	            var foreignObject = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+	            $(foreignObject).html('<span class="bevel_rotate"></span>');
+	            that.$view.find('svg').append($(foreignObject));
+	            that.$rotation = $(foreignObject);
+	            that.$rotation.attr('x', 1172).attr('y', 38);
+	            that.$rotation.attr('width', 58).attr('height', 58);
+	        }
+
+	        /**
+	         * 事件绑定
+	         * @private
+	         */
+
+	    }, {
+	        key: '_bindDom',
+	        value: function _bindDom() {
+	            var that = this;
+	            // 开始、暂停、继续事件绑定
+	            that.startBtn.on("click", _utils2.default.debounce(function (e) {
+	                e.stopPropagation();
+	                var $this = $(this);
+	                that.resetBtn.removeClass("click_disabled");
+	                if ($this.hasClass("start_state")) {
+	                    $this.removeClass("start_state").addClass("pause_state");
+	                    $this.find("span").text(that.i18nModel.gb_pause_txt);
+	                    if (that.isFirstClick) {
+	                        that.motionAnime.setBall(that.ball);
+	                        that.motionAnime.start();
+	                        that.isFirstClick = false;
+	                        that.$rotation.hide();
+	                    } else {
+	                        that.motionAnime.resume();
+	                    }
+	                } else {
+	                    $this.removeClass("pause_state").addClass("start_state");
+	                    $this.find("span").text(that.i18nModel.gb_resume_txt);
+	                    that.motionAnime.pause();
+	                }
+	            }, _config.numConfig.debounceTime, true));
+
+	            //重置事件绑定
+	            that.resetBtn.on("click", function (e) {
+	                e.stopPropagation();
+	                if ($(this).hasClass("click_disabled")) {
+	                    return;
+	                }
+	                $(this).addClass("click_disabled");
+	                that.rightDashBall.setStyle("display", "none");
+	                that.startBtn.removeClass("pause_state").addClass("start_state");
+	                that.startBtn.find("span").text(that.i18nModel.gb_begin_txt);
+	                that.motionAnime.stop();
+	                that.$rotation.show();
+	                that.paper.removeShape(that.ball);
+	                that.ball = new kity.Circle(that.ballData.r, that.ballData.cx, that.ballData.cy).pipe(function () {
+	                    that.setBallStyle.call(this);
+	                });
+	                that.isFirstClick = true;
+	            });
+
+	            that.container.on('reachRight', function () {
+	                that.rightDashBall.setStyle("display", "block");
+	            });
+
+	            //旋转事件绑定
+	            that.$rotation.on("mousedown touchstart", function (e) {
+	                var self = $(this);
+	                self.find("span.bevel_rotate").addClass("rotate_active");
+	                var originX1 = e.pageX || e.originalEvent.touches[0].pageX;
+	                var originY1 = e.pageY || e.originalEvent.touches[0].pageY;
+	                var point = _utils2.default.reportMouseCoordinates(that.svgDom, originX1, originY1, that.svgDom);
+	                originX1 = point.x;
+	                originY1 = point.y;
+	                var originCx = parseFloat(self.attr("x"));
+	                var originCy = parseFloat(self.attr("y"));
+	                var originDeg = _utils2.default.calculateAngle(that.rightPoint.x, that.rightPoint.y, that.rightControlPoint.x, that.rightControlPoint.y);
+	                that.panel.on("mousemove touchmove", function (e) {
+	                    var x2 = e.pageX || e.originalEvent.touches[0].pageX;
+	                    var y2 = e.pageY || e.originalEvent.touches[0].pageY;
+	                    var point2 = _utils2.default.reportMouseCoordinates(that.svgDom, x2, y2, that.svgDom);
+	                    x2 = point2.x;
+	                    y2 = point2.y;
+	                    var deltaX = x2 - originX1;
+	                    var deltaY = y2 - originY1;
+	                    var finalCx = originCx + deltaX;
+	                    var finalCy = originCy + deltaY;
+	                    var deltaDeg = _utils2.default.calculateAngle(finalCx, finalCy, originCx, originCy, that.rightControlPoint.x, that.rightControlPoint.y);
+	                    if (finalCx < that.controlCircle.cx - 150 || finalCx > 1772 || finalCy < that.topLimit || finalCy > 682) {
+	                        that._mouseUpHandler();
+	                        return;
+	                    }
+	                    self.attr("x", finalCx);
+	                    self.attr("y", finalCy);
+	                    that.curDeg = 360 - originDeg - deltaDeg;
+	                    that._adjustRightBevel(that.curDeg);
+	                });
+	            });
+	            that.panel.on("mouseup touchend", function () {
+	                that._mouseUpHandler();
+	            });
+	        }
+
+	        /**
+	         * 鼠标松开处理
+	         * @private
+	         */
+
+	    }, {
+	        key: '_mouseUpHandler',
+	        value: function _mouseUpHandler() {
+	            this.panel.off("mousemove touchmove");
+	            this.$rotation.find("span.bevel_rotate").removeClass("rotate_active");
+	            this._adjustMotionPath();
+	            var deg = 360 - _utils2.default.calculateAngle(this.rightPoint.x, this.rightPoint.y, this.rightControlPoint.x, this.rightControlPoint.y);
+	            this.curDeg = deg;
+	            this.dashLineLen = Math.min(_config.numConfig.viewBoxW + this.rightMotionLen * Math.cos(deg * _config.numConfig.radRatio), 500000);
+	            this.dashLine.setPoint2(this.dashLineLen, this.ballData.cy);
+	            this._rotationLocate();
+	            this._setRightMotionTime(deg);
+	            this.motionAnime.setMotionParams({
+	                lx: this.leftMotionData,
+	                ly: this.leftMotionData,
+	                arc: this.arcMotionPath,
+	                rx: this.rightMotionDataX,
+	                ry: this.rightMotionDataY,
+	                bevelAngle: this.curDeg,
+	                lt: _config.numConfig.lt,
+	                arct: _config.numConfig.arct,
+	                rt: this.rightMotionTime
+	            });
+	        }
+
+	        /**
+	         * 根据右侧斜面角度来调整右侧动画时间
+	         * @param {number} deg 右侧斜面角度
+	         * @private
+	         */
+
+	    }, {
+	        key: '_setRightMotionTime',
+	        value: function _setRightMotionTime(deg) {
+	            if (deg >= 50) {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.45;
+	            } else if (deg > 30) {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.44;
+	            } else if (deg > 11) {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.43;
+	            } else if (deg > 5) {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.45;
+	            } else if (deg > 0.1) {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.29;
+	            } else {
+	                this.rightMotionTime = this.rightMotionLen * 10 * 0.17;
+	            }
+	        }
+
+	        /**
+	         * 旋转图标定位
+	         * @private
+	         */
+
+	    }, {
+	        key: '_rotationLocate',
+	        value: function _rotationLocate() {
+	            var curDeg = 360 - _utils2.default.calculateAngle(this.rightPoint.x, this.rightPoint.y, this.rightControlPoint.x, this.rightControlPoint.y);
+	            var h = this.controlCircle.cy - _config.numConfig.topH - 50;
+	            var x = this.controlCircle.cx + h / Math.tan(curDeg * _config.numConfig.radRatio) - parseInt(this.$rotation.attr("width"));
+	            var y = this.controlCircle.cy - h + 20 - parseInt(this.$rotation.attr("height"));
+	            if (x > 1670) {
+	                x = 1670;
+	                y = this.controlCircle.cy - (1670 - this.controlCircle.cx) * Math.tan(curDeg * _config.numConfig.radRatio) - parseInt(this.$rotation.attr("height")) * 1.5;
+	            }
+	            this.$rotation.attr('x', x).attr('y', y);
+	        }
+
+	        /**
+	         * 调整斜面角度，右侧贝塞尔曲线会一直连到一个控制圆上，在画右侧直线
+	         * @param {number} curDeg 右侧斜面角度
+	         * @private
+	         */
+
+	    }, {
+	        key: '_adjustRightBevel',
+	        value: function _adjustRightBevel(curDeg) {
+	            var that = this;
+	            var k = -Math.tan(curDeg * _config.numConfig.radRatio);
+	            var b = -k * this.rightControlPoint.x + this.rightControlPoint.y;
+	            var c = -this.controlCircle.cx;
+	            var d = -this.controlCircle.cy;
+	            var r = this.controlCircle.r;
+	            // 求直线和圆的交点
+	            var point = _utils2.default.getIntersectPoint(k, b, c, d, r);
+	            var x1 = point.x;
+	            var y1 = point.y;
+	            if (curDeg >= 90 && curDeg <= 180) {
+	                this._adjustRightBevel(89.999);
+	                return;
+	            } else if (curDeg <= 0 || curDeg >= 270) {
+	                curDeg = 0.001;
+	                this._adjustRightBevel(0.001);
+	                return;
+	            }
+	            this.rightPoint.x = x1;
+	            this.rightPoint.y = y1;
+	            this._setParam(this.rightLines, 'setPoint1', [x1, y1]);
+	            this.rightMotionLen = (this.rightPoint.y - this.ballData.cy) / Math.sin(curDeg * _config.numConfig.radRatio);
+	            // 右侧斜面小球移动数据
+	            this.rightMotionDataX = this.rightMotionLen * Math.cos(curDeg * _config.numConfig.radRatio) - (_config.numConfig.strokeWidth / 2 + this.ballData.r + 1) / Math.tan(curDeg * _config.numConfig.radRatio) * Math.cos(curDeg * _config.numConfig.radRatio);
+	            this.rightMotionDataY = this.rightMotionLen * Math.sin(curDeg * _config.numConfig.radRatio) - (_config.numConfig.strokeWidth / 2 + this.ballData.r + 1) / Math.tan(curDeg * _config.numConfig.radRatio) * Math.sin(curDeg * _config.numConfig.radRatio);
+	            // 右侧斜面长度
+	            var bevelLen = (this.rightPoint.y - _config.numConfig.topH) / Math.sin(curDeg * _config.numConfig.radRatio);
+	            var x2 = bevelLen + x1;
+	            //视图移动距离
+	            this.viewMoveLen = (this.rightMotionDataX - _config.numConfig.viewMoveDescrease) * that.ratio;
+	            // 小于45度x2为超出白色虚线后延长290
+	            if (curDeg < 45) {
+	                x2 = this.rightMotionLen + x1 + 290;
+	            }
+	            this._setParam(this.rightLines, 'setPoint2', [x2, y1]);
+	            this._setParam(this.rightLines, 'setRotate', [-curDeg, x1, y1]);
+	            var pathStr = this._getArcPathStr(x1, y1);
+	            this._setParam(this.arcPaths, 'setPathData', [pathStr]);
+	        }
+
+	        /**
+	         * 设置底部弧线和右边斜面的参数
+	         * @param {array} elems
+	         * @param {string} name
+	         * @param {array} params
+	         * @private
+	         */
+
+	    }, {
+	        key: '_setParam',
+	        value: function _setParam(elems, name, params) {
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	                for (var _iterator = elems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var elem = _step.value;
+
+	                    elem[name].apply(elem, _toConsumableArray(params));
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+
+	            if (elems === this.rightLines && name === 'setPoint1') {
+	                this.rightInnerLine2.setPoint1(params[0] - 1, params[1]);
+	            }
+	        }
+
+	        /**
+	         * 调整弧线段运动路径和右侧虚线小球
+	         * @private
+	         */
+
+	    }, {
+	        key: '_adjustMotionPath',
+	        value: function _adjustMotionPath() {
+	            var offset = _config.numConfig.strokeWidth / 2 + this.ballData.r + 1;
+	            var data = _utils2.default.calcBezierPath(this.leftPoint.x, this.leftPoint.y, this.leftControlPoint.x, this.leftControlPoint.y, this.controlCircle.cx, this.controlCircle.cy, this.rightControlPoint.x, this.rightControlPoint.y, this.rightPoint.x, this.rightPoint.y, offset);
+	            this.arcMotionPath = data.path;
+	            this.rightDashBallX = offset * Math.sin((-this.curDeg - 0.2) * _config.numConfig.radRatio) + data.finalX + this.rightMotionDataX;
+	            this.rightDashBallY = -offset * Math.cos((-this.curDeg - 0.2) * _config.numConfig.radRatio) + data.finalY - this.rightMotionDataY;
+	            this.rightDashBall.setCenter(this.rightDashBallX, this.rightDashBallY);
+	        }
+
+	        /**
+	         * 获取弧线右半段路径
+	         * @param {number} x1 右边弧线末点的坐标x
+	         * @param {number} y1 右边弧线末点的坐标y
+	         * @returns {string}
+	         * @private
+	         */
+
+	    }, {
+	        key: '_getArcPathStr',
+	        value: function _getArcPathStr(x1, y1) {
+	            return "M" + this.leftPoint.x + " " + this.leftPoint.y + "Q" + this.leftControlPoint.x + " " + this.leftControlPoint.y + " " + this.controlCircle.cx + " " + this.controlCircle.cy + "T" + x1 + " " + y1;
+	        }
+	    }]);
+
+	    return GalileoBevel;
+	}();
+
+	exports.default = GalileoBevel;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	(function () {
+	    var lastTime = 0;
+	    var vendors = ['webkit', 'moz'];
+	    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+	        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
+	        window.cancelAnimationFrame = window[vendors[x] + 'CancelAnimationFrame'] || // name has changed in Webkit
+	        window[vendors[x] + 'CancelRequestAnimationFrame'];
+	    }
+
+	    if (!window.requestAnimationFrame) {
+	        window.requestAnimationFrame = function (callback, element) {
+	            var currTime = new Date().getTime();
+	            var timeToCall = Math.max(0, 16.7 - (currTime - lastTime));
+	            var id = window.setTimeout(function () {
+	                callback(currTime + timeToCall);
+	            }, timeToCall);
+	            lastTime = currTime + timeToCall;
+	            return id;
+	        };
+	    }
+	    if (!window.cancelAnimationFrame) {
+	        window.cancelAnimationFrame = function (id) {
+	            clearTimeout(id);
+	        };
+	    }
+	})();
+
+	var Utils = function () {
+	    function Utils() {
+	        _classCallCheck(this, Utils);
+	    }
+
+	    _createClass(Utils, null, [{
+	        key: 'reportMouseCoordinates',
+
+	        /* 屏幕坐标转为svg坐标*/
+	        value: function reportMouseCoordinates(svgElement, pageX, pageY, svgChild) {
+	            var point = svgElement.createSVGPoint();
+	            point.x = pageX;
+	            point.y = pageY;
+	            point = _coordinateTransform(point, svgChild);
+	            return point;
+	        }
+	        //获取直线与圆的一个交点
+
+	    }, {
+	        key: 'getIntersectPoint',
+	        value: function getIntersectPoint(k, b, c, d, r) {
+	            var x = (Math.sqrt((Math.pow(k, 2) + 1) * Math.pow(r, 2) - Math.pow(c, 2) * Math.pow(k, 2) + (2 * c * d + 2 * b * c) * k - Math.pow(d, 2) - 2 * b * d - Math.pow(b, 2)) + (-d - b) * k - c) / (Math.pow(k, 2) + 1);
+	            var y = k * x + b;
+	            return { x: x, y: y };
+	        }
+	        //计算角度
+
+	    }, {
+	        key: 'calculateAngle',
+	        value: function calculateAngle(x1, y1, x2, y2, x3, y3) {
+	            if (x3 == null) {
+	                var x = x1 - x2,
+	                    y = y1 - y2;
+	                if (!x && !y) {
+	                    return 0;
+	                }
+	                return (180 + Math.atan2(-y, -x) * 180 / Math.PI + 360) % 360;
+	            } else {
+	                return Utils.calculateAngle(x1, y1, x3, y3) - Utils.calculateAngle(x2, y2, x3, y3);
+	            }
+	        }
+	    }, {
+	        key: 'debounce',
+	        value: function debounce(func, wait, immediate) {
+	            var timeout, result;
+	            return function () {
+	                var context = this,
+	                    args = arguments;
+	                var later = function later() {
+	                    timeout = null;
+	                    if (!immediate) result = func.apply(context, args);
+	                };
+	                var callNow = immediate && !timeout;
+	                clearTimeout(timeout);
+	                timeout = setTimeout(later, wait);
+	                if (callNow) result = func.apply(context, args);
+	                return result;
+	            };
+	        }
+	        //计算贝塞尔曲线路径
+
+	    }, {
+	        key: 'calcBezierPath',
+	        value: function calcBezierPath(x1, y1, x2, y2, x3, y3, x4, y4, x5, y5, offset) {
+	            var startX = 0;
+	            var startY = 0;
+	            var path = "";
+	            var t;
+	            var x, y, x11, y11, x12, y12, x21, y21, deg;
+	            for (var i = 0; i <= 1; i += 0.1) {
+	                t = i;
+	                x = getBezierX(x1, x2, x3, t);
+	                y = getBezierY(y1, y2, y3, t);
+	                x11 = x1 + (x2 - x1) * i;
+	                y11 = y1 + (y2 - y1) * i;
+	                x12 = x2 + (x3 - x2) * i;
+	                y12 = y2 + (y3 - y2) * i;
+	                deg = Utils.calculateAngle(x11, y11, x12, y12) - 180;
+	                if (i == 0) {
+	                    path += "M" + 0 + " " + 0;
+	                    startX = +offset * Math.sin(deg * Math.PI / 180) + x;
+	                    startY = -offset * Math.cos(deg * Math.PI / 180) + y;
+	                } else {
+	                    x21 = +offset * Math.sin(deg * Math.PI / 180) + x - startX;
+	                    y21 = -offset * Math.cos(deg * Math.PI / 180) + y - startY;
+	                    path += "L" + x21 + " " + y21;
+	                }
+	            }
+	            for (var j = 0; j <= 1; j += 0.1) {
+	                t = j;
+	                x = getBezierX(x3, x4, x5, t);
+	                y = getBezierY(y3, y4, y5, t);
+	                x11 = x3 + (x4 - x3) * j;
+	                y11 = y3 + (y4 - y3) * j;
+	                x12 = x4 + (x5 - x4) * j;
+	                y12 = y4 + (y5 - y4) * j;
+	                deg = Utils.calculateAngle(x11, y11, x12, y12) - 180;
+	                x21 = +offset * Math.sin(deg * Math.PI / 180) + x - startX;
+	                y21 = -offset * Math.cos(deg * Math.PI / 180) + y - startY;
+	                path += "L" + x21 + " " + y21;
+	            }
+	            return {
+	                path: path,
+	                finalX: x,
+	                finalY: y
+	            };
+
+	            function getBezierX(x1, x2, x3, t) {
+	                return x = Math.pow(1 - t, 2) * x1 + 2 * t * (1 - t) * x2 + Math.pow(t, 2) * x3;
+	            }
+
+	            function getBezierY(y1, y2, y3, t) {
+	                return Math.pow(1 - t, 2) * y1 + 2 * t * (1 - t) * y2 + Math.pow(t, 2) * y3;
+	            }
+	        }
+	    }]);
+
+	    return Utils;
+	}();
+
+	/* 获取svg对象的转化矩阵并求其逆矩阵*/
+
+
+	exports.default = Utils;
+	function _coordinateTransform(screenPoint, someSvgObject) {
+	    var CTM = someSvgObject.getScreenCTM();
+	    return screenPoint.matrixTransform(CTM.inverse());
+	}
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(5);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var MotionAnime = function () {
+	    function MotionAnime(ball, rightDashBall, container, ratio, initData) {
+	        _classCallCheck(this, MotionAnime);
+
+	        this.ball = ball;
+	        this.container = container;
+	        this.ratio = ratio;
+	        this.isAnimated = false;
+	        this.isPaused = false;
+	        this.rightDashBall = rightDashBall;
+	        this.scale = 1;
+	        _resetData.call(this);
+	        $.extend(true, this.data, initData || {});
+	        _initScene.call(this, this.data);
+	        _resetRecentData.call(this);
+	    }
+
+	    /**
+	     * 设置运动参数
+	     * @param options
+	     */
+
+
+	    _createClass(MotionAnime, [{
+	        key: "setMotionParams",
+	        value: function setMotionParams(options) {
+	            this.lx = options.lx;
+	            this.ly = options.ly;
+	            this.arc = options.arc;
+	            this.rx = options.rx;
+	            this.ry = options.ry;
+	            this.bevelAngle = options.bevelAngle;
+	            this.lt = options.lt;
+	            this.acrt = options.arct;
+	            this.rt = options.rt;
+	            this.motionsTime = [options.lt, options.arct, options.rt, options.rt, options.arct, options.lt];
+	            _setEasing.call(this, this.bevelAngle);
+	            this.motionEasing = [kity.Easing.easeInCubic, kity.Easing.linear, this.easingOut, this.easingIn, kity.Easing.linear, kity.Easing.easeOutCubic];
+	            _initAnime.call(this);
+	        }
+
+	        /**
+	         * 动画开始
+	         */
+
+	    }, {
+	        key: "start",
+	        value: function start() {
+	            var _this = this;
+
+	            this.isAnimated = true;
+	            this.isPaused = false;
+	            this.step = this.data.step || 0;
+	            _setMotionPromise.call(this, this.motions[this.step], _resetData.bind(this)).then(function () {
+	                return _setMotionPromise.call(_this, _this.motions[_this.step += 1]);
+	            }, function () {
+	                return _rejectPromise.call(_this);
+	            }).then(function () {
+	                return _setMotionPromise.call(_this, _this.motions[_this.step += 1]);
+	            }, function () {
+	                return _rejectPromise.call(_this);
+	            }).then(function () {
+	                return _setMotionPromise.call(_this, _this.motions[_this.step += 1]);
+	            }, function () {
+	                return _rejectPromise.call(_this);
+	            }).then(function () {
+	                return _setMotionPromise.call(_this, _this.motions[_this.step += 1]);
+	            }, function () {
+	                return _rejectPromise.call(_this);
+	            }).then(function () {
+	                return _setMotionPromise.call(_this, _this.motions[_this.step += 1]);
+	            }, function () {
+	                return _rejectPromise.call(_this);
+	            }).then(function () {
+	                _this.start();
+	            }, function () {});
+	        }
+
+	        /**
+	         * 设置小球
+	         * @param ball
+	         */
+
+	    }, {
+	        key: "setBall",
+	        value: function setBall(ball) {
+	            this.ball = ball;
+	        }
+
+	        /**
+	         * 恢复动画
+	         */
+
+	    }, {
+	        key: "resume",
+	        value: function resume() {
+	            this.isAnimated = true;
+	            this.isPaused = false;
+	            this.timeline ? this.timeline.play() : this.start();
+	            if (this.moveViewTL) {
+	                this.moveViewTL.play();
+	            }
+	        }
+
+	        /**
+	         * 暂停动画
+	         */
+
+	    }, {
+	        key: "pause",
+	        value: function pause() {
+	            this.isAnimated = false;
+	            this.isPaused = true;
+	            this.timeline.pause();
+	            if (this.moveViewTL) {
+	                this.moveViewTL.pause();
+	            }
+	            this.recentPausedData = this.getAnimeData();
+	        }
+
+	        /**
+	         * 结束动画
+	         */
+
+	    }, {
+	        key: "stop",
+	        value: function stop() {
+	            this.isAnimated = false;
+	            this.isPaused = false;
+	            this.timeline && this.timeline.stop();
+	            if (this.moveViewTL) {
+	                this.moveViewTL.stop();
+	                this.moveViewTL = null;
+	            }
+	            this.ballStepPos = null;
+	            this.ball.transform = null;
+	            this.step = 0;
+	            this.container.css("transform", "translate3d(0, 0, 0)");
+	            _resetData.call(this);
+	            _resetRecentData.call(this);
+	        }
+
+	        /**
+	         * 获取当前的动画参数
+	         * @returns {*}
+	         */
+
+	    }, {
+	        key: "getAnimeData",
+	        value: function getAnimeData() {
+	            if (this.isAnimated) {
+	                this.recentPausedData.isAnimated = true;
+	                return this.recentPausedData;
+	            }
+	            var curViewLen = this.moveViewTL ? this.moveViewTL.getValue() : 0;
+	            var time = this.timeline ? this.timeline.time : 0;
+	            return {
+	                step: this.step || 0,
+	                time: time,
+	                curTransform: this.ball.transform || '',
+	                stepTransform: this.ballStepPos || '',
+	                curViewLen: curViewLen,
+	                isAnimated: this.isAnimated,
+	                isPaused: this.isPaused,
+	                rightDashBallVisible: this.rightDashBall.getNode().style.display
+	            };
+	        }
+	    }, {
+	        key: "adjustView",
+	        value: function adjustView(scale) {
+	            var transform = this.container.css('transform');
+	            var viewX = parseFloat(transform.match(/matrix\(\d+, \d+, \d+, \d+, (.*), \d+\)/)[1]) * scale;
+	            this.container.css('transform', "translate3d(" + viewX + "px, 0px, 0px)");
+	        }
+	    }]);
+
+	    return MotionAnime;
+	}();
+
+	/**
+	 * 初始动画场景
+	 * @param data
+	 * @private
+	 */
+
+
+	function _initScene(data) {
+	    this.stepMatrix = null;
+	    this.stepTranslate = null;
+	    // 小球当前位置信息
+	    if (data.curTransform && data.curTransform.matrix) {
+	        var curM = data.curTransform.matrix.m;
+	        var curMaxtrix = new kity.Matrix(curM.a, curM.b, curM.c, curM.d, curM.e, curM.f);
+	        this.ball.setMatrix(curMaxtrix);
+	    }
+	    if (data.curTransform && data.curTransform.translate) {
+	        var curTranslate = data.curTransform.translate;
+	        this.ball.setTranslate(curTranslate);
+	    }
+	    // 小球在每个阶段起始的信息
+	    if (data.stepTransform && data.stepTransform.matrix) {
+	        var stepM = data.stepTransform.matrix.m;
+	        this.stepMatrix = new kity.Matrix(stepM.a, stepM.b, stepM.c, stepM.d, stepM.e, stepM.f);
+	    }
+	    if (data.stepTransform && data.stepTransform.translate) {
+	        this.stepTranslate = data.stepTransform.translate;
+	    }
+	    this.container.css('transform', 'translate3d(' + -data.curViewLen + 'px, 0, 0)');
+	}
+
+	/**
+	 * 初始化动画器
+	 * @private
+	 */
+	function _initAnime() {
+	    var _this2 = this;
+
+	    this.leftMotion = new kity.TranslateAnimator(this.lx, this.ly);
+	    this.leftMotionReverse = this.leftMotion.reverse();
+	    this.arcMotion = new kity.Animator(0.0001, 0.9999, function (target, value) {
+	        var path = _this2.arc;
+	        var point = kity.g.pointAtPath(path, value);
+	        target.setTranslate(point.x, point.y);
+	    });
+	    this.arcMotionReverse = this.arcMotion.reverse();
+	    this.rightMotion = new kity.TranslateAnimator(this.rx, -this.ry);
+	    this.rightMotionReverse = this.rightMotion.reverse();
+	    this.motions = [this.leftMotion, this.arcMotion, this.rightMotion, this.rightMotionReverse, this.arcMotionReverse, this.leftMotionReverse];
+	    for (var i = 0; i < this.motions.length; i++) {
+	        this.motions[i].params = {
+	            time: this.motionsTime[i],
+	            easing: this.motionEasing[i]
+	        };
+	    }
+	    this.isMoveView = this.bevelAngle < _config.numConfig.moveViewDeg;
+	    if (this.isMoveView) {
+	        this.viewMoveLen = (this.rx - _config.numConfig.viewMoveDescrease) * this.ratio;
+	        this.moveView = new kity.Animator(0, this.viewMoveLen, function (target, value) {
+	            target.style.transform = 'translate3d(' + -value * _this2.scale + 'px, 0, 0)';
+	        });
+	        this.moveBackView = this.moveView.reverse();
+	    }
+	}
+
+	/**
+	 * 设置动画器promise
+	 * @param motion
+	 * @param fn
+	 * @returns {Promise}
+	 * @private
+	 */
+	function _setMotionPromise(motion, fn) {
+	    var _this3 = this;
+
+	    switch (this.step) {
+	        case 2:
+	            _scrollView.call(this);
+	            break;
+	        case 3:
+	            this.container.trigger('reachRight');
+	            _scrollView.call(this, true);
+	            break;
+	    }
+	    return new Promise(function (resolve, reject) {
+	        _this3.ballStepPos = JSON.parse(JSON.stringify(_this3.ball.transform));
+	        if (!motion) {
+	            reject();
+	            _this3.start();
+	        } else {
+	            _this3.timeline = motion.create(_this3.ball, motion.params.time, motion.params.easing, function () {
+	                resolve();
+	            });
+	            _this3.timeline.play();
+	            // 设置初始参数
+	            if (_this3.data.time !== 0) {
+	                _this3.timeline.time = _this3.data.time;
+	                _this3.ball.setMatrix(_this3.stepMatrix);
+	                _this3.ball.setTranslate(_this3.stepTranslate);
+	            }
+	            _this3.timeline.on('stop', function () {
+	                reject();
+	            });
+	        }
+	        fn && fn.call(_this3);
+	    });
+	}
+
+	function _rejectPromise() {
+	    return new Promise(function (resolve, reject) {
+	        reject();
+	    });
+	}
+
+	/**
+	 * 视图滚动
+	 * @param isBackward 是否是返回方向
+	 * @private
+	 */
+	function _scrollView(isBackward) {
+	    if (!isBackward) {
+	        if (this.isMoveView) {
+	            this.moveViewTL = this.moveView.create(this.container.get(0), this.rt, this.easingOut);
+	            this.moveViewTL.play();
+	        }
+	    } else {
+	        if (this.isMoveView) {
+	            this.moveViewTL = this.moveBackView.create(this.container.get(0), this.rt, this.easingIn);
+	            this.moveViewTL.play();
+	        }
+	    }
+	    if (this.data.time !== 0 && this.isMoveView) {
+	        this.moveViewTL.time = this.data.time;
+	    }
+	}
+
+	/**
+	 * 根据右侧斜面角度来调整动画缓动
+	 * @param deg
+	 * @private
+	 */
+	function _setEasing(deg) {
+	    if (deg >= 50) {
+	        this.easingIn = kity.Easing.easeInCubic;
+	        this.easingOut = kity.Easing.easeOutCubic;
+	    } else if (deg > 30) {
+	        this.easingIn = kity.Easing.easeInCubic;
+	        this.easingOut = kity.Easing.easeOutCubic;
+	    } else if (deg > 11) {
+	        this.easingIn = kity.Easing.easeInCubic;
+	        this.easingOut = kity.Easing.easeOutCubic;
+	    } else if (deg > 5) {
+	        this.easingIn = kity.Easing.easeInCubic;
+	        this.easingOut = kity.Easing.easeOutCubic;
+	    } else if (deg > 0.1) {
+	        this.easingIn = kity.Easing.easeInQuad;
+	        this.easingOut = kity.Easing.easeOutQuad;
+	    } else {
+	        this.easingIn = kity.Easing.linear;
+	        this.easingOut = kity.Easing.linear;
+	    }
+	}
+
+	/**
+	 * 重置推送过来的信息
+	 * @private
+	 */
+	function _resetData() {
+	    this.data = {
+	        curTransform: '',
+	        stepTransform: '',
+	        step: 0,
+	        time: 0,
+	        curViewLen: 0
+	    };
+	}
+	/**
+	 * 重置阶段的初始信息
+	 * @private
+	 */
+	function _resetRecentData() {
+	    this.recentPausedData = {
+	        step: 0,
+	        time: 0,
+	        curTransform: '',
+	        stepTransform: '',
+	        curViewLen: 0,
+	        isAnimated: false,
+	        isPaused: false
+	    };
+	}
+
+	exports.default = MotionAnime;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * deg 左边斜面的角度
+	 * lt 小球在左边斜面运动时间
+	 * arct 小球在弧线段运动时间
+	 * debounceTime 防止快速点击的时间参数
+	 * moveViewDeg 需要视图移动的临界角度
+	 * viewMoveDescrease 视图移动和小球横向移动的差值
+	 * viewBoxW svg.viewBox.width
+	 * viewBoxH svg.viewBox.height
+	 * strokeWidth 斜面的宽度
+	 * ballR 小球的半径
+	 * radRatio 转弧度系数
+	 * topH 右边斜面的延伸负相关
+	 *
+	 */
+	var numConfig = {
+	  deg: 45,
+	  lt: 2050,
+	  arct: 320,
+	  debounceTime: 150,
+	  moveViewDeg: 32,
+	  viewMoveDescrease: 100,
+	  viewBoxW: 1920,
+	  viewBoxH: 730,
+	  strokeWidth: 17,
+	  ballR: 37,
+	  radRatio: Math.PI / 180,
+	  topH: 170
+	};
+
+	exports.numConfig = numConfig;
+
+/***/ })
+/******/ ]);]]></presenter><resources><file src="./resources/GalileoBevel.json"/><file src="./resources/wood/images/bg_board.png"/><file src="./resources/wood/images/icon_rotate_active.png"/><file src="./resources/wood/images/icon_rotate_normal.png"/><file src="./resources/wood/images/icon_rotate.png"/><file src="./resources/wood/images/redball.png"/><file src="./resources/wood/images/redballlight.png"/></resources></addon>

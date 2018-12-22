@@ -1,0 +1,96 @@
+<div class="ndui-pop com_pop com_pop_big">
+    <div class="ndui-pop-mask"></div>
+    <div class="ndui-pop-square ">
+
+        <!-- 弹窗内容区 -->
+        <div class="ndui-pop-wrap">
+
+            <!--关闭按钮左上 comui_btn_lt
+        右上 comui_btn_rt
+        左下 comui_btn_lb
+        右下 comui_btn_rb-->
+        <a href="###" class="comui_btn_close comui_btn_rb ndui-pop-close right" v-on:click="onClose"></a>
+
+        <!--关闭按钮左上 comui_btn_lt
+        右上 comui_btn_rt
+        左下 comui_btn_lb 
+        右下 comui_btn_rb-->
+        <a href="###" class="comui_btn_close comui_btn_lb ndui-pop-close left" v-on:click="onClose"></a>
+
+    <div class="single_report_detail_wrap">
+        <div class="content_hd">
+            <span>答题报告</span>
+        </div>
+        <div class="content_box">
+            <div class="box_left">
+                <div class="left_top">
+                    <div class="img_box">
+                        <img class="user_avatar" :src="reportinfo.student.headIcon">
+                        <span class="user_name">{{reportinfo.student.studentName}}</span>
+                    </div>
+                </div>
+                <div class="left_bottom">
+                    <div class="answer_detail">
+                        <div class="line">
+                            <span class="fix_text">得分：</span><span class="score" :class="{'color_a':reportinfo.student.level == 'A','color_b':reportinfo.student.level == 'B','color_c':reportinfo.student.level == 'C','color_d':reportinfo.student.level == 'D','color_e':reportinfo.student.level == 'E'}">{{reportinfo.student.level}}</span>
+                            <!--abc等级分别切换类color_a, color_b, color_c, color_d-->
+                        </div>
+                        <div class="line">
+                            <span class="fix_text">优秀率：</span><span class="percent color_green">{{reportinfo.student.excellPercent}}</span>
+                            <!--优秀: color_green 其次：color_orange 再其次: color_red-->
+                        </div>
+                        <div class="line">
+                            <span class="fix_text">用时：</span><span class="time">{{reportinfo.student.time}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box_right">
+                <div class="box_right_content scrollbar_style_light_color">
+                    <ul>
+                        <li class="detail_info_list" v-for='(result,index) in reportinfo.student.result'>
+                            <div class="icon_score_box">
+                                <span class="icon_score" :class="{'icon_score_a':result.finalScoreLevel == 'A','icon_score_b':result.finalScoreLevel == 'B','icon_score_c':result.finalScoreLevel == 'C','icon_score_d':result.finalScoreLevel == 'D','icon_score_e':result.finalScoreLevel == 'E'}"></span>
+                                <!--四种分数：A: icon_score_a  B: icon_score_b  C: icon_score_c  D: icon_score_d-->
+                            </div>
+                            <div class="sentences_info_box">
+                                <div class="sentences">
+                                    <span class="text">{{result.content}}</span>
+                                </div>
+                                <div class="comment_box">
+                                    <div class="line">
+                                        <span class="fix_text">流畅性：</span><span class="score" :class="{'color_a':result.fluencyLevel == 'A','color_b':result.fluencyLevel == 'B','color_c':result.fluencyLevel == 'C','color_d':result.fluencyLevel == 'D','color_e':result.fluencyLevel == 'E'}">{{result.fluencyLevel}}</span>
+                                        <!--abc等级分别切换类color_a, color_b, color_c, color_d-->
+                                    </div>
+                                    <div class="line">
+                                        <span class="fix_text">完整性：</span><span class="score" :class="{'color_a':result.integrityLevel == 'A','color_b':result.integrityLevel == 'B','color_c':result.integrityLevel == 'C','color_d':result.integrityLevel == 'D','color_e':result.integrityLevel == 'E'}">{{result.integrityLevel}}</span>
+                                    </div>
+                                    <div class="line">
+                                        <span class="fix_text">准确性：</span><span class="score" :class="{'color_a':result.accuracyLevel == 'A','color_b':result.accuracyLevel == 'B','color_c':result.accuracyLevel == 'C','color_d':result.accuracyLevel == 'D','color_e':result.accuracyLevel == 'E'}">{{result.accuracyLevel}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="icon_btn_video_box">
+                                <a href="javascript:;" class="btn_listen_video" :class="{'btn_play':!result.playing, 'btn_stop':result.playing, 'hide_dom':!canplay}" v-on:click="playAudio(index)"></a><!--btn_play btn_stop-->
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!--提示框-->
+            <div class="dialog_mask" style="position:absolute;left:0;right:0;height:100%;z-index:999;" :class='{"hide_dom":!popMsg}'>
+                <div style="font-size: 1.667em;margin-top: 7.5em;margin-left:11.88883em;margin-right:11.88883em;background: rgba(0,0,0,0.5);padding-bottom: 2em;padding-top: 2em;border-radius: .667em;color: #f5f5f5;">{{msg}}</div>
+            </div>
+        </div>
+        <div class="content_ft">
+            <audio ref="audioplayer" >您的浏览器不支持audio</audio>
+            <a href="javascript:;" class="ft_btn pre_stu" :class='{"disabled":reportinfo.preindex < 0 | popMsg}' v-on:click="preStu"><span class="ft_font">上一个学生</span></a>
+            <a href="javascript:;" class="ft_btn next_stu" :class='{"disabled":reportinfo.nextindex < 0 | popMsg}' v-on:click="nextStu"><span class="ft_font">下一个学生</span></a>
+        </div>
+    </div>
+    
+
+        </div>
+        <!-- /弹窗内容区 -->
+    </div>
+</div>

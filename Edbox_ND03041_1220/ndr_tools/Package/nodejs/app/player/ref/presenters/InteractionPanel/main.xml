@@ -1,0 +1,173 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='InteractionPanel'>
+<properties>
+
+                <property name="text" displayName="文本" type="html" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div id="text-area" class="text-area txt"></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+
+(function () {
+    var Presenter = BasicPresenter.extend({
+        // 元数据信息
+        metaInfo: {
+            name: 'InteractionPanel',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        // Presenter的初始化方法
+        $init: function () {
+            this._super();
+            this.status = {
+                media: {},
+                scrollTop: 0
+            };
+            this.$formulaDefer = $.Deferred();
+        },
+        // Presenter对外暴露的方法
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            /**
+             * 获取课堂状态
+             */
+            getClassroomStatus: function () {
+                var $defer = $.Deferred();
+                var _status = $.extend(true, {}, this.parent.status);
+                $defer.resolve(_status);
+                return $defer.promise();
+            },
+            /**
+             * 设置课堂状态 
+             */
+            setClassroomStatus: function (status) {
+                this.parent.status = status;
+                for (var key in status.media) {
+                    if (status.media.hasOwnProperty(key)) {
+                        var _media = status.media[key];
+                        var _currentTime = _media.currentTime - 1 < 0 ? 0 : _media.currentTime - 1;
+                        NDMediaPlayer.mediaSkip(_media.mediaType, _media.index, _currentTime);
+                    }
+                }
+                this.parent.$formulaDefer.done(function () {
+                    this.parent.$view.parent().scrollTop(status.scrollTop);
+                    //通知数据恢复完成
+                    this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: this.parent.metaInfo.name });
+                }.bind(this));
+            },
+            /**
+             * 清除课堂状态
+             */
+            clearClassroomStatus: function () {
+
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        // 以下开始为icPlayer的生命周期方法
+        run: function (view, model) {
+            this.$view = $(view);
+            this._render(view, model);
+            this._renderFormula(view);
+        },
+        // 以下开始为Presenter的私有方法
+        _render: function (view, model) {
+            var self = this;
+            var textArea = $(view).find('.text-area');
+            textArea.html(model.text);
+            NDMediaPlayer.render(textArea, {
+                containerId: 'text-area',
+                lang: icCreatePlayer.lang,
+                img: {
+                    render: true,
+                    modal: true
+                },
+                onFullScreenChange: function (isFull) {
+                    self.$dispatchEvent('HandWriteDisplayChange', PresenterEventType.IC_PLAYER_EVENT, {
+                        'isFull': isFull
+                    });
+                }
+            });
+            if (player.getPlayerServices().getRuntime() === icCreatePlayer.RUNTIME.TEACHER_PC) {
+                // 多媒体进度监控
+                NDMediaPlayer.mediaOnTimeupdate(function (o) {
+                    var key = o.mediaType + '-' + o.index;
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = o.currentTime;
+                    self.playerController.startFlow('css_classroom_status_changed', {
+                        presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                    });
+                });
+                // com_lay_panel滚动条监控
+                $(view).parent().scroll(function (e) {
+                    self.status.scrollTop = $(this).scrollTop();
+                    self.playerController.startFlow('css_classroom_status_changed', {
+                        presenterCode: self.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                    });
+                });
+            }
+        },
+        _renderFormula: function (view) {
+            var self = this;
+            var textArea = $(view).find('.text-area');
+            var maxWidth = textArea.width();
+            textArea.hide();
+            MathJax.Hub.Queue(['Typeset', MathJax.Hub, textArea[0]]);
+            MathJax.Hub.Queue(['End', function () {
+                textArea.show();
+                // 宽度超出后，设置百分比缩放，再重新绘制
+                textArea.find('.math-tex').each(function () {
+                    var math = this;
+                    math.style.display = 'inline';
+                    var w = math.offsetWidth;
+                    math.style.display = '';
+                    if (w > maxWidth) {
+                        math.style.fontSize = Math.floor(maxWidth / w * 100) + '%'
+                    }
+                    MathJax.Hub.Queue(['Rerender', MathJax.Hub, math]);
+                });
+                self.$formulaDefer.resolve();
+            }]);
+        }
+    });
+
+    window.AddonInteractionPanel_create = function () {
+        return new Presenter();
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

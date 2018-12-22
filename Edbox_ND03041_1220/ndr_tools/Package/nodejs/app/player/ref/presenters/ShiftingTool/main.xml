@@ -1,0 +1,816 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="out_frame" version="1.0.8"/><javaScript name="tools_common" version="1.0.0"/><javaScript name="knockout" version="3.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .shiftingtool{width:100%;height:100%;position:relative;background:#bfd3e2;padding:3.83333em 5.33333em 7em}.exam_skin_wood .shiftingtool .shiftingtool_wrapper{width:100%;height:100%;position:relative;background:#b8cdde;text-align:center}.exam_skin_wood .shiftingtool .shiftingtool_wrapper:before{content:"";height:100%;display:inline-block;vertical-align:middle}.exam_skin_wood .shiftingtool .shiftingtool_content{display:inline-block;vertical-align:middle;width:47.5em;height:29.16667em;position:relative;background:url(resources/wood/images/shiftingtool_coordinate.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper{display:inline-block;width:32.79167em;height:21.33333em;bottom:3.83333em;left:4.75em}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.rect_box_primary .rect_item{border-color:#2484cc;background-color:rgba(35,131,204,.1)}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.rect_box_selects .rect_item{border-color:#fffc00;background-color:#2383cc}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.trapezoidal_rect_select .trapezoidal_item{border-right:32.66667em solid #ff8213}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.trapezoidal_rect_select .rect_item{border-color:#fffc00;background-color:#2383cc}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.trapezoidal_select .trapezoidal_item{border-right:32.66667em solid #ff8213}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper.trapezoidal_select .rect_item{border-color:#fffc00;background-color:rgba(35,131,204,0)}.exam_skin_wood .shiftingtool .trapezoidal_item{display:inline-block;width:0;height:21.5em;border-right:32.70833em solid transparent;border-top:14.41667em solid transparent;position:absolute;bottom:0;left:0}.exam_skin_wood .shiftingtool .triangle_item{position:absolute;top:-2.79167em;left:9.79167em;display:inline-block;width:9.58333em;height:4.54167em;background:url(resources/wood/images/shiftingtool_triangle_bg.png) 50% no-repeat;background-size:100% auto;background-position:bottom}.exam_skin_wood .shiftingtool .trapezoidal_select .triangle_item{background-position:top}.exam_skin_wood .shiftingtool .triangle_item:after{content:" ";display:inline-block;width:3.66667em;height:6em;background:url(resources/wood/images/shiftingtool_arrow.png) 50% no-repeat;background-size:100% auto;position:absolute;top:4.58333em;left:4.75em}.exam_skin_wood .shiftingtool .rect_box{display:inline-block;width:100%;position:absolute;bottom:0;left:-1px}.exam_skin_wood .shiftingtool .rect_box .rect_item.shapes_select{position:relative}.exam_skin_wood .shiftingtool .rect_box .rect_item.shapes_select:before{content:"";position:absolute;left:-2px;top:-2px;right:-2px;bottom:-2px;background-color:#2383cc;border:2px solid #fffc00;pointer-events:none}.exam_skin_wood .shiftingtool .rect_item{display:inline-block;border:2px solid transparent;border-right:0;vertical-align:bottom}.exam_skin_wood .shiftingtool .rect_item:last-child{border-right:2px solid transparent;pointer-events:none}.exam_skin_wood .shiftingtool .shiftingtool_action_bar{position:absolute;left:0;bottom:0;width:100%;padding:1.08333em 2.08333em;text-align:center}.exam_skin_wood .shiftingtool .shiftingtool_action_bar .st_btns{height:2.66667em;line-height:2.66667em}.exam_skin_wood .shiftingtool .shiftingtool_action_bar .st_text{font-size:1.25em}.exam_skin_wood .shiftingtool .shiftingtool_switch_box{display:inline-block;height:3.16667em;line-height:3.16667em;border:1px solid #ff0;vertical-align:middle}.exam_skin_wood .shiftingtool .shiftingtool_switch{display:inline-block;vertical-align:middle}.exam_skin_wood .shiftingtool .shiftingtool_foot{position:absolute;left:0;bottom:0;width:100%;height:5.83333em;padding:0 5.33333em;background:#cfdee9;z-index:9;text-align:right}.exam_skin_wood .shiftingtool .shiftingtool_number_list{display:inline-block;height:100%;text-align:right;padding-right:2.08333em;vertical-align:middle}.exam_skin_wood .shiftingtool .shiftingtool_number{display:inline-block;min-width:5.41667em;height:5.83333em;padding-top:.16667em}.exam_skin_wood .shiftingtool .shiftingtool_number.ui_btn_active .tool_operate_img.item_1{background-position:0 bottom}.exam_skin_wood .shiftingtool .shiftingtool_number.ui_btn_active .tool_operate_img.item_2{background-position:-3.33333em bottom}.exam_skin_wood .shiftingtool .shiftingtool_number.ui_btn_active .tool_operate_img.item_3{background-position:-6.66667em bottom}.exam_skin_wood .shiftingtool .shiftingtool_number.ui_btn_active .tool_operate_img.item_4{background-position:-10em bottom}.exam_skin_wood .shiftingtool .shiftingtool_number.ui_btn_active .tool_operate_img.item_5{background-position:-13.33333em bottom}.exam_skin_wood .shiftingtool .tool_operate_img{display:block;margin:.54167em auto 0;width:2.91667em;height:2.91667em;margin-top:.54167em;background:url(resources/wood/images/shiftingtool_number_btns.png) no-repeat;background-size:auto 6.25em}.exam_skin_wood .shiftingtool .tool_operate_img.item_1{background-position:0 top}.exam_skin_wood .shiftingtool .tool_operate_img.item_2{background-position:-3.33333em top}.exam_skin_wood .shiftingtool .tool_operate_img.item_3{background-position:-6.66667em top}.exam_skin_wood .shiftingtool .tool_operate_img.item_4{background-position:-10em top}.exam_skin_wood .shiftingtool .tool_operate_img.item_5{background-position:-13.33333em top}.exam_skin_wood .shiftingtool .tool_operate_text{padding:0 1em;text-align:center;color:#292525;display:block;font-size:1.16667em}.exam_skin_wood .shiftingtool .shiftingtool_control_list{display:inline-block;min-width:16.25em;height:100%;text-align:center;position:relative;vertical-align:middle}.exam_skin_wood .shiftingtool .shiftingtool_control_list:before{content:"";display:inline-block;width:0;height:100%;border-left:.04167em solid #e6f3fc;border-right:.04167em solid #b3c1ca;position:absolute;left:0}.exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar{display:inline-block}.exam_skin_wood .shiftingtool .shiftingTool_main{display:inline-block;width:32.79167em;height:21.33333em;position:absolute;bottom:3.83333em;left:4.86em}.exam_skin_wood .shiftingtool .shiftingTool_main .line{position:absolute;z-index:10;bottom:7em;left:-2px;display:block;width:36.75em;height:.208333em;background:url(resources/wood/images/shiftingtool_coordinate_line.png) 50% no-repeat;background-size:100% 100%;-webkit-transform:rotate(-24deg);transform:rotate(-24deg);-webkit-transform-origin:0 0;transform-origin:0 0}.exam_skin_wood .shiftingtool .shiftingtool_shapes_wrapper{position:absolute;width:100%;height:100%;left:0;bottom:0}.exam_skin_wood .shiftingtool .triangle_item{display:none}.exam_skin_wood .shiftingtool .partEnlarge .triangle_item{display:inline-block}.exam_skin_wood .shiftingtool .triangle_item.p15{top:-3.15em;left:8.55em}.exam_skin_wood .shiftingtool .triangle_item.p30{top:-3em;left:7.8em}.exam_skin_wood .shiftingtool .triangle_item.p60{top:-3.5em;left:8.5em}.exam_skin_wood .shiftingtool .triangle_item.p100{top:-3.32em;left:8em}.exam_skin_wood .shiftingtool .rect_box{-webkit-transform-origin:bottom left;transform-origin:bottom left}.exam_skin_wood .shiftingtool .rect_item:last-child{border-right:0}.typefaces_long .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar{vertical-align:top;margin-top:.5em;padding-top:.6em}.typefaces_long .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar .com_applicationset_switch{margin-bottom:.3em}.typefaces_long .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar .tool_operate_text{margin-top:.2em}.typefaces_ru_RU .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar{vertical-align:top;margin-top:.5em;padding-top:.6em}.typefaces_ru_RU .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar .com_applicationset_switch{margin-bottom:.3em}.typefaces_ru_RU .exam_skin_wood .shiftingtool .shiftingtool_control_list .tool_operate_bar .tool_operate_text{margin-top:.2em}.exam_skin_wood .shiftingtool .tool_operate_text{padding:0 1em;text-align:right;color:#292525;display:block;font-size:1.16667em}.exam_skin_wood .shiftingtool .shiftingtool_control_list{display:inline-block;min-width:16.25em;height:100%;text-align:center;vertical-align:middle;position:relative}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="shiftingtool"><div class="shiftingtool_wrapper"><div class="shiftingtool_content"><div class="shiftingTool_main _shiftingMain"><div class="line _line"></div></div></div><div class="shiftingtool_action_bar hide_dom _shiftingtool_action_bar"><div class="action_button_list shiftingtool_action_btns"><a href="javascript:;" class="com_btns btns-primary st_btns _selectAllRect"><span class="btns-primary-txt st_text" data-bind="text:selectAllRect">选中全部小矩形</span> </a><a href="javascript:;" class="com_btns btns-primary st_btns _selectTrapezium"><span class="btns-primary-txt st_text" data-bind="text:selectTrapezium">选中梯形</span></a></div></div></div><div class="shiftingtool_foot"><div class="shiftingtool_number_list _selectNum"><a href="javascript:;" class="shiftingtool_number" data-select="p5"><i class="tool_operate_img item_1"></i> <span class="tool_operate_text">5<em data-bind="text: part">份</em></span> </a><a href="javascript:;" class="shiftingtool_number" data-select="p15"><i class="tool_operate_img item_2"></i> <span class="tool_operate_text">15<em data-bind="text: part">份</em></span> </a><a href="javascript:;" class="shiftingtool_number" data-select="p30"><i class="tool_operate_img item_3"></i> <span class="tool_operate_text">30<em data-bind="text: part">份</em></span> </a><a href="javascript:;" class="shiftingtool_number" data-select="p60"><i class="tool_operate_img item_4"></i> <span class="tool_operate_text">60<em data-bind="text: part">份</em></span> </a><a href="javascript:;" class="shiftingtool_number" data-select="p100"><i class="tool_operate_img item_5"></i> <span class="tool_operate_text">100<em data-bind="text: part">份</em></span></a></div><div class="shiftingtool_control_list hide_visibility _shiftingtool_control_list"><a href="javascript:;" class="tool_operate_bar _partEnlarge"><label class="com_applicationset_switch _com_applicationset_switch"><input type="checkbox"></label><span class="tool_operate_text" data-bind="text: partEnlarge">局部放大</span> </a><a href="javascript:;" class="tool_operate_bar tool_btns_clean _reset"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_reset"></i> </span><span class="tool_operate_text" data-bind="text: reset">重置</span></a></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(2);
+	__webpack_require__(3);
+	module.exports = __webpack_require__(4);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _MainShifting = __webpack_require__(2);
+
+	var _MainShifting2 = _interopRequireDefault(_MainShifting);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var ctrl = {};
+	  var i18nData = {};
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'ShiftingTool',
+	      type: PresenterType.PRESENTER_COMPONENT,
+	      subtype: ''
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	    },
+	    /**
+	     * Presenter对外暴露的方法
+	     */
+	    _service_: {
+	      constructor: function constructor(parent) {
+	        this.parent = parent;
+	      },
+	      setLocationProperties: function setLocationProperties(properties) {
+	        i18nData = properties;
+	      },
+	      getExtendData: function getExtendData() {
+	        return this.parent.shiftingMain.getData();
+	      },
+	      getQuestionInfo: function getQuestionInfo() {
+	        var url = '';
+	        try {
+	          url = JSON.stringify(ctrl.url);
+	        } catch (e) {
+
+	          console.log('json stringify failed');
+	        }
+	        return {
+	          'id': ctrl.questionId,
+	          'type_code': 'ShiftingTool',
+	          'type_name': i18nData['shiftingTool'] || '位移工具',
+	          'url': '"' + url + '"',
+	          'notExistStatistics': true,
+	          'noNeedQuizProgress': true
+	        };
+	      }
+
+	    },
+	    getService: function getService() {
+	      this._service_.constructor(this);
+	      return this._service_;
+	    },
+	    /****以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      var that = this;
+	      that.$view = $(view);
+	      that.model = model;
+
+	      ctrl.moduleId = model.ID;
+	      ctrl.questionId = model.question_id;
+	      ctrl.url = model.question_url;
+
+	      that._initComponent();
+	      that.helper = {
+	        'shiftingMain': that.$view.find('._shiftingMain'),
+	        'selectAllRect': that.$view.find('._selectAllRect'),
+	        'selectTrapezium': that.$view.find('._selectTrapezium'),
+	        'partEnlarge': that.$view.find('._partEnlarge'),
+	        'reset': that.$view.find('._reset'),
+	        'selectNum': that.$view.find('._selectNum'),
+	        'selectNumAEle': that.$view.find('._selectNum a'),
+	        'shiftingtool_action_bar': that.$view.find('._shiftingtool_action_bar'),
+	        'shiftingtool_control_list': that.$view.find('._shiftingtool_control_list'),
+	        'com_applicationset_switch': that.$view.find('._com_applicationset_switch')
+	      };
+
+	      var viewFontSize = that._getFontSize();
+	      var option = that._getOptions(viewFontSize);
+	      /*减去父元素右边框*/
+	      that._setLinePos(viewFontSize);
+	      var parentWidth = that._getParentWidth(viewFontSize);
+
+	      // require(['MainShifting'], function (MainShifting) {
+
+	      // })
+	      if (that.model.__ExtendModel && that.model.__ExtendModel._curIndex) {
+	        that.helper.shiftingtool_action_bar.removeClass('hide_dom');
+	        that.helper.shiftingtool_control_list.removeClass('hide_visibility');
+	        for (var i = 0; i < that.helper.selectNumAEle.length; i++) {
+	          var aEle = that.helper.selectNumAEle.eq(i);
+	          var index = aEle.attr('data-select');
+	          if (index === that.model.__ExtendModel._curIndex) {
+	            aEle.addClass('ui_btn_active');
+	          } else {
+	            aEle.removeClass('ui_btn_active');
+	          }
+	        }
+	        // that.helper.selectNumAEle.removeClass('ui_btn_active');
+	        // that.helper.selectNumAEle.eq(that.model.__ExtendModel._curIndex).addClass('ui_btn_active');
+	      } else {
+	        that.helper.shiftingtool_action_bar.addClass('hide_dom');
+	        that.helper.shiftingtool_control_list.addClass('hide_visibility');
+	      }
+
+	      $('._shiftingMain').on('change', function (type) {
+	        if (that.shiftingMain.getHasSelectAllRect()) {
+	          that.helper.selectAllRect.addClass('ui_btn_active');
+	        } else {
+	          that.helper.selectAllRect.removeClass('ui_btn_active');
+	        }
+
+	        if (that.shiftingMain.getHasSelectTrapezium()) {
+	          that.helper.selectTrapezium.addClass('ui_btn_active');
+	        } else {
+	          that.helper.selectTrapezium.removeClass('ui_btn_active');
+	        }
+
+	        if (that.shiftingMain.getHasPartEnlarge()) {
+	          that.helper.com_applicationset_switch.addClass('checked');
+	        } else {
+	          that.helper.com_applicationset_switch.removeClass('checked');
+	        }
+	      });
+	      ko.applyBindings(i18nData, that.$view.get(0));
+	      that._bindEvent();
+	      that.shiftingMain = new _MainShifting2.default();
+	      that.shiftingMain.create('._shiftingMain', option, that.model.__ExtendModel, parentWidth);
+	    },
+	    pageShow: function pageShow(view, model) {},
+	    pageLeave: function pageLeave() {
+	      this._unbindEvent();
+	      this.shiftingMain = null;
+	    },
+	    __interface: {
+	      resizeScreen: function resizeScreen(data) {
+	        // var ratio = parseInt(data.ratio.split('/')[0]) / parseInt(data.ratio.split('/')[1])
+
+	        var viewFontSize = this._getFontSize();
+	        this._setLinePos(viewFontSize);
+	        var parentWidth = this._getParentWidth(viewFontSize);
+	        var option = this._getOptions(viewFontSize);
+	        var curIndex = this.shiftingMain._curIndex;
+	        this.shiftingMain.updateInitData(option, parentWidth);
+	        for (var i in option) {
+	          if (i !== curIndex) {
+	            if (this.shiftingMain._shiftings[i]) {
+	              delete this.shiftingMain._shiftings[i];
+	            }
+	          }
+	        }
+	        if (curIndex) {
+	          this.shiftingMain._shiftings[curIndex].onResize(option[curIndex].v_tGragh, parentWidth);
+	        }
+	      }
+	    },
+	    destroy: function destroy() {},
+	    /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	    getState: function getState() {},
+	    setState: function setState(state, options) {},
+	    /****以下开始为Presenter的私有方法*****/
+	    _initComponent: function _initComponent() {},
+	    _getFontSize: function _getFontSize() {
+	      var viewFontSize = this.helper.shiftingMain.css('font-size');
+	      return parseFloat(viewFontSize.substring(0, viewFontSize.length - 2));
+	    },
+	    _setLinePos: function _setLinePos(viewFontSize) {
+	      this.$view.find('._line').css('bottom', 7 * viewFontSize - 0.8 + 'px');
+	    },
+	    _getParentWidth: function _getParentWidth(viewFontSize) {
+	      return 32.79167 * viewFontSize - 2;
+	    },
+	    _getOptions: function _getOptions(viewFontSize) {
+	      return {
+	        'p5': {
+	          'num': 5,
+	          'v_tGragh': {
+	            'degree': 24,
+	            'pos': { x: 0, y: 7 * viewFontSize }
+	          }
+	        },
+	        'p15': {
+	          'num': 15,
+	          'v_tGragh': {
+	            'degree': 24,
+	            'pos': { x: 0, y: 7 * viewFontSize }
+	          }
+	        },
+	        'p30': {
+	          'num': 30,
+	          'v_tGragh': {
+	            'degree': 24,
+	            'pos': { x: 0, y: 7 * viewFontSize }
+	          }
+	        },
+	        'p60': {
+	          'num': 60,
+	          'v_tGragh': {
+	            'degree': 24,
+	            'pos': { x: 0, y: 7 * viewFontSize }
+	          }
+	        },
+	        'p100': {
+	          'num': 100,
+	          'v_tGragh': {
+	            'degree': 24,
+	            'pos': { x: 0, y: 7 * viewFontSize }
+	          }
+	        }
+	      };
+	    },
+	    _bindEvent: function _bindEvent() {
+	      var that = this;
+	      /*选择份数*/
+	      that.helper.selectNum.on('click', 'a', function (event) {
+	        if (that.helper.shiftingtool_action_bar.hasClass('hide_dom')) {
+	          that.helper.shiftingtool_action_bar.removeClass('hide_dom');
+	        }
+	        if (that.helper.shiftingtool_control_list.hasClass('hide_visibility')) {
+	          that.helper.shiftingtool_control_list.removeClass('hide_visibility');
+	        }
+	        var index = $(this).attr('data-select');
+	        that.shiftingMain.showShifting(index);
+
+	        that.helper.selectNumAEle.removeClass('ui_btn_active');
+	        $(this).addClass('ui_btn_active');
+	        return false;
+	      });
+	      /*选中全部小矩形*/
+	      that.helper.selectAllRect.on('click', function (event) {
+	        that.shiftingMain.selectAllRect();
+	        return false;
+	      });
+	      /*选中梯形*/
+	      that.helper.selectTrapezium.on('click', function (event) {
+	        that.shiftingMain.selectTrapezium();
+	        return false;
+	      });
+	      /*局部放大*/
+	      that.helper.partEnlarge.on('click', function (event) {
+	        that.shiftingMain.partEnlarge();
+	        return false;
+	      });
+	      /*重置*/
+	      that.helper.reset.on('click', function (event) {
+	        that.helper.shiftingtool_action_bar.addClass('hide_dom');
+
+	        that.helper.shiftingtool_control_list.addClass('hide_visibility');
+	        that.helper.selectNumAEle.removeClass('ui_btn_active');
+	        that.shiftingMain.reset();
+	        return false;
+	      });
+	    },
+	    _unbindEvent: function _unbindEvent() {
+	      var that = this;
+	      that.helper.selectNum.off('click');
+	      that.helper.selectAllRect.off('click');
+	      that.helper.selectTrapezium.off('click');
+	      that.helper.partEnlarge.off('click');
+	      that.helper.reset.off('click');
+	    }
+	  });
+
+	  window.AddonShiftingTool_create = function () {
+	    return new Presenter('ShiftingTool');
+	  };
+	})();
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Shifting = __webpack_require__(3);
+
+	var _Shifting2 = _interopRequireDefault(_Shifting);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MainShifting = function MainShifting() {
+	  this._shiftings = {};
+	  this._curIndex = null;
+	  this.parent = null;
+	  this.option = null;
+	}; // define('MainShifting', ['Shifting'], function (Shifting) {
+
+	MainShifting.prototype = {
+	  /**
+	   *
+	   * @param parent
+	   * @param option [{parentWidth: xx, num: x, v_tGragh: x}, {parentWidth: xx, num: x, v_tGragh: x}, {parentWidth: xx, num: x, v_tGragh: x}]
+	   */
+	  create: function create(parent, option, initData, parentWidth) {
+	    var that = this;
+
+	    that.parent = parent;
+	    that.option = option;
+	    that.parentWidth = parentWidth;
+	    that.initData = initData;
+	    if (!$.isEmptyObject(initData) && initData._curIndex) {
+	      this.setData(initData);
+	    }
+	    //  return that;
+	  },
+	  getCurShifting: function getCurShifting() {
+	    return this._shiftings[this._curIndex];
+	  },
+	  /**
+	   *
+	   * @param i 选择等分
+	   */
+	  showShifting: function showShifting(num) {
+	    var that = this;
+	    var pid = num;
+	    if (!that._shiftings[pid]) {
+	      /*不存在就创建*/
+	      var shiftingType = that.option[pid];
+	      var shifting = new _Shifting2.default().create(that.parent, shiftingType.num, shiftingType.v_tGragh, that.initData, that.parentWidth);
+	      that._shiftings[pid] = shifting;
+	    }
+	    if (pid !== that._curIndex) {
+	      that.reset();
+	      that._shiftings[pid].setDisplay(true);
+	      that._curIndex = pid;
+	    }
+	    $(this.parent).trigger('change');
+	  },
+	  /**
+	   * 选中所有小矩形
+	   */
+	  selectAllRect: function selectAllRect() {
+	    this.getCurShifting() && this.getCurShifting().selectRect();
+	    $(this.parent).trigger('change');
+	  },
+	  /**
+	   * 选中梯形
+	   */
+	  selectTrapezium: function selectTrapezium() {
+	    this.getCurShifting() && this.getCurShifting().selectTrapezium();
+	    $(this.parent).trigger('change');
+	  },
+
+	  /**
+	   * 局部放大
+	   */
+	  partEnlarge: function partEnlarge() {
+	    this.getCurShifting() && this.getCurShifting().partEnlarge();
+	    $(this.parent).trigger('change');
+	  },
+	  reset: function reset() {
+	    var that = this;
+	    for (var i in that._shiftings) {
+	      that._shiftings[i].setDisplay(false);
+	      that._shiftings[i].reset();
+	    }
+
+	    that._curIndex = null;
+	  },
+	  getData: function getData() {
+	    var that = this;
+	    var data = {};
+	    data._curIndex = that._curIndex;
+	    if (that._curIndex) {
+	      data.shiftingData = this.getCurShifting().getData();
+	    }
+	    return data;
+	  },
+	  setData: function setData(data) {
+	    var that = this;
+	    if (!$.isEmptyObject(data)) {
+	      that._curIndex = data._curIndex;
+	      that.showShifting(data._curIndex);
+	    }
+	  },
+	  getHasSelectAllRect: function getHasSelectAllRect() {
+	    return this.getCurShifting() && this.getCurShifting().getHasSelectAllRect();
+	  },
+	  getHasSelectTrapezium: function getHasSelectTrapezium() {
+	    return this.getCurShifting() && this.getCurShifting().getHasSelectTrapezium();
+	  },
+	  getHasPartEnlarge: function getHasPartEnlarge() {
+	    return this.getCurShifting() && this.getCurShifting().getHasPartEnlarge();
+	  },
+	  getHasSelectRectTrapezium: function getHasSelectRectTrapezium() {
+	    return this.getHasSelectAllRect() && this.getHasSelectRectTrapezium();
+	  },
+	  updateInitData: function updateInitData(option, parentWidth) {
+	    this.option = option;
+	    this.parentWidth = parentWidth;
+	  }
+
+	};
+
+	exports.default = MainShifting;
+	// });
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Utils = __webpack_require__(4);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var styleClass = {
+	  'liSelect': 'shapes_select',
+	  'allRectSelect': 'rect_box_selects',
+	  'trapeziumSelect': 'trapezoidal_select',
+	  'partEnlargeSelect': 'partEnlarge',
+	  'trapeziumRectSelect': 'trapezoidal_rect_select',
+	  'borderWidth': 2
+	}; // define('Shifting', ['Utils'], function (Utils) {
+
+
+	var Shifting = function Shifting() {
+	  this._parrentEle = null;
+	  this._liEles = null;
+	  this._hasSelectAllRect = false;
+	  this._hasSelectTrapezium = false;
+	  this._hasPartEnlarge = false;
+	  this._hasSelectLiIndex = -1;
+	  this.parent = null;
+	  this.num = -1;
+	};
+	Shifting.prototype = {
+	  /**
+	   *
+	   * @param parent ul的父元素
+	   * @param num 创建的li个数
+	   * @param v_tGragh斜线
+	   */
+	  create: function create(parent, num, v_tGragh, initData, parentWidth) {
+	    this.parent = $(parent);
+	    this.num = num;
+	    var initPos = v_tGragh.pos;
+
+	    var kbLine = _Utils2.default.getLineKb(v_tGragh.degree, initPos);
+	    var _parrentEle = document.createElement('div');
+	    this._parrentEle = $(_parrentEle);
+	    this._parrentEle.addClass('shiftingtool_shapes_wrapper rect_box_primary');
+	    /**
+	     * 计算li的宽度和高度
+	     */
+	    var ulEle = document.createElement('ul');
+	    $(ulEle).addClass('rect_box');
+	    var i = 0;
+	    var liWidth = parentWidth / num;
+
+	    /*浏览器渲染小数点，导致60等分100等分的时候矩形有大有小，改为方案：宽度先往上取整，再整个ul缩放回原来的比例*/
+	    liWidth = Math.ceil(liWidth);
+	    var ulWidth = Math.ceil(liWidth) * num + styleClass.borderWidth;
+	    var scale = parentWidth / ulWidth;
+
+	    var actualWidth = 0;
+	    for (i = 0; i < num + 1; i++) {
+	      var liEle = document.createElement('li');
+	      $(ulEle).append(liEle);
+	      var liX = (initPos.x + liWidth * i) * scale;
+	      /*x的值进行缩放再计算y的值*/
+	      var liY = liX * kbLine.k + kbLine.b;
+	      if (i !== num) {
+	        //$(liEle).addClass('rect_item').css({'width': liWidth, 'height': liY});
+	        $(liEle).addClass('rect_item').css({ 'width': liWidth, 'height': liY.toFixed(2) });
+	      } else {
+	        //$(liEle).addClass('rect_item').css({'width': 0, 'height': liY});
+	        $(liEle).addClass('rect_item').css({ 'width': 0, 'height': liY.toFixed(2) });
+	        actualWidth = liX;
+	      }
+	    }
+	    /*整体变大需重置ul大小，缩放不会改变原有宽度*/
+	    $(ulEle).css('width', ulWidth);
+	    /*缩放*/
+	    $(ulEle).css({
+	      '-webkit-transform': 'scaleX(' + scale + ')',
+	      '-moz-transform': 'scaleX(' + scale + ')',
+	      '-o-transform': 'scaleX(' + scale + ')'
+	    });
+
+	    this.parent.append(_parrentEle);
+	    this._parrentEle.attr('data-select', 'p' + num);
+	    this._parrentEle.append('<div class="trapezoidal_item _trapezoidal_item"></div>').append(ulEle).append('<div class="triangle_item p' + num + '"></div>');
+
+	    this.parent.find('._trapezoidal_item').css('border-right-width', actualWidth);
+	    this._liEles = this._parrentEle.find('li');
+
+	    this.bindEvent();
+
+	    /**
+	     * 主要用于编辑保存
+	     */
+	    this.init(initData);
+	    this._parrentEle.addClass(this._hasSelectAllRect ? styleClass.allRectSelect : '').addClass(this._hasSelectTrapezium ? styleClass.trapeziumSelect : '').addClass(this._hasPartEnlarge ? styleClass.partEnlargeSelect : '');
+	    this.isRectTrapeziumSelect();
+	    return this;
+	  },
+	  /**
+	   * 选中小矩形
+	   */
+	  selectRect: function selectRect() {
+	    var that = this;
+	    if (arguments.length == 0) {
+	      /*选中全部小矩形先去掉选中单个小矩形*/
+	      that._liEles.removeClass(styleClass.liSelect);
+	      that._hasSelectLiIndex = -1;
+	      //if(that._hasSelectAllRect){
+	      //    that._parrentEle.removeClass(styleClass.allRectSelect);
+	      //    that._hasSelectAllRect = false;
+	      //}else{
+	      //    that._parrentEle.addClass(styleClass.allRectSelect);
+	      //    that._hasSelectAllRect = true;
+	      //}
+	      that._parrentEle.toggleClass(styleClass.allRectSelect);
+	      that._hasSelectAllRect = that._parrentEle.hasClass(styleClass.allRectSelect);
+	    } else {
+	      that._liEles.removeClass(styleClass.liSelect);
+	      that._liEles.eq(arguments[0]).addClass(styleClass.liSelect);
+	      that._parrentEle.removeClass(styleClass.allRectSelect);
+	      that._hasSelectAllRect = false;
+	      that._hasSelectLiIndex = arguments[0];
+	    }
+	    that.isRectTrapeziumSelect();
+	  },
+	  /**
+	   * 选中梯形
+	   */
+	  selectTrapezium: function selectTrapezium() {
+	    var that = this;
+	    //if(this._hasSelectTrapezium){
+	    //    this._parrentEle.removeClass(styleClass.trapeziumSelect);
+	    //    this._hasSelectTrapezium = false;
+	    //}else{
+	    //    this._parrentEle.addClass(styleClass.trapeziumSelect);
+	    //    this._hasSelectAllRect = false;
+	    //    this.selectRect();
+	    //    this._hasSelectTrapezium = true;
+	    //}
+	    /*选中全部小矩形先去掉选中单个小矩形*/
+	    that._liEles.removeClass(styleClass.liSelect);
+	    that._hasSelectLiIndex = -1;
+	    that._parrentEle.toggleClass(styleClass.trapeziumSelect);
+	    that._hasSelectTrapezium = that._parrentEle.hasClass(styleClass.trapeziumSelect);
+	    that.isRectTrapeziumSelect();
+	  },
+	  /**
+	   * 局部放大
+	   */
+	  partEnlarge: function partEnlarge() {
+	    var that = this;
+	    //if(this._hasPartEnlarge){
+	    //    this._parrentEle.removeClass((styleClass.partEnlargeSelect));
+	    //    this._hasPartEnlarge = false;
+	    //}else{
+	    //    this._parrentEle.addClass((styleClass.partEnlargeSelect));
+	    //    this._hasSelectAllRect = false;
+	    //    this._hasSelectTrapezium = false;
+	    //    this.selectRect();
+	    //    this.selectTrapezium();
+	    //    this._hasPartEnlarge = true;
+	    //}
+	    /*选中全部小矩形先去掉选中单个小矩形*/
+	    //that._liEles.removeClass(styleClass.liSelect);
+	    //that._hasSelectLiIndex = -1;
+	    that._parrentEle.toggleClass(styleClass.partEnlargeSelect);
+	    that._hasPartEnlarge = that._parrentEle.hasClass(styleClass.partEnlargeSelect);
+
+	    that.isRectTrapeziumSelect();
+	  },
+	  /**
+	   * 重置
+	   */
+	  reset: function reset() {
+	    this._liEles.removeClass(styleClass.liSelect);
+	    this._parrentEle.removeClass(styleClass.trapeziumSelect).removeClass(styleClass.partEnlargeSelect).removeClass(styleClass.trapeziumRectSelect).removeClass(styleClass.allRectSelect);
+	    this._hasSelectAllRect = false;
+	    this._hasSelectTrapezium = false;
+	    this._hasPartEnlarge = false;
+	    this._hasSelectLiIndex = -1;
+	  },
+	  /**
+	   * 绑定li点击事件
+	   */
+	  bindEvent: function bindEvent() {
+	    var that = this;
+	    that._parrentEle.on('click', 'li', function (event) {
+	      if (!that._hasSelectAllRect && !that._hasSelectTrapezium && !that._hasPartEnlarge) {
+	        var index = $(this).index();
+	        that.selectRect(index);
+	        $(that.parent).trigger('change');
+	      }
+	      return false;
+	    });
+	  },
+	  /**
+	   *
+	   * @param string none或block
+	   */
+	  setDisplay: function setDisplay(isShow) {
+	    this._parrentEle[isShow ? 'removeClass' : 'addClass']('hide_dom');
+	  },
+	  getData: function getData() {
+	    var that = this;
+	    var data = {
+	      'selectState': {
+	        '_hasSelectAllRect': that.getHasSelectAllRect(),
+	        '_hasSelectTrapezium': that.getHasSelectTrapezium(),
+	        '_hasPartEnlarge': that.getHasPartEnlarge(),
+	        '_hasSelectLiIndex': that.getHasSelectLiIndex()
+	      }
+	    };
+	    return data;
+	  },
+	  getHasSelectAllRect: function getHasSelectAllRect() {
+	    return this._hasSelectAllRect;
+	  },
+	  getHasSelectTrapezium: function getHasSelectTrapezium() {
+	    return this._hasSelectTrapezium;
+	  },
+	  getHasPartEnlarge: function getHasPartEnlarge() {
+	    return this._hasPartEnlarge;
+	  },
+	  getHasSelectRectTrapezium: function getHasSelectRectTrapezium() {
+	    return this.getHasSelectAllRect() && this.getHasSelectTrapezium();
+	  },
+	  getHasSelectLiIndex: function getHasSelectLiIndex() {
+	    return this._hasSelectLiIndex;
+	  },
+	  isRectTrapeziumSelect: function isRectTrapeziumSelect() {
+	    if (this.getHasSelectRectTrapezium()) {
+	      this._parrentEle.addClass(styleClass.trapeziumRectSelect);
+	    } else {
+	      this._parrentEle.removeClass(styleClass.trapeziumRectSelect);
+	    }
+	  },
+	  init: function init(data) {
+	    if (data && !$.isEmptyObject(data) && data.shiftingData) {
+	      var selectState = data.shiftingData.selectState;
+	      this._hasSelectAllRect = selectState._hasSelectAllRect;
+	      this._hasSelectTrapezium = selectState._hasSelectTrapezium;
+	      this._hasPartEnlarge = selectState._hasPartEnlarge;
+	      this._hasSelectLiIndex = selectState._hasSelectLiIndex;
+	      if (this._hasSelectLiIndex != -1) {
+	        this._liEles.eq(this._hasSelectLiIndex).addClass(styleClass.liSelect);
+	      }
+	    }
+	  },
+	  onResize: function onResize(v_tGragh, parentWidth) {
+	    var num = this.num;
+	    var initPos = v_tGragh.pos;
+	    var kbLine = _Utils2.default.getLineKb(v_tGragh.degree, initPos);
+	    var liWidth = Math.ceil(parentWidth / num);
+	    var ulWidth = Math.ceil(liWidth) * num + styleClass.borderWidth;
+	    var scale = parentWidth / ulWidth;
+	    var $ulEle = this.parent.find('.rect_box');
+	    $ulEle.css({
+	      'width': ulWidth,
+	      '-webkit-transform': 'scaleX(' + scale + ')',
+	      '-moz-transform': 'scaleX(' + scale + ')',
+	      '-o-transform': 'scaleX(' + scale + ')'
+	    });
+
+	    var actualWidth = 0;
+	    for (var i = 0; i < num + 1; i++) {
+	      var liX = (initPos.x + liWidth * i) * scale;
+	      /*x的值进行缩放再计算y的值*/
+	      var liY = liX * kbLine.k + kbLine.b;
+	      if (i !== num) {
+	        //$(liEle).addClass('rect_item').css({'width': liWidth, 'height': liY});
+	        $(this._liEles[i]).css({ 'width': liWidth, 'height': liY.toFixed(2) });
+	      } else {
+	        //$(liEle).addClass('rect_item').css({'width': 0, 'height': liY});
+	        $(this._liEles[i]).css({ 'width': 0, 'height': liY.toFixed(2) });
+	        actualWidth = liX;
+	      }
+	    }
+	    this.parent.find('._trapezoidal_item').css('border-right-width', actualWidth);
+	    console.log(parentWidth);
+	  }
+	};
+	exports.default = Shifting;
+	// })
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	// define('Utils', function () {
+	var Utils = {
+	  /**
+	   * 获取弧度
+	   * @param degree 角度
+	   * @returns {number}
+	   */
+	  getRadian: function getRadian(degree) {
+	    return 2 * Math.PI / 360 * degree;
+	  },
+	  /**
+	   * 获取角度
+	   * @param degree 弧度
+	   * @returns {number}
+	   */
+	  getDegree: function getDegree(radian) {
+	    return radian * 360 / (2 * Math.PI);
+	  },
+	  /**
+	   * 获取直接kb值
+	   * @param degree 与x轴角度
+	   * @param pos 线上的一点
+	   */
+	  getLineKb: function getLineKb(degree, pos) {
+	    var kb = {};
+	    degree = degree < 0 ? (degree + 360) % 360 : degree % 360;
+	    kb.degree = degree;
+	    //kb.k = Math.cos(this.getRadian(degree));
+	    if (degree != 90 && degree != 270 && degree != 0 && degree != 180) {
+	      kb.k = Math.tan(this.getRadian(degree));
+	      //pos.y = k * pos.x + b;
+	      kb.b = pos.y - kb.k * pos.x;
+	      return kb;
+	    } else if (degree == 90 || degree == 270) {
+	      kb.k = 'no_exist';
+	      kb.x = pos.x;
+	      return kb;
+	    } else if (degree == 0 || degree == 180) {
+	      kb.k = 0;
+	      kb.b = pos.y;
+	      return kb;
+	    }
+	  }
+	};
+	exports.default = Utils;
+	// });
+
+/***/ }
+/******/ ]);]]></presenter><resources><file src="./resources/wood/images/shiftingtool_arrow.png"/><file src="./resources/wood/images/shiftingtool_coordinate_line.png"/><file src="./resources/wood/images/shiftingtool_coordinate.png"/><file src="./resources/wood/images/shiftingtool_number_btns.png"/><file src="./resources/wood/images/shiftingtool_triangle_bg.png"/></resources></addon>

@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='video'>
+<properties>
+
+                <property name="id" displayName="" type="string" isLocalized="false" />
+                <property name="poster" displayName="" type="file" isLocalized="false" />
+                <property name="mp4" displayName="" type="file" isLocalized="false" />
+                <property name="webm" displayName="" type="file" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div style="width: 100%;height: 100%;" >
+  <video controls="controls" preload="none" >
+        Your browser does not support the audio element.
+  </video>
+</div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[function Addonvideo_create() {
+
+    function MediaEventController() {
+
+        var presenter = null,
+            mediaPlayer = null,
+            mediaId = null,
+            userInfo = null;
+
+        this.init = function(_presenter, _mediaPlayer, _mediaId) {
+
+            if (checkEnvironment()) {
+
+                presenter = _presenter;
+                mediaPlayer = _mediaPlayer;
+                mediaId = _mediaId;
+                userInfo = getCurrentUserInfo();
+
+                if (userInfo.isProjectionMobile) {
+                    initProjectionMobile();
+                }
+
+            }
+
+            return this;
+
+        };
+
+        function getCurrentUserInfo() {
+
+            var userInfo = Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", "getCurrentUserInfo", {});
+
+            console.log("userInfo - ", userInfo);
+
+            return {
+                isTeacherMobile: userInfo.userType === 'TEACHER',
+                isProjectionMobile: userInfo.isProjector
+            };
+
+        }
+
+        function initProjectionMobile() {
+
+            var bridgeListener = Bridge.registerListener('TriggerUserInput', function(eventData) {
+
+                console.log("eventController[" + mediaId + "] receive event - ", eventData);
+
+                if (!supportEvent(eventData)) {
+                    return;
+                }
+
+                switch (eventData.name) {
+                    case 'start':
+                        mediaPlayer.mediaPlay(eventData.data.mediaType, eventData.data.index);
+                        break;
+                    case 'pause':
+                        if (!eventData.data.ended) {
+                            mediaPlayer.mediaPause(eventData.data.mediaType, eventData.data.index);
+                        }
+                        break;
+                    case 'seeked':
+                        mediaPlayer.mediaSkip(eventData.data.mediaType, eventData.data.index, eventData.data.seeked);
+                        break;
+                    case 'volumeChange':
+                        mediaPlayer.mediaVolumeChange(eventData.data.mediaType, eventData.data.index, eventData.data.volume, eventData.data.display);
+                        break;
+                }
+
+            });
+
+            presenter.destroy = function() {
+                Bridge.unRegisterListener('TriggerUserInput', bridgeListener);
+            };
+
+        }
+
+        this.getMediaEventListener = function(eventName) {
+
+            if (!userInfo || userInfo.isProjectionMobile) {
+                return;
+            }
+
+            return function(event) {
+                sendEvent(eventName, event);
+            };
+
+        };
+
+        function sendEvent(eventName, eventData) {
+
+            console.log("eventController[" + mediaId + "] send event - ", eventName, eventData);
+
+            Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", "sendEvent", {
+                "eventName": "UserInput",
+                "eventData": {
+                    "mediaId": mediaId,
+                    "name": eventName,
+                    "data": eventData
+                }
+            });
+
+        }
+
+        function supportEvent(eventData) {
+            return mediaId === eventData.mediaId;
+        }
+
+        function checkEnvironment() {
+            return (typeof AndroidInterface != "undefined");
+        }
+
+    }
+
+    var presenter = {};
+
+    presenter.setPlayerController = function (controller) {
+        presenter.controller = controller;
+        presenter.eventBus = presenter.controller.getEventBus();
+        presenter.eventBus.addEventListener('AnswerSubmitterEvent', presenter);
+
+    };
+
+   presenter.onEventReceived = function(eventName, eventData) {
+          switch (eventName) {
+            case 'AnswerSubmitterEvent':
+                if (eventData.event == 'finished') {
+                 presenter.close();
+                }
+                break;
+         }
+
+    };
+
+    presenter.close = function() {
+        for(var key in MediaRender) {
+            MediaRender[key].mediaPlay();
+            MediaRender[key].mediaPause();
+        }
+    };
+
+    presenter.run = function(view, model) {
+        presenter.render(view, model);
+    };
+
+    presenter.render = function(view, model) {
+
+        var video = $(view).find("video"),
+            mediaId = model.id,
+            mediaEventController = new MediaEventController().init(presenter, NDMediaPlayer, mediaId);
+
+        video.attr("src", model.mp4 || model.webm);
+        video.attr("poster", model.poster);
+        video.attr("width", $(view).width() + 'px');
+        video.attr("height",  $(view).height() + 'px');
+
+        MediaRender = NDMediaPlayer.render(view, {
+            containerId: mediaId,
+            onlyRender: false,
+            autoAdaptSize: true,
+            mediaMargin: "0px",
+            returnInstances:true,
+            onPlay: mediaEventController.getMediaEventListener("start"),
+            onPause: mediaEventController.getMediaEventListener("pause"),
+            onSeek: mediaEventController.getMediaEventListener("seeked"),
+            onVolumeChange: mediaEventController.getMediaEventListener("volumeChange")
+        });
+
+    };
+
+    return presenter;
+}
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

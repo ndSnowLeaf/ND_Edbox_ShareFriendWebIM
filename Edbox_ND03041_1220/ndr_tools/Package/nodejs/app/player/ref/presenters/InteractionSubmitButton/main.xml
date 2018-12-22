@@ -1,0 +1,373 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='InteractionSubmitButton'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_InteractionSubmitButton .submit_button a{display:inline-block;width:164px;height:60.67px;line-height:56px;font-size:24px;color:#5d390d;text-align:center;background:url(resources/btn1_normal.png) center center no-repeat;background-size:100% auto;text-shadow:.5px .87px 0 rgba(255,255,255,.51);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:pointer}.addon_InteractionSubmitButton .submit_button{margin-top:20px;margin-right:0}.addon_InteractionSubmitButton .submit_button a:hover{background:url(resources/btn1_hover.png) center center no-repeat;background-size:100% auto}.addon_InteractionSubmitButton .submit_button a:active{background:url(resources/btn1_press.png) center center no-repeat;background-size:100% auto}.addon_InteractionSubmitButton .submit_button.com_btn_disabled a{opacity:.7;color:#ce9f58;text-shadow:0 0 4px #fff}.addon_InteractionSubmitButton .submit_button.com_btn_disabled a:active,.addon_InteractionSubmitButton .submit_button.com_btn_disabled a:hover{opacity:.7;background:url(resources/btn1_normal.png) center center no-repeat;background-size:100% auto}.addon_InteractionSubmitButton .submit_button a>span{display:inline-block}.addon_InteractionSubmitButton .submit_button a>span:first-child{margin-right:.5em}.addon_InteractionSubmitButton .submit-wrapper{position:fixed;z-index:200;right:0;top:0;height:77px;width:500px}.addon_InteractionSubmitButton .submit-wrapper .tip{position:absolute;top:50%;height:48px;margin-top:-24px;line-height:48px;right:130px;letter-spacing:2px;color:#666}.addon_InteractionSubmitButton #answer-question-submit{position:absolute;top:50%;margin-top:-24px;right:0;text-align:center;width:110px;height:48px;line-height:48px;font-size:20px;font-weight:700;color:#ea8501;-moz-border-radius:24px 0 0 24px;-webkit-border-radius:24px 0 0 24px;border-radius:24px 0 0 24px;background:-webkit-gradient(linear,left top,left bottom,color-stop(1%,#f8f8f8),color-stop(100%,#e8e8e8));box-shadow:0 3px 7px rgba(4,0,0,.2)}.addon_InteractionSubmitButton #answer-question-submit.com_btn_disabled{color:#b4b4b4;cursor:pointer}.addon_InteractionSubmitButton .mask-dialog .dialog,.addon_InteractionSubmitButton .mask-dialog-submitting .dialog-submitting{line-height:80px;margin-left:-125px;color:#fff;font-size:24px;text-align:center;border-radius:10px;background-color:rgba(0,0,0,.75);position:fixed}.addon_InteractionSubmitButton #answer-question-submit.input-method-in{position:fixed;top:0;right:0;margin-top:15px}.addon_InteractionSubmitButton .mask-dialog .mask{position:fixed;z-index:1999;top:0;left:0;width:100%;height:100%}.addon_InteractionSubmitButton .mask-dialog .dialog{left:50%;top:2px;width:250px;height:80px;z-index:200}.addon_InteractionSubmitButton .mask-dialog-submitting .mask-submitting{position:fixed;z-index:1999;top:0;left:0;width:100%;height:100%}.addon_InteractionSubmitButton .mask-dialog-submitting .dialog-submitting{left:50%;top:2px;width:250px;height:80px;z-index:200}.addon_InteractionSubmitButton .can-not-do-it{position:fixed;display:none;z-index:199;top:0;left:0;width:100%;height:100%}.addon_InteractionSubmitButton .can-not-do-it.show{display:block}.addon_InteractionSubmitButton .can-not-do-it.importantHide{display:none!important}.addon_InteractionSubmitButton .hide{display:none}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<a class="js_commitbutton_ppt com_btn_round pptshell_button com_btn_disabled" href="javascript:;" style="display: none"><span class="icons_box hide_dom"></span> <span class="text_box">提&nbsp;&nbsp;交</span> </a><span class="uedc_preload_img_01" style="display:none"></span> <span class="uedc_preload_img_02" style="display:none"></span><div class="pad_button" style="display: none"><div class="buttons show"><div class="submit-wrapper"><div class="tip"></div><div id="answer-question-submit" class="com_btn_disabled">提交</div></div></div><div class="mask-dialog" style="display: none"><div class="mask"></div><div class="dialog"><p class="message">请听老师讲解！</p></div></div><div class="mask-dialog-submitting" style="display: none"><div class="mask-submitting"></div><div class="dialog-submitting"><p class="message-submitting">正在提交...</p></div></div><div class="can-not-do-it"></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+var SUBMIT_BUTTON_STATE_CODE = {
+    CAN_NOT_SUBMIT: 'can_not_submit', //不可提交状态
+    CAN_SUBMIT: 'can_submit', //正常可提交状态
+    CAN_MODIFY: 'can_modify', //可修改状态
+    RESET: 'reset', //重新作答
+    FINISH: 'finish', //结束状态
+    SUBMITTING: 'submitting', // 提交中状态，不可修改
+    RETRY_SUBMIT: 'retry_submit', // 提交失败，重新提交
+    MODIFY_SUBMIT: 'modify_submit'//修改后，重新提交
+};
+(function () {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "InteractionSubmitButton",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.UTILITY_COMPONENT
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.currentState = SUBMIT_BUTTON_STATE_CODE.CAN_NOT_SUBMIT;
+            this.isMouseDown = false;
+            this.isAllowSubmit = false;
+            this.result_tip = "";
+            this.tType = "pptshell";
+            this.languageKeySet = {};
+
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            getButtonState: function () {
+                this.parent.logger.debug("InteractionSubmitButton getButtonState " + this.parent.currentState);
+                return this.parent.currentState;
+            },
+            setVisible: function (enable) {
+                this.parent.logger.debug("InteractionSubmitButton setVisible " + enable);
+                if (enable) {
+                    this.parent.$view.css("visibility", "");
+                } else {
+                    this.parent.$view.css("visibility", "hidden");
+                }
+            },
+            setButtonState: function (state) {
+                this.parent.logger.debug("setButtonState " + state);
+                this.parent._stateChanged(state);
+            },
+            onTimeOver: function () {
+                this.parent.logger.debug("onTimeOver");
+                this.parent._unbindEvent();
+                this.parent.$view.find('.submit_button').addClass('com_btn_disabled');
+            },
+            getState: function () {
+                var state = {
+                    code: this.parent.currentState,
+                    tip: this.parent.result_tip
+                };
+                this.parent.logger.debug("InteractionSubmitButton getState " + JSON.stringify(state));
+                return state;
+            },
+            setState: function (state) {
+                this.parent.logger.debug("InteractionSubmitButton setState " + JSON.stringify(state));
+                if (state.code) {
+                    if (state.code == SUBMIT_BUTTON_STATE_CODE.SUBMITTING && state.__isSubmitSucceed != undefined) {
+                        if (this.parent.canModify) {
+                            this.parent._stateChanged(SUBMIT_BUTTON_STATE_CODE.CAN_MODIFY, true);
+                        } else {
+                            if (state.__isSubmitSucceed) {
+                                this.parent._stateChanged(SUBMIT_BUTTON_STATE_CODE.FINISH, true);
+                            } else {
+                                this.parent._stateChanged(SUBMIT_BUTTON_STATE_CODE.CAN_SUBMIT, true);
+                            }
+                        }
+                    } else {
+						//支持思维导图多次交互特性，状态恢复bug-99606、99658 修复
+						if(state.code === SUBMIT_BUTTON_STATE_CODE.FINISH && state.__isSubmitSucceed != true) {
+							state.code = SUBMIT_BUTTON_STATE_CODE.CAN_NOT_SUBMIT;
+						}
+						
+                        this.parent._stateChanged(state.code, true);
+                    }
+                }
+                if (state.tip) {
+                    this.parent._tipChanged(state.tip);
+                }
+            },
+            setLocationProperties: function (properties) {
+                this.parent.languageKeySet = properties;
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.linkQuestionId = model["linkQuestionId"];
+            this.linkQuestionType = model["linkQuestionType"];
+            this.canModify = model["can_modify"];
+            this.view_type = model["view_type"];
+            var tType = "new_em_button";
+            if (this.view_type || this.isPPTShell) {
+                tType = "new_em_button";
+            } else if (this.isStudent || this.isWeb) {
+                tType = "pad";
+            }
+            this.logger.debug("InteractionSubmitButton tType " + tType);
+            switch (tType) {
+                case "pad": {
+                    this.tType = "pad";
+                    this.$view.find('.pad_button').css('display', '');
+                    break;
+                }
+                case "new_em_button": {
+                    this.tType = "new_em_button";
+                    this.$view.find('.pptshell_button').css('display', '');
+                    this.$view.find('.com_btn_round').addClass('com_btn_disabled');
+                    this.$view.find('.text_box').text(this._getLanguageText('submit_it'));
+                    break;
+                }
+            }
+        },
+        pageShow: function () {
+            this._bindEvent();
+        },
+        pageLeave: function () {
+            this._unbindEvent();
+        },
+        destroy: function () {
+        },
+        /****以下开始为Presenter的私有方法*****/
+        //私有方法
+        _bindEvent: function () {
+            if (this.tType == 'pad') {
+                this.$view.find('#answer-question-submit')
+                    .on('mousedown', $.proxy(this._onButtonMouseDown, this))
+                    .on('mouseup', $.proxy(this._onButtonMouseUp, this));
+            } else if (this.tType == 'new_em_button') {
+                this.$view.find('.js_commitbutton_ppt')
+                    .on('mousedown touchstart', $.proxy(this._onButtonMouseDown, this))
+                    .on('mouseup touchend', $.proxy(this._onButtonMouseUp, this));
+            }
+        },
+        _unbindEvent: function () {
+            if (this.tType == 'pad') {
+                this.$view.find('#answer-question-submit').off();
+            } else if (this.tType == 'new_em_button') {
+                this.$view.find('.js_commitbutton_ppt').off();
+            }
+        },
+        _stateChanged: function (stateCode, isRecover) {
+            this.currentState = stateCode;
+            this.logger.debug("InteractionSubmitButton stateChanged " + stateCode);
+            var buttonElement = this.$view.find('.com_btn_round ');
+            var buttonTextElement = this.$view.find('.text_box');
+            if (this.tType == "pad") {
+                buttonElement = this.$view.find('#answer-question-submit');
+                buttonTextElement = this.$view.find('#answer-question-submit');
+            }
+            switch (this.currentState) {
+                case SUBMIT_BUTTON_STATE_CODE.CAN_NOT_SUBMIT:
+                    buttonTextElement.text(this._getLanguageText('submit_question'));
+                    buttonElement.addClass('com_btn_disabled');
+                    this.isAllowSubmit = false;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.CAN_SUBMIT:
+                    buttonTextElement.text(this._getLanguageText('submit_question'));
+                    buttonElement.removeClass('com_btn_disabled');
+                    this.isAllowSubmit = true;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.RESET:
+                    buttonTextElement.text(this._getLanguageText('answer_again'));
+                    buttonElement.removeClass('com_btn_disabled');
+                    this.isAllowSubmit = true;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.CAN_MODIFY:
+                    if (this.canModify) {
+                        buttonTextElement.text(this._getLanguageText('modify_answer'));
+                        buttonElement.removeClass('com_btn_disabled');
+                        this.isAllowSubmit = true;
+                        break;
+                    } else {
+                        this._stateChanged(SUBMIT_BUTTON_STATE_CODE.FINISH);
+                        break;
+                    }
+                case SUBMIT_BUTTON_STATE_CODE.FINISH:
+                    buttonTextElement.text(this._getLanguageText('has_ended'));
+                    buttonElement.addClass('com_btn_disabled');
+                    this.isAllowSubmit = false;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.SUBMITTING:
+                    buttonTextElement.text(this._getLanguageText('in_submit'));
+                    buttonElement.addClass('com_btn_disabled');
+                    this.isAllowSubmit = false;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.RETRY_SUBMIT:
+                    buttonTextElement.text(this._getLanguageText('reanswer_question'));
+                    buttonElement.removeClass('com_btn_disabled');
+                    this.isAllowSubmit = true;
+                    break;
+                case SUBMIT_BUTTON_STATE_CODE.MODIFY_SUBMIT:
+                    buttonTextElement.text(this._getLanguageText('reanswer_question'));
+                    buttonElement.addClass('com_btn_disabled');
+                    this.isAllowSubmit = false;
+                    break;
+            }
+            buttonElement.attr('data-action', this.currentState);
+            if (isRecover) {
+                return;
+            }
+            //通知保存状态
+            this.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        _tipChanged: function (tip) {
+            if (tip) {
+                this.$view.find(".submit-wrapper .tip").text(tip);
+            }
+        },
+        _renderTime: function (time) {
+            var returnTime = Math.ceil(time / 1000);
+            if (returnTime < 60) {
+                return returnTime + "秒前"
+            }
+            returnTime = Math.round(returnTime / 60);
+            if (returnTime < 60) {
+                return returnTime + "分钟前";
+            }
+            var hours = Math.round(returnTime / 60);
+            var minute = returnTime % 60;
+            //此处需要注意，语法可能会不同
+            return hours + "小时" + minute + "分钟前";
+        },
+        //暂时不用
+        _changeTipType: function (changeType) {
+            var type = this.getType();
+            if (changeType) {
+                type = this._verifyType(changeType);
+                this.set(type);
+            }
+            var text = '';
+            var duration = this._getTime();
+            switch (type) {
+                case 'lastSubmit':
+                    text = '上次提交时间：' + this._renderTime(duration);
+                    break;
+                case 'success':
+                    text = '提交成功';
+                    break;
+                case 'failed':
+                    text = '提交失败';
+                    break;
+                case 'blank':
+                    text = '';
+                    break;
+                default:
+                    text = '';
+            }
+            this._tipChanged(text);
+        },
+        /*********以下是事件处理函数**************/
+        _onButtonMouseDown: function (event) {
+            this.logger.debug("InteractionSubmitButton onButtonMouseDown " + this.isAllowSubmit);
+            event.preventDefault();
+			this.isMouseDown = false;
+            if (this.isAllowSubmit) {
+                this.isMouseDown = true;
+            }
+        },
+        _onButtonMouseUp: function (event) {
+            this.logger.debug("InteractionSubmitButton onButtonMouseUp " + this.isMouseDown);
+            event.preventDefault();
+            event.stopPropagation();
+			
+			//支持作文提纲教学中的特性：未查看检查清单下点击提交按钮弹出提示框，所以需要这里发出事件通知(临时方案待后续重构调整)
+			if(this.currentState == SUBMIT_BUTTON_STATE_CODE.CAN_NOT_SUBMIT) {
+				this.$dispatchEvent('Try2SubmitWhenDisabled', PresenterEventType.IC_PLAYER_EVENT, {});
+			}
+			
+            var self = this;
+            if (self.isMouseDown) {
+                if (this.currentState == SUBMIT_BUTTON_STATE_CODE.CAN_MODIFY) {
+                    this.logger.debug("InteractionSubmitButton onButtonMouseUp currentState" + this.currentState);
+                    this._stateChanged(SUBMIT_BUTTON_STATE_CODE.MODIFY_SUBMIT);
+                    //题目作答状态改变，按钮变为重新提交，但不可点击
+                    this.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT, {
+                            linkQuestionId: self.linkQuestionId,
+                            canSubmit: false
+                        });
+                } else if (self.isAllowSubmit) {
+                    this.logger.debug("InteractionSubmitButton onButtonMouseUp send custom_event_submit_answer");
+                    //发出提交按钮的事件
+                    self.isAllowSubmit = false;
+                    self.$dispatchEvent('custom_event_submit_answer',
+                        PresenterEventType.IC_PLAYER_EVENT, {
+                            question_id: self.linkQuestionId,
+                            question_type: self.linkQuestionType,
+                            state: self.currentState
+                        });
+						
+					//体验优化(学生端)：不等待业务组件的业务数据，立即对用户点击做出UI响应	
+					// if(self.isStudent) {
+					// 	self._stateChanged(SUBMIT_BUTTON_STATE_CODE.SUBMITTING, true);
+					// }
+                }
+            }
+        },
+        _getLanguageText: function (key) {
+            if (this.languageKeySet[key] == undefined)
+                return "ERROR";
+            return this.languageKeySet[key];
+        }
+    }, "InteractionSubmitButton");
+    window.AddonInteractionSubmitButton_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/btn1_hover.png' />
+<file src='./resources/btn1_normal.png' />
+<file src='./resources/btn1_press.png' />
+
+
+</resources>
+
+</addon>

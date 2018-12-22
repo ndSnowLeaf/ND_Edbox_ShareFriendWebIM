@@ -1,0 +1,4852 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='BasicGraph'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="threejs" version="73.1" />
+    <javaScript  name="threejs_canvasrender" version="73.1" />
+    <javaScript  name="threejs_projector" version="73.1" />
+    <javaScript  name="knockout" version="3.3.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_BasicGraph .mr--m {
+  margin-right: 5px; }
+
+.addon_BasicGraph .toolbar {
+  position: fixed;
+  left: 50%;
+  bottom: 48px;
+  float: left;
+  list-style: none;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border: 1px solid #B3ADAD;
+  border-radius: 5px;
+  color: black;
+  font-size: 10px;
+  background-color: #E8E8E8;
+  padding-left: 5px;
+  padding-right: 5px; }
+
+.addon_BasicGraph .toolbar--hide {
+  visibility: hidden; }
+
+.addon_BasicGraph .toolbar__item {
+  padding: 5px;
+  position: relative;
+  background: url(resources/separationLine.png) no-repeat right center; }
+
+.addon_BasicGraph .toolbar__item--center {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column; }
+
+.addon_BasicGraph .toolbar__item--last {
+  background: none; }
+
+.addon_BasicGraph .toolbar__item * {
+  vertical-align: middle; }
+
+.addon_BasicGraph .toolbar__item > a {
+  cursor: default; }
+
+.addon_BasicGraph .toolbar__sub {
+  position: absolute;
+  bottom: 31px;
+  left: -7px;
+  background-color: #E8E8E8;
+  border: 1px solid #B3ADAD;
+  border-radius: 5px;
+  width: 130px;
+  list-style: none;
+  margin: 0px;
+  padding: 0px; }
+
+.addon_BasicGraph .pullUpMenu {
+  position: absolute;
+  top: -9px;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 8px solid #B3ADAD;
+  font-size: 0px;
+  line-height: 0px; }
+
+.addon_BasicGraph .toolbar__sub__item > * {
+  vertical-align: middle; }
+
+.addon_BasicGraph .toolbar__sub__item {
+  padding: 5px;
+  position: relative; }
+
+.addon_BasicGraph .toolbar__sub__item:hover {
+  background: #646B74;
+  box-shadow: 2px 0 0 0 #00CC00 inset; }
+
+.addon_BasicGraph .toolbar__sub__item input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="three2D-canvas" style="display:none;">
+    <div class="2D-canvas">
+        <canvas style="pointer-events: none;"></canvas>
+    </div>
+    <ul class="js-toolbar  toolbar toolbar--hide">
+        <div data-bind="with: basicGraphViewModel">
+            <li data-bind="visible: subToolbarList().angleSwitch"
+                class="toolbar__item toolbar__item--center js-toolbar__item--contain">
+                <a data-bind="click: basicGraphToggleSubToolbar.bind($data, 'angleSwitch')"><span
+                        class="mr--m basic_angle">角度 </span><img
+                        data-src="resources/expand.png"/></a>
+
+                <div data-bind="visible: subToolbarStatus().angleSwitch">
+                    <ul class="toolbar__sub angle_type_option" style="width: 60px;">
+                        <li class="toolbar__sub__item" data-bind="click: switchShapeData.bind($data, 'angle',60)">
+                            <img data-src="resources/AngleShape.png"/>
+                            <a class="basic_acute_angle">锐角</a>
+                        </li>
+                        <li class="toolbar__sub__item" data-bind="click: switchShapeData.bind($data, 'angle', 90)">
+                            <img data-src="resources/AngleRight.png"/>
+                            <a class="basic_right_angle">直角</a>
+                        </li>
+                        <li class="toolbar__sub__item" data-bind="click: switchShapeData.bind($data, 'angle', 120)">
+                            <img data-src="resources/AngleObtuse.png"/>
+                            <a class="basic_obtuse_angle">钝角</a>
+                        </li>
+                    </ul>
+                    <div class="pullUpMenu"></div>
+                </div>
+            </li>
+        </div>
+        <div data-bind="with: basicGraphViewModel">
+            <li data-bind="visible: subToolbarList().lineArrow"
+                class="toolbar__item toolbar__item--center js-toolbar__item--contain">
+                <a data-bind="click: basicGraphToggleSubToolbar.bind($data, 'lineArrow')"><span class="mr--m basic_style">样式 </span><img
+                        data-src="resources/expand.png"/></a>
+
+                <div data-bind="visible:subToolbarStatus().lineArrow">
+                    <ul class="toolbar__sub line_style_option" style="width: 80px;">
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'arrowType','none')">
+                            <img data-src="resources/ArrowNone.png"/>
+                            <a class="basic_no_arrow">无箭头</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'arrowType','left')">
+                            <img data-src="resources/ArrowLeft.png"/>
+                            <a class="basic_left_arrow">左箭头</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'arrowType','both')">
+                            <img data-src="resources/ArrowBoth.png"/>
+                            <a class="basic_both_arrow">双箭头</a>
+                        </li>
+
+                    </ul>
+                    <div class="pullUpMenu"></div>
+                </div>
+            </li>
+        </div>
+        <div data-bind="with: basicGraphViewModel">
+            <li data-bind="visible: subToolbarList().lineType"
+                class="toolbar__item toolbar__item--center js-toolbar__item--contain">
+                <a data-bind="click: basicGraphToggleSubToolbar.bind($data, 'lineType')"><span
+                        class="mr--m basic_line_type">线形 </span><img
+                        data-src="resources/expand.png"/></a>
+
+                <div data-bind="visible: subToolbarStatus().lineType">
+                    <ul class="toolbar__sub line_type_option" style="width: 60px;">
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'lineType','beeline')">
+                            <img data-src="resources/TypeBee.png"/>
+                            <a class="basic_solid_line">实线</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'lineType','brokenLine')">
+                            <img data-src="resources/TypeBoroken.png"/>
+                            <a class="basic_dashed_line">虚线</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'lineType','segment')">
+                            <img data-src="resources/TypeSegment.png"/>
+                            <a class="basic_segment_line">线段</a>
+                        </li>
+                    </ul>
+                    <div class="pullUpMenu"></div>
+                </div>
+            </li>
+        </div>
+        <div data-bind="with: basicGraphViewModel">
+            <li data-bind="visible: subToolbarList().lineWidth"
+                class="toolbar__item toolbar__item--center js-toolbar__item--contain">
+                <a data-bind="click:  basicGraphToggleSubToolbar.bind($data, 'lineWidth')"><span
+                        class="mr--m basic_line_width">线宽 </span><img
+                        data-src="resources/expand.png"/></a>
+
+                <div data-bind="visible: subToolbarStatus().lineWidth">
+                    <ul class="toolbar__sub line_width_option" style="width: 75px">
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'linewidth',10)">
+                            <img data-src="resources/LineWidth10.png"/>
+                            <a>10*10</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'linewidth',14)">
+                            <img data-src="resources/LineWidth20.png"/>
+                            <a>15*15</a>
+                        </li>
+                        <li class="toolbar__sub__item"
+                            data-bind="click: switchShapeData.bind($data, 'linewidth',20)">
+                            <img data-src="resources/LineWidth40.png"/>
+                            <a>20*20</a>
+                        </li>
+                    </ul>
+                    <div class="pullUpMenu"></div>
+                </div>
+            </li>
+        </div>
+
+        <li class="toolbar__item toolbar__item--center toolbar__item--last" data-bind="click: removeTarget">
+            <a><img data-src="resources/close.png"/><span>关闭</span></a>
+        </li>
+
+    </ul>
+    <div data-bind="with: basicGraphViewModel" style="position: fixed;left:-100px;top:-100px;width: 0px;height:0px;">
+        <input id="basic-graph-keyInput" maxlength=3 data-bind="value: inputValue, valueUpdate: 'afterkeydown'"
+               style="background-color:transparent;height: 100px;width: 100px; border-style: none">
+    </div>
+</div>
+]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[var AddonBasicGraph_create = function() { var presenter= 
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(1);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _appPresenter = __webpack_require__(2);
+
+	var _appPresenter2 = _interopRequireDefault(_appPresenter);
+
+	exports['default'] = function () {
+	  return _appPresenter2['default'];
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterRun = __webpack_require__(3);
+
+	var _presenterRun2 = _interopRequireDefault(_presenterRun);
+
+	var _presenterSetBasePath = __webpack_require__(23);
+
+	var _presenterSetBasePath2 = _interopRequireDefault(_presenterSetBasePath);
+
+	var _presenterHandleCallBack = __webpack_require__(24);
+
+	var _presenterHandleCallBack2 = _interopRequireDefault(_presenterHandleCallBack);
+
+	var _presenterPageChange = __webpack_require__(42);
+
+	var _presenterPageChange2 = _interopRequireDefault(_presenterPageChange);
+
+	var _presenterDestroy = __webpack_require__(43);
+
+	var _presenterDestroy2 = _interopRequireDefault(_presenterDestroy);
+
+	var _presenterInterface = __webpack_require__(44);
+
+	var _presenterInterface2 = _interopRequireDefault(_presenterInterface);
+
+	var _presenterSetPlayerController = __webpack_require__(45);
+
+	var _presenterSetPlayerController2 = _interopRequireDefault(_presenterSetPlayerController);
+
+	var _presenterOnEventReceived = __webpack_require__(46);
+
+	var _presenterOnEventReceived2 = _interopRequireDefault(_presenterOnEventReceived);
+
+	var _presenterSetLocationProperties = __webpack_require__(47);
+
+	var _presenterSetLocationProperties2 = _interopRequireDefault(_presenterSetLocationProperties);
+
+	exports['default'] = {
+	  run: _presenterRun2['default'],
+	  destroy: _presenterDestroy2['default'],
+	  handleCallBack: _presenterHandleCallBack2['default'],
+	  setBasePath: _presenterSetBasePath2['default'],
+	  pageChange: _presenterPageChange2['default'], //翻页注销
+	  __interface: _presenterInterface2['default'],
+	  setPlayerController: _presenterSetPlayerController2['default'],
+	  onEventReceived: _presenterOnEventReceived2['default'],
+	  setLocationProperties: _presenterSetLocationProperties2['default']
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+		* 运行环境下, 初始化Module的方法
+		* @param view 运行视图(DOM对象)
+		* @param model Module的模型, Key-Value结构
+		* @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+		*/
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterLogic = __webpack_require__(4);
+
+	var _presenterLogic2 = _interopRequireDefault(_presenterLogic);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (view, model) {
+	  _presenter2['default'].eventBus.addEventListener("mousemove", _presenter2['default']);
+	  _presenter2['default'].eventBus.addEventListener("mousedown", _presenter2['default']);
+	  _presenter2['default'].eventBus.addEventListener("mouseup", _presenter2['default']);
+	  _presenter2['default'].eventBus.addEventListener("blur", _presenter2['default']);
+	  _presenter2['default'].eventBus.addEventListener("focus", _presenter2['default']);
+	  (0, _presenterLogic2['default'])(view, model, false);
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global $ paper icCreatePlayer */
+	/**
+	 * Module的逻辑
+	 * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+	 * @param model 模型对象
+	 * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _constants = __webpack_require__(5);
+
+	var _EventDocumentEventJs = __webpack_require__(6);
+
+	var _EventDocumentEventJs2 = _interopRequireDefault(_EventDocumentEventJs);
+
+	var _viewQuickToolbar = __webpack_require__(17);
+
+	var _viewQuickToolbar2 = _interopRequireDefault(_viewQuickToolbar);
+
+	var _setLanguage = __webpack_require__(22);
+
+	var _setLanguage2 = _interopRequireDefault(_setLanguage);
+
+	exports['default'] = function (view, model, isPreview) {
+	    // 将 model 值赋给 this
+	    _presenter2['default'].model = model;
+	    // 将 view 值存入 presenter
+	    _presenter2['default'].view = view;
+	    // 使用 basePath 替换 view 中的图片 url
+	    var $imgs = $(view).find('img');
+
+	    (0, _setLanguage2['default'])();
+
+	    $imgs.each(function () {
+	        $(this).attr('src', _presenter2['default'].path + $(this).attr('data-src'));
+	    });
+	    _constants.ZPOSITION.initZposition();
+	    // 创建快捷工具栏
+	    (0, _viewQuickToolbar2['default'])();
+	    (0, _EventDocumentEventJs2['default'])();
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	/* global $ */
+	// 定义 addon 的可活动大小
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var REAL_ESTATE = {
+	  width: document.body.clientWidth,
+	  height: document.body.clientHeight,
+	  left: document.body.clientLeft,
+	  top: document.body.clientTop
+	};
+
+	exports.REAL_ESTATE = REAL_ESTATE;
+	// 定义快捷工具栏的高度
+	var TOOLBAR_HEIGHT = 48;
+
+	exports.TOOLBAR_HEIGHT = TOOLBAR_HEIGHT;
+	// 定义几何图形的可活动范围
+	var CONSTRAINT = {
+	  xmin: 0,
+	  xmax: REAL_ESTATE.width,
+	  ymin: 0,
+	  ymax: REAL_ESTATE.height - TOOLBAR_HEIGHT
+	};
+	exports.CONSTRAINT = CONSTRAINT;
+	var ZPOSITION = {
+	  z: 0,
+	  getZposition: function getZposition() {
+	    var step = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+
+	    this.z += step;
+	    return this.z;
+	  },
+	  initZposition: function initZposition() {
+	    this.z = 0;
+	  }
+	};
+	exports.ZPOSITION = ZPOSITION;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = documentInit;
+	exports.removeListener = removeListener;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threeMangerJs = __webpack_require__(7);
+
+	var _constantsJs = __webpack_require__(5);
+
+	var _viewRefreshQuickToolbar = __webpack_require__(14);
+
+	var _viewRefreshQuickToolbar2 = _interopRequireDefault(_viewRefreshQuickToolbar);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _listenerManager = __webpack_require__(15);
+
+	var _listenerManager2 = _interopRequireDefault(_listenerManager);
+
+	var _basicGraphContextEventJs = __webpack_require__(16);
+
+	//var curSel = null;
+
+	function documentInit() {
+	  _listenerManager2['default'].addListener('focus', onFocus);
+	  _listenerManager2['default'].addListener('blur', _basicGraphContextEventJs.onBlur);
+	  _listenerManager2['default'].addListener('mousemove', _basicGraphContextEventJs.bgMouseMove);
+	  _listenerManager2['default'].addListener('mouseup', _basicGraphContextEventJs.bgMouseUp);
+	}
+
+	function removeListener() {
+	  _listenerManager2['default'].removeListener('focus', onFocus);
+	  _listenerManager2['default'].removeListener('blur', _basicGraphContextEventJs.onBlur);
+	  _listenerManager2['default'].removeListener('mousemove', _basicGraphContextEventJs.bgMouseMove);
+	  _listenerManager2['default'].removeListener('mouseup', _basicGraphContextEventJs.bgMouseUp);
+	}
+
+	function onFocus(event) {
+	  if ($(event.target).closest('.toolbar:visible').length != 0) {
+	    return;
+	  }
+	  event.preventDefault();
+	  var pointer = undefined;
+	  if (event.touches) {
+	    if (event.touches.length === 1) {
+	      pointer = event.changedTouches[0];
+	    } else {
+	      return;
+	    }
+	  } else {
+	    pointer = event;
+	  }
+
+	  _threeMangerJs.mouse.x = pointer.clientX / _constantsJs.REAL_ESTATE.width * 2 - 1;
+	  _threeMangerJs.mouse.y = -(pointer.clientY / _constantsJs.REAL_ESTATE.height) * 2 + 1;
+	  _threeMangerJs.raycaster.setFromCamera(_threeMangerJs.mouse, _threeMangerJs.camera);
+
+	  // 点线角扩展，如果选中电线角，修改几何图形对象
+	  (0, _basicGraphContextEventJs.bgMouseDown)(event, _threeMangerJs.raycaster);
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.threeStart = threeStart;
+	exports.addThreeShape = addThreeShape;
+	exports.destroy = destroy;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _constants = __webpack_require__(5);
+
+	var _basicGraphShapeBaseBasicGraphJs = __webpack_require__(8);
+
+	var _basicGraphShapeBaseBasicGraphJs2 = _interopRequireDefault(_basicGraphShapeBaseBasicGraphJs);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _UtilsAutoDetectRender = __webpack_require__(13);
+
+	var _UtilsAutoDetectRender2 = _interopRequireDefault(_UtilsAutoDetectRender);
+
+	var _EventDocumentEvent = __webpack_require__(6);
+
+	var renderer;
+	var scene;
+	var camera;
+	var raycaster;
+	var mouse;
+	var currentAnimate = undefined;
+
+	function initThree() {
+	  //let container = $(presenter.view).find('.2D-canvas').get(0);
+	  //创建渲染
+	  exports.renderer = renderer = (0, _UtilsAutoDetectRender2['default'])({
+	    canvas: $(_presenter2['default'].view).find('canvas')[0],
+	    antialias: true, //抗锯齿
+	    alpha: true // apply transparent attribute
+	  });
+	  renderer.setClearColor(0xFFFFFF, 0);
+	  renderer.setSize(_constants.REAL_ESTATE.width, _constants.REAL_ESTATE.height);
+
+	  //container.appendChild(renderer.domElement);
+	}
+
+	function initScene() {
+	  exports.scene = scene = new THREE.Scene();
+	}
+
+	function initCamera() {
+	  //创建Camera
+	  var RATIO = 2;
+	  exports.camera = camera = new THREE.OrthographicCamera(_constants.REAL_ESTATE.width / -RATIO, _constants.REAL_ESTATE.width / RATIO, _constants.REAL_ESTATE.height / RATIO, _constants.REAL_ESTATE.height / -RATIO, -20000, 20000);
+	  camera.position.x = 0;
+	  camera.position.y = 0;
+	  camera.position.z = 500;
+	  camera.lookAt({ x: 0, y: 0, z: 0 });
+	}
+
+	function initRaycaster() {
+	  //添加点击检测
+	  exports.raycaster = raycaster = new THREE.Raycaster();
+	  raycaster.linePrecision = 1;
+	  exports.mouse = mouse = new THREE.Vector2();
+	}
+
+	function animate() {
+	  currentAnimate = requestAnimationFrame(animate);
+	  render();
+	}
+
+	function render() {
+	  renderer.render(scene, camera);
+	}
+
+	function threeStart() {
+	  initThree();
+	  initCamera();
+	  initScene();
+	  initRaycaster();
+	  animate();
+	}
+
+	function addThreeShape(threeShape, uuid) {
+	  if (threeShape instanceof _basicGraphShapeBaseBasicGraphJs2['default']) {
+	    var group = threeShape.createShapeGroup();
+	    scene.add(group);
+	  } else {
+	    console.error('threeManger.addThreeShape: object not an instance of BaseThreeShape');
+	  }
+	}
+
+	function destroy() {
+	  "use strict";
+	  renderer.dispose();
+	  renderer.domElement = null;
+	  window.cancelAnimationFrame(currentAnimate);
+
+	  exports.renderer = renderer = null;
+	  exports.scene = scene = null;
+	  exports.camera = camera = null;
+	  exports.raycaster = raycaster = null;
+	  exports.mouse = mouse = null;
+
+	  (0, _EventDocumentEvent.removeListener)();
+	  _presenter2['default'].playerController.getCommands().closeTool();
+	}
+
+	exports.renderer = renderer;
+	exports.scene = scene;
+	exports.camera = camera;
+	exports.raycaster = raycaster;
+	exports.mouse = mouse;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var _contextShapeContextJs = __webpack_require__(9);
+
+	var _utilMatrixJs = __webpack_require__(11);
+
+	var _threeMangerJs = __webpack_require__(7);
+
+	var _UtilsDestroyThreeObjectJs = __webpack_require__(12);
+
+	var _UtilsDestroyThreeObjectJs2 = _interopRequireDefault(_UtilsDestroyThreeObjectJs);
+
+	var _constants = __webpack_require__(5);
+
+	var BaseBasicGraph = (function () {
+	  _createClass(BaseBasicGraph, [{
+	    key: 'getMesh',
+
+	    /**
+	     * 安类型取得图形
+	     * @param type
+	     * @returns {*}
+	     */
+	    value: function getMesh(type) {
+	      for (var index = 0; index < this.shapeGroup.children.length; index++) {
+	        if (this.shapeGroup.children[index].type == type) {
+	          return this.shapeGroup.children[index];
+	        }
+	      }
+	    }
+
+	    /**
+	     * 构造函数
+	     * @param x
+	     * @param y
+	     * @param name
+	     */
+	  }]);
+
+	  function BaseBasicGraph() {
+	    var name = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+	    var id = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+	    _classCallCheck(this, BaseBasicGraph);
+
+	    // 名称
+	    this.name = name;
+	    this.isCreating = true;
+
+	    // 创建图形
+	    this.shapeGroup = new THREE.Object3D();
+	    this.shapeGroup.z = _constants.ZPOSITION.getZposition(2);
+
+	    // 唯一ID
+	    if (id) {
+	      this.id = id;
+	    } else {
+	      this.id = this.shapeGroup.id;
+	    }
+
+	    // 当前行为
+	    this.lastPosition = null; // 点击坐标
+	    this.tempMesh = {};
+
+	    // 绘图数据
+	    this.lastData = {};
+	    this.data = {
+	      selected: false, // 是否选中
+	      anchroZ: 1, // 锚点图层
+	      fontSize: 15, // 文字大小
+	      positionZ: 0 //z层坐标
+	    };
+
+	    this.data.action = null; // 当前行为
+	    this.data.event = null;
+	    this.data.movePosition = null;
+	    this.data.centerPosition = new THREE.Vector3(0, 0, 0);
+
+	    //材料
+	    this.material = new THREE.MeshBasicMaterial({
+	      color: 'black'
+	    });
+
+	    // 当前选中部分
+	    this.selectedGeometry = null;
+	    this.data.positionZ = _constants.ZPOSITION.getZposition();
+	  }
+
+	  /**
+	   * 设置所有图形的主图形为当前图形
+	   */
+
+	  _createClass(BaseBasicGraph, [{
+	    key: 'setMainObject',
+	    value: function setMainObject() {
+	      for (var index = 0; index < this.shapeGroup.length; index++) {
+	        this.shapeGroup[index].mainObject = this;
+	      }
+	    }
+
+	    /**
+	     * 绘制图形
+	     */
+	  }, {
+	    key: 'draw',
+	    value: function draw(data) {
+	      //set
+	      if (data) {
+	        //let temp = this.data.movePosition;
+	        this.data = data;
+	        //if(!data.clickMousePosition){
+	        //  this.data.movePosition = null;
+	        //}
+	        //else if (!temp) {
+	        //  this.data.movePosition = this.data.clickMousePosition;
+	        //} else {
+	        //  this.data.movePosition = temp;
+	        //}
+	      }
+
+	      // 更改Z层位置
+	      this.shapeGroup.position.z = this.data.positionZ;
+
+	      // 判断是否是移动
+	      if (this.data.action == "MOVE") {
+	        //let offsetX = this.data.eventPosition.x - this.data.movePosition.x;
+	        //let offsetY = this.data.eventPosition.y - this.data.movePosition.y;
+	        if (this.data.eventPosition && !this.isOffLimit(new THREE.Vector3().subVectors(this.data.eventPosition, this.data.clickMousePosition))) {
+	          this.shapeGroup.position.x = this.data.eventPosition.x - this.data.clickMousePosition.x;
+	          this.shapeGroup.position.y = this.data.eventPosition.y - this.data.clickMousePosition.y;
+	        }
+
+	        //this.data.movePosition = this.data.eventPosition;
+	        return true;
+	      }
+	    }
+
+	    /**
+	     * 使用公共方法
+	     * 删除图片
+	     */
+	  }, {
+	    key: 'remove',
+	    value: function remove() {
+	      this.removeModuleFromTemp();
+	      this.removeModuleFromGroup();
+	      //for (let index = 0; index < this.shapeGroup.children.length;) {
+	      //  let mesh = this.shapeGroup.children[index];
+	      //  if (!suffix || (mesh.type && mesh.type.indexOf(suffix) > -1)) {
+	      //    mesh.mainObject = null;
+	      //    this.shapeGroup.(mesh);
+	      //  } else {
+	      //    index++;
+	      //  }
+	      //}
+	    }
+
+	    /**
+	     * 销毁
+	     */
+	  }, {
+	    key: 'destory',
+	    value: function destory() {
+	      // 销毁图形
+	      this.remove();
+
+	      // 从全局中删除
+	      _contextShapeContextJs.currentObject.set(null);
+	      for (var index = 0; index < _contextShapeContextJs.objectGroup.length; index++) {
+	        if (_contextShapeContextJs.objectGroup[index].id == this.id) {
+	          _contextShapeContextJs.objectGroup.splice(index, 1);
+	          break;
+	        }
+	      }
+
+	      // 销毁组
+	      if (this.shapeGroup.parent) {
+	        this.shapeGroup.parent.remove(this.shapeGroup);
+	      }
+	    }
+
+	    /**
+	     * 重写
+	     */
+	  }, {
+	    key: 'createShapeGroup',
+	    value: function createShapeGroup() {}
+
+	    /**
+	     *
+	     * @param geometry
+	     */
+	  }, {
+	    key: 'setSelectedGeometry',
+	    value: function setSelectedGeometry(geometry, event) {
+	      var setData = {};
+	      if (geometry) {
+	        var clickPosition = (0, _utilMatrixJs.convertEvent)(event);
+	        if ((0, _utilMatrixJs.isOffLimit)(clickPosition)) {
+	          return;
+	        }
+	        this.selectedGeometry = geometry;
+	        this.data.clickMousePosition = clickPosition;
+
+	        this.data.movePosition = this.data.clickMousePosition;
+	        setData = { selected: true };
+	      } else {
+	        this.data.action = null;
+	        this.data.clickMousePosition = null;
+	        this.data.movePosition = this.data.clickMousePosition;
+	        this.selectedGeometry = null;
+	        setData = { selected: false };
+	      }
+	      this.setDrawData(setData);
+	    }
+
+	    /**
+	     * 画锚点
+	     */
+	  }, {
+	    key: 'drawAnchor',
+	    value: function drawAnchor() {}
+
+	    /**
+	     * 选中当前的图形
+	     * @param value
+	     */
+	  }, {
+	    key: 'setSelected',
+	    value: function setSelected(value) {
+	      //this.remove("anchor");
+	      if (value) {
+	        this.data.positionZ = _constants.ZPOSITION.getZposition(2);
+	        this.data.selected = true;
+	        this.drawAnchor();
+	      }
+	    }
+
+	    /**
+	     * 创建图形组
+	     * @returns {THREE.Object3D}
+	     */
+	  }, {
+	    key: 'createShapeGroup',
+	    value: function createShapeGroup() {
+	      // 绘图
+	      this.draw();
+
+	      var length = this.shapeGroup.children.length;
+	      for (var index = 0; index < length; index++) {
+	        this.shapeGroup.children[index].mainObject = this;
+	      }
+
+	      // 返回
+	      return this.shapeGroup;
+	    }
+
+	    /**
+	     * 当鼠标移动时候的反应
+	     * @param event
+	     */
+	  }, {
+	    key: 'onMouseMove',
+	    value: function onMouseMove(event) {
+	      this.data.eventPosition = (0, _utilMatrixJs.convertEvent)(event);
+	      return;
+	    }
+
+	    /**
+	     * 当鼠标移动时候的反应
+	     * @param event
+	     */
+	  }, {
+	    key: 'onMouseUp',
+	    value: function onMouseUp(event) {
+	      this.data.action = null;
+	      this.data.movePosition = null;
+	      this.data.clickMousePosition = null;
+	    }
+
+	    /**
+	     * 是否超出范围
+	     */
+	  }, {
+	    key: 'isOffLimit',
+	    value: function isOffLimit(offset) {
+	      return false;
+	    }
+
+	    /**
+	     * 移动测试
+	     */
+	  }, {
+	    key: 'moveTest',
+	    value: function moveTest() {
+	      if (this.isOffLimit()) {
+	        for (var key in this.data) {
+	          if (this.data[key] instanceof Array) {
+	            this.data[key] = new Array();
+	            for (var index = 0; index < this.lastData[key].length; index++) {
+	              if (this.lastData[key][index] instanceof THREE.Vector3) {
+	                this.data[key][index] = this.lastData[key][index].clone();
+	              } else {
+	                this.data[key][index] = this.lastData[key][index];
+	              }
+	            }
+	          } else if (this.data[key] instanceof THREE.Vector3) {
+	            this.data[key] = this.lastData[key].clone();
+	          } else {
+	            this.data[key] = this.lastData[key];
+	          }
+	        }
+	        this.draw();
+	      } else {
+	        for (var key in this.data) {
+	          if (this.data[key] instanceof Array) {
+	            this.lastData[key] = new Array();
+	            for (var index = 0; index < this.data[key].length; index++) {
+	              if (this.data[key][index] instanceof THREE.Vector3) {
+	                this.lastData[key][index] = this.data[key][index].clone();
+	              } else {
+	                this.lastData[key][index] = this.data[key][index];
+	              }
+	            }
+	          } else if (this.data[key] instanceof THREE.Vector3) {
+	            this.lastData[key] = this.data[key].clone();
+	          } else {
+	            this.lastData[key] = this.data[key];
+	          }
+	        }
+	      }
+	    }
+
+	    /**
+	     * 设置绘画数据
+	     * @param setData
+	     */
+	  }, {
+	    key: 'setDrawData',
+	    value: function setDrawData(setData) {
+	      for (var key in setData) {
+	        this.data[key] = setData[key];
+	      }
+	      this.draw();
+	      //this.moveTest();
+	    }
+
+	    /**
+	     * 修改锚点图层
+	     * @param value
+	     */
+	  }, {
+	    key: 'updateZ',
+	    value: function updateZ(type, value) {
+	      var length = this.shapeGroup.children.length;
+	      for (var index = 0; index < length; index++) {
+	        if (this.shapeGroup.children[index].type && this.shapeGroup.children[index].type.indexOf(type) > -1) {
+	          this.shapeGroup.children[index].position.z = value;
+	        }
+	      }
+	    }
+
+	    /**
+	     * 计算文字的中心位置
+	     */
+	  }, {
+	    key: 'getTextPoint',
+	    value: function getTextPoint(pointA, pointB, text, material) {
+	      var vector = new THREE.Vector3();
+	      var lineWidth = this.data.linewidth;
+	      var fontSize = this.data.fontSize;
+	      if (material) {
+	        lineWidth = material.lineWidth;
+	        fontSize = material.fontSize;
+	      }
+	      var textLength = text.length;
+	      if (text.length == 0) {
+	        textLength = 3;
+	      }
+
+	      vector.subVectors(pointB, pointA);
+	      vector.normalize();
+	      var scale = 1;
+	      if (lineWidth) {
+	        scale += (lineWidth - 10) / 60;
+	      }
+
+	      // vector.x *= (fontSize * 1.5 + (textLength - 1) * fontSize / 1.5) * scale;
+	      // vector.y *= (fontSize * 1.5) * scale;
+	      vector.x *= fontSize * 2.2 * scale;
+	      vector.y *= fontSize * 1.5 * scale;
+	      return pointB.clone().add(vector);
+	    }
+
+	    /**
+	     * 从临时栈中删除组件
+	     * @param type
+	     */
+	  }, {
+	    key: 'removeModuleFromTemp',
+	    value: function removeModuleFromTemp(type) {
+	      if (type) {
+	        this.removeModule(this.tempMesh[type]);
+	        this.tempMesh[type] = null;
+	        return;
+	      }
+
+	      // 删除所有
+	      for (var key in this.tempMesh) {
+	        this.removeModule(this.tempMesh[key]);
+	        this.tempMesh[key] = null;
+	      }
+	    }
+
+	    /**
+	     * 从显示组中删除
+	     * @param type
+	     */
+	  }, {
+	    key: 'removeModuleFromGroup',
+	    value: function removeModuleFromGroup(type) {
+	      for (var index = 0; index < this.shapeGroup.children.length;) {
+	        if (!type || this.shapeGroup.children[index].type == type) {
+	          this.removeModule(this.shapeGroup.children[index]);
+	        } else {
+	          index++;
+	        }
+	      }
+	    }
+
+	    /**
+	     * 删除组件
+	     * @param mesh
+	     */
+	  }, {
+	    key: 'removeModule',
+	    value: function removeModule(mesh) {
+	      if (!mesh) {
+	        return;
+	      }
+
+	      // 清除内置信息
+	      this.shapeGroup.remove(mesh);
+	      mesh.mainObject = null;
+	      (0, _UtilsDestroyThreeObjectJs2['default'])(mesh);
+
+	      // 设置空
+	      mesh = null;
+	    }
+	  }]);
+
+	  return BaseBasicGraph;
+	})();
+
+	exports['default'] = BaseBasicGraph;
+	module.exports = exports['default'];
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getObject = getObject;
+	exports.destoryAll = destoryAll;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _presenterJs = __webpack_require__(2);
+
+	var _presenterJs2 = _interopRequireDefault(_presenterJs);
+
+	var _viewRefreshToolbarJs = __webpack_require__(10);
+
+	var _viewRefreshToolbarJs2 = _interopRequireDefault(_viewRefreshToolbarJs);
+
+	//import {TransformControls2D} from '../../Controller/TransformControls'
+
+	// 定义激活的图形
+	var _curObject = null;
+
+	// 对象上下文
+	var objectGroup = new Array();
+	exports.objectGroup = objectGroup;
+	/**
+	 * 根据ID取得对象
+	 * @param id 对象ID
+	 */
+
+	function getObject(id) {
+	  // 循环查找
+	  for (var index = 0; index < objectGroup.length; index++) {
+	    if (objectGroup[index].id == id) {
+	      return objectGroup[index];
+	    }
+	  }
+
+	  //没有找到返回空
+	  return null;
+	}
+
+	/**
+	 * 删除所有图形
+	 */
+
+	function destoryAll() {
+	  for (var index = 0; index < objectGroup.length;) {
+	    objectGroup[0].destory();
+	  }
+	}
+
+	// 当前对象的设置
+	var currentObject = {
+	  // 获取
+	  get: function get() {
+	    return _curObject;
+	  },
+
+	  // 设置
+	  set: function set(inObject) {
+	    if (_curObject === inObject) {
+	      return;
+	    }
+
+	    // 切换当前对象
+	    if (_curObject) {
+	      _curObject.setSelectedGeometry(null);
+	    }
+
+	    // 设置到几何图形组内
+	    _curObject = inObject;
+	    if (_curObject) {
+	      _curObject.setSelected(true);
+	    }
+
+	    // 刷新
+	    (0, _viewRefreshToolbarJs2["default"])();
+	  }
+	};
+	exports.currentObject = currentObject;
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global $ */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterJs = __webpack_require__(2);
+
+	var _presenterJs2 = _interopRequireDefault(_presenterJs);
+
+	// 显示快捷工具栏
+
+	exports['default'] = function () {
+	    var toolbar = $(_presenterJs2['default'].view);
+	    toolbar.trigger('refresh.basicGraphToolBar');
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.convertEvent = convertEvent;
+	exports.rotatePoint = rotatePoint;
+	exports.rotationAngleVector = rotationAngleVector;
+	exports.getLocationPoint = getLocationPoint;
+	exports.isOffLimit = isOffLimit;
+
+	var _constantsJs = __webpack_require__(5);
+
+	/**
+	 * 鼠标事件转化为指标
+	 * @param position
+	 * @returns {THREE.Vector2}
+	 */
+
+	function convertEvent(event) {
+	  var position = event;
+	  if (position.clientX == undefined) {
+	    position = position.touches[0];
+	  }
+
+	  var mouse = new THREE.Vector2(0, 0);
+	  mouse.x = position.clientX - _constantsJs.REAL_ESTATE.width / 2;
+	  mouse.y = -(position.clientY - _constantsJs.REAL_ESTATE.height / 2);
+
+	  // 返回
+	  return mouse;
+	}
+
+	/**
+	 * 跟中心转一定角度后的坐标
+	 * @param point 点
+	 * @param center 中心
+	 * @param angle 角度
+	 * @returns {THREE.Vector3} 结果
+	 */
+
+	function rotatePoint(point, center, angle) {
+	  var l = angle * Math.PI / 180;
+
+	  //sin/cos value
+	  var cosv = Math.cos(l);
+	  var sinv = Math.sin(l);
+
+	  // calc new point
+	  var newX = (point.x - center.x) * cosv - (point.y - center.y) * sinv + center.x;
+	  var newY = (point.x - center.x) * sinv + (point.y - center.y) * cosv + center.y;
+	  return new THREE.Vector3(newX, newY, 0);
+	}
+
+	/**
+	 * 向量旋转后的向量，返回旋转后的点和向量;
+	 * @param movePoint 旋转角度
+	 * @param fixedPoint 旋转轴点（固定的点）
+	 * @param angle 旋转角度
+	 * @param clockwise 旋转方向
+	 */
+
+	function rotationAngleVector(movePoint, fixedPoint, angle, clockwise) {
+
+	  var tempVector = new THREE.Vector2(movePoint.x - fixedPoint.x, movePoint.y - fixedPoint.y);
+	  var valueX = undefined,
+	      valueY = undefined;
+	  var radian = angle / 180 * Math.PI;
+
+	  if (clockwise) {
+	    valueX = tempVector.x * Math.cos(radian) + tempVector.y * Math.sin(radian) + fixedPoint.x;
+	    valueY = tempVector.y * Math.cos(radian) - tempVector.x * Math.sin(radian) + fixedPoint.y;
+	  } else {
+	    valueX = tempVector.x * Math.cos(radian) - tempVector.y * Math.sin(radian) + fixedPoint.x;
+	    valueY = tempVector.y * Math.cos(radian) + tempVector.x * Math.sin(radian) + fixedPoint.y;
+	  }
+
+	  var afterRotationPoint = new THREE.Vector2(valueX, valueY);
+	  var afterRotationVector = new THREE.Vector2(valueX - fixedPoint.x, valueY - fixedPoint.y);
+
+	  return {
+	    point: afterRotationPoint,
+	    vector: afterRotationVector
+	  };
+	}
+
+	/**
+	 *  从A到B的方向距离length的点
+	 * @param pointA
+	 * @param pointB
+	 * @param length
+	 * @returns {THREE.Vector3}
+	 */
+
+	function getLocationPoint(pointA, pointB, length) {
+	  var vector = new THREE.Vector3(0, 0, 0);
+	  vector.subVectors(pointB, pointA);
+	  vector = vector.setLength(length);
+	  vector.add(pointA);
+	  return vector;
+	}
+
+	/**
+	 * 是否超出框架
+	 */
+
+	function isOffLimit(point) {
+	  var position = {};
+	  position.clientX = point.x + _constantsJs.REAL_ESTATE.width / 2;
+	  position.clientY = _constantsJs.REAL_ESTATE.height / 2 - point.y;
+
+	  if (position.clientX < 0 || position.clientX > _constantsJs.REAL_ESTATE.width || position.clientY < 0 || position.clientY > _constantsJs.REAL_ESTATE.height) {
+	    return true;
+	  }
+
+	  return false;
+	}
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = destroyThreeObject;
+
+	function destroyThreeObject(object) {
+	  "use strict";
+	  if (!object) return;
+	  if (object.children && object.children.length > 0) {
+	    for (var i = 0; i < object.children.length; i++) {
+	      destroyThreeObject(object.children[i]);
+	    }
+	  }
+	  if (object.geometry) object.geometry.dispose();
+	  if (object.material) {
+	    object.material.dispose();
+	    if (object.material.map && object.material.map.dispose) object.material.map.dispose();
+	  }
+	  object = null;
+	}
+
+	module.exports = exports["default"];
+
+/***/ },
+/* 13 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by lyp on 2016/2/17.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = autoDetectRender;
+	var isWebGLRenderer = undefined;
+
+	exports.isWebGLRenderer = isWebGLRenderer;
+
+	function autoDetectRender(options, noWebGL) {
+	    if (!noWebGL && isWebGLSupported()) {
+	        exports.isWebGLRenderer = isWebGLRenderer = true;
+	        return new THREE.WebGLRenderer(options);
+	    }
+
+	    exports.isWebGLRenderer = isWebGLRenderer = false;
+	    return new THREE.CanvasRenderer(options);
+	}
+
+	function isWebGLSupported() {
+	    var contextOptions = { stencil: true };
+	    try {
+	        if (!window.WebGLRenderingContext) {
+	            return false;
+	        }
+
+	        var canvas = document.createElement('canvas'),
+	            gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
+
+	        return !!(gl && gl.getContextAttributes().stencil);
+	    } catch (e) {
+	        return false;
+	    }
+	}
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	// 显示快捷工具栏
+
+	exports['default'] = function () {
+	  $(_presenter2['default'].view).trigger('refresh.quickToolbar');
+	  $(_presenter2['default'].view).trigger('show.quickToolbar');
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by lyp on 2016/1/11.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	var Listener = function Listener() {
+	    _classCallCheck(this, Listener);
+
+	    this.name = undefined;
+	    this.fn = null;
+	};
+
+	var ListenerManager = (function () {
+	    function ListenerManager() {
+	        _classCallCheck(this, ListenerManager);
+
+	        this.listenArray = [];
+	    }
+
+	    _createClass(ListenerManager, [{
+	        key: 'addListener',
+	        value: function addListener(name, fn) {
+	            var listener = new Listener();
+	            listener.name = name;
+	            listener.fn = fn;
+	            this.listenArray.push(listener);
+	        }
+	    }, {
+	        key: 'dispose',
+	        value: function dispose() {
+	            this.listenArray = [];
+	        }
+	    }, {
+	        key: 'removeListener',
+	        value: function removeListener(name, fn) {
+	            for (var i = 0; i < this.listenArray.length; i++) {
+	                var listener = this.listenArray[i];
+	                if (listener.name === name && listener.fn === fn) {
+	                    this.listenArray.splice(i, 1);
+	                    break;
+	                }
+	            }
+	        }
+	    }, {
+	        key: 'run',
+	        value: function run(name, event) {
+	            if (event.type == 'mousedown' || event.type == 'click') {
+	                event.stopPropagation();
+	            }
+	            for (var i = 0; i < this.listenArray.length; i++) {
+	                var listener = this.listenArray[i];
+	                if (listener.name === name) {
+	                    listener.fn(event);
+	                }
+	            }
+	        }
+	    }]);
+
+	    return ListenerManager;
+	})();
+
+	var listenerManager = new ListenerManager();
+
+	exports['default'] = listenerManager;
+	module.exports = exports['default'];
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/19.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports.onBlur = onBlur;
+	exports.bgMouseUp = bgMouseUp;
+	exports.bgMouseDown = bgMouseDown;
+	exports.bgMouseMove = bgMouseMove;
+	exports.getHitGeometry = getHitGeometry;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _shapeContextJs = __webpack_require__(9);
+
+	var _presenterJs = __webpack_require__(2);
+
+	var _presenterJs2 = _interopRequireDefault(_presenterJs);
+
+	var _constantsJs = __webpack_require__(5);
+
+	var _threeMangerJs = __webpack_require__(7);
+
+	function onBlur(event) {
+	    if (_shapeContextJs.currentObject.get()) {
+	        _shapeContextJs.currentObject.get().setSelectedGeometry();
+	    }
+	    _shapeContextJs.currentObject.set(null);
+	    var keyInput = $('#basic-graph-keyInput');
+	    keyInput.trigger('blur');
+
+	    // 返回空
+	    return null;
+	}
+
+	/**
+	 * 鼠标点击事件
+	 * @param event
+	 */
+	function onMouseDown(event, raycaster) {
+	    // 查看点中物体
+	    var hitGeometry = getHitGeometry(raycaster);
+
+	    // 更新
+	    if (hitGeometry) {
+	        var mainObject = hitGeometry.mainObject;
+	        mainObject.setSelectedGeometry(hitGeometry, event);
+	        _shapeContextJs.currentObject.set(mainObject);
+
+	        var keyInput = $('#basic-graph-keyInput');
+	        if (hitGeometry.type && hitGeometry.type.indexOf('text') > -1) {
+	            keyInput.val(mainObject.data[hitGeometry.type]);
+	            keyInput.trigger('blur');
+	            keyInput.trigger('keydown');
+	            keyInput.trigger('focus');
+	        } else {
+	            keyInput.trigger('blur');
+	        }
+
+	        // 返回选中对象
+	        return _shapeContextJs.currentObject.get();
+	    }
+	}
+
+	/**
+	 * 拖拽事件
+	 */
+	function onMouseMove(event) {
+	    if (_shapeContextJs.currentObject.get()) {
+	        var _mouse = {};
+	        _shapeContextJs.currentObject.get().onMouseMove(event);
+	    }
+	}
+
+	/**
+	 * 鼠标点击事件
+	 * @param event
+	 */
+	function onKeyDown(event) {}
+
+	/**
+	 * 鼠标放开
+	 * @param event
+	 */
+
+	function bgMouseUp(event) {
+	    if (_shapeContextJs.currentObject.get()) {
+	        _shapeContextJs.currentObject.get().onMouseUp(event);
+	    }
+	}
+
+	//
+	///**
+	// * 键盘点击事件
+	// */
+	//export function bgKeyDown(event) {
+	//  if (currentObject.get() && currentObject.get().selectedGeometry && currentObject.get().selectedGeometry.type.indexOf('text') > -1) {
+	//    var keyInput = $('#basic-graph-keyInput');
+	//    let setData = {};
+	//    setData[currentObject.get().selectedGeometry.type] = keyInput.val();
+	//    currentObject.get().setDrawData(setData);
+	//  }
+	//}
+
+	/**
+	 * 点击事件
+	 * @param event
+	 * @param raycaster
+	 */
+
+	function bgMouseDown(event, raycaster) {
+	    return onMouseDown(event, raycaster);
+	}
+
+	/**
+	 * 移动事件
+	 * @param  {[type]} event [description]
+	 * @return {[type]}       [description]
+	 */
+
+	function bgMouseMove(event) {
+	    onMouseMove(event);
+	}
+
+	/**
+	 * 当前击中对象
+	 * @param raycaster 激光
+	 * @returns {*}
+	 */
+
+	function getHitGeometry(raycaster) {
+	    // 增加所有的图形
+	    var checkGeometryList = new Array();
+	    var geos = undefined;
+
+	    for (var index = 0; index < _shapeContextJs.objectGroup.length; index++) {
+	        geos = _shapeContextJs.objectGroup[index].shapeGroup.children;
+	        checkGeometryList.push.apply(checkGeometryList, _toConsumableArray(geos));
+	    }
+	    // 判断透过物品
+	    var intersectList = raycaster.intersectObjects(checkGeometryList, true);
+
+	    for (var index = 0; index < intersectList.length; index++) {
+	        if (intersectList[index].object.name && intersectList[index].object.name.indexOf('arrowSide') > -1) {
+	            intersectList[index].object = intersectList[index].object.parent;
+	        }
+	    }
+	    var resultIntersect = null;
+	    for (var index = 0; index < intersectList.length; index++) {
+	        if (!intersectList[index].object.mainObject) {
+	            break;
+	        } else if (resultIntersect == null) {
+	            resultIntersect = intersectList[index].object;
+	        } else if (intersectList[index].object.mainObject == resultIntersect.mainObject && !intersectList[index].object.type) {
+	            resultIntersect = intersectList[index].object;
+	        } else if (intersectList[index].object.mainObject != resultIntersect.mainObject) {
+	            break;
+	        }
+	    }
+
+	    // 返回
+	    return resultIntersect;
+	}
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _EventSelectNextShapeJs = __webpack_require__(18);
+
+	var _EventSelectNextShapeJs2 = _interopRequireDefault(_EventSelectNextShapeJs);
+
+	var _basicGraphViewExtendToolBarJs = __webpack_require__(20);
+
+	var _basicGraphContextShapeContextJs = __webpack_require__(9);
+
+	var ToolbarViewModel = {
+	    // 快捷工具栏的子菜单的可见状态
+	    subToolbar: ko.observable(false),
+	    gearStatus: ko.observable(true),
+	    removeTarget: function removeTarget() {
+	        // 判断是否是角
+	        if (_basicGraphContextShapeContextJs.currentObject.get()) {
+	            _basicGraphContextShapeContextJs.currentObject.get().destory();
+	            (0, _EventSelectNextShapeJs2['default'])();
+	            window.requestAnimationFrame(function () {
+	                $(_presenter2['default'].view).trigger('refresh.basicGraphToolBar');
+	            });
+	            return;
+	        }
+	    }
+	};
+
+	exports.ToolbarViewModel = ToolbarViewModel;
+
+	exports['default'] = function () {
+	    var view = _presenter2['default'].view;
+	    // 绑定到vi
+
+	    var $quickToolbar = $(view).find('.js-toolbar');
+
+	    (0, _basicGraphViewExtendToolBarJs.extendViewModel)(ToolbarViewModel);
+	    ko.applyBindings(ToolbarViewModel, view);
+
+	    $(view).on('show.quickToolbar', function (e) {
+	        $quickToolbar.removeClass('toolbar--hide');
+	        var toolbar = $(view).find('.toolbar');
+	        toolbar.css('margin-left', -toolbar.outerWidth() / 2);
+	        ToolbarViewModel.subToolbar(false);
+	    });
+	    $(view).on('hide.quickToolbar', function (e) {
+	        $quickToolbar.addClass('toolbar--hide');
+	        ToolbarViewModel.subToolbar(false);
+	    });
+	    // 切换快捷工具子菜单的可见状态
+	    $(view).find('.toolbar').on('click', function (e) {
+	        if (!$(e.target).closest('.toolbar__item').length) {
+	            if (ToolbarViewModel.subToolbar() === true) {
+	                ToolbarViewModel.subToolbar(false);
+	            }
+	        }
+	    });
+
+	    // 扩展监听
+	    (0, _basicGraphViewExtendToolBarJs.extendViewListener)(view);
+	};
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threeMangerJs = __webpack_require__(7);
+
+	var _basicGraphContextSelectNextShapeJs = __webpack_require__(19);
+
+	var _basicGraphContextSelectNextShapeJs2 = _interopRequireDefault(_basicGraphContextSelectNextShapeJs);
+
+	exports['default'] = function () {
+	  // 点线角扩展
+	  if ((0, _basicGraphContextSelectNextShapeJs2['default'])()) {
+	    return;
+	  } else {
+	    (0, _threeMangerJs.destroy)();
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 19 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/23.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _shapeContextJs = __webpack_require__(9);
+
+	var _threeMangerJs = __webpack_require__(7);
+
+	exports['default'] = function () {
+	  // 选中图层最大的图形
+	  var zMaxObject = null;
+	  for (var index = 0; index < _shapeContextJs.objectGroup.length; index++) {
+	    if (!zMaxObject) {
+	      zMaxObject = _shapeContextJs.objectGroup[index];
+	    } else {
+	      if (zMaxObject.shapeGroup.position.z < _shapeContextJs.objectGroup[index].shapeGroup.position.z) {
+	        zMaxObject = _shapeContextJs.objectGroup[index];
+	      }
+	    }
+	  }
+
+	  // 返回
+	  _shapeContextJs.currentObject.set(zMaxObject);
+	  return zMaxObject;
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 20 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/4.
+	 */
+	/* global $ ko */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports.extendViewModel = extendViewModel;
+	exports.extendViewListener = extendViewListener;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenterJs = __webpack_require__(2);
+
+	var _presenterJs2 = _interopRequireDefault(_presenterJs);
+
+	var _contextShapeContextJs = __webpack_require__(9);
+
+	var _contextTextValueJs = __webpack_require__(21);
+
+	var _EventSelectNextShapeJs = __webpack_require__(18);
+
+	var _EventSelectNextShapeJs2 = _interopRequireDefault(_EventSelectNextShapeJs);
+
+	// 操作栏列表
+	var toolbarList = {
+	    lineArrow: false,
+	    lineType: false,
+	    lineWidth: false
+	};
+
+	// 操作栏状态
+	var toolbarStatus = {
+	    lineArrow: false,
+	    lineType: false,
+	    lineWidth: false
+	};
+
+	var gearStatus = null;
+	var basicGraphViewModel = undefined;
+
+	exports.basicGraphViewModel = basicGraphViewModel;
+	/**
+	 * 扩展数据
+	 * @param viewModel
+	 */
+
+	function extendViewModel(viewModel) {
+	    // 操作栏列表
+	    var toolbarList = {
+	        lineArrow: false,
+	        lineType: false,
+	        lineWidth: false
+	    };
+
+	    // 操作栏状态
+	    var toolbarStatus = {
+	        lineArrow: false,
+	        lineType: false,
+	        lineWidth: false
+	    };
+
+	    exports.basicGraphViewModel = basicGraphViewModel = {
+	        subToolbarStatus: ko.observable(toolbarStatus),
+	        subToolbarList: ko.observable(toolbarList),
+	        subToolbarShow: ko.observable(false),
+	        inputValue: ko.observable(_contextTextValueJs.textValue.value),
+	        basicGraphToggleSubToolbar: function basicGraphToggleSubToolbar(name) {
+	            var toolbarStatus = this.subToolbarStatus();
+	            toolbarStatus[name] = !toolbarStatus[name];
+	            if (toolbarStatus[name]) {
+	                for (var key in toolbarStatus) {
+	                    if (key !== name) {
+	                        toolbarStatus[key] = false;
+	                    }
+	                }
+	            }
+	            this.subToolbarStatus(toolbarStatus);
+	        },
+	        closeSubToolbar: function closeSubToolbar() {
+	            var toolbarStatus = this.subToolbarStatus();
+	            for (var key in toolbarStatus) {
+	                toolbarStatus[key] = false;
+	            }
+	            this.subToolbarStatus(toolbarStatus);
+	        },
+	        switchShapeData: function switchShapeData(attr, value) {
+	            var shape = _contextShapeContextJs.currentObject.get();
+	            if (shape) {
+	                var drawData = {};
+	                drawData[attr] = value;
+	                shape.selectedGeometry = null;
+	                shape.setDrawData(drawData);
+	            }
+	            //let keyInput = $('#basic-graph-keyInput');
+	            //keyInput.trigger('blur');
+
+	            this.closeSubToolbar();
+	        }
+	    };
+
+	    basicGraphViewModel.inputValue.subscribe(function (newValue) {
+	        (0, _contextTextValueJs.textValueChange)(newValue);
+	    });
+
+	    // 设置单独的model
+	    viewModel.basicGraphViewModel = basicGraphViewModel;
+	    gearStatus = viewModel.gearStatus;
+	}
+
+	/**
+	 * 扩展view监听
+	 * @param view
+	 * @param model
+	 * @param isPreview
+	 */
+
+	function extendViewListener(view, model, isPreview) {
+	    var $toolbar = $(view);
+
+	    // 重绘工具栏
+	    $toolbar.on('refresh.basicGraphToolBar', function (event) {
+	        //取得对象
+	        var item = _contextShapeContextJs.currentObject.get();
+
+	        // 设置工具栏
+	        $(_presenterJs2['default'].view).trigger('refresh.quickToolbar');
+	        if (item && item.toolbarList != undefined) {
+	            basicGraphViewModel.subToolbarShow(true);
+	            basicGraphViewModel.subToolbarList(item.toolbarList);
+	            gearStatus(false);
+	            $(_presenterJs2['default'].view).trigger('show.quickToolbar');
+	        } else {
+	            gearStatus(false);
+	            basicGraphViewModel.subToolbarList(toolbarList);
+	            basicGraphViewModel.subToolbarShow(false);
+	            $(_presenterJs2['default'].view).trigger('hide.quickToolbar');
+	        }
+
+	        // 初始化状态
+	        basicGraphViewModel.closeSubToolbar();
+	    });
+	}
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.textValueChange = textValueChange;
+
+	var _shapeContextJs = __webpack_require__(9);
+
+	var _viewExtendToolBar = __webpack_require__(20);
+
+	var textValue = { value: "", selected: false };
+
+	exports.textValue = textValue;
+	/**
+	 * 文字修改
+	 */
+
+	function textValueChange() {
+	  // 判断是否有选中
+	  var item = _shapeContextJs.currentObject.get();
+	  if (!item) {
+	    return;
+	  }
+
+	  // 判断操作是否是修改字符
+	  if (!item.selectedGeometry || !item.selectedGeometry.type || item.selectedGeometry.type.indexOf("text") < -1) {
+	    return;
+	  }
+
+	  // 取得键入数据
+	  var keyInput = $('#basic-graph-keyInput');
+	  var drawData = {};
+	  var input = keyInput.val().substr(0, 3);
+	  var value = "";
+
+	  var exp = /[a-zA-Z0-9]/;
+	  for (var i = 0; i < input.length; i++) {
+	    if (exp.exec(input[i])) {
+	      value += input[i];
+	    }
+	  }
+	  drawData[item.selectedGeometry.type] = value;
+	  item.setDrawData(drawData);
+	  _viewExtendToolBar.basicGraphViewModel.inputValue(value);
+	  value = "";
+	}
+
+/***/ },
+/* 22 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by liuyuanpeng on 2016/8/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function () {
+	    var $view = $(_presenter2['default'].view);
+	    $view.find('.toolbar__item--last').find('span').html(_presenter2['default']._i18n['basic_close']);
+	    $view.find('.basic_style').html(_presenter2['default']._i18n['basic_style']);
+	    $view.find('.basic_no_arrow').html(_presenter2['default']._i18n['basic_no_arrow']);
+	    $view.find('.basic_left_arrow').html(_presenter2['default']._i18n['basic_left_arrow']);
+	    $view.find('.basic_both_arrow').html(_presenter2['default']._i18n['basic_both_arrow']);
+	    $view.find('.basic_line_type').html(_presenter2['default']._i18n['basic_line_type']);
+	    $view.find('.basic_solid_line').html(_presenter2['default']._i18n['basic_solid_line']);
+	    $view.find('.basic_dashed_line').html(_presenter2['default']._i18n['basic_dashed_line']);
+	    $view.find('.basic_segment_line').html(_presenter2['default']._i18n['basic_segment_line']);
+	    $view.find('.basic_line_width').html(_presenter2['default']._i18n['basic_line_width']);
+	    $view.find('.basic_angle').html(_presenter2['default']._i18n['basic_angle']);
+	    $view.find('.basic_acute_angle').html(_presenter2['default']._i18n['basic_acute_angle']);
+	    $view.find('.basic_right_angle').html(_presenter2['default']._i18n['basic_right_angle']);
+	    $view.find('.basic_obtuse_angle').html(_presenter2['default']._i18n['basic_obtuse_angle']);
+	    if (_presenter2['default']._i18n['basic_no_arrow'].length > 5) {
+	        var $lineTypeOption = $view.find('.line_type_option:first');
+	        $lineTypeOption.css('width', '110px');
+	        $lineTypeOption.css('left', '-10px');
+	        var $lineStyleOption = $view.find('.line_style_option:first');
+	        $lineStyleOption.css('width', '106px');
+	        $lineStyleOption.css('left', '-21px');
+	        var $angleStypeOption = $view.find('.angle_type_option:first');
+	        $angleStypeOption.css('width', '106px');
+	        $angleStypeOption.css('left', '-21px');
+	        $view.find('.line_width_option:first').css('left', '6px');
+	    }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (path) {
+	  _presenter2['default'].path = path;
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* global $ */
+	/**
+	 接收到 native 端的消息并处理
+	 * @param eventData {object} {item: 'click', value: 'FourEdges'}
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threeManger = __webpack_require__(7);
+
+	var _basicGraphShapeBasicShapeFactoryJs = __webpack_require__(25);
+
+	var _basicGraphShapeBasicShapeFactoryJs2 = _interopRequireDefault(_basicGraphShapeBasicShapeFactoryJs);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _viewRefreshQuickToolbar = __webpack_require__(14);
+
+	var _viewRefreshQuickToolbar2 = _interopRequireDefault(_viewRefreshQuickToolbar);
+
+	var _basicGraphContextShapeContextJs = __webpack_require__(9);
+
+	var _constants = __webpack_require__(5);
+
+	exports['default'] = function (eventData) {
+	  if (typeof eventData.value === 'undefined') {
+	    return;
+	  }
+	  //// 显示3D图形的形状
+	  if ($(_presenter2['default'].view).find('.three2D-canvas').css('display') === 'none') {
+	    var canvas = $(_presenter2['default'].view).find('canvas');
+	    canvas.css('position', 'fixed');
+	    canvas.css('left', 0);
+	    canvas.css('top', 0);
+	    canvas.css('right', _constants.REAL_ESTATE.width);
+	    canvas.css('bottom', _constants.REAL_ESTATE.height);
+	    $(_presenter2['default'].view).find('.three2D-canvas').show();
+	    (0, _threeManger.threeStart)();
+	  }
+
+	  // 点线角扩展
+	  for (var key in _basicGraphShapeBasicShapeFactoryJs.GEOMETRY_SHAPE) {
+	    if (_basicGraphShapeBasicShapeFactoryJs.GEOMETRY_SHAPE[key] == eventData.value) {
+	      (0, _viewRefreshQuickToolbar2['default'])();
+
+	      //设置点线角
+	      var basicShape = (0, _basicGraphShapeBasicShapeFactoryJs2['default'])(eventData.value);
+	      (0, _threeManger.addThreeShape)(basicShape);
+	      _basicGraphContextShapeContextJs.currentObject.set(basicShape);
+
+	      return;
+	    }
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 25 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = createShape;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _DotJs = __webpack_require__(26);
+
+	var _DotJs2 = _interopRequireDefault(_DotJs);
+
+	var _LineJs = __webpack_require__(32);
+
+	var _LineJs2 = _interopRequireDefault(_LineJs);
+
+	var _AngleJs = __webpack_require__(38);
+
+	var _AngleJs2 = _interopRequireDefault(_AngleJs);
+
+	/**
+	 * 图形类型
+	 * @type {{DOT: string, LINE: string, ANGLE: string}}
+	 */
+	var GEOMETRY_SHAPE = {
+	  DOT: 'Dot', // 点
+	  LINE: 'Line', // 线
+	  ANGLE: 'Angle' //角
+	};
+
+	exports.GEOMETRY_SHAPE = GEOMETRY_SHAPE;
+	/**
+	 * 创建方法
+	 * @param type
+	 * @param params
+	 * @returns {*}
+	 */
+
+	function createShape(type, id) {
+	  var solidGeometry = undefined;
+	  switch (type) {
+
+	    /**
+	     * 点
+	     */
+	    case GEOMETRY_SHAPE.DOT:
+	      solidGeometry = new _DotJs2['default'](type, id);
+	      break;
+	    /**
+	     * 线
+	     */
+	    case GEOMETRY_SHAPE.LINE:
+	      solidGeometry = new _LineJs2['default'](type, id);
+	      break;
+	    /**
+	     * 圆
+	     */
+	    case GEOMETRY_SHAPE.ANGLE:
+	      solidGeometry = new _AngleJs2['default'](type, id);
+	      break;
+	    default:
+	      break;
+	  }
+
+	  // 返回
+	  return solidGeometry;
+	}
+
+/***/ },
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x3, _x4, _x5) { var _again = true; _function: while (_again) { var object = _x3, property = _x4, receiver = _x5; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x3 = parent; _x4 = property; _x5 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _BaseBasicGraphJs = __webpack_require__(8);
+
+	var _BaseBasicGraphJs2 = _interopRequireDefault(_BaseBasicGraphJs);
+
+	var _basicShapeFactoryJs = __webpack_require__(25);
+
+	var _utilDrawTextJs = __webpack_require__(27);
+
+	var _utilDrawTextJs2 = _interopRequireDefault(_utilDrawTextJs);
+
+	var _utilDrawAnchorJs = __webpack_require__(29);
+
+	var _utilDrawAnchorJs2 = _interopRequireDefault(_utilDrawAnchorJs);
+
+	var _utilDrawDotJs = __webpack_require__(30);
+
+	var _utilDrawDotJs2 = _interopRequireDefault(_utilDrawDotJs);
+
+	var _utilMatrixJs = __webpack_require__(11);
+
+	var _utilShapeUtilJs = __webpack_require__(31);
+
+	var _contextShapeContextJs = __webpack_require__(9);
+
+	var Dot = (function (_BaseBasicGraph) {
+	  _inherits(Dot, _BaseBasicGraph);
+
+	  /**
+	   * 构造函数
+	   * @param x
+	   * @param y
+	   * @param name
+	   */
+
+	  function Dot() {
+	    var name = arguments.length <= 0 || arguments[0] === undefined ? _basicShapeFactoryJs.GEOMETRY_SHAPE.DOT : arguments[0];
+	    var id = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+	    _classCallCheck(this, Dot);
+
+	    // 名称
+	    _get(Object.getPrototypeOf(Dot.prototype), 'constructor', this).call(this, name, id);
+
+	    // 初始化数据
+	    this.data.text = (0, _utilShapeUtilJs.getShapeName)(name);
+	    this.data.radius = 10;
+	    this.data.position = new THREE.Vector3(0, 0, 0);
+	    this.data.lastPosition = new THREE.Vector3(0, 0, 0);
+
+	    // 工具栏
+	    this.toolbarList = {
+	      lineArrow: false,
+	      lineType: false,
+	      lineWidth: false,
+	      angleSwitch: false
+	    };
+
+	    this.isCreating = false;
+
+	    // 设置当前图形
+	    //currentObject.set(this);
+	    _contextShapeContextJs.objectGroup.push(this);
+	  }
+
+	  /**
+	   * 是否超出范围
+	   */
+
+	  _createClass(Dot, [{
+	    key: 'isOffLimit',
+	    value: function isOffLimit(offset) {
+	      if (!offset) {
+	        offset = new THREE.Vector3();
+	      }
+	      return (0, _utilMatrixJs.isOffLimit)(new THREE.Vector3().addVectors(this.data.position, offset));
+	    }
+
+	    /**
+	     * 绘制图形
+	     */
+	  }, {
+	    key: 'draw',
+	    value: function draw(data) {
+	      if (this.data.radius < 10) {
+	        return;
+	      }
+
+	      //if (isOffLimit(this, {x: setData.radius, y: 0}) || isOffLimit(this, {
+	      //    x: setData.radius * -1,
+	      //    y: 0
+	      //  }) || isOffLimit(this, {y: setData.radius, x: 0}) || isOffLimit(this, {y: setData.radius * -1, x: 0})) {
+	      //  return;
+	      //}
+
+	      // 清空
+	      if (_get(Object.getPrototypeOf(Dot.prototype), 'draw', this).call(this, data)) return;
+	      if (this.shapeGroup.position.x != 0) {
+	        this.data.position.x += this.shapeGroup.position.x;
+	        this.data.position.y += this.shapeGroup.position.y;
+	        this.shapeGroup.position.x = 0;
+	        this.shapeGroup.position.y = 0;
+	      }
+
+	      //if(!this.data.position instanceof THREE.Vector3){
+	      this.data.position = new THREE.Vector3(this.data.position.x, this.data.position.y, this.data.position.z);
+	      //}
+
+	      // 字符
+	      (0, _utilDrawTextJs2['default'])(this, "text", {
+	        x: this.data.position.x,
+	        y: this.data.position.y + this.data.radius + 20
+	      }, this.data.text, this.selectedGeometry && this.selectedGeometry.type == "text");
+
+	      // 图形
+	      (0, _utilDrawDotJs2['default'])(this, this.data.position, this.data.radius);
+
+	      // 锚点
+	      this.drawAnchor();
+	    }
+
+	    /**
+	     * 画锚点
+	     */
+	  }, {
+	    key: 'drawAnchor',
+	    value: function drawAnchor() {
+	      // 锚点
+	      var size = 5;
+	      if (this.data.radius > 20) {
+	        size = 10;
+	      }
+	      var offset = this.data.radius;
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchor1", new THREE.Vector2(this.data.position.x - offset, this.data.position.y), size, this.data.selected, 5);
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchor2", new THREE.Vector2(this.data.position.x + offset, this.data.position.y), size, this.data.selected, 5);
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchor3", new THREE.Vector2(this.data.position.x, this.data.position.y - offset), size, this.data.selected, 5);
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchor4", new THREE.Vector2(this.data.position.x, this.data.position.y + offset), size, this.data.selected, 5);
+	    }
+
+	    /**
+	     * 设置当前点击组件
+	     * @param geometry
+	     */
+	  }, {
+	    key: 'setSelectedGeometry',
+	    value: function setSelectedGeometry(geometry, event) {
+	      _get(Object.getPrototypeOf(Dot.prototype), 'setSelectedGeometry', this).call(this, geometry, event);
+
+	      // 判断行为
+	      if (!this.selectedGeometry) {
+	        this.data.lastPosition = this.data.position.clone();
+	        this.data.action = null;
+	        this.selected = false;
+	        this.draw();
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type.indexOf("anchor") > -1) {
+	        this.data.action = "MOVE";
+	        this.data.lastPosition = this.data.position;
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type == "text") {
+	        this.data.action = "CHANGE_TEXT";
+	      } else {
+	        this.data.action = "MOVE";
+	      }
+	    }
+
+	    /**
+	     * 当鼠标移动时候的反应
+	     * @param event
+	     */
+	  }, {
+	    key: 'onMouseMove',
+	    value: function onMouseMove(event) {
+	      _get(Object.getPrototypeOf(Dot.prototype), 'onMouseMove', this).call(this, event);
+
+	      if (!this.data.action) {
+	        return;
+	      }
+
+	      var setData = {};
+	      var point = undefined;
+	      switch (this.data.action) {
+	        case "MOVE":
+	          //setData.position = new THREE.Vector3();
+	          //setData.position.x =  this.data.lastPosition.x + this.data.eventPosition.x - this.data.clickMousePosition.x;
+	          //setData.position.y = this.data.lastPosition.y + this.data.eventPosition.y - this.data.clickMousePosition.y;
+
+	          this.setDrawData(setData);
+	          break;
+	        case "CHANGE_SHAPE":
+	          point = (0, _utilMatrixJs.convertEvent)(event);
+	          if (point) {
+	            setData.radius = this.data.position.distanceTo(new THREE.Vector3(point.x, point.y, this.data.position.z));
+	            if (setData.radius < 10) {
+	              return;
+	            }
+	            this.setDrawData(setData);
+	          }
+	          break;
+	      }
+	    }
+	  }]);
+
+	  return Dot;
+	})(_BaseBasicGraphJs2['default']);
+
+	exports['default'] = Dot;
+	module.exports = exports['default'];
+
+/***/ },
+/* 27 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _threexDynamictextureJs = __webpack_require__(28);
+
+	var _threexDynamictextureJs2 = _interopRequireDefault(_threexDynamictextureJs);
+
+	var _presenterJs = __webpack_require__(2);
+
+	var _presenterJs2 = _interopRequireDefault(_presenterJs);
+
+	// 选项
+	var options = {
+	  height: 1,
+	  curveSegments: 2,
+	  font: "helvetiker",
+	  bevelEnabled: false
+	};
+
+	var squareGeometry = undefined;
+	// 选择区域
+	var boundMaterial = new THREE.MeshBasicMaterial({
+	  color: 'black',
+	  transparent: true,
+	  opacity: 0
+	});
+
+	// 边框
+	var lineMaterial = new THREE.LineBasicMaterial({
+	  color: 'blue'
+	});
+
+	//空字体材料
+	var textEmptyMaterial = new THREE.MeshBasicMaterial({
+	  color: "gray"
+	});
+
+	var squareShape = undefined;
+
+	exports['default'] = function (shape, type, position, text, selected) {
+	  var color = arguments.length <= 5 || arguments[5] === undefined ? 'black' : arguments[5];
+
+	  if (!text) {
+	    text = "EMP";
+	  }
+
+	  // 文字
+	  var textSS = shape.tempMesh[type];
+
+	  var fontSize = shape.data.fontSize;
+	  var charLength = text.length;
+	  var xOffset = 0;
+	  var yOffset = fontSize / 2;
+
+	  if (textSS && textSS.text != text) {
+	    //let textShapes = THREE.FontUtils.generateShapes(text, options);
+	    //
+	    //// 修改图形
+	    //if(textSS.geometry){
+	    //  textSS.geometry.dispose();
+	    //}
+	    //textSS.geometry = new THREE.ShapeGeometry(textShapes);
+	    //textSS.geometry.needsUpdate = true;
+	    //
+
+	    //textSS.material.map.
+	    // 修改颜色
+	    if (text == "EMP") {
+	      color = "gray";
+	      //textSS.material.setValues({color:"gray"});
+	      //textSS.material.needsUpdate = true;
+	    }
+
+	    var fontWidth = getFontWidth(15, text);
+	    console.log(fontWidth);
+	    textSS.texture.clear().drawText(text, null, 14, color);
+	    textSS.texture.texture.needsUpdate = true;
+
+	    // 修改位置
+	    textSS.text = text;
+	    textSS.position.x = position.x - xOffset;
+	    textSS.position.y = position.y - yOffset;
+	  } else if (textSS) {
+	    textSS.position.x = position.x - xOffset;
+	    textSS.position.y = position.y - yOffset;
+	  } else {
+	    options.size = fontSize;
+
+	    //组成文字
+	    //
+	    //let textMaterial = new THREE.MeshBasicMaterial({
+	    //  color: color
+	    //});
+	    //let textShapes = THREE.FontUtils.generateShapes(text, options);
+	    //textSS = new THREE.Mesh(new THREE.ShapeGeometry(textShapes), textMaterial);
+
+	    var dynamicTexture = new _threexDynamictextureJs2['default'].DynamicTexture(128, 32);
+	    dynamicTexture.context.font = "bold 15px Verdana";
+	    dynamicTexture.context.fillStyle = "rgba(0, 0, 0, 0.1)";
+	    //dynamicTexture.context.textAlign = 'center';
+	    dynamicTexture.texture.needsUpdate = true;
+
+	    dynamicTexture.drawText(text, null, 14, color);
+
+	    var geometry = new THREE.CubeGeometry(128, 32, 0);
+	    var material = new THREE.MeshBasicMaterial({
+	      map: dynamicTexture.texture,
+	      transparent: true
+	    });
+	    textSS = new THREE.Mesh(geometry, material);
+
+	    // 设置属性
+	    textSS.position.x = position.x - xOffset;
+	    textSS.position.y = position.y - yOffset;
+	    textSS.position.z = 0;
+
+	    // 设置属性
+	    textSS.texture = dynamicTexture;
+	    textSS.text = text;
+	    textSS.mainObject = shape;
+	    textSS.type = type;
+	    textSS.shapePosition = position;
+	    shape.tempMesh[type] = textSS;
+	    shape.shapeGroup.add(textSS);
+	  }
+
+	  if (type == "angleText") {
+	    return;
+	  }
+
+	  charLength = 4;
+	  xOffset = fontSize / 2.5 * charLength;
+	  yOffset = fontSize / 2;
+
+	  // squareMesh
+	  var squareMesh = shape.tempMesh[type + "area"];
+
+	  if (squareMesh) {
+	    squareMesh.position.x = position.x - squareMesh.shapePosition.x;
+	    squareMesh.position.y = position.y - squareMesh.shapePosition.y;
+	    shape.shapeGroup.add(squareMesh);
+	  } else {
+	    squareShape = new THREE.Shape();
+	    xOffset += 4;
+	    yOffset += 5;
+	    squareShape.moveTo(position.x - xOffset, position.y - yOffset);
+	    squareShape.lineTo(position.x - xOffset, position.y + yOffset);
+	    squareShape.lineTo(position.x + xOffset, position.y + yOffset);
+	    squareShape.lineTo(position.x + xOffset, position.y - yOffset);
+	    squareShape.lineTo(position.x - xOffset, position.y - yOffset);
+
+	    if (squareGeometry) {
+	      squareGeometry.dispose();
+	    }
+	    squareGeometry = new THREE.ShapeGeometry(squareShape);
+	    var _squareMesh = new THREE.Mesh(squareGeometry, boundMaterial);
+	    _squareMesh.type = type;
+	    _squareMesh.shapePosition = position;
+	    _squareMesh.mainObject = shape;
+	    shape.tempMesh[type + "area"] = _squareMesh;
+	    shape.shapeGroup.add(_squareMesh);
+	  }
+
+	  // 组成边框
+	  var bound = shape.tempMesh[type + "bound"];
+	  if (bound) {
+	    bound.position.x = position.x - squareMesh.shapePosition.x;
+	    bound.position.y = position.y - squareMesh.shapePosition.y;
+	  } else {
+	    // 材质
+	    var _lineMaterial = new THREE.LineBasicMaterial({
+	      color: 'blue',
+	      linewidth: 1
+	    });
+	    var points = squareShape.createPointsGeometry();
+	    bound = new THREE.Line(points, _lineMaterial);
+	    bound.mainObject = shape;
+	    bound.shapePosition = position;
+	    shape.tempMesh[type + "bound"] = bound;
+	  }
+
+	  if (selected) {
+	    shape.shapeGroup.add(bound);
+	  } else {
+	    shape.shapeGroup.remove(bound);
+	  }
+	};
+
+	//计算字符串宽度像素
+	function getFontWidth(fontSize, text) {
+	  var span = document.getElementById("__getwidth");
+	  if (span == null) {
+	    span = document.createElement("span");
+	    span.id = "__getwidth";
+	    _presenterJs2['default'].view.appendChild(span);
+	    span.style.visibility = "hidden";
+	    span.style.whiteSpace = "nowrap";
+	    span.style.position = "absolute";
+	    span.style.top = 0;
+	  }
+	  span.innerText = text;
+	  span.style.fontSize = fontSize;
+	  span.style.foneFamily = "Verdana";
+	  span.style.foneWeight = "bold";
+	  return Math.max(span.offsetWidth, 3);
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 28 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+	var THREEx = THREEx || {};
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Constructor							//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * create a dynamic texture with a underlying canvas
+	 *
+	 * @param {Number} width  width of the canvas
+	 * @param {Number} height height of the canvas
+	 */
+	THREEx.DynamicTexture = function (width, height) {
+		var canvas = document.createElement('canvas');
+		canvas.width = width;
+		canvas.height = height;
+		this.canvas = canvas;
+
+		var context = canvas.getContext('2d');
+		this.context = context;
+
+		var texture = new THREE.Texture(canvas);
+		this.texture = texture;
+	};
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		methods								//
+	//////////////////////////////////////////////////////////////////////////////////
+
+	/**
+	 * clear the canvas
+	 *
+	 * @param  {String*} fillStyle 		the fillStyle to clear with, if not provided, fallback on .clearRect
+	 * @return {THREEx.DynamicTexture}      the object itself, for chained texture
+	 */
+	THREEx.DynamicTexture.prototype.clear = function (fillStyle) {
+		// depends on fillStyle
+		if (fillStyle !== undefined) {
+			this.context.fillStyle = fillStyle;
+			this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+		} else {
+			this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+		}
+		// make the texture as .needsUpdate
+		this.texture.needsUpdate = true;
+		// for chained API
+		return this;
+	};
+
+	/**
+	 * draw text
+	 *
+	 * @param  {String}		text	- the text to display
+	 * @param  {Number|undefined}	x	- if provided, it is the x where to draw, if not, the text is centered
+	 * @param  {Number}		y	- the y where to draw the text
+	 * @param  {String*} 		fillStyle - the fillStyle to clear with, if not provided, fallback on .clearRect
+	 * @param  {String*} 		contextFont - the font to use
+	 * @return {THREEx.DynamicTexture}	- the object itself, for chained texture
+	 */
+	THREEx.DynamicTexture.prototype.drawText = function (text, x, y, fillStyle, contextFont) {
+		// set font if needed
+		if (contextFont !== undefined) this.context.font = contextFont;
+		// if x isnt provided
+		if (x === undefined || x === null) {
+			var textSize = this.context.measureText(text);
+			x = (this.canvas.width - textSize.width) / 2;
+		}
+		this.canvas.style.opacity = 1;
+
+		//this.context.backgroundAlpha = 0
+		//this.context.globalAlpha = 1
+
+		// actually draw the text
+		this.context.fillStyle = fillStyle;
+		this.context.fillText(text, x, y);
+		// make the texture as .needsUpdate
+		this.texture.needsUpdate = true;
+		// for chained API
+		return this;
+	};
+
+	THREEx.DynamicTexture.prototype.drawTextCooked = function (options) {
+		var context = this.context;
+		var canvas = this.canvas;
+		options = options || {};
+		var text = options.text;
+		var params = {
+			margin: options.margin !== undefined ? options.margin : 0.1,
+			lineHeight: options.lineHeight !== undefined ? options.lineHeight : 0.1,
+			align: options.align !== undefined ? options.align : 'left',
+			fillStyle: options.fillStyle !== undefined ? options.fillStyle : 'black',
+			font: options.font !== undefined ? options.font : "bold " + 0.2 * 512 + "px Arial"
+		};
+		// sanity check
+		console.assert(typeof text === 'string');
+
+		context.save();
+		context.fillStyle = params.fillStyle;
+		context.font = params.font;
+
+		var y = (params.lineHeight + params.margin) * canvas.height;
+		while (text.length > 0) {
+			// compute the text for specifically this line
+			var maxText = computeMaxTextLength(text);
+			// update the remaining text
+			text = text.substr(maxText.length);
+
+			// compute x based on params.align
+			var textSize = context.measureText(maxText);
+			if (params.align === 'left') {
+				var x = params.margin * canvas.width;
+			} else if (params.align === 'right') {
+				var x = (1 - params.margin) * canvas.width - textSize.width;
+			} else if (params.align === 'center') {
+				var x = (canvas.width - textSize.width) / 2;
+			} else console.assert(false);
+
+			// actually draw the text at the proper position
+			this.context.fillText(maxText, x, y);
+
+			// goto the next line
+			y += params.lineHeight * canvas.height;
+		}
+		context.restore();
+
+		// make the texture as .needsUpdate
+		this.texture.needsUpdate = true;
+		// for chained API
+		return this;
+
+		function computeMaxTextLength(text) {
+			var maxText = '';
+			var maxWidth = (1 - params.margin * 2) * canvas.width;
+			while (maxText.length !== text.length) {
+				var textSize = context.measureText(maxText);
+				if (textSize.width > maxWidth) break;
+				maxText += text.substr(maxText.length, 1);
+			}
+			return maxText;
+		}
+	};
+
+	/**
+	 * execute the drawImage on the internal context
+	 * the arguments are the same the official context2d.drawImage
+	 */
+	THREEx.DynamicTexture.prototype.drawImage = function () /* same params as context2d.drawImage */{
+		// call the drawImage
+		this.context.drawImage.apply(this.context, arguments);
+		// make the texture as .needsUpdate
+		this.texture.needsUpdate = true;
+		// for chained API
+		return this;
+	};
+
+	exports['default'] = THREEx;
+	module.exports = exports['default'];
+
+/***/ },
+/* 29 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var squareGeometry = null;
+	var anchorMaterial = new THREE.MeshBasicMaterial({
+	  color: 'blue',
+	  overdraw: 0.5
+	});
+
+	var boundMaterial = new THREE.MeshBasicMaterial({
+	  color: 'red',
+	  transparent: true,
+	  opacity: 0
+	});
+	var squareShape = null;
+
+	exports['default'] = function (shape, type, position, size, display, showSize) {
+	  // 画图形
+
+	  var squareMesh = null;
+	  squareMesh = shape.tempMesh[type];
+	  if (display) {
+	    if (squareMesh) {
+	      squareMesh.position.x = position.x - squareMesh.shapePosition.x;
+	      squareMesh.position.y = position.y - squareMesh.shapePosition.y;
+	      squareMesh.mainObject = shape;
+	      if (!squareMesh.parent) {
+	        shape.shapeGroup.add(squareMesh);
+	      }
+	    } else {
+	      squareShape = new THREE.Shape();
+	      squareShape.moveTo(position.x - showSize, position.y - showSize);
+	      squareShape.lineTo(position.x - showSize, position.y + showSize);
+	      squareShape.lineTo(position.x + showSize, position.y + showSize);
+	      squareShape.lineTo(position.x + showSize, position.y - showSize);
+	      squareShape.lineTo(position.x - showSize, position.y - showSize);
+
+	      if (squareGeometry) {
+	        squareGeometry.dispose();
+	      }
+	      squareGeometry = new THREE.ShapeGeometry(squareShape);
+
+	      squareMesh = new THREE.Mesh(squareGeometry, anchorMaterial);
+	      squareMesh.position.z = 1;
+	      squareMesh.shapePosition = position.clone();
+	      squareMesh.type = type;
+	      squareMesh.mainObject = shape;
+	      shape.tempMesh[type] = squareMesh;
+	      shape.shapeGroup.add(squareMesh);
+	    }
+	  } else {
+	    shape.shapeGroup.remove(squareMesh);
+	  }
+
+	  // 画选中框架
+	  squareMesh = shape.tempMesh[type + "bound"];
+	  if (squareMesh && squareMesh.size == size) {
+	    squareMesh.position.x = position.x - squareMesh.shapePosition.x;
+	    squareMesh.position.y = position.y - squareMesh.shapePosition.y;
+	    squareMesh.mainObject = shape;
+	    shape.shapeGroup.add(squareMesh);
+	  } else if (squareMesh && squareMesh.size != size) {
+	    squareShape = new THREE.Shape();
+	    squareShape.moveTo(squareMesh.shapePosition.x - size, squareMesh.shapePosition.y - size);
+	    squareShape.lineTo(squareMesh.shapePosition.x - size, squareMesh.shapePosition.y + size);
+	    squareShape.lineTo(squareMesh.shapePosition.x + size, squareMesh.shapePosition.y + size);
+	    squareShape.lineTo(squareMesh.shapePosition.x + size, squareMesh.shapePosition.y - size);
+	    squareShape.lineTo(squareMesh.shapePosition.x - size, squareMesh.shapePosition.y - size);
+
+	    squareMesh.geometry = new THREE.ShapeGeometry(squareShape);
+	    squareMesh.geometry.needsUpdate = true;
+
+	    squareMesh.position.x = position.x - squareMesh.shapePosition.x;
+	    squareMesh.position.y = position.y - squareMesh.shapePosition.y;
+	    squareMesh.size = size;
+	    squareMesh.mainObject = shape;
+	    shape.shapeGroup.add(squareMesh);
+	  } else {
+	    squareShape = new THREE.Shape();
+	    squareShape.moveTo(position.x - size, position.y - size);
+	    squareShape.lineTo(position.x - size, position.y + size);
+	    squareShape.lineTo(position.x + size, position.y + size);
+	    squareShape.lineTo(position.x + size, position.y - size);
+	    squareShape.lineTo(position.x - size, position.y - size);
+	    if (squareGeometry) {
+	      squareGeometry.dispose();
+	    }
+	    squareGeometry = new THREE.ShapeGeometry(squareShape);
+	    squareMesh = new THREE.Mesh(squareGeometry, boundMaterial);
+	    squareMesh.position.z = 1;
+	    squareMesh.mainObjectmainObject = shape;
+	    squareMesh.shapePosition = position.clone();
+	    squareMesh.type = type;
+	    squareMesh.size = size;
+	    shape.tempMesh[type + "bound"] = squareMesh;
+	    shape.shapeGroup.add(squareMesh);
+	    squareMesh = null;
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 30 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by wuhanchu on 15/11/22.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var material = new THREE.MeshBasicMaterial({
+	  color: 'black'
+	});
+	var segments = 200;
+
+	exports['default'] = function (shape, position, radius) {
+	  var mesh = shape.tempMesh['shape'];
+	  if (mesh) {
+	    // if( mesh.geometry){
+	    //   mesh.geometry.dispose();
+	    // }
+	    // mesh.geometry = new THREE.CircleGeometry(radius, segments);
+	    // mesh.geometry.needsUpdate = true;
+	    mesh.scale.x = mesh.scale.y = radius / shape.data.originalRadius;
+	    mesh.position.x = position.x;
+	    mesh.position.y = position.y;
+	  } else {
+
+	    var geometry = new THREE.CircleGeometry(radius, segments);
+	    var _mesh = new THREE.Mesh(geometry, material);
+	    _mesh.position.x = position.x;
+	    _mesh.position.y = position.y;
+	    _mesh.mainObject = shape;
+	    _mesh.type = "shape";
+	    shape.data.originalRadius = 10;
+	    shape.tempMesh["shape"] = _mesh;
+	    shape.shapeGroup.add(_mesh);
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.getShapeName = getShapeName;
+
+	var _shapeBasicShapeFactoryJs = __webpack_require__(25);
+
+	var TEXT_ARRAY = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ");
+
+	var dotIndex = 0; // 点命名字符 当前位置
+	var dotNum = 0; //单词命名后缀
+
+	var angleIndex = 0;
+	var angleNum = 0;
+
+	var lineNum = 0;
+
+	/**
+	 * 取得图形的名称
+	 * @param type
+	 * @param letter
+	 * @returns {string}
+	 */
+
+	function getShapeName(type) {
+	    var name = "未定义";
+	    switch (type) {
+	        case _shapeBasicShapeFactoryJs.GEOMETRY_SHAPE.DOT:
+	            //配置显示自负
+	            name = TEXT_ARRAY[dotIndex];
+	            dotNum %= 100;
+	            if (dotNum > 0) {
+	                name += dotNum;
+	            }
+	            dotIndex++;
+
+	            // 已经循环一轮
+	            if (dotIndex >= 26) {
+	                dotIndex = 0;
+	                dotNum++;
+	            }
+	            break;
+	        case _shapeBasicShapeFactoryJs.GEOMETRY_SHAPE.LINE:
+	            //配置显示自负
+	            name = "";
+	            lineNum %= 100;
+	            if (lineNum > 0) {
+	                name += lineNum;
+	            }
+	            lineNum++;
+	            break;
+	        case _shapeBasicShapeFactoryJs.GEOMETRY_SHAPE.ANGLE:
+	            name = TEXT_ARRAY[angleIndex];
+	            angleNum %= 100;
+	            if (angleNum > 0) {
+	                name += angleNum;
+	            }
+	            angleIndex++;
+
+	            // 已经循环一轮
+	            if (angleIndex >= 26) {
+	                angleIndex = 0;
+	                angleNum++;
+	            }
+	            break;
+	    }
+
+	    // 反悔
+	    return name;
+	}
+
+/***/ },
+/* 32 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x4, _x5, _x6) { var _again = true; _function: while (_again) { var object = _x4, property = _x5, receiver = _x6; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x4 = parent; _x5 = property; _x6 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _BaseBasicGraphJs = __webpack_require__(8);
+
+	var _BaseBasicGraphJs2 = _interopRequireDefault(_BaseBasicGraphJs);
+
+	var _basicShapeFactoryJs = __webpack_require__(25);
+
+	var _utilMatrixJs = __webpack_require__(11);
+
+	var _utilShapeUtilJs = __webpack_require__(31);
+
+	var _utilDrawTextJs = __webpack_require__(27);
+
+	var _utilDrawTextJs2 = _interopRequireDefault(_utilDrawTextJs);
+
+	var _utilDrawAnchorJs = __webpack_require__(29);
+
+	var _utilDrawAnchorJs2 = _interopRequireDefault(_utilDrawAnchorJs);
+
+	var _utilDrawLineJs = __webpack_require__(33);
+
+	var _utilDrawLineJs2 = _interopRequireDefault(_utilDrawLineJs);
+
+	var _utilDrawArrowJs = __webpack_require__(37);
+
+	var _utilDrawArrowJs2 = _interopRequireDefault(_utilDrawArrowJs);
+
+	var _contextShapeContextJs = __webpack_require__(9);
+
+	//import {isOffLimit} from '../util/matrix.js'
+
+	var Line = (function (_BaseBasicGraph) {
+	  _inherits(Line, _BaseBasicGraph);
+
+	  /**
+	   * 构造函数
+	   * @param x
+	   * @param y
+	   * @param name
+	   */
+
+	  function Line() {
+	    var name = arguments.length <= 0 || arguments[0] === undefined ? _basicShapeFactoryJs.GEOMETRY_SHAPE.LINE : arguments[0];
+	    var id = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+	    _classCallCheck(this, Line);
+
+	    // 名称
+	    _get(Object.getPrototypeOf(Line.prototype), 'constructor', this).call(this, name, id);
+
+	    // 初始化数据
+	    var suffix = (0, _utilShapeUtilJs.getShapeName)(name);
+	    this.data.textA = "A" + suffix;
+	    this.data.textB = "B" + suffix;
+	    this.data.linewidth = 10;
+	    this.data.pointA = new THREE.Vector3(-100, 0, 0);
+	    this.data.pointB = new THREE.Vector3(100, 0, 0);
+
+	    /**
+	     * 线段类型
+	     * segment 线段
+	     * beeline 直线
+	     * brokenLine 虚线
+	     * @type {string}
+	     */
+	    this.data.lineType = "beeline";
+
+	    /**
+	     * 箭头类型
+	     * none  无类型
+	     * both 双箭头
+	     * left 单箭头
+	     * right 双箭头
+	     * @type {string}
+	     */
+	    this.data.arrowType = "none";
+
+	    // 工具栏
+	    this.toolbarList = {
+	      lineArrow: true,
+	      lineType: true,
+	      lineWidth: true,
+	      angleSwitch: false
+	    };
+
+	    this.isCreating = false;
+
+	    // 设置当前图形
+	    //currentObject.set(this);
+	    _contextShapeContextJs.objectGroup.push(this);
+	  }
+
+	  /**
+	   * 是否超出范围
+	   */
+
+	  _createClass(Line, [{
+	    key: 'isOffLimit',
+	    value: function isOffLimit() {
+	      var offset = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+	      if (!offset) {
+	        offset = new THREE.Vector3();
+	      }
+
+	      if ((0, _utilMatrixJs.isOffLimit)(new THREE.Vector3().addVectors(this.data.pointA, offset)) || (0, _utilMatrixJs.isOffLimit)(new THREE.Vector3().addVectors(this.data.pointB, offset))) {
+	        return true;
+	      }
+
+	      return false;
+	    }
+
+	    /**
+	     * 绘制图形
+	     */
+	  }, {
+	    key: 'draw',
+	    value: function draw(data) {
+	      // 清空
+	      if (_get(Object.getPrototypeOf(Line.prototype), 'draw', this).call(this, data)) return;
+	      // console.log(this.shapeGroup);
+
+	      if (this.shapeGroup.position.x != 0) {
+	        this.data.pointA.x += this.shapeGroup.position.x;
+	        this.data.pointA.y += this.shapeGroup.position.y;
+	        this.data.pointB.x += this.shapeGroup.position.x;
+	        this.data.pointB.y += this.shapeGroup.position.y;
+	        this.shapeGroup.position.x = 0;
+	        this.shapeGroup.position.y = 0;
+	      }
+
+	      this.data.pointA = new THREE.Vector3(this.data.pointA.x, this.data.pointA.y, this.data.pointA.z);
+	      this.data.pointB = new THREE.Vector3(this.data.pointB.x, this.data.pointB.y, this.data.pointB.z);
+
+	      // 图形
+	      if (this.data.arrowType != "none" && this.data.lineType == 'segment') {
+	        (0, _utilDrawLineJs2['default'])(this, "beeline", this.data.pointA, this.data.pointB, this.data.linewidth);
+	      } else {
+	        (0, _utilDrawLineJs2['default'])(this, this.data.lineType, this.data.pointA, this.data.pointB, this.data.linewidth);
+	      }
+
+	      // 画箭头
+	      var removeSign = true;
+	      if (this.data.arrowType == "both" || this.data.arrowType == "left") {
+	        removeSign = false;
+	      }
+	      (0, _utilDrawArrowJs2['default'])(this, "arrowA", this.data.pointA, this.data.pointB, this.data.linewidth, removeSign);
+
+	      removeSign = true;
+	      if (this.data.arrowType == "both" || this.data.arrowType == "right") {
+	        removeSign = false;
+	      }
+	      (0, _utilDrawArrowJs2['default'])(this, "arrowB", this.data.pointB, this.data.pointA, this.data.linewidth, removeSign);
+
+	      // 字符
+	      var locationA = this.getTextPoint(this.data.pointB, this.data.pointA, this.data.textA);
+	      (0, _utilDrawTextJs2['default'])(this, "textA", locationA, this.data.textA, this.selectedGeometry && this.selectedGeometry.type == "textA");
+	      var locationB = this.getTextPoint(this.data.pointA, this.data.pointB, this.data.textB);
+	      (0, _utilDrawTextJs2['default'])(this, "textB", locationB, this.data.textB, this.selectedGeometry && this.selectedGeometry.type == "textB");
+
+	      // 锚点
+	      this.drawAnchor();
+	    }
+
+	    /**
+	     * 画锚点
+	     */
+	  }, {
+	    key: 'drawAnchor',
+	    value: function drawAnchor() {
+	      // 锚点
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchorA", this.data.pointA, 10, this.data.selected, 5);
+	      (0, _utilDrawAnchorJs2['default'])(this, "anchorB", this.data.pointB, 10, this.data.selected, 5);
+	    }
+
+	    /**
+	     * 设置当前点击组件
+	     * @param geometry
+	     */
+	  }, {
+	    key: 'setSelectedGeometry',
+	    value: function setSelectedGeometry(geometry, event) {
+	      // 父类设置
+	      _get(Object.getPrototypeOf(Line.prototype), 'setSelectedGeometry', this).call(this, geometry, event);
+
+	      // 设置点击
+	      this.clickPointA = this.data.pointA.clone();
+	      this.clickPointB = this.data.pointB.clone();
+
+	      // 判断行为
+	      if (!this.selectedGeometry) {
+	        this.data.action = null;
+	        this.setDrawData({ selected: false });
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type == "anchorA" || this.selectedGeometry.type == "anchorB") {
+	        this.data.action = "CHANGE_SHAPE";
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type.indexOf("text") > -1) {
+	        this.data.action = "CHANGE_TEXT";
+	      } else {
+	        this.data.action = "MOVE";
+	      }
+	    }
+
+	    /**
+	     * 当鼠标移动时候的反应
+	     * @param event
+	     */
+	  }, {
+	    key: 'onMouseMove',
+	    value: function onMouseMove(event) {
+	      _get(Object.getPrototypeOf(Line.prototype), 'onMouseMove', this).call(this, event);
+
+	      if (!this.data.action) {
+	        return;
+	      }
+
+	      // 判断行为进行处理
+	      var currentPosition = undefined;
+	      var setData = {};
+	      switch (this.data.action) {
+	        case 'CHANGE_SHAPE':
+	          currentPosition = (0, _utilMatrixJs.convertEvent)(event);
+	          if (this.selectedGeometry.type == "anchorA") {
+	            setData.pointA = new THREE.Vector3();
+	            setData.pointA.x = this.clickPointA.x + currentPosition.x - this.data.clickMousePosition.x;
+	            setData.pointA.y = this.clickPointA.y + currentPosition.y - this.data.clickMousePosition.y;
+	          } else if (this.selectedGeometry.type == "anchorB") {
+	            setData.pointB = new THREE.Vector3();
+	            setData.pointB.x = this.clickPointB.x + currentPosition.x - this.data.clickMousePosition.x;
+	            setData.pointB.y = this.clickPointB.y + currentPosition.y - this.data.clickMousePosition.y;
+	          }
+
+	          if (!this.isOffLimit()) {
+	            this.setDrawData(setData);
+	          }
+	          break;
+	        case 'CHANGE_TEXT':
+	          break;
+	        case 'MOVE':
+
+	          this.setDrawData(setData);
+	          break;
+	      }
+	    }
+	  }]);
+
+	  return Line;
+	})(_BaseBasicGraphJs2['default']);
+
+	exports['default'] = Line;
+	module.exports = exports['default'];
+
+/***/ },
+/* 33 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+
+	var _matrixJs = __webpack_require__(11);
+
+	var _drawEdgeJs = __webpack_require__(34);
+
+	var _drawEdgeJs2 = _interopRequireDefault(_drawEdgeJs);
+
+	var _updateVertices = __webpack_require__(35);
+
+	var _updateVertices2 = _interopRequireDefault(_updateVertices);
+
+	var _updateBrokenLine = __webpack_require__(36);
+
+	/**
+	 * 画线段
+	 * @param pointA
+	 * @param pointB
+	 * @param width
+	 * @returns {THREE.Mesh}
+	 */
+
+	// 画范围
+	var material = new THREE.MeshBasicMaterial({
+	  color: 'red',
+	  transparent: true,
+	  opacity: 0
+	});
+	var mesh = null;
+	var squareGeometry = undefined;
+	var geometry = undefined;
+
+	var lineMaterial = new THREE.MeshBasicMaterial({
+	  color: 'black',
+	  overdraw: 0.5
+	});
+
+	var brokenLineLength = 15;
+	var brokenLineInterval = 10;
+
+	// let brokenLineMaterial = new THREE.LineDashedMaterial({color: 'black', dashSize: 20, gapSize: 5})
+	// let beeLineMaterial = new THREE.LineBasicMaterial({color: 'black'});
+	var brokenLineMaterial = new THREE.MeshBasicMaterial({ color: 'black', transparent: true, opacity: 0, overdraw: 0.5 });
+	var beeLineMaterial = new THREE.MeshBasicMaterial({ color: 'black', overdraw: 0.5 });
+
+	exports["default"] = function (shape, type, pointA, pointB, linewidth) {
+
+	  //shape.removeModuleFromGroup("shape");
+
+	  // 画范围
+	  var squareMesh = shape.tempMesh["shapeArea"];
+	  var offset = 20;
+
+	  if (squareMesh) {
+	    (0, _updateVertices2["default"])(squareMesh, pointA, pointB, 40);
+	    //squareMesh.geometry = squareGeometry;
+	    //squareMesh.geometry.needsUpdate = true;
+	    //squareMesh.position.x = (pointA.x+pointB.x)/2;
+	    //squareMesh.position.y =  (pointA.y+pointB.y)/2;
+	    //
+	    // let offset = new THREE.Vector3().subVectors(pointA,pointB);
+	    // offset = rotatePoint(offset,pointB,90);
+	    // offset.normalize().multiplyScalar(20);
+
+	    // let scaler = 1;
+	    //if(offset.y > 0){
+	    //  scaler = -1;
+	    //}
+	    // let point1 = pointA;
+	    // let point2 = pointB;
+	    // if(offset.x < 0){
+	    //  point1 = pointB;
+	    //  point2 = pointA;
+	    // }
+	    // squareMesh.geometry.vertices[0].addVectors( point1, offset.multiplyScalar(scaler) );
+	    // squareMesh.geometry.vertices[1].addVectors( point1, offset.multiplyScalar(scaler*-1));
+	    // squareMesh.geometry.vertices[2].addVectors( point2, offset.multiplyScalar(scaler) );
+	    // squareMesh.geometry.vertices[3].addVectors( point2, offset.multiplyScalar(scaler*-1));
+	    // squareMesh.geometry.computeBoundingSphere();
+
+	    // squareMesh.geometry.verticesNeedUpdate = true;
+	    //squareShape.moveTo(,);
+	    //squareShape.lineTo(pointA.x, pointA.y + offset);
+	    //squareShape.lineTo(pointB.x, pointB.y + offset);
+	    //squareShape.lineTo(pointB.x, pointB.y - offset);
+	    //squareShape.lineTo(pointA.x, pointA.y - offset);
+	  } else {
+	      var squareShape = new THREE.Shape();
+	      squareShape.moveTo(pointA.x, pointA.y - offset);
+	      squareShape.lineTo(pointA.x, pointA.y + offset);
+	      squareShape.lineTo(pointB.x, pointB.y + offset);
+	      squareShape.lineTo(pointB.x, pointB.y - offset);
+	      squareShape.lineTo(pointA.x, pointA.y - offset);
+	      var _squareGeometry = new THREE.ShapeGeometry(squareShape);
+
+	      squareMesh = new THREE.Mesh(_squareGeometry, material);
+	      squareMesh.mainObject = shape;
+	      squareMesh.type = "shapeArea";
+	      squareMesh.position.x = 0;
+	      squareMesh.position.y = 0;
+
+	      shape.tempMesh["shapeArea"] = squareMesh;
+	      shape.shapeGroup.add(squareMesh);
+	    }
+
+	  // 画线
+	  if (linewidth == 40) {
+	    var vector1 = (0, _matrixJs.rotatePoint)(pointA, pointB, 90).sub(pointB).normalize().multiplyScalar(8);
+	    var vector2 = (0, _matrixJs.rotatePoint)(pointA, pointB, -90).sub(pointB).normalize().multiplyScalar(8);
+	    drawLineByWidth(shape, pointA, pointB, type, 20);
+	    drawLineByWidth(shape, new THREE.Vector3().addVectors(pointA, vector1), new THREE.Vector3().addVectors(pointB, vector1), type, 20);
+	    drawLineByWidth(shape, new THREE.Vector3().addVectors(pointA, vector2), new THREE.Vector3().addVectors(pointB, vector2), type, 20);
+	  } else {
+	    drawLineByWidth(shape, pointA, pointB, type, linewidth);
+	  }
+
+	  // 画过度
+	  //drawEdge(shape, "edgeA", pointA, linewidth);
+	  //drawEdge(shape, "edgeB", pointB, linewidth);
+
+	  // 判断是否是线段
+	  if (type == "segment") {
+	    (0, _drawEdgeJs2["default"])(shape, "circleA", pointA, linewidth * 1.5);
+	    (0, _drawEdgeJs2["default"])(shape, "circleB", pointB, linewidth * 1.5);
+	    //
+	    //geometry = new THREE.CircleGeometry(linewidth * 0.65, 50);
+	    //
+	    //mesh = new THREE.Mesh(geometry, lineMaterial);
+	    //mesh.position.set(pointA.x, pointA.y, 0);
+	    //mesh.mainObject = shape;
+	    //mesh.type = "shape";
+	    //shape.shapeGroup.add(mesh);
+	    //
+	    //geometry = new THREE.CircleGeometry(linewidth * 0.65, 50);
+	    //mesh = new THREE.Mesh(geometry, lineMaterial);
+	    //mesh.position.set(pointB.x, pointB.y, 0);
+	    //mesh.mainObject = shape;
+	    //mesh.type = "shape";
+	    //shape.shapeGroup.add(mesh);
+	    //mesh = null;
+	  } else {
+	      shape.shapeGroup.remove(shape.tempMesh["circleA"]);
+	      shape.shapeGroup.remove(shape.tempMesh["circleB"]);
+	    }
+	};
+
+	function drawLineByWidth(shape, pointA, pointB, type, linewidth) {
+	  var line = shape.tempMesh["shape"];
+	  if (line) {
+	    // line.geometry.vertices[0] = pointA.clone();
+	    // line.geometry.vertices[1] =  pointB.clone();
+
+	    (0, _updateVertices2["default"])(line, pointA, pointB, linewidth);
+
+	    var _material = null;
+	    if (type == "brokenLine") {
+	      _material = brokenLineMaterial;
+	      (0, _updateBrokenLine.updateBrokenLine)(line, pointA, pointB, brokenLineLength, brokenLineInterval, linewidth);
+	    } else {
+	      _material = beeLineMaterial;
+	      (0, _updateBrokenLine.hideBrokenLine)(line);
+	    }
+	    // material.setValues({linewidth:linewidth});
+	    line.material = _material;
+	    line.material.needsUpdate = true;
+	  } else {
+	    //判断是否是虚线
+	    // let geometry = new THREE.Geometry();
+	    // geometry.vertices.push(
+	    //   pointA, pointB
+	    // );
+	    // geometry.computeLineDistances();
+	    var lineShape = new THREE.Shape();
+	    lineShape.moveTo(pointA.x, -linewidth / 2);
+	    lineShape.lineTo(pointB.x, -linewidth / 2);
+	    lineShape.lineTo(pointB.x, linewidth / 2);
+	    lineShape.lineTo(pointA.x, linewidth / 2);
+	    lineShape.lineTo(pointA.x, -linewidth / 2);
+	    var _geometry = new THREE.ShapeGeometry(lineShape);
+	    var _material2 = null;
+	    if (type == "brokenLine") {
+	      _material2 = brokenLineMaterial;
+	    } else {
+	      _material2 = beeLineMaterial;
+	    }
+	    // material.setValues({linewidth:linewidth});
+
+	    // let line = new THREE.Line(geometry, material);
+	    var _line = new THREE.Mesh(_geometry, _material2);
+
+	    _line.mainObject = shape;
+	    _line.type = "shape";
+	    _line.position.x = 0;
+	    _line.position.y = 0;
+	    shape.tempMesh["shape"] = _line;
+	    shape.shapeGroup.add(_line);
+	  }
+	}
+	module.exports = exports["default"];
+
+/***/ },
+/* 34 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by wuhanchu on 15/12/4.
+	 * 绘制边缘图形
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var lineMaterial = new THREE.MeshBasicMaterial({
+	  color: 'black',
+	  overdraw: 0.5
+	});
+	var geometry = undefined;
+
+	exports['default'] = function (shape, type, position, linewidth) {
+	  var squareMesh = shape.tempMesh[type];
+	  if (squareMesh) {
+	    squareMesh.position.x = position.x;
+	    squareMesh.position.y = position.y;
+	    var scale = linewidth / squareMesh.linewidth;
+	    squareMesh.scale.x = scale;
+	    squareMesh.scale.y = scale;
+
+	    //squareMesh.geometry.scale(scale,scale,1);
+	    shape.shapeGroup.add(squareMesh);
+	    return;
+	  }
+
+	  // 创建
+	  var edgeWidth = linewidth * 0.5;
+	  geometry = new THREE.CircleGeometry(edgeWidth, 50);
+	  squareMesh = new THREE.Mesh(geometry, lineMaterial);
+	  squareMesh.position.set(position.x, position.y, 0);
+	  squareMesh.mainObject = shape;
+	  squareMesh.type = type;
+	  squareMesh.shapePosition = position.clone();
+	  squareMesh.linewidth = linewidth;
+	  //squareMesh.scale = 1;
+	  shape.tempMesh[type] = squareMesh;
+	  shape.shapeGroup.add(squareMesh);
+	  squareMesh = null;
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _matrixJs = __webpack_require__(11);
+
+	/**
+	 * 更新小棒位置
+	 * @param stick
+	 */
+
+	exports['default'] = function (shape, pointA, pointB, lineWidth) {
+
+	  var length = lineWidth / 2;
+	  var vector1 = (0, _matrixJs.rotationAngleVector)(pointB, pointA, 90, true).vector.setLength(length);
+	  var vector2 = (0, _matrixJs.rotationAngleVector)(pointB, pointA, 90, false).vector.setLength(length);
+	  var vertices = [];
+	  var orgVertices = shape.geometry.vertices;
+	  vertices.push(new THREE.Vector2().addVectors(pointA, vector2));
+	  vertices.push(new THREE.Vector2().addVectors(pointB, vector2));
+	  vertices.push(new THREE.Vector2().addVectors(pointB, vector1));
+	  vertices.push(new THREE.Vector2().addVectors(pointA, vector1));
+
+	  for (var i = 0; i < orgVertices.length; i++) {
+	    orgVertices[i].x = vertices[i].x;
+	    orgVertices[i].y = vertices[i].y;
+	  }
+	  shape.geometry.verticesNeedUpdate = true;
+	  shape.geometry.computeBoundingSphere();
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports.updateBrokenLine = updateBrokenLine;
+	exports.createBrokenLine = createBrokenLine;
+	exports.hideBrokenLine = hideBrokenLine;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _updateVertices = __webpack_require__(35);
+
+	var _updateVertices2 = _interopRequireDefault(_updateVertices);
+
+	function updateBrokenLine(line, pointA, pointB, brokenLineLength, brokenLineInterval, lineWidth) {
+	  var brokenLine = undefined,
+	      vectorAB = undefined,
+	      brokenLineCount = undefined,
+	      brokenLinePointA = undefined,
+	      brokenLinePointB = undefined,
+	      dis = undefined,
+	      remainingDis = undefined,
+	      brokenLineModel = undefined,
+	      len = undefined;
+
+	  // 线两点之间的距离
+	  vectorAB = new THREE.Vector2().subVectors(pointB, pointA);
+	  dis = vectorAB.length();
+	  // 线上虚线段的个数
+	  brokenLineCount = Math.floor(dis / (brokenLineLength * 2 + brokenLineInterval));
+	  // 线上除完整虚线段所余空间
+	  remainingDis = dis % (brokenLineLength * 2 + brokenLineInterval);
+	  // 线上是否已经存在虚线段，如果存在就利用，不存在就新建
+
+	  len = line.children.length;
+	  if (len == 0) {
+	    // 虚线段不存在时，根据线长，放置虚线段，默认多生成一个
+	    for (var i = 0; i < brokenLineCount + 1; i++) {
+	      brokenLine = createBrokenLine(pointA, pointB, lineWidth);
+	      line.add(brokenLine);
+	      update(line, pointA, pointB, brokenLineCount, brokenLineLength, brokenLineInterval, lineWidth);
+	    }
+	  } else {
+	    // 在最后一个的时候，预加载下一个虚线段
+	    if (len <= brokenLineCount) {
+	      var count = brokenLineCount - len + 1;
+	      for (var i = 0; i < count; i++) {
+	        brokenLine = createBrokenLine(pointA, pointB, lineWidth);
+	        line.add(brokenLine);
+	      }
+	    }
+	    update(line, pointA, pointB, brokenLineCount, brokenLineLength, brokenLineInterval, lineWidth);
+	  }
+	}
+
+	// 更新虚线段
+	function update(line, pointA, pointB, brokenLineCount, brokenLineLength, brokenLineInterval, lineWidth) {
+	  var brokenLine = undefined,
+	      brokenLinePointA = undefined,
+	      brokenLinePointB = undefined,
+	      len = undefined;
+	  len = line.children.length;
+	  for (var i = 0; i < len; i++) {
+	    brokenLine = line.children[i];
+	    brokenLinePointA = new THREE.Vector2().addVectors(pointA, new THREE.Vector2().subVectors(pointB, pointA).setLength((brokenLineLength * 2 + brokenLineInterval) * i));
+	    brokenLinePointB = new THREE.Vector2().addVectors(pointA, new THREE.Vector2().subVectors(pointB, pointA).setLength(brokenLineLength * 2 * (i + 1) + brokenLineInterval * i));
+	    if (i > brokenLineCount) {
+	      brokenLine.visible = false;
+	    } else {
+	      brokenLine.visible = true;
+	      // 最后一个线段根据实际剩余空间改变大小。
+	      if (i == brokenLineCount) {
+	        brokenLinePointB = pointB;
+	      }
+	      (0, _updateVertices2['default'])(brokenLine, brokenLinePointA, brokenLinePointB, lineWidth);
+	    }
+	  }
+	}
+
+	// 创建虚线段
+
+	function createBrokenLine(pointA, pointB, linewidth) {
+	  var shape = new THREE.Shape();
+	  shape.moveTo(pointA.x, -linewidth / 2);
+	  shape.lineTo(pointB.x, -linewidth / 2);
+	  shape.lineTo(pointB.x, linewidth / 2);
+	  shape.lineTo(pointA.x, linewidth / 2);
+	  shape.lineTo(pointA.x, -linewidth / 2);
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var brokenLine = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({ color: 'black', overdraw: 0.5 }));
+	  return brokenLine;
+	}
+
+	// 隐藏所有虚线段
+
+	function hideBrokenLine(line) {
+	  for (var i = 0; i < line.children.length; i++) {
+	    line.children[i].visible = false;
+	  }
+	}
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _matrixJs = __webpack_require__(11);
+
+	var _drawEdgeJs = __webpack_require__(34);
+
+	var _drawEdgeJs2 = _interopRequireDefault(_drawEdgeJs);
+
+	var _updateVertices = __webpack_require__(35);
+
+	var _updateVertices2 = _interopRequireDefault(_updateVertices);
+
+	/**
+	 * 绘制箭头
+	 */
+	var squareMesh = undefined;
+
+	exports['default'] = function (shape, type, pointA, pointB, linewidth, removeSign) {
+	  //while( squareMesh =  shape.getMesh( type)){
+	  //  shape.shapeGroup.remove(squareMesh);
+	  //}
+	  if (removeSign) {
+	    shape.shapeGroup.remove(shape.tempMesh[type + "EdgeA"]);
+	    shape.shapeGroup.remove(shape.tempMesh[type + "EdgeB"]);
+	    shape.shapeGroup.remove(shape.tempMesh[type + "Center"]);
+	    shape.shapeGroup.remove(shape.tempMesh[type]);
+	    return;
+	  }
+
+	  //转动角度
+	  var arrorPoint = (0, _matrixJs.getLocationPoint)(pointA, pointB, 40);
+	  var center = pointA;
+
+	  // 画图形
+	  var arrowPointA = (0, _matrixJs.rotatePoint)(arrorPoint, center, 45);
+	  var arrowPointB = (0, _matrixJs.rotatePoint)(arrorPoint, center, -45);
+
+	  // let points = new Array(arrowPointA,center,arrowPointB);
+	  drawArrow(shape, type, arrowPointA, arrowPointB, center, linewidth);
+
+	  // 画边缘
+	  (0, _drawEdgeJs2['default'])(shape, type + "EdgeA", arrowPointA, linewidth);
+	  (0, _drawEdgeJs2['default'])(shape, type + "EdgeB", arrowPointB, linewidth);
+	  (0, _drawEdgeJs2['default'])(shape, type + "Center", center, linewidth);
+	  // drawCircle(shape,type,center,linewidth);
+	};
+
+	function drawArrow(shape, type, pointA, pointB, center, linewidth) {
+	  var line = shape.tempMesh[type];
+	  if (line) {
+	    // for(let index = 0; index < points.length ;index++) {
+	    //   line.geometry.vertices[index] = points[index];
+	    // }
+	    // line.geometry.computeBoundingSphere();
+	    // line.geometry.verticesNeedUpdate = true;
+
+	    // line.material.setValues({linewidth: linewidth});
+	    // line.material.needsUpdate = true;
+
+	    // shape.shapeGroup.add(line);
+	    var side = undefined;
+	    for (var i = 0; i < line.children.length; i++) {
+	      side = line.children[i];
+	      if (side.name == 'arrowSideA') {
+	        (0, _updateVertices2['default'])(side, center, pointA, linewidth);
+	      } else {
+	        (0, _updateVertices2['default'])(side, center, pointB, linewidth);
+	      }
+	    }
+	    shape.shapeGroup.add(line);
+	  } else {
+	    // let  geometry = new THREE.Geometry();
+	    // for(let index = 0; index < points.length ;index++) {
+	    //   geometry.vertices.push(points[index]);
+	    // }
+	    // line = new THREE.Line(geometry,  new THREE.LineBasicMaterial({
+	    //   color: 'black',
+	    //   linewidth: linewidth
+	    // }));
+	    var arrow = new THREE.Object3D();
+	    var side1 = new THREE.Shape();
+	    side1.moveTo(center.x, -linewidth / 2);
+	    side1.lineTo(pointA.x, -linewidth / 2);
+	    side1.lineTo(pointA.x, linewidth / 2);
+	    side1.lineTo(center.x, linewidth / 2);
+	    side1.lineTo(center.x, -linewidth / 2);
+	    var geometry1 = new THREE.ShapeGeometry(side1);
+	    var arrow1 = new THREE.Mesh(geometry1, new THREE.MeshBasicMaterial({
+	      color: 'black',
+	      linewidth: linewidth,
+	      overdraw: 0.5
+	    }));
+	    arrow1.name = 'arrowSideA';
+	    (0, _updateVertices2['default'])(arrow1, center, pointA, linewidth);
+
+	    var side2 = new THREE.Shape();
+	    side2.moveTo(center.x, -linewidth / 2);
+	    side2.lineTo(pointB.x, -linewidth / 2);
+	    side2.lineTo(pointB.x, linewidth / 2);
+	    side2.lineTo(center.x, linewidth / 2);
+	    side2.lineTo(center.x, -linewidth / 2);
+	    var geometry2 = new THREE.ShapeGeometry(side2);
+	    var arrow2 = new THREE.Mesh(geometry2, new THREE.MeshBasicMaterial({
+	      color: 'black',
+	      linewidth: linewidth,
+	      overdraw: 0.5
+	    }));
+	    arrow2.name = 'arrowSideB';
+	    (0, _updateVertices2['default'])(arrow2, center, pointB, linewidth);
+
+	    arrow.add(arrow1);
+	    arrow.add(arrow2);
+	    arrow.type = type;
+	    arrow.mainObject = shape;
+	    //arrow1.mainObject = shape;
+	    //arrow2.mainObject = shape;
+	    shape.tempMesh[type] = arrow;
+	    shape.shapeGroup.add(arrow);
+	    //shape.shapeGroup.add(arrow1);
+	    //shape.shapeGroup.add(arrow2);
+	  }
+	}
+
+	/**
+	 * 画原点
+	 * @param shape
+	 * @param position
+	 * @param linewidth
+	 */
+	//function drawCircle(shape,type,position, linewidth){
+	//  if(geometry){
+	//    geometry.dispose();
+	//  }
+	//   geometry = new THREE.CircleGeometry(linewidth/3.2,50);
+	//
+	//  let mesh = new THREE.Mesh(geometry,  new THREE.MeshBasicMaterial({
+	//    color: 'black'
+	//  }));
+	//  mesh.position.x = position.x;
+	//  mesh.position.y = position.y;
+	//  mesh.mainObject = shape;
+	//  mesh.type = type;
+	//  shape.shapeGroup.add(mesh);
+	//}
+	module.exports = exports['default'];
+
+/***/ },
+/* 38 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/17.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x4, _x5, _x6) { var _again = true; _function: while (_again) { var object = _x4, property = _x5, receiver = _x6; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x4 = parent; _x5 = property; _x6 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _BaseBasicGraphJs = __webpack_require__(8);
+
+	var _BaseBasicGraphJs2 = _interopRequireDefault(_BaseBasicGraphJs);
+
+	var _basicShapeFactoryJs = __webpack_require__(25);
+
+	var _utilDrawTextJs = __webpack_require__(27);
+
+	var _utilDrawTextJs2 = _interopRequireDefault(_utilDrawTextJs);
+
+	var _utilDrawAnchorJs = __webpack_require__(29);
+
+	var _utilDrawAnchorJs2 = _interopRequireDefault(_utilDrawAnchorJs);
+
+	var _utilDrawAngleJs = __webpack_require__(39);
+
+	var _utilDrawAngleJs2 = _interopRequireDefault(_utilDrawAngleJs);
+
+	var _utilMatrixJs = __webpack_require__(11);
+
+	var _utilShapeUtilJs = __webpack_require__(31);
+
+	var _utilDrawArcJs = __webpack_require__(41);
+
+	var _utilDrawArcJs2 = _interopRequireDefault(_utilDrawArcJs);
+
+	var _contextShapeContextJs = __webpack_require__(9);
+
+	var Angle = (function (_BaseBasicGraph) {
+	  _inherits(Angle, _BaseBasicGraph);
+
+	  /**
+	   * 构造函数
+	   * @param x
+	   * @param y
+	   * @param name
+	   */
+
+	  function Angle() {
+	    var name = arguments.length <= 0 || arguments[0] === undefined ? _basicShapeFactoryJs.GEOMETRY_SHAPE.ANGLE : arguments[0];
+	    var id = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+
+	    _classCallCheck(this, Angle);
+
+	    // 名称
+	    _get(Object.getPrototypeOf(Angle.prototype), 'constructor', this).call(this, name, id);
+
+	    // 初始化数据
+	    this.data.text = (0, _utilShapeUtilJs.getShapeName)(name);
+	    this.data.radius = 10;
+	    this.data.angle = 60;
+	    this.data.points = new Array(new THREE.Vector3(100, 0, 0), new THREE.Vector3(0, 0, 0));
+
+	    // 设置工具栏位
+	    this.toolbarList = {
+	      lineArrow: false,
+	      lineType: false,
+	      lineWidth: false,
+	      angleSwitch: true
+	    };
+
+	    this.isCreating = false;
+	    this.data.lastAngle = 60;
+
+	    // 设置当前图形
+	    //currentObject.set(this);
+	    _contextShapeContextJs.objectGroup.push(this);
+	  }
+
+	  /**
+	   * 是否超出范围
+	   */
+
+	  _createClass(Angle, [{
+	    key: 'isOffLimit',
+	    value: function isOffLimit() {
+	      var offset = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+
+	      if (!offset) {
+	        offset = new THREE.Vector3();
+	      }
+
+	      for (var index = 0; index < this.data.points.length; index++) {
+	        if ((0, _utilMatrixJs.isOffLimit)(new THREE.Vector3().addVectors(this.data.points[index], offset))) {
+	          return true;
+	        }
+	      }
+	      return false;
+	    }
+
+	    /**
+	     * 绘制图形
+	     */
+	  }, {
+	    key: 'draw',
+	    value: function draw(data) {
+	      // 清空
+	      if (_get(Object.getPrototypeOf(Angle.prototype), 'draw', this).call(this, data)) return;
+
+	      if (this.shapeGroup.position.x != 0) {
+	        for (var index = 0; index < this.data.points.length; index++) {
+	          this.data.points[index].x += this.shapeGroup.position.x;
+	          this.data.points[index].y += this.shapeGroup.position.y;
+	        }
+	        this.shapeGroup.position.x = 0;
+	        this.shapeGroup.position.y = 0;
+	      }
+
+	      // 转换顶点
+	      for (var index = 0; index < this.data.points.length; index++) {
+	        this.data.points[index] = new THREE.Vector3(this.data.points[index].x, this.data.points[index].y, this.data.points[index].z);
+	      }
+
+	      // 图形,角度进行修改情况下 从新计算
+	      if (!this.data.points[2] || this.data.lastAngle != this.data.angle) {
+	        this.data.points[2] = (0, _utilMatrixJs.rotatePoint)(this.data.points[0], this.data.points[1], this.data.angle);
+	        this.data.lastAngle = this.data.angle;
+	      }
+	      (0, _utilDrawAngleJs2['default'])(this, this.data.points);
+
+	      // 画角度
+	      (0, _utilDrawArcJs2['default'])(this, new THREE.Vector2(this.data.points[0].x, this.data.points[0].y), new THREE.Vector2(this.data.points[1].x, this.data.points[1].y), new THREE.Vector2(this.data.points[2].x, this.data.points[2].y));
+
+	      // 锚点
+	      this.drawAnchor();
+	    }
+
+	    /**
+	     * 画锚点
+	     */
+	  }, {
+	    key: 'drawAnchor',
+	    value: function drawAnchor() {
+	      // 锚点
+	      for (var index = 0; index < this.data.points.length; index++) {
+	        (0, _utilDrawAnchorJs2['default'])(this, "anchor" + index, this.data.points[index], 10, this.data.selected, 5);
+	      }
+	    }
+
+	    /**
+	     * 设置当前点击组件
+	     * @param geometry
+	     */
+	  }, {
+	    key: 'setSelectedGeometry',
+	    value: function setSelectedGeometry(geometry, event) {
+	      _get(Object.getPrototypeOf(Angle.prototype), 'setSelectedGeometry', this).call(this, geometry, event);
+	      this.clickPoints = new Array();
+	      for (var index = 0; index < this.data.points.length; index++) {
+	        this.clickPoints.push(this.data.points[index].clone());
+	      }
+
+	      // 判断行为
+	      if (!this.selectedGeometry) {
+	        this.data.action = null;
+	        this.selected = false;
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type.indexOf("anchor") > -1) {
+	        this.data.action = "CHANGE_SHAPE";
+	      } else if (this.selectedGeometry.type && this.selectedGeometry.type == "text") {
+	        this.data.action = "CHANGE_TEXT";
+	      } else {
+	        this.data.action = "MOVE";
+	      }
+	    }
+
+	    /**
+	     * 当鼠标移动时候的反应
+	     * @param event
+	     */
+	  }, {
+	    key: 'onMouseMove',
+	    value: function onMouseMove(event) {
+	      _get(Object.getPrototypeOf(Angle.prototype), 'onMouseMove', this).call(this, event);
+	      if (!this.data.action) {
+	        return;
+	      }
+
+	      // 判断行为进行处理
+	      var setData = {};
+	      var minLength = 25;
+	      var currentPosition = undefined;
+	      switch (this.data.action) {
+	        case 'CHANGE_SHAPE':
+	          currentPosition = (0, _utilMatrixJs.convertEvent)(event);
+	          if (this.selectedGeometry.type.indexOf("anchor") > -1) {
+	            var index = this.selectedGeometry.type.substr(6);
+
+	            var distance = undefined;
+	            if (index != 1) {
+	              // 判断长度
+	              distance = currentPosition.distanceTo(new THREE.Vector2(this.data.points[1].x, this.data.points[1].y));
+	              if (distance < minLength) {
+	                return;
+	              }
+	            } else {
+	              distance = currentPosition.distanceTo(new THREE.Vector2(this.data.points[0].x, this.data.points[0].y));
+	              if (distance < minLength) {
+	                return;
+	              }
+	              distance = currentPosition.distanceTo(new THREE.Vector2(this.data.points[2].x, this.data.points[2].y));
+	              if (distance < minLength) {
+	                return;
+	              }
+	            }
+
+	            // 修改
+	            setData.points = this.data.points;
+	            setData.points[index].x = this.clickPoints[index].x + currentPosition.x - this.data.clickMousePosition.x;
+	            setData.points[index].y = this.clickPoints[index].y + currentPosition.y - this.data.clickMousePosition.y;
+
+	            if (!this.isOffLimit()) {
+	              this.setDrawData(setData);
+	            }
+
+	            this.setDrawData(setData);
+	          }
+	          break;
+	        case 'CHANGE_TEXT':
+	          break;
+	        case 'MOVE':
+
+	          this.setDrawData(setData);
+	          break;
+	      }
+	    }
+	  }]);
+
+	  return Angle;
+	})(_BaseBasicGraphJs2['default']);
+
+	exports['default'] = Angle;
+	module.exports = exports['default'];
+
+/***/ },
+/* 39 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 15/11/22.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _UtilsGetAngleJs = __webpack_require__(40);
+
+	var _UtilsGetAngleJs2 = _interopRequireDefault(_UtilsGetAngleJs);
+
+	/**
+	 * 画线段
+	 * @param pointA
+	 * @param pointB
+	 * @param width
+	 * @returns {THREE.Mesh}
+	 */
+
+	//材料
+	var material = new THREE.MeshBasicMaterial({
+	  color: 'white',
+	  transparent: true,
+	  opacity: 0
+	});
+	var squareGeometry = undefined;
+	var lineMaterial = new THREE.LineBasicMaterial({
+	  color: 'black',
+	  linewidth: 3
+	});
+	var shapePoints = undefined;
+	//let squareShape;
+
+	exports['default'] = function (shape, points) {
+	  // 画图形
+	  var squareMesh = shape.tempMesh["shapeArea"];
+	  var squareShape = new THREE.Shape();
+	  squareShape.moveTo(points[0].x, points[0].y);
+	  squareShape.lineTo(points[1].x, points[1].y);
+	  squareShape.lineTo(points[2].x, points[2].y);
+	  squareShape.lineTo(points[0].x, points[0].y);
+	  if (squareMesh) {
+	    // if( squareMesh.geometry) {
+	    //   squareMesh.geometry.dispose();
+	    // }
+	    // squareMesh.geometry = new THREE.ShapeGeometry(squareShape);
+	    // squareMesh.geometry.needsUpdate = true;
+	    var ang1 = (0, _UtilsGetAngleJs2['default'])(points[0], points[1], new THREE.Vector2().addVectors(points[1], new THREE.Vector2(1, 0)));
+	    var ang2 = (0, _UtilsGetAngleJs2['default'])(points[2], points[1], new THREE.Vector2().addVectors(points[1], new THREE.Vector2(1, 0)));
+	    var vec1 = new THREE.Vector2().subVectors(points[0], points[1]);
+	    var vec2 = new THREE.Vector2().subVectors(points[2], points[1]);
+	    if (vec1.y < 0) ang1 = 360 - ang1;
+	    if (vec2.y < 0) ang2 = 360 - ang2;
+	    var len = squareMesh.geometry.vertices.length;
+	    if (ang1 - ang2 < 0 && ang1 - ang2 >= -180 || ang1 - ang2 > 180) {
+	      for (var i = 0; i < len; i++) {
+	        squareMesh.geometry.vertices[i].x = points[i].x;
+	        squareMesh.geometry.vertices[i].y = points[i].y;
+	        squareMesh.geometry.vertices[i].z = 0;
+	      }
+	    }
+	    if (ang1 - ang2 <= 180 && ang1 - ang2 >= 0 || ang1 - ang2 < -180) {
+	      for (var i = 0; i < len; i++) {
+	        var index = len - 1 - i;
+	        squareMesh.geometry.vertices[i].x = points[index].x;
+	        squareMesh.geometry.vertices[i].y = points[index].y;
+	        squareMesh.geometry.vertices[i].z = 0;
+	      }
+	    }
+	    squareMesh.geometry.verticesNeedUpdate = true;
+	    squareMesh.geometry.computeBoundingSphere();
+	    squareMesh.position.x = 0;
+	    squareMesh.position.y = 0;
+	  } else {
+	    squareMesh = new THREE.Mesh(new THREE.ShapeGeometry(squareShape), material);
+	    squareMesh.mainObject = shape;
+	    squareMesh.type = "shapeArea";
+	    shape.tempMesh["shapeArea"] = squareMesh;
+	    //shape.shapeGroup.add(squareMesh);
+	  }
+
+	  // 画线
+	  var line = shape.tempMesh["shape"];
+	  if (line) {
+	    shapePoints = squareShape.createPointsGeometry();
+	    shapePoints.vertices.pop();
+	    line.geometry.vertices = shapePoints.vertices;
+	    //for(let i = 0; i < points.length ; i++){
+	    //  line.geometry.vertices[i] = points[i].clone();
+	    //}
+	    line.geometry.verticesNeedUpdate = true;
+	  } else {
+	    shapePoints = squareShape.createPointsGeometry();
+	    shapePoints.vertices.pop();
+	    line = new THREE.Line(shapePoints, lineMaterial);
+	    line.mainObject = shape;
+	    line.frustumCulled = false;
+	    line.type = "shape";
+	    shape.tempMesh["shape"] = line;
+	    shape.shapeGroup.add(line);
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 40 */
+/***/ function(module, exports) {
+
+	/**
+	 * Created by ChengChangXiong on 2015/11/19.
+	 */
+	/*
+	 first_p：起点坐标，center_p：端点坐标，second_p：末点
+	 */
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports["default"] = GetAngle;
+
+	function GetAngle(first_p, center_p, second_p) {
+	    var v_ao = new THREE.Vector2.prototype.subVectors(first_p, center_p);
+	    var v_bo = new THREE.Vector2.prototype.subVectors(second_p, center_p);
+	    var dx1 = undefined,
+	        dx2 = undefined,
+	        dy1 = undefined,
+	        dy2 = undefined,
+	        angle = undefined,
+	        abs = undefined;
+	    dx1 = v_ao.x;
+	    dy1 = v_ao.y;
+	    dx2 = v_bo.x;
+	    dy2 = v_bo.y;
+	    var c = Math.sqrt(dx1 * dx1 + dy1 * dy1) * Math.sqrt(dx2 * dx2 + dy2 * dy2);
+	    if (c == 0) return -1;
+	    abs = (dx1 * dx2 + dy1 * dy2) / c;
+	    if (abs < 0 && Math.abs(abs) > 1) {
+	        //当abs>且是负数的时候，向量方向相反重合，为180°
+	        return 180;
+	    }
+	    if (Math.abs(abs) > 1) {
+	        //当abs>1且是正数数的时候，向量方向一致且重合，为0°
+	        return 0;
+	    }
+	    angle = Math.acos((dx1 * dx2 + dy1 * dy2) / c) * 180 / Math.PI;
+
+	    return Math.round(angle * 100) / 100;
+	}
+
+	module.exports = exports["default"];
+
+/***/ },
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by wuhanchu on 2015/11/22.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = DrawArc;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _UtilsGetAngleJs = __webpack_require__(40);
+
+	var _UtilsGetAngleJs2 = _interopRequireDefault(_UtilsGetAngleJs);
+
+	var _drawTextJs = __webpack_require__(27);
+
+	var _drawTextJs2 = _interopRequireDefault(_drawTextJs);
+
+	var _utilMatrixJs = __webpack_require__(11);
+
+	/*
+	 point_first：起点 point_center:端点 point_second：末点
+	 */
+	var textMaterial = { lineWidth: 10, fontSize: 10, color: 'red' };
+	var geometry = undefined;
+	var material = new THREE.LineBasicMaterial({ color: 'black', linewidth: 3 });
+
+	function DrawArc(shape, point_first, point_center, point_second) {
+	  var scale = arguments.length <= 4 || arguments[4] === undefined ? 1 : arguments[4];
+
+	  // 画弧线
+	  //let  ellipse = shape.tempMesh["ellipse"];
+
+	  //shape.removeModuleFromTemp("ellipse");
+	  //if(ellipse){
+	  //  shape.shapeGroup.remove(ellipse);
+	  //
+	  //}
+	  var ellipse = shape.tempMesh["ellipse"];
+
+	  var angle = (0, _UtilsGetAngleJs2['default'])(point_first, point_center, point_second);
+	  var angleInt = Math.round(parseFloat(angle));
+	  shape.data.lastAngle = angleInt;
+	  shape.data.angle = angleInt;
+
+	  var ang1 = (0, _UtilsGetAngleJs2['default'])(point_first, point_center, new THREE.Vector2().addVectors(point_center, new THREE.Vector2(1, 0)));
+	  var ang2 = (0, _UtilsGetAngleJs2['default'])(point_second, point_center, new THREE.Vector2().addVectors(point_center, new THREE.Vector2(1, 0)));
+	  var vec1 = new THREE.Vector2().subVectors(point_first, point_center);
+	  var vec2 = new THREE.Vector2().subVectors(point_second, point_center);
+
+	  var points = undefined;
+
+	  // 判断是否是直角?
+	  if (angleInt != "90") {
+	    if (vec1.y < 0) ang1 = 360 - ang1;
+	    if (vec2.y < 0) ang2 = 360 - ang2;
+	    var maxAng = Math.max(ang1, ang2);
+	    var minAng = Math.min(ang1, ang2);
+	    var endAng = maxAng;
+	    var startAng = minAng;
+
+	    if (maxAng - minAng > 180) {
+	      endAng = minAng;
+	      startAng = maxAng;
+	    }
+
+	    var curve = new THREE.EllipseCurve(point_center.x, point_center.y, // ax, aY
+	    20 / scale, 20 / scale, // xRadius, yRadius
+	    Math.PI * startAng / 180, //aStartAngle,
+	    Math.PI * endAng / 180, // aEndAngle
+	    false // aClockwise
+	    );
+	    points = curve.getSpacedPoints(50);
+	    var path = new THREE.Path();
+	    geometry = path.createGeometry(points);
+	  } else {
+	    points = new Array();
+	    var point1 = new THREE.Vector2().addVectors(point_center, vec1.clone().setLength(15 / scale));
+	    var point2 = new THREE.Vector2().addVectors(point_center, vec2.clone().setLength(15 / scale));
+	    var point3 = new THREE.Vector2().addVectors(point1, vec2.clone().setLength(15 / scale));
+	    points.push(new THREE.Vector3(point1.x, point1.y, 0), new THREE.Vector3(point3.x, point3.y, 0), new THREE.Vector3(point2.x, point2.y, 0));
+	  }
+
+	  if (ellipse) {
+	    for (var i = 0; i < points.length; i++) {
+	      points[i] = new THREE.Vector3().setX(points[i].x).setY(points[i].y);
+	    }
+
+	    if (points.length > 50) {
+	      ellipse.tempGeometry.vertices = points.concat();
+	      ellipse.geometry = ellipse.tempGeometry;
+	    } else {
+	      ellipse.rightGeometry.vertices = points.concat();
+	      ellipse.geometry = ellipse.rightGeometry;
+	    }
+
+	    ellipse.geometry.verticesNeedUpdate = true;
+	  } else {
+	    var _geometry = undefined;
+	    var rightGeometry = undefined;
+	    var path = new THREE.Path();
+	    _geometry = path.createGeometry(points);
+	    rightGeometry = new THREE.Geometry();
+	    rightGeometry.vertices = points.concat();
+	    rightGeometry.verticesNeedUpdate = true;
+
+	    ellipse = new THREE.Line(_geometry, material);
+	    ellipse.tempGeometry = ellipse.geometry;
+	    ellipse.rightGeometry = rightGeometry;
+	    ellipse.mainObject = shape;
+	    shape.tempMesh["ellipse"] = ellipse;
+
+	    shape.shapeGroup.add(ellipse);
+	  }
+
+	  // 计算位置
+	  vec1.normalize();
+	  vec2.normalize();
+	  var centereVec = new THREE.Vector2();
+	  centereVec.addVectors(vec1, vec2);
+	  centereVec.normalize();
+
+	  // 字符
+	  var nameLocation = centereVec.clone();
+	  nameLocation.multiplyScalar(-2).add(point_center);
+	  var location = shape.getTextPoint(shape.data.points[1], new THREE.Vector3(nameLocation.x, nameLocation.y, 0), shape.data.text);
+	  (0, _drawTextJs2['default'])(shape, "text", location, shape.data.text, shape.selectedGeometry && shape.selectedGeometry.type == "text");
+
+	  // 写字体
+	  var angleText = angleInt + '°';
+
+	  centereVec.multiplyScalar(25);
+	  centereVec.add(point_center);
+	  var position = shape.getTextPoint(new THREE.Vector3(point_center.x, point_center.y, 0), new THREE.Vector3(centereVec.x, centereVec.y, 0), angleText, textMaterial);
+	  //let angleInt = parseFloat(angle);
+	  if (angleInt < 40) {
+	    angleInt = 40;
+	    var position1 = (0, _utilMatrixJs.rotatePoint)(position, point_center, angleInt);
+	    var position2 = (0, _utilMatrixJs.rotatePoint)(position, point_center, angleInt * -1);
+
+	    position = position1;
+	    if (position1.distanceTo(location) < position2.distanceTo(location)) {
+	      position = position2;
+	    }
+	  }
+
+	  (0, _drawTextJs2['default'])(shape, "angleText", position, angleText, false, "red");
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _basicGraphContextShapeContextJs = __webpack_require__(9);
+
+	var _threeManger = __webpack_require__(7);
+
+	/**
+	 * 翻页注销工具
+	 */
+
+	exports['default'] = function () {
+	  //隐藏
+	  var container = $(_presenter2['default'].view).find('.three2D-canvas');
+	  if (container.css('display') != 'none') {
+	    container.hide();
+	    // 删除多有电线角图形
+	    (0, _basicGraphContextShapeContextJs.destoryAll)();
+	    (0, _threeManger.destroy)();
+	  }
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 43 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * 运行环境下, 销毁Module时执行的方法
+	 * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function () {
+		//解除绑定的Module事件
+		// unBindEvent();
+		//ToDo:释放Module占用的内存对象
+		// 实例销毁
+		_presenter2['default'].callbacks = {};
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 44 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by lyp on 2015/12/29.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _basicGraphContextEvent = __webpack_require__(16);
+
+	var _threeManger = __webpack_require__(7);
+
+	var _constants = __webpack_require__(5);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = {
+	    isPointInPath: function isPointInPath(event) {
+
+	        if ($(event.target).closest('.toolbar:visible').length != 0) {
+	            return true;
+	        }
+
+	        var pointer = undefined;
+	        if (event.touches) {
+	            if (event.touches.length === 1) {
+	                pointer = event.changedTouches[0];
+	            } else {
+	                return;
+	            }
+	        } else {
+	            pointer = event;
+	        }
+	        var mouse = new THREE.Vector2();
+	        mouse.x = pointer.clientX / _constants.REAL_ESTATE.width * 2 - 1;
+	        mouse.y = -(pointer.clientY / _constants.REAL_ESTATE.height) * 2 + 1;
+	        _threeManger.raycaster.setFromCamera(mouse, _threeManger.camera);
+	        var hitGeometry = (0, _basicGraphContextEvent.getHitGeometry)(_threeManger.raycaster);
+	        if (hitGeometry == null) {
+	            console.log('false');
+	            return false;
+	        }
+	        console.log('true');
+	        return true;
+	    },
+	    execute: function execute(params) {
+	        if (params.type) {
+	            _presenter2['default'].handleCallBack({ value: params.type });
+	        }
+	    }
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by lyp on 2016/1/11.
+	 */
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	    value: true
+	});
+	exports['default'] = setPlayerController;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function setPlayerController(controller) {
+	    console.log('setplayercontroller');
+	    _presenter2['default'].playerController = controller;
+	    _presenter2['default'].eventBus = _presenter2['default'].playerController.getEventBus();
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 46 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by lyp on 2016/1/11.
+	 */
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _listenerManager = __webpack_require__(15);
+
+	var _listenerManager2 = _interopRequireDefault(_listenerManager);
+
+	exports['default'] = function (eventName, event) {
+	  _listenerManager2['default'].run(eventName, event);
+	};
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 47 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	exports['default'] = function (properties) {
+		console.log('setLocationProperties:', properties);
+		_presenter2['default']._i18n = properties;
+	};
+
+	module.exports = exports['default'];
+
+/***/ }
+/******/ ]);
+ return presenter() }]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/AngleObtuse.png' />
+<file src='./resources/AngleRight.png' />
+<file src='./resources/AngleShape.png' />
+<file src='./resources/ArrowBoth.png' />
+<file src='./resources/ArrowLeft.png' />
+<file src='./resources/ArrowNone.png' />
+<file src='./resources/close.png' />
+<file src='./resources/expand.png' />
+<file src='./resources/LineWidth10.png' />
+<file src='./resources/LineWidth20.png' />
+<file src='./resources/LineWidth40.png' />
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/en_US/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/select.png' />
+<file src='./resources/separationLine.png' />
+<file src='./resources/TypeBee.png' />
+<file src='./resources/TypeBoroken.png' />
+<file src='./resources/TypeSegment.png' />
+
+
+</resources>
+
+</addon>

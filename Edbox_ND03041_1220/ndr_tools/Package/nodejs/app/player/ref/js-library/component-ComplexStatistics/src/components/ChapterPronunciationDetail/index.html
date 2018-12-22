@@ -1,0 +1,81 @@
+<div class="ndui-pop com_pop encanto-sta__pop" :class="hideDom">
+    <div class="ndui-pop-mask"></div>
+    <!-- 提示框 start-->
+    <div class="dialog_mask" style="position:absolute;left:0;right:0;height:100%;z-index:999;" :class='{"hide_dom":!popMsg}'>
+        <div style="font-size: 1.667em;margin-top: 11.5em;margin-left:11.88883em;margin-right:11.88883em;background: rgba(0,0,0,0.5);padding-bottom: 2em;padding-top: 2em;border-radius: .667em;color: #f5f5f5;">{{msg}}</div>
+    </div>
+    <!--提示框 end-->
+    <div class="ndui-pop-square">
+        <!-- 弹窗内容区 -->
+        <div class="ndui-pop-wrap">
+            <a href="###" class="ndui-pop-close right" @click="closeDetail"></a>
+            <a href="###" class="ndui-pop-close left" @click="closeDetail"></a>
+            <div class="encanto-sta">
+                <div class="encanto-sta__head">
+                    <div class="encanto-sta__user">
+                        <img class="user-img" :src="userInfo.imgUrl" alt="">
+                        <p class="user-name">
+                            <span class="name-t">{{userInfo.name}}</span>
+                        </p>
+                    </div>
+                    <!--计时器-->
+                    <div class="com_time encanto-sta__time">
+                        <!--当多语言时，要去掉分和秒文字时，请在.com_time上增加类名.time_lang-->
+                        <!-- 答题时间：<span class="time_m"><em>05</em>分</span> -->
+                        <!-- <span class="time_s"><em>21</em>秒</span> -->
+                        <div class="time_default ">
+                            <b class="time_text" ref="lang_detail.totaltime"></b>
+                            <span class="time_m"><em>{{getTime.minute}}</em></span>
+                            <b class="time_text" ref="lang_detail.minute"></b>
+                            <span class="time_s"><em>{{getTime.second}}</em></span>
+                            <b class="time_text" ref="lang_detail.second"></b>
+                        </div>
+                    </div>
+                    <!--/计时器-->
+                    <!-- 平均分 -->
+                    <div class="encanto-sta__last-score">
+                        <span class="last-t1" ref="lang_detail.avg"></span>
+                        <span class="last-t2" :class="setGradeClass(getGrade.overall)">{{getGrade.overall}}</span>
+                    </div>
+                    <!-- /平均分 -->
+                    <!-- 播放按钮 -->
+                    <!-- 正常为播放按钮，暂停图标,加class:s-pause，按钮不可点击时,加class:s-disabled -->
+                    <a href="javascript:;" class="ndui__btn--play" :class="audioClass" @click="play">
+                        <audio :src="audioUrl"></audio>
+                    </a>
+                </div>
+                <div class="encanto-sta__content scrollbar_style_light">
+                    <p class="encanto-sta__canto">
+                        <!-- 读之后加上grade_a、grade_b、grade_c、grade_d -->
+                        <span v-for="item in getGrade.scores" class="encanto-sta__grade" :class="setGradeClass(item.score)"><em class="grade-t">{{item.text}}</em></span>
+                    </p>
+                </div>
+                <div class="encanto-sta__result">
+                    <div class="ndui__components--eval-wrap ">
+                        <p class="ndui__components--eval-item">
+                            <span class="eval-t" ref="lang_detail.fluency"></span>
+                            <span class="eval-cir" :class="setGradeClass(getGrade.fluency)"><em class="eval-l">{{getGrade.fluency}}</em></span>
+                        </p>
+                        <p class="ndui__components--eval-item">
+                            <span class="eval-t" ref="lang_detail.integrity"></span>
+                            <span class="eval-cir" :class="setGradeClass(getGrade.integrity)"><em class="eval-l">{{getGrade.integrity}}</em></span>
+                        </p>
+                        <p class="ndui__components--eval-item">
+                            <span class="eval-t" ref="detail.accuracy"></span>
+                            <span class="eval-cir" :class="setGradeClass(getGrade.accuracy)"><em class="eval-l">{{getGrade.accuracy}}</em></span>
+                        </p>
+                    </div>
+                    <!-- 右下送花 -->
+                    <!--送花-加文字 -->
+                    <div class="com_send_flower_wrap encanto-sta__flower" :class='{"hide_dom":hideFlower}'>
+                        <p class="flow_text"><em class="text" ref="lang_detail.sendFlower"></em></p>
+                        <div class="com_send_flower" @click="sendFlower"></div>
+                    </div>
+                    <!--/送花-加文字-->
+                    <!-- /右下送花 -->
+                </div>
+            </div>
+        </div>
+        <!-- /弹窗内容区 -->
+    </div>
+</div>

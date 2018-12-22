@@ -1,0 +1,652 @@
+<?xml version='1.0' encoding='UTF-8'?><addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/><property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="tools_common" version="1.3.0"/><javaScript name="snap_svg" version="1.0.0"/><javaScript name="knockout" version="3.3.0"/><javaScript name="basicPresenter" version="1.0.5"/><javaScript name="jquery-ui" version="1.10.4"/><javaScript name="jquery-ui-touch-punch" version="0.2.3.2"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .ChargedParticleMoving{width:100%;height:100%;position:relative;background:#bfd3e2;padding:4.16667em 5.08333em 7.16667em 3.33333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container{display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;height:100%;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main{position:relative;display:inline-block;width:48.125em;height:100%;background:#b0c7d8;padding:.54167em .83333em;float:left}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container{z-index:999;position:absolute;width:47.5em;height:32.875em;display:inline-block;left:.41667em;top:.25em;background:#ecf2f6;border:1px solid #393b3b;border-radius:.41667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .text_one{position:absolute;right:22.58333em;top:10.83333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .text_one .r_equal{margin-left:.45833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .text_two{position:absolute;right:22.79167em;top:21.20833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .text_two .r_equal{margin-left:.25em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_one{position:absolute;display:inline-block;text-align:center;vertical-align:middle;padding:0 .08333em;left:24.83333em;top:8.625em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_one .formula_line{top:4.16667em;left:-.125em;width:110%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_one .formula_c_up{margin-bottom:.04167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_two{position:absolute;display:inline-block;text-align:center;vertical-align:middle;padding:0 .08333em;left:24.83333em;top:19.16667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_two .formula_line{top:4em;left:.29167em;width:100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_two .formula_c_up{margin-bottom:-.04167em;margin-left:.125em;margin-top:-.08333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .equal_hao{vertical-align:middle;font-size:3.54167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .formula_c_up{display:block;position:relative;font-size:4.375em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .formula_line{display:inline-block;position:absolute;height:.20833em;background:#3e3e3e}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .formula_c_down{display:inline-block;font-size:4.375em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_c_equation{font-size:3.33333em;font-weight:700;position:absolute;left:.41667em;top:1em;text-align:left}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_equation{vertical-align:middle;font-weight:700;font-size:2em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_equal{vertical-align:middle;font-size:4.375em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .close_btn{display:inline-block;position:absolute;width:3.58333em;height:3.58333em;background:-webkit-linear-gradient(bottom,#e9e9e9,#fff);background:linear-gradient(0deg,#e9e9e9 0,#fff);border:1px solid #397274;border-radius:.41667em;right:1.08333em;bottom:1.25em;cursor:pointer}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .close_btn:active{background:#7ebdbf}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .close_btn:active i{background:url(resources/wood/images/close_btn_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .close_btn i{display:inline-block;width:1.41667em;height:1.41667em;margin-top:1.04167em;background:url(resources/wood/images/close_btn.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain{width:100%;height:100%;position:relative}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_point{z-index:888;width:1.91667em;height:1.91667em;position:absolute;left:24.79167em;top:15.41667em;background:url(resources/wood/images/point.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_point.point_fu{background:url(resources/wood/images/point_fu.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_solidline{z-index:150;position:absolute;left:25.75em;top:16.33333em;display:block;background-size:auto 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_v_text{display:block;font-size:3.54167em;color:#0785c7;-webkit-transform:rotate(-180deg);transform:rotate(-180deg)}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_f_text{display:block;font-size:3.54167em;-webkit-transform:rotate(-90deg);transform:rotate(-90deg);color:#000;margin-top:-1.16667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_v{width:4.5em;height:.375em;-webkit-transform:rotate(180deg);transform:rotate(180deg);-webkit-transform-origin:0 50%;transform-origin:0 50%;margin-top:-.1875em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_v.change_state .line_v_text{margin-top:-.91667em;margin-left:.41667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_v_bg{position:absolute;left:0;top:0;bottom:0;right:0;background-color:#0785c7}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_f{width:4.5em;height:.375em;-webkit-transform:rotate(90deg);transform:rotate(90deg);-webkit-transform-origin:0 50%;transform-origin:0 50%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_f.change_state .line_f_text{margin-top:.20833em;margin-left:.41667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_f_bg{position:absolute;left:0;top:0;bottom:0;right:0;background-color:#000}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_v_icon{width:.75em;height:1.45833em;display:inline-block;position:absolute;right:0;margin-right:-.375em;top:0;margin-top:-.52083em;background:url(resources/wood/images/line_v_head.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .line_F_icon{width:.75em;height:1.45833em;display:inline-block;position:absolute;right:0;margin-right:-.375em;top:0;margin-top:-.52083em;background:url(resources/wood/images/line_F_head.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_lamp{width:8.375em;height:2.33333em;margin-top:.16667em;position:absolute;left:26.16667em;top:15.16667em;background:url(resources/wood/images/lamp.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_lamp.change_state{background:url(resources/wood/images/lamp_fu.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .added_ball{display:inline-block;width:.91667em;height:.91667em;background:#e06313;border-radius:.91667em;position:absolute;top:70%;left:50%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .added_line{display:inline-block;width:.79167em;height:.29167em;background:#ffe013;border-radius:.91667em;position:absolute;top:80%;left:50%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_hand{z-index:99;display:inline-block;width:11.91667em;height:8.04167em;background:url(resources/wood/images/zheng_hand.png) no-repeat;background-size:100% 100%;-webkit-transform:rotate(180deg);transform:rotate(180deg);position:absolute}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_hand:not(.change_state){-webkit-transform:rotate(0);transform:rotate(0);left:15.20833em;top:13.66667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_hand:not(.change_state).change_deg{left:24.33333em;top:10.83333em;-webkit-transform:rotate(180deg);transform:rotate(180deg)}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_hand.change_state{background:url(resources/wood/images/fan_hand.png) no-repeat;background-size:100% 100%;left:15.33333em;top:11.08333em;-webkit-transform:rotate(170deg);transform:rotate(170deg)}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .main_contain .charged_particle_hand.change_state.change_deg{-webkit-transform:rotate(0);transform:rotate(0);left:23.95833em;top:13.75em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B .num_n_power,.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_m .num_n_power,.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q .num_n_power,.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_v .num_n_power{top:.08333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side{display:inline-block;position:relative;left:1.625em;height:100%;width:19.83333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list{display:inline-block;height:auto;border-radius:.20833em;width:100%;background:#b0c7d8;padding:0 .91667em;text-align:left}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list:nth-child(2){margin:1.04167em 0 .66667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list.second_sidebar_list{padding:0 0 .70833em .79167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list.third_sidebar_list{padding:.58333em 0 .70833em .79167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text{position:relative;display:block;vertical-align:middle}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .side_equation{vertical-align:middle;display:inline-block;font-size:3.54167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .side_equation.right_tow{margin-left:.16667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_r .last_num_unit{margin-left:.41667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_T .last_num_unit{margin-left:.625em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_m .last_num_unit{margin-left:.95833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_m .side_num_big{margin:.08333em .125em 0 .5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_m .maohao,.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_m .side_equation{margin-top:-.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q{margin-bottom:.83333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q .last_num_unit{margin-left:.95833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q .side_num_big{margin:.08333em .125em 0 .5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q .side_equation{margin-top:-.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_q .maohao{margin:-.125em 0 0 .125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_v .last_num_unit{margin-left:.625em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_v .side_num_big{margin:.08333em .125em 0 .5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_v .side_equation{margin-top:-.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_v .maohao{margin:-.125em 0 0 .20833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B{margin-top:.41667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B .last_num_unit{margin-left:.625em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B .side_num_big{margin:.08333em .125em 0 .5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B .side_equation{margin-top:-.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text.text_B .maohao{margin:-.125em 0 0 .04167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .more_top{margin-top:-.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .more_bottom{margin-top:.20833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .side_num{display:inline-block;vertical-align:middle;min-width:1.875em;font-weight:700;font-size:2em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .num_unit{vertical-align:middle;display:inline-block;font-weight:700;font-size:2em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .num_n_power{display:inline-block;font-size:1.16667em;font-weight:700;position:absolute;top:.45833em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .maohao{display:inline-block;font-size:3.54167em;vertical-align:middle}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .fuhao{font-weight:700;font-size:2em;margin:0 .04167em;vertical-align:middle}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_list_text .side_num_big{display:inline-block;font-weight:700;vertical-align:middle;font-size:2.5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar{text-align:left}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar li{position:relative;display:inline-block;height:100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_procut{display:inline-block;vertical-align:middle;margin-right:.29167em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_procut a{display:block}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_procut .com_btn_pic{display:inline-block;width:2.25em;height:2.25em;background:url(resources/wood/images/com_btn_pic_cut.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_procut .com_btn_pic:not(.com_btn_pic_disabled):active{background:url(resources/wood/images/com_btn_pic_cut_active.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_procut .com_btn_pic.com_btn_pic_disabled{background:url(resources/wood/images/com_btn_pic_cut_disabled.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar{position:relative;vertical-align:middle;width:12.91667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar:before{top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);position:absolute;content:"";display:inline-block;width:100%;height:.25em;background:#acbecb}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar b{cursor:pointer;position:absolute;margin-left:-.75em;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);left:40%;z-index:100;width:1.5em;height:2.625em;background:url(resources/wood/images/icon_probtn.png);background-size:100% 100%;display:inline-block}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar b:active{background:url(resources/wood/images/icon_probtn_active.png);background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar .scale{position:absolute;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%);width:.16667em;height:1em;margin-left:-.08333em;background:#acbecb}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_proadd{vertical-align:middle;display:inline-block;margin-left:.125em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_proadd a{display:block}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_proadd .com_btn_pic{display:inline-block;width:2.25em;height:2.25em;background:url(resources/wood/images/com_btn_pic_add.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_proadd .com_btn_pic:not(.com_btn_pic_disabled):active{background:url(resources/wood/images/com_btn_pic_add_active.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_btn_proadd .com_btn_pic.com_btn_pic_disabled{background:url(resources/wood/images/com_btn_pic_add_disabled.png);background-size:100% auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot{display:-webkit-box;display:-ms-flexbox;display:flex;position:absolute;left:0;bottom:0;width:100%;height:5.70833em;padding:0 4.16667em;background:#cfdee9;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list{display:inline-block;float:right;height:100%;padding:.58333em .83333em 0 0}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list{cursor:pointer;margin:0 1.91667em;float:left;display:inline-block;height:100%;vertical-align:middle;position:relative}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool{vertical-align:middle;display:inline-block;text-align:center;min-width:7.83333em;height:4.5em;background:-webkit-linear-gradient(bottom,#e9e9e9,#fff);background:linear-gradient(0deg,#e9e9e9 0,#fff);border:1px solid #397274;border-radius:.41667em;color:#333;padding:0 .33333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state.click_disabled{background:#c7d0d6;color:#8d989f}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state.click_disabled .com_btn_img.btn_1{background:url(resources/wood/images/com_btn_left_1img_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state.click_disabled .com_btn_img.btn_2{background:url(resources/wood/images/com_btn_left_2img_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state.click_disabled .com_btn_img.btn_3{background:url(resources/wood/images/com_btn_left_3img_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state:not(.click_disabled):active{background:#629a9b;color:#fff}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state:not(.click_disabled):active .com_btn_img.btn_1{background:url(resources/wood/images/com_btn_left_1img_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state:not(.click_disabled):active .com_btn_img.btn_2{background:url(resources/wood/images/com_btn_left_2img_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state:not(.click_disabled):active .com_btn_img.btn_3{background:url(resources/wood/images/com_btn_left_3img_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state .com_btn_img.btn_1{background:url(resources/wood/images/com_btn_left_1img.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state .com_btn_img.btn_2{background:url(resources/wood/images/com_btn_left_2img.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.change_state .com_btn_img.btn_3{background:url(resources/wood/images/com_btn_left_3img.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.com_btn_active:before{content:"";display:inline-block;position:absolute;right:-.33333em;top:-.33333em;width:1.5em;height:1.54167em;background:url(resources/wood/images/selected.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.click_disabled{background:#c7d0d6;color:#8d989f}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.click_disabled .com_btn_img.btn_1{background:url(resources/wood/images/com_btn_left_img1_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.click_disabled .com_btn_img.btn_2{background:url(resources/wood/images/com_btn_left_img2_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.click_disabled .com_btn_img.btn_3{background:url(resources/wood/images/com_btn_left_img3_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool.click_disabled .com_btn_img.btn_4{background:url(resources/wood/images/com_btn_left_img4_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool:not(.click_disabled):active{background:#629a9b;color:#fff}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool:not(.click_disabled):active .com_btn_img.btn_1{background:url(resources/wood/images/com_btn_left_img1_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool:not(.click_disabled):active .com_btn_img.btn_2{background:url(resources/wood/images/com_btn_left_img2_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool:not(.click_disabled):active .com_btn_img.btn_3{background:url(resources/wood/images/com_btn_left_img3_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool:not(.click_disabled):active .com_btn_img.btn_4{background:url(resources/wood/images/com_btn_left_img4_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_img{display:block;margin:0 auto}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_img.btn_1{width:2.16667em;height:2.125em;margin-top:.58333em;background:url(resources/wood/images/com_btn_left_img1.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_img.btn_2{width:1.875em;height:1.91667em;margin:.625em auto .375em;background:url(resources/wood/images/com_btn_left_img2.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_img.btn_3{width:2.33333em;height:2.58333em;margin-top:.125em;background:url(resources/wood/images/com_btn_left_img3.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_img.btn_4{width:3.91667em;height:1.75em;margin:.70833em auto .5em;background:url(resources/wood/images/com_btn_left_img4.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_text{display:block;margin-top:.20833em;bottom:0;font-size:1.16667em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list{display:inline-block;float:right;position:relative;height:100%;padding-left:.5em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list:before{content:"";display:inline-block;position:absolute;width:1px;top:.29167em;bottom:.16667em;left:0;background:#aab6bf}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list:after{content:"";display:inline-block;position:absolute;width:1px;top:.29167em;bottom:.16667em;background:#d6e3ec;left:1px}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list{cursor:pointer;margin:0 1.79167em;float:left;display:inline-block;height:100%;vertical-align:middle;position:relative}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type{max-width:9.58333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar{min-width:7.5em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar,.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar{min-width:10.83333em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_start{display:inline-block}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_pausedemo,.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_start{display:none}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_pausedemo{display:inline-block}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre1_photo{background:url(resources/wood/images/fan_hand.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre2_photo{background:url(resources/wood/images/zheng_hand.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre3_photo{background:url(resources/wood/images/lamp.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre4_photo{background:url(resources/wood/images/lamp_fu.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre5_photo{background:url(resources/wood/images/com_btn_right_img1.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre6_photo{background:url(resources/wood/images/com_btn_right_img2.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre7_photo{background:url(resources/wood/images/com_btn_left_img2.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre8_photo{background:url(resources/wood/images/point_fu.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre9_photo{background:url(resources/wood/images/com_btn_right_stop.png) no-repeat}.exam_skin_wood .ChargedParticleMoving .pre_photo_load .pre10_photo{background:url(resources/wood/images/point.png) no-repeat}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_c_equation{font-size:2.5em;text-align:left}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_equation{font-size:2em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list{margin:0 .83333em;width:auto;display:-webkit-box;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_img{font-size:.7em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_text{font-size:.91667em;width:auto;display:-webkit-box;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:first-of-type{max-width:13.33333em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(2),.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(3){max-width:9.16667em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(4){max-width:8.33333em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type,.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:nth-of-type(2){max-width:10.83333em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list{margin:0 .41667em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_imgcnt .tool_operate_icon{font-size:.8em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_text{font-size:.91667em}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_start{display:inline-block}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_pausedemo,.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_start{display:none}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_pausedemo{display:inline-block}.typefaces_long .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_bar{max-width:15em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_c_equation{font-size:2.5em;text-align:left}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_main .expression_container .r_equation{font-size:2em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list{margin:0 .83333em;width:auto;display:-webkit-box;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_img{font-size:.7em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list .com_btn_tool .com_btn_text{font-size:.91667em;width:auto;display:-webkit-box;overflow:hidden;text-overflow:ellipsis;-webkit-line-clamp:2;-webkit-box-orient:vertical}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:first-of-type{max-width:13.33333em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(2),.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(3){max-width:9.16667em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_left_list .btn_left_list:nth-of-type(4){max-width:8.33333em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type,.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:nth-of-type(2){max-width:10.83333em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list{margin:0 .41667em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_imgcnt .tool_operate_icon{font-size:.8em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_text{font-size:.91667em}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_start{display:inline-block}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar .tool_pausedemo,.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_start{display:none}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list:first-of-type .tool_operate_bar.change_state .tool_pausedemo{display:inline-block}.typefaces_ru_RU .exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_foot .ChargedParticleMoving_right_list .btn_right_list .tool_operate_bar{max-width:15em}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar a{cursor:pointer;position:absolute;margin-left:-.83333em;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);transform:translateY(-50%);left:40%;z-index:100;width:1.5em;height:2.625em;background:url(resources/wood/images/icon_probtn.png);background-size:100% 100%;display:inline-block}.exam_skin_wood .ChargedParticleMoving .ChargedParticleMoving_container .ChargedParticleMoving_side .sidebar_list .sidebar_progressbar .sidebar_pro_bar{margin:0 .50833em}]]></css><view><![CDATA[<div class="exam_skin_wood" id="layout"><div class="ChargedParticleMoving"><div class="ChargedParticleMoving_container"><div class="ChargedParticleMoving_main"><div class="main_contain"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="js_cpm_svg" style="width:100%;height:100%"><defs><pattern id="js_cpm_negative" x="0" y="0" patternUnits="userSpaceOnUse" data-bind="attr:{width:param.magneticDis(),height:param.magneticDis()}"><circle cx="10" cy="10" r="5" file="#7e9bb0"></circle></pattern><pattern id="js_cpm_positive" x="0" y="0" patternUnits="userSpaceOnUse" data-bind="attr:{width:param.magneticDis(),height:param.magneticDis()}"><path d="M0,0 L20,20 M20,0 L0,20 " stroke="#7e9bb0" stroke-width="3"></path></pattern></defs><rect x="0" y="0" style="width: 100%; height: 100%;transform-origin: 0 0" data-bind="style:{fill:button.magneticDirect()? 'url(#js_cpm_positive)' : 'url(#js_cpm_negative)',transform:param.rightbottom()}"></rect><rect x="0" y="0" style="width: 100%; height: 100%;transform-origin: 0 0" data-bind="style:{fill:button.magneticDirect()? 'url(#js_cpm_positive)' : 'url(#js_cpm_negative)',transform:param.lefttop()}"></rect><rect x="0" y="0" style="width: 100%; height: 100%;transform-origin: 0 0" data-bind="style:{fill:button.magneticDirect()? 'url(#js_cpm_positive)' : 'url(#js_cpm_negative)',transform:param.leftbottom()}"></rect><rect x="0" y="0" style="width: 100%; height: 100%;transform-origin: 0 0" data-bind="style:{fill:button.magneticDirect()? 'url(#js_cpm_positive)' : 'url(#js_cpm_negative)',transform:param.righttop()}"></rect><path fill="none" stroke="#000" stroke-width="0.25em" stroke-dasharray="10,5" data-bind="attr:{d:movingParam.rd()},css:{'hide_dom':!button.displayMoving()||!movingParam.pathShow()}"></path><path fill="none" stroke="#0785c7" stroke-width="5" data-bind="attr:{d:movingParam.d()},css:{'hide_dom':!movingParam.pathShow()}"></path><circle fill="#e06313" r="0.41667em" data-bind="attr:{cx:movingParam.cx(),cy:movingParam.cy()},css:{'hide_dom':!button.displayMoving()|| !movingParam.pathShow()}"></circle></svg><div class="charged_particle_point js_cpm_point" data-bind="css:{'point_fu':!button.chargeType()},style:{'transform':movingParam.pTrans(),'top':movingParam.pTop()}"></div><div class="charged_particle_lamp js_cpm_lamp" data-bind="css:{'change_state':!button.chargeType()},style:{opacity:movingParam.lamp(),'transform':movingParam.lTrans(),'top':movingParam.lTop()}"></div><div class="charged_particle_solidline line_v js_cpm_v" data-bind="style:{'transform':movingParam.vTrans(),'width':movingParam.vLength(),'top':movingParam.vTop()},css:{'hide_visibility':!button.displayMoving(),'change_state': button.chargeType() ^ button.magneticDirect()}"><span class="line_v_text nd_NewRoman_italic" data-bind="style:{'transform': movingParam.vTextTrans()}">v</span> <span class="line_v_icon"></span> <span class="line_v_bg"></span></div><div class="charged_particle_solidline line_f js_cpm_f" data-bind="style:{'transform':movingParam.fTrans(),'width':movingParam.fLength(),'top':movingParam.fTop()},css:{'hide_visibility':!button.displayMoving(),'change_state': button.chargeType() ^ button.magneticDirect()}"><span class="line_f_text nd_NewRoman_italic" data-bind="style:{'transform': movingParam.fTextTrans()}">F</span> <span class="line_F_icon"></span> <span class="line_f_bg"></span></div><div class="charged_particle_hand js_cpm_hand1" data-bind="css:{'hide_visibility':((button.playMoving()=='pause'||button.playMoving() == 'playing')||!button.displayMoving()) || !button.chargeType()||!button.magneticDirect()},style:{'transform':movingParam.hTrans(),'top':movingParam.h1Top()}"></div><div class="charged_particle_hand change_state js_cpm_hand11" data-bind="css:{'hide_visibility':((button.playMoving()=='pause'||button.playMoving() == 'playing')||!button.displayMoving()) || !button.chargeType()|| button.magneticDirect()},style:{'transform':movingParam.hTrans(),'top':movingParam.h11Top()}"></div><div class="charged_particle_hand change_deg js_cpm_hand2" data-bind="css:{'hide_visibility':((button.playMoving()=='pause'||button.playMoving() == 'playing')||!button.displayMoving()) || button.chargeType() || !button.magneticDirect()},style:{'transform':movingParam.hTrans(),'top':movingParam.h2Top()}"></div><div class="charged_particle_hand change_deg change_state js_cpm_hand21" data-bind="css:{'hide_visibility':((button.playMoving()=='pause'||button.playMoving() == 'playing')||!button.displayMoving()) || button.chargeType() || button.magneticDirect()},style:{'transform':movingParam.hTrans(),'top':movingParam.h21Top()}"></div></div><div class="expression_container" data-bind="css:{'hide_dom':!button.displayFormula()}"><span class="r_c_equation" data-bind="text:i18nText.formulaText()"></span><div class="text_one"><span class="r_equation" data-bind="text:i18nText.rFormula()"></span><span class="r_equal nd_NewRoman_italic">r</span><span class="equal_hao nd_NewRoman_italic">=</span></div><div class="equal_one"><span class="formula_c_up nd_NewRoman_italic">mv</span><span class="formula_line"></span> <span class="formula_c_down nd_NewRoman_italic">qB</span></div><div class="text_two"><span class="r_equation" data-bind="text:i18nText.tFormula()"></span><span class="r_equal nd_NewRoman_italic">T</span><span class="equal_hao nd_NewRoman_italic">=</span></div><div class="equal_two"><span class="formula_c_up nd_NewRoman_italic">2πm</span><span class="formula_line"></span> <span class="formula_c_down nd_NewRoman_italic">qB</span></div><span class="close_btn" data-bind="click:button.buttonEvent.bind($data,'showFormula')"><i></i></span></div></div><div class="ChargedParticleMoving_side"><div class="sidebar_list"><div class="sidebar_list_text text_r"><span class="side_equation right_tow nd_NewRoman_italic">r=</span> <span class="side_num nd_NewRoman" data-bind="text:param.rValue()"></span> <span class="num_unit nd_NewRoman" data-bind="css:{'hide_dom':param.rValue() == '' || param.rEValue() == 0}">× 10</span> <span class="num_n_power nd_NewRoman" data-bind="css:{'hide_dom':param.rValue() == ''|| param.rEValue() == 0},text:param.rEValue()"></span> <span class="num_unit nd_NewRoman last_num_unit" data-bind="css:{'hide_dom':param.rValue() == ''}">m</span></div><div class="sidebar_list_text text_T"><span class="side_equation nd_NewRoman_italic">T=</span> <span class="side_num nd_NewRoman" data-bind="text:param.tValue()"></span> <span class="num_unit nd_NewRoman" data-bind="css:{'hide_dom':param.tValue() == ''|| param.tEValue() == 0}">× 10</span> <span class="num_n_power nd_NewRoman" data-bind="css:{'hide_dom':param.tValue() == ''|| param.tEValue() == 0},text:param.tEValue()"></span> <span class="num_unit nd_NewRoman last_num_unit" data-bind="css:{'hide_dom':param.tValue() == ''}">s</span></div></div><div class="sidebar_list second_sidebar_list"><div class="sidebar_list_text text_m"><span class="side_equation nd_NewRoman_italic">m</span><span class="maohao nd_NewRoman">:</span><span class="side_num_big nd_NewRoman" data-bind="text:param.mValue()">5.0</span> <span class="fuhao nd_NewRoman">×</span> <span class="num_unit nd_NewRoman">10</span> <span class="num_n_power nd_NewRoman">-27</span> <span class="num_unit nd_NewRoman last_num_unit">kg</span></div><ul class="sidebar_progressbar"><li class="sidebar_btn_procut"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.mMin()},click:param.changeValue.bind($data,param.mMin(),'m','min')"></i></a></li><li class="sidebar_pro_bar js_cpm_mbar"><ins class="scale" style="left:0"></ins> <ins class="scale" style="left: 100%"></ins></li><li class="sidebar_btn_proadd"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.mAdd()},click:param.changeValue.bind($data,param.mAdd(),'m','add')"></i></a></li></ul><div class="sidebar_list_text text_q"><span class="side_equation nd_NewRoman_italic">q</span> <span class="maohao nd_NewRoman">:</span> <span class="side_num_big nd_NewRoman" data-bind="text:param.qValue()"></span> <span class="fuhao nd_NewRoman">×</span> <span class="num_unit nd_NewRoman">10</span> <span class="num_n_power nd_NewRoman">-19</span> <span class="num_unit nd_NewRoman last_num_unit">C</span></div><ul class="sidebar_progressbar"><li class="sidebar_btn_procut"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.qMin()},click:param.changeValue.bind($data,param.qMin(),'q','min')"></i></a></li><li class="sidebar_pro_bar js_cpm_qbar"><ins class="scale" style="left:0"></ins> <ins class="scale" style="left: 100%"></ins></li><li class="sidebar_btn_proadd"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.qAdd()},click:param.changeValue.bind($data,param.qAdd(),'q','add')"></i></a></li></ul></div><ul class="sidebar_list third_sidebar_list"><div class="sidebar_list_text text_v"><span class="side_equation nd_NewRoman_italic">v</span> <span class="maohao nd_NewRoman">:</span> <span class="side_num_big nd_NewRoman" data-bind="text:param.vValue()"></span> <span class="fuhao nd_NewRoman">×</span> <span class="num_unit nd_NewRoman">10</span> <span class="num_n_power nd_NewRoman">6</span> <span class="num_unit nd_NewRoman last_num_unit">m/s</span></div><ul class="sidebar_progressbar"><li class="sidebar_btn_procut"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.vMin()},click:param.changeValue.bind($data,param.vMin(),'v','min')"></i></a></li><li class="sidebar_pro_bar js_cpm_vbar"><ins class="scale" style="left:0"></ins> <ins class="scale" style="left: 100%"></ins></li><li class="sidebar_btn_proadd"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.vAdd()},click:param.changeValue.bind($data,param.vAdd(),'v','add')"></i></a></li></ul><div class="sidebar_list_text text_B"><span class="side_equation nd_NewRoman_italic">B</span> <span class="maohao nd_NewRoman">:</span> <span class="side_num_big nd_NewRoman" data-bind="text:param.bValue()"></span> <span class="fuhao nd_NewRoman">×</span> <span class="num_unit nd_NewRoman">10</span> <span class="num_n_power nd_NewRoman">-4</span> <span class="num_unit nd_NewRoman last_num_unit">T</span></div><ul class="sidebar_progressbar"><li class="sidebar_btn_procut"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.bMin()},click:param.changeValue.bind($data,param.bMin(),'b','min')"></i></a></li><li class="sidebar_pro_bar js_cpm_bbar"><ins class="scale" style="left:0"></ins> <ins class="scale" style="left: 100%"></ins></li><li class="sidebar_btn_proadd"><a class="com_btn_square_tool" href="javascript:;"><i class="com_btn_pic" data-bind="css:{'com_btn_pic_disabled':!param.bAdd()},click:param.changeValue.bind($data,param.bAdd(),'b','add')"></i></a></li></ul></ul></div></div><div class="ChargedParticleMoving_foot"><ul class="ChargedParticleMoving_left_list"><li class="btn_left_list"><a class="com_btn_tool" data-bind="click:button.buttonEvent.bind($data,'changeMagnetic'),css:{'change_state':!button.magneticDirect(),'click_disabled':button.playMoving()== 'pause' || button.playMoving() == 'playing'}"><span class="com_btn_img btn_1"></span> <span class="com_btn_text" data-bind="text:i18nText.magneticText()"></span></a></li><li class="btn_left_list"><a class="com_btn_tool" data-bind="click:button.buttonEvent.bind($data,'changeCharge'),css:{'change_state':!button.chargeType(),'click_disabled':button.playMoving()== 'pause' || button.playMoving() == 'playing'}"><span class="com_btn_img btn_2"></span> <span class="com_btn_text" data-bind="text:i18nText.chargedText()"></span></a></li><li class="btn_left_list"><a class="com_btn_tool" data-bind="click:button.buttonEvent.bind($data,'displayMoving',{'status':true}),css:{'change_state':!button.magneticDirect()}"><span class="com_btn_img btn_3"></span> <span class="com_btn_text" data-bind="text:i18nText.analyzeText()"></span></a></li><li class="btn_left_list"><a class="com_btn_tool" data-bind="click:button.buttonEvent.bind($data,'showFormula')"><span class="com_btn_img btn_4"></span> <span class="com_btn_text" data-bind="text:i18nText.formulaText()"></span></a></li></ul><ul class="ChargedParticleMoving_right_list"><li class="btn_right_list"><a class="tool_operate_bar" data-bind="click:button.buttonEvent.bind($data,'playMoving'),css:{'change_state': button.playMoving() == 'playing'}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_start"></i> <i class="tool_operate_icon tool_pausedemo"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.startText()"></span></a></li><li class="btn_right_list"><a class="tool_operate_bar" data-bind="click:button.buttonEvent.bind($data,'playStop'),css:{'click_disabled':button.playMoving() == 'start'}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_stopdemo"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.stopText()"></span></a></li></ul></div><div class="pre_photo_load"><span class="pre1_photo"></span> <span class="pre2_photo"></span> <span class="pre3_photo"></span> <span class="pre4_photo"></span> <span class="pre5_photo"></span> <span class="pre6_photo"></span> <span class="pre7_photo"></span> <span class="pre8_photo"></span> <span class="pre9_photo"></span> <span class="pre10_photo"></span></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+(function () {
+  // 继承了BasicPresenter，可以简单的使用已经封装好的功能，是代码更简洁
+  var Presenter = BasicPresenter.extend({
+    // 该信息与国际化文件的命名获取相关，需要注意名称大小写及拼写
+    metaInfo: {
+      name: 'ChargedParticleMoving',
+      type: PresenterType.PRESENTER_COMPONENT
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function $init() {
+      this._super();
+      this.initData = {
+        defaultValue: 1.2,
+        maxValue: 1.5,
+        minValue: 1.0,
+        magneticMax: 120,
+        magneticMid: 70,
+        magneticMin: 55,
+        maxR: 225,
+        minR: 44.4,
+        maxT: 942,
+        minT: 279
+      };
+      this.viewModel = {
+        presenter: this,
+        button: {
+          magneticDirect: ko.observable(true),
+          chargeType: ko.observable(true),
+          displayMoving: ko.observable(false),
+          displayFormula: ko.observable(false),
+          playMoving: ko.observable('start'),
+          buttonEvent: this._buttonEvent
+        },
+        param: {
+          rValue: ko.observable(''),
+          rEValue: ko.observable(''),
+          tValue: ko.observable(''),
+          tEValue: ko.observable(''),
+          mValue: ko.observable(this.initData.defaultValue),
+          mAdd: ko.observable(true),
+          mMin: ko.observable(true),
+          qValue: ko.observable(this.initData.defaultValue),
+          qAdd: ko.observable(true),
+          qMin: ko.observable(true),
+          vValue: ko.observable(this.initData.defaultValue),
+          vAdd: ko.observable(true),
+          vMin: ko.observable(true),
+          bValue: ko.observable(this.initData.defaultValue),
+          bAdd: ko.observable(true),
+          bMin: ko.observable(true),
+          magneticDis: ko.observable(this.initData.magneticMid),
+          rightbottom: ko.observable('translate(418px,293px)'),
+          lefttop: ko.observable('translate(418px,293px)rotate(180deg)'),
+          leftbottom: ko.observable('translate(418px,293px)rotate(90deg)'),
+          righttop: ko.observable('translate(418px,293px)rotate(-90deg)'),
+          changeValue: this._changeValue
+        },
+        movingParam: {
+          cx: ko.observable(30),
+          cy: ko.observable(30),
+          rd: ko.observable(),
+          pTrans: ko.observable(),
+          vTrans: ko.observable(),
+          vTextTrans: ko.observable(),
+          fTrans: ko.observable(),
+          fTextTrans: ko.observable(),
+          fLength: ko.observable(),
+          vLength: ko.observable(),
+          hTrans: ko.observable(),
+          lTrans: ko.observable(),
+          pTop: ko.observable(),
+          fTop: ko.observable(),
+          vTop: ko.observable(),
+          lTop: ko.observable(),
+          h1Top: ko.observable(),
+          h11Top: ko.observable(),
+          h2Top: ko.observable(),
+          h21Top: ko.observable(),
+          pathShow: ko.observable(false),
+          d: ko.observable(),
+          lamp: ko.observable(1)
+        },
+        i18nText: {
+          magneticText: ko.observable(),
+          chargedText: ko.observable(),
+          analyzeText: ko.observable(),
+          formulaText: ko.observable(),
+          rFormula: ko.observable(),
+          tFormula: ko.observable(),
+          startText: ko.observable(),
+          stopText: ko.observable()
+        }
+      };
+      this.i18nModel = {
+        magneticText: '切换磁场方向',
+        chargedText: '切换粒子电荷',
+        analyzeText: '显示运动分析',
+        hideAnalyzeText: '隐藏运动分析',
+        formulaText: '半径、周期公式',
+        rFormula: '半径:',
+        tFormula: '周期:',
+        startText: '计算并演示',
+        pauseText: '暂停演示',
+        stopText: '停止演示'
+      };
+      this.option = {
+        min: this.initData.minValue, max: this.initData.maxValue, step: 0.1, value: this.initData.defaultValue
+      };
+      this.param = {
+        m: this.initData.defaultValue,
+        q: this.initData.defaultValue,
+        v: this.initData.defaultValue,
+        b: this.initData.defaultValue
+      };
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    _service_: {
+      constructor: function constructor(parent) {
+        this.parent = parent;
+      },
+      // 获取需要同步给学生端的信息，如需编辑推送功能必须实现该接口
+      getExtendData: function getExtendData() {
+        return {};
+      },
+      // 获取题目信息，及对应配置
+      getQuestionInfo: function getQuestionInfo() {
+        return {
+          id: this.parent.model.question_id || '',
+          type_code: 'ChargedParticleMoving',
+          type_name: '带电粒子在匀强磁场中的运动',
+          statistics_type: 'no_need',
+          noExistStatistics: true,
+          noNeedQuizProgress: true
+        };
+      },
+      setLocationProperties: function setLocationProperties(location) {
+        if (location && !$.isEmptyObject(location)) {
+          this.parent.i18nModel = location;
+        }
+      }
+    },
+    // 获取完整地址前缀
+    setBasePath: function setBasePath(path) {
+      var me = this;
+      me.basePath = path;
+    },
+    // SubjectToolLauncher通过该接口获取服务，实现调用如：国际化接口
+    getService: function getService() {
+      var me = this;
+      me._service_.constructor(me);
+      return me._service_;
+    },
+    /** **以下开始为icPlayer的生命周期方法*****/
+    run: function run(view, model) {
+      var me = this;
+      me.$view = $(view);
+      me.model = model;
+      me._initI18n();
+      me._initView();
+      me._initData();
+      ko.applyBindings(this.viewModel, me.$view[0]);
+    },
+    __interface: {
+      resizeScreen: function resizeScreen(data) {
+        var me = this;
+        // me.viewData.top = me.viewData.point.offset().top - me.viewData.svg.offset().top - me.viewData.pTransY
+        // me.viewData.left = me.viewData.point.offset().left - me.viewData.svg.offset().left - me.viewData.pTransX
+        // const invert = me.viewModel.button.chargeType()
+        // const invertB = me.viewModel.button.magneticDirect()
+        // const startx = me.viewData.left + me.viewData.pointR
+        // const R = (me.viewData.minDiameter + me.viewData.diameterUnit * (me._e2num(me.viewModel.param.rValue() + 'e' + me.viewModel.param.rEValue()) - me.initData.minR)) / 2.0
+        // const starty = me.viewData.top + me.viewData.pointR + R + 2
+        // const endy = starty - R
+
+        // me.viewModel.movingParam.cx(startx)
+        // me.viewModel.movingParam.cy(starty)
+        // me.viewModel.movingParam.rd('M' + startx + ',' + starty + ' L' + startx + ',' + endy)
+        me.vLength = me.vLength * data.ratio;
+        me.fLength = me.fLength * data.ratio;
+        me.viewModel.movingParam.vLength(me.vLength + 'px');
+        me.viewModel.movingParam.fLength(me.fLength + 'px');
+        // if (me.viewData.hasFinish) {
+        //   const d = 'M' + (me.viewData.left + me.viewData.pointR) + ',' +
+        // (me.viewData.top + me.viewData.pointR) + 'A' + R + ',' +
+        //  R + ',0,' + (me.viewData.val >= 180 ? 1 : 0) + ',' + ((invertB ^ invert) ? 1 : 0) +
+        //  ',' + (me.viewData.left + me.viewData.pointR + me.viewData.x) + ',' +
+        //  (me.viewData.top + me.viewData.pointR + me.viewData.y) + 'Z'
+        //   me.viewModel.movingParam.d(d)
+        //   return
+        // }
+        // const d = 'M' + (me.viewData.left + me.viewData.pointR) + ',' +
+        // (me.viewData.top + me.viewData.pointR) + 'A' + R + ',' +
+        //  R + ',0,' + (me.viewData.val >= 180 ? 1 : 0) + ',' + ((invertB ^ invert) ? 1 : 0) +
+        //  ',' + (me.viewData.left + me.viewData.pointR + me.viewData.x) + ',' +
+        //  (me.viewData.top + me.viewData.pointR + me.viewData.y)
+        // me.viewModel.movingParam.d(d)
+      }
+    },
+    destroy: function destroy() {},
+    /** **以下为界面操作接口*****/
+    _initData: function _initData() {
+      var me = this;
+      var svg = me.$view.find('.js_cpm_svg');
+      var swidth = svg.width();
+      var sheight = svg.height();
+
+      me.viewData = {
+        maxDiameter: sheight - 85,
+        minDiameter: 110,
+        minTime: 3,
+        maxTime: 10,
+        swidth: swidth,
+        sheight: sheight,
+        svg: me.$view.find('.js_cpm_svg'),
+        point: me.$view.find('.js_cpm_point'),
+        f: me.$view.find('.js_cpm_f'),
+        v: me.$view.find('.js_cpm_v'),
+        lamp: me.$view.find('.js_cpm_lamp'),
+        hand1: me.$view.find('.js_cpm_hand1'),
+        hand11: me.$view.find('.js_cpm_hand11'),
+        hand2: me.$view.find('.js_cpm_hand2'),
+        hand21: me.$view.find('.js_cpm_hand21'),
+        pTransX: 0,
+        pTransY: 0,
+        val: 0,
+        x: 0,
+        y: 0
+      };
+      // const $svg = $(me.viewData.svg)
+      // $svg.attr('viewBox', '0 0 ' + $svg.width() + ' ' + $svg.height())
+
+      me.viewData.diameterUnit = parseFloat(me.viewData.maxDiameter - me.viewData.minDiameter) / (me.initData.maxR - me.initData.minR);
+      me.viewData.timeUnit = parseFloat(me.viewData.maxTime - me.viewData.minTime) / (me.initData.maxT - me.initData.minT);
+      var dis = me.viewModel.param.magneticDis() - 20;
+      me.viewModel.param.rightbottom('translate(' + swidth / 2 + 'px,' + sheight / 2 + 'px)');
+      me.viewModel.param.lefttop('translate(' + (swidth / 2 - dis) + 'px,' + (sheight / 2 - dis) + 'px)rotate(180deg)');
+      me.viewModel.param.leftbottom('translate(' + (swidth / 2 - dis) + 'px,' + sheight / 2 + 'px)rotate(90deg)');
+      me.viewModel.param.righttop('translate(' + swidth / 2 + 'px,' + (sheight / 2 - dis) + 'px)rotate(-90deg)');
+      me.viewModel.movingParam.fLength(me.viewData.minDiameter / 2.0 - 15 + 'px');
+      me.fLength = me.viewData.minDiameter / 2.0 - 15;
+      me.viewModel.movingParam.vLength(me.viewData.minDiameter / 2.0 + 'px');
+      me.vLength = me.viewData.minDiameter / 2.0;
+      me._resetView();
+    },
+    _playMoving: function _playMoving() {
+      var me = this;
+
+      player.controller.getEventBus().sendEvent('PLAYER.TOOL.FORBIDE_FULL', { id: me.model.$.unqiueId, isForbide: true });
+      me.viewData.pointR = me.viewData.point.width() / 2;
+      var R = (me.viewData.minDiameter + me.viewData.diameterUnit * (me._e2num(me.viewModel.param.rValue() + 'e' + me.viewModel.param.rEValue()) - me.initData.minR)) / 2.0;
+      var invert = me.viewModel.button.chargeType();
+      var invertB = me.viewModel.button.magneticDirect();
+
+      var pTop = me.viewData.point.position().top;
+      var isEnough = invert ^ invertB ? pTop + me.viewData.pointR - 2 * R - 20 > 0 : pTop + 2 * R + me.viewData.pointR < me.viewData.svg.height();
+      if (!isEnough) {
+        (function () {
+          var now = mina.time();
+          var vTran = me.viewModel.movingParam.vTrans();
+          var fTran = me.viewModel.movingParam.fTrans();
+          if (invert ^ invertB) {
+            var dis = 2 * R - pTop + me.viewData.pointR;
+            me.moving = mina(0, dis, now, now + Math.abs(dis) / me.viewData.sheight * 3000, mina.time, function (val) {
+              var trans = 'translate(0,' + val + 'px)';
+              me.viewModel.movingParam.pTrans(trans);
+              me.viewData.pTransX = 0;
+              me.viewData.pTransY = val;
+              me.viewModel.movingParam.lTrans(trans);
+              me.viewModel.movingParam.vTrans(trans + vTran);
+              me.viewModel.movingParam.fTrans(trans + fTran);
+              me.viewModel.movingParam.hTrans(trans);
+            }, mina.linear);
+          } else {
+            var _dis = me.viewData.svg.height() - (pTop + 2 * R + me.viewData.pointR) - 20;
+            me.moving = mina(0, _dis, now, now + Math.abs(_dis) / me.viewData.sheight * 3000, mina.time, function (val) {
+              var trans = 'translate(0,' + val + 'px)';
+              me.viewModel.movingParam.pTrans(trans);
+              me.viewData.pTransX = 0;
+              me.viewData.pTransY = val;
+              me.viewModel.movingParam.lTrans(trans);
+              me.viewModel.movingParam.vTrans(trans + vTran);
+              me.viewModel.movingParam.fTrans(trans + fTran);
+              me.viewModel.movingParam.hTrans(trans);
+            }, mina.linear);
+          }
+          eve.once('mina.finish.' + me.moving.id, function () {
+            delete me.moving;
+            me.viewModel.movingParam.h1Top(me.viewData.hand1.position().top + 'px');
+            me.viewModel.movingParam.h11Top(me.viewData.hand11.position().top + 'px');
+            me.viewModel.movingParam.h2Top(me.viewData.hand2.position().top + 'px');
+            me.viewModel.movingParam.h21Top(me.viewData.hand21.position().top + 'px');
+            me.viewModel.movingParam.hTrans('');
+            var tempvp = me.viewData.v.position().top;
+            me.viewModel.movingParam.vTop(tempvp + 'px');
+            me.viewModel.movingParam.fTop(tempvp + 'px');
+            me.viewModel.movingParam.vTrans(vTran);
+            me.viewModel.movingParam.fTrans(fTran);
+            me.viewModel.movingParam.lTop(me.viewData.lamp.position().top + 'px');
+            me.viewModel.movingParam.lTrans('');
+
+            me.viewModel.movingParam.pTop(me.viewData.point.position().top + 'px');
+            me.viewData.ptop = me.viewData.point.position().top;
+            me.viewModel.movingParam.pTrans('');
+            me.viewData.pTransX = 0;
+            me.viewData.pTransY = 0;
+
+            me.lampid = mina(10, 0, mina.time(), mina.time() + 500, mina.time, function (val) {
+              me.viewModel.movingParam.lamp(val / 10);
+            }, mina.linear);
+            me.viewData.top = me.viewData.point.offset().top - me.viewData.svg.offset().top;
+            me.viewData.left = me.viewData.point.offset().left - me.viewData.svg.offset().left;
+            me.viewModel.movingParam.pathShow(true);
+            me.viewData.hasFinish = false;
+            var startx = me.viewData.left + me.viewData.pointR;
+            var starty = me.viewData.top + me.viewData.pointR + R + 2;
+            var endy = starty - R;
+            if (invert ^ invertB) {
+              starty = me.viewData.top + me.viewData.pointR - R;
+            }
+            me.viewModel.movingParam.cx(startx);
+            me.viewModel.movingParam.cy(starty);
+            me.viewModel.movingParam.rd('M' + startx + ',' + starty + ' L' + startx + ',' + endy);
+
+            me._movingAction(R, invert, invertB);
+          });
+        })();
+      } else {
+        me.lampid = mina(10, 0, mina.time(), mina.time() + 500, mina.time, function (val) {
+          me.viewModel.movingParam.lamp(val / 10);
+        }, mina.linear);
+        me.viewData.top = me.viewData.point.offset().top - me.viewData.svg.offset().top;
+        me.viewData.left = me.viewData.point.offset().left - me.viewData.svg.offset().left;
+        me.viewModel.movingParam.pathShow(true);
+        me.viewData.hasFinish = false;
+        var startx = me.viewData.left + me.viewData.pointR;
+        var starty = me.viewData.top + me.viewData.pointR + R + 2;
+        var endy = starty - R;
+        if (invert ^ invertB) {
+          starty = me.viewData.top + me.viewData.pointR - R;
+        }
+        me.viewModel.movingParam.cx(startx);
+        me.viewModel.movingParam.cy(starty);
+        me.viewModel.movingParam.rd('M' + startx + ',' + starty + ' L' + startx + ',' + endy);
+
+        me._movingAction(R, invert, invertB);
+      }
+    },
+    _movingAction: function _movingAction(R, invert, invertB) {
+      var me = this;
+      var now = mina.time();
+      me.anim = mina(0, 360, now, Math.floor(now + (me.viewData.minTime + (me._e2num(me.viewModel.param.tValue() + 'e' + me.viewModel.param.tEValue()) * 10000 - me.initData.minT) * me.viewData.timeUnit) * 1000), mina.time, _.throttle(function (val) {
+        if (me.viewModel.button.playMoving() === 'start') {
+          return;
+        }
+        var radian = val / 180 * Math.PI;
+        var x = -(R * Math.sin(radian));
+        var y = invertB ^ invert ? -R + R * Math.cos(radian) : R - R * Math.cos(radian);
+        me.viewModel.movingParam.pTrans('translate' + '(' + x + 'px,' + y + 'px)');
+        me.viewData.pTransX = x;
+        me.viewData.pTransY = y;
+        me.viewModel.movingParam.vTrans('translate(' + x + 'px,' + y + 'px)' + ' rotate(' + (invert ^ invertB ? 180 + val : 180 - val) + 'deg)');
+        me.viewModel.movingParam.fTrans('translate(' + x + 'px,' + y + 'px)' + ' rotate(' + (invertB ^ invert ? -90 + val : 90 - val) + 'deg)');
+        me.viewModel.movingParam.vTextTrans('rotate(' + (invert ^ invertB ? 180 - val : 180 + val) + 'deg)');
+        me.viewModel.movingParam.fTextTrans('rotate(' + (invertB ^ invert ? 90 - val : -90 + val) + 'deg)');
+        if (!me.viewData.hasFinish) {
+          if (val === 360) {
+            me.viewData.hasFinish = true;
+            me.viewModel.movingParam.d(me.viewModel.movingParam.d() + 'Z');
+            return;
+          }
+          var d = 'M' + (me.viewData.left + me.viewData.pointR) + ',' + (me.viewData.top + me.viewData.pointR) + 'A' + R + ',' + R + ',0,' + (val >= 180 ? 1 : 0) + ',' + (invertB ^ invert ? 1 : 0) + ',' + (me.viewData.left + me.viewData.pointR + x) + ',' + (me.viewData.top + me.viewData.pointR + y);
+          me.viewData.val = val;
+          me.viewData.x = x;
+          me.viewData.y = y;
+          me.viewModel.movingParam.d(d);
+        }
+      }, 16, { leading: true, trailing: true }), mina.linear);
+      eve.once('mina.finish.' + me.anim.id, function () {
+        delete me.anim;
+        me._movingAction(R, invert, invertB);
+      });
+    },
+    _initView: function _initView() {
+      var me = this;
+      me.bars = {};
+      var mSListener = function mSListener(e, ui) {
+        me._buttonStatus('m', parseFloat(ui.value).toFixed(1));
+      };
+      me.bars['m'] = me.$view.find('.js_cpm_mbar').slider($.extend(me.option, {
+        change: mSListener,
+        slide: mSListener
+      }));
+      var qSListener = function qSListener(e, ui) {
+        me._buttonStatus('q', parseFloat(ui.value).toFixed(1));
+      };
+      me.bars['q'] = me.$view.find('.js_cpm_qbar').slider($.extend(me.option, {
+        slide: qSListener,
+        change: qSListener
+      }));
+      var vSListener = function vSListener(e, ui) {
+        me._buttonStatus('v', parseFloat(ui.value).toFixed(1));
+      };
+      me.bars['v'] = me.$view.find('.js_cpm_vbar').slider($.extend(me.option, {
+        slide: vSListener,
+        change: vSListener
+      }));
+      var bSListener = function bSListener(e, ui) {
+        var value = parseFloat(ui.value).toFixed(1);
+        me._buttonStatus('b', value);
+        var fvalue = parseFloat(value);
+        if (fvalue < me.initData.defaultValue) {
+          fvalue = me.initData.magneticMid - (fvalue - me.initData.defaultValue) / Math.abs(me.initData.defaultValue - me.initData.minValue) * (me.initData.magneticMax - me.initData.magneticMid);
+        } else {
+          fvalue = me.initData.magneticMid - (fvalue - me.initData.defaultValue) / Math.abs(me.initData.defaultValue - me.initData.maxValue) * (me.initData.magneticMid - me.initData.magneticMin);
+        }
+        console.log(fvalue);
+        me.viewModel.param.magneticDis(fvalue);
+        var dis = me.viewModel.param.magneticDis() - 20;
+        me.viewModel.param.rightbottom('translate(' + me.viewData.swidth / 2 + 'px,' + me.viewData.sheight / 2 + 'px)');
+        me.viewModel.param.lefttop('translate(' + (me.viewData.swidth / 2 - dis) + 'px,' + (me.viewData.sheight / 2 - dis) + 'px)rotate(180deg)');
+        me.viewModel.param.leftbottom('translate(' + (me.viewData.swidth / 2 - dis) + 'px,' + me.viewData.sheight / 2 + 'px)rotate(90deg)');
+        me.viewModel.param.righttop('translate(' + me.viewData.swidth / 2 + 'px,' + (me.viewData.sheight / 2 - dis) + 'px)rotate(-90deg)');
+      };
+      me.bars['b'] = me.$view.find('.js_cpm_bbar').slider($.extend(me.option, {
+        slide: bSListener,
+        change: bSListener
+      }));
+    },
+    _buttonStatus: function _buttonStatus(type, value) {
+      var me = this;
+      me.param[type] = parseFloat(value);
+      me.viewModel.param[type + 'Value'](value);
+      if (me.param[type] === me.option.max) {
+        me.viewModel.param[type + 'Add'](false);
+        me.viewModel.param[type + 'Min'](true);
+      } else if (me.param[type] === me.option.min) {
+        me.viewModel.param[type + 'Add'](true);
+        me.viewModel.param[type + 'Min'](false);
+      } else {
+        me.viewModel.param[type + 'Add'](true);
+        me.viewModel.param[type + 'Min'](true);
+      }
+    },
+    _updateParamButtom: function _updateParamButtom(disabled) {
+      var me = this;
+      $.each(me.bars, function (k, v) {
+        if (!disabled) {
+          me.viewModel.param[k + 'Add'](false);
+          me.viewModel.param[k + 'Min'](false);
+          v.slider('disable');
+        } else {
+          v.slider('enable');
+          v.slider('value', me.param[k]);
+        }
+      });
+    },
+    _initI18n: function _initI18n() {
+      var me = this;
+      $.each(me.viewModel.i18nText, function (k, v) {
+        v(me.i18nModel[k]);
+      });
+    },
+    _changeValue: function _changeValue(enable, type, action) {
+      var me = this.presenter || this;
+      if (!enable) {
+        return;
+      }
+      me.bars[type].slider('value', action === 'add' ? me.param[type] + 0.1 : me.param[type] - 0.1);
+    },
+    _num2e: function _num2e(num) {
+      var p = Math.floor(Math.log(num) / Math.LN10);
+      var n = num * Math.pow(10, -p);
+      return [p, n, p + 'e' + n];
+    },
+    _e2num: function _e2num(e) {
+      var num = Number(e);
+      return parseFloat(num.toString());
+    },
+    _buttonEvent: function _buttonEvent(action, param) {
+      var me = this.presenter || this;
+      switch (action) {
+        case 'showFormula':
+          {
+            me.viewModel.button.displayFormula(!me.viewModel.button.displayFormula());
+            break;
+          }
+        case 'changeMagnetic':
+          {
+            if (me.viewModel.button.playMoving() === 'pause' || me.viewModel.button.playMoving() === 'playing') {
+              return;
+            }
+            me.viewModel.button.magneticDirect(!me.viewModel.button.magneticDirect());
+            me._resetView();
+            break;
+          }
+        case 'changeCharge':
+          {
+            if (me.viewModel.button.playMoving() === 'pause' || me.viewModel.button.playMoving() === 'playing') {
+              return;
+            }
+            me.viewModel.button.chargeType(!me.viewModel.button.chargeType());
+            me._resetView();
+            break;
+          }
+        case 'displayMoving':
+          {
+            me.viewModel.button.displayMoving(!me.viewModel.button.displayMoving());
+            if (me.viewModel.button.displayMoving()) {
+              me.viewModel.i18nText.analyzeText(me.i18nModel.hideAnalyzeText);
+            } else {
+              me.viewModel.i18nText.analyzeText(me.i18nModel.analyzeText);
+            }
+            break;
+          }
+        case 'playMoving':
+          {
+            me._updateParamButtom(false);
+            if (me.viewModel.button.playMoving() === 'playing') {
+              me.viewModel.i18nText.startText(me.i18nModel.startText);
+              me.viewModel.button.playMoving('pause');
+              if (me.moving) {
+                me.moving.pause();
+              }
+              if (me.anim) {
+                me.anim.pause();
+              }
+            } else {
+              me.viewModel.button.playMoving('playing');
+              me.viewModel.i18nText.startText(me.i18nModel.pauseText);
+              if (me.moving) {
+                // avoid snap mina bug
+                mina(1, 2, mina.time(), mina.time() + 1, mina.time, function (val) {}, mina.easeout);
+                me.moving.resume();
+              } else if (me.anim) {
+                // avoid snap mina bug
+                mina(1, 2, mina.time(), mina.time() + 1, mina.time, function (val) {}, mina.easeout);
+                me.anim.resume();
+              } else {
+                var r = me._num2e(me.param.m * me.param.v / (me.param.q * me.param.b));
+                var t = me._num2e(2 * Math.PI * me.param.m / (me.param.q * me.param.b));
+                me.viewModel.param.rValue(r[1].toFixed(2));
+                me.viewModel.param.tValue(t[1].toFixed(2));
+                me.viewModel.param.rEValue(r[0] + 2);
+                me.viewModel.param.tEValue(t[0] - 2);
+                me._playMoving();
+              }
+            }
+            break;
+          }
+        case 'playStop':
+          {
+            if (me.viewModel.button.playMoving() === 'start') {
+              return;
+            }
+
+            player.controller.getEventBus().sendEvent('PLAYER.TOOL.FORBIDE_FULL', { id: me.model.$.unqiueId, isForbide: false });
+            me._updateParamButtom(true);
+            me.viewModel.button.playMoving('start');
+            me.viewModel.i18nText.startText(me.i18nModel.startText);
+            me.viewModel.movingParam.pathShow(false);
+            me.viewData.hasFinish = false;
+            // playing circle
+            if (me.anim) {
+              me.anim.stop();
+              delete me.anim;
+            }
+            // playing moving
+            if (me.moving) {
+              me.moving.stop();
+              var vPos = me.viewData.v.position().top;
+              me.viewModel.movingParam.fTop(vPos + 'px');
+              me.viewModel.movingParam.fTrans(me.viewModel.movingParam.fTrans());
+              me.viewModel.movingParam.vTop(vPos + 'px');
+              me.viewModel.movingParam.vTrans(me.viewModel.movingParam.vTrans());
+              me.viewModel.movingParam.lTop(me.viewData.lamp.position().top + 'px');
+              me.viewModel.movingParam.lTrans('');
+              me.viewModel.movingParam.h1Top(me.viewData.hand1.position().top + 'px');
+              me.viewModel.movingParam.h11Top(me.viewData.hand11.position().top + 'px');
+              me.viewModel.movingParam.h2Top(me.viewData.hand2.position().top + 'px');
+              me.viewModel.movingParam.h21Top(me.viewData.hand21.position().top + 'px');
+              me.viewModel.movingParam.hTrans('');
+              me.viewModel.movingParam.pTop(me.viewData.point.position().top + 'px');
+              me.viewModel.movingParam.pTrans('');
+              me.viewData.pTransX = 0;
+              me.viewData.pTransY = 0;
+              delete me.moving;
+            }
+            if (me.lampid) {
+              me.lampid.stop();
+              me.viewModel.movingParam.lamp(1);
+              delete me.lampid;
+            }
+            me.viewModel.param.rValue('');
+            me.viewModel.param.tValue('');
+            me._resetView();
+            break;
+          }
+      }
+    },
+    _resetView: function _resetView() {
+      var me = this;
+      me.viewModel.movingParam.pTrans('');
+      me.viewData.pTransX = 0;
+      me.viewData.pTransY = 0;
+      var type = (me.viewModel.button.chargeType() ? 'Positive' : 'Negative') + (me.viewModel.button.magneticDirect() ? 'InSide' : 'OutSide');
+      switch (type) {
+        case 'PositiveInSide':
+          {
+            me.viewModel.movingParam.vTrans('rotate(180deg)');
+            me.viewModel.movingParam.vTextTrans('rotate(180deg)');
+            me.viewModel.movingParam.fTrans('rotate(90deg)');
+            me.viewModel.movingParam.fTextTrans('rotate(-90deg)');
+            break;
+          }
+        case 'PositiveOutSide':
+          {
+            me.viewModel.movingParam.vTrans('rotate(180deg)');
+            me.viewModel.movingParam.vTextTrans('rotate(180deg)');
+            me.viewModel.movingParam.fTrans('rotate(-90deg)');
+            me.viewModel.movingParam.fTextTrans('rotate(90deg)');
+            break;
+          }
+        case 'NegativeInSide':
+          {
+            me.viewModel.movingParam.vTrans('rotate(180deg)');
+            me.viewModel.movingParam.vTextTrans('rotate(180deg)');
+            me.viewModel.movingParam.fTrans('rotate(-90deg)');
+            me.viewModel.movingParam.fTextTrans('rotate(90deg)');
+            break;
+          }
+        case 'NegativeOutSide':
+          {
+            me.viewModel.movingParam.vTrans('rotate(180deg)');
+            me.viewModel.movingParam.vTextTrans('rotate(180deg)');
+            me.viewModel.movingParam.fTrans('rotate(90deg)');
+            me.viewModel.movingParam.fTextTrans('rotate(-90deg)');
+            break;
+          }
+      }
+    }
+  });
+  window.AddonChargedParticleMoving_create = function () {
+    return new Presenter();
+  };
+})();]]></presenter><resources><file src="./resources/wood/images/close_btn_active.png"/><file src="./resources/wood/images/close_btn.png"/><file src="./resources/wood/images/com_btn_left_1img_active.png"/><file src="./resources/wood/images/com_btn_left_1img_dis.png"/><file src="./resources/wood/images/com_btn_left_1img.png"/><file src="./resources/wood/images/com_btn_left_2img_active.png"/><file src="./resources/wood/images/com_btn_left_2img_dis.png"/><file src="./resources/wood/images/com_btn_left_2img.png"/><file src="./resources/wood/images/com_btn_left_3img_active.png"/><file src="./resources/wood/images/com_btn_left_3img_dis.png"/><file src="./resources/wood/images/com_btn_left_3img.png"/><file src="./resources/wood/images/com_btn_left_img1_active.png"/><file src="./resources/wood/images/com_btn_left_img1_dis.png"/><file src="./resources/wood/images/com_btn_left_img1.png"/><file src="./resources/wood/images/com_btn_left_img2_active.png"/><file src="./resources/wood/images/com_btn_left_img2_dis.png"/><file src="./resources/wood/images/com_btn_left_img2.png"/><file src="./resources/wood/images/com_btn_left_img3_active.png"/><file src="./resources/wood/images/com_btn_left_img3_dis.png"/><file src="./resources/wood/images/com_btn_left_img3.png"/><file src="./resources/wood/images/com_btn_left_img4_active.png"/><file src="./resources/wood/images/com_btn_left_img4_dis.png"/><file src="./resources/wood/images/com_btn_left_img4.png"/><file src="./resources/wood/images/com_btn_pic_add_active.png"/><file src="./resources/wood/images/com_btn_pic_add_disabled.png"/><file src="./resources/wood/images/com_btn_pic_add.png"/><file src="./resources/wood/images/com_btn_pic_cut_active.png"/><file src="./resources/wood/images/com_btn_pic_cut_disabled.png"/><file src="./resources/wood/images/com_btn_pic_cut.png"/><file src="./resources/wood/images/com_btn_right_img1_active.png"/><file src="./resources/wood/images/com_btn_right_img1.png"/><file src="./resources/wood/images/com_btn_right_img2_active.png"/><file src="./resources/wood/images/com_btn_right_img2_disabled.png"/><file src="./resources/wood/images/com_btn_right_img2.png"/><file src="./resources/wood/images/com_btn_right_stop_active.png"/><file src="./resources/wood/images/com_btn_right_stop.png"/><file src="./resources/wood/images/fan_hand.png"/><file src="./resources/wood/images/icon_probtn_active.png"/><file src="./resources/wood/images/icon_probtn.png"/><file src="./resources/wood/images/lamp_fu.png"/><file src="./resources/wood/images/lamp.png"/><file src="./resources/wood/images/line_F_head.png"/><file src="./resources/wood/images/line_v_head.png"/><file src="./resources/wood/images/point_bg_single.png"/><file src="./resources/wood/images/point_bg.png"/><file src="./resources/wood/images/point_fu.png"/><file src="./resources/wood/images/point.png"/><file src="./resources/wood/images/selected.png"/><file src="./resources/wood/images/x_bg_single.png"/><file src="./resources/wood/images/x_bg.png"/><file src="./resources/wood/images/zheng_hand.png"/></resources></addon>

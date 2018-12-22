@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="script/CanvasWriter.js"></script>
+    <style>
+        #myDiv{
+            position: absolute;
+            top:0;
+            left:0;
+            z-index:10;
+            width:1000px;
+            height:800px;
+            border: 1px solid #cccbca;
+
+        }
+
+        #myDiv canvas{
+            cursor: default;
+        }
+
+        #back{
+            position: absolute;
+            top:0;
+            left:0;
+            z-index:1;
+            width:1000px;
+            height:800px;
+        }
+
+        .penetrate{
+            pointer-events: none;
+        }
+
+        .btns{
+            position: absolute;
+            top:800px;
+            left:0;
+            border: 1px solid #cccbca;
+
+        }
+    </style>
+</head>
+<body>
+
+<div id="myDiv"> </div>
+<div class="btns">
+    <button id="btn1">清空</button>
+    <button id="btn2">橡皮</button>
+    <button id="btn3">书写</button>
+    <button id="btn4">穿透</button>
+    <button id="btn5">保存状态</button>
+</div>
+<div>
+    <ul id="config">
+    </ul>
+</div>
+
+<div id="back"></div>
+
+
+<script>
+    window.onload = function(){
+        var div = document.getElementById("myDiv");
+        var configUl = document.getElementById("config");
+        var state = [];
+
+        var writer = new CanvasWriter(div);
+
+        var btn1 = document.getElementById("btn1");
+        var btn2 = document.getElementById("btn2");
+        var btn3 = document.getElementById("btn3");
+        var btn4 = document.getElementById("btn4");
+        var btn5 = document.getElementById("btn5");
+        var back = document.getElementById("back");
+
+        btn1.addEventListener("click", function(){
+            writer.clear();
+        },false);
+
+        btn2.addEventListener("click", function(){
+            writer.setWriteType(2);
+            div.classList.remove("penetrate");
+        },false);
+
+        btn3.addEventListener("click", function(){
+            writer.setWriteType(1);
+            div.classList.remove("penetrate");
+        },false);
+
+        btn4.addEventListener("click", function(){
+            div.classList.add("penetrate");
+        },false);
+
+        btn5.addEventListener("click", function(){
+           state.push(writer.getState());
+        },false);
+
+        back.addEventListener("click", function(){
+            alert("back clicked");
+        }, false);
+
+    }
+</script>
+</body>
+</html>

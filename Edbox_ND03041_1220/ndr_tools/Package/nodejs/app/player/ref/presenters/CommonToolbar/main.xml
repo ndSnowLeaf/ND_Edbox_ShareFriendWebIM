@@ -1,0 +1,679 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CommonToolbar'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonCommonToolbar_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var BaseToolbar = __webpack_require__(1);
+
+var presenter;
+
+function FreeCombinationToolbar(parent) {
+    presenter = parent;
+    //初始化父类
+    this.$init(presenter);
+    this.$view = presenter.$view;
+}
+
+FreeCombinationToolbar.prototype = new BaseToolbar();
+FreeCombinationToolbar.prototype.constructor = FreeCombinationToolbar;
+FreeCombinationToolbar.prototype.parent = BaseToolbar.prototype;
+
+//绑定弹层事件
+FreeCombinationToolbar.prototype.$bindPopupMenuEvent = function (linkMenu, popupMenu) {
+    if (linkMenu == 'js_pen_color') {
+        //画笔颜色弹窗
+        popupMenu.find('.js_pen_weight').on('mousedown touchstart', onPenWeightSelected.bind(this));
+        popupMenu.find('.js_pen_color').on('mousedown touchstart', onPenColorSelected.bind(this));
+    } else if (linkMenu == 'js_paint_color') {
+        //涂色弹窗
+        popupMenu.find('.js_paint_item').on('mousedown touchstart', onPaintColorSelected.bind(this));
+    }
+};
+FreeCombinationToolbar.prototype.$unbindPopupMenuEvent = function (linkMenu, popupMenu) {
+    if (linkMenu == 'js_pen_color') {
+        //画笔颜色弹窗
+        popupMenu.find('.js_pen_weight').off('mousedown touchstart');
+        popupMenu.find('.js_pen_color').off('mousedown touchstart');
+    } else if (linkMenu == 'js_paint_color') {
+        //涂色弹窗
+        popupMenu.find('.js_paint_item').off('mousedown touchstart');
+    }
+};
+FreeCombinationToolbar.prototype.$setPopupMenuState = function (linkMenu, popupMenu, state) {
+    if (linkMenu === 'js_pen_color') {
+        if (state.weight) {
+            popupMenu.find('.js_pen_weight').each(function () {
+                var extendData = $(this).data().extend;
+                this.classList[extendData.EventData.weight === state.weight ? 'add' : 'remove']('on');
+            });
+        }
+        if (state.color) {
+            popupMenu.find('.js_pen_color').each(function () {
+                var extendData = $(this).data().extend;
+                this.classList[extendData.EventData.color === state.color ? 'add' : 'remove']('on');
+            });
+        }
+    } else if (linkMenu === 'js_paint_color') {
+        if (state.color) {
+            this.painterColorIndicator.removeClass(this.currentPainterColor);
+            var currentPainterColor = null;
+            popupMenu.find('.js_paint_item').each(function () {
+                var dataSet = $(this).data();
+                if (dataSet.extend.EventData.color === state.color) {
+                    this.classList.add('on');
+                    currentPainterColor = dataSet.color;
+                } else {
+                    this.classList.remove('on');
+                }
+            });
+            this.painterColorIndicator.addClass(currentPainterColor);
+            this.currentPainterColor = currentPainterColor;
+        }
+    }
+};
+FreeCombinationToolbar.prototype.destroyView = function () {
+    this.parent.destroyView();
+    this.$view.find('.js_clear_cancel').off();
+    this.$view.find('.js_clear_confirm').off();
+
+    //填充色指示器
+    this.painterColorIndicator = null;
+    this.currentPainterColor = null;
+};
+FreeCombinationToolbar.prototype._onPopupItemMouseDown = function (e) {
+    this.parent._onPopupItemMouseDown(e);
+    var target = $(e.currentTarget);
+    target.siblings('.ui_btn_select').removeClass('ui_btn_select');
+    target.siblings('.open').removeClass('open');
+    //选择默认
+    if (target.hasClass('open')) {
+        var dataSet = target.data(),
+            popupMenu;
+        if (dataSet.linkMenu == 'js_pen_color') {
+            popupMenu = target.find('.' + dataSet.linkMenu);
+            popupMenu.find('.js_pen_weight.on').triggerHandler('mousedown');
+            popupMenu.find('.js_pen_color.on').triggerHandler('mousedown');
+        } else if (dataSet.linkMenu == 'js_paint_color') {
+            popupMenu = target.find('.' + dataSet.linkMenu);
+            //popupMenu.find('.js_paint_item.on').triggerHandler('mousedown');
+        }
+    } else {
+        target.removeClass('open')
+    }
+    e.preventDefault();
+};
+//工具栏渲染完成后
+FreeCombinationToolbar.prototype.afterRenderToolbar = function () {
+    //TODO: 在这里做国际化资源的处理 
+    $.each(this.$view.find('[nd-translate]'), function (index, item) {
+        var $item = $(item);
+        $item.text(presenter.$translate($item.attr('nd-translate')));
+    });
+    //TODO: 绑定弹窗的事件
+    this.$view.find('.js_clear_cancel').on('mousedown touchstart', onClearAllCancel.bind(this));
+    this.$view.find('.js_clear_confirm').on('mousedown touchstart', onClearAllConfirm.bind(this));
+    //TODO: 设置默认选择项目
+    this.$setToolbarItemStatus('SelectMode', 'activate', true);
+
+    //填充色指示器
+    this.painterColorIndicator = this.$view.find('.fct_color_range .fct_colorful');
+    this.currentPainterColor = '';
+};
+//笔迹粗细选择
+function onPenWeightSelected(e) {
+    var target = $(e.currentTarget),
+        dataSet = target.data();
+    //添加标记, 去掉兄弟节点中的选中标记
+    target.addClass('on');
+    target.siblings('.on').removeClass('on');
+    this.sendEventData(dataSet);
+    return false;
+}
+
+//笔迹颜色选择
+function onPenColorSelected(e) {
+    var target = $(e.currentTarget),
+        dataSet = target.data();
+    //添加标记, 去掉兄弟节点中的选中标记
+    target.addClass('on');
+    target.siblings('.on').removeClass('on');
+    this.sendEventData(dataSet);
+    return false;
+}
+
+//填充颜色选择
+function onPaintColorSelected(e) {
+    var target = $(e.currentTarget),
+        dataSet = target.data();
+    //添加标记, 去掉兄弟节点中的选中标记
+    target.addClass('on');
+    target.siblings('.on').removeClass('on');
+
+    //填充色指示器
+    this.painterColorIndicator.removeClass(this.currentPainterColor).addClass(dataSet.color);
+    this.currentPainterColor = dataSet.color;
+
+    this.sendEventData(dataSet);
+    return false;
+}
+
+function onClearAllCancel(e) {
+    this.$view.find('.js_clear_popup').addClass('hide_dom');
+    e.preventDefault();
+}
+
+function onClearAllConfirm(e) {
+    var dataSet = $(e.currentTarget).data();
+    this.sendEventData(dataSet);
+    this.$view.find('.js_clear_popup').addClass('hide_dom');
+    e.preventDefault();
+}
+
+module.exports = FreeCombinationToolbar;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+var presenter;
+var toolbarEnabled = true;
+
+function BaseToolbar() {}
+
+BaseToolbar.prototype = {
+    $init: function (parent) {
+        presenter = parent;
+        toolbarEnabled = true;
+        this.toolbarItems = [];
+    },
+    initView: function (templateName) {
+        var def = $.Deferred();
+        $.get(presenter.basePath + 'resources/templates/' + templateName)
+            .done(function (dom) {
+                if (presenter.$view) {
+                    presenter.$view.append(dom)
+                }
+                def.resolve(dom);
+            });
+        return def.promise();
+    },
+    destroyView: function () {
+        var self = this;
+        //移除所有顶级项目事件绑定
+        _.each(this.toolbarItems, function (item) {
+            item.off();
+            var dataSet = item.data();
+            if (dataSet.itemType == 'popup') {
+                //获取弹窗对象
+                if (dataSet.linkMenu) {
+                    var popupMenu = item.find('.' + dataSet.linkMenu);
+                    //绑定弹层的事件
+                    self.$unbindPopupMenuEvent(dataSet.linkMenu, popupMenu);
+                }
+            }
+        });
+    },
+    //在Toolbar完成渲染后执行的方法,默认为空实现可在子类中进行复写
+    afterRenderToolbar: function () {},
+    //设置按钮的可见性
+    setToolbarItemVisibility: function (identify, visible) {
+        var item = _.find(this.toolbarItems, function (o) {
+            return o.data().identify == identify;
+        });
+        if (visible == true && item.hasClass('hide_dom')) {
+            item.removeClass('hide_dom');
+        } else if (visible == false && !item.hasClass('hide_dom')) {
+            item.addClass('hide_dom');
+        }
+    },
+    setToolbarItemEnabled: function (identify, enabled) {
+        var item = _.find(this.toolbarItems, function (o) {
+            return o.data().identify == identify;
+        });
+        if (enabled == true && item.hasClass('click_disabled')) {
+            item.removeClass('click_disabled');
+        } else if (enabled == false && !item.hasClass('click_disabled')) {
+            item.addClass('click_disabled');
+        }
+    },
+    setToolbarEnabled: function (enabled) {
+        toolbarEnabled = enabled;
+        //如果是禁用工具栏
+        if (enabled == false) {
+            this.retractToolbar();
+            //在UL上添加
+        }!enabled ? presenter.$view.find('.js_tool_items').addClass('click_disabled') :
+            presenter.$view.find('.js_tool_items').removeClass('click_disabled');
+    },
+    setToolbarState: function (state) {
+        if (state.activedItem) {
+            presenter.$view.find('.ui_btn_select').removeClass('ui_btn_select');
+            this.$setToolbarItemStatus(state.activedItem, 'activate', true);
+        }
+        for (var k in state.itemState) {
+            this.$setToolbarItemState(k, state.itemState[k]);
+        }
+    },
+    retractToolbar: function (identify) {
+        //检查是否还有弹窗,都去掉
+        _.each(this.toolbarItems, function (item) {
+            var dataSet = item.data();
+            if (dataSet.itemType == 'popup') {
+                //如果设置需要关闭特定的弹窗
+                if (identify != undefined && dataSet.identify == identify) {
+                    //获取弹窗对象
+                    item.removeClass('open');
+                } else {
+                    //获取弹窗对象
+                    item.removeClass('open');
+                }
+            }
+            //如果是一个弹窗的话, 将弹窗也去掉
+            if (dataSet.popupWindow) {
+                var popup = presenter.$view.find('.' + dataSet.popupWindow);
+                if (popup && popup.length == 1) {
+                    if (!popup.hasClass('hide_dom')) {
+                        popup.addClass('hide_dom');
+                    }
+                }
+            }
+        });
+    },
+    parseToolbar: function (toolbarView) {
+        var self = this;
+        var items = toolbarView.find('.js_item');
+        $.each(items, function (index, item) {
+            var $item = $(item),
+                dataSet = $item.data();
+            if (dataSet.itemType == 'simple') {
+                //点击按钮
+                $item.on('mousedown touchstart', $.proxy(self._onSimpleItemMouseDown, self));
+                //如果按钮是激活式的
+                if (dataSet.clickMode == 'active') {
+                    $item.on('mouseup touchend', $.proxy(self._onSimpleItemMouseUp, self));
+                }
+            } else if (dataSet.itemType == 'popup') {
+                //弹窗按钮
+                $item.on('mousedown touchstart', $.proxy(self._onPopupItemMouseDown, self));
+                //获取弹窗对象
+                if (dataSet.linkMenu) {
+                    var popupMenu = $item.find('.' + dataSet.linkMenu);
+                    //绑定弹层的事件
+                    self.$bindPopupMenuEvent(dataSet.linkMenu, popupMenu);
+                }
+            }
+            self.toolbarItems.push($item);
+        });
+    },
+    sendEventData: function (dataSet, extra) {
+        if (dataSet.extend == undefined) {
+            presenter.logger.info('节点中不存在data-extend配置节');
+            return;
+        }
+        try {
+            var obj = dataSet.extend;
+            if (obj.EventName == undefined || obj.EventData == undefined) {
+                presenter.logger.error('不存在EventName和EventData配置!');
+                return;
+            }
+            if (presenter && presenter.toolbarEventListener) {
+                $.each(presenter.toolbarEventListener, function (index, item) {
+                    if (extra) {
+                        $.extend(obj.EventData, extra);
+                    }
+                    item.receiveBroadcastEvent(obj.EventName, obj.EventData);
+                });
+            }
+        } catch (e) {
+            presenter.logger.error(e);
+        }
+    },
+    /**
+     * 需要在子类中重写的方法,绑定弹层事件
+     * @param linkMenu 弹层关联的类名
+     * @param popupMenu 弹层的对象
+     */
+    $bindPopupMenuEvent: function (linkMenu, popupMenu) {},
+    /**
+     * 需要在子类中重写的方法,解除绑定弹层事件
+     * @param linkMenu 弹层关联的类名
+     * @param popupMenu 弹层的对象
+     */
+    $unbindPopupMenuEvent: function (linkMenu, popupMenu) {},
+    /**
+     * 需要在子类中重写的方法，设置绑定层的操作状态
+     */
+    $setPopupMenuState: function (linkMenu, popupMenu, state) {},
+    $setToolbarItemStatus: function (identify, status, sendEvent) {
+        var item = _.find(this.toolbarItems, function (o) {
+            return o.data().identify == identify;
+        });
+        if (item) {
+            var dataSet = item.data(),
+                isSelected = false;
+            if (dataSet.clickMode == 'select') {
+                if (status === 'activate') {
+                    item.addClass('ui_btn_select');
+                    isSelected = true;
+                } else if (dataSet.clickMode == 'deactivate') {
+                    item.removeClass('ui_btn_select');
+                    isSelected = false;
+                }
+            }
+            if (sendEvent == true) {
+                this.sendEventData(dataSet, {
+                    "isSelected": isSelected
+                })
+            }
+        }
+    },
+    $setToolbarItemState: function (identify, state) {
+        var item = _.find(this.toolbarItems, function (o) {
+            return o.data().identify == identify;
+        });
+        if (item) {
+            var dataSet = item.data();
+            if (dataSet.itemType === 'popup') {
+                var $popup = item.find('.' + dataSet.linkMenu);
+                if (state.showPopup === true) {
+                    $popup.addClass('open');
+                }
+                this.$setPopupMenuState(dataSet.linkMenu, $popup, state);
+            }
+        }
+    },
+    //简单按钮点击时的事件响应
+    _onSimpleItemMouseDown: function (e) {
+        e.preventDefault();
+        var target = $(e.currentTarget),
+            dataSet = target.data();
+        //如果不可点击
+        if (target.hasClass('click_disabled') || toolbarEnabled == false) {
+            return;
+        }
+        if (dataSet.clickMode != undefined) {
+            if (dataSet.clickMode == 'select') {
+                target.addClass('ui_btn_select');
+                //去掉兄弟节点中的ui_btn_select
+                target.siblings('.ui_btn_select').removeClass('ui_btn_select');
+                target.siblings('.open').removeClass('open');
+                //发事件
+                this.sendEventData(dataSet);
+            } else if (dataSet.clickMode == 'active') {
+                target.addClass('ul_btn_active');
+            }
+        }
+        //判断是否存在popupWindow
+        if (dataSet.popupWindow) {
+            var popup = presenter.$view.find('.' + dataSet.popupWindow);
+            if (popup && popup.length == 1) {
+                this.retractToolbar(); //隐藏其他弹窗，如：修复bug-116555
+
+                if (popup.hasClass('hide_dom')) {
+                    popup.removeClass('hide_dom');
+                }
+            }
+        }
+    },
+    _onSimpleItemMouseUp: function (e) {
+        e.preventDefault();
+        var target = $(e.currentTarget),
+            dataSet = target.data();
+        //如果不可点击
+        if (target.hasClass('click_disabled') || toolbarEnabled == false) {
+            return;
+        }
+        if (dataSet.clickMode == 'active') {
+            target.removeClass('ul_btn_active');
+            this.sendEventData(dataSet);
+        }
+    },
+    _onPopupItemMouseDown: function (e) {
+        e.preventDefault();
+        var target = $(e.currentTarget),
+            dataSet = target.data(),
+            isSelected = false;
+        //如果不可点击
+        if (target.hasClass('click_disabled') || toolbarEnabled == false) {
+            return;
+        }
+        if (target.hasClass('open')) {
+            //已经被选中
+            target.removeClass('open');
+            isSelected = false;
+        } else {
+            //没有被选中
+            target.addClass('ui_btn_select').addClass('open');
+            isSelected = true;
+        }
+        this.sendEventData(dataSet, {
+            "isSelected": isSelected
+        });
+    }
+};
+
+module.exports = BaseToolbar;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var me = null;
+var Presenter = BaseController.extend({
+    metaInfo: {
+        name: "CommonToolbar",
+        type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+        this.toolbarInstance = null;
+        this.toolbarEventListener = [];
+        //定义日志
+        this.logger.appendHandler(function (message, context) {
+            switch (context.level.name) {
+                case 'DEBUG':
+                    console.debug(message);
+                    break;
+                case 'INFO':
+                    console.info(message);
+                    break;
+                case 'WARN':
+                    console.warn(message);
+                    break;
+                case 'ERROR':
+                    console.error(message);
+                    break;
+                default:
+                    console.log(message);
+                    break;
+            }
+        }, {
+            level: Logger.DEBUG
+        });
+        me = this;
+    },
+    /**对外的Service对象**/
+    _service_: {
+        //设置工具栏项目的可用性
+        setItemEnabled: function (identify, enabled) {
+            me.toolbarInstance.setToolbarItemEnabled(identify, enabled);
+        },
+        //设置工具栏项目的可见性
+        setItemVisibility: function (identify, visible) {
+            me.toolbarInstance.setToolbarItemVisibility(identify, visible);
+        },
+        //设置工具栏的整体可用性
+        setToolbarEnabled: function (enabled) {
+            me.toolbarInstance.setToolbarEnabled(enabled);
+        },
+        //设置工具栏操作状态
+        setToolbarState: function (state) {
+            me.toolbarInstance.setToolbarState(state);
+        },
+        /**
+         * 尝试收起配置为popup的工具栏项目展开项目
+         * @param identify: 指定收起的项目,不指定就收起所有
+         */
+        retractToolbar: function (identify) {
+            me.toolbarInstance.retractToolbar(identify);
+        },
+        /****实现国际化支持的接口****/
+        setLocationProperties: function (properties) {
+            me.$translator.setData(properties);
+        }
+    },
+    getService: function () {
+        return this._service_;
+    },
+    $getInterfaceMethods: function () {
+        return [{
+            interface: 'IToolbarEventListener',
+            methods: ['receiveBroadcastEvent']
+        }];
+    },
+    $beforePresenterRun: function (interfaceName, metaInfo, service) {
+        if (interfaceName == 'IToolbarEventListener') {
+            this.toolbarEventListener.push(service);
+        }
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        var self = this,
+            def = $.Deferred();
+        this.$view = $(view);
+        var Toolbar = __webpack_require__(0);
+        self.toolbarInstance = new Toolbar(self);
+        self.toolbarInstance.initView('free_combination.html').done(function () {
+            self.toolbarInstance.parseToolbar(self.$view);
+            self.toolbarInstance.afterRenderToolbar();
+            def.resolve();
+        });
+        return def.promise();
+    },
+
+    destroy: function () {
+        if (me.toolbarInstance) {
+            //执行Toolbar实例的销毁事件
+            me.toolbarInstance.destroyView();
+        }
+        me = null;
+    }
+}, "CommonToolbar");
+
+module.exports = function () {
+    return new Presenter();
+};
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/templates/free_combination.html' />
+
+
+</resources>
+
+</addon>

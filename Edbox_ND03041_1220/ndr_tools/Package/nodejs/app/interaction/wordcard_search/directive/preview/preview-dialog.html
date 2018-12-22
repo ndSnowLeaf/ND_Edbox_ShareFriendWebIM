@@ -1,0 +1,172 @@
+<style>.ngdialog {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.ngdialog *,
+.ngdialog *:before,
+.ngdialog *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+.ngdialog {
+  position: fixed;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 10000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.ngdialog-overlay {
+  position: fixed;
+  background: #000;
+  filter: alpha(opacity=40);
+  background: rgba(0, 0, 0, 0.4);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadein 0.5s;
+  animation: ngdialog-fadein 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+:root .ngdialog-overlay{
+  filter:"";
+}
+.ngdialog.ngdialog-closing .ngdialog-overlay {
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadeout 0.5s;
+  animation: ngdialog-fadeout 0.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.ngdialog-content {
+  background: white;
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadein 0.5s;
+  animation: ngdialog-fadein 0.5s;
+/*  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;*/
+}
+
+.ngdialog.ngdialog-closing .ngdialog-content {
+  -webkit-backface-visibility: hidden;
+  -webkit-animation: ngdialog-fadeout 0.5s;
+  animation: ngdialog-fadeout 0.5s;
+/*  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;*/
+}
+
+
+
+body.ngdialog-open {
+  overflow: hidden;
+}
+
+.wp-dialog {
+    font-size: 16px;
+    border-radius: 5px;
+}
+.wp-dialog .ngdialog-content {
+position: relative;
+    z-index: 2;
+    width: 100%;
+
+    height: 100%;
+    border-radius: 5px;
+}
+.ngdialog-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 55px;
+    font: 40px/55px "Microsoft Yahei";
+    padding: 0 15px;
+    cursor: pointer;
+    color: #eeeeee;
+    border-left: 1px solid #00a5e4;
+    z-index:-10000;
+}
+.wp-dialog .ngdialog-close:hover {
+    background-color: #116994;
+}
+
+
+.wp-dialog-head,
+.wp-dialog-body {
+    padding: 0 20px;
+}
+
+.wp-dialog-head {
+    background-color:#3693f3;
+    height: 55px;
+    line-height: 55px;
+    font-size: 18px;
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+
+.wp-dialog-body {
+    /* padding-bottom: 60px; */
+}
+.wp-dialog-body .wp-head-tabs {
+    text-align: right;
+}
+.wp-dialog-body .wp-ppt-list {
+    max-height: 380px;
+    overflow: auto;
+}
+.wp-dialog-body .wp-ppt-list li {
+    padding: 0;
+    height: 40px;
+}
+
+.wp-dialog-foot {
+    width: 100%;
+    position: absolute;
+    bottom: 20px;
+    text-align: right;
+    overflow: hidden;
+}
+.wp-dialog-foot .wp-btn {
+    margin-right: 20px;
+}
+
+.wp-dialog-helper {
+    text-align: center;
+}
+.wp-dialog-helper .ngdialog-close {
+    top: 0;
+    right: 0;
+    height: 30px;
+    font: 30px/30px "Microsoft Yahei";
+    padding: 0 5px;
+    border-left: none;
+}
+.wp-dialog-helper .ngdialog-content {
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
+    top: 120px;
+    border-radius: 5px;
+}
+.wp-dialog-helper .wp-dialog-body {
+    padding: 20px 20px 70px;
+}
+.wp-dialog-helper .wp-dialog-body em {
+    color: #FB9318;
+    font-style: normal;
+}
+.wp-dialog-helper .wp-dialog-foot {
+    text-align: center;
+}</style><div class="wp-dialog-body" style="width: 100%; height:  96%"><iframe ng-src="{{$parent.model.href}}" style="width: 100%; height:  100%; border:0 none"></iframe></div>

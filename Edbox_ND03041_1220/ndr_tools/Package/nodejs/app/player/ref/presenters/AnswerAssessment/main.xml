@@ -1,0 +1,1188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='AnswerAssessment'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div id="question_type_handwrite" class="ndui-pop com_pop com_pop_mid stu_peerreview record_flower_ctrol" style="display:none" data-bind="visible: isOpened, css:{'peerreview_p_none': !isPublic()}"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="javascript:;" class="ndui-pop-close right" data-bind="click: close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a> <a href="javascript:;" class="ndui-pop-close left" data-bind="click: close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a><div class="pop_wrap pop_slidebottom"><div class="pop_tit"><em class="font"><label data-bind="text:data().targetUserName"></label><span data-bind="visible: isPublic, text: data().correctedBy"></span></em></div><div class="content"><div class="student_screen student_screen_pic_bg"><img data-bind="attr: {src: data().thumb.originValue}"></div></div><div class="peerreview_to_pop"><div class="peerreview_stars"><label data-bind="text: labelScore"></label><span data-bind="text: data().score"></span><i></i></div><div class="peerreview_highlights"><label data-bind="text: labelPoint"></label><span data-bind="text: data().points"></span><i></i></div></div><div class="slidebox"></div></div><div class="sut_comments sut_comments_bottom"><div class="sut_comments_main"><span class="sut_comments_title" data-bind="text: labelComment"></span> <span class="sut_comments_text" data-bind="text: data().comment"></span></div></div><div class="pop_foot"><div class="stu_correct_person" data-bind="visible: isPublic"><span class="stu_correct_title" data-bind="text: labelCorrector"></span> <span class="stu_correct_name _js_" data-bind="text: data().userName"></span></div><div class="constrst_wrap"><div class="wrap"><div class="com_send_flower_wrap" data-bind="click: sendFlower"><p class="flow_text"><em class="text" data-bind="text: labelSendFlower"></em></p><div class="com_send_flower"></div></div></div></div></div></div></div></div><div id="question_type_subjectivity" class="ndui-pop com_pop com_pop_mid stu_peerreview record_flower_ctrol" style="display:none" data-bind="visible: isOpened, css:{'peerreview_p_none': !isPublic()}"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="javascript:;" class="ndui-pop-close right" data-bind="click: close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a> <a href="javascript:;" class="ndui-pop-close left" data-bind="click: close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a><div class="pop_wrap pop_slidebottom"><div class="pop_tit"><em class="font"><label data-bind="text: data().targetUserName"></label><span data-bind="visible: isPublic, text: data().correctedBy"></span></em></div><div class="content"><div class="student_screen student_screen_pic_bg"><img data-bind="attr: {src: thumbSelected().originValue}, visible: thumbSelected().data_type!='raw'"><div class="stu_peerreview_txt scrollbar_style_gray" data-bind="visible: thumbSelected().data_type=='raw'"><p class="pop_text" data-bind="html: thumbSelected().originValue"></p></div></div><div class="sut_comments" data-bind="css: {'sut_comments_hide': isCommentHide}"><div class="sut_comments_main"><span class="sut_comments_title" data-bind="text: labelComment"></span> <span class="sut_comments_text" data-bind="text: data().comment"></span></div><a class="sut_comments_btn" data-bind="click: onToggleComment"></a></div></div><div class="peerreview_to_pop"><div class="peerreview_stars"><label data-bind="text: labelScore"></label><span data-bind="text: data().score"></span><i></i></div><div class="peerreview_highlights"><label data-bind="text: labelPoint"></label><span data-bind="text: data().points"></span><i></i></div></div></div><div class="pop_foot"><div class="stu_correct_person" data-bind="visible: isPublic"><span class="stu_correct_title" data-bind="text: labelCorrector"></span> <span class="stu_correct_name" data-bind="text: data().userName"></span></div><div class="constrst_wrap"><div class="wrap"><div class="com_send_flower_wrap" data-bind="click: sendFlower"><p class="flow_text"><em class="text" data-bind="text: labelSendFlower"></em></p><div class="com_send_flower"></div></div></div></div><div class="com_stat_slidebox slidebox_big media_box" data-bind="css: {flow: thumbs().length > 5}"><a href="###" class="btn_slide slide_prev" data-bind="click: onSlideLeft"></a> <i class="shadow shadow_l"></i><div class="slidebox_wrap"><ul class="media_box" data-bind="foreach: thumbs"><li data-bind="css: {on: $parent.thumbSelected() == $data}, click: $parent.onClickThumb"><a href="###" class="slide_a" data-bind="css: data_type, visible: data_type!='raw'"><span class="pic-vertical-mc"><img data-bind="attr: {src: value}" alt=""></span><span class="icon"></span> <span class="play" data-bind="visible: canPlay"></span> </a><a href="###" class="slide_a original_title" data-bind="visible: data_type=='raw'"><div class="box_view_text"><p class="view_text" data-bind="html:value"></p><span class="icon"></span></div></a></li></ul></div><i class="shadow shadow_r"></i> <a href="###" class="btn_slide slide_next" data-bind="click: onSlideRight"></a></div></div></div></div></div><div class="com_pop_bgtips tips_stu_state _message_wrapper"><div class="pop_text_main"><span class="font_size _message_text"></span></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonAnswerAssessment_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+//类继承实现机制
+var __extends = this.__extends || function (d, b) {
+    for (var p in b)
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+
+    function __() {
+        this.constructor = d;
+    }
+
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+
+/**
+ * 基础MVC
+ */
+
+var BaseMVC = (function () {
+    function BaseMVC($view) {
+        this.$view = $view;
+
+        this.init();
+    }
+
+    //初始化
+    BaseMVC.prototype.init = function () {
+        //Step1. 构建数据模型
+        this.viewModel = this._constructViewModel();
+
+        //Step2. 绑定数据
+        ko.applyBindings(this.viewModel, this.$view[0]);
+    };
+
+    //销毁
+    BaseMVC.prototype.destroy = function () {
+        ko.cleanNode(this.$view[0]);
+    };
+
+    //构建数据模型
+    BaseMVC.prototype._constructViewModel = function () {
+        return {};
+    };
+
+
+    return BaseMVC;
+})();
+
+module.exports = BaseMVC;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 按钮界面MVC
+ */
+
+var BaseMVC = __webpack_require__(0);
+
+//当前Presenter实例
+var currentPresenterInstance = null;
+
+var ButtonsMVC = (function (_super) {
+    __extends(ButtonsMVC, _super);
+
+    function ButtonsMVC($view, presenter) {
+        currentPresenterInstance = presenter;
+
+        //调用父类构造函数
+        _super.call(this, $view);
+    }
+
+    //构建数据模型
+    ButtonsMVC.prototype._constructViewModel = function () {
+        var viewModel = {
+            labelBtnProgress: currentPresenterInstance.$translate('label.show.progress'),
+            labelBtnStop: currentPresenterInstance.$translate('label.stop.assessment'),
+            onShowProgress: function () {
+                console.log('发起: 查看进度...');
+                currentPresenterInstance.api.showProgress();
+            },
+            onStopAssessment: function () {
+                console.log('发起: 结束互评...');
+                currentPresenterInstance.api.stopAssessment(false);
+            }
+        };
+
+        return viewModel;
+    };
+
+    return ButtonsMVC;
+})(BaseMVC);
+
+module.exports = ButtonsMVC;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 星级页签界面MVC
+ */
+
+var BaseMVC = __webpack_require__(0);
+
+//当前Presenter实例
+var currentPresenterInstance = null,
+    MAX_STARS = 5; //最多星数
+var StarTabsMVC = (function (_super) {
+    __extends(StarTabsMVC, _super);
+
+    function StarTabsMVC($view, presenter, answerData) {
+        currentPresenterInstance = presenter;
+        this._constructStarTabsData(answerData);
+
+        //调用父类构造函数
+        _super.call(this, $view);
+    }
+
+    //组装星级筛选面板数据
+    StarTabsMVC.prototype._constructStarTabsData = function (answerData) {
+        //Step1. 统计星级数据
+        var TAB_ALL = currentPresenterInstance.$translate('label.tab.all'),
+            TAB_UNSUBMIT = currentPresenterInstance.$translate('label.tab.unsubmit'),
+            unSubmitTab = {
+                name: TAB_UNSUBMIT,
+                items: [],
+                isStar: false
+            },
+            self = this;
+
+        this.starTabsData = {};
+        this.starTabsData[TAB_ALL] = {
+            name: TAB_ALL,
+            items: answerData,
+            isStar: false
+        };
+        this.starTabsData[TAB_UNSUBMIT] = unSubmitTab;
+        $.each(answerData, function (index, item) {
+            if (!item.committed) {
+                unSubmitTab.items.push(item);
+            } else {
+                var score = item.score;
+                if (score > 0) {
+                    if (self.starTabsData.hasOwnProperty(score)) {
+                        self.starTabsData[score].items.push(item);
+                    } else {
+                        self.starTabsData[score] = {
+                            name: score,
+                            items: [item]
+                        };
+                    }
+                }
+            }
+        });
+
+        //Step2. 补充星级数据
+        for (var i = 1; i <= MAX_STARS; i++) {
+            if (!this.starTabsData.hasOwnProperty(i)) {
+                this.starTabsData[i] = {
+                    name: i,
+                    items: []
+                };
+            }
+        }
+
+        //Step3. 构建starTabs - viewModel
+        this.starTabs = [];
+        for (var key in this.starTabsData) {
+            var keyValue = this.starTabsData[key];
+            var items = keyValue.items;
+            this.starTabs.push({
+                name: key,
+                count: _.isArray(items) ? items.length : 0,
+                isStar: keyValue.isStar != false
+            });
+        }
+        this.starTabs = this.starTabs.sort(function (a, b) { //按顺序排序：全部、星级（从高到低）、未提交
+            if (a.name == TAB_ALL || b.name == TAB_UNSUBMIT) return -1;
+            if (a.name == TAB_UNSUBMIT || b.name == TAB_ALL) return 1;
+
+            return a.name > b.name ? -1 : 1;
+        });
+    };
+
+    //构建数据模型
+    StarTabsMVC.prototype._constructViewModel = function () {
+        var self = this;
+        var viewModel = {
+            labelPerson: currentPresenterInstance.$translate('label.unit.persons'),
+            starTabs: ko.observableArray(self.starTabs),
+            currentTab: ko.observable(self.starTabs[0]),
+            onClickItem: function (tab) {
+                self.viewModel.currentTab(tab);
+
+                var data = self.starTabsData[tab.name];
+                currentPresenterInstance.statisticsService.refreshThumbList(data.items);
+            }
+        };
+
+        return viewModel;
+    };
+
+    //更新
+    StarTabsMVC.prototype.update = function (answerData) {
+        var self = this;
+        self._constructStarTabsData(answerData);
+        self.viewModel.starTabs(self.starTabs);
+        self.viewModel.currentTab(self.starTabs[0]);
+    };
+
+    return StarTabsMVC;
+})(BaseMVC);
+
+module.exports = StarTabsMVC;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/**
+ * 外部接口交互
+ */
+
+var INSTANCE_ID = 'AnswerAssessment';
+var currentPresenter = null;
+
+function API(presenter) {
+    currentPresenter = presenter;
+}
+
+API.prototype = {
+    constructor: API,
+
+    //创建事件交互通道
+    createAssessment: function () {
+        currentPresenter.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+            presenterId: INSTANCE_ID,
+            instanceId: INSTANCE_ID
+        });
+    },
+    //销毁事件交互通道
+    destroyAssessment: function () {
+        currentPresenter.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: INSTANCE_ID
+        });
+    },
+    //发起作业互评
+    startAssessment: function (assessmentType) {
+        currentPresenter.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: INSTANCE_ID,
+            type: 'start',
+            data: {
+                assessmentType: assessmentType
+            }
+        });
+    },
+    //结束作业互评
+    stopAssessment: function (isForce) {
+        currentPresenter.$dispatchEvent('StopAssessment', PresenterEventType.IC_PLAYER_EVENT);
+        currentPresenter.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: INSTANCE_ID,
+            type: 'stop',
+            data: {
+                isForce: isForce
+            }
+        });
+    },
+    //获取学生互评结果数据
+    getAssessmentData: function () {
+        currentPresenter.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+            instanceId: INSTANCE_ID,
+            type: 'getThumb'
+        });
+    },
+    //查看互评进度
+    showProgress: function () {
+        currentPresenter.$dispatchEvent('ShowAssessmentProgress', PresenterEventType.IC_PLAYER_EVENT);
+    },
+    //送花给学生
+    sendFlower: function (studentId, count) {
+        currentPresenter.$dispatchEvent('Stuff', PresenterEventType.PPT_NATIVE_EVENT, {
+            source: 'AnswerClassStatis',
+            item: 'FLOWER',
+            value: {
+                "num": count || 1,
+                userIds: [studentId]
+            }
+        });
+    }
+};
+
+module.exports = API
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 手写题类批改详情界面MVC
+ */
+
+var BaseMVC = __webpack_require__(0);
+
+//当前Presenter实例
+var currentPresenterInstance = null;
+var HandWriteDetailMVC = (function (_super) {
+    __extends(HandWriteDetailMVC, _super);
+
+    function HandWriteDetailMVC($view, presenter, detailData) {
+        currentPresenterInstance = presenter;
+        this.detailData = detailData || {};
+
+        //调用父类构造函数
+        _super.call(this, $view);
+
+        currentPresenterInstance.$view.show();
+    }
+
+    //更新数据模型
+    var updateViewModel = function (viewModel, detailData) {
+        //修复bug-79843\79809
+        viewModel.isPublic(currentPresenterInstance._isPublicAssessment());
+
+        viewModel.data({
+            userName: detailData.userName,
+            targetUserName: detailData.targetUserName,
+            correctedBy: currentPresenterInstance.$translate('corrector.on.detail', detailData.userName || ''),
+            score: detailData.score,
+            points: detailData.points,
+            comment: detailData.comment,
+            thumb: {
+                originValue: detailData.data.length > 0 ? (detailData.data[0].originValue || detailData.data[0].value) : ''
+            }
+        });
+    };
+
+    //构建数据模型
+    HandWriteDetailMVC.prototype._constructViewModel = function () {
+        var self = this;
+        var viewModel = {
+            isPublic: ko.observable(currentPresenterInstance._isPublicAssessment()),
+            isOpened: ko.observable(true),
+            labelBtnClose: currentPresenterInstance.$translate('label.btn.close'),
+            labelScore: currentPresenterInstance.$translate('label.score'),
+            labelPoint: currentPresenterInstance.$translate('label.point'),
+            labelComment: currentPresenterInstance.$translate('label.comment'),
+            labelCorrector: currentPresenterInstance.$translate('label.corrector'),
+            labelSendFlower: currentPresenterInstance.$translate('label.send.flower'),
+            data: ko.observable(),
+            close: function () { //关闭
+                self.viewModel.isOpened(false);
+                currentPresenterInstance.$view.hide();
+            },
+            sendFlower: function () { //送花
+                currentPresenterInstance.api.sendFlower(self.detailData.userId);
+                PresenterFlowerTip([self.detailData.userName]);
+            }
+        };
+
+        //更新数据模型
+        updateViewModel(viewModel, this.detailData);
+
+        return viewModel;
+    };
+
+    //赋值批改详细数据（点击不同学生批改详情时触发）
+    HandWriteDetailMVC.prototype.setDetailData = function (detailData) {
+        if (this.detailData != detailData) {
+            //设置详情数据
+            this.detailData = detailData || {};
+
+            //更新viewModel
+            updateViewModel(this.viewModel, this.detailData);
+        }
+
+        //显示批改详情窗口
+        this.viewModel.isOpened(true);
+        currentPresenterInstance.$view.show();
+    };
+
+    return HandWriteDetailMVC;
+})(BaseMVC);
+
+module.exports = HandWriteDetailMVC;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 顶部界面MVC（互评时间、提交人数）
+ */
+
+var BaseMVC = __webpack_require__(0);
+
+//当前Presenter实例
+var currentPresenterInstance = null;
+var ProgressMVC = (function (_super) {
+    //__extends(ProgressMVC, _super);
+
+    function ProgressMVC($view, presenter) {
+        currentPresenterInstance = presenter;
+        this.$view = $view;
+        this.minuteCtrl = this.$view.find('.time_m');
+        this.secondCtrl = this.$view.find('.time_s');
+        this.submitCtrl = this.$view.find('.upload .num');
+        this.amountCtrl = this.$view.find('.upload ._amount');
+        this.amount = -1;
+        this.progressTimer = null;
+        this.elapsedTime = 0;
+
+        this.init();
+    }
+
+    //初始化
+    ProgressMVC.prototype.init = function () {
+        //Step1. 标签国际化
+        this.$view.find('._label_time').text(currentPresenterInstance.$translate('label.assessment.time'));
+        this.$view.find('._label_time_m').text(currentPresenterInstance.$translate('label.unit.minutes'));
+        this.$view.find('._label_time_s').text(currentPresenterInstance.$translate('label.unit.seconds'));
+        this.$view.find('.upload_text').text(currentPresenterInstance.$translate('label.count.submitted'));
+
+        //Step2. 开始计时
+        this.start();
+    };
+
+    ProgressMVC.prototype.start = function () {
+        var self = this;
+        this.elapsedTime = 0;
+        this.progressTimer = window.setInterval(function () {
+            self.elapsedTime++;
+
+            self.minuteCtrl.text(Math.floor(self.elapsedTime / 60));
+            self.secondCtrl.text(self.elapsedTime % 60);
+        }, 1000);
+    };
+
+    //更新进度: 更新提交人数
+    ProgressMVC.prototype.update = function (answerData) {
+        this.submitCtrl.text(answerData.finishedNum);
+
+        var amount = (answerData.finishedNum || 0) + (answerData.unfinishedNum || 0) + (answerData.offlineNum || 0);
+        if (this.amount != amount) {
+            this.amount = amount;
+            this.amountCtrl.text(amount);
+        }
+    };
+
+    //停止进度更新
+    ProgressMVC.prototype.stop = function () {
+        //Step1. 停止计时
+        if (!!this.progressTimer) {
+            window.clearInterval(this.progressTimer);
+            this.progressTimer = null;
+        }
+    };
+
+    //销毁
+    ProgressMVC.prototype.destroy = function () {
+        //Step1. 停止计时
+        this.stopProgress();
+    };
+
+    return ProgressMVC;
+})(BaseMVC);
+
+module.exports = ProgressMVC;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 主观题类批改详情界面MVC
+ */
+
+var BaseMVC = __webpack_require__(0);
+
+//当前Presenter实例
+var currentPresenterInstance = null;
+var SubjectivityDetailMVC = (function (_super) {
+    __extends(SubjectivityDetailMVC, _super);
+
+    function SubjectivityDetailMVC($view, presenter, detailData) {
+        currentPresenterInstance = presenter;
+        this.detailData = detailData || {};
+        this.mediaBox = $view.find('.slidebox .media_box');
+
+        //调用父类构造函数
+        _super.call(this, $view);
+
+        currentPresenterInstance.$view.show();
+    }
+
+    //更新数据模型
+    var updateViewModel = function (viewModel, detailData) {
+        //修复bug-79843\79809
+        viewModel.isPublic(currentPresenterInstance._isPublicAssessment());
+
+        viewModel.data({
+            userName: detailData.userName,
+            targetUserName: detailData.targetUserName,
+            correctedBy: currentPresenterInstance.$translate('corrector.on.detail', detailData.userName || ''),
+            score: detailData.score,
+            points: detailData.points,
+            comment: detailData.comment
+        });
+
+        viewModel.thumbs.removeAll();
+        $.each(detailData.data, function () {
+            this.canPlay = false;
+            this.originValue = this.originValue || this.value;
+            viewModel.thumbs.push(this);
+        });
+        viewModel.thumbSelected($.isArray(detailData.data) && detailData.data.length > 0 ? detailData.data[0] : {});
+    };
+
+    //构建数据模型
+    SubjectivityDetailMVC.prototype._constructViewModel = function () {
+        var self = this;
+        var viewModel = {
+            isPublic: ko.observable(currentPresenterInstance._isPublicAssessment()),
+            isOpened: ko.observable(true),
+            isCommentHide: ko.observable(false),
+            labelBtnClose: currentPresenterInstance.$translate('label.btn.close'),
+            labelScore: currentPresenterInstance.$translate('label.score'),
+            labelPoint: currentPresenterInstance.$translate('label.point'),
+            labelComment: currentPresenterInstance.$translate('label.comment'),
+            labelCorrector: currentPresenterInstance.$translate('label.corrector'),
+            labelSendFlower: currentPresenterInstance.$translate('label.send.flower'),
+            data: ko.observable(),
+            thumbs: ko.observableArray(),
+            thumbSelected: ko.observable(),
+            close: function () { //关闭
+                self.viewModel.isOpened(false);
+                currentPresenterInstance.$view.hide();
+            },
+            sendFlower: function () { //送花
+                currentPresenterInstance.api.sendFlower(self.detailData.userId);
+                PresenterFlowerTip([self.detailData.userName]);
+            },
+            onClickThumb: function (data, event) { //点击缩略图
+                self.viewModel.thumbSelected(data);
+            },
+            onToggleComment: function () {
+                self.viewModel.isCommentHide(!self.viewModel.isCommentHide());
+            },
+            onSlideLeft: function () { //向左滑动
+                var li = self.mediaBox.find('li').eq(0),
+                    sl = self.mediaBox.scrollLeft();
+                var v = 2 * li.outerWidth() - li.width();
+
+                self.mediaBox.scrollLeft(sl - 6 * v);
+            },
+            onSlideRight: function () { //向右滑动
+                var li = self.mediaBox.find('li').eq(0),
+                    sl = self.mediaBox.scrollLeft();
+                var v = 2 * li.outerWidth() - li.width();
+
+                self.mediaBox.scrollLeft(sl + 6 * v);
+            }
+        };
+
+        //更新数据模型
+        updateViewModel(viewModel, this.detailData);
+
+        return viewModel;
+    };
+
+    //赋值批改详细数据（点击不同学生批改详情时触发）
+    SubjectivityDetailMVC.prototype.setDetailData = function (detailData) {
+        if (this.detailData != detailData) {
+            //设置详情数据
+            this.detailData = detailData || {};
+
+            //更新viewModel
+            updateViewModel(this.viewModel, this.detailData);
+        }
+
+        //显示批改详情窗口
+        this.mediaBox.scrollLeft(0);
+        this.viewModel.isCommentHide(false);
+        this.viewModel.isOpened(true);
+        currentPresenterInstance.$view.show();
+    };
+
+    return SubjectivityDetailMVC;
+})(BaseMVC);
+
+module.exports = SubjectivityDetailMVC;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var API = __webpack_require__(3);
+
+//常量定义
+var CONSTANTS = {
+    PRESENTER_NAME: 'AnswerAssessment',
+    INSTANCE_ID: 'AnswerAssessment',
+    ASSESSMENT_ANONYMOUS: 'anon', //匿名互评
+    ASSESSMENT_PUBLIC: 'pub', //公开互评
+    MESSAGE_STYLE: 'notice-tip-box-auto', //
+    MESSAGE_TIMER_KEEPS: 4000, //提示信息显示时间(单位: 秒)
+    IDENTIFY_ASSESSMENT: 'answerAssessment',
+    IDENTIFY_PROGRESS: 'assessment-progress',
+    IDENTIFY_STAR_TABS: 'assessment-star-tabs',
+    IDENTIFY_BUTTONS: 'assessment-buttons',
+    INJECT_ACTION_TYPE_RENDER: 'ListItemRender', //D类统计注入功能类型 - 列表项目被渲染
+    INJECT_ACTION_TYPE_CLICK: 'ListItemClick', //D类统计注入功能类型 - 列表项目被点击
+    INJECT_ACTION_TYPE_EXIT: 'ExitExam', //D类统计注入功能类型 - 退出本题
+    CLASS_LAYOUT_CONTAINER: 'container_to_peerreview', //追加到D类统计com_layout_container层的样式名
+    CLASS_INJECT_ITEM: 'com_stat_list_to_peerreview', //追加到D类统计ListItem上的样式名
+
+    VIEW_STYLE_A: 'A', //主观题-风格：多图
+    VIEW_STYLE_B: 'B', //手写题-风格：单图
+    VIEW_STYLE_MAP: {
+        'subjectivity': 'A', //主观题
+        'newhandwrite': 'B', //手写题
+        'FillColor': 'B', //填色游戏
+        'CompositionOutline': 'B' //作文提纲教学
+    },
+
+    PluginStatus: {
+        Loaded: 1, // 插件加载完成，初始化
+        Enter: 2, // 进入插件
+        Exit: 3, // 退出插件
+        ListRefresh: 4, // 列表数据刷新
+        ListRendering: 5 // 插件修改列表渲染
+    }
+};
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: CONSTANTS.PRESENTER_NAME,
+        type: PresenterType.PRESENTER_COMPONENT,
+        subType: "AnswerClassStatisticsExtend"
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+
+        this.$view = null;
+        this.questionType = null; //当前使用统计模块的题目类型
+        this.statisticsService = null; //D类统计的service
+        this.api = null; //对应api.js对象，负责与外部接口交互
+
+        this.hasStartedAssessment = false; //进入互评状态
+        this.assessmentType = null; //互评模式
+
+        this.messageTimer = null; //消息提示定时器
+        this.progressView = null; //注入到D类统计TopPanel的按钮面板(互评时间、提交人数)
+        this.buttonsView = null; //注入到D类统计BottomPanel的按钮面板(查看进度、结束答题)
+        this.starTabsView = null; //注入到D类统计BottomPanel的星级页签面板
+        this.$buttonsMVC = null; //底部按钮面板MVC
+        this.$progressMVC = null; //顶部进度MVC
+        this.$starTabsMVC = null; //星级筛选面板MVC
+        this.$handWriteDetailMVC = null; //手写类批改详情MVC
+        this.$subjectivityDetailMVC = null; //主观类批改详情MVC
+        this.mvcArray = []; //MVC构建对象：buttonsMVC、starTabsMVC、handWriteDetailMVC、subjectivityDetailMVC等等
+
+        this._changeStatus(CONSTANTS.PluginStatus.Loaded);
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    _service_: {
+        constructor: function (presenter) {
+            this.presenter = presenter;
+        },
+        /**
+         * 在统计presenter run的时候会调用此方法完成自己底部view的注入
+         * @param topPanel 顶部panel jQuery对象
+         * @param bottomPanel 底部panel jQuery对象
+         */
+        injectLayout: function (topPanel, bottomPanel) {
+            //预先注入templates.html(可以根据实际情况考虑延迟注入，即需要显示时注入)
+            var presenterSelf = this.presenter;
+            $.get(presenterSelf.basePath + 'resources/templates/templates.html', function (data) {
+                var $wrapper = $('<div/>');
+                $wrapper.html(data);
+
+                presenterSelf.buttonsView = $wrapper.find('[data-identify="assessment-buttons"]:first');
+                presenterSelf.starTabsView = $wrapper.find('[data-identify="assessment-star-tabs"]:first');
+                presenterSelf.progressView = $wrapper.find('[data-identify="assessment-progress"]:first');
+
+                presenterSelf.buttonsView.appendTo(bottomPanel);
+                presenterSelf.starTabsView.appendTo(bottomPanel);
+                presenterSelf.progressView.appendTo(topPanel);
+            });
+        },
+        //在这里拿到D类统计presenter的service对象，用于后续的隐藏当操作
+        setStatisticsService: function (service) {
+            var presenterSelf = this.presenter;
+            if (service && presenterSelf.statisticsService === null) {
+                presenterSelf.statisticsService = service;
+                presenterSelf.questionType = service.getCurrentState().questionType;
+
+                //注入列表项目的渲染过程：注入星级、亮点等
+                service.injectAction(CONSTANTS.PRESENTER_NAME, CONSTANTS.INJECT_ACTION_TYPE_RENDER, presenterSelf._injectListItem.bind(presenterSelf));
+
+                //注入当列表项目被点击时执行额外执行的过程: 查看批改详情
+                service.injectAction(CONSTANTS.PRESENTER_NAME, CONSTANTS.INJECT_ACTION_TYPE_CLICK, presenterSelf._showAssessmentDetail.bind(presenterSelf));
+
+                //注入当退出本题时
+                service.injectAction(CONSTANTS.PRESENTER_NAME, CONSTANTS.INJECT_ACTION_TYPE_EXIT, presenterSelf._onExamExit.bind(presenterSelf));
+            }
+        },
+        setPluginStatus: function (status) {
+            this.status = status;
+        },
+        //国际化语言包设置
+        setLocationProperties: function (properties) {
+            this.presenter.$translator.setData(properties);
+        }
+    },
+    getService: function () {
+        this._service_.constructor(this);
+
+        return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        this.$view = $(view);
+        this.$view.hide();
+
+        //注册工具栏上的按钮
+        this._injectToolbarButton();
+
+        //载入API
+        this.api = new API(this);
+    },
+    pageShow: function () {
+        this._bindEvent();
+    },
+    pageLeave: function () {},
+    destroy: function () {
+        this._unbindEvent();
+    },
+    /****以下开始为Presenter的私有方法*****/
+    _bindEvent: function () {
+        if (!this.isStudent) {
+            this.$addEventListener("AssessmentCallback", PresenterEventType.NATIVE_EVENT, this._onAssessmentCallback);
+        }
+    },
+    _unbindEvent: function () {
+        //解除Native事件监听
+        this.$removeEventListener();
+
+        //解除定时器
+        !!this.messageTimer && window.clearTimeout(this.messageTimer);
+
+        //销毁MVC
+        if (!!this.mvcArray) {
+            $.each(this.mvcArray, function (index, mvc) {
+                !!mvc.destroy && mvc.destroy();
+            });
+        }
+
+        //销毁事件交互通道
+        !!this.api && this.api.destroyAssessment();
+    },
+    /*以下是私有方法*/
+    _changeStatus: function (status) {
+        this.status = status;
+
+        if (this.statisticsService) {
+            this.statisticsService.plugin.changeStatus(CONSTANTS.PRESENTER_NAME, status);
+        }
+    },
+    _injectToolbarButton: function () {
+        if (this.statisticsService !== null) {
+            var presenterSelf = this;
+            this.statisticsService.injectToolbarItem([{
+                identify: CONSTANTS.IDENTIFY_ASSESSMENT,
+                type: 'ComboButton',
+                text: presenterSelf.$translate('label.assessment'),
+                class: 'square_tool_peerReview',
+                //tip: presenterSelf.$translate('label.assessment.mode'),
+                events: [{
+                    event: 'click',
+                    fn: null
+                }],
+                items: [{
+                    text: presenterSelf.$translate('label.assessment.public'),
+                    event: 'click',
+                    fn: function () {
+                        presenterSelf._startAssessment(CONSTANTS.ASSESSMENT_PUBLIC);
+                    },
+                    default: true
+                }, {
+                    text: presenterSelf.$translate('label.assessment.anonymous'),
+                    event: 'click',
+                    fn: function () {
+                        presenterSelf._startAssessment(CONSTANTS.ASSESSMENT_ANONYMOUS);
+                    }
+                }]
+            }], 29);
+        }
+    },
+    /**
+     * 发出开始作业互评请求
+     * @param assessmentType
+     * @private
+     */
+    _startAssessment: function (assessmentType) {
+        this.assessmentType = assessmentType;
+        this.api.createAssessment();
+        this.api.startAssessment(this.assessmentType);
+    },
+    //注入列表项目的渲染过程: 星级、亮点
+    _injectListItem: function (viewModel, data) {
+        if (this.status != CONSTANTS.PluginStatus.ListRendering) return;
+
+        //注入星级、亮点
+        viewModel.injectHTML = '<div class="peerreview_box">' +
+            '<div class="peerreview_stars"><span>' + data.score + '</span><i></i></div>' +
+            '<div class="peerreview_highlights"><span>' + data.points + '</span><i></i></div>' +
+            '</div>';
+        viewModel.extendStyle = CONSTANTS.CLASS_INJECT_ITEM; //注入样式名，通过样式控制送花按钮的隐藏
+    },
+    //判断是否为公开互评
+    _isPublicAssessment: function () {
+        return this.assessmentType === CONSTANTS.ASSESSMENT_PUBLIC;
+    },
+    //查看批改详情
+    _showAssessmentDetail: function (data) {
+        if (this.status != CONSTANTS.PluginStatus.ListRendering) return true;
+
+        var style = CONSTANTS.VIEW_STYLE_MAP[this.questionType];
+        switch (style) {
+            case CONSTANTS.VIEW_STYLE_A:
+                this._showSubjectivityDetail(data.answerData);
+                break;
+            default:
+                this._showHandWriteDetail(data.answerData);
+        }
+
+        return false;
+    },
+    //显示主观题类的批改详情界面
+    _showSubjectivityDetail: function (data) {
+        var presenterSelf = this;
+        if (!!presenterSelf.$subjectivityDetailMVC) { //已初始化
+            presenterSelf.$subjectivityDetailMVC.setDetailData(data);
+        } else {
+            var SubjectivityDetailMVC = __webpack_require__(6);
+            presenterSelf.$subjectivityDetailMVC = new SubjectivityDetailMVC(presenterSelf.$view.find('#question_type_subjectivity'), presenterSelf, data);
+            presenterSelf.mvcArray.push(presenterSelf.$subjectivityDetailMVC);
+        }
+    },
+    //显示手写题类的批改详情界面
+    _showHandWriteDetail: function (data) {
+        var presenterSelf = this;
+        if (!!presenterSelf.$handWriteDetailMVC) { //已初始化
+            presenterSelf.$handWriteDetailMVC.setDetailData(data);
+        } else {
+            var HandWriteDetailMVC = __webpack_require__(4);
+            presenterSelf.$handWriteDetailMVC = new HandWriteDetailMVC(presenterSelf.$view.find('#question_type_handwrite'), presenterSelf, data);
+            presenterSelf.mvcArray.push(presenterSelf.$handWriteDetailMVC);
+        }
+    },
+    //显示提示信息
+    _showMessage: function (isSuccess, text, callback) {
+        var presenterSelf = this;
+        var messagePanel = presenterSelf.$view.find('._message_wrapper');
+        messagePanel.find('._message_text').text(text);
+        messagePanel.addClass(CONSTANTS.MESSAGE_STYLE);
+        presenterSelf.$view.show();
+
+        !!presenterSelf.messageTimer && window.clearTimeout(presenterSelf.messageTimer);
+        presenterSelf.messageTimer = window.setTimeout(function () {
+            presenterSelf.messageTimer = null;
+            presenterSelf.$view.hide();
+            messagePanel.removeClass(CONSTANTS.MESSAGE_STYLE);
+
+            $.isFunction(callback) && callback();
+        }, CONSTANTS.MESSAGE_TIMER_KEEPS);
+    },
+    _isReceivableEvent: function (eventData) {
+        return !!eventData && eventData.question_type == CONSTANTS.INSTANCE_ID;
+    },
+    //生生互评回调事件
+    _onAssessmentCallback: function (eventData) {
+        if (!!eventData) {
+            switch (eventData.type) {
+                case 'start':
+                    this._onStartAssessmentCallback(eventData);
+
+                    break;
+                case 'stop':
+                    this._onStopAssessmentCallback(eventData);
+
+                    break;
+                case 'progress':
+                    this._onAssessmentProgressCallback(eventData);
+
+                    break;
+                case 'getThumb':
+                    this._onGetAssessmentDataCallback(eventData);
+
+                    break;
+                default:
+                    ;
+            }
+        }
+    },
+    //D类统计 退出本题时调用
+    _onExamExit: function (eventData) {
+        if (this.hasStartedAssessment) { //已进入互评状态
+            this.hasStartedAssessment = false;
+
+            //解除定时器
+            this.messageTimer && window.clearTimeout(this.messageTimer);
+
+            //销毁事件交互通道
+            this.api && this.api.destroyAssessment();
+
+            //进入互评状态：显示查看进度、结束互评
+            this.statisticsService.hideInjectPanel('top', CONSTANTS.IDENTIFY_PROGRESS);
+            this.statisticsService.hideInjectPanel('bottom', CONSTANTS.IDENTIFY_STAR_TABS);
+
+            //通知D类统计该插件退出
+            this.statisticsService.plugin.exit(CONSTANTS.PRESENTER_NAME);
+        }
+    },
+    //作业互评任务发起回调
+    _onStartAssessmentCallback: function (eventData) {
+        if (eventData && eventData.data && eventData.data.result) {
+            //Step1. 已开启互评标识
+            this.hasStartedAssessment = true;
+            this._changeStatus(CONSTANTS.PluginStatus.Enter);
+
+            //Step2. 发送成功后给予提示: 互评任务发送成功.
+            //Step3. 构建ProgressMVC：显示互评时间、提交人数
+            var presenterSelf = this;
+            if (!!presenterSelf.$progressMVC) {
+                presenterSelf.$progressMVC.start();
+
+                //进入互评状态：显示查看进度、结束互评
+                presenterSelf.statisticsService.showInjectPanel('top', CONSTANTS.IDENTIFY_PROGRESS, true);
+            } else {
+                var ProgressMVC = __webpack_require__(5);
+                presenterSelf.$progressMVC = new ProgressMVC(presenterSelf.progressView, presenterSelf);
+                presenterSelf.mvcArray.push(presenterSelf.$progressMVC);
+
+                //进入互评状态：显示查看进度、结束互评
+                presenterSelf.statisticsService.showInjectPanel('top', CONSTANTS.IDENTIFY_PROGRESS, true);
+            }
+
+            //Step4. 构建ButtonsMVC后，进入互评状态：显示查看进度、结束互评
+            if (!!presenterSelf.$buttonsMVC) {
+                //进入互评状态：显示查看进度、结束互评
+                presenterSelf.statisticsService.showInjectPanel('bottom', CONSTANTS.IDENTIFY_BUTTONS, true);
+            } else {
+                var ButtonsMVC = __webpack_require__(1)
+                presenterSelf.$buttonsMVC = new ButtonsMVC(presenterSelf.buttonsView, presenterSelf);
+                presenterSelf.mvcArray.push(presenterSelf.$buttonsMVC);
+
+                //进入互评状态：显示查看进度、结束互评
+                presenterSelf.statisticsService.showInjectPanel('bottom', CONSTANTS.IDENTIFY_BUTTONS, true);
+            }
+
+            //通知D类统计该插件退出
+            presenterSelf.statisticsService.plugin.enter(CONSTANTS.PRESENTER_NAME);
+        } else {
+            if (eventData && eventData.data && !eventData.data.result) {
+                switch (eventData.data.code) {
+                    case 400:
+                        this._showMessage(false, this.$translate('message.two.answer.least'));
+
+                        break;
+                    case 401:
+                        this._showMessage(false, this.$translate('message.answer.not.meet'));
+
+                        break;
+                    default:
+                        ;
+                }
+            } else {
+                //发送失败后给予提示: 互评任务发送失败, 请重试!
+                this._showMessage(false, this.$translate('message.start.failed'));
+            }
+        }
+    },
+    //作业互评任务结束回调
+    _onStopAssessmentCallback: function (eventData) {
+        if (eventData && eventData.data && eventData.data.result) {
+            //Step1. 发起请求: 获取学生互评结果数据
+            this.api.getAssessmentData();
+
+            //结束进度更新
+            this.$progressMVC.stop();
+
+            //Step2. 隐藏Buttons Panel
+            this.statisticsService.hideInjectPanel('bottom', CONSTANTS.IDENTIFY_BUTTONS);
+        }
+    },
+    //作业互评进度更新回调
+    _onAssessmentProgressCallback: function (eventData) {
+        if (eventData) {
+            //更新提交人数
+            !!this.$progressMVC && this.$progressMVC.update(eventData);
+        }
+    },
+    //获取学生互评结果星级统计数据回调
+    _onGetAssessmentDataCallback: function (eventData) {
+        if (eventData && $.isArray(eventData.answerData)) {
+            var presenterSelf = this;
+
+            var assessmentData = presenterSelf._convertAssessmentData(eventData.answerData);
+            if (!!presenterSelf.$starTabsMVC) {
+                presenterSelf.$starTabsMVC.update(assessmentData);
+
+                //显示星级筛选面板
+                presenterSelf.statisticsService.showInjectPanel('bottom', CONSTANTS.IDENTIFY_STAR_TABS, CONSTANTS.CLASS_LAYOUT_CONTAINER, false);
+            } else {
+                //Step1. 渲染星级面板
+                var StarTabsMVC = __webpack_require__(2);
+                presenterSelf.$starTabsMVC = new StarTabsMVC(presenterSelf.starTabsView, presenterSelf, assessmentData);
+                presenterSelf.mvcArray.push(presenterSelf.$starTabsMVC);
+
+                //显示星级筛选面板
+                presenterSelf.statisticsService.showInjectPanel('bottom', CONSTANTS.IDENTIFY_STAR_TABS, CONSTANTS.CLASS_LAYOUT_CONTAINER, false);
+            }
+
+            //Step3. 通知D类统计刷新列表
+            presenterSelf._changeStatus(CONSTANTS.PluginStatus.ListRendering);
+            presenterSelf.statisticsService.refreshThumbList(assessmentData);
+        }
+    },
+    //数据结构转化
+    _convertAssessmentData: function (answerData) {
+        if (!!answerData && answerData.length > 0) {
+            var result = [];
+            $.each(answerData, function () {
+                var item = {};
+                item._isAnswerDetail = true; //是否详细数据标识
+
+                var commentData = this.commentData;
+                delete this.commentData;
+
+                item = $.extend(item, this);
+                item = $.extend(item, commentData);
+                item.studentId = item.targetUserId; //item.userId;
+                item.studentName = item.targetUserName; //item.userName;
+                item.score = item.score || 0;
+                item.points = (item.points && item.points.count) || 0;
+                if (!!item.data) {
+                    $.each(item.data, function (i, t) {
+                        t.type = (t.data_type != 'raw' ? t.data_type : 'string');
+                    });
+                }
+
+                result.push(item);
+            });
+
+            return result;
+        }
+
+        return [];
+    }
+}, CONSTANTS.PRESENTER_NAME);
+
+module.exports = function () {
+
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/templates/templates.html' />
+
+
+</resources>
+
+</addon>

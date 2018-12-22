@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../common_wood.css">
+    <script>
+	/*文本区域 textarea 高度自适应*/
+	var autoTextarea = function (elem, extra, maxHeight) {
+        extra = extra || 0;
+        var isFirefox = !!document.getBoxObjectFor || 'mozInnerScreenX' in window,
+        isOpera = !!window.opera && !!window.opera.toString().indexOf('Opera'),
+                addEvent = function (type, callback) {
+                        elem.addEventListener ?
+                                elem.addEventListener(type, callback, false) :
+                                elem.attachEvent('on' + type, callback);
+                },
+                getStyle = elem.currentStyle ? function (name) {
+                        var val = elem.currentStyle[name];
+ 
+                        if (name === 'height' && val.search(/px/i) !== 1) {
+                                var rect = elem.getBoundingClientRect();
+                                return rect.bottom - rect.top -
+                                        parseFloat(getStyle('paddingTop')) -
+                                        parseFloat(getStyle('paddingBottom')) + 'px';        
+                        };
+ 
+                        return val;
+                } : function (name) {
+                                return getComputedStyle(elem, null)[name];
+                },
+                minHeight = parseFloat(getStyle('height'));
+ 
+        elem.style.resize = 'none';
+ 
+        var change = function () {
+                var scrollTop, height,
+                        padding = 0,
+                        style = elem.style;
+ 
+                if (elem._length === elem.value.length) return;
+                elem._length = elem.value.length;
+ 
+                if (!isFirefox && !isOpera) {
+                        padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
+                };
+                scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+ 
+                elem.style.height = minHeight + 'px';
+                if (elem.scrollHeight > minHeight) {
+                        if (maxHeight && elem.scrollHeight > maxHeight) {
+                                height = maxHeight - padding;
+                                style.overflowY = 'auto';
+                        } else {
+                                height = elem.scrollHeight - padding;
+                                style.overflowY = 'hidden';
+                        };
+                        style.height = height + extra + 'px';
+                        scrollTop += parseInt(style.height) - elem.currHeight;
+                        document.body.scrollTop = scrollTop;
+                        document.documentElement.scrollTop = scrollTop;
+                        elem.currHeight = parseInt(style.height);
+                };
+        };
+ 
+        addEvent('propertychange', change);
+        addEvent('input', change);
+        addEvent('focus', change);
+        change();
+};
+	</script>
+</head>
+<body class="exam_wood">
+<div class="com_layout_large">
+
+<!-- 弹窗 -->
+    <div class="pop_box">
+        <div class="com_m_sideboard_2">
+            <div class="com_m_sidehead">
+                <a href="###" class="close"></a>
+            </div>
+            <div class="com_m_sidecon">
+                <div class="content">
+                    <p class="text">请输入正确的区间<br />或区间运算式</p>
+                    <p class="btn_box">
+                        <a href="###" class="com_u_btn1">确定</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /弹窗 -->
+</div>
+</body>
+</html>

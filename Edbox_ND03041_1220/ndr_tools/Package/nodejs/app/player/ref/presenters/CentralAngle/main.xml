@@ -1,0 +1,1969 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="undefined"/><property name="question_url" displayName="undefined" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="snap_svg" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .central_angle_main .circle_svg{width:100%;height:100%}.exam_skin_wood .central_angle_main .whole_circle{stroke:#4d4d4d;fill:none;stroke-width:5px}.exam_skin_wood .central_angle_main .common_line{fill:none;stroke-width:5px}.exam_skin_wood .central_angle_main .circle_arc{fill:none;stroke-width:6px}.exam_skin_wood .central_angle_main .center_circle{fill:#4d4d4d}.exam_skin_wood .central_angle_main .point_circle{fill:#fff;stroke:#cb2627;stroke-width:5px;cursor:pointer}.exam_skin_wood .central_angle_main .point_circle.hover{fill:#fff;stroke:#ff4242}.exam_skin_wood .central_angle_main .point_circle.active{fill:#cb2627;stroke:#fff}.exam_skin_wood .central_angle_main .letter_txt{fill:#4d4d4d;font:italic 95px "Times New Roman"}.exam_skin_wood .central_angle_main .angle_txt{font:95px "Times New Roman"}.exam_skin_wood .central_angle_main .arc_txt{font:95px "Times New Roman"}.exam_skin_wood .central_angle_main .chord_txt{font:95px "Times New Roman"}.exam_skin_wood .central_angle_main .deg_arc{stroke-width:2px}.exam_skin_wood .central_angle_main .sector_area{stroke-width:6px;stroke:none;fill:#46e550;fill-opacity:0}.exam_skin_wood .central_angle_main .sector_area.active{stroke:#3fac45;fill:#46e550;fill-opacity:.4}.addon_CentralAngle .exam_skin_wood{height:100%}.exam_skin_wood .central_angle_wrapper{width:100%;height:100%;position:relative;background:#bfd3e2;text-align:left}.exam_skin_wood .central_angle_wrapper .ca_guide_page{position:absolute;top:0;left:0;z-index:10;width:100%;height:100%;background-color:rgba(0,0,0,.4)}.exam_skin_wood .central_angle_wrapper .ca_guide_page_pic{position:absolute;width:57.66667em;height:38.33333em;top:53%;left:50%;background:url(resources/wood/images/guide_page.png) no-repeat;background-size:100% 100%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.exam_skin_wood .central_angle_wrapper .ca_guide_desc{position:absolute;left:50%;top:5%;width:85%;text-align:center;font:1.75em Microsoft YaHei;-webkit-transform:translate(-50%);transform:translate(-50%)}.exam_skin_wood .central_angle_wrapper .ca_guide_page_btn{position:absolute;left:23.875em;bottom:1.5em;min-width:10em;height:3.08333em;line-height:3.08333em;text-align:center;border:1px solid #397274;border-radius:.33333em;color:#384650;background:-webkit-linear-gradient(top,#fff,#e9e9e9);background:linear-gradient(180deg,#fff 0,#e9e9e9);cursor:pointer}.exam_skin_wood .central_angle_wrapper .ca_guide_page_btn.ui_btn_active{color:#fff;background:#7ebdbf}.exam_skin_wood .central_angle_wrapper .ca_guide_page_btn span{font-size:1.5em}.exam_skin_wood .central_angle_inner{width:100%;height:100%;padding:6.25em 6.58333em 3.54167em;white-space:nowrap}.exam_skin_wood .central_angle_main{display:inline-block;width:70.8%;height:100%;background-color:#b8cdde;border-radius:.33333em;vertical-align:top}.exam_skin_wood .central_angle_aside{position:relative;display:inline-block;width:29%;height:100%;text-align:center}.exam_skin_wood .central_angle_aside .ca_equal_txt{display:none;padding:6.25em 0 0 1em}.exam_skin_wood .central_angle_aside .ca_chord_equal_txt{font:700 italic 3em Times New Roman;color:#2383cc}.exam_skin_wood .central_angle_aside .ca_chord_equal_txt .equal_sign{font:700 1em Microsoft YaHei;color:#4d4d4d}.exam_skin_wood .central_angle_aside .ca_chord_equal_txt .ca_chord_txt{display:inline-block;font:1em Microsoft YaHei;color:#4d4d4d}.exam_skin_wood .central_angle_aside .ca_arc_equal_txt{text-align:right;margin-top:.83333em}.exam_skin_wood .central_angle_aside .ca_arc_equal_txt .ca_arc_txt{position:relative;font:700 italic 3em Times New Roman;color:#de6c2e}.exam_skin_wood .central_angle_aside .ca_arc_equal_txt .ca_arc_txt:before{content:"";position:absolute;left:.16667em;top:-.25em;width:1.16667em;height:.30417em;background:url(resources/wood/images/arc_mark.png) no-repeat;background-size:100% 100%}.exam_skin_wood .central_angle_aside .ca_arc_equal_txt .equal_sign{font:700 3em Microsoft YaHei;color:#4d4d4d}.exam_skin_wood .central_angle_aside .ca_deg_txt{position:absolute;bottom:0;padding-left:1.75em;color:#4d4d4d}.exam_skin_wood .central_angle_aside .ca_deg_txt span{vertical-align:middle}.exam_skin_wood .central_angle_aside .ca_deg_txt p{margin:1.33333em 0}.exam_skin_wood .central_angle_aside .ca_deg_txt p>:first-child{position:relative;margin-left:.91667em;font:700 italic 2.5em Times New Roman;vertical-align:-.318em}.exam_skin_wood .central_angle_aside .ca_deg_txt p>:first-child:before{content:"";position:absolute;left:-.91667em;top:50%;width:.83333em;height:.73333em;background:url(resources/wood/images/angle_mark.png) no-repeat;background-size:100% 100%;-webkit-transform:translateY(-50%);transform:translateY(-50%)}.exam_skin_wood .central_angle_aside .ca_deg_txt .equal_sign{font:700 2.58333em Microsoft YaHei}.exam_skin_wood .central_angle_aside .ca_deg_txt .input{position:relative;display:inline-block;width:3.125em;height:1.6em;margin-left:.08333em;font:700 2.5em Microsoft YaHei;color:#4d4d4d;border:.04167em solid #8b8b8b;border-radius:.25em;box-shadow:inset 0 .06167em .08333em #c6c9cc;background:-webkit-linear-gradient(top,#f0f0f0,#fff);background:linear-gradient(180deg,#f0f0f0 0,#fff);text-align:center}.exam_skin_wood .central_angle_aside .ca_deg_txt .input.active{border:.05em solid #2daaec}.exam_skin_wood .central_angle_aside .ca_deg_txt .input>span{position:absolute;left:50%;top:47%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}.exam_skin_wood .central_angle_aside .ca_deg_txt p:first-child .input{position:relative;left:.04167em}.exam_skin_wood .central_angle_aside .deg_value.active{background-color:#afe2ff}.exam_skin_wood .central_angle_aside .fractions_keyboard_list,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2{border:1px solid #686868;background:#ebebeb;position:absolute;width:13.91667em;z-index:100}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .hd,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .hd{height:1.66667em;background:url(resources/wood/images/jeyboard_hd.png) repeat-x;background-size:auto 100%;border-bottom:1px solid #bababa}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .hd .btn_close,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .hd .btn_close{overflow:hidden;float:right;cursor:pointer;height:1.625em;padding:.45833em .625em}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .hd .btn_close b,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .hd .btn_close b{width:.79167em;height:.79167em;display:block;background:url(resources/wood/images/icon_close.png) no-repeat;background-size:100% 100%}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .hd .btn_close:hover,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .hd .btn_close:hover{background:#d8d7d7}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .hd .btn_close:active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .hd .btn_close:active{background:#d3d3d3}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd{padding:.41667em}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a{width:3.66667em;height:2.25em;line-height:2.25em;float:left;color:#4d4d4d;background:#fff;text-align:center;border-radius:.20833em;border:1px solid #9c9c9c;margin:.29167em}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a span{font-size:1.5em;vertical-align:top}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a:active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a:active{background:#31b0ee;color:#fff;border-color:#007ab6}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_enter span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_enter span{font-size:1em}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del{text-align:center}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del span{width:1.25em;height:.91667em;display:block;margin:.29167em auto 0;overflow:hidden;background:url(resources/wood/images/icon_del_normal.png) no-repeat 0 0;background-size:100% 100%}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del.active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del:active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del.active,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del:active{background:#31b0ee}.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del.active span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list .bd a.btn_del:active span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del.active span,.exam_skin_wood .central_angle_aside .fractions_keyboard_list2 .bd a.btn_del:active span{background:url(resources/wood/images/icon_del_active.png) no-repeat 0 0;background-size:100% 100%}.typefaces_long .exam_skin_wood .central_angle_aside .ca_chord_equal_txt .ca_chord_txt{font-size:.7em}.typefaces_ru_RU .exam_skin_wood .central_angle_aside .ca_chord_equal_txt .ca_chord_txt{font-size:.7em}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="central_angle_wrapper"><div class="central_angle_inner"><div class="central_angle_main"><svg class="circle_svg"></svg></div><div class="central_angle_aside"><div class="ca_equal_txt"><p class="ca_chord_equal_txt"><span class="ca_chord_txt">弦</span>AB<span class="equal_sign">=</span>CD</p><p class="ca_arc_equal_txt"><span class="ca_arc_txt">AB</span><span class="equal_sign">=</span><span class="ca_arc_txt">CD</span></p></div><div class="ca_deg_txt"><p><span>AOB</span><span class="equal_sign">=</span><span class="ca_deg_aob input"> <span><span class="deg_value">40</span>°</span></span></p><p><span>COD</span><span class="equal_sign">=</span><span class="ca_deg_cod input"> <span><span class="deg_value">40</span>°</span></span></p><div class="fractions_keyboard_list clearfix" style="display:none"><div class="hd"><span class="btn_close"><b></b></span></div><div class="bd clearfix"><a href="javascript:;"><span>1</span></a> <a href="javascript:;"><span>2</span></a> <a href="javascript:;"><span>3</span></a> <a href="javascript:;"><span>4</span></a> <a href="javascript:;"><span>5</span></a> <a href="javascript:;"><span>6</span></a> <a href="javascript:;"><span>7</span></a> <a href="javascript:;"><span>8</span></a> <a href="javascript:;"><span>9</span></a> <a href="javascript:;" class="btn_del"><span></span></a> <a href="javascript:;"><span>0</span></a> <a href="javascript:;" class="btn_enter"><span>Enter</span></a></div></div><div class="fractions_keyboard_list2 clearfix" style="display:none"><div class="hd"><span class="btn_close"><b></b></span></div><div class="bd clearfix"><a href="javascript:;"><span>1</span></a> <a href="javascript:;"><span>2</span></a> <a href="javascript:;"><span>3</span></a> <a href="javascript:;"><span>4</span></a> <a href="javascript:;"><span>5</span></a> <a href="javascript:;"><span>6</span></a> <a href="javascript:;"><span>7</span></a> <a href="javascript:;"><span>8</span></a> <a href="javascript:;"><span>9</span></a> <a href="javascript:;" class="btn_del"><span></span></a> <a href="javascript:;"><span>0</span></a> <a href="javascript:;" class="btn_enter"><span>Enter</span></a></div></div></div></div></div><div class="ca_guide_page" style="display: block"><div class="ca_guide_page_pic"><span class="ca_guide_desc">拖拽扇形，旋转圆心角</span> <a class="ca_guide_page_btn"><span>我知道了</span></a></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(5);
+	__webpack_require__(2);
+	__webpack_require__(4);
+	module.exports = __webpack_require__(3);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _CentralAngle = __webpack_require__(2);
+
+	var _CentralAngle2 = _interopRequireDefault(_CentralAngle);
+
+	var _AngleInputs = __webpack_require__(5);
+
+	var _AngleInputs2 = _interopRequireDefault(_AngleInputs);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+
+	  var i18nModel = {
+	    'ca_chord_txt': '弦',
+	    'ca_guide_page_btn': '我知道了',
+	    'ca_guide_desc': '拖拽扇形，旋转圆心角'
+	  };
+
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'CentralAngle',
+	      type: '',
+	      subtype: ''
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	    },
+	    /**
+	     * Presenter对外暴露的方法
+	     */
+	    _service_: {
+	      constructor: function constructor(parent) {
+	        this.parent = parent;
+	      },
+	      getQuestionInfo: function getQuestionInfo() {
+	        return {
+	          id: '',
+	          type_code: 'CentralAngle',
+	          type_name: '圆心角定理',
+	          url: '',
+	          notExistStatistics: true,
+	          noNeedQuizProgress: true
+	        };
+	      },
+	      setLocationProperties: function setLocationProperties(data) {
+	        $.extend(i18nModel, data || {});
+	      },
+	      getExtendData: function getExtendData() {
+	        //return this.parent.centralAngle.getAllPointsDeg()
+	        var data = {
+	          points: this.parent.centralAngle.getAllPointsDeg(),
+	          is_hide_guide: this.parent.is_hide_guide
+	        };
+	        return data;
+	      }
+	    },
+	    getService: function getService() {
+	      this._service_.constructor(this);
+	      return this._service_;
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      this.model = model;
+	      this.setMultiLanguage(view);
+	      this.guidePage = $(view).find('.ca_guide_page');
+	      this.guidePageBtn = $(view).find('.ca_guide_page_btn');
+	      this.angleInputs = new _AngleInputs2.default($(view).find('.ca_deg_aob'), $(view).find('.ca_deg_cod'));
+	      this.angleInputs.init(view, model);
+	      if (this.model.__ExtendModel && !$.isEmptyObject(this.model.__ExtendModel)) {
+	        var arr = this.model.__ExtendModel.points;
+	        var is_hide_guide = this.model.__ExtendModel.is_hide_guide;
+	        if (is_hide_guide) {
+	          this.guidePage.hide();
+	        }
+	        this.centralAngle = new _CentralAngle2.default(arr[0], arr[1], arr[2], arr[3]);
+	      } else {
+	        this.centralAngle = new _CentralAngle2.default(180, 220, 310, 350);
+	      }
+	      this.centralAngle.addController(this.angleInputs);
+	      this.centralAngle.init(view, model);
+	      this.angleInputs.addAngle(this.centralAngle);
+	      var that = this;
+	      this.__interface = {
+	        resizeScreen: function resizeScreen(data) {
+	          that.angleInputs.adjustKeyBoardPos();
+	        }
+	      };
+	    },
+	    setMultiLanguage: function setMultiLanguage(view) {
+	      var $view = $(view);
+	      $view.find('span.ca_guide_desc').text(i18nModel.ca_guide_desc);
+	      $view.find('a.ca_guide_page_btn').find('span').text(i18nModel.ca_guide_page_btn);
+	      $view.find('span.ca_chord_txt').text(i18nModel.ca_chord_txt);
+	    },
+	    pageShow: function pageShow() {
+	      this._bindEvent();
+	    },
+	    pageLeave: function pageLeave() {
+	      this._unbindEvent();
+	    },
+	    destroy: function destroy() {},
+	    /** 如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+	    getState: function getState() {},
+	    setState: function setState(state, options) {},
+	    /** **以下开始为Presenter的私有方法*****/
+	    _bindEvent: function _bindEvent() {
+	      var that = this;
+	      that.is_hide_guide = false;
+	      this.guidePageBtn.mousedown(function () {
+	        $(this).addClass('ui_btn_active');
+	      }).click(function () {
+	        that.is_hide_guide = true;
+	        that.guidePage.hide();
+	      });
+	      this.guidePageBtn.on('touchstart', function () {
+	        $(this).addClass('ui_btn_active');
+	      });
+	      this.guidePageBtn.on('touchend', function () {
+	        that.guidePage.hide();
+	        $(this).removeClass('ui_btn_active');
+	      });
+	      this.guidePage.mouseup(function () {
+	        that.guidePageBtn.removeClass('ui_btn_active');
+	      });
+	    },
+	    _unbindEvent: function _unbindEvent() {}
+	  });
+
+	  window.AddonCentralAngle_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by Administrator on 2017/6/29 0029.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _utils = __webpack_require__(3);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _config = __webpack_require__(4);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var getPointX = _utils2.default.getPointX;
+	var getPointY = _utils2.default.getPointY;
+	var setText = _utils2.default.setText;
+	var setPointPosition = _utils2.default.setPointPosition;
+	var setLinePosition = _utils2.default.setLinePosition;
+	var reportMouseCoordinates = _utils2.default.reportMouseCoordinates;
+	// 计算弦长用的半径
+	var calcuRadius = _config2.default.calcuRadius;
+	var svgWidth = _config2.default.svgWidth;
+	var svgHeight = _config2.default.svgHeight;
+	var circleRadius = _config2.default.circleRadius;
+	var centerPointR = _config2.default.centerPointR;
+	var pointRadius = _config2.default.pointRadius;
+	var svgColor = _config2.default.svgColor;
+	var textCenter = {
+	  'text-anchor': 'middle',
+	  'dominant-baseline': 'central'
+	};
+
+	var CentralAngle = function () {
+	  function CentralAngle(degA, degB, degC, degD) {
+	    _classCallCheck(this, CentralAngle);
+
+	    this.degA = degA;
+	    this.degB = degB;
+	    this.degC = degC;
+	    this.degD = degD;
+	  }
+
+	  _createClass(CentralAngle, [{
+	    key: 'init',
+	    value: function init(view, model) {
+	      this.$view = $(view);
+	      this.model = model;
+	      this.$svg = this.$view.find('.circle_svg');
+	      this.svgDom = this.$svg.get(0);
+	      this.$panel = this.$view.find('.central_angle_wrapper');
+	      this.paper = Snap(this.$svg.get(0));
+	      this.paper.attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight);
+	      this.panel = Snap(this.$panel.get(0));
+	      this.equalTxt = this.$view.find('.ca_equal_txt');
+	      this.circle = {
+	        x: svgWidth / 2,
+	        y: svgHeight / 2,
+	        r: circleRadius
+	      };
+	      this.initView();
+	      this.bindDom();
+	      this.sortLayout();
+	    }
+	  }, {
+	    key: 'initView',
+	    value: function initView() {
+	      this.paper.circle(this.circle.x, this.circle.y, this.circle.r).addClass('whole_circle');
+	      this.paper.text(this.circle.x, this.circle.y + this.circle.x / 14, 'O').attr(textCenter).addClass('letter_txt');
+	      this.initPointView();
+	      // 画标注角度的扇形
+	      this.degABArc = this.paper.path().addClass('deg_arc').attr({ stroke: svgColor.BULE, fill: svgColor.LIGHTBULE });
+	      this.degCDArc = this.paper.path().addClass('deg_arc deg_cd_arc').attr({ stroke: svgColor.GREEN, fill: svgColor.LIGHTGREEN });
+	      this.$degCDArc = this.$svg.find('.deg_cd_arc');
+	      // 画半径线
+	      this.lineOA = _createLine(this.paper, this.circle, this.pointA, svgColor.BULE);
+	      this.lineOB = _createLine(this.paper, this.circle, this.pointB, svgColor.BULE);
+	      this.lineOC = _createLine(this.paper, this.circle, this.pointC, svgColor.GREEN);
+	      this.lineOD = _createLine(this.paper, this.circle, this.pointD, svgColor.GREEN);
+	      // 画弦长
+	      this.lineAB = _createChord(this.paper, this.pointA, this.pointB, svgColor.BULE);
+	      this.lineCD = _createChord(this.paper, this.pointC, this.pointD, svgColor.GREEN);
+	      // 画文字
+	      this.textA = this.paper.text(0, 0, 'A').attr(textCenter).addClass('letter_txt');
+	      this.textB = this.paper.text(0, 0, 'B').attr(textCenter).addClass('letter_txt');
+	      this.textC = this.paper.text(0, 0, 'C').attr(textCenter).addClass('letter_txt');
+	      this.textD = this.paper.text(0, 0, 'D').attr(textCenter).addClass('letter_txt');
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textD];
+	      this.chordABLenText = this.paper.text(0, 0, 0).attr(textCenter).addClass('chord_txt').attr({ fill: svgColor.BULE });
+	      this.chordCDLenText = this.paper.text(0, 0, 0).attr(textCenter).addClass('chord_txt').attr({ fill: svgColor.GREEN });
+	      this.degABText = this.paper.text(0, 0, 0).attr(textCenter).addClass('angle_txt').attr({ fill: svgColor.RED });
+	      this.degCDText = this.paper.text(0, 0, 0).attr(textCenter).addClass('angle_txt').attr({ fill: svgColor.RED });
+	      this.arcABText = this.paper.text(0, 0, 0).attr(textCenter).addClass('arc_txt').attr({ fill: svgColor.ORANGE });
+	      this.arcCDText = this.paper.text(0, 0, 0).attr(textCenter).addClass('arc_txt').attr({ fill: svgColor.PURPLE });
+	      // 画圆周弧线
+	      this.circleABArc = this.paper.path().addClass('circle_arc').attr({ stroke: svgColor.ORANGE });
+	      this.circleCDArc = this.paper.path().addClass('circle_arc').attr({ stroke: svgColor.PURPLE });
+	      // 画整个圆心角扇形区
+	      this.sectorAOB = this.paper.path().addClass('sector_area');
+	      this.sectorCOD = this.paper.path().addClass('sector_area');
+	      // 圆心
+	      this.centerPoint = this.paper.circle(this.circle.x, this.circle.y, centerPointR).addClass('center_circle');
+
+	      this.drawPointText(['A', 'B', 'C', 'D']);
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      this.midABDeg = this.getMidDeg(this.pointA, this.pointB);
+	      this.midCDDeg = this.getMidDeg(this.pointC, this.pointD);
+	      this.drawChordLenText(aob, this.chordABLenText, this.midABDeg);
+	      this.drawChordLenText(cod, this.chordCDLenText, this.midCDDeg);
+	      // flag用于画圆弧
+	      var arcflag1 = aob >= 180 ? 0 : 1;
+	      var arcflag2 = cod >= 180 ? 0 : 1;
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      this.drawDegText(aob, this.degABText, this.midABDeg);
+	      this.drawDegText(cod, this.degCDText, this.midCDDeg);
+	      this.drawArcLenText(aob, this.arcABText, this.midABDeg);
+	      this.drawArcLenText(cod, this.arcCDText, this.midCDDeg);
+	      this.drawCircleArc(this.circleABArc, this.sectorAOB, this.pointA, this.pointB, arcflag1);
+	      this.drawCircleArc(this.circleCDArc, this.sectorCOD, this.pointC, this.pointD, arcflag2);
+	      this.drawDegArc(aob, this.degABArc, this.pointA, this.pointB, arcflag1);
+	      this.drawDegArc(cod, this.degCDArc, this.pointC, this.pointD, arcflag2);
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textD];
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointD]);
+	      this.hanlderManytTextCoincide();
+	      var isEqual = this.occurTalCoincide();
+	      this.preventValueCoincide(isEqual);
+	      this.handlerArcLenCoincide();
+	      this.hanlderChordLenCoincide(isEqual);
+	      this.sortSectorLayout();
+	      this.control.setDeg(aob, 1);
+	      this.control.setDeg(cod, 2);
+	    }
+	  }, {
+	    key: 'initPointView',
+	    value: function initPointView() {
+	      this.pointA = _createCirclePoint(this.paper, this.degA, this.circle);
+	      this.pointB = _createCirclePoint(this.paper, this.degB, this.circle);
+	      this.pointC = _createCirclePoint(this.paper, this.degC, this.circle);
+	      this.pointD = _createCirclePoint(this.paper, this.degD, this.circle);
+	      this.pointA.data('angle', 'aob');
+	      this.pointB.data('angle', 'aob');
+	      this.pointC.data('angle', 'cod');
+	      this.pointD.data('angle', 'cod');
+	    }
+	  }, {
+	    key: 'addController',
+	    value: function addController(control) {
+	      this.control = control;
+	    }
+	  }, {
+	    key: 'sortLayout',
+	    value: function sortLayout() {
+	      this.paper.append(this.pointA);
+	      this.paper.append(this.pointB);
+	      this.paper.append(this.pointC);
+	      this.paper.append(this.pointD);
+	    }
+
+	    /**
+	     * 调整扇形层级关系，为了在大扇形包含小扇形时能选中小扇形
+	     */
+
+	  }, {
+	    key: 'sortSectorLayout',
+	    value: function sortSectorLayout() {
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      aob = parseInt((aob > 180 ? 360 - aob : aob).toFixed(0));
+	      cod = parseInt((cod > 180 ? 360 - cod : cod).toFixed(0));
+	      if (aob > cod) {
+	        this.sectorAOB.after(this.sectorCOD);
+	      } else if (aob < cod) {
+	        this.sectorCOD.after(this.sectorAOB);
+	      }
+	    }
+	  }, {
+	    key: 'bindDom',
+	    value: function bindDom() {
+	      var that = this;
+	      var pointArr = [that.pointA, that.pointB, that.pointC, that.pointD];
+	      pointArr.forEach(function (elem) {
+	        elem.mousedown(function (e) {
+	          that.isOperatePoint = true;
+	          that.pointMousedown(e, this);
+	        });
+	        elem.touchstart(function (e) {
+	          e.preventDefault();
+	          resetHover();
+	          that.isOperatePoint = true;
+	          that.pointMousedown(e.touches[0], this);
+	        });
+	        elem.mouseover(function () {
+	          this.addClass('hover');
+	        });
+	        elem.mouseout(function () {
+	          this.removeClass('hover');
+	        });
+	      });
+	      that.sectorAOB.mousedown(function (e) {
+	        that.arcMouseDown(e, that.pointA, that.pointB);
+	      });
+	      that.sectorAOB.touchstart(function (e) {
+	        e.preventDefault();
+	        that.arcMouseDown(e.touches[0], that.pointA, that.pointB);
+	      });
+	      that.sectorCOD.mousedown(function (e) {
+	        that.arcMouseDown(e, that.pointC, that.pointD);
+	      });
+	      that.sectorCOD.touchstart(function (e) {
+	        e.preventDefault();
+	        that.arcMouseDown(e.touches[0], that.pointC, that.pointD);
+	      });
+	      that.panel.mouseup(function () {
+	        that.mouseUp();
+	      });
+	      that.panel.touchend(function () {
+	        that.mouseUp();
+	      });
+
+	      function resetHover() {
+	        pointArr.forEach(function (elem) {
+	          elem.removeClass('hover');
+	        });
+	      }
+	    }
+	  }, {
+	    key: 'pointMousedown',
+	    value: function pointMousedown(e, p) {
+	      var that = this;
+	      var point = reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var startX = point.x;
+	      var startY = point.y;
+	      var startX2 = parseFloat(getPointX(p));
+	      var startY2 = parseFloat(getPointY(p));
+	      p.addClass('active');
+	      that.lastOperatePoint = p;
+	      that.paper.append(p);
+	      that.pointsText = [that.textA, that.textB, that.textC, that.textD];
+	      that.resetPointText();
+	      that.resetValuePosition();
+	      var num = void 0;
+	      if (p == this.pointA) {
+	        that.pointsText = [that.textB, that.textC, that.textD];
+	        that.preventCoincide([that.pointB, that.pointC, that.pointD]);
+	        num = 1;
+	        this.sectorCOD.after(this.sectorAOB);
+	      } else if (p == that.pointB) {
+	        that.pointsText = [that.textA, that.textC, that.textD];
+	        that.preventCoincide([that.pointA, that.pointC, that.pointD]);
+	        this.sectorCOD.after(this.sectorAOB);
+	        num = 1;
+	      } else if (p == that.pointC) {
+	        that.pointsText = [that.textA, that.textB, that.textD];
+	        that.preventCoincide([that.pointA, that.pointB, that.pointD]);
+	        this.sectorAOB.after(this.sectorCOD);
+	        num = 2;
+	      } else if (p == that.pointD) {
+	        that.pointsText = [that.textA, that.textB, that.textC];
+	        that.preventCoincide([that.pointA, that.pointB, that.pointC]);
+	        this.sectorAOB.after(this.sectorCOD);
+	        num = 2;
+	      }
+	      that.keepDis();
+	      that.panel.mousemove(function (e) {
+	        pointMousemove(e);
+	      });
+
+	      that.panel.touchmove(function (e) {
+	        e.preventDefault();
+	        pointMousemove(e.touches[0]);
+	      });
+
+	      function pointMousemove(e) {
+	        var point = reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x1 = point.x;
+	        var y1 = point.y;
+	        if (startX == x1 && startY == y1) {
+	          return false;
+	        }
+	        that.$degCDArc.show();
+	        that.equalTxt.hide();
+	        var x = x1 - startX + startX2;
+	        var y = y1 - startY + startY2;
+	        var angle = Snap.angle(x, y, that.circle.x, that.circle.y);
+	        var axisX = Math.cos(Snap.rad(angle)) * that.circle.r + that.circle.x;
+	        var axisY = Math.sin(Snap.rad(angle)) * that.circle.r + that.circle.y;
+
+	        if (x < 0 || x > svgWidth || y < 0 || y > svgHeight) {
+	          that.mouseUp();
+	          return;
+	        }
+	        setPointPosition(p, axisX, axisY);
+	        var deg = that.followPoint(p);
+	        that.control.setDeg(deg, num);
+	      }
+	    }
+	  }, {
+	    key: 'arcMouseDown',
+	    value: function arcMouseDown(e, p1, p2) {
+	      var that = this;
+	      var point = reportMouseCoordinates(this.svgDom, e.pageX, e.pageY, this.svgDom);
+	      var x1 = point.x;
+	      var y1 = point.y;
+	      var startX2 = parseFloat(getPointX(p1));
+	      var startY2 = parseFloat(getPointY(p1));
+	      var startX3 = parseFloat(getPointX(p2));
+	      var startY3 = parseFloat(getPointY(p2));
+	      if (p1 == this.pointA) {
+	        that.sectorAOB.addClass('active');
+	        that.sectorAOB.insertBefore(that.centerPoint);
+	        if (that.textA.node.innerHTML.length != 1 || that.textB.node.innerHTML.length != 1) {
+	          that.pointsText = [that.textA, that.textB, that.textC, that.textD];
+	          that.resetPointText();
+	        }
+	      } else {
+	        that.sectorCOD.addClass('active');
+	        that.sectorCOD.insertBefore(that.centerPoint);
+	        if (that.textC.node.innerHTML.length != 1 || that.textD.node.innerHTML.length != 1) {
+	          that.pointsText = [that.textA, that.textB, that.textC, that.textD];
+	          that.resetPointText();
+	        }
+	      }
+	      that.paper.append(p1);
+	      that.paper.append(p2);
+	      that.lastRealtePoint1 = p1;
+	      that.lastRealtePoint2 = p2;
+	      that.isOperateSector = true;
+	      that.resetValuePosition();
+	      that.panel.mousemove(function (e) {
+	        arcMousemove(e);
+	      });
+	      that.panel.touchmove(function (e) {
+	        arcMousemove(e.touches[0]);
+	      });
+
+	      function arcMousemove(e) {
+	        var point = reportMouseCoordinates(that.svgDom, e.pageX, e.pageY, that.svgDom);
+	        var x2 = point.x;
+	        var y2 = point.y;
+	        if (x1 == x2 && y1 == y2) {
+	          return false;
+	        }
+	        that.$degCDArc.show();
+	        that.equalTxt.hide();
+	        if (x2 < 0 || x2 > svgWidth || y2 < 0 || y2 > svgHeight) {
+	          that.sectorAOB.removeClass('active');
+	          that.sectorCOD.removeClass('active');
+	          that.panel.unmousemove();
+	          return;
+	        }
+	        var angle = Snap.angle(x2, y2, x1, y1, that.circle.x, that.circle.y);
+	        var angle1 = Snap.angle(startX2, startY2, that.circle.x, that.circle.y);
+	        var angle2 = Snap.angle(startX3, startY3, that.circle.x, that.circle.y);
+	        var axisX = Math.cos(Snap.rad(angle1 + angle)) * that.circle.r + that.circle.x;
+	        var axisY = Math.sin(Snap.rad(angle1 + angle)) * that.circle.r + that.circle.y;
+	        var axisX2 = Math.cos(Snap.rad(angle2 + angle)) * that.circle.r + that.circle.x;
+	        var axisY2 = Math.sin(Snap.rad(angle2 + angle)) * that.circle.r + that.circle.y;
+	        setPointPosition(p1, axisX, axisY);
+	        setPointPosition(p2, axisX2, axisY2);
+	        that.followPoint(p1);
+	      }
+	    }
+	  }, {
+	    key: 'mouseUp',
+	    value: function mouseUp() {
+	      if (this.isOperatePoint) {
+	        this.pointSnap();
+	      }
+	      if (this.isOperateSector) {
+	        this.arcSnap();
+	      }
+	      var isEqual = this.occurTalCoincide();
+	      this.preventValueCoincide(isEqual);
+	      this.handlerArcLenCoincide();
+	      this.hanlderChordLenCoincide(isEqual);
+	      this.pointA.removeClass('active');
+	      this.pointB.removeClass('active');
+	      this.pointC.removeClass('active');
+	      this.pointD.removeClass('active');
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textD];
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointD]);
+	      this.hanlderManytTextCoincide();
+	      this.keepDis();
+	      this.sortSectorLayout();
+	      this.sectorAOB.removeClass('active');
+	      this.sectorCOD.removeClass('active');
+	      this.panel.unmousemove();
+	      this.panel.untouchmove();
+	      this.isOperatePoint = false;
+	      this.isOperateSector = false;
+	    }
+
+	    /**
+	     * 移动点时的相关图形或数据随之变化
+	     */
+
+	  }, {
+	    key: 'followPoint',
+	    value: function followPoint(p) {
+	      if (p.data('angle') == 'aob') {
+	        var ax = getPointX(this.pointA);
+	        var ay = getPointY(this.pointA);
+	        var bx = getPointX(this.pointB);
+	        var by = getPointY(this.pointB);
+	        setLinePosition(this.lineOA, 'x2', 'y2', ax, ay);
+	        setLinePosition(this.lineOB, 'x2', 'y2', bx, by);
+	        setLinePosition(this.lineAB, 'x1', 'y1', ax, ay);
+	        setLinePosition(this.lineAB, 'x2', 'y2', bx, by);
+	        var aob = this.getDeg(this.pointA, this.pointB);
+	        this.midABDeg = this.getMidDeg(this.pointA, this.pointB);
+	        this.drawChordLenText(aob, this.chordABLenText, this.midABDeg);
+	        var arcflag1 = aob >= 180 ? 0 : 1;
+	        aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	        this.drawDegText(aob, this.degABText, this.midABDeg);
+	        this.drawArcLenText(aob, this.arcABText, this.midABDeg);
+	        this.drawCircleArc(this.circleABArc, this.sectorAOB, this.pointA, this.pointB, arcflag1);
+	        this.drawDegArc(aob, this.degABArc, this.pointA, this.pointB, arcflag1);
+	        this.drawPointText(['A', 'B']);
+	        return aob;
+	      } else {
+	        var cx = getPointX(this.pointC);
+	        var cy = getPointY(this.pointC);
+	        var dx = getPointX(this.pointD);
+	        var dy = getPointY(this.pointD);
+	        setLinePosition(this.lineOC, 'x2', 'y2', cx, cy);
+	        setLinePosition(this.lineOD, 'x2', 'y2', dx, dy);
+	        setLinePosition(this.lineCD, 'x1', 'y1', cx, cy);
+	        setLinePosition(this.lineCD, 'x2', 'y2', dx, dy);
+	        var cod = this.getDeg(this.pointC, this.pointD);
+	        this.midCDDeg = this.getMidDeg(this.pointC, this.pointD);
+	        this.drawChordLenText(cod, this.chordCDLenText, this.midCDDeg);
+	        var arcflag2 = cod >= 180 ? 0 : 1;
+	        cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	        this.drawDegText(cod, this.degCDText, this.midCDDeg);
+	        this.drawArcLenText(cod, this.arcCDText, this.midCDDeg);
+	        this.drawCircleArc(this.circleCDArc, this.sectorCOD, this.pointC, this.pointD, arcflag2);
+	        this.drawDegArc(cod, this.degCDArc, this.pointC, this.pointD, arcflag2);
+	        this.drawPointText(['C', 'D']);
+	        return cod;
+	      }
+	    }
+	  }, {
+	    key: 'pointSnap',
+	    value: function pointSnap() {
+	      var p = this.lastOperatePoint;
+	      var deg1 = void 0,
+	          deg2 = void 0,
+	          deg3 = void 0,
+	          x1 = void 0,
+	          x2 = void 0,
+	          y1 = void 0,
+	          y2 = void 0,
+	          delta1 = void 0,
+	          delta2 = void 0;
+	      if (p == this.pointA || p == this.pointB) {
+	        x1 = getPointX(this.pointC);
+	        y1 = getPointY(this.pointC);
+	        x2 = getPointX(this.pointD);
+	        y2 = getPointY(this.pointD);
+	        deg1 = Snap.angle(x1, y1, this.circle.x, this.circle.y);
+	        deg2 = Snap.angle(x2, y2, this.circle.x, this.circle.y);
+	        deg3 = Snap.angle(getPointX(p), getPointY(p), this.circle.x, this.circle.y);
+	        delta1 = Math.abs(deg1 - deg3);
+	        delta2 = Math.abs(deg2 - deg3);
+	      } else if (p == this.pointC || p == this.pointD) {
+	        x1 = getPointX(this.pointA);
+	        y1 = getPointY(this.pointA);
+	        x2 = getPointX(this.pointB);
+	        y2 = getPointY(this.pointB);
+	        deg1 = Snap.angle(x1, y1, this.circle.x, this.circle.y);
+	        deg2 = Snap.angle(x2, y2, this.circle.x, this.circle.y);
+	        deg3 = Snap.angle(getPointX(p), getPointY(p), this.circle.x, this.circle.y);
+	        delta1 = Math.abs(deg1 - deg3);
+	        delta2 = Math.abs(deg2 - deg3);
+	      }
+	      // 对最近的线段进行吸附
+	      delta1 = delta1 > 180 ? 360 - delta1 : delta1;
+	      delta2 = delta2 > 180 ? 360 - delta2 : delta2;
+	      if (delta1 < 3.5 && delta2 < 3.5 && delta1 < delta2 || delta1 < 3.5 && delta2 >= 3.5) {
+	        setPointPosition(p, x1, y1);
+	        this.followPoint(p);
+	      }
+	      if (delta1 < 3.5 && delta2 < 3.5 && delta1 > delta2 || delta1 >= 3.5 && delta2 < 3.5) {
+	        setPointPosition(p, x2, y2);
+	        this.followPoint(p);
+	      }
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      this.control.setDeg(aob, 1);
+	      this.control.setDeg(cod, 2);
+	    }
+	  }, {
+	    key: 'arcSnap',
+	    value: function arcSnap() {
+	      var p1 = this.lastRealtePoint1;
+	      var p2 = this.lastRealtePoint2;
+	      var x1 = void 0,
+	          x2 = void 0,
+	          y1 = void 0,
+	          y2 = void 0;
+	      if (p1 == this.pointA || p1 == this.pointB) {
+	        x1 = getPointX(this.pointC);
+	        y1 = getPointY(this.pointC);
+	        x2 = getPointX(this.pointD);
+	        y2 = getPointY(this.pointD);
+	      } else if (p1 == this.pointC || p1 == this.pointD) {
+	        x1 = getPointX(this.pointA);
+	        y1 = getPointY(this.pointA);
+	        x2 = getPointX(this.pointB);
+	        y2 = getPointY(this.pointB);
+	      }
+	      var deg1 = Snap.angle(x1, y1, this.circle.x, this.circle.y);
+	      var deg2 = Snap.angle(x2, y2, this.circle.x, this.circle.y);
+	      var deg3 = Snap.angle(getPointX(p1), getPointY(p1), this.circle.x, this.circle.y);
+	      var deg4 = Snap.angle(getPointX(p2), getPointY(p2), this.circle.x, this.circle.y);
+	      var delta1 = Math.abs(deg1 - deg3); // AC
+	      var delta2 = Math.abs(deg2 - deg3); // AD
+	      var delta3 = Math.abs(deg1 - deg4); // BC
+	      var delta4 = Math.abs(deg2 - deg4); // BD
+	      delta1 = delta1 > 180 ? 360 - delta1 : delta1;
+	      delta2 = delta2 > 180 ? 360 - delta2 : delta2;
+	      delta3 = delta3 > 180 ? 360 - delta3 : delta3;
+	      delta4 = delta4 > 180 ? 360 - delta4 : delta4;
+	      // 离的最近的两个线段进行吸附
+	      var minDelta = Math.min(delta1, delta2, delta3, delta4);
+	      switch (minDelta) {
+	        case delta1:
+	          if (delta1 < 3.5) {
+	            delta1 = deg1 - deg3;
+	            setPointPosition(p1, x1, y1);
+	            setPointPosition(p2, Math.cos(Snap.rad(deg4 + delta1)) * this.circle.r + this.circle.x, Math.sin(Snap.rad(deg4 + delta1)) * this.circle.r + this.circle.y);
+	            this.followPoint(p1);
+	          }
+	          break;
+	        case delta2:
+	          if (delta2 < 3.5) {
+	            delta2 = deg2 - deg3;
+	            setPointPosition(p1, x2, y2);
+	            setPointPosition(p2, Math.cos(Snap.rad(deg4 + delta2)) * this.circle.r + this.circle.x, Math.sin(Snap.rad(deg4 + delta2)) * this.circle.r + this.circle.y);
+	            this.followPoint(p1);
+	          }
+	          break;
+	        case delta3:
+	          if (delta3 < 3.5) {
+	            delta3 = deg1 - deg4;
+	            setPointPosition(p2, x1, y1);
+	            setPointPosition(p1, Math.cos(Snap.rad(deg3 + delta3)) * this.circle.r + this.circle.x, Math.sin(Snap.rad(deg3 + delta3)) * this.circle.r + this.circle.y);
+	            this.followPoint(p2);
+	          }
+	          break;
+	        case delta4:
+	          if (delta4 < 3.5) {
+	            delta4 = deg2 - deg4;
+	            setPointPosition(p2, x2, y2);
+	            setPointPosition(p1, Math.cos(Snap.rad(deg3 + delta4)) * this.circle.r + this.circle.x, Math.sin(Snap.rad(deg3 + delta4)) * this.circle.r + this.circle.y);
+	            this.followPoint(p2);
+	          }
+	          break;
+	      }
+	    }
+
+	    /**
+	     * UI键盘输入进行角度变化
+	     */
+
+	  }, {
+	    key: 'changeDeg',
+	    value: function changeDeg(deg, num) {
+	      this.$degCDArc.show();
+	      this.equalTxt.hide();
+	      deg = deg == 180 ? 179.99 : deg;
+	      if (num == 0) {
+	        var degA = Snap.angle(getPointX(this.pointA), getPointY(this.pointA), this.circle.x, this.circle.y);
+	        var degB = Snap.angle(getPointX(this.pointB), getPointY(this.pointB), this.circle.x, this.circle.y);
+	        var deltaAB = degA - degB;
+	        if (deltaAB > 0 && deltaAB <= 180 || deltaAB <= -180) {
+	          degB = degA - deg;
+	        } else {
+	          degB = degA + deg;
+	        }
+	        var axisX = Math.cos(Snap.rad(degB)) * this.circle.r + this.circle.x;
+	        var axisY = Math.sin(Snap.rad(degB)) * this.circle.r + this.circle.y;
+	        setPointPosition(this.pointB, axisX, axisY);
+	        this.followPoint(this.pointB);
+	      } else {
+	        var degC = Snap.angle(getPointX(this.pointC), getPointY(this.pointC), this.circle.x, this.circle.y);
+	        var degD = Snap.angle(getPointX(this.pointD), getPointY(this.pointD), this.circle.x, this.circle.y);
+	        var deltaCD = degC - degD;
+	        if (deltaCD > 0 && deltaCD <= 180 || deltaCD <= -180) {
+	          degD = degC - deg;
+	        } else {
+	          degD = degC + deg;
+	        }
+	        var axisX = Math.cos(Snap.rad(degD)) * this.circle.r + this.circle.x;
+	        var axisY = Math.sin(Snap.rad(degD)) * this.circle.r + this.circle.y;
+	        setPointPosition(this.pointD, axisX, axisY);
+	        this.followPoint(this.pointD);
+	        this.sortSectorLayout();
+	      }
+	      this.pointsText = [this.textA, this.textB, this.textC, this.textD];
+	      this.resetPointText();
+	      this.preventCoincide([this.pointA, this.pointB, this.pointC, this.pointD]);
+	      this.hanlderManytTextCoincide();
+	      this.keepDis();
+	      var isEqual = this.occurTalCoincide();
+	      this.preventValueCoincide(isEqual);
+	      this.handlerArcLenCoincide();
+	      this.hanlderChordLenCoincide(isEqual);
+	    }
+
+	    /**
+	     * 处理两个扇形完全重叠情况
+	     * @returns {boolean}
+	     */
+
+	  }, {
+	    key: 'occurTalCoincide',
+	    value: function occurTalCoincide() {
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      var ax = getPointX(this.pointA);
+	      var ay = getPointY(this.pointA);
+	      var bx = getPointX(this.pointB);
+	      var by = getPointY(this.pointB);
+	      var cx = getPointX(this.pointC);
+	      var cy = getPointY(this.pointC);
+	      var dx = getPointX(this.pointD);
+	      var dy = getPointY(this.pointD);
+	      var len = Math.PI * this.circle.r / 180;
+	      // 拖动扇形 95.4 和 95 重合文字显示问题
+	      var flag1 = Math.abs(ax - cx) < len && Math.abs(ay - cy) < len && Math.abs(bx - dx) < len && Math.abs(by - dy) < len;
+	      var flag2 = Math.abs(ax - dx) < len && Math.abs(ay - dy) < len && Math.abs(bx - cx) < len && Math.abs(by - cy) < len;
+	      if (aob == cod && (flag1 || flag2)) {
+	        if (aob == 180) {
+	          var midABDeg = this.getMidDeg(this.pointA, this.pointB);
+	          var midCDDeg = this.getMidDeg(this.pointC, this.pointD);
+	          if (Math.abs(midABDeg - midCDDeg) > 1) {
+	            return false;
+	          }
+	        }
+	        this.$degCDArc.hide();
+	        this.equalTxt.css('display', 'inline-block');
+	        return true;
+	      }
+	      return false;
+	    }
+
+	    /**
+	     * 获取点的角度信息用于推送
+	     * @returns {Array}
+	     */
+
+	  }, {
+	    key: 'getAllPointsDeg',
+	    value: function getAllPointsDeg() {
+	      var degArr = [];
+	      degArr.push(Snap.angle(getPointX(this.pointA), getPointY(this.pointA), this.circle.x, this.circle.y));
+	      degArr.push(Snap.angle(getPointX(this.pointB), getPointY(this.pointB), this.circle.x, this.circle.y));
+	      degArr.push(Snap.angle(getPointX(this.pointC), getPointY(this.pointC), this.circle.x, this.circle.y));
+	      degArr.push(Snap.angle(getPointX(this.pointD), getPointY(this.pointD), this.circle.x, this.circle.y));
+	      return degArr;
+	    }
+	  }, {
+	    key: 'drawCircleArc',
+	    value: function drawCircleArc(arc, sector, p1, p2, flag) {
+	      var circleArcPath = 'M{x1} {y1}A{r} {r} 0 0 {c} {x2} {y2}';
+	      var deg1 = Snap.angle(getPointX(p1), getPointY(p1), this.circle.x, this.circle.y);
+	      var deg2 = Snap.angle(getPointX(p2), getPointY(p2), this.circle.x, this.circle.y);
+	      if (deg1 > deg2) {
+	        var temp = p2;
+	        p2 = p1;
+	        p1 = temp;
+	      }
+	      circleArcPath = Snap.format(circleArcPath, {
+	        x1: getPointX(p1),
+	        y1: getPointY(p1),
+	        r: this.circle.r,
+	        c: flag,
+	        x2: getPointX(p2),
+	        y2: getPointY(p2)
+	      });
+	      arc.node.setAttribute('d', circleArcPath);
+	      sector.node.setAttribute('d', circleArcPath + 'L' + this.circle.x + ' ' + this.circle.y + 'Z');
+	    }
+	  }, {
+	    key: 'drawDegArc',
+	    value: function drawDegArc(deg, arc, p1, p2, flag) {
+	      var degArcPath = 'M{x1} {y1}A{r} {r} 0 0 {c} {x2} {y2}L{x3} {y3}Z';
+	      var deg1 = Snap.angle(getPointX(p1), getPointY(p1), this.circle.x, this.circle.y);
+	      var deg2 = Snap.angle(getPointX(p2), getPointY(p2), this.circle.x, this.circle.y);
+	      var ratio = deg == 90 ? 0.178 : 0.25;
+	      if (p1 == this.pointC) {
+	        ratio = deg == 90 ? 0.178 : 0.20;
+	      }
+	      var x1 = Math.cos(Snap.rad(deg1)) * this.circle.r * ratio + this.circle.x;
+	      var y1 = Math.sin(Snap.rad(deg1)) * this.circle.r * ratio + this.circle.y;
+	      var x2 = Math.cos(Snap.rad(deg2)) * this.circle.r * ratio + this.circle.x;
+	      var y2 = Math.sin(Snap.rad(deg2)) * this.circle.r * ratio + this.circle.y;
+	      if (deg1 > deg2) {
+	        var tempx = x2;
+	        x2 = x1;
+	        x1 = tempx;
+	        var tempy = y2;
+	        y2 = y1;
+	        y1 = tempy;
+	      }
+	      if (deg == 90) {
+	        degArcPath = 'M' + x1 + ' ' + y1 + 'L' + (x1 + x2 - this.circle.x) + ' ' + (y1 + y2 - this.circle.y) + 'L' + x2 + ' ' + y2 + 'L' + this.circle.x + ' ' + this.circle.y + 'Z';
+	      } else {
+	        degArcPath = Snap.format(degArcPath, {
+	          x1: x1,
+	          y1: y1,
+	          r: this.circle.r * ratio,
+	          c: flag,
+	          x2: x2,
+	          y2: y2,
+	          x3: this.circle.x,
+	          y3: this.circle.y
+	        });
+	      }
+
+	      arc.node.setAttribute('d', degArcPath);
+	    }
+	  }, {
+	    key: 'drawPointText',
+	    value: function drawPointText(pointArr) {
+	      var text = void 0,
+	          textx = void 0,
+	          texty = void 0,
+	          x = void 0,
+	          y = void 0,
+	          angle = void 0,
+	          point = void 0;
+	      for (var i = 0; i < pointArr.length; i++) {
+	        if (pointArr[i] == 'A') {
+	          point = this.pointA;
+	          text = this.textA;
+	        } else if (pointArr[i] == 'B') {
+	          point = this.pointB;
+	          text = this.textB;
+	        } else if (pointArr[i] == 'C') {
+	          point = this.pointC;
+	          text = this.textC;
+	        } else {
+	          point = this.pointD;
+	          text = this.textD;
+	        }
+	        x = parseFloat(getPointX(point));
+	        y = parseFloat(getPointY(point));
+	        angle = Snap.angle(x, y, this.circle.x, this.circle.y);
+	        textx = Math.cos(Snap.rad(angle)) * this.circle.r * 1.19 + this.circle.x;
+	        texty = Math.sin(Snap.rad(angle)) * this.circle.r * 1.19 + this.circle.y;
+	        text.node.setAttribute('x', textx);
+	        text.node.setAttribute('y', texty);
+	        this.keepDis();
+	      }
+	    }
+	  }, {
+	    key: 'drawChordLenText',
+	    value: function drawChordLenText(deg, txt, midDeg) {
+	      var x = void 0,
+	          y = void 0;
+	      deg = deg > 180 ? 360 - deg : deg;
+	      // 圆心角大于104后，文字位置要随动
+	      if (deg > 104) {
+	        var tempDeg = midDeg - deg * 0.5 + (230 - deg) / 126 * 52;
+	        x = Math.cos(Snap.rad(tempDeg)) * this.circle.r * (0.75 - (deg - 104) * 0.0025) + this.circle.x;
+	        y = Math.sin(Snap.rad(tempDeg)) * this.circle.r * (0.75 - (deg - 104) * 0.0025) + this.circle.y;
+	      } else {
+	        x = Math.cos(Snap.rad(midDeg)) * this.circle.r * 0.75 + this.circle.x;
+	        y = Math.sin(Snap.rad(midDeg)) * this.circle.r * 0.75 + this.circle.y;
+	      }
+	      deg = deg.toFixed(0);
+	      var len = (Math.sin(Snap.rad(deg / 2)) * calcuRadius * 2).toFixed(2);
+	      if (deg == 0) {
+	        len = '0';
+	      }
+	      setText(txt, len, x, y);
+	    }
+	  }, {
+	    key: 'drawDegText',
+	    value: function drawDegText(deg, txt, midDeg) {
+	      var x = Math.cos(Snap.rad(midDeg)) * this.circle.r * 0.40 + this.circle.x;
+	      var y = Math.sin(Snap.rad(midDeg)) * this.circle.r * 0.40 + this.circle.y;
+	      setText(txt, deg + '°', x, y);
+	    }
+	  }, {
+	    key: 'drawArcLenText',
+	    value: function drawArcLenText(deg, txt, midDeg) {
+	      var ratio = 1.30;
+	      if (midDeg >= 60 && midDeg <= 120) {
+	        ratio = 1.22 + Math.abs(90 - midDeg) * 0.00267;
+	      } else if (midDeg >= 240 && midDeg <= 300) {
+	        ratio = 1.22 + Math.abs(270 - midDeg) * 0.00267;
+	      }
+	      var x = Math.cos(Snap.rad(midDeg)) * this.circle.r * ratio + this.circle.x;
+	      var y = Math.sin(Snap.rad(midDeg)) * this.circle.r * ratio + this.circle.y;
+	      var len = (deg * Math.PI * calcuRadius / 180).toFixed(2);
+	      if (deg == 0) {
+	        len = '0';
+	      }
+	      setText(txt, len, x, y);
+	    }
+
+	    /**
+	     * 计算圆心角
+	     */
+
+	  }, {
+	    key: 'getDeg',
+	    value: function getDeg(p1, p2) {
+	      var deg = Snap.angle(getPointX(p1), getPointY(p1), getPointX(p2), getPointY(p2), this.circle.x, this.circle.y);
+	      return Math.abs(deg);
+	    }
+	  }, {
+	    key: 'getMidDeg',
+	    value: function getMidDeg(p1, p2) {
+	      var x = (getPointX(p1) + getPointX(p2)) / 2;
+	      var y = (getPointY(p1) + getPointY(p2)) / 2;
+	      var midABDeg = Snap.angle(x, y, this.circle.x, this.circle.y);
+	      // 中点和圆心重叠时另外计算
+	      if (x == this.circle.x) {
+	        var deg = this.getDeg(p1, p2);
+	        var deg1 = Snap.angle(getPointX(p1), getPointY(p1), this.circle.x, this.circle.y);
+	        var deg2 = Snap.angle(getPointX(p2), getPointY(p2), this.circle.x, this.circle.y);
+	        midABDeg = (deg1 + deg2) / 2;
+	        midABDeg = deg >= 180 ? midABDeg + 180 : midABDeg;
+	      }
+	      return midABDeg;
+	    }
+	  }, {
+	    key: 'resetPointText',
+	    value: function resetPointText() {
+	      for (var i = 0; i < this.pointsText.length; i++) {
+	        if (i == 0) {
+	          this.pointsText[i].node.innerHTML = 'A';
+	        } else if (i == 1) {
+	          this.pointsText[i].node.innerHTML = 'B';
+	        } else if (i == 2) {
+	          this.pointsText[i].node.innerHTML = 'C';
+	        } else {
+	          this.pointsText[i].node.innerHTML = 'D';
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'resetValuePosition',
+	    value: function resetValuePosition() {
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      this.midABDeg = this.getMidDeg(this.pointA, this.pointB);
+	      this.midCDDeg = this.getMidDeg(this.pointC, this.pointD);
+	      this.drawChordLenText(cod, this.chordCDLenText, this.midCDDeg);
+	      this.drawChordLenText(aob, this.chordABLenText, this.midABDeg);
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      this.drawDegText(aob, this.degABText, this.midABDeg);
+	      this.drawDegText(cod, this.degCDText, this.midCDDeg);
+	      this.drawArcLenText(aob, this.arcABText, this.midABDeg);
+	      this.drawArcLenText(cod, this.arcCDText, this.midCDDeg);
+	    }
+
+	    /**
+	     * 处理文字ABCD重叠
+	     */
+
+	  }, {
+	    key: 'preventCoincide',
+	    value: function preventCoincide(pointArr) {
+	      var degArr = [];
+	      var degDelta = 6.2;
+	      for (var k = 0; k < pointArr.length; k++) {
+	        var deg = Snap.angle(getPointX(pointArr[k]), getPointY(pointArr[k]), this.circle.x, this.circle.y);
+	        degArr.push(deg);
+	      }
+	      for (var i = degArr.length - 1; i >= 0; i--) {
+	        for (var j = i - 1; j >= 0; j--) {
+	          var delta = Math.round(degArr[i] - degArr[j]);
+	          var delta2 = Math.round(360 - Math.abs(degArr[i] - degArr[j]));
+	          /* cjj  修改文字重叠*/
+	          if (delta == 0 || delta2 == 0) {
+	            if (this.pointsText[j].node.innerHTML !== '') {
+	              if (this.pointsText[i].node.innerHTML.length >= this.pointsText[j].node.innerHTML.length) {
+	                this.pointsText[i].node.innerHTML = this.pointsText[i].node.innerHTML + '(' + this.pointsText[j].node.innerHTML + ')';
+	                this.pointsText[j].node.innerHTML = '';
+	              } else {
+	                this.pointsText[i].node.innerHTML = this.pointsText[j].node.innerHTML + '(' + this.pointsText[i].node.innerHTML + ')';
+	                this.pointsText[j].node.innerHTML = '';
+	              }
+	            }
+	          } else {
+	            if (Math.abs(delta) < degDelta || delta2 < degDelta) {
+	              if (degArr[i] < 180) {
+	                if (delta > 0) {
+	                  this.pointsText[i].node.innerHTML += this.pointsText[j].node.innerHTML;
+	                  this.pointsText[j].node.innerHTML = '';
+	                } else {
+	                  this.pointsText[i].node.innerHTML = this.pointsText[j].node.innerHTML + this.pointsText[i].node.innerHTML;
+	                  this.pointsText[j].node.innerHTML = '';
+	                }
+	              } else {
+	                if (delta < 0) {
+	                  this.pointsText[i].node.innerHTML += this.pointsText[j].node.innerHTML;
+	                  this.pointsText[j].node.innerHTML = '';
+	                } else {
+	                  this.pointsText[i].node.innerHTML = this.pointsText[j].node.innerHTML + this.pointsText[i].node.innerHTML;
+	                  this.pointsText[j].node.innerHTML = '';
+	                }
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    /**
+	     * 初步处理两个圆周角的弦长、弧长重叠， 方案是向两边弹开
+	     */
+
+	  }, {
+	    key: 'preventValueCoincide',
+	    value: function preventValueCoincide(isEqual) {
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      var midABDeg = this.getMidDeg(this.pointA, this.pointB);
+	      var midCDDeg = this.getMidDeg(this.pointC, this.pointD);
+	      var delta = Math.abs(midABDeg - midCDDeg);
+	      var a = void 0,
+	          b = void 0,
+	          c = void 0;
+	      var flag = true;
+	      var arcABMidDeg = midABDeg;
+	      var arcCDMidDeg = midCDDeg;
+	      if (midABDeg > 150 && midABDeg < 210 || midABDeg > 330 || midABDeg < 30 || midCDDeg > 150 && midCDDeg < 210 || midCDDeg > 330 || midCDDeg < 30) {
+	        a = 18;
+	        if (delta + a > 360) {
+	          delta = 360 - delta;
+	          flag = false;
+	        }
+	        if (delta < a && !isEqual) {
+	          // preventCoincide
+	          b = 0.65;
+	          c = 6.5;
+	          if (flag) {
+	            if (midABDeg < midCDDeg) {
+	              midABDeg -= (a - delta) * b + c;
+	              midCDDeg += (a - delta) * b + c;
+	            } else {
+	              midABDeg += (a - delta) * b + c;
+	              midCDDeg -= (a - delta) * b + c;
+	            }
+	          } else {
+	            if (midABDeg < midCDDeg) {
+	              midABDeg += (a - delta) * b + c;
+	              midCDDeg -= (a - delta) * b + c;
+	            } else {
+	              midABDeg -= (a - delta) * b + c;
+	              midCDDeg += (a - delta) * b + c;
+	            }
+	          }
+	          arcABMidDeg = midABDeg;
+	          arcCDMidDeg = midCDDeg;
+	        }
+	      } else {
+	        if (aob >= 100 || cod >= 100) {
+	          a = 34;
+	        } else {
+	          a = 31.5;
+	        }
+	        if (delta < a && !isEqual) {
+	          if (delta < 12) {
+	            if (aob >= 100 || cod >= 100) {
+	              b = 0.35;
+	              c = 12;
+	            } else {
+	              b = 0.2;
+	              c = 12;
+	            }
+	          } else {
+	            if (aob >= 100 || cod >= 100) {
+	              b = 0.65;
+	              c = 6;
+	            } else {
+	              b = 0.6;
+	              c = 6;
+	            }
+	          }
+	          if (midABDeg > 215 && midABDeg < 235 && midCDDeg > 215 && midCDDeg < 235 || midABDeg > 305 && midABDeg < 325 && midCDDeg > 305 && midCDDeg < 325 || midABDeg > 125 && midABDeg < 145 && midCDDeg > 125 && midCDDeg < 145 || midABDeg > 35 && midABDeg < 55 && midCDDeg > 35 && midCDDeg < 55) {
+	            if (midABDeg < midCDDeg) {
+	              arcABMidDeg -= (a - delta) * (b - 0.08) + (c - 1);
+	              arcCDMidDeg += (a - delta) * (b - 0.08) + (c - 1);
+	              midABDeg -= (a - delta) * b + c;
+	              midCDDeg += (a - delta) * b + c;
+	            } else {
+	              arcABMidDeg += (a - delta) * (b - 0.08) + (c - 1);
+	              arcCDMidDeg -= (a - delta) * (b - 0.08) + (c - 1);
+	              midABDeg += (a - delta) * b + c;
+	              midCDDeg -= (a - delta) * b + c;
+	            }
+	          } else {
+	            if (midABDeg < midCDDeg) {
+	              midABDeg -= (a - delta) * b + c;
+	              midCDDeg += (a - delta) * b + c;
+	            } else {
+	              midABDeg += (a - delta) * b + c;
+	              midCDDeg -= (a - delta) * b + c;
+	            }
+	            arcABMidDeg = midABDeg;
+	            arcCDMidDeg = midCDDeg;
+	          }
+	        }
+	      }
+	      if (aob > 135 && cod > 135 || aob < 135 && cod < 135) {
+	        this.drawChordLenText(aob, this.chordABLenText, midABDeg);
+	        this.drawChordLenText(cod, this.chordCDLenText, midCDDeg);
+	      }
+	      aob = parseInt((aob > 180 ? 360 - aob : aob).toFixed(0));
+	      cod = parseInt((cod > 180 ? 360 - cod : cod).toFixed(0));
+	      if (delta < 12 && aob > cod && cod < 45 && cod > 15 && !(cod < 45 && aob - cod < 58)) {
+	        this.drawArcLenText(aob, this.arcABText, midABDeg);
+	      } else if (delta < 12 && aob < cod && aob < 45 && aob > 15 && !(aob < 45 && cod - aob < 58)) {
+	        this.drawArcLenText(cod, this.arcCDText, midCDDeg);
+	      } else {
+	        this.drawArcLenText(aob, this.arcABText, arcABMidDeg);
+	        this.drawArcLenText(cod, this.arcCDText, arcCDMidDeg);
+	      }
+	      this.drawDegText(aob, this.degABText, midABDeg);
+	      this.drawDegText(cod, this.degCDText, midCDDeg);
+	    }
+
+	    /**
+	     * 再次处理弧长重叠，防止和外面字母重叠
+	     */
+
+	  }, {
+	    key: 'handlerArcLenCoincide',
+	    value: function handlerArcLenCoincide() {
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      var degA = Snap.angle(getPointX(this.pointA), getPointY(this.pointA), this.circle.x, this.circle.y);
+	      var degB = Snap.angle(getPointX(this.pointB), getPointY(this.pointB), this.circle.x, this.circle.y);
+	      var degC = Snap.angle(getPointX(this.pointC), getPointY(this.pointC), this.circle.x, this.circle.y);
+	      var degD = Snap.angle(getPointX(this.pointD), getPointY(this.pointD), this.circle.x, this.circle.y);
+	      var degArcABText = Snap.angle(this.arcABText.node.getAttribute('x'), this.arcABText.node.getAttribute('y'), this.circle.x, this.circle.y);
+	      var degArcCDText = Snap.angle(this.arcCDText.node.getAttribute('x'), this.arcCDText.node.getAttribute('y'), this.circle.x, this.circle.y);
+	      var threshold1 = degA > 155 && degA < 205 || degA > 335 || degA < 25 ? 5.5 : 7.5;
+	      var threshold2 = degB > 155 && degB < 205 || degB > 335 || degB < 25 ? 5.5 : 7.5;
+	      var threshold3 = degC > 155 && degC < 205 || degC > 335 || degC < 25 ? 5.5 : 7.5;
+	      var threshold4 = degD > 155 && degD < 205 || degD > 335 || degD < 25 ? 5.5 : 7.5;
+	      var changeDeg = 10;
+	      var flag1 = Math.abs(degA - degArcABText) < threshold1 || 360 - Math.abs(degA - degArcABText) < threshold1;
+	      var flag2 = Math.abs(degB - degArcABText) < threshold2 || 360 - Math.abs(degB - degArcABText) < threshold2;
+	      var flag3 = Math.abs(degC - degArcABText) < threshold3 || 360 - Math.abs(degC - degArcABText) < threshold3;
+	      var flag4 = Math.abs(degD - degArcABText) < threshold4 || 360 - Math.abs(degD - degArcABText) < threshold4;
+	      var sign = true;
+	      if (flag1 || flag2 || flag3 || flag4) {
+	        if (degArcABText > 155 && degArcABText < 205 || degArcABText > 335 && degArcABText < 25) {
+	          changeDeg = 9;
+	        }
+	        if (Math.abs(degA - degArcABText) < 8.5 && Math.abs(degB - degArcABText) < 8.5) {
+	          changeDeg = 13;
+	          if (degArcABText > 155 && degArcABText < 205 || degArcABText > 335 && degArcABText < 25) {
+	            changeDeg = 10;
+	          }
+	          if (degA > degB) {
+	            degArcABText = degA;
+	          } else {
+	            degArcABText = degB;
+	          }
+	        } else {
+	          if (flag1) {
+	            if (Math.abs(degA - degArcABText) > 180) {
+	              sign = degA - degArcABText > 0;
+	            } else {
+	              sign = degA - degArcABText < 0;
+	            }
+	          }
+	          if (flag2) {
+	            if (Math.abs(degB - degArcABText) > 180) {
+	              sign = degB - degArcABText > 0;
+	            } else {
+	              sign = degB - degArcABText < 0;
+	            }
+	          }
+	          if (flag3) {
+	            if (Math.abs(degC - degArcABText) > 180) {
+	              sign = degC - degArcABText > 0;
+	            } else {
+	              sign = degC - degArcABText < 0;
+	            }
+	          }
+	          if (flag4) {
+	            if (Math.abs(degD - degArcABText) > 180) {
+	              sign = degD - degArcABText > 0;
+	            } else {
+	              sign = degD - degArcABText < 0;
+	            }
+	          }
+	        }
+	        if (sign) {
+	          this.drawArcLenText(aob, this.arcABText, degArcABText + changeDeg);
+	        } else {
+	          this.drawArcLenText(aob, this.arcABText, degArcABText - changeDeg);
+	        }
+	      }
+	      flag1 = Math.abs(degA - degArcCDText) < threshold1 || 360 - Math.abs(degA - degArcCDText) < threshold1;
+	      flag2 = Math.abs(degB - degArcCDText) < threshold2 || 360 - Math.abs(degB - degArcCDText) < threshold2;
+	      flag3 = Math.abs(degC - degArcCDText) < threshold3 || 360 - Math.abs(degC - degArcCDText) < threshold3;
+	      flag4 = Math.abs(degD - degArcCDText) < threshold4 || 360 - Math.abs(degD - degArcCDText) < threshold4;
+	      if (flag1 || flag2 || flag3 || flag4) {
+	        if (degArcCDText > 155 && degArcCDText < 205 || degArcCDText > 335 && degArcCDText < 25) {
+	          changeDeg = 9;
+	        }
+	        if (Math.abs(degC - degArcCDText) < 8.5 && Math.abs(degD - degArcCDText) < 8.5) {
+	          changeDeg = 13;
+	          if (degArcCDText > 155 && degArcCDText < 205 || degArcCDText > 335 && degArcCDText < 25) {
+	            changeDeg = 10;
+	          }
+	          if (degC > degD) {
+	            degArcCDText = degC;
+	          } else {
+	            degArcCDText = degD;
+	          }
+	        } else {
+	          if (flag1) {
+	            if (Math.abs(degA - degArcCDText) > 180) {
+	              sign = degA - degArcCDText > 0;
+	            } else {
+	              sign = degA - degArcCDText < 0;
+	            }
+	          }
+	          if (flag2) {
+	            if (Math.abs(degB - degArcCDText) > 180) {
+	              sign = degB - degArcCDText > 0;
+	            } else {
+	              sign = degB - degArcCDText < 0;
+	            }
+	          }
+	          if (flag3) {
+	            if (Math.abs(degC - degArcCDText) > 180) {
+	              sign = degC - degArcCDText > 0;
+	            } else {
+	              sign = degC - degArcCDText < 0;
+	            }
+	          }
+	          if (flag4) {
+	            if (Math.abs(degD - degArcCDText) > 180) {
+	              sign = degD - degArcCDText > 0;
+	            } else {
+	              sign = degD - degArcCDText < 0;
+	            }
+	          }
+	        }
+	        if (sign) {
+	          this.drawArcLenText(cod, this.arcCDText, degArcCDText + changeDeg);
+	        } else {
+	          this.drawArcLenText(cod, this.arcCDText, degArcCDText - changeDeg);
+	        }
+	      }
+	    }
+
+	    /**
+	     * 再次处理弦长重叠，防止大角度弦长随动后的重叠
+	     * @param isEqual
+	     */
+
+	  }, {
+	    key: 'hanlderChordLenCoincide',
+	    value: function hanlderChordLenCoincide(isEqual) {
+	      if (isEqual) {
+	        return;
+	      }
+	      var aob = this.getDeg(this.pointA, this.pointB);
+	      var cod = this.getDeg(this.pointC, this.pointD);
+	      aob = (aob > 180 ? 360 - aob : aob).toFixed(0);
+	      cod = (cod > 180 ? 360 - cod : cod).toFixed(0);
+	      var x1 = this.chordABLenText.node.getAttribute('x');
+	      var y1 = this.chordABLenText.node.getAttribute('y');
+	      var x2 = this.chordCDLenText.node.getAttribute('x');
+	      var y2 = this.chordCDLenText.node.getAttribute('y');
+	      var dis1 = _utils2.default.getDistance(x1, y1, this.circle.x, this.circle.y);
+	      var dis2 = _utils2.default.getDistance(x2, y2, this.circle.x, this.circle.y);
+	      var deg1 = Snap.angle(x1, y1, this.circle.x, this.circle.y);
+	      var deg2 = Snap.angle(x2, y2, this.circle.x, this.circle.y);
+	      if (Math.abs(deg1 - deg2) < 22 || 360 - Math.abs(deg1 - deg2) < 22) {
+	        if (deg1 > deg2) {
+	          deg1 += 12.8;
+	          deg2 -= 12.8;
+	        } else {
+	          deg2 += 12.8;
+	          deg1 -= 12.8;
+	        }
+	      }
+	      var len = (Math.sin(Snap.rad(aob / 2)) * calcuRadius * 2).toFixed(2);
+	      var x = Math.cos(Snap.rad(deg1)) * dis1 + this.circle.x;
+	      var y = Math.sin(Snap.rad(deg1)) * dis1 + this.circle.y;
+	      if (aob == 0) {
+	        len = '0';
+	      }
+	      setText(this.chordABLenText, len, x, y);
+	      len = (Math.sin(Snap.rad(cod / 2)) * calcuRadius * 2).toFixed(2);
+	      if (cod == 0) {
+	        len = '0';
+	      }
+	      x = Math.cos(Snap.rad(deg2)) * dis2 + this.circle.x;
+	      y = Math.sin(Snap.rad(deg2)) * dis2 + this.circle.y;
+	      setText(this.chordCDLenText, len, x, y);
+	    }
+
+	    /**
+	     * 处理多个点的文字在一起重叠情况
+	     */
+
+	  }, {
+	    key: 'hanlderManytTextCoincide',
+	    value: function hanlderManytTextCoincide() {
+	      var pointsText = [this.textA, this.textB, this.textC, this.textD];
+	      var degA = Snap.angle(getPointX(this.pointA), getPointY(this.pointA), this.circle.x, this.circle.y);
+	      if (degA > 45 && degA < 135 || degA > 225 && degA < 315) {
+	        var degB = Snap.angle(getPointX(this.pointB), getPointY(this.pointB), this.circle.x, this.circle.y);
+	        var degC = Snap.angle(getPointX(this.pointC), getPointY(this.pointC), this.circle.x, this.circle.y);
+	        var degD = Snap.angle(getPointX(this.pointD), getPointY(this.pointD), this.circle.x, this.circle.y);
+	        var max = Math.max(degA, degB, degC, degD);
+	        var min = Math.min(degA, degB, degC, degD);
+	        var index = 0;
+	        var flag = false;
+	        if (max - min < 15) {
+	          for (var i = 0; i < pointsText.length; i++) {
+	            if (pointsText[i].node.innerHTML.length == 3) {
+	              pointsText[i].node.innerHTML = 'ABCD';
+	              index = i;
+	              flag = true;
+	            }
+	          }
+	          if (flag) {
+	            for (var j = 0; j < pointsText.length; j++) {
+	              if (index != j) {
+	                pointsText[j].node.innerHTML = '';
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    /**
+	     * 文字重叠处理后与圆周线保持距离
+	     */
+
+	  }, {
+	    key: 'keepDis',
+	    value: function keepDis() {
+	      var x = void 0,
+	          y = void 0,
+	          deg = void 0;
+	      for (var i = 0; i < this.pointsText.length; i++) {
+	        switch (this.pointsText[i].node.innerHTML.length) {
+	          case 2:
+	            x = this.pointsText[i].node.getAttribute('x');
+	            y = this.pointsText[i].node.getAttribute('y');
+	            deg = Snap.angle(x, y, this.circle.x, this.circle.y);
+	            if (deg > 135 && deg < 225 || deg < 45 || deg > 315) {
+	              x = Math.cos(Snap.rad(deg)) * this.circle.r * 1.215 + this.circle.x;
+	              y = Math.sin(Snap.rad(deg)) * this.circle.r * 1.215 + this.circle.y;
+	              this.pointsText[i].node.setAttribute('x', x);
+	              this.pointsText[i].node.setAttribute('y', y);
+	            }
+	            break;
+	          case 3:
+	            x = this.pointsText[i].node.getAttribute('x');
+	            y = this.pointsText[i].node.getAttribute('y');
+	            deg = Snap.angle(x, y, this.circle.x, this.circle.y);
+	            if (deg > 135 && deg < 225 || deg < 45 || deg > 315) {
+	              x = Math.cos(Snap.rad(deg)) * this.circle.r * 1.26 + this.circle.x;
+	              y = Math.sin(Snap.rad(deg)) * this.circle.r * 1.26 + this.circle.y;
+	              this.pointsText[i].node.setAttribute('x', x);
+	              this.pointsText[i].node.setAttribute('y', y);
+	            }
+	            break;
+	          case 4:
+	            x = this.pointsText[i].node.getAttribute('x');
+	            y = this.pointsText[i].node.getAttribute('y');
+	            deg = Snap.angle(x, y, this.circle.x, this.circle.y);
+	            if (deg > 150 && deg < 210 || deg < 30 || deg > 330) {
+	              x = Math.cos(Snap.rad(deg)) * this.circle.r * 1.3 + this.circle.x;
+	              y = Math.sin(Snap.rad(deg)) * this.circle.r * 1.3 + this.circle.y;
+	              this.pointsText[i].node.setAttribute('x', x);
+	              this.pointsText[i].node.setAttribute('y', y);
+	            } else if (deg > 125 && deg < 235 || deg < 55 || deg > 305) {
+	              x = Math.cos(Snap.rad(deg)) * this.circle.r * 1.32 + this.circle.x;
+	              y = Math.sin(Snap.rad(deg)) * this.circle.r * 1.32 + this.circle.y;
+	              this.pointsText[i].node.setAttribute('x', x);
+	              this.pointsText[i].node.setAttribute('y', y);
+	            }
+	            break;
+	        }
+	      }
+	    }
+	  }]);
+
+	  return CentralAngle;
+	}();
+
+	function _createCirclePoint(paper, deg, circle) {
+	  return paper.circle(Math.cos(Snap.rad(deg)) * circle.r + circle.x, Math.sin(Snap.rad(deg)) * circle.r + circle.y, pointRadius).addClass('point_circle');
+	}
+
+	function _createLine(paper, center, point, strokeColor) {
+	  return paper.line(center.x, center.y, getPointX(point), getPointY(point)).addClass('common_line').attr({
+	    stroke: strokeColor
+	  });
+	}
+
+	function _createChord(paper, point1, point2, strokeColor) {
+	  return paper.line(getPointX(point1), getPointY(point1), getPointX(point2), getPointY(point2)).addClass('common_line').attr({
+	    stroke: strokeColor
+	  });
+	}
+
+	exports.default = CentralAngle;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Created by Administrator on 2017/6/30 0030.
+	 */
+	var utils = function () {
+	  function utils() {
+	    _classCallCheck(this, utils);
+	  }
+
+	  _createClass(utils, null, [{
+	    key: 'getDistance',
+	    value: function getDistance(x1, y1, x2, y2) {
+	      return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	    }
+
+	    /* 屏幕坐标转为svg坐标*/
+
+	  }, {
+	    key: 'reportMouseCoordinates',
+	    value: function reportMouseCoordinates(svgElement, pageX, pageY, svgChild) {
+	      var point = svgElement.createSVGPoint();
+	      point.x = pageX;
+	      point.y = pageY;
+	      point = _coordinateTransform(point, svgChild);
+	      return point;
+	    }
+	  }, {
+	    key: 'getPointX',
+	    value: function getPointX(elem) {
+	      return parseFloat(elem.node.getAttribute('cx'));
+	    }
+	  }, {
+	    key: 'getPointY',
+	    value: function getPointY(elem) {
+	      return parseFloat(elem.node.getAttribute('cy'));
+	    }
+	    // 设置文字
+
+	  }, {
+	    key: 'setText',
+	    value: function setText(elem, text, x, y) {
+	      elem.node.textContent = text;
+	      elem.node.setAttribute('x', x);
+	      elem.node.setAttribute('y', y);
+	    }
+	    // 设置点位置
+
+	  }, {
+	    key: 'setPointPosition',
+	    value: function setPointPosition(elem, x, y) {
+	      elem.node.setAttribute('cx', x);
+	      elem.node.setAttribute('cy', y);
+	    }
+	    // 设置线位置
+
+	  }, {
+	    key: 'setLinePosition',
+	    value: function setLinePosition(elem, x, y, vx, vy) {
+	      elem.node.setAttribute(x, vx);
+	      elem.node.setAttribute(y, vy);
+	    }
+	  }]);
+
+	  return utils;
+	}();
+
+	/* 获取svg对象的转化矩阵并求其逆矩阵*/
+
+
+	exports.default = utils;
+	function _coordinateTransform(screenPoint, someSvgObject) {
+	  var CTM = someSvgObject.getScreenCTM();
+	  return screenPoint.matrixTransform(CTM.inverse());
+	}
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Created by Administrator on 2017/6/30 0030.
+	 */
+	exports.default = {
+	  svgColor: {
+	    RED: '#cb2627',
+	    BULE: '#2383cc',
+	    GREEN: '#3f9044',
+	    ORANGE: '#de6c2e',
+	    PURPLE: '#bb30de',
+	    LIGHTGREEN: 'rgba(63,144,68,0.35)',
+	    LIGHTBULE: 'rgba(35,131,204,0.35)'
+	  },
+	  svgWidth: 1129,
+	  svgHeight: 845,
+	  circleRadius: 308,
+	  calcuRadius: 3, //计算弦长用的半径
+	  centerPointR: 9,
+	  pointRadius: 15
+	};
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AngleInputs = function () {
+	  function AngleInputs(degInput, degInput2) {
+	    _classCallCheck(this, AngleInputs);
+
+	    this.$degInput = degInput;
+	    this.$degInput2 = degInput2;
+	  }
+
+	  _createClass(AngleInputs, [{
+	    key: 'init',
+	    value: function init(view, model) {
+	      this.$view = $(view);
+	      this.model = model;
+	      this.$svg = this.$view.find('.circle_svg');
+	      this.$panel = this.$view.find('.central_angle_wrapper');
+	      this.$keyboard = this.$view.find('.fractions_keyboard_list');
+	      this.$keyback = this.$keyboard.find('.btn_del');
+	      this.$keyenter = this.$keyboard.find('.btn_enter');
+	      this.$boardclose = this.$keyboard.find('.btn_close');
+	      this.$degValue = this.$view.find('.ca_deg_aob .deg_value');
+	      this.$degValue2 = this.$view.find('.ca_deg_cod .deg_value');
+	      this.$keyboard2 = this.$view.find('.fractions_keyboard_list2');
+	      this.$keyback2 = this.$keyboard2.find('.btn_del');
+	      this.$keyenter2 = this.$keyboard2.find('.btn_enter');
+	      this.$boardclose2 = this.$keyboard2.find('.btn_close');
+	      this.isFirstDown = true;
+	      this.isFirstDown2 = true;
+	      this.bindDom();
+	      this.deg = parseInt(this.$degValue.text());
+	      this.deg2 = parseInt(this.$degValue2.text());
+	    }
+	  }, {
+	    key: 'bindDom',
+	    value: function bindDom() {
+	      var that = this;
+	      that.$degInput.on('mousedown touchstart', function (e) {
+	        e.stopPropagation();
+	        _relocateKeyboard(that.$degInput, that.$keyboard);
+	        _inputMouseDown.call(that, 1);
+	      }).keydown(function (e) {
+	        e.preventDefault();
+	      });
+
+	      that.$degInput2.on('mousedown touchstart', function (e) {
+	        e.stopPropagation();
+	        _relocateKeyboard(that.$degInput2, that.$keyboard2);
+	        _inputMouseDown.call(that, 2);
+	      }).keydown(function (e) {
+	        e.preventDefault();
+	      });
+
+	      // 其他地方点击后收起键盘
+	      $('.central_angle_inner').on('mousedown touchstart', function () {
+	        that.$degValue.text(that.deg);
+	        that.$degValue2.text(that.deg2);
+	        that.$keyboard.hide();
+	        that.$keyboard2.hide();
+	        _removeActiveState([that.$degInput, that.$degInput2, that.$degValue, that.$degValue2]);
+	        that.$keyboard.find('.btn_close');
+	      }).on('mouseup touchend', function () {
+	        _removeActiveState([that.$boardclose, that.$keyboard.find('a'), that.$boardclose2, that.$keyboard2.find('a')]);
+	      });
+
+	      // 键盘上点击不收起
+	      that.$keyboard.on('mousedown touchstart', function (e) {
+	        e.stopPropagation();
+	      }).on('mouseup touchend', function () {
+	        _removeActiveState([that.$boardclose, that.$keyboard.find('a')]);
+	      });
+
+	      // 关闭按钮事件绑定
+	      that.$boardclose.on('click touchend', function () {
+	        _removeActiveState([that.$degInput, that.$degValue, $(this)]);
+	        that.$degValue.text(that.deg);
+	        that.$keyboard.hide();
+	      }).on('mousedown touchstart', function () {
+	        $(this).addClass('active');
+	      });
+
+	      // 点击数值事件处理
+	      that.$keyboard.find('a').click(function (e) {
+	        that.isFirstDown = _keyboardClick.call(this, that.isFirstDown, that.$degValue);
+	      }).on('mousedown touchstart', function () {
+	        $(this).addClass('active');
+	      }).on('mouseup touchend', function () {
+	        $(this).removeClass('active');
+	      });
+
+	      // 点击后退事件绑定
+	      that.$keyback.click(function () {
+	        that.isFirstDown = _backClick.call(this, that.isFirstDown, that.$degValue);
+	      });
+
+	      // 点击确定事件绑定
+	      that.$keyenter.click(function () {
+	        _removeActiveState([that.$degValue, that.$degInput]);
+	        that.deg = parseInt(that.$degValue.text());
+	        that.$keyboard.hide();
+	        that.centralAngle.changeDeg(that.deg, 0);
+	      });
+
+	      // 键盘上点击不收起
+	      that.$keyboard2.on('mousedown touchstart', function (e) {
+	        e.stopPropagation();
+	      }).on('mouseup touchend', function () {
+	        _removeActiveState([that.$boardclose2, that.$keyboard2.find('a')]);
+	      });
+
+	      // 关闭按钮事件绑定
+	      that.$boardclose2.on('click touchend', function () {
+	        _removeActiveState([that.$degInput2, that.$degValue2, $(this)]);
+	        that.$degValue2.text(that.deg2);
+	        that.$keyboard2.hide();
+	        $(this).removeClass('active');
+	      }).on('mousedown touchstart', function () {
+	        $(this).addClass('active');
+	      });
+
+	      // 点击数值事件处理
+	      that.$keyboard2.find('a').click(function (e) {
+	        that.isFirstDown2 = _keyboardClick.call(this, that.isFirstDown2, that.$degValue2);
+	      }).on('mousedown touchstart', function () {
+	        $(this).addClass('active');
+	      }).on('mouseup touchend', function () {
+	        $(this).removeClass('active');
+	      });
+
+	      // 点击后退事件绑定
+	      that.$keyback2.click(function (e) {
+	        that.isFirstDown2 = _backClick.call(this, that.isFirstDown2, that.$degValue2);
+	      });
+
+	      // 点击确定事件绑定
+	      that.$keyenter2.click(function () {
+	        _removeActiveState([that.$degValue2, that.$degInput2]);
+	        that.deg2 = parseInt(that.$degValue2.text());
+	        that.$keyboard2.hide();
+	        that.centralAngle.changeDeg(that.deg2, 1);
+	      });
+	    }
+
+	    // 设置相应的角度
+
+	  }, {
+	    key: 'setDeg',
+	    value: function setDeg(deg, num) {
+	      if (num == 1) {
+	        this.$degValue.text(deg);
+	        this.deg = deg;
+	      } else {
+	        this.$degValue2.text(deg);
+	        this.deg2 = deg;
+	      }
+	    }
+
+	    // 设置控制的圆心角, angle中包括了两个圆心角
+
+	  }, {
+	    key: 'addAngle',
+	    value: function addAngle(angle) {
+	      this.centralAngle = angle;
+	    }
+	  }, {
+	    key: 'adjustKeyBoardPos',
+	    value: function adjustKeyBoardPos() {
+	      _relocateKeyboard(this.$degInput, this.$keyboard);
+	      _relocateKeyboard(this.$degInput2, this.$keyboard2);
+	    }
+	  }]);
+
+	  return AngleInputs;
+	}();
+
+	function _keyboardClick(isFirstDown, $degValue) {
+	  var num = parseInt(this.textContent);
+	  $degValue.removeClass('active');
+	  if (isNaN(num)) {
+	    return isFirstDown;
+	  }
+	  if (isFirstDown) {
+	    $degValue.text(num);
+	    isFirstDown = false;
+	  } else {
+	    var prev = parseInt($degValue.text());
+	    var current = parseInt(prev + '' + num);
+	    if (current > 180) {
+	      $degValue.text(prev);
+	    } else {
+	      $degValue.text(current);
+	    }
+	  }
+	  $(this).removeClass('active');
+	  return isFirstDown;
+	}
+
+	function _backClick(isFirstDown, $degValue) {
+	  $degValue.removeClass('active');
+	  if (isFirstDown) {
+	    $degValue.text('0');
+	    isFirstDown = false;
+	  } else {
+	    var num = parseInt($degValue.text());
+	    if (num != 0) {
+	      num = num.toString();
+	      num = num.length == 1 ? 0 : num.substr(0, num.length - 1);
+	      $degValue.text(num);
+	    }
+	  }
+	  return isFirstDown;
+	}
+
+	function _inputMouseDown(index) {
+	  if (index == 1) {
+	    this.$keyboard.show();
+	    this.$keyboard2.hide();
+	    this.isFirstDown = true;
+	    this.$degValue2.text(this.deg2);
+	    _addActiveState([this.$degInput, this.$degValue]);
+	    _removeActiveState([this.$degInput2, this.$degValue2]);
+	  } else {
+	    this.$keyboard.hide();
+	    this.$keyboard2.show();
+	    this.isFirstDown2 = true;
+	    this.$degValue.text(this.deg);
+	    _removeActiveState([this.$degInput, this.$degValue]);
+	    _addActiveState([this.$degInput2, this.$degValue2]);
+	  }
+	}
+
+	function _addActiveState(elems) {
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = elems[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var elem = _step.value;
+
+	      elem.addClass('active');
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	}
+
+	function _removeActiveState(elems) {
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+
+	  try {
+	    for (var _iterator2 = elems[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      var elem = _step2.value;
+
+	      elem.removeClass('active');
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
+	}
+
+	function _relocateKeyboard(input, keyboard) {
+	  var left = input.position().left;
+	  var top = input.position().top;
+	  var h = input.innerHeight();
+	  var keyboardW = keyboard.width();
+	  var keyboardH = keyboard.height();
+	  keyboard.css({
+	    left: left - keyboardW - 1,
+	    top: top + h - keyboardH
+	  });
+	}
+
+	exports.default = AngleInputs;
+
+/***/ }
+/******/ ]);]]></presenter><resources><file src="./resources/CentralAngle.json"/><file src="./resources/wood/images/angle_mark.png"/><file src="./resources/wood/images/arc_mark.png"/><file src="./resources/wood/images/guide_page.png"/><file src="./resources/wood/images/icon_close.png"/><file src="./resources/wood/images/icon_del_active.png"/><file src="./resources/wood/images/icon_del_normal.png"/><file src="./resources/wood/images/jeyboard_hd.png"/></resources></addon>

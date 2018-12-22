@@ -1,0 +1,183 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='StudentComposition'>
+<properties>
+
+                <property name="question_id" displayName="question_id" type="string" />
+                <property name="id" displayName="id" type="string" />
+                <property name="url" displayName="url" type="string" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="6.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonStudentComposition_create = function () {
+        return new BasicLauncher({
+            "defaultConfig":'simple',
+            "dataParse":function(model, pageModels){
+                var me = this;
+                var deferred = $.Deferred();
+                if (model.url) {
+                    QtiPlayer.load(model.url, {
+                        refPath: icCreatePlayer.ref_path
+                    }, function (data) {
+                        if (data.modelMap) {
+                            for (var item in data.modelMap) {
+                                var response = data.modelMap[item];
+
+                                model.titleType = response.titleType;
+                                model.title = response.title;
+                                model.paperType = response.paperType;
+                                model.text = response.content;
+                                model.asset = JSON.stringify(response.asset);
+                                model.assetTitle = JSON.stringify(response.assetTitle);
+                                //处理背景url为空的情况，使用默认图片
+                                var backgroundUrl = response.object.data || me.basePath.substring(7) + "resources/papertype_1.png";
+                                if (response.questionType === 'drawing') {
+                                    model.writer_background = {
+                                        url: backgroundUrl,
+                                        type: 0,
+                                        left: 0,
+                                        top: 0,
+                                        right: 0,
+                                        bottom: 0
+                                    };
+                                }
+                            }
+                            deferred.resolve(model);
+                        }
+                    });
+                }
+                return deferred.done(
+                    function(data) {
+                        data.isWhole = true;
+                        data.questionType = 'composition';
+                        data.examId = me._getExamId();
+                    }
+                );
+            },
+            "getEnvironment":function(){
+                var envName;
+                var sys = this._getQueryString('sys');
+
+                if (this.isPPTShell || (sys != null && sys.toLowerCase() === 'icrstatisticsplatform')) {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.PPTShell;
+                } else {
+                    envName = BasicLauncher.simpleGetEnvironment.ENV.Pad;
+                }
+                return envName;
+            },
+            "getComponent":function(model) {
+                return [
+                    {presenter:'CompositionPanel', autowired:['text','titleType','title','asset','assetTitle'], renderTo:'panel'},
+                    {presenter:'InteractionTimer', value:{'view_type':'new_timer'}, renderTo:'timer'},
+                    {presenter:'InteractionSubmitButton', value:{'can_modify':'true','linkQuestionType':'write','linkQuestionId':model.id,'view_type':'new_em_button'}, renderTo:'submit', applyTo:['pad']}
+                ];
+            },
+            "getController":function(model){
+                return [
+                    //作文题控制器
+                    {presenter: 'CompositionController', autowired:['id','examId','isWhole','questionType','writer_background','title','paperType']},
+                    //手写题启动器 require d类统计
+                    {presenter:"AnswerClassStatis",applyTo:['ppt']},
+                    //课堂数据数据保存控制器
+                    {
+                        presenter: 'ClassroomStatusController',
+                        value: {
+                            'questionId': model.id
+                        }
+                    }
+                ];
+            },
+            "getLayout":function(model){
+                return {presenter:'WriteLayout', value:{'questionType':'composition'}};
+            },
+            '_getExamId':function(){
+                var examId = '';
+                this.$addEventListener('TaskInfoCallback', PresenterEventType.IC_PLAYER_EVENT, function(eventData) {
+                    if(eventData && eventData.value){
+                        examId = eventData.value.examId;
+                    }
+                });
+                this.$dispatchEvent('TaskInfo',PresenterEventType.IC_PLAYER_EVENT,{'item':'exam','type':'query'});
+                return examId;
+            },
+            '_getQueryString': function(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(r[2]); return null;
+            },
+            'presenterParserMapping':{
+                'interactionStateRecoverFilter':function(module){
+                    module.applyTo = ['pad'];
+                },
+                'objectiveStatController':function(module){
+                    module.applyTo = []
+                }
+            }
+        });
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/1.png' />
+<file src='./resources/2.png' />
+<file src='./resources/3.png' />
+<file src='./resources/images/bookskin_left.png' />
+<file src='./resources/images/bookskin_leftbg.png' />
+<file src='./resources/images/bookskin_mainbg.png' />
+<file src='./resources/images/bookskin_right.png' />
+<file src='./resources/images/bookskin_righttop.png' />
+<file src='./resources/images/bookskin_top.png' />
+<file src='./resources/images/write/bg_instruction_bottom.png' />
+<file src='./resources/images/write/bg_instruction_tit.png' />
+<file src='./resources/images/write/bg_shadowbig.png' />
+<file src='./resources/images/write/bg_shadowsmall.png' />
+<file src='./resources/images/write/bg_text_box.png' />
+<file src='./resources/images/write/bookskin_mainbg.png' />
+<file src='./resources/images/write/icon_change01.png' />
+<file src='./resources/images/write/icon_change02.png' />
+<file src='./resources/images/write/icon_chose01.png' />
+<file src='./resources/images/write/icon_chose02.png' />
+<file src='./resources/images/write/icon_clock.png' />
+<file src='./resources/images/write/icon_flag01.png' />
+<file src='./resources/images/write/icon_flag02.png' />
+<file src='./resources/images/write/icon_flag03.png' />
+<file src='./resources/images/write/icon_instruction.png' />
+<file src='./resources/images/write/icon_play.png' />
+<file src='./resources/images/write/icon_play2.png' />
+<file src='./resources/images/write/icon_refresh.png' />
+<file src='./resources/papertype_1.png' />
+
+
+</resources>
+
+</addon>

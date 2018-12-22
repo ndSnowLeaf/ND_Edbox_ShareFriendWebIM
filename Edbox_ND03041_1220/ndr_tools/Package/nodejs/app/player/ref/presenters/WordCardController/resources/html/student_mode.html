@@ -1,0 +1,63 @@
+<div class="exam_skin_wood" data-bind="visible: showPractise() || showCard()">
+    <div class="js_show_container" data-bind="visible: showCard()"></div>
+    <div class="" data-bind="visible: !showCard(),css:{woc_com_layout:practiseType() == 'chinese'}" style="position: fixed; left: 0; top: 0; height: 100%; width: 100%;">
+        <div class="woc_com_wrapper_pad">
+            <div class="pratice_pptpop wordcard_pad">
+                <div class="wordcard pratice_pptpop_main">
+                    <div class="wordcard_stu_header clearfix" data-bind="css:{hide_dom:practiseType() != 'chinese'}">
+                        <div class="btn_right_container clearfix">
+                            <a class="com_btn_round" data-bind="css: {com_btn_disabled: submitter.enabled() == false}" href="javascript:void(0)">
+                                <span class="icons_box"></span>
+                                <span class="text_box submitButton" data-bind="text: submitter.text"></span>
+                            </a>
+                        </div>
+                        <div class="wordcard_time">
+                            <div class="time_default ">
+                                <span class="time_m"><em data-bind="text: timer.minutes"></em></span>
+                                <i>:</i>
+                                <span class="time_s"><em data-bind="text: timer.second"></em></span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 题卡的容器 -->
+                    <div class="js_practise_container wordcard">
+                        <div class="chinese" data-bind="css:{hide_dom:practiseType() != 'chinese'}"></div>
+                        <div class="com_layout" data-bind="css:{hide_dom:practiseType() != 'english'}">
+                            <div class="com_wrapper_pad en_card_wrapper en_card_wrapper_send">
+                                <div class="com_layout_header">
+                                    <!--计时器-->
+                                    <div class="com_header_time">
+                                        <div class="com_time">
+                                            <div class="time_default ">
+                                                <b class="time_text" _lang="lang_txt_answer_time"><!--答题时间：--></b>
+                                                <span class="time_m"><em data-bind="text: timer.minutes"></em></span><b class="time_text"
+                                                    _lang="lang_txt_min"></b>><i>:</i><span class="time_s"><em data-bind="text: timer.second"></em></span>
+                                                <b class="time_text" _lang="lang_txt_sec">
+                                                    <!--秒-->
+                                                    </b>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--/计时器-->
+                                    <!--提交按钮-->
+                                    <div class="com_header_tool">
+                                        <a class="com_btn_round" data-bind="css:{hide_dom:!hasBeenSubmit(),com_btn_disabled: showingAnswer()}">
+                                            <!-- <span class="icons_box"></span> -->
+                                            <span class="text_box _js_ShowAnswer" _lang="lang_btn_look_answer"><!--查看答案--></span>
+                                        </a>
+                                        <a class="com_btn_round " data-bind="css: {com_btn_disabled: submitter.enabled() == false,hide_dom:hasBeenSubmit()}">
+                                            <!-- <span class="icons_box"></span> -->
+                                            <span class="text_box submitButton" data-bind="text: submitter.text"></span>
+                                        </a>
+                                    </div>
+                                    <!--/提交按钮-->
+                                </div>
+                                <div class="english com_layout_container ec_wrapper ec_stu_wrapper"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

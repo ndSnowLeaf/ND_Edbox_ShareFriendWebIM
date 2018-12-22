@@ -1,0 +1,1119 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompareRemake'>
+<properties>
+
+                <property name="questionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="questionData" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .compare_main{position:relative;height:100%;z-index:333}.exam_skin_wood .compare_main .com_layout_main{padding:0 1.25em}.exam_skin_wood .compare_main .respondRes_tip{margin:.83333em 0 -.83333em;padding:0 .83333em;font-size:1.66667em;text-align:center}.exam_skin_wood .compare_main .respondRes_tip.respond_right{color:#258d52}.exam_skin_wood .compare_main .respondRes_tip.respond_error{color:#d52a2a}.exam_skin_wood .compare_main .exam_box{max-height:24.58333em;margin:1.75em 0 0;overflow-y:auto}.exam_skin_wood .compare_main .exam_box li{position:relative;margin-bottom:.95833em;height:3.875em;line-height:3.875em;text-align:center}.exam_skin_wood .compare_main .module_number{position:absolute;left:.41667em;top:.75em;padding:0;height:2.33333em;line-height:2.08333em;border-radius:.5em;border:.125em solid #9b590c;min-width:2.83333em}.exam_skin_wood .compare_main .module_number.green{border-color:green;color:green}.exam_skin_wood .compare_main .module_left,.exam_skin_wood .compare_main .module_right{color:#5d390d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;border-radius:.41667em}.exam_skin_wood .compare_main .module_left{margin:0 .75em;display:inline-block;width:25em;height:100%;background-image:url(resources/wood/images/bg_m.png);background-repeat:repeat-x;background-position:0 0;background-origin:padding-box;background-size:auto 100%}.exam_skin_wood .compare_main .module_left:after,.exam_skin_wood .compare_main .module_left:before{display:block;height:3.875em;width:.83333em;content:" ";position:relative;top:0}.exam_skin_wood .compare_main .module_left:before{float:left;left:0;background:url(resources/wood/images/bg_l.png) no-repeat;background-size:auto 100%}.exam_skin_wood .compare_main .module_left:after{float:right;right:0;background:url(resources/wood/images/bg_r.png) 100% 0 no-repeat;background-size:auto 100%}.exam_skin_wood .compare_main .module_right{margin:0 .83333em;display:inline-block;width:25em;height:100%;background-image:url(resources/wood/images/bg_m.png);background-repeat:repeat-x;background-position:0 0;background-origin:padding-box;background-size:auto 100%}.exam_skin_wood .compare_main .module_right:before{content:" ";float:left;position:relative;top:0;left:0;background:url(resources/wood/images/bg_l.png) no-repeat;background-size:auto 100%;display:block;height:3.875em;width:.83333em}.exam_skin_wood .compare_main .module_right:after{content:" ";float:right;position:relative;top:0;right:0;background:url(resources/wood/images/bg_r.png) 100% 0 no-repeat;background-size:auto 100%;display:block;height:3.875em;width:.83333em}.exam_skin_wood .compare_main .module_fz_em{font-size:1.75em;color:#59390b}.exam_skin_wood .compare_main .module_fz_em.fz_em_big{font-size:1.91667em}.exam_skin_wood .compare_main .module_mid,.exam_skin_wood .compare_main .module_mid .com_u_btn2{width:5.75em;display:inline-block;height:3.875em;vertical-align:top}.exam_skin_wood .compare_main .module_mid .com_u_btn2{line-height:3.16667em;border-radius:.5em;background:linear-gradient(180deg,#6aa4ca,#4b9ad3);background-size:100% auto;text-align:center}.exam_skin_wood .compare_main .module_mid .com_u_btn2 em{font-size:2.16667em;color:#fff;font-weight:700}.exam_skin_wood .compare_main .module_mid .com_u_btn2.com_s_on{background:linear-gradient(180deg,#4cc9fd,#74ddff);border:3px solid #0d64a3}.exam_skin_wood .compare_main .module_mid .com_u_btn2.com_s_right{background:linear-gradient(180deg,#1ea056,#268b52)}.exam_skin_wood .compare_main .module_mid .com_u_btn2.com_s_right_on{background:linear-gradient(180deg,#1ea056,#268b52);border:3px solid #14c061}.exam_skin_wood .compare_main .module_mid .com_u_btn2.com_s_error{background:linear-gradient(180deg,#ca4747,#d62727)}.exam_skin_wood .compare_main .module_mid .com_u_btn2.com_s_error_on{background:linear-gradient(180deg,#ca4747,#d62727);border:3px solid #861010}.exam_skin_wood .compare_main .symbol_box .com_u_btn2{width:4.16667em;margin:0 .41667em;display:inline-block;height:3em;line-height:3em;font-size:1.25em;color:#834f06;font-weight:700}.exam_skin_wood .compare_main .compare_bottom_tool .bottom_tools li em,.exam_skin_wood .compare_main .moving_tool em{font-size:2.25em;color:#834f06;font-weight:700}.exam_skin_wood .compare_main .compare_lay_box{padding:0;text-align:center}.exam_skin_wood .compare_main .compare_bottom_tool{position:absolute;z-index:339;width:100%;height:5.75em;bottom:.83333em;left:0;text-align:center}.exam_skin_wood .compare_main .compare_bottom_tool .bottom_tools li{position:relative;margin:0 1.29167em;display:inline-block;width:7.45833em;height:5.75em;line-height:5.41667em;background:url(resources/wood/images/btn_lr_board.png) top no-repeat;background-size:100% auto;text-align:center;cursor:pointer}.exam_skin_wood .compare_main .compare_bottom_tool .bottom_tools li div{position:absolute;left:0;top:0;display:inline-block;width:100%;height:100%}.exam_skin_wood .compare_main .compare_bottom_tool .bottom_tools li.ui_btn_selected{background-position:bottom}.exam_skin_wood .compare_main .moving_tool{position:absolute;left:25em;bottom:6.25em;z-index:998;display:inline-block;width:7.45833em;height:5.75em;line-height:5.41667em;background:url(resources/wood/images/btn_lr_board.png) top no-repeat;background-size:100% auto;text-align:center;cursor:pointer}.exam_skin_wood .compare_main .moving_tool:active{background-position:bottom}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div div class="com_layout_exam_content compare_main" style="-webkit-touch-callout: none;  -webkit-user-select: none;  -khtml-user-select: none;  -moz-user-select: none;  -ms-user-select: none;  user-select: none"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit" data-bind="text: title"></h2></div><div class="com_layout_main" style="overflow: hidden"><div class="exam_box scrollbar_style_simple"><ul data-bind="foreach:items"><li class="_compare_node"><span class="module_left"><em class="module_fz_em" data-bind="text:left, css: leftCss"></em></span><div class="module_mid"><a class="com_u_btn2 textentry"><em data-bind="text:userAnswer, attr: {index: $index}"></em></a></div><span class="module_right"><em class="module_fz_em" data-bind="text:right, css: rightCss"></em></span></li></ul></div><div class="compare_bottom_tool"><ul class="bottom_tools" data-bind="foreach: symbols"><li><em class="symbol" data-bind="text:$data"></em><div class="mask"></div></li></ul></div></div><div class="symbol-move moving_tool" style="display: none"><em>＜</em></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonCompareRemake_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+
+function CompareRemakeService(parent) {
+    this.parent = parent;
+    this.status = {};
+}
+
+CompareRemakeService.prototype = {
+    getQuestionInfo: function () {
+        return {
+            id: this.parent.model.questionId,
+            type_code: 'compare',
+            type_name: '比大小',
+            url: this.parent.model.questionId,
+            dispatchOnly: true
+        }
+    },
+    setLocationProperties: function (data) {
+        this.parent.$translator.setData(data);
+    },
+    getResult: function () {
+        var result = {
+            correctAnswer: this.parent.correctAnswer,
+            userAnswer: []
+        };
+        var hasBlank = false;
+        $.each(this.parent.viewModel.items(), function (ke, v) {
+            result.userAnswer.push(v.userAnswer());
+            if (v.userAnswer() == "") {
+                hasBlank = true;
+            }
+        });
+        if (!hasBlank) {
+            this.parent.answerState = "COMPLETE";
+        }
+
+        var correct = true;
+        for (var index = 0, len = this.parent.correctAnswer.length; index < len; index++) {
+            if (this.parent._mapData(this.parent.correctAnswer[index].answer) != result.userAnswer[index]) {
+                correct = false;
+                break;
+            }
+        }
+        var returnAnswer = {
+            answer: {
+                "answer_result": correct,
+                "correct_response": this.parent.correctAnswer,
+                "user_response": result.userAnswer
+            },
+            answerState: this.parent.answerState,
+            questionId: this.parent.model.questionId
+        };
+
+        this.parent.logger.debug("CompareRemake getResult " + JSON.stringify(returnAnswer));
+        return returnAnswer;
+    },
+    getStatisticClass: function () {
+        this.parent.logger.debug("CompareRemake getStatisticClass " + this.parent.statisticClass);
+        return this.parent.statisticClass;
+    },
+    convertDataForStatistics: function (oriData) {
+        var value = oriData.value;
+        var onlineNum = 0;
+        var correctAnswer,
+            item_key = [],
+            percent = [],
+            stuAnswerStat = [];
+        var convertedData = {};
+
+        convertedData["allrightStu"] = [];
+        if (value.answers) {
+            for (var i = 0, ilen = value.answers.length; i < ilen; i++) {
+                if (!$.isArray(value.answers[i])) {
+                    break;
+                }
+                if (value.answers[i].length) {
+                    for (var j = 0, jlen = value.answers[i].length; j < jlen; j++) {
+                        if (typeof (value.answers[i][j]) != "object") {
+                            break;
+                        }
+                        if (typeof (value.answers[i][j].answer) == "string") {
+                            value.answers[i][j].answer = JSON.parse(value.answers[i][j].answer);
+                        } else if (typeof (value.answers[i][j].answer) == "object") {
+                            value.answers[i][j].answer = value.answers[i][j].answer;
+                        } else {
+                            break;
+                        }
+
+                        $.each(value.answers[i][j].answer.correct_response, function (k, item) {
+                            if (!stuAnswerStat[k]) {
+                                stuAnswerStat[k] = {
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k + 1)
+                                };
+                                item_key.push(k + 1);
+                            }
+                            if (value.answers[i][j].answer.correct_response[k].answer == value.answers[i][j].answer.user_response[k]) {
+                                stuAnswerStat[k].right_userIds = stuAnswerStat[k].right_userIds.concat(value.answers[i][j].userIds);
+                            } else {
+                                stuAnswerStat[k].wrong_userIds = stuAnswerStat[k].wrong_userIds.concat(value.answers[i][j].userIds);
+                            }
+                        });
+                        if (value.answers[i][j].answer.answer_result) {
+                            convertedData["allrightStu"] = convertedData["allrightStu"].concat(value.answers[i][j].userIds);
+                        }
+                    }
+                } else {
+                    $.each(value.correctAnswerTeacher.correct_response, function (k, item) {
+                        if (!stuAnswerStat[k]) {
+                            stuAnswerStat[k] = {
+                                rightNum: 0,
+                                right_userIds: [],
+                                wrong_userIds: [],
+                                unfinished_userIds: value.unfinishedUserIds,
+                                ref_key: (k + 1)
+                            };
+                            item_key.push(k + 1);
+                        }
+                    });
+                    convertedData["allrightStu"] = [];
+                }
+            }
+        }
+        $.each(stuAnswerStat, function (k, item) {
+            item.rightNum = item.right_userIds.length;
+        });
+        onlineNum = value.finishedNum + value.unfinishedNum;
+        /**计算正确率**/
+        for (var ii = 0; ii < stuAnswerStat.length; ii++) {
+            percent[ii] = (onlineNum > 0) ? (stuAnswerStat[ii]["rightNum"] / onlineNum).toFixed(2) : 0;
+        }
+
+        convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+        convertedData["submit_count"] = onlineNum;
+        convertedData["answers"] = value.answers;
+        convertedData["item_key"] = item_key;
+        convertedData["percent"] = percent;
+        convertedData["unfinishedNum"] = value.unfinishedNum;
+        convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+        convertedData["stuAnswerStat"] = stuAnswerStat;
+
+        value["convertedData"] = convertedData;
+        return oriData;
+    },
+    /**
+     * 显示答案
+     * @param answer 需要显示的答案,如果对象为空则显示正确答案
+     */
+    showAnswer: function (showAnswerType, commitedAnswer) {
+        this.parent.logger.debug("CompareRemake showAnswer showAnswerType:" + showAnswerType + "  commitedAnswer: " + commitedAnswer);
+        var answer = null;
+        //显示已提交的答案
+        if (commitedAnswer) {
+            answer = [];
+            var committedAnswer = commitedAnswer.answer.user_response;
+            if (committedAnswer) {
+                for (var index = 0, len = committedAnswer.length; index < len; index++) {
+                    answer.push(committedAnswer[index]);
+                }
+            }
+        } else {
+            //状态恢复
+            this.parent.showAnswerInfo = {
+                'hasShow': true,
+                'type': showAnswerType
+            };
+
+            switch (showAnswerType) {
+                //显示正确答案
+                case "correct":
+                    {
+                        answer = [];
+                        for (var index = 0, len = this.parent.correctAnswer.length; index < len; index++) {
+                            answer.push(this.parent.correctAnswer[index].answer);
+                        }
+                        break;
+                    }
+                    //显示当前学生答案用
+                case "user":
+                    {
+                        answer = [];
+                        $.each(this.parent.viewModel.items(), function (ke, v) {
+                            answer.push(v.userAnswer());
+                        });
+                        break;
+                    }
+                    //统计使用
+                default:
+                    {
+                        answer = [];
+                        for (var index = 0, len = this.parent.correctAnswer.length; index < len; index++) {
+                            answer.push(this.parent.correctAnswer[index].answer);
+                        }
+                        this.parent._toggleInteraction(false);
+                        break;
+                    }
+            }
+        }
+        //把答案赋值给填空
+        var self = this;
+        $.each(answer, function (key, value) {
+            self.parent.viewModel.items()[key].userAnswer(value);
+        });
+        //检查答案是否正确，并显示相应红绿框
+        this.parent._showAnswerCheck();
+    },
+    showResultHint: function (option) {
+        this.parent.logger.debug("CompareRemake showResultHint " + option);
+        var result = {
+            userAnswer: []
+        };
+        $.each(this.parent.viewModel.items(), function (ke, v) {
+            result.userAnswer.push(v.userAnswer());
+        });
+        var correct = true;
+        for (var index = 0, len = this.parent.correctAnswer.length; index < len; index++) {
+            if (this.parent._mapData(this.parent.correctAnswer[index].answer) != result.userAnswer[index]) {
+                correct = false;
+                break;
+            }
+        }
+        //状态恢复
+        this.parent.showHintInfo = {
+            'hasShow': true,
+            'result': correct
+        };
+
+        //弹窗提示
+        if (this.parent.isApp) {
+            this.lockQuestion();
+            this.parent.$view.compareModuleResponseTip({
+                type: correct ? 'correct' : 'wrong',
+                // msg: correct? '太棒了，你全对了！': '很遗憾，未能回答正确',
+                msg: correct ? this.parent.$translate('right') : this.parent.$translate('error'),
+                time: option.spendTime,
+                auto: 3000,
+                text: {
+                    minute: this.parent.$translate('minute'),
+                    second: this.parent.$translate('second'),
+                    tip: this.parent.$translate('tip')
+                }
+            });
+        }
+    },
+    //将题目重置为未作答状态
+    resetQuestion: function () {
+        this.parent.logger.debug("CompareRemake resetQuesion ");
+        //清空所有的作答结果
+        $.each(this.parent.viewModel.items(), function (k, v) {
+            v.userAnswer('');
+        });
+        this.parent._resetAnswerCheck();
+        this.parent.showHintInfo = {
+            'hasShow': false,
+            'result': undefined
+        };
+        this.parent.showAnswerInfo = {
+            'hasShow': false,
+            'type': undefined
+        };
+        this.parent.answerState = "NO_ANSWER";
+
+        // this.parent._toggleInteraction(true); 通知状态变化
+        this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+    },
+    _getState: function () {
+        var userAnswers = [];
+        var hasBlank = false;
+        $.each(this.parent.viewModel.items(), function (ke, v) {
+            userAnswers.push(v.userAnswer());
+            if (v.userAnswer() == "") {
+                hasBlank = true;
+            }
+        });
+
+        if (!hasBlank) {
+            this.parent.answerState = "COMPLETE";
+        }
+
+        var state = {
+            userAnswers: userAnswers,
+            showAnswerInfo: this.parent.showAnswerInfo,
+            showHintInfo: this.parent.showHintInfo,
+            answerState: this.parent.answerState,
+            isLockQuestion: this.parent.toggleSwitch
+        };
+        this.parent.logger.debug("CompareRemake getState " + JSON.stringify(state));
+        return state;
+    },
+    getState: function () {
+        this.parent.playerController.startFlow('css_classroom_status_changed', {
+            presenterCode: this.parent.metaInfo.name
+        });
+        return this._getState();
+    },
+    setState: function (state) {
+        this.parent.logger.debug("CompareRemake setState " + JSON.stringify(state));
+        var stateObj = state;
+        if (stateObj) {
+            for (var i = 0, len = this.parent.viewModel.items().length; i < len; i++) {
+                this.parent.viewModel.items()[i].userAnswer(stateObj.userAnswers[i]);
+            }
+
+            if (stateObj.showAnswerInfo) {
+                if (stateObj.showAnswerInfo.hasShow) {
+                    this.showAnswer(stateObj.showAnswerInfo.type);
+                }
+            }
+
+            if (stateObj.showHintInfo) {
+                if (stateObj.showHintInfo.hasShow) {
+                    this.showResultHint(stateObj.showHintInfo.result);
+                }
+            }
+            this.parent.answerState = stateObj.answerState;
+            this.parent.toggleSwitch = stateObj.isLockQuestion;
+        }
+    },
+    getClassroomStatus: function () {
+        return this._getState();
+    },
+    setClassroomStatus: function (status) {
+        this.status = status;
+        !!this.status && this.setState(status);
+        this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+            presenterCode: this.parent.metaInfo.name
+        });
+    },
+    clearClassroomStatus: function () {
+        this.setClassroomStatus(null);
+    },
+    startStatistics: function () {
+        this.parent.logger.debug("CompareRemake startStatistics ");
+        //结束答题的时候不清空，退出本题的时候再清空。 修复bug：47603 this.resetQuestion();
+        this.parent._setStatisticsViewAttr();
+        this.parent._bindStatisticsView();
+    },
+    //将题目设置为不可作答状态
+    lockQuestion: function () {
+        this.parent.logger.debug("CompareRemake lockQuestion ");
+        this.parent._toggleInteraction(false);
+    },
+    //将题目设置为可作答状态
+    unlockQuestion: function () {
+        this.parent.logger.debug("CompareRemake unlockQuestion ");
+        this.parent._toggleInteraction(true);
+    },
+    //将题目设置为结束作答状态
+    finishQuestion: function () {
+        this.parent.logger.debug("CompareRemake finishQuestion ");
+        this.parent._toggleInteraction(true);
+    }
+};
+
+module.exports = CompareRemakeService;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/**
+ *
+ * @param options json {type: 弹窗类型 correct | wrong, msg: 提示文本, time: 提示时间, created: 弹出后回调, destroyed: 关闭后回调, auto: 自动关闭时间}
+ */
+$.fn.compareModuleResponseTip = function (options) {
+    var $this = this;
+    var minute = 0,
+        second = 0;
+    if (typeof options.time === 'number') {
+        minute = (Math.floor(options.time / 60) / 100).toFixed(2).substring(2);
+        second = (options.time % 60 / 100).toFixed(2).substring(2);
+    }
+    var html = [
+        '<div class="com_pop_ans_result correct ' + options.type + '">',
+        '    <p class="ans_result_tit">',
+        '       <span>' + options.msg + '</span>',
+        '    </p>',
+        '    <div class="ans_result_content">',
+        '        <div class="ans_result_pics">',
+        '            <span class="pics_t"></span>',
+        '            <span class="pics_r"></span>',
+        '            <span class="pics_b"></span>',
+        '            <span class="pics_l"></span>',
+        '        </div>',
+        '        <p class="ans_result_time">',
+        // '            <span class="com_pop_minute">' + minute + '</span><span>' + options.text.minute + '</span>',
+        // '            <span class="com_pop_second">' + second + '</span><span>' + options.text.second + '</span>',
+        '               <span class="com_pop_minute">' + minute + ' : ' + second + '</span>',
+        '        </p>',
+        '        <p class="ans_result_bottom">' + options.text.tip + '</p>',
+        '    </div>',
+        '</div>'
+    ].join("");
+    var $tip = $(html);
+    var destroy = function () {
+        $tip.remove();
+        options.destroyed && options.destroyed();
+    };
+    $this.append($tip);
+    $this.one('click', destroy);
+    options.created && options.created();
+    !!options.auto && setTimeout(destroy, +options.auto);
+};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(0);
+
+var hasIncludeCNChar = function (str) {
+    return /[\u4E00-\u9FA5\uF900-\uFA2D]/.test(str);
+};
+
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: "CompareRemake",
+        type: PresenterType.PRESENTER_COMPONENT,
+        subtype: SubPresenterType.INTERACTION_QUESTION
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+        this.viewModel = {
+            title: "",
+            items: ko.observableArray([]),
+            symbols: ["＜", "＞", "≤", "≥", "＝", "≈"]
+            // hasCNChar: hasIncludeCNChar
+        };
+        this.correctAnswer = [];
+        this.$view = this.model = null;
+        this.symbolMove = null;
+        this.acceptArea = [];
+        this.moveText = "";
+        this.scrollObj = {
+            left: 0,
+            top: 0
+        };
+        this.mixDistanceX = 80;
+        this.mixDistanceY = 50;
+        this.mouseDown = false;
+        this.clickOffset = {};
+        //统计用
+        this.itemIndexClass = 'module_number';
+        this.dataType = 'data-item';
+        this.statisticClass = "B";
+        this.toggleSwitch = false;
+        //状态恢复用
+        this.showHintInfo = {
+            'hasShow': false,
+            'result': undefined
+        };
+        this.showAnswerInfo = {
+            'hasShow': false,
+            'type': undefined
+        }
+        //答题情况三种状态
+        this.answerState = "NO_ANSWER";
+
+        //定义日志
+        this.logger.appendHandler(function (message, context) {
+            console.log(message);
+        }, {
+            level: Logger.DEBUG
+        });
+
+    },
+    getService: function () {
+        if (!this._service_) {
+            this._service_ = new Service(this);
+        }
+        return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        var self = this;
+        self.$view = $(view);
+        self.model = model;
+        for (var index = 0, len = model.questionData.items.length; index < len; index++) {
+            model.questionData.items[index].symbol = this._mapData(model.questionData.items[index].symbol);
+        }
+        self.$compareMain = self.$view.find('.compare_main');
+        //初始化Presenter
+        self._initPresenter();
+        self._bindEvent();
+    },
+    destroy: function () {
+        this.$removeEventListener();
+        ko.cleanNode(this.$view[0]);
+        this._unbindEvent();
+        this.viewModel = null;
+    },
+    /****以下开始为Presenter的私有方法*****/
+    _bindEvent: function () {
+
+        //点击选中交互
+        this.$view
+            .on('click', '.mask', this._onOptionsSelected.bind(this));
+        this.$view.find('.textentry')
+            .on('click', this._onSymbolClick.bind(this))
+            // .on('dblclick', this._onSymbolDblClick.bind(this))
+            .on('mousedown', this._onSymbolFocus.bind(this))
+            .on('mouseup', this._onSymbolBlur.bind(this))
+
+        //拖动选中交互
+        // this.$attachDelegateEvent('mousedown', ['.compare_main .mask'], this._onMaskClick);
+        // this.$attachDelegateEvent('mousedown', ['.textentry'], this._onSymbolStaticClick);
+        // this.$attachDelegateEvent('mousemove', ['.compare_main'], this._onMouseMove);
+        // this.$attachDelegateEvent('mouseup', ['.compare_main'], this._onSymbolMoveLeave);
+        // this.$compareMain.on("mouseleave", {self: this}, this._onSymbolMoveLeave2);
+        // this.$compareMain.on("touchcancel", {self: this}, this._onSymbolMoveLeave2);
+    },
+    _unbindEvent: function () {
+        this.toggleSwitch = true;
+
+        //拖动交互
+        // $(self.$view).off('click', '.module-interaction-compare');
+        // this.$compareMain.off("mouseleave");
+        // this.$compareMain.off("touchcancel");
+    },
+    //Presenter的初始化
+    _initPresenter: function () {
+        //初始化ViewModel
+        var self = this;
+        this.viewModel.title = this.model.questionData.title;
+        if (this.viewModel.title && this.viewModel.title.length > 38) {
+            this.$view.find(".tit").addClass("s_tit");
+        }
+        var items = [];
+        $.each(this.model.questionData.items, function (key, value) {
+            items.push({
+                left: value.left,
+                leftCss: hasIncludeCNChar(value.left) ? '' : 'fz_em_big',
+                userAnswer: ko.observable(''),
+                right: value.right,
+                rightCss: hasIncludeCNChar(value.right) ? '' : 'fz_em_big'
+            });
+            self.correctAnswer.push({
+                answer: self._mapData(value.symbol)
+            });
+        });
+        this.viewModel.items(items);
+        ko.applyBindings(self.viewModel, self.$view[0]);
+        //获取需要在全局使用的DOM对象
+        // this.symbolMove = this.$view.find('.symbol-move');
+    },
+
+
+
+    /*页面事件处理，点击交互*/
+    //底部选项点击
+    _onOptionsSelected: function (e) {
+        //this ==> presenter
+        if (this.toggleSwitch) {
+            return;
+        }
+        var target = e.target;
+        var curr = target.parentNode;
+        var prev = curr.parentNode.querySelector('.ui_btn_selected');
+        prev && prev !== curr && prev.classList.remove('ui_btn_selected');
+        if (curr.classList.contains('ui_btn_selected')) {
+            this._onOptionsCancelSelected();
+        } else {
+            curr.classList.add('ui_btn_selected');
+            this.moveText = curr.children[0].innerHTML;
+        }
+    },
+    _onOptionsCancelSelected: function () {
+        this.$view.find('.ui_btn_selected').removeClass('ui_btn_selected');
+        this.moveText = '';
+    },
+    //中间答案框点击
+    _onSymbolClick: function (e) {
+        //this ==> presenter
+        e.preventDefault();
+        if (this.toggleSwitch) {
+            return;
+        }
+        var target = e.target;
+        var hasInput = !!this.moveText;
+        //点击在textentry或子节点em上
+        if (target.classList.contains('textentry')) {
+            target = target.children[0];
+        }
+        target.innerHTML = this.moveText;
+
+        this._onOptionsCancelSelected();
+        this._checkAnswer();
+
+        //通知保存状态
+        this.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+            PresenterEventType.IC_PLAYER_EVENT);
+        if (hasInput) {
+            //题目作答状态改变，按钮变为可提交
+            this.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: true
+                });
+        }
+    },
+    //中间答案区双击
+    _onSymbolDblClick: function (e) {
+        if (this.toggleSwitch) {
+            return;
+        }
+        var text = this.moveText;
+        this.moveText = '';
+        this._onSymbolClick.call(this, e);
+        this.moveText = text;
+    },
+    //答案区点击时
+    _onSymbolFocus: function (e) {
+        if (this.toggleSwitch || !this.isPPTShell) {
+            return;
+        }
+        var target = e.target;
+        //.textentry或子节点em
+        if (target.tagName.toUpperCase() === 'EM') {
+            target = target.parentNode;
+        }
+        if (target.classList.contains('com_s_right')) {
+            target.classList.remove('com_s_right') && target.classList.add('com_s_right_on');
+        } else if (target.classList.contains('com_s_error')) {
+            target.classList.remove('com_s_error') && target.classList.add('com_s_error_on')
+        } else {
+            target.classList.add('com_s_on');
+        }
+    },
+    _onSymbolBlur: function (e) {
+        if (this.toggleSwitch || !this.isPPTShell) {
+            return;
+        }
+        var target = e.target;
+        //.textentry或子节点em
+        if (target.tagName.toUpperCase() === 'EM') {
+            target = target.parentNode;
+        }
+        if (target.classList.contains('com_s_right_on')) {
+            target.classList.remove('com_s_right_on') && target.classList.add('com_s_right');
+        } else if (target.classList.contains('com_s_error_on')) {
+            target.classList.remove('com_s_error_on') && target.classList.add('com_s_error')
+        } else {
+            target.classList.remove('com_s_on');
+        }
+    },
+    //检查答案
+    _checkAnswer: function () {
+        this._countAnswerPosition();
+        var area = this.acceptArea;
+        var modelItems = this.viewModel.items();
+        // var hasAnswer = false;
+        var hasComplete = true;
+        area.forEach(function (item, index) {
+            var content = item.textContent.trim();
+            modelItems[index].userAnswer(content);
+            // if(content && !hasAnswer){
+            //     hasAnswer = true;
+            // }
+            if (!content && hasComplete) {
+                hasComplete = false;
+            }
+        });
+        this.answerState = hasComplete ? 'COMPLETE' : 'NO_COMPLETE';
+    },
+    _clearEffect: function () {
+        this._onOptionsCancelSelected();
+        this.$view.find('.com_s_on').removeClass('com_s_on');
+        this.$view.find('.com_s_right_on').removeClass('com_s_right_on').add('com_s_right');
+        this.$view.find('.com_s_error_on').removeClass('com_s_error_on').add('com_s_error');
+    },
+
+    /*拖动交互*/
+    //页面事件处理bind
+    _onSymbolMoveLeave2: function (event) {
+        var self = event.data.self;
+        if (this.toggleSwitch) {
+            return;
+        }
+        if (self.acceptArea) {
+            for (var i = 0, len = self.acceptArea.length; i < len; i++) {
+                self.acceptArea[i].obj.removeClass("com_s_on");
+                self.acceptArea[i].obj.removeClass("com_s_error_on");
+                self.acceptArea[i].obj.removeClass("com_s_right_on");
+            }
+        }
+
+        self.symbolMove.css({
+            display: "none"
+        });
+    },
+    //页面事件处理bind
+    _onSymbolMoveLeave: function (selector, e) {
+        if (this.toggleSwitch) {
+            return;
+        }
+        var self = this;
+        self.mouseDown = false;
+        var left = self.symbolMove.offset().left + self.scrollObj.left;
+        var top = self.symbolMove.offset().top + self.scrollObj.top;
+
+        for (var i = 0, len = self.acceptArea.length; i < len; i++) {
+            if (left >= self.acceptArea[i].left && top >= self.acceptArea[i].top &&
+                left <= self.acceptArea[i].left + self.acceptArea[i].width &&
+                top <= self.acceptArea[i].top + self.acceptArea[i].height) {
+                self.viewModel.items()[i].userAnswer(self.moveText);
+                self.answerState = "NO_COMPLETE";
+                //通知保存状态
+                self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+                //题目作答状态改变，按钮变为可提交
+                self.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, {
+                        canSubmit: true
+                    });
+                break;
+            }
+        }
+        for (var i = 0, len = self.acceptArea.length; i < len; i++) {
+            self.acceptArea[i].obj.removeClass("com_s_on");
+            self.acceptArea[i].obj.removeClass("com_s_error_on");
+            self.acceptArea[i].obj.removeClass("com_s_right_on");
+        }
+        self.mouseDown = false;
+        self.symbolMove.css({
+            display: "none"
+        });
+    },
+    _onSymbolStaticClick: function (selector, e) {
+        if (this.toggleSwitch) {
+            return;
+        }
+        var self = this;
+        var $this = $(e.target);
+        var index = $this.attr('index') ? $this.attr('index') : $this.children().attr('index');
+        self._setScroll();
+        self._countAnswerPosition();
+        if (!self.viewModel.items()[index] || self.viewModel.items()[index].userAnswer() == '') {
+            return;
+        }
+        self.viewModel.items()[index].userAnswer('');
+        //通知保存状态
+        self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+            PresenterEventType.IC_PLAYER_EVENT);
+    },
+    _onMaskClick: function (selector, e) {
+        e.preventDefault();
+        if (this.toggleSwitch) {
+            return;
+        }
+        var $mainOffset = this.$compareMain.offset();
+        var self = this;
+        var $this = $(e.target);
+        var offset = $this.offset(),
+            thisMove = $this.parent();
+        self.moveText = thisMove.find('.symbol').text();
+        self._setScroll();
+        self._countAnswerPosition();
+
+        self.mouseDown = true;
+        self.symbolMove.find('em').text(self.moveText);
+        self.symbolMove.css({
+            left: (offset.left - $mainOffset.left) + 'px',
+            top: (offset.top - $mainOffset.top) + 'px',
+            display: "inline-block"
+        });
+    },
+    _onMouseMove: function (selector, e) {
+        if (this.toggleSwitch) {
+            return;
+        }
+        var $mainOffset = this.$compareMain.offset();
+        var self = this;
+        if (self.mouseDown) {
+            e.preventDefault();
+            var left, top;
+            var height = self.symbolMove.height() / 2;
+            var width = self.symbolMove.width() / 2;
+            if (e.type == "touchmove") {
+                var point = e.changedTouches[0];
+                left = point.clientX - $mainOffset.left - width;
+                top = point.clientY - $mainOffset.top - height;
+            } else {
+                left = e.clientX - $mainOffset.left - width;
+                top = e.clientY - $mainOffset.top - height;
+            }
+            self.symbolMove.css({
+                'left': left + 'px',
+                'top': top + 'px'
+            });
+            if (this.isPPTShell) {
+                left = self.symbolMove.offset().left + self.scrollObj.left;
+                top = self.symbolMove.offset().top + self.scrollObj.top;
+                for (var i = 0, len = self.acceptArea.length; i < len; i++) {
+                    self.acceptArea[i].obj.removeClass("com_s_on");
+                    self.acceptArea[i].obj.removeClass("com_s_error_on");
+                    self.acceptArea[i].obj.removeClass("com_s_right_on");
+                }
+                for (var i = 0, len = self.acceptArea.length; i < len; i++) {
+                    if (left >= self.acceptArea[i].left && top >= self.acceptArea[i].top &&
+                        left <= self.acceptArea[i].left + self.acceptArea[i].width &&
+                        top <= self.acceptArea[i].top + self.acceptArea[i].height) {
+                        if (self.acceptArea[i].obj.hasClass("com_s_right")) {
+                            self.acceptArea[i].obj.addClass("com_s_right_on");
+                        } else if (self.acceptArea[i].obj.hasClass("com_s_error")) {
+                            self.acceptArea[i].obj.addClass("com_s_error_on");
+                        } else {
+                            self.acceptArea[i].obj.addClass("com_s_on");
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+    },
+    _setScroll: function () {
+        var $scrolls = this.$view.find('.exam_box');
+        this.scrollObj = {
+            top: $scrolls.scrollTop(),
+            left: $scrolls.scrollLeft()
+        };
+    },
+    _countAnswerPosition: function () {
+
+        if (!this.acceptArea.length) {
+            this.acceptArea = this.$view.find('.textentry').get();
+        }
+
+        // var self = this;
+        // var moveFeaturesWidth = this.symbolMove.width();
+        // var moveFeaturesHeight = this.symbolMove.height();
+        // this.acceptArea = [];
+        // $.each(this.$view.find('.textentry'), function (k, v) {
+        //     var $v = $(v);
+        //     var offset = $v.offset();
+        //     var width = $v.width();
+        //     var height = $v.height();
+        //     self.acceptArea.push({
+        //         obj: $v,
+        //         top: offset.top - self.mixDistanceY + self.scrollObj.top,
+        //         left: offset.left - self.mixDistanceX + self.scrollObj.left,
+        //         width: width + 2 * self.mixDistanceX - moveFeaturesWidth,
+        //         height: height + 2 * self.mixDistanceY - moveFeaturesHeight
+        //     });
+        // });
+    },
+    /**
+     * [_showAnswerCheck 作答的反馈]
+     * 正确显示绿色，错误显示为红色
+     * 内容区域正确class为rightAnswer,错误为errorAnswer
+     *
+     */
+    _showAnswerCheck: function () {
+        this._countAnswerPosition();
+        var area = this.acceptArea;
+        var answer = this.correctAnswer;
+        // var isTrue = true;
+        // 作答区域反馈
+        this._clearEffect();
+        for (var i = 0, len = area.length; i < len; i++) {
+            var item = area[i];
+            if (item.textContent.trim() === answer[i].answer) {
+                item.classList.remove('com_s_error');
+                item.classList.add('com_s_right');
+            } else {
+                item.classList.remove('com_s_right');
+                item.classList.add('com_s_error');
+            }
+            // if (area[i].obj[0].textContent.trim() === this.correctAnswer[i].answer) {
+            //     area[i].obj.removeClass('com_s_error');
+            //     area[i].obj.addClass('com_s_right');
+            // } else {
+            //     isTrue = false;
+            //     area[i].obj.removeClass('com_s_right');
+            //     area[i].obj.addClass('com_s_error');
+            // }
+        }
+    },
+    _resetAnswerCheck: function () {
+        var self = this;
+        this._countAnswerPosition();
+        var area = this.acceptArea;
+        // 作答区域反馈
+        for (var i = 0, len = area.length; i < len; i++) {
+            area[i].classList.remove('com_s_right');
+            area[i].classList.remove('com_s_error');
+            // area[i].obj.removeClass('com_s_right');
+            // area[i].obj.removeClass('com_s_error');
+        }
+        this._clearEffect();
+        $(self.$view).find('.compare_bottom_tool').removeClass('statistic-compare-footer');
+        $(self.$view).find('.exam_box ._compare_node').removeClass('module-interaction-compare').removeAttr(self.dataType);
+        $(self.$view).find('.' + self.itemIndexClass).remove();
+    },
+    _setStatisticsViewAttr: function () {
+        var self = this;
+        var i = 1;
+        $(self.$view).find('.compare_bottom_tool').addClass('statistic-compare-footer');
+        $.each($(self.$view).find('.exam_box ._compare_node').addClass('module-interaction-compare'), function (k, item) {
+            var $item = $(item);
+            $item.prepend(self._createItemIndexDom(i));
+            $item.attr(self.dataType, i);
+            i++;
+        });
+    },
+    _createItemIndexDom: function (index) {
+        var self = this;
+        var $div = $('<span></span>');
+        $div.addClass(self.itemIndexClass).text('' + index + '');
+        return $div;
+    },
+    _bindStatisticsView: function () {
+        var self = this;
+        $(self.$view).on('click', ".module_number", function (event) {
+            $(self.$view).find('.' + self.itemIndexClass).css("color", "");
+            self._clickPresenterItem(event, this);
+        });
+    },
+    _clickPresenterItem: function (event, context) {
+        var self = this;
+        var index = $(context).parent().attr(self.dataType);
+        //通知统计
+        self.$dispatchEvent("statistics_call",
+            PresenterEventType.IC_PLAYER_EVENT, {
+                service: "statistic",
+                method: "clickItem",
+                args: [index - 1, this.statisticClass]
+            });
+        $(context).css("color", "green");
+    },
+    _toggleInteraction: function (enabled) {
+        if (enabled) {
+            this.toggleSwitch = false;
+        } else {
+            this._unbindEvent();
+            this._clearEffect();
+        }
+    },
+    _mapData: function (map) {
+        var symbol = '';
+        switch (map) {
+            case 'lt':
+                symbol = '＜';
+                break;
+            case 'gt':
+                symbol = '＞';
+                break;
+            case 'lteq':
+                symbol = '≤';
+                break;
+            case 'gteq':
+                symbol = '≥';
+                break;
+            case 'eq':
+                symbol = '＝';
+                break;
+            case 'abeq':
+                symbol = '≈';
+                break;
+            case '<':
+                symbol = '＜';
+                break;
+            case '>':
+                symbol = '＞';
+                break;
+            case '=':
+                symbol = '＝';
+                break;
+            case '≦':
+                symbol = '≤';
+                break;
+            case '≧':
+                symbol = '≥';
+                break;
+            default:
+                symbol = map;
+                break;
+        }
+        return symbol;
+    }
+}, "CompareRemake");
+
+module.exports = function () {
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/1111111111bg_l.png' />
+<file src='./resources/wood/images/11111111bg_m.png' />
+<file src='./resources/wood/images/22222222bg_r.png' />
+<file src='./resources/wood/images/bg_l.png' />
+<file src='./resources/wood/images/bg_m.png' />
+<file src='./resources/wood/images/bg_r.png' />
+<file src='./resources/wood/images/btn_bg.jpg' />
+<file src='./resources/wood/images/btn_lr_board.png' />
+<file src='./resources/wood/images/ico_1.png' />
+<file src='./resources/wood/images/ico_2.png' />
+<file src='./resources/wood/images/ico_3.png' />
+<file src='./resources/wood/images/ico_4.png' />
+<file src='./resources/wood/images/ico_5.png' />
+<file src='./resources/wood/images/ico_6.png' />
+
+
+</resources>
+
+</addon>

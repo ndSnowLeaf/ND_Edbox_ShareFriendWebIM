@@ -1,0 +1,253 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='OperateHistoryController'>
+<properties>
+
+                <property name="StepLimit" type="string" />
+                <property name="StorePosition" type="string" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "OperateHistoryController",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.stepLimit = 10;
+            this.storePosition = 'cache';
+            this.holders = {};
+            this.operatorService = {};
+            $PresenterEvent["HistoryController"] = {
+                SEND_OPERATE_HISTORY: "SendOperateHistory"
+            };
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            undo: function (operator) {
+                if (this.parent.operatorService[operator] && this.parent.holders[operator]) {
+                    //如果可以进行撤销操作
+                    if (this.parent.holders[operator].enableUndo()) {
+                        //调用撤销
+                        var data = this.parent.holders[operator].popUndo();
+                        //调用操作者的undo方法
+                        this.parent.operatorService[operator].undo(data);
+                        //返回是否还能进行操作
+                        return this.parent.holders[operator].enableUndo();
+                    }
+                    //返回不可进行撤销操作
+                    return false;
+                }
+                //如果是一个不存在的操作者
+                return false;
+            },
+            redo: function (operator) {
+                if (this.parent.operatorService[operator] && this.parent.holders[operator]) {
+                    //如果可以进行还原操作
+                    if (this.parent.holders[operator].enableRedo()) {
+                        //调用撤销
+                        var data = this.parent.holders[operator].popRedo();
+                        //调用操作者的undo方法
+                        this.parent.operatorService[operator].redo(data);
+                        //返回是否还能进行操作
+                        return this.parent.holders[operator].enableRedo();
+                    }
+                    //返回不可进行撤销操作
+                    return false;
+                }
+                //如果是一个不存在的操作者
+                return false;
+            },
+            getEvents: function() {
+                return ["un_do", "re_do"];
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****复写基类的方法*****/
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            if (interfaceName == 'IHistory') {
+                if (this.holders[metaInfo.name] == undefined) {
+                    this.holders[metaInfo.name] = new HistoryHolder(metaInfo.name, this.stepLimit, this.storePosition);
+                    this.operatorService[metaInfo.name] = service;
+                }
+            }
+        },
+        $getInterfaceMethods: function () {
+            return [{
+                interface: 'IHistory',
+                methods: ['undo', 'redo']
+            }];
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.stepLimit = model["StepLimit"];
+            this.storePosition = model["StorePosition"];
+            this._bindEvent();
+
+            var self = this;
+            //TODO: MOCK数据
+            this.$afterPresenterRun('IHistory', {
+                    name: 'TestOperator'
+                },
+                {
+                    undo: function (data) {
+                        console.log('undo', data);
+                    }, redo: function (data) {
+                    console.log('redo', data);
+                }
+                }
+            );
+        },
+        destroy: function () {
+            this._unbindEvent();
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+            this.$addEventListener($PresenterEvent.HistoryController.SEND_OPERATE_HISTORY,
+                PresenterEventType.IC_PLAYER_EVENT, this._receiveOperateData);
+        },
+        _unbindEvent: function () {
+            this.$removeEventListener();
+        },
+        //接收到操作数据
+        _receiveOperateData: function (eventData) {
+            if (eventData.operator) {
+                var operator = eventData.operator;
+                if (this.holders[operator]) {
+                    this.holders[operator].pushUndo(eventData.data);
+                }
+            }
+        }
+    }, "OperateHistoryController");
+
+    /***********定义历史操作的管理者***************/
+    var HistoryHolder = function (operator, stepLimit, storePosition) {
+        this.operator = operator;
+        this.stepLimit = stepLimit;
+        this.storePosition = storePosition;
+        this.undoList = [];
+        this.redoList = [];
+    };
+    HistoryHolder.prototype = {
+        //向撤销队列中添加操作数据
+        pushUndo: function (data) {
+            //如果超过可以撤销的最大步数,移除撤销队列第一个操作数据
+            if (this.undoList.length >= this.stepLimit) {
+                this.undoList.shift();
+            }
+            this.undoList.push(data);
+            //如果在压入撤销队列时,存在重做队列,将重做队列清空
+            if (this.redoList.length > 0) {
+                this.redoList = [];
+            }
+        },
+        //从重做队列中提出一个操作数据,并将其返回
+        popRedo: function () {
+            //如果初始时只有一个元素,返回这个元素
+            if(this.redoList.length == 1) {
+                var redoData = this.redoList .pop();
+                this.undoList.push(redoData);
+                return redoData;
+            }
+            //如果元素大于等于2个
+            if(this.redoList.length >= 2) {
+                var redoData2 = this.redoList.pop();
+                this.undoList.push(redoData2);
+                //弹出后判断是否是最后一个状态数据
+                if(this.redoList.length == 1) {
+                    //直接弹出
+                    var result = this.redoList.pop();
+                    this.undoList.push(result);
+                    //返回最后的状态数据
+                    return result;
+                } else {
+                    //返回前一个状态
+                    return this.redoList[this.redoList.length - 1];
+                }
+            }
+            return null;
+        },
+        //从撤销队列中提出一个操作数据,并将其返回
+        popUndo: function () {
+            //如果初始时只有一个元素,返回这个元素
+            if(this.undoList.length == 1) {
+                var undoData2 = this.undoList.pop();
+                this.redoList.push(undoData2);
+                return undoData2;
+            }
+            //如果元素大于等于2个
+            if(this.undoList.length >= 2) {
+                var undoData = this.undoList.pop();
+                this.redoList.push(undoData);
+                //弹出后判断是否是最后一个状态数据
+                if(this.undoList.length == 1) {
+                    //直接弹出
+                    var result = this.undoList.pop();
+                    this.redoList.push(result);
+                    //返回最后的状态数据
+                    return result;
+                } else {
+                    //返回前一个状态
+                    return this.undoList[this.undoList.length - 1];
+                }
+            }
+            return null;
+        },
+        //是否可以撤销
+        enableUndo: function () {
+            return this.undoList.length > 0;
+        },
+        //是否可以还原
+        enableRedo: function () {
+            return this.redoList.length > 0;
+        }
+    };
+
+    window.AddonOperateHistoryController_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

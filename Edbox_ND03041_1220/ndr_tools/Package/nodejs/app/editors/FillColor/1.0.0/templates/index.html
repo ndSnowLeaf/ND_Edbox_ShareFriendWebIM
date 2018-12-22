@@ -1,0 +1,69 @@
+<div class="exam_wood ui_dev_layout">
+    <div class="com_layout com_layout_large">
+        <div class="com_lay_main">
+            <div class="com_lay_header">
+                <time-box model="model.time"></time-box>
+                <div class="ui_layout_operationTips" style="display: none;">
+                    <a class="nes_btn_pt nes_help" href="javascript:" translate="common.label.help"></a>
+                    <a class="nes_btn_pt nes_example ui_has_bf_line" href="javascript:" translate="common.label.sample"></a>
+                </div>
+            </div>
+            <!-- 题干内容 begin -->
+            <div class="com_lay_contain fill_color_layout">
+                <div class="com_lay_mboard">
+                    <div class="com_lay_boardtit">
+                        <h2 class="com_u_boardtit">
+                            <!--<p class="tit" contenteditable="true">{{model.title}}</p><!--此处建议使用p标签配合contenteditable属性的形式，也可换成input-->
+                            <textarea title-box class="tit tit_row1" ng-class="{'tit_row2':model.title.length>47}" maxlength="60" ng-model="model.title"></textarea>
+                        </h2>
+                    </div>
+                    <div class="com_lay_board fill_mainbox" ng-show="!isShowBoard"><!-- 添加单词之后 -->
+                        <div class="fill_initbox">
+                            <a href="###" class="btn_addfillcolor" ng-click="AddModeHandle.search();" translate="color.btn.picture.add">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="com_lay_board fill_mainbox" ng-show="isShowBoard"><!-- 添加单词之后 -->
+                        <!-- 侧栏 -->
+                        <div class="fill_silder comui_wood_scrollbar">
+                            <h3 class="filltitle" ng-bind="model.pictureInfo.title"></h3>
+                            <div class="fillcon">
+                                <p class="boxtit" translate="color.text.recommend.color"></p>
+                                <div class="colorbox">
+                                    <a class="color" ng-repeat="colorItem in model.pictureInfo.recommendedColor" ng-style="{'background-color':colorItem}"  ></a>
+                                </div>
+                            </div>
+                            <div class="fillcon">
+                                <p class="boxtit" translate="color.text.color.demo"></p>
+                                <div class="examplebox">
+                                    <img ng-src="{{model.pictureInfo.previewLocation}}">
+                                </div>
+                            </div>
+                            <div class="showexample" ng-click="AddModeHandle.setDemoHidden();">
+                                <label class="com_u_checkbox" ng-class="{'check':model.isDemoHidden}"><span translate="color.text.hidden.demo"></span></label>
+                            </div>
+                        </div>
+                        <!-- /侧栏 -->
+
+                        <!-- 正文 -->
+                        <div class="fill_container">
+                            <div class="fill_inner">
+                                <div class="fillbox">
+                                    <img ng-src="{{model.pictureInfo.pictureLocation}}" />
+                                </div>
+                            </div>
+                            <div class="fill_ctrl">
+                                <a href="#" ng-click="AddModeHandle.search();" class="com_u_btn4 com_u_btn4_l" translate="color.btn.picture.change"></a>
+                            </div>
+                        </div>
+                        <!-- /正文 -->
+                    </div>
+                    <!-- 选择图片的弹窗 -->
+                    <picture-selector after-select-picture="AddModeHandle.selectPictureCallback"></picture-selector>
+                    <!-- /选择图片的弹窗 -->
+                </div>
+            </div>
+            <!-- //题干内容 end. -->
+        </div>
+    </div>
+</div>

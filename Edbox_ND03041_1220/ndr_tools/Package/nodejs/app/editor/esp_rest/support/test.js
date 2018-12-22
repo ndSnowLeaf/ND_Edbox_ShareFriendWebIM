@@ -1,0 +1,1 @@
+"use strict";var convertImage=require("./convertImage");convertImage("Z:\\workspace\\esp-offline-editor\\app\\editor\\esp_rest\\support\\error-image.png","Z:\\workspace\\esp-offline-editor\\app\\editor\\esp_rest\\support\\146278585447837-2.png",.7,!1,function(e,o){console.log(e),console.log(o)});

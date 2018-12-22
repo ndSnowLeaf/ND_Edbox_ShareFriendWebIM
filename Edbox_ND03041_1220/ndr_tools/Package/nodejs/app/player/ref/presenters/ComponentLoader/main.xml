@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ComponentLoader'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "ComponentLoader",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.controllers = {};
+            this.controllerDepended = {};
+            //标记组件是否已经被加载过
+            this.hasBeenLoaded = false;
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {level: Logger.DEBUG});
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            if (model.Components === undefined) {
+                throw Error("can't found property 'Components'");
+            }
+            this.$view = $(view);
+            this.model = model;
+            this.settings = this.model.Components;
+            //如果从启动器有传递应用域,则将当前的应用域进行记录
+            if (this.model._AppDomain_ !== undefined) {
+                this._APP_DOMAIN_ = this.model._AppDomain_;
+            }
+            return this._loadAll();
+        },
+        //所有声明为控制器对象的组件都需要被该控制器所处理
+        $isUnderControl: function (metaInfo, service) {
+            return !this.hasBeenLoaded && metaInfo.type == PresenterType.PRESENTER_CONTROLLER;
+        },
+        $beforePresenterRun: function (name, metaInfo, service) {
+            var self = this;
+            //如果从来没有被加载过,但是加载配置为空
+            if (self.hasBeenLoaded == false && self.settings === undefined) {
+                return;
+            }
+            if (self.controllers[metaInfo.name] === undefined) {
+                self.controllers[metaInfo.name] = service;
+            }
+            //循环配置的控制器选项
+            $.each(self.settings.controllers, function (key, value) {
+                if (value.presenter == metaInfo.name && value.depends && value.depends.length > 0) {
+                    //如果当前Presenter名称与处理的Presenter名称相同且包含有依赖信息
+                    $.each(value.depends, function (k, v) {
+                        var property = 'set' + v.property;
+                        //设值的方法存在,且依赖的对象已经加载
+                        if (service[property] && self.controllers[v.presenter]) {
+                            service[property].call(service, self.controllers[v.presenter]);
+                        }
+                    });
+                }
+            });
+            //如果当前Controller有被其他的Controller所依赖
+            if (self.controllerDepended[metaInfo.name]) {
+                var method;
+                //便利所有被依赖的controller
+                $.each(self.controllerDepended[metaInfo.name], function (index, item) {
+                    method = 'set' + item.property;
+                    //这个Controller已经被加载
+                    if (self.controllers[item.presenter] &&
+                        self.controllers[item.presenter][method]) {
+                        self.controllers[item.presenter][method].call(
+                            self.controllers[item.presenter], service);
+                    }
+                });
+            }
+        },
+        _loadAll: function () {
+            //先加载页面布局
+            var self = this;
+            //从model中找设置, 处理如果布局组件不存在model时,也可以正常的require
+            var layoutCode = self.settings.layout.presenter !== undefined ?
+                self.settings.layout.presenter : self.settings.layout;
+            var layoutSelector = self.settings.layout.renderTo != undefined ?
+                self.settings.layout.renderTo : null;
+            var layoutModel = self.model[layoutCode];
+            //布局组件的z-index从200开始
+            self.$requireComponent(layoutCode, layoutModel === undefined ? []
+                : JSON.parse(layoutModel),
+                layoutSelector === null ? null : $(layoutSelector),
+                {zindex: 200}).then(function (presenter) {
+                presenter._APP_DOMAIN_ = self._APP_DOMAIN_;
+                //处理getService返回的两种状态
+                var result = presenter.getService();
+                //修复151314
+                self.layoutService = result;
+                if (result.then) {
+                    result.then(function () {
+                        presenter._service_.initContainer().done(function () {
+                            self._loadController();
+                        });
+                    });
+                } else {
+                    result.initContainer().done(function () {
+                        self._loadController();
+                    });
+                }
+            });
+        },
+        _loadController: function () {
+            //加载控制器
+            var self = this;
+            var ctrlDeffer = [];
+            //确认控制器加载顺序
+            var loadSequence = this._parseControllerSetting();
+            //配置控制器的依赖项目
+            this.controllerDepended = this._checkDepended();
+            $.each(loadSequence, function (key, value) {
+                //控制器也可以有model
+                var presenterModel = '';
+                var container = null,
+                    layout = null;
+                //控制器也可以被Render到一个特定位置
+                if (value.renderTo) {
+                    container = self.layoutService.getContainer(value.renderTo);
+                } else {
+                    layout = {
+                        left: 0,
+                        top: 0,
+                        width: 0,
+                        height: 0
+                    };
+                }
+                if (self.model[value.presenter]) {
+                    presenterModel = self.model[value.presenter];
+                }
+                var deffer = self.$requireComponent(value.presenter, presenterModel === '' ?
+                    null :
+                    JSON.parse(presenterModel), container, layout);
+                ctrlDeffer.push(deffer);
+            });
+            return $.when.apply($, ctrlDeffer).done(function () {
+                $.each(arguments, function (index, presenter) {
+                    presenter._APP_DOMAIN_ = self._APP_DOMAIN_;
+                });
+                //加载组件
+                self._loadComponents();
+            });
+        },
+        _loadComponents: function () {
+            var componentDeffer = [];
+            var self = this;
+            $.each(self.settings.components, function (key, value) {
+                var container = self.layoutService.getContainer(value.renderTo);
+                if (container !== null && container.length > 0) {
+                    //在Model中查找对应Presenter的数据
+                    var presenterModel = self.model[value.presenter];
+                    var deffer = self.$requireComponent(value.presenter, presenterModel === undefined ?
+                        null :
+                        JSON.parse(presenterModel), container);
+                    componentDeffer.push(deffer);
+                }
+            });
+            return $.when.apply($, componentDeffer).done(function () {
+                self.logger.debug("All Presenter Loaded");
+                self.$dispatchEvent("PresenterLoaded", PresenterEventType.IC_PLAYER_EVENT, {});
+                if (self.playerController.getPlayerEvent !== undefined) {
+                    self.hasBeenLoaded = true;
+                    self.playerController.getPlayerEvent().dispatch("PresenterLoaded");
+                    self.playerController.getPlayerEvent().dispatch('PLAYER.PRINTSCREEN');
+                }
+                $.each(arguments, function (index, presenter) {
+                    presenter._APP_DOMAIN_ = self._APP_DOMAIN_;
+                });
+            });
+        },
+        //处理控制的设置,被依赖的Controller将被优先加载
+        _parseControllerSetting: function () {
+            var loadSequence = [];
+            for (var i = 0; i < this.settings.controllers.length; i++) {
+                this._checkDepend(this.settings.controllers[i], loadSequence, null);
+            }
+            return loadSequence;
+        },
+        //构建被依赖列表
+        _checkDepended: function () {
+            var depended = {};
+            for (var i = 0, len = this.settings.controllers.length; i < len; i++) {
+                //如果存在依赖,且依赖数量>0
+                if (this.settings.controllers[i].depends && this.settings.controllers[i].depends.length > 0) {
+                    for (var j = 0, dlen = this.settings.controllers[i].depends.length; j < dlen; j++) {
+                        if (depended[this.settings.controllers[i].depends[j].presenter] === undefined) {
+                            //设置被依赖对象列表,并将被依赖对象插入
+                            depended[this.settings.controllers[i].depends[j].presenter] = [];
+                        }
+                        depended[this.settings.controllers[i].depends[j].presenter]
+                            .push({
+                                presenter: this.settings.controllers[i].presenter,
+                                property: this.settings.controllers[i].depends[j].property
+                            });
+                    }
+                }
+            }
+            return depended;
+        },
+        _checkDepend: function (presenterObj, loadSequence, depended) {
+            var index = 0;
+            for (var i = 0; i < this.settings.controllers.length; i++) {
+                if (this.settings.controllers[i].presenter == presenterObj.presenter) {
+                    if (this.settings.controllers[i].depends && this.settings.controllers[i].depends.length > 0) {
+                        for (var j = 0; j < this.settings.controllers[i].depends.length; j++) {
+                            //避免自依赖
+                            if (this.settings.controllers[i].depends[j].presenter == presenterObj.presenter) {
+                                continue;
+                            }
+                            if (depended) {
+                                //避免循环依赖
+                                if (this.settings.controllers[i].depends[j].presenter == depended.presenter) {
+                                    continue;
+                                }
+                            }
+                            this._checkDepend(this.settings.controllers[i].depends[j], loadSequence, this.settings.controllers[i]);
+                        }
+                    } else {
+                        index = _.findIndex(loadSequence, function (o) {
+                            return o.presenter == presenterObj.presenter;
+                        });
+                        //不存在
+                        if (index == -1) {
+                            loadSequence.push(presenterObj);
+                        }
+                    }
+                }
+            }
+            index = _.findIndex(loadSequence, function (o) {
+                return o.presenter == presenterObj.presenter;
+            });
+            //不存在
+            if (index == -1) {
+                loadSequence.push(presenterObj);
+            }
+        }
+    }, "ComponentLoader");
+
+    window.AddonComponentLoader_create = function () {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/components/textSelect.json' />
+
+
+</resources>
+
+</addon>

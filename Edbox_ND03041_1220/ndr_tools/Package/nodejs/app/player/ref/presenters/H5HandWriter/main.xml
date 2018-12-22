@@ -1,0 +1,1516 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='H5HandWriter'>
+<properties>
+
+                <property name="userId" displayName="学号" type="string" />
+                <property name="client" displayName="客户端类型" type="string" />
+                <property name="lessonId" displayName="课堂ID" type="string" />
+                <property name="marginBottom" displayName="下边外距" type="int" />
+                <property name="marginTop" displayName="上边外距" type="int" />
+                <property name="isWhole" displayName="手写板是否使用全屏模式" type="int" />
+                <property name="isAutoGetState" displayName="是否启动内部计时器进行状态保存" type="int" />
+                <property name="isSinglePage" displayName="是否单页模式" type="int" />
+                <property name="title" displayName="标题" type="string" />
+                <property name="questionType" displayName="习题类型" type="string" />
+                <property name="background" displayName="手写板背景" type="json" isLocalized="false" />
+                <property name="renderPosition" displayName="手写板渲染位置" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="object_watch" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_H5HandWriter *{margin:0;padding:0;outline:0;vertical-align:baseline;box-sizing:border-box}.addon_H5HandWriter em,.addon_H5HandWriter i{font-style:normal}.addon_H5HandWriter a{color:#585858;text-decoration:none;-webkit-tap-highlight-color:transparent}.addon_H5HandWriter ul{list-style:none}.addon_H5HandWriter canvas{position:relative;z-index:1}.addon_H5HandWriter .hws_container{overflow:hidden;position:absolute;width:100%;bottom:0;left:7px;box-shadow:-5px -5px 10px}.addon_H5HandWriter .hws_content{height:200px;overflow-y:auto;overflow-x:hidden}.addon_H5HandWriter .hws_canvas img{position:absolute;z-index:0}.addon_H5HandWriter .hand_write,.addon_H5HandWriter .hws_canvas{position:relative}.addon_H5HandWriter .com_toolbar{z-index:12}.addon_H5HandWriter .hand_write .btn_jslx{right:196px}.addon_H5HandWriter .stu_hand_write .btn_jslx{right:10px}.addon_H5HandWriter .hand_write .open_pop{right:100px}.addon_H5HandWriter .top_right_btn{position:absolute;right:0;top:0;width:75px;height:78px;z-index:100;background:url(resources/images/hand_write/btn_h_w.png) right top no-repeat;background-size:100% auto}.addon_H5HandWriter .top_right_btn:active{background-position:right -114px}.addon_H5HandWriter .hr_title{font-size:14px;padding:10px 124px 10px 10px;line-height:24px}.addon_H5HandWriter .title_pics li{width:219px;height:156px;position:relative;float:left;margin:16px 16px 0 0}.addon_H5HandWriter .hand_write .title_pic{width:219px;height:156px;border:2px solid #fd9a3c}.addon_H5HandWriter .hand_write .title_pic img{width:215px;height:152px}.addon_H5HandWriter .hand_write .title_text{position:absolute;left:2px;right:2px;bottom:2px;background:rgba(0,0,0,.5);font-size:14px;color:#fff;height:32px;line-height:32px;text-indent:14px}.addon_H5HandWriter .hand_write .btn_icon_play{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;background:url("resources/ images/hand_write/icons_play.png") right top no-repeat;background-size:100% auto;text-indent:-999px}.addon_H5HandWriter .hand_write .btn_icon_play.stop{background-image:url(resources/images/hand_write/icons_stop.png)}.addon_H5HandWriter .hand_write .btn_icon_play:active{opacity:.8;filter:alpha(opacity=80)}.addon_H5HandWriter .hand_write .time_base{position:absolute;text-align:right;font-size:12px;color:#fff;text-indent:0;right:4px;bottom:-1px}.addon_H5HandWriter .hand_write .time_base em{color:#ffa600}.addon_H5HandWriter .hand_write .icons_right{position:absolute;right:6px;top:6px;width:48px;height:48px;background-position:right top;background-repeat:no-repeat;background-size:100% auto;text-indent:-999px}.addon_H5HandWriter .hand_write .icons_video{background-image:url("resources/ images/hand_write/icons_video.png")}.addon_H5HandWriter .hand_write .icons_sound{background-image:url(resources/images/hand_write/icons_sound.png)}.addon_H5HandWriter .hand_write .icons_pic{background-image:url("resources/ images/hand_write/icons_pic.png")}.addon_H5HandWriter .hr_main_box{position:fixed;z-index:10;width:100%;left:0;bottom:0;background:url(resources/images/hand_write/drag_shadow.png) left top no-repeat;padding-top:15px}.addon_H5HandWriter .btn_drag_icon{position:absolute;z-index:2;width:54px;height:54px;left:50%;margin:-30px 0 0 -74px;background:url(resources/images/hand_write/icon_drag.png) left top no-repeat;background-size:100% auto}.addon_H5HandWriter .hr_main{width:100%;background-image:-webkit-linear-gradient(to left,#d3d3d3,#fff,#e0e0e0);background-image:linear-gradient(to left,#d3d3d3,#fff,#e0e0e0)}.addon_H5HandWriter .hand_write .resultwrap .result_con{padding-top:25px}.addon_H5HandWriter .hand_write .top_infowrap{padding:0 24px}.addon_H5HandWriter .hand_write .top_infowrap .top_contro_btn{margin:3px 0 0 10px;display:inline-block;border:1px solid #eaeaea}.addon_H5HandWriter .hand_write .top_infowrap .top_btn_black{color:#4f4f4f}.addon_H5HandWriter .hand_write .top_infowrap .top_contro_btn_dis{color:#bababa}.addon_H5HandWriter .top_right_btns{display:inline-block;float:right;height:60px}.addon_H5HandWriter .top_right_btns a.top_contro_btn{position:static}.addon_H5HandWriter .hand_write .top_time .icon_clock{background-image:url(resources/images/hand_write/icon_timeclock.png)}.addon_H5HandWriter .hand_write .top_infowrap .top_time{color:#ff9000;padding-left:46px;margin-right:16px}.addon_H5HandWriter .hand_write .prompt_text{display:inline-block;height:60px;line-height:60px;margin-left:6px;color:#797979;font-size:14px}.addon_H5HandWriter .icon_submitted{background:url("resources/ images/hand_write/icon_ok.png") center center no-repeat #abcb29}.addon_H5HandWriter .icon_off_line{background:url(resources/images/hand_write/icon_off.png) center center no-repeat #939393}.addon_H5HandWriter .icon_text_typing{background:url("resources/ images/hand_write/icon_on.png") center center no-repeat #ff9a49}.addon_H5HandWriter .icon_off_line,.addon_H5HandWriter .icon_submitted,.addon_H5HandWriter .icon_text_typing{background-size:80% auto;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;display:inline-block;width:22px;height:22px;vertical-align:top;margin:18px 4px 0 0}.addon_H5HandWriter .listcon .icon_off_line,.addon_H5HandWriter .listcon .icon_submitted,.addon_H5HandWriter .listcon .icon_text_typing{display:none;position:absolute;right:-12px;bottom:-6px;width:26px;height:26px;border:1px solid #fff}.addon_H5HandWriter .userlist01 .submitted{background:#daf0c0;border-color:#c2e29b}.addon_H5HandWriter .listcon.noconnect{background:#c5c5c5}.addon_H5HandWriter .userlist01 .listcon.noconnect .dec_mask{display:none}.addon_H5HandWriter .noconnect .icon_off_line,.addon_H5HandWriter .on .icon_text_typing,.addon_H5HandWriter .submitted .icon_submitted{display:block}.addon_H5HandWriter .listcon.noconnect img{-webkit-filter:grayscale(100%);-moz-filter:grayscale(100%);-o-filter:grayscale(100%);filter:grayscale(100%)}.addon_H5HandWriter .hand_write .jslx_stumain{margin:0 10px 0 60px}.addon_H5HandWriter .hand_write .jslx_stumain .userlist01{padding-right:60px}.addon_H5HandWriter .jslx_stumain .userlist01 .listcon.stu_selected{background:#f6de98;border-color:#e5c66d}.addon_H5HandWriter .hand_write .ordinary_top{border:none;background:url(resources/images/hand_write/hand_r_bg.png) center bottom no-repeat;background-size:100% auto;padding:5px 24px 20px}.addon_H5HandWriter .stu_operation_box{position:relative;display:inline-block;padding:0 45px}.addon_H5HandWriter .stu_previous{background-image:url("resources/ images/hand_write/icon_g_left.png");left:0}.addon_H5HandWriter .stu_next{background-image:url(resources/images/hand_write/icon_g_right.png);right:0}.addon_H5HandWriter .stu_next,.addon_H5HandWriter .stu_previous{position:absolute;top:0;text-indent:-999em;width:42px;height:60px;background-position:center center;background-repeat:no-repeat;background-size:100% auto}.addon_H5HandWriter .stu_next:active,.addon_H5HandWriter .stu_previous:active{filter:alpha(opacity=70);-moz-opacity:.7;-khtml-opacity:.7;opacity:.7}.addon_H5HandWriter .stu_operation_box .prompt_text{display:none;margin:0}.addon_H5HandWriter .stu_name{height:60px;line-height:60px;font-size:24px;color:#333;display:inline-block}.addon_H5HandWriter .stu_off_line .text_off_line,.addon_H5HandWriter .stu_submitted .text_submitted,.addon_H5HandWriter .stu_text_typing .text_typing{display:inline-block}.addon_H5HandWriter .stu_off_line{color:#848484}.addon_H5HandWriter .stu_text_typing,.addon_H5HandWriter .stu_text_typing .prompt_text{color:#ff9a49}.addon_H5HandWriter .stu_submitted,.addon_H5HandWriter .stu_submitted .prompt_text{color:#abcb29}.addon_H5HandWriter .stu_container{position:absolute;left:30px;top:92px;right:30px;bottom:20px;overflow-y:auto}.addon_H5HandWriter .stu_off_line_text{display:none;position:absolute;left:50%;bottom:50%;font-size:52px;width:440px;height:90px;margin:0 0 20px -220px;text-align:center;color:#bfbfbf}.addon_H5HandWriter .typing_text_box{padding:0 30px}.addon_H5HandWriter .box_flicking{position:absolute;left:0;bottom:10px;text-align:center;width:100%}.addon_H5HandWriter .box_flicking a{text-indent:999em;display:inline-block;width:16px;height:16px;margin:0 3px;background:#fff;border:1px solid #acacac;-moz-border-radius:50%;-webkit-border-radius:50%;border-radius:50%;overflow:hidden}.addon_H5HandWriter .box_flicking a.on{background:#ffa312;border-color:#ee9811}.addon_H5HandWriter .view_thumbnail_box{padding:24px 60px}.addon_H5HandWriter .stu_thumbnail_box{width:32%;float:left;margin-left:2%;margin-bottom:20px;border:1px solid #acacac;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;padding:14px 14px 0;background:#fff;box-shadow:0 0 5px 2px rgba(4,0,0,.2)}.addon_H5HandWriter .stu_thumbnail_box.stu_b_on{background:#f6de98;border-color:#ffc621}.addon_H5HandWriter .stu_thumbnail_box:nth-child(3n+1){margin-left:0}.addon_H5HandWriter .stu_answer_pic{position:relative;height:220px;text-align:center;line-height:208px;overflow:hidden;border:1px solid #acacac;-moz-border-radius:5px;-webkit-border-radius:5px;border-radius:5px;background:#f6f6f6}.addon_H5HandWriter .stu_answer_pic:before{content:' ';position:absolute;left:0;top:0;right:0;bottom:0;box-shadow:inset 0 0 18px rgba(134,134,134,.8)}.addon_H5HandWriter .stu_answer_pic:after{content:' ';vertical-align:middle}.addon_H5HandWriter .stu_answer_pic img{vertical-align:middle;max-height:220px;max-width:100%}.addon_H5HandWriter .stu_s_name{height:38px;line-height:38px;text-align:center;color:#4a4a4a;font-size:20px}.addon_H5HandWriter .mask_ckda_box{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.4);text-align:center;z-index:1010}.addon_H5HandWriter .mask_ckda_box .mask_content{position:relative;display:inline-block;vertical-align:middle;padding:50px 10px 20px;background:#fff;-moz-border-radius:9px;-webkit-border-radius:9px;border-radius:9px}.addon_H5HandWriter .mask_ckda_box .clo_mask_ckda{position:absolute;top:0;right:0;text-indent:-999px;width:64px;height:56px;background:url("resources/ images/hand_write/btn_close_r.png") right top no-repeat;background-size:100% auto;-moz-border-radius:0 9px 0 0;-webkit-border-radius:0 9px 0 0;border-radius:0 9px 0 0;overflow:hidden}.addon_H5HandWriter .mask_ckda_box .clo_mask_ckda:active{opacity:.8;filter:alpha(opacity=80)}.addon_H5HandWriter .mask_ckda_box:after{content:'';width:0;height:100%;display:inline-block;vertical-align:middle}.addon_H5HandWriter .ckda_box_conter{width:1000px;height:560px;overflow:auto;padding:0 30px;text-align:left}.addon_H5HandWriter .title_topic{background:#f7f7f7;padding:20px;color:#6a6a6a;line-height:32px}.addon_H5HandWriter .model_answer{position:relative;border-top:1px dashed #c9c9c9;margin-top:48px;padding-top:30px;font-size:14px;line-height:30px;color:#262626}.addon_H5HandWriter .m_answer_title{position:absolute;left:50%;top:-16px;margin-left:-50px;width:100px;background:#fff;text-align:center;font-size:16px;font-weight:700;color:#0e0e0e}.addon_H5HandWriter .new_toolbar{position:absolute;top:0;right:0;bottom:0;z-index:13;background:#fff;border-left:1px dashed #dbdbdb;padding:0 10px}.addon_H5HandWriter .btn_switch{position:relative;margin-top:28px;display:block;width:78px;height:44px;background-image:url(resources/images/hand_write/off_on.png);background-repeat:no-repeat;background-size:100% auto}.addon_H5HandWriter .btn_switch.off{background-position:center top}.addon_H5HandWriter .btn_switch.on{background-position:center -71px}.addon_H5HandWriter .btn_switch span{position:absolute;top:-29px;display:none;color:#9d9d9d;font-size:12px;padding:2px 8px;background:#fff;border:1px solid #ededed;-moz-border-radius:20px;-webkit-border-radius:20px;border-radius:20px;white-space:nowrap;box-shadow:0 2px 4px rgba(40,40,40,.3);text-align:center}.addon_H5HandWriter .btn_switch span:after{content:'';position:absolute;width:0;height:0;bottom:-5px;left:50%;margin-left:-7px;border-left:7px solid transparent;border-right:7px solid transparent;border-top:5px solid #fff}.addon_H5HandWriter .btn_switch span:before{content:'';position:absolute;width:0;height:0;bottom:-7px;left:50%;margin-left:-8px;border-left:8px solid transparent;border-right:8px solid transparent;border-top:6px solid rgba(40,40,40,.1)}.addon_H5HandWriter .btn_switch.off .off_text{display:block;left:-26px}.addon_H5HandWriter .btn_switch.on .on_text{display:block;left:18px}.addon_H5HandWriter .new_toolbar_list{border:1px dashed #d0d0d0;border-left:none;border-right:none;margin:14px 0 0;padding:0 0 14px}.addon_H5HandWriter .new_toolbar_list>li{position:relative}.addon_H5HandWriter .new_toolbar_list>li .mainlink{display:block;text-align:center;background:url(resources/images/hand_write/bg_r_b.png) center top no-repeat;background-size:100% auto;width:84px;height:84px;padding:6px 2px 0;margin-top:14px}.addon_H5HandWriter .new_toolbar_list>li .mainlink:active{background-position:center -122px}.addon_H5HandWriter .new_toolbar_list>li .mainlink .icon1{background-image:url(resources/images/hand_write/icon-pen.png)}.addon_H5HandWriter .new_toolbar_list>li .mainlink .icon2{background-image:url(resources/images/hand_write/icon-clear.png)}.addon_H5HandWriter .new_toolbar_list>li .mainlink .icon3{background-image:url(resources/images/hand_write/icon-delete.png)}.addon_H5HandWriter .new_toolbar_list>li .mainlink .decicon{display:block;width:100%;height:40px;margin-top:4px;background-position:center center;background-repeat:no-repeat;background-size:40px auto}.addon_H5HandWriter .new_toolbar_list>li .mainlink .listtxt{display:block;width:100%;line-height:100%;color:#666;font-size:12px}.addon_H5HandWriter .new_toolbar_list>li.on .mainlink{background-position:center -122px}.addon_H5HandWriter .new_toolbar_list>li.on .toolbarpop01{display:block;top:0;right:90px}.addon_H5HandWriter .icon_erase{position:absolute;width:86px;height:82px;left:800px;top:434px;display:block;text-align:center;background:url("resources/ images/hand_write/clear.png") left top no-repeat;background-size:100% auto;z-index:40}.addon_H5HandWriter .compop .popmain .poptxt{padding:0 1.1em}.addon_H5HandWriter .teacher_st .time_info em.e1{color:#ea8501}.addon_H5HandWriter .hand_write .hr_text_main_box{overflow:auto;height:88%;padding-bottom:5%}.addon_H5HandWriter .toolbarpop01{display:none;position:absolute;right:84px;top:0;width:214px;border:1px solid #ccc;border-radius:13px;background:#fff;box-shadow:0 3px 3px rgba(0,0,0,.43);overflow:hidden}.addon_H5HandWriter .toolbarpop01 .dec_poptop{display:block;position:absolute;left:0;top:0;width:100%;height:14px;z-index:10;border-top-left-radius:13px;border-top-right-radius:13px;background:url(resources/images/toolbar_sliderbg.png) left top repeat-x;background-size:auto 14px}.addon_H5HandWriter .toolbarpop01 .toolbox{width:100%;padding:24px 0 0;border-bottom:1px solid #e3e3e3;overflow-y:hidden;overflow-x:auto;z-index:9}.addon_H5HandWriter .toolbarpop01 .toolbox .toolrow{text-align:center}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon{position:relative;display:inline-block;width:40px;height:40px;margin:0 10px 13px;border:1px solid #e5e5e5;border-radius:4px;background:#fff;box-shadow:0 3px 3px rgba(4,0,0,.3)}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.penweight1{background:url(resources/images/toolbar_weight1.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.penweight2{background:url(resources/images/toolbar_weight2.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.penweight3{background:url(resources/images/toolbar_weight3.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colordark{background:#333}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colorgrey{background:#d6d6d6;border-color:#a2a2a2}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colorred{background:#ff5252;border-color:#cb5454}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colorpurple{background:#cd50f1;border-color:#9754ab}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colorblue{background:#71cbf5;border-color:#5ba5c7}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.colorgreen{background:#68b100;border-color:#518901}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.on,.addon_H5HandWriter .toolbarpop01 .toolbox .listcon:active{border-color:#ff8f00}.addon_H5HandWriter .toolbarpop01 .toolbox .listcon.on:before,.addon_H5HandWriter .toolbarpop01 .toolbox .listcon:active:before{position:absolute;top:0;right:0;content:"";width:13px;height:13px;background:url(resources/images/toolbar_toolon.png) top right no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .classtoolbox,.addon_H5HandWriter .toolbarpop01 .penbox{padding-left:24px}.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon,.addon_H5HandWriter .toolbarpop01 .penbox .listcon{float:left;width:72px;height:72px;margin:-35px 0 6px -13px;border-radius:0;border:none;box-shadow:none;background-position:0 0}.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon.on .preview,.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon:active .preview,.addon_H5HandWriter .toolbarpop01 .penbox .listcon.on .preview,.addon_H5HandWriter .toolbarpop01 .penbox .listcon:active .preview{display:block}.addon_H5HandWriter .toolbarpop01 .penbox{padding-bottom:14px}.addon_H5HandWriter .toolbarpop01 .penbox .listcon{position:relative}.addon_H5HandWriter .toolbarpop01 .penbox .preview{display:none;position:absolute;left:10px;bottom:-12px}.addon_H5HandWriter .toolbarpop01 .penbox .pen1{background:url(resources/images/toolbar_pen1.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen1.on,.addon_H5HandWriter .toolbarpop01 .penbox .pen1:active{background:url(resources/images/toolbar_pen1_press.png) -5px 15px no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .preview{width:164px;height:20px;background-size:100% auto;background-repeat:no-repeat}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .bold_black{background-image:url(resources/images/pen_preview/pen1_bold_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .bold_grey{background-image:url(resources/images/pen_preview/pen1_bold_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .bold_red{background-image:url(resources/images/pen_preview/pen1_bold_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .nor_black{background-image:url(resources/images/pen_preview/pen1_nor_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .nor_grey{background-image:url(resources/images/pen_preview/pen1_nor_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .nor_red{background-image:url(resources/images/pen_preview/pen1_nor_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .thin_black{background-image:url(resources/images/pen_preview/pen1_thin_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .thin_grey{background-image:url(resources/images/pen_preview/pen1_thin_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen1 .thin_red{background-image:url(resources/images/pen_preview/pen1_thin_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2{background:url(resources/images/toolbar_pen2.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen2.on,.addon_H5HandWriter .toolbarpop01 .penbox .pen2:active{background:url(resources/images/toolbar_pen2_press.png) -5px 15px no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .preview{width:120px;height:20px;background-size:100% auto;background-repeat:no-repeat}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .bold_black{background-image:url(resources/images/pen_preview/pen2_bold_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .bold_grey{background-image:url(resources/images/pen_preview/pen2_bold_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .bold_red{background-image:url(resources/images/pen_preview/pen2_bold_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .nor_black{background-image:url(resources/images/pen_preview/pen2_nor_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .nor_grey{background-image:url(resources/images/pen_preview/pen2_nor_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .nor_red{background-image:url(resources/images/pen_preview/pen2_nor_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .thin_black{background-image:url(resources/images/pen_preview/pen2_thin_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .thin_grey{background-image:url(resources/images/pen_preview/pen2_thin_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen2 .thin_red{background-image:url(resources/images/pen_preview/pen2_thin_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3{background:url(resources/images/toolbar_pen3.png) no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen3.on,.addon_H5HandWriter .toolbarpop01 .penbox .pen3:active{background:url(resources/images/toolbar_pen3_press.png) -5px 15px no-repeat;background-size:auto 100%}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .preview{width:54px;height:20px;background-size:100% auto;background-repeat:no-repeat}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .bold_black{background-image:url(resources/images/pen_preview/pen3_bold_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .bold_grey{background-image:url(resources/images/pen_preview/pen3_bold_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .bold_red{background-image:url(resources/images/pen_preview/pen3_bold_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .nor_black{background-image:url(resources/images/pen_preview/pen3_nor_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .nor_grey{background-image:url(resources/images/pen_preview/pen3_nor_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .nor_red{background-image:url(resources/images/pen_preview/pen3_nor_red.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .thin_black{background-image:url(resources/images/pen_preview/pen3_thin_black.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .thin_grey{background-image:url(resources/images/pen_preview/pen3_thin_grey.png)}.addon_H5HandWriter .toolbarpop01 .penbox .pen3 .thin_red{background-image:url(resources/images/pen_preview/pen3_thin_red.png)}.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon{height:100px;text-align:center}.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon .tit{display:inline-block;height:23px;margin:78px 1px 1px;padding:0 8px;line-height:23px;text-align:center;border-radius:13px;font-size:13px;color:#333}.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon.on .tit,.addon_H5HandWriter .toolbarpop01 .classtoolbox .listcon:active .tit{margin-top:77px;color:#ff9000;border-radius:13px;border:1px solid #e5e5e5;background:#f6f6f6;box-shadow:inset 0 3px 3px rgba(4,0,0,.24)}.addon_H5HandWriter .toolbarpop01 .classtoolbox .classtool1{background:url(resources/images/toolbar_classtool1.png) no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .classtoolbox .classtool2{background:url(resources/images/toolbar_classtool2.png) no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .classtoolbox .classtool3{background:url(resources/images/toolbar_classtool3.png) no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .classtoolbox .toolbar_rubber1{background:url(resources/images/toolbar_rubber1.png) no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .classtoolbox .toolbar_rubber2{background:url(resources/images/toolbar_rubber2.png) no-repeat;background-size:100% auto}.addon_H5HandWriter .toolbarpop01 .rubberbox{padding-left:12px}.addon_H5HandWriter .toolbarpop01 .rubberbox .listcon{width:87px;margin-right:5px;margin-left:5px}.addon_H5HandWriter .compop{position:fixed;left:0;top:0;width:100%;height:100%;z-index:1000}.addon_H5HandWriter .compop .pop_mask{width:100%;height:100%;background:rgba(0,0,0,.7)}.addon_H5HandWriter .compop .popmain{position:absolute;left:50%;top:50%;width:20em;min-height:12em;padding-top:3.5em;padding-bottom:1.8em;transform:translate(-50%,-50%);text-align:center;border-radius:.8em;background:url(resources/images/compop_dec2.png) left top repeat-x #fff;background-size:auto 2.2em}.addon_H5HandWriter .compop .popmain:before{content:"";position:absolute;left:0;top:-.5em;right:1.4em;height:1.6em;background:url(resources/images/compop_dec1.png) 1.4em top no-repeat,url(resources/images/compop_dec1.png) right top no-repeat;background-size:auto 100%,auto 100%}.addon_H5HandWriter .compop .popmain .poptxt{line-height:1.5;font-size:1.3em;color:#333;min-height:2.5em}.addon_H5HandWriter .compop .btnwrap{margin-top:1.5em}.addon_H5HandWriter .compop .btnwrap .btn{display:inline-block;width:5.6em;height:2.2em;line-height:2.2em;font-size:1em;color:#333;margin:0 .6em;box-shadow:0 .125em .125em 0 rgba(4,0,0,.2),0 -1px .125em 0 rgba(4,0,0,.1);border-radius:2em;background-image:-webkit-linear-gradient(to bottom,#fcfcfc,#e6e5e5);background-image:linear-gradient(to bottom,#fcfcfc,#e6e5e5)}.addon_H5HandWriter .compop .btnwrap .btn:active{box-shadow:0 .0833em .0833em 0 rgba(4,0,0,.1);background-image:-webkit-linear-gradient(to top,#fbfbfb,#dad9d9);background-image:linear-gradient(to top,#fbfbfb,#dad9d9)}.addon_H5HandWriter .compop .btnwrap .btn.btn_submit{color:#ff9000}.exam_skin_wood .nhw_write_toolbar{z-index:999}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="uicomwrite-paper-btns"><a href="javascript:;" class="uicomwrite-btn-delete disable"></a><div class="uicomwrite-page-item"><a href="javascript:;" class="uicomwrite-btn-prev disable"></a> <span class="page-number"><span class="highlight">1</span> / <span>1</span> </span><a href="javascript:;" class="uicomwrite-btn-next disable"></a></div><a href="javascript:;" class="uicomwrite-btn-add"></a></div><div class="uicomwrite-word-count"><span>52</span><span>字</span></div><div class="com_layout_main"><div class="composition-tit"><span class="txt">那是一次<input type="text" maxlength="10">的尝试</span></div><a href="javascript:;" class="handWrite_resize"></a><div class="handWrite_wrap"><div class="handWrite_content scrollbar_style_gray"><p class="handWrite_placeholder"><span class="txt write_area">可书写区域</span></p></div></div></div><div class="nhw_write_toolbar"><div class="nhw_btn_switch_box on" href="####" style="display:none"><span class="off_text"><em>推开即可手写</em></span> <span class="on_text"><em>手写已开启</em></span> <a class="nhw_btn_switch" href="###"></a></div><ul class="nhw_write_toolbar_list"><li class="on" data-type="1"><a href="####" class="nhw_mainlink icon1"><em class="listtxt write_pen">画笔</em></a><div class="nhw_toolbarpop_bg"><div class="nhw_toolbarpop nhw_toolbarpop01"><div class="nhw_toolbox nhw_penbox" style="display:none"><p class="nhw_toolrow clearfix"><a href="####" class="nhw_listcon pen1"><em class="preview thin_black"></em></a> <a href="####" class="nhw_listcon pen2 on"><em class="preview nor_black"></em></a> <a href="####" class="nhw_listcon pen3"><em class="preview thin_grey"></em></a></p></div><div class="nhw_toolbox" style="padding-top: .58333em"><p class="nhw_toolrow clearfix"><a href="####" class="nhw_listcon penweight1 on" data-mode="1"></a> <a href="####" class="nhw_listcon penweight2" data-mode="2"></a> <a href="####" class="nhw_listcon penweight3" data-mode="3"></a></p></div><div class="nhw_toolbox"><p class="nhw_toolrow clearfix"><a href="####" class="nhw_listcon colordark on" data-mode="4"></a> <a href="####" class="nhw_listcon colorgrey" data-mode="5"></a> <a href="####" class="nhw_listcon colorred" data-mode="6"></a></p></div></div></div></li><li class="" data-type="2"><a href="####" class="nhw_mainlink icon2"><em class="listtxt write_eraser">橡皮</em></a><div class="nhw_toolbarpop_bg nhw_wrap_rubber"><div class="nhw_toolbarpop nhw_toolbarpop01"><div class="nhw_toolbox nhw_classtoolbox nhw_rubberbox"><p class="nhw_toolrow clearfix"><a href="####" class="nhw_listcon toolbar_rubber1" data-mode="8"><span class="icon"></span> <span class="tit"><em class="txt write_clean">一键清除</em></span> </a><a href="####" class="nhw_listcon toolbar_rubber2 on" data-mode="7"><span class="icon"></span> <span class="tit"><em class="txt write_eraser">普通橡皮</em></span></a></p></div></div></div></li><li class="js_record_btn" data-type="3" style="display: none"><a href="####" class="nhw_mainlink icon4"><em class="listtxt js_audio_record">录音</em></a></li><li class="js_record_btn" data-type="4" style="display: none"><span class="nhw_del"></span> <a href="####" class="nhw_mainlink icon5"><em class="listtxt js_audio_play">语音001</em></a></li></ul></div><div class="comui_big_pop pop_nobg ui_pop_sccess js_pop_win" style="display: none"><div class="comui_pop_notebook_bg"><div class="comui_pop_notebook_bg_papper"><div class="comui_pop_papper_main"><div class="comui_pop_papper_txt">该操作将清空所有作答痕迹确定要清除吗？</div><div class="comui_pop_btn_item"><a class="com_btn_round2" href="javascript:;" data-type="1"><span class="js_pop_btn js_btn_cancel text_box" data-type="1">取 消</span> </a><a class="com_btn_round2 right" href="javascript:;" data-type="2"><span class="js_pop_btn js_btn_submit text_box" data-type="2">确 定</span></a></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Presenter = __webpack_require__(1);
+
+window.AddonH5HandWriter_create = function () {
+    return new Presenter();
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(2);
+var Util = __webpack_require__(3);
+
+var self = null;
+var WriteStatus = {
+    "Pen": 1,
+    "Hand": 2,
+    "Eraser": 3
+};
+
+var Presenter = BasicPresenter.extend({
+    //元数据信息
+    metaInfo: {
+        name: "H5HandWriter",
+        type: PresenterType.PRESENTER_COMPONENT
+    },
+
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+        this.i18nModel = {};
+        this.writeStatus = WriteStatus.Pen;
+        this.canvas = null;
+        this.$canvas = null;
+        this.context = null;
+        this.contextArr = [];
+        this.isStartExam = false;
+        this.isCurrentEdit = true;
+        this.isInCanvas = false;//光标是否在画板内
+        this.currentState = {
+            pen: {
+                lineWidth: 3,
+                strokeStyle: 'rgb(51,51,51)'
+            }
+        };
+        this.defaultOptions = {
+            width: 1000,
+            height: 1600
+        };
+        this.minTop = 195;
+        this.maxTop = 700;
+        this.page = {
+            currentIndex: 1,
+            pageCount: 1
+        };
+        this.isFirstWriteTab = true;
+        this.canvasMarginLeft = 0;
+        this.canvasMarginTop = 0;
+        this.pageNum = 1;
+        this.currentPage = 0;
+        this.parseStrokeDataDeffer = null;
+
+        // 状态数据保存
+        this.status = {
+            isCurrentEdit: this.isCurrentEdit,
+            toolbar: {
+                writeStatus: this.writeStatus,
+                currentState: this.currentState //画笔
+            },
+            strokeDatas: [],
+            currentPage: this.currentPage,
+            scrollTop: 0,
+            top: undefined
+        }
+        this.hasRecover = false;
+        this.$bgDeferred = $.Deferred();
+
+        // 用于国际化的语言设置deferred
+        this.$translateDeferred = $.Deferred();
+        // 日志记录
+        this.logger.appendHandler(function (message) {
+            console.log(message);
+            ClassroomUtils.log(JSON.stringify(message));
+        }, { level: Logger.DEBUG });
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    getService: function () {
+        Service.constructor(this);
+        return Service;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        this.model = {};
+        for (var p in model.initData) {
+            this.model[p] = model.initData[p];
+        }
+        this.model.wordsNum = this.model.wordsNum || 0;
+        this.model.limitPage = this.model.limitPage || 1;
+        this.model.isWhole = (this.model.isWhole == 1 ? true : false) || false;
+
+        this.$view = $(view);
+        this.canvasId = null;
+        this.container = this.$view.find('.handWrite_content');
+        this.$addPage = this.$view.find('.uicomwrite-btn-add');
+        this.$nextPage = this.$view.find('.uicomwrite-btn-next');
+        this.$prevPage = this.$view.find('.uicomwrite-btn-prev');
+        this.$delPage = this.$view.find('.uicomwrite-btn-delete');
+        this.$currentPage = this.$view.find('.page-number span').eq(0);
+        this.$totalPage = this.$view.find('.page-number span').eq(1);
+        this.$btnRecordDel = this.$view.find('.nhw_del');
+        // span的disabled 属性没有效果，所以用变量方式判断
+        this.isBtnRecordDelEnable = true;
+
+        if (this.model.wordsNum === 0) {
+            // 没有字数时，不显示每页多少字
+            this.$view.find('.uicomwrite-word-count').hide();
+        } else {
+            this.$view.find('.uicomwrite-word-count').children().first().html(this.model.wordsNum * (this.currentPage + 1));
+        }
+        if (this.model.isSinglePage === 1) {
+            // 单页模式时，导航不显示
+            this.$view.find('.uicomwrite-paper-btns').hide();
+        }
+    },
+    pageShow: function () {
+        self = this;
+
+        // renderPosition里包含的是复合题加载的时候手写定位的一些参数
+        var container = this.$view.find('.com_layout_main');
+        var buttons = this.$view.find('.uicomwrite-paper-btns');
+        var numbers = this.$view.find('.uicomwrite-word-count');
+        var renderPosition = this.model.renderPosition || {};
+        var initTop; // 手写板初始化的位置
+
+        if (this.model.questionType !== 'composition') {
+            container.css('position', 'absolute');
+            this.defaultOptions.width = this.container.width();
+        } else {
+            var fontsize = this.$view.parent().data('fontsize');
+            if (this.model['canvasHeight']) {
+                this.defaultOptions.height = this.model['canvasHeight'] - 4.4 * fontsize;
+            }
+            if (this.model['canvasWidth']) {
+                this.defaultOptions.width = this.model['canvasWidth'];
+            }
+            this.canvasMarginLeft = 20;
+            this.canvasMarginTop = 4.6;
+        }
+
+        this._initI18N();
+        this._createCanvas();
+        this._setCurrentCanvasContext(0);
+        if (this.model.isWhole) {
+            setTimeout(function () {
+                self._setBackgroundImage(self.model.background);
+            }, 1000);
+        } else {
+            this._setBackgroundImage(this.model.background);
+        }
+
+        var fontsize = this.$view.parent().data('fontsize');
+        this.minTop = renderPosition.minTop ? 1 : 10 * fontsize;
+        this.maxTop = (renderPosition.maxTop - 100) || 30 * fontsize;
+
+        if (this.model.isWhole) {
+            this.$view.find('.handWrite_resize').hide();
+            if (this.model.questionType === 'newhandwrite') {
+                container.css('top', '0px');
+            }
+        } else {
+            initTop = renderPosition.initTop;
+
+            if (initTop) {
+                (initTop > this.maxTop) && (initTop = this.maxTop);
+                container.css("top", initTop);
+            }
+        }
+
+
+        if (this.model.questionType === 'composition') {
+            container.hide();
+            buttons.hide();
+            numbers.hide();
+            this.isCurrentEdit = false;
+
+            var span = container.find('.composition-tit').find('span');
+            if (this.model.title === '') {
+                span.html('<input type="text" style="width: 32em" maxlength="32"/>');
+            } else {
+                this.model.title = this.model.title.replace(/(<textEntry\/>)\1+/gi, "$1");
+                var textNum = this.model.title.split('<p><textEntry/></p>').length - 1;
+                if (textNum == 1) {
+                    span.html(this.model.title.replace(/<textEntry\/>/gi, '<input type="text"style="width: 32em" maxlength="32"/>'));
+                } else {
+                    span.html(this.model.title.replace(/<textEntry\/>/gi, '<input type="text" maxlength="10"/>'));
+                }
+            }
+            
+            var audioRecordBtn = this.$view.find(".nhw_write_toolbar_list li").eq(2);
+            audioRecordBtn.show();
+
+        } else {
+            this.$view.find('.composition-tit').hide();
+        }        
+        this._bindEvent();
+    },
+    pageLeave: function () {
+        this._unbindEvent();
+    },
+    destroy: function () {
+
+    },
+    /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+    getState: function () {
+
+    },
+    setState: function (state, options) {
+
+    },
+    /****以下开始为Presenter的私有方法*****/
+    _bindEvent: function () {
+        var selector = "#" + this.canvasId;
+        // 手写板绘制
+        this.$attachDelegateEvent('mousedown', ['.handWrite_content canvas'], this._start);
+        this.$attachDelegateEvent('mousemove', ['.handWrite_content canvas'], this._move);
+        this.$attachDelegateEvent('mouseup', ['.handWrite_content canvas'], this._end);
+
+        //修复bug109448
+        $(document).on("mouseup", function (e) {
+            this.isDrawDown && this._end('.handWrite_content canvas', e);
+        }.bind(this));
+
+        if (this.model.isWhole == false) {
+            // 拖拽
+            this.$attachDelegateEvent('mousedown', ['.handWrite_resize'], this._dragStart);
+            this.$attachDelegateEvent('mousemove', this._dragMove);
+            this.$attachDelegateEvent('mouseup', this._dragUp);
+        }
+        // 工具栏按钮
+        this.$attachDelegateEvent('mouseup', ['.nhw_write_toolbar_list li'], this._changeUI);
+        this.$attachDelegateEvent('mouseup', ['.nhw_toolbarpop01 a'], this._changeStrokeUI);
+        this.$attachDelegateEvent('mouseup', ['.js_pop_win a'], this._dialogClick);
+
+        // 导航
+        this.$attachDelegateEvent('click', ['.uicomwrite-btn-add'], this._addPage);
+        this.$attachDelegateEvent('click', ['.uicomwrite-btn-prev'], this._prePage);
+        this.$attachDelegateEvent('click', ['.uicomwrite-btn-next'], this._nextPage);
+        this.$attachDelegateEvent('click', ['.uicomwrite-btn-delete'], this._delPage);
+
+        if (this.model.questionType === 'composition') {
+            this.$addEventListener('exerciseStateChange', PresenterEventType.IC_PLAYER_EVENT, this._exerciseStateChange);
+            this.$addEventListener('CompositionHandWriteShowed', PresenterEventType.IC_PLAYER_EVENT, this._show);
+            // 作文题标题失去焦点事件
+            this.$view.find('.com_layout_main .composition-tit input').blur(function () {
+                self.title = this.value;
+            });
+            this.$addEventListener('CompositionShowAudioBtn', PresenterEventType.IC_PLAYER_EVENT, this._showAudioBtn);
+            this.$btnRecordDel.on('mouseup touchend',function (event) {
+                if (self.isBtnRecordDelEnable) {
+                    self.$dispatchEvent('CompositionDelRecord', PresenterEventType.IC_PLAYER_EVENT, "");
+                }
+                //return false;
+                event.stopPropagation();
+            });
+            //恢复菜单样式
+            this.$addEventListener("CompositionRecoverMenuStyle", PresenterEventType.IC_PLAYER_EVENT, this._recoverMenuStyle);
+            //设置菜单样式
+            this.$addEventListener("CompositionSetMenuStyle", PresenterEventType.IC_PLAYER_EVENT, this._setMenuStyle);
+        }
+        // 监控课堂状态
+        this._watchStatus();
+    },
+    _unbindEvent: function () {
+        this.container.off('mousedown');
+        this.container.off('mousemove');
+        this.container.off('mouseup');
+        this.$removeEventListener();
+        this._unwatchStatus();
+    },
+    _createCanvas: function () {
+        /**
+         * 给canvas一个id，用于事件绑定的时候当做标识
+         * 修复bug#75583
+         */
+        this.canvasId = Util.uuid();
+
+        this.$canvas = $('<canvas></canvas>');
+        this.$canvas.attr("id", this.canvasId);
+        this.$canvas.css({
+            'margin-left': this.canvasMarginLeft + 'px',
+            'margin-top': this.canvasMarginTop + 'em'
+        });
+
+        this.canvas = this.$canvas[0];
+        this.canvas.width = this.defaultOptions.width;
+        this.canvas.height = this.defaultOptions.height;
+        var context = this.canvas.getContext('2d');
+        context.lineJoin = "round";
+        context.lineCap = "round";
+        if (this.context) {
+            context.lineWidth = this.context.lineWidth;
+            context.strokeStyle = this.context.strokeStyle;
+        } else {
+            context.lineWidth = 3;
+            context.strokeStyle = 'rgb(51,51,51)';
+        }
+        this.contextArr.push(context);
+
+        this.offCanvas = document.createElement('canvas');
+        this.offContext = this.offCanvas.getContext('2d');
+        this.offCanvas.width = this.defaultOptions.width;
+        this.offCanvas.height = this.defaultOptions.height;
+
+        this.hasImage = false;
+        this.container.append(this.canvas);
+        return this.$canvas;
+    },
+    _setCurrentCanvasContext: function (index) {
+        this.$canvas = this.container.find('canvas').eq(index);
+        this.context = this.contextArr[index];
+
+        this.context.lineWidth = this.currentState.pen.lineWidth;
+        this.context.strokeStyle = this.currentState.pen.strokeStyle;
+    },
+    _exerciseStateChange: function (eventData) {
+        if (eventData.type === 'start' && eventData.value.result === true) {
+            this.isStartExam = true;
+        }
+        if (eventData.type === 'exit') {
+            this.isStartExam = false;
+            this._resetToolBar();
+        }
+    },
+    _show: function (eventData) {
+        var container = this.$view.find('.com_layout_main');
+        var buttons = this.$view.find('.uicomwrite-paper-btns');
+        var numbers = this.$view.find('.uicomwrite-word-count');
+        var lis = this.$view.find('.nhw_write_toolbar_list').children();
+        for (var i = 0; i < lis.length; i++) {
+            $(lis[i]).removeClass('open');
+        }
+        if (eventData.index === 2) {
+            container.show();
+            buttons.show();
+            if (this.model.wordsNum !== 0) {
+                numbers.show();
+            }
+            if (this.isStartExam == false) {
+                this.isCurrentEdit = true;
+            }
+            if (this.isFirstWriteTab) {
+                var lineWidth = this.context.lineWidth;
+                var strokeStyle = this.context.strokeStyle;
+                // var fontsize = this.$view.parent().data('fontsize');
+                // this.canvas.height = this.offCanvas.height = eventData.height - 4.4 * fontsize;
+                // this.canvas.width = this.offCanvas.width = eventData.width;
+
+                // this.canvas.height = this.offCanvas.height = this.defaultOptions.height;
+                // this.canvas.width = this.offCanvas.width = this.defaultOptions.width;
+
+                // this.canvasMarginLeft = 20;
+                // this.canvasMarginTop = 4.6;
+                $(this.canvas).css({
+                    'margin-left': this.canvasMarginLeft + 'px',
+                    'margin-top': this.canvasMarginTop + 'em'
+                });
+                // this.defaultOptions.height = eventData.height - 4.4 * fontsize;
+                // this.defaultOptions.width = eventData.width;
+                this.context.lineWidth = lineWidth;
+                this.context.strokeStyle = strokeStyle;
+            }
+            this.isFirstWriteTab = false;
+        } else {
+            container.hide();
+            buttons.hide();
+            numbers.hide();
+            this.isCurrentEdit = false;
+        }
+    },
+    _showAudioBtn: function (option) {
+        if (!option) {
+            return;
+        }
+        var btnAudio = self.$view.find(".nhw_write_toolbar_list li").eq(3);
+        if (option.show) {
+            btnAudio.show();
+        } else {
+            btnAudio.hide();
+        }
+        var text = option.name;
+        if (text.length > 3) {
+            text = text.substring(0, 3) + "...";
+        }
+        btnAudio.find('.js_audio_play').text(text);
+    },
+    _addPage: function (selectors, e) {
+        e.preventDefault();
+        var tar = $(e.target);
+        if (!tar.hasClass('disable') && this.isCurrentEdit) {
+            // 改变导航数据和UI
+            this.pageNum++;
+            this.currentPage = this.pageNum - 1;
+            this.$delPage.removeClass('disable');
+            this.$prevPage.removeClass('disable');
+            this.$nextPage.addClass('disable');
+            this.$totalPage.html(this.pageNum);
+            this.$currentPage.html(this.pageNum);
+            var word = this.$view.find('.uicomwrite-word-count');
+            word.children().first().html(this.model.wordsNum * (this.currentPage + 1));
+            if (this.pageNum == this.model.limitPage) {
+                this.$addPage.addClass('disable');
+            }
+
+            // 修改手写板Canvas
+            this.$canvas.hide();
+            this._createCanvas();
+            this._setCurrentCanvasContext(this.currentPage);
+
+            // 发送事件，可能controller会监听（例如作文题）
+            this.$dispatchEvent('HandWriterAddPage', PresenterEventType.IC_PLAYER_EVENT, {});
+            // 更新strokeDatas状态
+            this._updateStrokeDatas();
+        }
+    },
+    _prePage: function (selectors, e) {
+        e.preventDefault();
+        var tar = $(e.target);
+        if (!tar.hasClass('disable')) {
+            this.currentPage--;
+            this.$currentPage.html(this.currentPage + 1);
+            if (this.currentPage === 0) {
+                this.$prevPage.addClass('disable');
+            }
+            this.$nextPage.removeClass('disable');
+            var word = this.$view.find('.uicomwrite-word-count');
+            word.children().first().html(this.model.wordsNum * (this.currentPage + 1));
+
+            this._gotoPage(this.currentPage);
+        }
+    },
+    _nextPage: function (selectors, e) {
+        e.preventDefault();
+        var tar = $(e.target);
+        if (!tar.hasClass('disable')) {
+            this.currentPage++;
+            this.$currentPage.html(this.currentPage + 1);
+            if (this.currentPage === this.pageNum - 1) {
+                this.$nextPage.addClass('disable');
+            }
+            this.$prevPage.removeClass('disable');
+            var word = this.$view.find('.uicomwrite-word-count');
+            word.children().first().html(this.model.wordsNum * (this.currentPage + 1));
+
+            this._gotoPage(this.currentPage);
+        }
+    },
+    _gotoPage: function (pageNum) {
+        var $canvases = this.container.find('canvas');
+        $canvases.hide();
+        $canvases.eq(pageNum).show();
+        this._setCurrentCanvasContext(pageNum);
+    },
+    _delPage: function (selectors, e) {
+        e.preventDefault();
+        var tar = $(e.target);
+        if (!tar.hasClass('disable') && this.isCurrentEdit) {
+            // 改变导航数据和UI
+            var num = this.currentPage;
+            this.pageNum--;
+            this.$totalPage.html(this.pageNum);
+            if (this.currentPage === this.pageNum) {
+                this.currentPage = this.pageNum - 1;
+                this.$currentPage.html(this.pageNum);
+            }
+            if (this.pageNum === 1) {
+                this.$prevPage.addClass('disable');
+                this.$nextPage.addClass('disable');
+                this.$delPage.addClass('disable');
+            } else if (this.currentPage === this.pageNum - 1) {
+                this.$nextPage.addClass('disable');
+            }
+            var word = self.$view.find('.uicomwrite-word-count');
+            word.children().first().html(this.model.wordsNum * (this.currentPage + 1));
+            if (this.pageNum < this.model.limitPage) {
+                this.$addPage.removeClass('disable');
+            }
+
+            // 修改手写板Canvas
+            this.container.find('canvas').eq(num).remove();
+            this.contextArr.splice(num, 1);
+            if (num == this.contextArr.length) {
+                num--;
+            }
+            this._gotoPage(num);
+
+            // 发送事件，可能controller会监听（例如作文题）
+            this.$dispatchEvent('HandWriterDelPage', PresenterEventType.IC_PLAYER_EVENT, {});
+            // 更新strokeDatas状态
+            this._updateStrokeDatas();
+        }
+    },
+    _setBackgroundImage: function (backgroundOptions) {
+        var _bgDeferred = $.Deferred();
+        if (this.hasRecover) {
+            _bgDeferred.resolve();
+            return _bgDeferred.promise();
+        }
+        if (!backgroundOptions && this.model.questionType === 'newhandwrite') {
+            _bgDeferred.resolve();
+            return _bgDeferred.promise();
+        }
+
+        //没有传参 或者传参，url字段为空情况，直接返回
+        if (!backgroundOptions || (backgroundOptions && !backgroundOptions.url) || this.model.questionType === 'composition') {
+            this.$bgDeferred.resolve();
+            _bgDeferred.resolve();
+            return _bgDeferred.promise();
+        }
+
+        this.hasImage = true;
+        var img = document.createElement('img'),
+            options = backgroundOptions,
+            t = this;
+
+        //加载背景图时，把offContext清空
+        t.offContext.clearRect(0, 0, t.offContext.canvas.width, t.offContext.canvas.height);
+        this.bgImgId = Date.now().toString();
+        img.setAttribute('data-bg-id', this.bgImgId);
+        img.onload = function () {
+            if (img.getAttribute('data-bg-id') !== t.bgImgId) {
+                return;
+            }
+            switch (options.type) {
+                case 0:
+                    t.context.drawImage(img, 0, 0, t.canvas.width, t.canvas.height);
+                    t.offContext.drawImage(img, 0, 0, t.canvas.width, t.canvas.height);
+                    break;
+                case 1:
+                    var x, y, wLength = Math.ceil(t.canvas.width / img.width), hLength = Math.ceil(t.canvas.height / img.height);
+                    for (var i = 0; i < hLength; i++) {
+                        x = 0;
+                        y = i * img.height;
+                        for (var j = 0; j < wLength; j++) {
+                            x = j * img.width;
+                            t.context.drawImage(img, x, y, img.width, img.height);
+                            t.offContext.drawImage(img, x, y, img.width, img.height);
+                        }
+                    }
+                    break;
+                case 2:
+                    var wP = t.canvas.width / 1620, hP = t.canvas.height / 1350;
+                    var left = wP * options.left, right = wP * options.right, top = hP * options.top, bottom = hP * options.bottom;
+                    var width = t.canvas.width - right - left;
+                    var height = t.canvas.height - top - bottom;
+                    if (options.height !== undefined && options.width !== undefined) {
+                        height = options.height / options.width * width;
+                    }
+                    t.context.drawImage(img, left, top, width, height);
+                    t.offContext.drawImage(img, left, top, width, height);
+                    break;
+                case 3:
+                    if (options.height !== undefined && options.width !== undefined) {
+                        var canvasWidth = $(t.canvas).parent().width();
+                        var width = canvasWidth;
+                        var left = 0, top = 0;
+                        var height = options.height / options.width * width;
+                        if (options.width < canvasWidth) {
+                            left = (canvasWidth - options.width) / 2;
+                            width = options.width;
+                            height = options.height;
+                        }
+                        t.context.drawImage(img, left, top, width, height);
+                        t.offContext.drawImage(img, left, top, width, height);
+                    }
+                    break;
+                default:
+                    break;
+            }
+            _bgDeferred.resolve();
+            this.$bgDeferred.resolve();
+
+        }.bind(this);
+
+        img.src = options.url;
+
+        return _bgDeferred.promise();
+    },
+    //设置canvas大小
+    _resetCanvasConfig: function (options) {
+        var canvas = this.canvas,
+            offCanvas = this.offCanvas,
+            maxTop = options.layout.containerHigh,
+            minTop = options.layout.stemHigh;
+
+        if (this.model["canvasWidth"]) {
+            this.defaultOptions.width = this.model["canvasWidth"];
+        } else {
+            this.defaultOptions.width = this.container.width();
+        }
+
+        //兼容阅读理解题需求：手写区域大小根据容器大小自适应
+        if(this.model.questionType === 'ReadingComprehension') {
+            this.defaultOptions.height = this.container.height();
+            this.defaultOptions.height = this.defaultOptions.width * 5 / 6;
+            this.$view.find('.handWrite_wrap').height(this.defaultOptions.height);
+            canvas.height = this.defaultOptions.height;
+            offCanvas.height = this.defaultOptions.height;
+        }
+
+        //设置canvas宽度
+        canvas.width = this.defaultOptions.width;
+        offCanvas.width = this.defaultOptions.width;
+
+        //设置能拖动的最大高度
+        if (maxTop) {
+            this.maxTop = maxTop - 100;
+        }
+
+        //设置能拖动的最小高度
+        this.minTop = minTop || 1;
+
+        // 重置工具栏选中状态
+        this._resetToolBar();
+    },
+    _resetToolBar: function () {
+        this.$view.find('.nhw_listcon').removeClass('on');
+        this.$view.find('.penweight1').addClass('on');
+        this.$view.find('.colordark').addClass('on');
+        this.$view.find('.toolbar_rubber2').addClass('on');
+    },
+    _start: function (selectors, e) {
+        e.preventDefault();
+        //强制文本框失去焦点
+        this.$view.find(".composition-tit input").blur();
+        this.isMouseDown = false;
+        if (!this.isCurrentEdit || this.isStartExam)
+            return;
+        var flag = false;
+
+        //开始书写的时候关闭掉工具弹窗 2016/11/9
+        this.$view.find(".nhw_write_toolbar_list").children().removeClass("open");
+
+        if (this.model.questionType === 'composition' && e.type == 'touchstart') {
+            flag = true;
+        }
+        var p = this._getPoint(e, 'touchstart', flag);
+        this.lastX = p.x;
+        this.lastY = p.y;
+        this.isDrawDown = true;
+        this.context.beginPath();
+        this.context.lineTo(this.lastX, this.lastY);
+
+        /**
+         * 2016/8/18 付君春
+         * 开始手写，发出事件由business接收，控制提交按钮的状态改变
+         */
+        this.$dispatchEvent('HandWriterStartWrite', PresenterEventType.IC_PLAYER_EVENT, {});
+    },
+    _move: function (selectors, e) {
+        e.preventDefault();
+        if (!this.isCurrentEdit || !this.isDrawDown)
+            return;
+
+        var flag = false;
+
+        if (this.model.questionType === 'composition' && e.type == 'touchmove') {
+            flag = true;
+        }
+        var p = this._getPoint(e, 'touchmove', flag);
+
+        if (this.isDrawDown) {
+            if (this.writeStatus == WriteStatus.Pen) {
+                if (Math.abs(this.lastX - p.x) <= 20 && Math.abs(this.lastY - p.y) <= 20) {
+                    this.context.lineTo(p.x, p.y);
+                    this.context.stroke();
+                }
+            } else {
+                this._eraseLast();
+                this._drawEraser(p);
+            }
+            this.lastX = p.x;
+            this.lastY = p.y;
+        }
+    },
+    _end: function (selectors, e) {
+        e.preventDefault();
+        if (!this.isCurrentEdit || this.isStartExam)
+            return;
+
+        this.logger.debug('_end');
+        this.isDrawDown = false;
+        this.isMouseDown = false;
+        this.context.closePath();
+
+        if (this.writeStatus === WriteStatus.Eraser)
+            this._eraseLast();
+    },
+    _getPoint: function (e, ename, flag) {
+        var x, y, touch;
+        if (e.type === ename) {
+            var offset = this.container.offset();
+            var touches = e.touches || e.originalEvent.touches;
+            touch = touches[0];
+            x = touch.pageX - offset.left;
+            y = touch.pageY - offset.top + this.container.scrollTop();
+        } else {
+            x = e.offsetX;
+            y = e.offsetY;
+        }
+        flag = flag || false;
+        if (flag) {
+            var fontsize = this.$view.parent().data('fontsize');
+            x -= this.canvasMarginLeft;
+            y -= this.canvasMarginTop * fontsize;
+        }
+        return { "x": x, "y": y };
+    },
+    _eraseLast: function () {
+        this.context.save();
+        this._setErasePathForEraser();
+        this._resetBackground();
+        this.context.restore();
+    },
+    _drawEraser: function (loc) {
+        this.context.save();
+
+        this.context.lineWidth = 2;
+        this.context.shadowColor = '#e2c599';
+        this.context.shadowOffsetX = 5;
+        this.context.shadowOffsetY = 5;
+        this.context.shadowBlur = 10;
+        this.context.strokeStyle = '#e9ca9c';
+
+        this._setDrawPathForEraser(loc);
+        this.context.stroke();
+
+        this.context.restore();
+    },
+    _setErasePathForEraser: function () {
+        var fontsize = this.$view.parent().data('fontsize');
+        var eraserWidth = fontsize ? parseInt(fontsize * 4.2) : 100;
+        this.context.beginPath();
+        this.context.arc(this.lastX, this.lastY, eraserWidth / 2 + 1, 0, Math.PI * 2, false);
+        this.context.clip();
+    },
+    _resetBackground: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.hasImage)
+            this.context.drawImage(this.offCanvas, 0, 0);
+    },
+    _setDrawPathForEraser: function (loc) {
+        var fontsize = this.$view.parent().data('fontsize');
+        var eraserWidth = fontsize ? parseInt(fontsize * 4.2) : 100;
+        this.context.beginPath();
+        this.context.arc(loc.x, loc.y, eraserWidth / 2, 0, Math.PI * 2, false);
+        this.context.clip();
+    },
+    _getScreenY: function (e, eName) {
+        var y;
+        if (e.type === eName) {
+            var touch = e.touches || e.originalEvent.touches;
+            y = touch[0].screenY;
+        } else {
+            y = e.screenY;
+        }
+        return y;
+    },
+    _changeUI: function (selectors, e) {
+        e.preventDefault();
+        if (!this.isCurrentEdit || this.isStartExam)
+            return;
+        var tar = $(e.target);
+        while (!tar.is('li')) {
+            tar = tar.parent();
+        }
+        var type = tar.data('type');
+
+        switch (type) {
+            case 1:
+                tar.toggleClass('open').next().removeClass('open');
+                tar.addClass('on').next().removeClass('on');
+                this.writeStatus = 1;
+                break;
+            case 2:
+                tar.toggleClass('open').prev().removeClass('open');
+                tar.addClass('on').prev().removeClass('on');
+                this._setHtmlCanvas(7);
+                break;
+            case 3:
+                tar.toggleClass('open').next().removeClass('open');
+                tar.addClass('on').next().removeClass('on');
+                var show = tar.hasClass("open") ? true : false;
+                this.$dispatchEvent('ShowRecordPop', PresenterEventType.IC_PLAYER_EVENT, {type: type, show: show});
+                break;
+            case 4:
+                tar.toggleClass('open').prev().removeClass('open');
+                tar.addClass('on').prev().removeClass('on');
+                var show = tar.hasClass("open") ? true : false;
+                //todo： 通知pannel将录音播放界面show出来，同时将录音界面隐藏
+                this.$dispatchEvent('ShowRecordPop', PresenterEventType.IC_PLAYER_EVENT, {type: type, show: show});
+                break;
+        }
+    },
+    _changeStrokeUI: function (selectors, e) {
+        e.stopPropagation();
+        var tar = $(e.target);
+        while (!tar.is('a')) {
+            tar = tar.parent();
+        }
+        tar.addClass('on').siblings().removeClass('on');
+        this._setHtmlCanvas(tar.data('mode'));
+    },
+    _setHtmlCanvas: function (mode) {
+        switch (mode) {
+            case 1:
+                this.context.lineWidth = 3;
+                this.currentState.pen.lineWidth = 3;
+                break;
+            case 2:
+                this.context.lineWidth = 6;
+                this.currentState.pen.lineWidth = 6;
+                break;
+            case 3:
+                this.context.lineWidth = 9;
+                this.currentState.pen.lineWidth = 9;
+                break;
+            case 4:
+                this.context.strokeStyle = 'rgb(51,51,51)';
+                this.currentState.pen.strokeStyle = 'rgb(51,51,51)';
+                break;
+            case 5:
+                this.context.strokeStyle = 'rgb(214,214,214)';
+                this.currentState.pen.strokeStyle = 'rgb(214,214,214)';
+                break;
+            case 6:
+                this.context.strokeStyle = 'rgb(255,82,82)';
+                this.currentState.pen.strokeStyle = 'rgb(255,82,82)';
+                break;
+            case 7:
+                this.writeStatus = 3;
+                break;
+            case 8:
+                this.$view.find('.js_pop_win').show();
+                break;
+        }
+    },
+    _dialogClick: function (selectors, e) {
+        this.$view.find('.toolbar_rubber2').toggleClass('on').siblings().removeClass('on');
+        var type = $(e.target).data('type');
+        switch (type) {
+            case 1:
+                this.$view.find('.js_pop_win').hide();
+                break;
+            case 2:
+                this._clearAll();
+                this.$view.find('.js_pop_win').hide();
+                break;
+        }
+    },
+    _clearAll: function () {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.hasImage) {
+            this.context.drawImage(this.offCanvas, 0, 0);
+        }
+        // 更新strokeDatas状态
+        this._updateStrokeDatas(this.currentPage);
+    },
+    _dragStart: function (selectors, e) {
+        e.preventDefault();
+        this.isMouseDown = true;
+        this.logger.debug('_dragStart');
+        this.lastY = this._getScreenY(e, 'touchstart');
+    },
+    _dragMove: function (selectors, e) {
+        //e.preventDefault();
+        if (!this.isMouseDown)
+            return;
+
+        var h = parseInt(this.$view.find('.com_layout_main').css('top').replace('px', '')),
+            y = this._getScreenY(e, 'touchmove');
+
+        h = h - (this.lastY - y);
+        if (h < this.minTop || h > this.maxTop)
+            return;
+
+        if (e !== undefined && e.touches !== undefined) {
+            var touch = e.touches[0];
+            if (touch === undefined || touch.screenY < 5) {
+                this.isMouseDown = false;
+                return;
+            }
+        }
+
+        this.$view.find('.com_layout_main').css('top', h + 'px');
+        this.lastY = y;
+    },
+    _dragUp: function (selectors, e) {
+        //e.preventDefault();
+        this.isMouseDown = false;
+        this.status.top = this.$view.find('.com_layout_main').css('top');
+    },
+    _initI18N: function () {
+        var self = this;
+        var v = this.$view;
+
+        this.$translateDeferred.done(function () {
+            v.find('.off_text').html('<em>' + self.i18nModel['write_toolbar_tip'] + '</em>');
+            v.find('.on_text').html('<em>' + self.i18nModel['write_toolbar_tip1'] + '</em>');
+            v.find('.write_pen').html(self.i18nModel['write_toolbar_pen']);
+            v.find('.write_area').html(self.i18nModel['write_area']);
+            v.find('.write_clean').html(self.i18nModel['write_toolbar_clean']);
+            v.find('.write_eraser').html(self.i18nModel['write_boolbar_eraser']);
+            v.find('.comui_pop_papper_txt').html(self.i18nModel['write_del_confirm']);
+            v.find('.js_btn_cancel').html(self.i18nModel['write_cancel']);
+            v.find('.js_btn_submit').html(self.i18nModel['write_ensure']);
+            v.find('.uicomwrite-word-count').children('span:eq(1)').html(self.i18nModel['write_word']);
+
+            v.find('.js_audio_record').html(self.i18nModel['write_toolbar_audio']);
+            v.find('.js_audio_play').html(self.i18nModel['write_toolbar_audio']);
+        });
+    },
+
+    //恢复菜单样式
+    _recoverMenuStyle: function (menuIndex) {
+         this.$view.find(".nhw_write_toolbar_list li").eq(menuIndex).removeClass("on").removeClass("open");
+    },
+
+
+    //恢复菜单样式
+    _recoverMenuStyle: function (menuIndex) {
+         this.$view.find(".nhw_write_toolbar_list li").eq(menuIndex).removeClass("on").removeClass("open");
+    },
+
+    //设置菜单样式
+    _setMenuStyle: function (eventData) {
+         this.$view.find(".nhw_write_toolbar_list li").eq(eventData.removeMenuIndex).removeClass("on").removeClass("open");
+         this.$view.find(".nhw_write_toolbar_list li").eq(eventData.toggleMenuIndex).toggleClass("open on");
+         var $el = this.$view.find(".nhw_write_toolbar_list li").eq(eventData.toggleMenuIndex);
+         if(!$el.hasClass("open")){
+             $el.addClass("open");
+         }
+         if(!$el.hasClass("on")){
+             $el.addClass("on");
+         }
+    },
+    /**
+     * 课堂状态监控
+     */
+    _watchStatus: function () {
+        // 对象监控
+        WatchJS.watch(this, ['isCurrentEdit', 'writeStatus', 'currentState', 'currentPage', 'isDrawDown', 'title', 'scrollTop', 'top'], this._commitStatusUpdate.bind(this));
+        WatchJS.watch(this.status, ['scrollTop', 'top'], this._commitStatusUpdate.bind(this));
+        // 手写板滚动条监控
+        this.container.scroll(function (e) {
+            self.status.scrollTop = $(this).scrollTop();
+        });
+    },
+    /**
+     * 状态变更通知
+     */
+    _commitStatusUpdate: function (prop, action, newvalue, oldvalue) {
+        if (prop === 'isDrawDown') {// 一笔结束后提交
+            if (newvalue) {
+                return;
+            } else {
+                this._updateStrokeDatas(this.currentPage);
+                return;
+            }
+        }
+        this.playerController.startFlow('css_classroom_status_changed', {
+            presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+        });
+    },
+    /**
+     * 更新strokeDatas
+     */
+    _updateStrokeDatas: function (page) {
+        if (page) {
+            this.status.strokeDatas.splice(page, 1, this.contextArr[page].canvas.toDataURL('image/png'))
+        } else {
+            this.status.strokeDatas = []
+            this.contextArr.forEach(function (context) {
+                var strokeData = context.canvas.toDataURL('image/png');
+                this.status.strokeDatas.push(strokeData);
+            }, this);
+        }
+        this.playerController.startFlow('css_classroom_status_changed', {
+            presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+        });
+    },
+    /**
+     * 销毁监控需要提交的数据对象
+     */
+    _unwatchStatus: function () {
+        WatchJS.unwatch(this, ['isCurrentEdit', 'writeStatus', 'currentState', 'currentPage', 'isDrawDown', 'title', 'scrollTop', 'top'], this._commitStatusUpdate.bind(this));
+        WatchJS.unwatch(this.status, ['scrollTop', 'top'], this._commitStatusUpdate.bind(this));
+    }
+
+}, "H5HandWriter");
+
+module.exports = Presenter;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+var Service = {
+    constructor: function (parent) {
+        this.parent = parent;
+    },
+    //国际化处理
+    setLocationProperties: function (i18nModel) {
+        this.parent.i18nModel = i18nModel;
+        this.parent.$translateDeferred.resolve();
+    },
+    /**
+     * 清空手写板
+     */
+    clean: function () {
+        if (this.parent.contextArr.length > 1) {
+            //作文题
+            this.parent.contextArr = [];
+            this.parent.canvasId = null;
+            this.parent.container.find('canvas').remove();
+            this.parent._createCanvas();
+            this.parent._setCurrentCanvasContext(0);
+        } else {
+            this.parent.context.clearRect(0, 0, this.parent.canvas.width, this.parent.canvas.height);
+            if (this.parent.hasImage) {
+                this.parent.context.drawImage(this.parent.offCanvas, 0, 0);
+            }
+        }
+        // 更新strokeDatas状态
+        this.parent._updateStrokeDatas();
+    },
+    /**
+     * 显示/隐藏手写板
+     * @param isShow boolean
+     */
+    show: function (isShow) {
+        this.parent.showState = Boolean(isShow);
+        if (isShow) {
+            this.parent.container.find('.h5_handwriter').show();
+        } else {
+            this.parent.container.find('.h5_handwriter').hide();
+        }
+    },
+    showToolbar: function (isShow) {
+        //do nothing
+    },
+    /**
+     * 切换手写板编辑态
+     * @param isEdit
+     */
+    edit: function (isEdit) {
+        this.parent.isCurrentEdit = isEdit;
+        if (isEdit == false) {
+            var lis = this.parent.$view.find('.nhw_write_toolbar_list').children();
+            for (var i = 0; i < lis.length; i++) {
+                $(lis[i]).removeClass('open');
+            }
+            //导航禁用
+            this.parent.$delPage.addClass('disable');
+            this.parent.$addPage.addClass('disable');
+            // 修复BUG:161735	已发送任务，仍可删除已有的录音文件
+            this.parent.isBtnRecordDelEnable = false;
+        } else {
+            if (this.parent.pageNum > 1) {
+                this.parent.$delPage.removeClass('disable');
+            }
+            if (this.parent.pageNum < 10) {
+                this.parent.$addPage.removeClass('disable');
+            }
+            this.parent.isBtnRecordDelEnable = true;
+        }
+    },
+    /**
+     * 清空标题划线部分
+     * @param isEdit
+     */
+    editTitle: function (isEdit) {
+        var tar = this.parent.$view.find('.composition-tit input');
+        if (isEdit) {
+            tar.removeAttr("readonly");
+            return;
+        }
+        tar.val('');
+        tar.attr("readonly", "readonly");
+    },
+    /**
+     * 获取轨迹数据
+     * @param options
+     */
+    getStrokeData: function (options) {
+        //如果返回imageData数据会很大，因此返回base64
+        return this.parent.canvas.toDataURL('image/png');
+    },
+    /**
+     * 设置轨迹数据
+     * @param data base64编码
+     */
+    parseStrokeData: function (data) {
+        var ctx = this.parent.context;
+        var image = new Image();
+        var parent = this.parent;
+
+        // 清空手写板
+        ctx.clearRect(0, 0, this.parent.canvas.width, this.parent.canvas.height);
+
+        image.onload = function () {
+            // data中图片高宽比可能和容器不一样，做缩放
+            var scale = parent.defaultOptions.width / image.width;
+            var height = image.height * scale;
+            ctx.drawImage(image, 0, 0, parent.defaultOptions.width, height);
+            // 更新strokeDatas状态
+            parent._updateStrokeDatas();
+            parent.parseStrokeDataDeffer.resolve();
+        };
+
+        image.src = data;
+        this.parent.parseStrokeDataDeffer = $.Deferred();
+        return this.parent.parseStrokeDataDeffer.promise();
+    },
+    /**
+     * 关闭PopWin
+     */
+    closePopWin: function () {
+        var lis = this.parent.$view.find('.nhw_write_toolbar_list').children();
+        for (var i = 0; i < lis.length; i++) {
+            $(lis[i]).removeClass('open');
+        }
+    },
+    closeRecordPopWin: function (option) {
+        var lis = this.parent.$view.find('.nhw_write_toolbar_list').children();
+        $(lis[option.id]).removeClass('open');
+    },
+    /**
+     * 复合题第二次加载题目
+     * 清空画板，并加载背景图
+     *
+     */
+    loadNewQuestion: function (backgroundOptions, answer, extraData) {
+        var self = this;
+        var $bgDeferred;
+
+        //在load的对一些参数重设，保证canvas显示正常
+        this.parent._resetCanvasConfig(extraData);
+
+        //清空画板
+        this.parent.context.clearRect(0, 0, this.parent.canvas.width, this.parent.canvas.height);
+
+        //设置背景图
+        self.parent.hasRecover = false;
+        $bgDeferred = this.parent._setBackgroundImage(backgroundOptions);
+
+        //设置轨迹
+        if (answer) {
+            $bgDeferred.done(function () {
+                self.parseStrokeData(answer);
+            });
+        } else {
+            self.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: self.parent.metaInfo.name // 当前模块代码,也就是metaInfo.name
+            });
+        }
+
+    },
+    //复合题切换时，用于恢复手写板的位置的数据
+    getTop: function () {
+        //native返回的是promise，在此保持一致，便于business处理
+        var $defer = $.Deferred();
+        var top = this.parent.$view.find(".com_layout_main").position().top;
+        $defer.resolve(top);
+
+        return $defer.promise();
+    },
+    setTop: function (top, saved) {
+        this.parent.$view.find(".com_layout_main").css("top", top + "px");
+    },
+    // 重置导航页
+    resetPage: function (data) {
+        this.parent.pageNum = 1;
+        this.parent.currentPage = 0;
+        this.parent.$delPage.addClass('disable');
+        this.parent.$prevPage.addClass('disable');
+        this.parent.$nextPage.addClass('disable');
+        this.parent.$totalPage.html(this.parent.pageNum);
+        this.parent.$currentPage.html(this.parent.pageNum);
+        var word = this.parent.$view.find('.uicomwrite-word-count');
+        word.children().first().html(this.parent.model.wordsNum);
+    },
+    showAudioButton: function (option) {
+        if (!option) {
+            return;
+        }
+        this.parent._showAudioBtn(option);
+    },
+    /**
+     * 获取课堂状态
+     */
+    getClassroomStatus: function () {
+        var $defer = $.Deferred();
+        var status = {
+            isCurrentEdit: this.parent.isCurrentEdit,
+            toolbar: {
+                writeStatus: this.parent.writeStatus,
+                currentState: this.parent.currentState //画笔
+            },
+            strokeDatas: this.parent.status.strokeDatas,
+            currentPage: this.parent.currentPage,
+            scrollTop: this.parent.status.scrollTop,
+            top: this.parent.status.top
+        }
+        //作文题题目
+        if (this.parent.title) {
+            status.title = this.parent.title;
+        }
+        var _status = $.extend(true, {}, status);
+        $defer.resolve(_status);
+        return $defer.promise();
+    },
+    /**
+     * 设置课堂状态 
+     */
+    setClassroomStatus: function (status) {
+        var parent = this.parent;
+        parent.isCurrentEdit = status.isCurrentEdit;
+        parent.$bgDeferred.done(function () {
+            parent.writeStatus = status.toolbar.writeStatus;
+            parent.currentState = status.toolbar.currentState;
+            parent.contextArr = [];
+            parent.container.find('canvas').remove();
+            parent.status.strokeDatas = status.strokeDatas;
+            status.strokeDatas.forEach(function (strokeData) {
+                // 创建canvas
+                var $canvas = $('<canvas></canvas>');
+                $canvas.css({
+                    'margin-left': parent.canvasMarginLeft + 'px',
+                    'margin-top': parent.canvasMarginTop + 'em'
+                });
+                var canvas = $canvas[0];
+                canvas.width = parent.defaultOptions.width;
+                canvas.height = parent.defaultOptions.height;
+                var context = canvas.getContext('2d');
+                context.lineJoin = "round";
+                context.lineCap = "round";
+                context.lineWidth = status.toolbar.currentState.pen.lineWidth;
+                context.strokeStyle = status.toolbar.currentState.pen.strokeStyle;
+
+                // 设置轨迹数据到手写板
+                var image = new Image();
+                image.onload = function () {
+                    var scale = parent.defaultOptions.width / image.width;
+                    var height = image.height * scale;
+                    context.drawImage(image, 0, 0, parent.defaultOptions.width, height);
+                }
+                image.src = strokeData;
+
+                parent.contextArr.push(context);
+                parent.container.append(canvas);
+            });
+            parent.context = parent.contextArr[status.currentPage];
+            parent.$canvas = parent.container.find('canvas').eq(status.currentPage);
+            parent.canvas = parent.$canvas[0];
+            parent.hasRecover = true;
+            // 工具栏
+            parent.$view.find('.colordark').parent().children().removeClass('on');
+            parent.$view.find('.penweight1').parent().children().removeClass('on');
+            parent.$view.find('.penweight' + status.toolbar.currentState.pen.lineWidth / 3).addClass('on');
+            switch (status.toolbar.currentState.pen.strokeStyle) {
+                case 'rgb(51,51,51)':
+                    parent.$view.find('.colordark').addClass('on');
+                    break;
+                case 'rgb(214,214,214)':
+                    parent.$view.find('.colorgrey').addClass('on');
+                    break;
+                case 'rgb(255,82,82)':
+                    parent.$view.find('.colorred').addClass('on');
+                    break;
+                default:
+                    parent.$view.find('.colordark').addClass('on');
+                    break;
+            }
+            parent.$view.find(".nhw_write_toolbar_list").children().removeClass('on');
+            if (status.toolbar.writeStatus === 1) { //画笔
+                parent.$view.find(".nhw_write_toolbar_list").children(':eq(0)').addClass('on');
+            } else {// 橡皮
+                parent.$view.find(".nhw_write_toolbar_list").children(':eq(1)').addClass('on');
+            }
+            // 多页:增减页、上下页、字数
+            parent.pageNum = status.strokeDatas.length;
+            parent.currentPage = status.currentPage;
+            parent.container.find('canvas').hide();
+            parent.container.find('canvas').eq(parent.currentPage).show();
+            parent.$currentPage.html(parent.currentPage + 1);
+            parent.$totalPage.html(parent.pageNum);
+            parent.$view.find('.uicomwrite-word-count').children().first().html(parent.model.wordsNum * (parent.currentPage + 1));
+            parent.$addPage.removeClass('disable');
+            parent.$delPage.removeClass('disable');
+            parent.$prevPage.removeClass('disable');
+            parent.$nextPage.removeClass('disable');
+            if (parent.pageNum <= 1) {
+                parent.$delPage.addClass('disable');
+            }
+            if (parent.pageNum === parent.model.limitPage) {
+                parent.$addPage.addClass('disable');
+            }
+            if (parent.currentPage === 0) {
+                parent.$prevPage.addClass('disable');
+            }
+            if (parent.currentPage === parent.pageNum - 1) {
+                parent.$nextPage.addClass('disable');
+            }
+            // 作文题还原题目
+            if (status.title) {
+                parent.title = status.title;
+                parent.$view.find('.com_layout_main .composition-tit input').val(status.title);
+            }
+            // 手写板滚动条
+            parent.container.scrollTop(status.scrollTop);
+            // 分界栏位置
+            if (status.top) {
+                parent.$view.find('.com_layout_main').css('top', status.top);
+            }
+            //通知数据恢复完成
+            parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: parent.metaInfo.name });
+            parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: parent.metaInfo.name // 当前模块代码,也就是metaInfo.name
+            });
+        })
+    },
+    /**
+     * 清除课堂状态
+     */
+    clearClassroomStatus: function () {
+
+    },
+};
+
+module.exports = Service;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+exports.uuid = function () {
+    var s = [], hexDigits = "0123456789abcdef";
+
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+
+    s[14] = "4";
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    return s.join("");
+};
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/compop_dec1.png' />
+<file src='./resources/images/compop_dec2.png' />
+<file src='./resources/images/hand_write/bg_r_b.png' />
+<file src='./resources/images/hand_write/drag_shadow.png' />
+<file src='./resources/images/hand_write/hand_r_bg.png' />
+<file src='./resources/images/hand_write/icon-clear.png' />
+<file src='./resources/images/hand_write/icon-delete.png' />
+<file src='./resources/images/hand_write/icon-pen.png' />
+<file src='./resources/images/hand_write/icon_drag.png' />
+<file src='./resources/images/hand_write/off_on.png' />
+<file src='./resources/images/toolbar_sliderbg.png' />
+<file src='./resources/images/toolbar_toolon.png' />
+<file src='./resources/images/toolbar_weight1.png' />
+<file src='./resources/images/toolbar_weight2.png' />
+<file src='./resources/images/toolbar_weight3.png' />
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/bo/lang.po' />
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/bo_CN/lang.po' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+<file src='./resources/locations/zh/zh.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/lang.po' />
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html class="full">
+
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="telephone=no;address=no;email=no" name="format-detection"/>
+
+    <title>课件</title>
+    <link rel="stylesheet" href="ref/modules/icPlayer/ndplayer/theme/default/ndplayer.css?v=2792a207a781f784">
+    <style>
+        .full {
+            width: 100%;
+            height: 100%;
+            /* background-color:white;*/
+        }
+
+        body {
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        #loadingdiv_index {
+            position: absolute;
+            top: 45%;
+            left: 45%;
+            z-index: 999999999999;
+            text-align: center;
+            margin: 0px;
+            font-size: 24px;
+        }
+        #reloaddialog_index{
+            display: none;
+            position: absolute;
+            z-index: 9999;
+            left: 37.5%;
+            top: 25%;
+            width: 25%;
+            height: 15%;
+            background-color: #e9e9e9;
+            border: 1px solid #797979;
+            box-shadow: rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        #reloaddialog_index_text {
+            padding: 6% 0;
+            font-size: 28px;
+        }
+    </style>
+    <script type="text/javascript" src="ref/modules/icPlayer/javascript/jquery-1.10.2.min.js"></script>
+    <!-- inject:develop:config -->
+    <!-- endinject -->
+
+    <script src="ref/modules/icPlayer/javascript/nativeInterface/PlayerInterface-android.js?v=5a072a3453fcfb2b"></script>
+</head>
+
+<body class="full">
+<div id="loadingdiv_index">loading...</div>
+<div id="_icplayer" class="full"></div>
+<div id="reloaddialog_index">
+    <p id="reloaddialog_index_text">当前网络异常，是否关闭</p>
+    <button id="reloaddialog_index_continue">继续等待</button>
+    <button id="reloaddialog_index_close">直接关闭</button>
+</div>
+<script src="ref/modules/icPlayer/ndplayer/ndplayer.js?v=faad2f4fb5c04fe6"></script>
+<script src="ref/modules/icPlayer/ndplayer/platforms/app.js?v=20082b3ee9fdbd4c"></script>
+<script src="ref/modules/InteractionMidware/midway/facade.umd.js?v=faad2f4fb5c04fff"></script>
+<script type="text/javascript">
+    'use strict';
+    var isLoadConfig = (icCreatePlayer.request('loadconfig') == 'true');
+    var isTransparent = (icCreatePlayer.request('transparent') == 'true');
+    var wsUrl = decodeURIComponent(icCreatePlayer.request('wsurl'));
+    var width = icCreatePlayer.request('width') || "device-width";
+    var height = icCreatePlayer.request('height') || "device-height";
+    var mMeta;
+  
+  
+     //配置中间件BasePath
+     if(!!window.Midware) {
+       (typeof Midware.globalConfig === 'function') && Midware.globalConfig({
+          LanguageBasePath: 'ref/languages',
+          ComponentBasePath: 'ref/js-library'
+       });
+       
+       (typeof Midware.startup === 'function') && Midware.startup({async: false});
+     }
+  
+     //兼容性代码：加载定制播放器的语言配置 中间层组件1.1.3收敛I18nManager定义
+     !window.I18nManager && (window.I18nManager  = {
+       getInstance: function() {
+         return window.Midware.i18nManager;
+       }
+     });
+
+    if (!icCreatePlayer.request('width')) {
+        mMeta = '<meta content="initial-scale=1.0,user-scalable=no" name="viewport" />';
+    }
+    else {
+        mMeta = '<meta name="viewport" content="width=' + width + ',height=' + height + ',user-scalable=no" />';
+    }
+    $('head').prepend(mMeta);
+    var player;
+    function setBackGround(flag) {
+        if (flag)
+            $('#_icplayer').css({'background-color': 'rgba(255, 255, 255, 0)', 'border': 'hidden'});
+        else
+            $('#_icplayer').css({'background-color': '#ffffff', 'border': 'hidden'});
+    }
+    /**
+     * 重新加载main.xml
+     * @param  {[type]} url            课件的main.xml
+     * @param  {[type]} refPath        refpath
+     * @param  {[type]} stateToken     状态恢复的token
+     * @param  {[type]} startPageIndex 开始页吗
+     * @return {[type]}
+     */
+    function loadMain(url, refPath, stateToken, startPageIndex) {
+        player.release();
+        player = null;
+        $('#_icplayer').html('');
+        player = icCreatePlayer.create({
+            'waitDialog': WaitImage,
+            'hidePage': '',
+            'url': url,
+            'startPageIndex': startPageIndex || 0,
+            'stateToken': stateToken,
+            'refPath': {'ref-path': refPath},
+            'listeners': {
+                'render': function () {
+                    if (isApp && Bridge.onMainLoaded) {
+                        Bridge.onMainLoaded();
+                    }
+                }
+
+            }
+
+        });
+        player.render('#_icplayer');
+    }
+
+    function loadConfig(option) {
+        player = icCreatePlayer.create(option);
+        player.render('#_icplayer');
+    }
+    var WaitImage = {
+        show: function () {
+            if (document.getElementById("loadingdiv_index") != undefined)
+                document.getElementById("loadingdiv_index").style.display = 'block';
+        },
+        hide: function () {
+            if (document.getElementById("loadingdiv_index") != undefined)
+                document.getElementById("loadingdiv_index").style.display = 'none';
+        }
+    };
+    var ReloadDialog = {
+        t: null,
+        set: function (time) {
+            var that = this;
+            this.bindEvent();
+            this.t = setTimeout(function(){
+                that.setDisplay(true);
+            }, time);
+        },
+        cancel: function(){
+            clearTimeout(this.t);
+            this.setDisplay();
+            this.unBindEvent();
+        },
+        reload: function(){
+            this.setDisplay();
+            if(player){
+                player.release();
+                player = null;
+                $('#_icplayer').html('');
+            }
+            LoadWithoutConfig(5000);
+        },
+        closePlayer: function(){
+            if (typeof (CoursePlayer) !== 'undefined' && CoursePlayer.close) CoursePlayer.close();
+            this.setDisplay();
+            this.unBindEvent();
+        },
+        setDisplay: function(isShow){
+            document.getElementById('reloaddialog_index').style.display = isShow ? 'block' : 'none';
+        },
+        bindEvent:function(){
+            if(!this.isBind){
+                this.isBind = true;
+                this.reloadEvent = this.reload.bind(this);
+                this.closeEvent = this.closePlayer.bind(this);
+                this.continueBtn = document.getElementById('reloaddialog_index_continue');
+                this.continueBtn.addEventListener('click', this.reloadEvent);
+                this.closeBtn = document.getElementById('reloaddialog_index_close');
+                this.closeBtn.addEventListener('click', this.closeEvent);
+            }
+        },
+        unBindEvent:function(){
+            this.continueBtn.removeEventListener('click', this.reloadEvent);
+            this.closeBtn.removeEventListener('click', this.closeEvent);
+            this.isBind = false;
+        }
+    }
+    if (typeof(MathJax) !== 'undefined') {
+        MathJax.Hub.Config({
+            showMathMenu: false //不显示公式右键长安菜单
+        });
+
+    }
+    if (isTransparent)
+        setBackGround(true);
+    else
+        setBackGround(false);
+
+    function LoadWithoutConfig(reloadTime){
+        ReloadDialog.set(reloadTime);
+        loadConfig({
+            'waitDialog': WaitImage,
+            'listeners': {
+                'render': function () {
+                    ReloadDialog.cancel();
+                    ReloadDialog.setDisplay();
+                   if (typeof MathJax !== "undefined")
+                    MathJax.Hub.Configured();
+                    if (wsUrl && wsUrl !== '')
+                        icCreatePlayer.sync.start(wsUrl);
+                }
+
+            }
+        }, '#_icplayer');
+    }
+    if (!isLoadConfig) {
+        LoadWithoutConfig(10000);
+    } else {
+        var hidePage = 'footer,header,left,right';
+        if (icCreatePlayer.request('terminal') === 'student')
+            hidePage = 'toolbar,footer,header,left,right';
+        loadConfig({
+            'hidePage': hidePage,
+            'url': 'ref/modules/icPlayer/main.xml',
+            'startPageIndex': -1,
+            'waitDialog': WaitImage,
+            'listeners': {
+                'render': function () {
+                  if (typeof MathJax !== "undefined")
+                    MathJax.Hub.Configured();
+                    if (wsUrl && wsUrl !== '')
+                        icCreatePlayer.sync.start(wsUrl);
+                }
+
+            }
+        }, '#_icplayer');
+    }
+   window.addEventListener("resize",function () {
+        if (icCreatePlayer && icCreatePlayer.utils.getFontSize) {
+            player.setContainerFontSize(icCreatePlayer.utils.getFontSize());
+        }
+    })
+</script>
+</body>
+
+</html>

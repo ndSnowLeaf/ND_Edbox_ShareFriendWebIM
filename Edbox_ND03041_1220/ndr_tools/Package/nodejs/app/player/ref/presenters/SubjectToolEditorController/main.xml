@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SubjectToolEditorController'>
+<properties>
+
+                <property name="toolName" displayName="启动工具名称" type="string" isLocalized="false" />
+                <property name="initModel" displayName="工具初始模型" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_SubjectToolEditorController .message_wraper{width:100%;height:100%;justify-content:center;align-items:center;display:-webkit-flex;-webkit-justify-content:center;-webkit-align-items:center}.addon_SubjectToolEditorController .message_wraper .message_text{color:#fff;background-color:rgba(0,0,0,.7);font-size:2.5em;padding:20px 30px;border-radius:5px;-webkit-border-radius:5px}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<p class="message_wraper"><span class="message_text">Succeed to save.</span></p>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+(function () {
+    var Presenter = BaseController.extend({
+        metaInfo: {
+            name: "SubjectToolEditorController",
+            type: PresenterType.PRESENTER_CONTROLLER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            var self = this;
+            this._super();
+            this.launchTool = null;
+            this.subjectEditorService = null;
+            this.messageTimer = null;
+            this.messageCtrl = null;
+            if(window.top.SaveSubjectTool == undefined) {
+                window.top.SaveSubjectTool = this._createDelegate(self._saveSubjectTool, [], true, self);
+            }
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                switch(context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {level: Logger.DEBUG});
+        },
+        _service_: {
+            constructor: function (parent) {
+                this.presenter = parent;
+            },
+            setLocationProperties: function(properties) {
+                this.presenter.$translator.setData(properties);
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.$view.hide();
+            this.messageCtrl = this.$view.find('.message_text');
+        },
+        destroy: function () {
+            if(window.top.SaveSubjectTool != undefined) {
+                delete window.top.SaveSubjectTool;
+            }
+
+            !!this.messageTimer && window.clearTimeout(this.messageTimer);
+        },
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "ISubjectEditor",
+                methods: ["getExtendData"]
+            }];
+        },
+        $afterPresenterRun: function (interfaceName, metaInfo, service) {
+            if(interfaceName === 'ISubjectEditor' && this.subjectEditorService == null) {
+                this.subjectEditorService = service;
+                this.launchTool = metaInfo.toolKey || metaInfo.name;
+            }
+        },
+        _saveSubjectTool: function () {
+            if(this.subjectEditorService == null) {
+                this.logger.error('subjectEditorService is NULL');
+                this._showMessage(this.$translator.translate('message_save_not_support'));
+                return;
+            }
+            var extendData = this.subjectEditorService.getExtendData();
+            if(extendData == undefined || $.isEmptyObject(extendData)) {
+                this.logger.error('subject extendData is NULL');
+                return;
+            }
+            this.logger.info('call save API');
+            var self = this;
+            var editorUrl = 'http://localhost:3001/v0.2/subject_tool/' + this.launchTool + '/' +
+                this.urlParams['id'] + '?file_path=' + (this.urlParams.file_path || '');
+            $.ajax({
+                url: editorUrl,
+                type: 'PUT',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify({
+                    name: '__ExtendModel',
+                    type: 'json',
+                    text: JSON.stringify(extendData)
+                })
+            }).done(function (data) {
+                self._showMessage(self.$translator.translate('message_success_save'));
+                if (data.isInterface === true) {
+                    try {
+                        window.eval(data.text);
+                    } catch (e) {
+                        self.logger.error(e);
+                    }
+                } else {
+                    console.log(JSON.stringify(data));
+                }
+            }).fail(function (data) {
+                self._showMessage(self.$translator.translate('message_fail_save'));
+                self.logger.error("save fail");
+            });
+        },
+        _showMessage: function (message) {
+            if (!!message) {
+                var self = this;
+                self.messageCtrl.text(message);
+                self.$view.show();
+                self.messageTimer = window.setTimeout(function () {
+                    self.$view.hide();
+                    self.messageTimer = null;
+                }, 2000);
+            }
+        }
+    }, "SubjectToolEditorController");
+
+    window.AddonSubjectToolEditorController_create = function () {
+        return new Presenter();
+    };
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

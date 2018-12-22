@@ -1,0 +1,1346 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="threejs" version="73.1"/><javaScript name="webglControl" version="1.0.0"/></jsDependency></dependencies><css/><view><![CDATA[<canvas id="canvas" onselectstart="return false;" style="-moz-user-select:none; -webkit-transform: rotate(0deg); -webkit-transform-origin:20px 20px; position: absolute; left:400px; top:100px; cursor: hand; pointer-events: none"></canvas>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(3);
+	__webpack_require__(2);
+	__webpack_require__(5);
+	module.exports = __webpack_require__(4);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _setsquarea = __webpack_require__(2);
+
+	var _setsquarea2 = _interopRequireDefault(_setsquarea);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	    var Service = function Service() {
+	        this.questionId = null;
+	        this.i18n = {};
+	    };
+	    Service.prototype = {
+	        init: function init(model) {
+	            this.questionId = model.question.id;
+	        },
+	        getQuestionInfo: function getQuestionInfo() {
+	            return {
+	                'id': this.questionId,
+	                'type_code': 'setsquarea',
+	                'type_name': 'setsquarea_tool',
+	                //'url': '"' + url + '"',
+	                'notExistStatistics': true,
+	                'noNeedQuizProgress': true
+	            };
+	        },
+	        // setLocationProperties: function (properties) {
+	        //     this.i18n = properties;
+	        // },
+	        getExtendData: function getExtendData() {
+	            var options = {
+	                width: '100%' //全屏展示
+	            };
+	            return options;
+	        }
+	    };
+
+	    var Presenter = BasicPresenter.extend({
+	        metaInfo: {
+	            name: 'SetsquareaA',
+	            type: PresenterType.PRESENTER_COMPONENT
+	        },
+	        $init: function $init() {
+	            this._super();
+	        },
+	        run: function run(view, model) {
+	            this.$view = $(view);
+	            this.webglControl = icCreatePlayer.plugin.webglControl;
+	            this.setsquarea = new _setsquarea2.default(this.$view, this);
+	            var that = this;
+	            this.__interface = {
+	                isPointInPath: function isPointInPath(e) {
+	                    return that.setsquarea.isPointInPath(e);
+	                }
+	            };
+	        },
+	        setPaint: function setPaint(paint) {
+	            this.paintSetSquare = paint;
+	        },
+	        onEventReceived: function onEventReceived(eventName, eventData) {
+	            event.preventDefault(); //防止部分手机事件出现问题
+	            if (eventName === 'mousedown') {
+	                this.setsquarea.mouseDownEvent(eventData);
+	            }
+	            if (eventName === 'mousemove') {
+	                this.setsquarea.mouseMoveEvent(eventData);
+	            }
+	            if (eventName === 'mouseup') {
+	                this.setsquarea.mouseUpEvent(eventData);
+	            }
+	            if (eventName === 'focus') {
+	                this.setsquarea.focusEvent(eventData);
+	            }
+	        },
+	        setPlayerController: function setPlayerController(controller) {
+	            var that = this;
+	            that.playerController = controller;
+	            that.eventBus = that.playerController.getEventBus();
+	            that.eventBus.addEventListener('mousedown', that);
+	            that.eventBus.addEventListener('mousemove', that);
+	            that.eventBus.addEventListener('mouseup', that);
+	            that.eventBus.addEventListener('focus', that);
+	        },
+
+	        bindEvent: function bindEvent() {},
+	        destroy: function destroy() {
+	            console.log('destroy');
+	            this.setsquarea.unBindEvent();
+	        },
+	        getService: function getService() {
+	            this._service_ = new Service();
+	            this._service_.constructor(this);
+	            return this._service_;
+	        },
+	        getState: function getState() {
+	            //TODO: 添加符合Module需求的状态对象
+	            var moduleState = JSON.stringify({
+	                module_id: presenter.model.ID
+	            });
+	            return moduleState;
+	        },
+	        setState: function setState(state) {
+	            var currentState;
+	            if (state) {
+	                currentState = JSON.parse(state);
+	                //ToDo:处理Module的状态恢复
+	            }
+	        }
+	    });
+	    window.AddonSetSquareA_create = function () {
+	        return new Presenter();
+	    };
+	})();
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(3);
+
+	var _utils = __webpack_require__(4);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _threeManager = __webpack_require__(5);
+
+	var _threeManager2 = _interopRequireDefault(_threeManager);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var isCloseBtn = void 0;
+	var isRotate = void 0;
+	var isStretch = void 0;
+	var isLine1 = void 0;
+	var isLine2 = void 0;
+	var isMove = void 0;
+
+	var MAX_WIDTH = $(window).width();
+	var MAX_HEIGHT = $(window).height();
+
+	var SetsquareA = function () {
+	    function SetsquareA($view, presenter) {
+	        _classCallCheck(this, SetsquareA);
+
+	        this.$view = $view;
+	        this.presenter = presenter;
+	        this.paintSetSquare = presenter.paintSetSquare;
+	        this.threeManager = new _threeManager2.default(this.presenter.webglControl);
+	        this.threeManager.threeStart();
+	        this.paintSetting = {
+	            color: '#000000',
+	            width: 3
+	        };
+	        _utils2.default.clearSelect();
+	    }
+
+	    /**
+	     * 鼠标点击事件
+	     * @param e
+	     */
+
+
+	    _createClass(SetsquareA, [{
+	        key: 'mouseDownEvent',
+	        value: function mouseDownEvent(e) {
+	            e.preventDefault();
+	            e.stopPropagation();
+	            this.settingPaint();
+	            this.startPoint = _utils2.default.getPoint(e);
+
+	            var actions = this.threeManager.getAction(this.mouseStartPoint);
+	            isCloseBtn = actions.isClose;
+	            isRotate = actions.isRotate;
+	            isStretch = actions.isStretch;
+	            isLine1 = actions.isLine1;
+	            isLine2 = actions.isLine2;
+	            isMove = actions.isMove;
+
+	            //关闭按钮处理
+	            if (isCloseBtn) {
+	                this.threeManager.removeScene();
+	                this.presenter.playerController.getCommands().closeTool();
+	            }
+	            if (isRotate) {
+	                this.rotationRad = -this.threeManager.getRotation();
+	            }
+	            if (isStretch) {
+	                var size = this.threeManager.getSize();
+	                this.rotationRad = -this.threeManager.getRotation();
+	                this.rotatePoint = this.threeManager.getRotationPoint();
+	                this.setsquareWidth = size.width;
+	                this.setsquareHeight = size.height;
+	                this.startAxis = _utils2.default.axisTransform(this.startPoint.x, this.startPoint.y, this.rotationRad);
+	            }
+	            if (isLine1) {
+	                this.threeManager.beforeDrawLine(this.startPoint, this.paintSetting, true);
+	            }
+	            if (isLine2) {
+	                this.threeManager.beforeDrawLine(this.startPoint, this.paintSetting);
+	            }
+	        }
+
+	        /**
+	         * 鼠标移动事件
+	         * @param e
+	         */
+
+	    }, {
+	        key: 'mouseMoveEvent',
+	        value: function mouseMoveEvent(e) {
+	            if (isRotate) {
+	                this.setsquareaRotate(e);
+	            }
+	            if (isStretch) {
+	                this.setsquareaStretch(e);
+	            }
+	            if (isMove) {
+	                this.setsquareaMove(e);
+	            }
+	            if (isLine1) {
+	                this.drawLine(e, true);
+	            }
+	            if (isLine2) {
+	                this.drawLine(e);
+	            }
+	        }
+
+	        /**
+	         * 鼠标松开事件
+	         * @param e
+	         */
+
+	    }, {
+	        key: 'mouseUpEvent',
+	        value: function mouseUpEvent(e) {
+	            if (isLine1) {
+	                var info = this.threeManager.afterDrawLine();
+	                this.drawPPTLine(info, true);
+	            }
+	            if (isLine2) {
+	                var _info = this.threeManager.afterDrawLine();
+	                this.drawPPTLine(_info);
+	            }
+	            isCloseBtn = false;
+	            isRotate = false;
+	            isStretch = false;
+	            isLine1 = false;
+	            isLine2 = false;
+	            isMove = false;
+	        }
+	    }, {
+	        key: 'focusEvent',
+	        value: function focusEvent() {
+	            this.threeManager.focus();
+	        }
+	    }, {
+	        key: 'setsquareaRotate',
+	        value: function setsquareaRotate(e) {
+	            var rotatePoint = this.threeManager.getRotationPoint();
+	            var cx = rotatePoint.x + MAX_WIDTH / 2;
+	            var cy = -rotatePoint.y + MAX_HEIGHT / 2;
+	            var endPoint = _utils2.default.getPoint(e);
+	            var rotateDeg = _utils2.default.calculateAngle(endPoint.x, endPoint.y, this.startPoint.x, this.startPoint.y, cx, cy);
+	            this.threeManager.setTransform('rotate', this.rotationRad + rotateDeg / 180 * Math.PI);
+	        }
+	    }, {
+	        key: 'setsquareaMove',
+	        value: function setsquareaMove(e) {
+	            this.endPoint = _utils2.default.getPoint(e);
+	            var deltaX = this.endPoint.x - this.startPoint.x;
+	            var deltaY = this.endPoint.y - this.startPoint.y;
+	            this.threeManager.setTransform('translate', { x: deltaX, y: deltaY });
+	            this.startPoint = this.endPoint;
+	        }
+	    }, {
+	        key: 'setsquareaStretch',
+	        value: function setsquareaStretch(e) {
+	            this.endPoint = _utils2.default.getPoint(e);
+	            this.endAxis = _utils2.default.axisTransform(this.endPoint.x, this.endPoint.y, this.rotationRad);
+	            var deltaX = this.endAxis.x - this.startAxis.x;
+	            this.threeManager.stretch(this.setsquareWidth + deltaX);
+	        }
+	    }, {
+	        key: 'drawLine',
+	        value: function drawLine(e, isHorizontal) {
+	            this.endPoint = _utils2.default.getPoint(e);
+	            this.threeManager.drawLine(this.endPoint, isHorizontal);
+	        }
+	    }, {
+	        key: 'drawPPTLine',
+	        value: function drawPPTLine(info, isHorizontal) {
+	            var axis = _utils2.default.axisTransform(info.x, info.y, -info.angle);
+	            var rotatePoint = this.threeManager.getRotationPoint();
+	            var x = axis.x + rotatePoint.x + MAX_WIDTH / 2;
+	            var y = -axis.y - rotatePoint.y + MAX_HEIGHT / 2;
+	            var start = { x: x, y: y };
+	            var end = void 0;
+	            var rad = isHorizontal ? info.angle : info.angle - Math.PI / 2;
+	            if (info.direction === 1) {
+	                end = {
+	                    x: x + info.distance * Math.cos(rad),
+	                    y: y - info.distance * Math.sin(rad)
+	                };
+	            } else {
+	                end = {
+	                    x: x - info.distance * Math.cos(rad),
+	                    y: y + info.distance * Math.sin(rad)
+	                };
+	            }
+
+	            start.x = Math.floor(start.x);
+	            start.y = Math.floor(start.y);
+	            end.x = Math.floor(end.x);
+	            end.y = Math.floor(end.y);
+	            this.paintSetSquare.drawLine(start, end, this.paintSetting.color, this.paintSetting.width);
+	        }
+
+	        /**
+	         * 解除事件绑定的方法
+	         */
+
+	    }, {
+	        key: 'unBindEvent',
+	        value: function unBindEvent() {
+	            $(window).off("mouseup").off("keyup").off("mousemove");
+	        }
+	    }, {
+	        key: 'isPointInPath',
+	        value: function isPointInPath(e) {
+	            return this.threeManager.isPointInPath(e);
+	        }
+	    }, {
+	        key: 'settingPaint',
+	        value: function settingPaint() {
+	            var detail = this.paintSetSquare.getPaintSetting();
+	            if (detail && detail.width) {
+	                this.paintSetting.width = detail.width;
+	            }
+	            if (detail && detail.color) {
+	                this.paintSetting.color = detail.color;
+	            }
+	        }
+	    }]);
+
+	    return SetsquareA;
+	}();
+
+	exports.default = SetsquareA;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var config = {
+	    angle: 45, //类型 45度三角板
+	    split: 20, //外三角形边距  (画笔画的区域)
+	    maxWidth: 950, //最大宽度
+	    maxHeight: 950, //最大宽度
+	    minWidth: 286, //最小宽度
+	    minHeight: 286,
+	    defaultWidth: 366, //默认宽度
+	    defaultHeight: 366, //默认高度
+	    countX: 20,
+	    countY: 20,
+	    graduationWidth: 4, //刻度宽
+	    closeButton: {
+	        left: 60,
+	        top: 60,
+	        width: 40,
+	        height: 40
+	    }, //关闭按钮
+	    stretchButton: {
+	        right: 186,
+	        top: 60,
+	        width: 40,
+	        height: 40
+	    }, //拉伸按钮
+	    rotateButton: {
+	        left: 60,
+	        bottom: 186,
+	        width: 40,
+	        height: 40
+	    }, //旋转按钮
+	    inTriangle: {
+	        left: 110,
+	        top: 110,
+	        bottom: 250,
+	        right: 250
+	    }, //内三角形
+	    graduationLength: [30, 22, 15], //刻度的长度
+	    lineArea: 30 //划线区域
+	};
+
+	exports.config = config;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Utils = function () {
+	    function Utils() {
+	        _classCallCheck(this, Utils);
+	    }
+
+	    _createClass(Utils, null, [{
+	        key: "destroyThreeObject",
+	        value: function destroyThreeObject(object) {
+	            "use strict";
+
+	            if (!object) return;
+	            if (object.children && object.children.length > 0) {
+	                for (var i = 0; i < object.children.length; i++) {
+	                    Utils.destroyThreeObject(object.children[i]);
+	                }
+	            }
+	            if (object.geometry) object.geometry.dispose();
+	            if (object.material) {
+	                object.material.dispose();
+	                if (object.material.map && object.material.map.dispose) object.material.map.dispose();
+	            }
+	            object = null;
+	        }
+	        /**
+	         * 获取事件e的位置
+	         * @param ev
+	         * @returns {{}}
+	         */
+
+	    }, {
+	        key: "getPoint",
+	        value: function getPoint(ev) {
+	            var p = {};
+	            p.x = ev.pageX || (ev.touches ? ev.touches[0].pageX : ev.originalEvent.pageX || ev.originalEvent.touches[0].pageX);
+	            p.y = ev.pageY || (ev.touches ? ev.touches[0].pageY : ev.originalEvent.pageY || ev.originalEvent.touches[0].pageY);
+	            return p;
+	        }
+	    }, {
+	        key: "calculateAngle",
+	        value: function calculateAngle(x1, y1, x2, y2, x3, y3) {
+	            if (x3 == null) {
+	                var x = x1 - x2,
+	                    y = y1 - y2;
+	                if (!x && !y) {
+	                    return 0;
+	                }
+	                return (180 + Math.atan2(-y, -x) * 180 / Math.PI + 360) % 360;
+	            } else {
+	                return Utils.calculateAngle(x1, y1, x3, y3) - Utils.calculateAngle(x2, y2, x3, y3);
+	            }
+	        }
+	    }, {
+	        key: "getDistance",
+	        value: function getDistance(x1, y1, x2, y2) {
+	            return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	        }
+	    }, {
+	        key: "clearSelect",
+	        value: function clearSelect() {
+	            $(window).on("mousedown mousemove mouseup touchstart touchmove touchend", function () {
+	                clearSlct();
+	            });
+	            $(document).on("mousedown mousemove mouseup touchstart touchmove touchend", function () {
+	                clearSlct();
+	            });
+	            document.onselectstart = function () {
+	                return false;
+	            };
+	        }
+	    }, {
+	        key: "axisTransform",
+	        value: function axisTransform(x, y, rad) {
+	            if (!rad) return { x: x, y: y };
+	            var newX = x * Math.cos(rad) + y * Math.sin(rad);
+	            var newY = y * Math.cos(rad) - x * Math.sin(rad);
+	            return {
+	                x: newX,
+	                y: newY
+	            };
+	        }
+	    }]);
+
+	    return Utils;
+	}();
+
+	exports.default = Utils;
+
+
+	function clearSlct() {
+	    try {
+	        window.getSelection().removeAllRanges();
+	    } catch (e) {}
+	    try {
+	        document.selection.empty();
+	    } catch (e) {}
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(3);
+
+	var _shapeFactory = __webpack_require__(6);
+
+	var _utils = __webpack_require__(4);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var MAX_WIDTH = $(window).width();
+	var MAX_HEIGHT = $(window).height();
+
+	var ThreeManager = function () {
+	    function ThreeManager(webglControl) {
+	        _classCallCheck(this, ThreeManager);
+
+	        this.webglControl = webglControl;
+	    }
+
+	    _createClass(ThreeManager, [{
+	        key: 'initScene',
+	        value: function initScene() {
+	            this.scene = new THREE.Scene();
+	            this.shapeGroup = new THREE.Object3D();
+	            this.shapeGroup.position.set(-_config.config.defaultWidth / 2, _config.config.defaultHeight / 2, 0);
+	            this.setsquareWidth = _config.config.defaultWidth;
+	            this.setsquareHeight = _config.config.defaultHeight;
+	            this.setsquare = _shapeFactory.ShapeFactory.create('Setsquare', {
+	                width: _config.config.defaultWidth,
+	                height: _config.config.defaultHeight
+	            });
+	            this.closeBtn = _shapeFactory.ShapeFactory.create('CloseBtn');
+	            this.closeBtn.position.set(_config.config.closeButton.left + _config.config.closeButton.width / 2, -_config.config.closeButton.top - _config.config.closeButton.height / 2, 1);
+	            this.stretchBtn = _shapeFactory.ShapeFactory.create('StretchBtn');
+	            this.stretchBtn.position.set(_config.config.defaultWidth - _config.config.stretchButton.right + _config.config.stretchButton.width / 2, -_config.config.stretchButton.top - _config.config.stretchButton.height / 2, 1);
+	            this.rotateBtn = _shapeFactory.ShapeFactory.create('RotateBtn');
+	            this.rotateBtn.position.set(_config.config.rotateButton.left + _config.config.rotateButton.width / 2, -_config.config.defaultWidth + _config.config.rotateButton.bottom - _config.config.rotateButton.height / 2, 1);
+	            this.lineArea1 = _shapeFactory.ShapeFactory.create('LineArea1', { width: _config.config.maxWidth });
+	            this.lineArea2 = _shapeFactory.ShapeFactory.create('LineArea2', { height: _config.config.maxHeight });
+	            this.shapeGroup.add(this.setsquare);
+	            this.shapeGroup.add(this.closeBtn);
+	            this.shapeGroup.add(this.stretchBtn);
+	            this.shapeGroup.add(this.rotateBtn);
+	            this.shapeGroup.add(this.lineArea1);
+	            this.shapeGroup.add(this.lineArea2);
+	            this.scene.add(this.shapeGroup);
+	        }
+	    }, {
+	        key: 'initCamera',
+	        value: function initCamera() {
+	            //创建Camera
+	            var RATIO = 2;
+	            var width = document.body.clientWidth;
+	            var height = document.body.clientHeight;
+	            this.camera = new THREE.OrthographicCamera(width / -RATIO, width / RATIO, height / RATIO, height / -RATIO, -20000, 20000);
+	            this.camera.position.x = 0;
+	            this.camera.position.y = 0;
+	            this.camera.position.z = 500;
+	            this.camera.lookAt({ x: 0, y: 0, z: 0 });
+	        }
+	    }, {
+	        key: 'initRaycaster',
+	        value: function initRaycaster() {
+	            //添加点击检测
+	            this.raycaster = new THREE.Raycaster();
+	            this.raycaster.linePrecision = 1;
+	            this.mouse = new THREE.Vector2();
+	            this.intersects = [];
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            this.webglControl.render();
+	        }
+	    }, {
+	        key: 'threeStart',
+	        value: function threeStart() {
+	            this.initCamera();
+	            this.initScene();
+	            this.initRaycaster();
+	            this.webglControl.addView(this.scene, this.camera, false);
+	            this.render();
+	        }
+	    }, {
+	        key: 'focus',
+	        value: function focus() {
+	            !this.isRemove && this.webglControl.reIndexScene(this.scene);
+	        }
+	    }, {
+	        key: 'setTransform',
+	        value: function setTransform(name, value) {
+	            if (name === 'rotate') {
+	                this.shapeGroup.rotation.z = -value;
+	            } else if (name === 'translate') {
+	                this.shapeGroup.position.x += value.x;
+	                this.shapeGroup.position.y += -value.y;
+	            }
+	            this.render();
+	        }
+	    }, {
+	        key: 'stretch',
+	        value: function stretch(x) {
+	            this.setsquareWidth = x;
+	            if (this.setsquareWidth > _config.config.maxWidth) {
+	                this.setsquareWidth = _config.config.maxWidth;
+	            }
+	            if (this.setsquareWidth < _config.config.minWidth) {
+	                this.setsquareWidth = _config.config.minWidth;
+	            }
+	            this.setsquareHeight = this.setsquareWidth;
+	            _utils2.default.destroyThreeObject(this.setsquare);
+	            this.shapeGroup.remove(this.setsquare);
+	            this.setsquare = _shapeFactory.ShapeFactory.create('Setsquare', {
+	                width: this.setsquareWidth,
+	                height: this.setsquareHeight
+	            });
+	            this.shapeGroup.add(this.setsquare);
+	            this.stretchBtn.position.x = this.setsquareWidth - _config.config.stretchButton.right + _config.config.stretchButton.width / 2;
+	            this.rotateBtn.position.y = -this.setsquareHeight + _config.config.rotateButton.bottom - _config.config.rotateButton.height / 2;
+	            this.render();
+	        }
+	    }, {
+	        key: 'beforeDrawLine',
+	        value: function beforeDrawLine(point, setting, isHorizontal) {
+	            var x = point.x - MAX_WIDTH / 2 - this.shapeGroup.position.x;
+	            var y = -point.y + MAX_HEIGHT / 2 - this.shapeGroup.position.y;
+	            var axis = _utils2.default.axisTransform(x, y, this.shapeGroup.rotation.z);
+	            var data = void 0;
+	            if (isHorizontal) {
+	                data = {
+	                    planeW: 1,
+	                    planeH: setting.width,
+	                    pos: axis.x,
+	                    lineX: axis.x,
+	                    lineY: setting.width,
+	                    limit1: axis.x,
+	                    limit2: this.setsquareWidth - axis.x,
+	                    scale: 2,
+	                    direction: 0
+	                };
+	            } else {
+	                data = {
+	                    planeW: setting.width,
+	                    planeH: 1,
+	                    pos: axis.y,
+	                    lineX: -setting.width,
+	                    lineY: axis.y,
+	                    limit1: -axis.y,
+	                    limit2: this.setsquareHeight + axis.y,
+	                    scale: 2,
+	                    direction: 0
+	                };
+	            }
+	            var geometry = new THREE.PlaneGeometry(data.planeW, data.planeH);
+	            var material = new THREE.MeshBasicMaterial({ color: setting.color });
+	            this.line = new THREE.Mesh(geometry, material);
+	            this.line.userData = data;
+	            this.line.position.set(data.lineX, data.lineY, 0);
+	            this.shapeGroup.add(this.line);
+	            this.render();
+	        }
+	    }, {
+	        key: 'drawLine',
+	        value: function drawLine(point, isHorizontal) {
+	            var x = point.x - MAX_WIDTH / 2 - this.shapeGroup.position.x;
+	            var y = -point.y + MAX_HEIGHT / 2 - this.shapeGroup.position.y;
+	            var axis = _utils2.default.axisTransform(x, y, this.shapeGroup.rotation.z);
+	            var delta = isHorizontal ? axis.x - this.line.userData.pos : this.line.userData.pos - axis.y;
+	            if (delta < 0) {
+	                delta = -delta > this.line.userData.limit1 ? -this.line.userData.limit1 : delta;
+	                this.line.userData.direction = 0;
+	            } else {
+	                delta = delta > this.line.userData.limit2 ? this.line.userData.limit2 : delta;
+	                this.line.userData.direction = 1;
+	            }
+	            delta = delta === 0 ? 1 : delta;
+	            this.line.userData.scale = Math.abs(delta);
+	            if (isHorizontal) {
+	                this.line.scale.x = Math.abs(delta);
+	                this.line.position.x = this.line.userData.pos + delta / 2;
+	            } else {
+	                this.line.scale.y = Math.abs(delta);
+	                this.line.position.y = this.line.userData.pos - delta / 2;
+	            }
+
+	            this.render();
+	        }
+	    }, {
+	        key: 'afterDrawLine',
+	        value: function afterDrawLine() {
+	            var info = {};
+	            info.angle = this.shapeGroup.rotation.z;
+	            info.x = this.line.userData.lineX;
+	            info.y = this.line.userData.lineY;
+	            info.distance = this.line.userData.scale;
+	            info.direction = this.line.userData.direction;
+	            _utils2.default.destroyThreeObject(this.line);
+	            this.shapeGroup.remove(this.line);
+	            this.render();
+	            return info;
+	        }
+	    }, {
+	        key: 'getRotationPoint',
+	        value: function getRotationPoint() {
+	            return {
+	                x: this.shapeGroup.position.x,
+	                y: this.shapeGroup.position.y
+	            };
+	        }
+	    }, {
+	        key: 'getRotation',
+	        value: function getRotation() {
+	            return this.shapeGroup.rotation.z;
+	        }
+	    }, {
+	        key: 'getSize',
+	        value: function getSize() {
+	            return {
+	                width: this.setsquareWidth,
+	                height: this.setsquareHeight
+	            };
+	        }
+	    }, {
+	        key: 'getAction',
+	        value: function getAction() {
+	            var isClose = false;
+	            var isRotate = false;
+	            var isStretch = false;
+	            var isLine1 = false;
+	            var isLine2 = false;
+	            var isMove = false;
+	            var _iteratorNormalCompletion = true;
+	            var _didIteratorError = false;
+	            var _iteratorError = undefined;
+
+	            try {
+	                for (var _iterator = this.intersects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	                    var intersect = _step.value;
+
+	                    if (intersect.object === this.closeBtn) {
+	                        isClose = true;
+	                        break;
+	                    }
+	                    if (intersect.object === this.rotateBtn) {
+	                        isRotate = true;
+	                        break;
+	                    }
+	                    if (intersect.object === this.stretchBtn) {
+	                        isStretch = true;
+	                        break;
+	                    }
+	                    if (intersect.object === this.lineArea1) {
+	                        isLine1 = true;
+	                        break;
+	                    }
+	                    if (intersect.object === this.lineArea2) {
+	                        isLine2 = true;
+	                        break;
+	                    }
+	                    if (intersect.object === this.setsquare.children[0]) {
+	                        isMove = true;
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError = true;
+	                _iteratorError = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion && _iterator.return) {
+	                        _iterator.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError) {
+	                        throw _iteratorError;
+	                    }
+	                }
+	            }
+
+	            isMove = isMove && !isClose && !isRotate && !isStretch && !isLine1 && !isLine2;
+	            return {
+	                isMove: isMove,
+	                isClose: isClose,
+	                isRotate: isRotate,
+	                isStretch: isStretch,
+	                isLine1: isLine1,
+	                isLine2: isLine2
+	            };
+	        }
+	    }, {
+	        key: 'isPointInPath',
+	        value: function isPointInPath(event) {
+	            var pointer = void 0;
+	            if (event.touches) {
+	                if (event.touches.length === 1) {
+	                    pointer = event.changedTouches[0];
+	                } else {
+	                    return false;
+	                }
+	            } else {
+	                pointer = event;
+	            }
+	            this.mouse.x = pointer.clientX / window.innerWidth * 2 - 1;
+	            this.mouse.y = -(pointer.clientY / window.innerHeight) * 2 + 1;
+	            this.raycaster.setFromCamera(this.mouse, this.camera);
+	            this.intersects = this.raycaster.intersectObjects([].concat(_toConsumableArray(this.shapeGroup.children), _toConsumableArray(this.setsquare.children)));
+	            var _iteratorNormalCompletion2 = true;
+	            var _didIteratorError2 = false;
+	            var _iteratorError2 = undefined;
+
+	            try {
+	                for (var _iterator2 = this.intersects[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	                    var intersect = _step2.value;
+
+	                    if (intersect.object === this.setsquare.children[0]) {
+	                        return true;
+	                    }
+	                }
+	            } catch (err) {
+	                _didIteratorError2 = true;
+	                _iteratorError2 = err;
+	            } finally {
+	                try {
+	                    if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	                        _iterator2.return();
+	                    }
+	                } finally {
+	                    if (_didIteratorError2) {
+	                        throw _iteratorError2;
+	                    }
+	                }
+	            }
+
+	            return false;
+	        }
+	    }, {
+	        key: 'removeScene',
+	        value: function removeScene() {
+	            this.isRemove = this.webglControl.removeScene(this.scene);
+	        }
+	    }]);
+
+	    return ThreeManager;
+	}();
+
+	exports.default = ThreeManager;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.ShapeFactory = undefined;
+
+	var _drawTexture = __webpack_require__(7);
+
+	var _config = __webpack_require__(3);
+
+	var _drawContext = __webpack_require__(8);
+
+	var _drawContext2 = _interopRequireDefault(_drawContext);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var textMeshs = [];
+	for (var i = 0; i < 21; i++) {
+	    textMeshs.push((0, _drawContext2.default)(i, { fontSize: 16, fontFamily: 'Arial' }));
+	}
+	var graduationMaterial = new THREE.MeshBasicMaterial({
+	    color: '#000000'
+	});
+	var graduationMeshs = [new THREE.Mesh(new THREE.PlaneGeometry(1.8, _config.config.graduationLength[0]), graduationMaterial), new THREE.Mesh(new THREE.PlaneGeometry(1.8, _config.config.graduationLength[1]), graduationMaterial), new THREE.Mesh(new THREE.PlaneGeometry(1.8, _config.config.graduationLength[2]), graduationMaterial)];
+
+	var ShapeFactory = {
+	    create: function create(type, data) {
+	        var mesh = null;
+	        switch (type) {
+	            case 'Setsquare':
+	                mesh = createSetSquare(data.width, data.height);
+	                break;
+	            case 'CloseBtn':
+	                mesh = createMesh(createBtnGeometry(), (0, _drawTexture.drawClose)());
+	                break;
+	            case 'RotateBtn':
+	                mesh = createMesh(createBtnGeometry(), (0, _drawTexture.drawRotate)());
+	                break;
+	            case 'StretchBtn':
+	                mesh = createMesh(createBtnGeometry(), (0, _drawTexture.drawStretch)());
+	                break;
+	            case 'LineArea1':
+	                mesh = createLineArea1(data.width);
+	                break;
+	            case 'LineArea2':
+	                mesh = createLineArea2(data.height);
+	                break;
+	        }
+	        return mesh;
+	    }
+	};
+	function createSetSquare(width, height) {
+	    // 画三角板
+	    var setsquareGroup = new THREE.Object3D();
+	    var setsquareShape = new THREE.Shape();
+	    setsquareShape.moveTo(0, 0);
+	    setsquareShape.lineTo(width, 0);
+	    setsquareShape.lineTo(0, -height);
+	    var setsquareGeometry = new THREE.ShapeGeometry(setsquareShape);
+	    var setSquare = new THREE.Mesh(setsquareGeometry, new THREE.MeshBasicMaterial({
+	        color: "#ffffff",
+	        transparent: true,
+	        opacity: 0.15
+	    }));
+	    setsquareGroup.add(setSquare);
+
+	    // 画三角板边框
+	    var setsquareBorder = new THREE.Mesh(setsquareGeometry, new THREE.MeshBasicMaterial({
+	        color: "#000000",
+	        wireframe: true
+	    }));
+	    setsquareGroup.add(setsquareBorder);
+
+	    if (width > _config.config.defaultWidth) {
+	        // 内三角形
+	        var vertices = [new THREE.Vector3(_config.config.inTriangle.left, -_config.config.inTriangle.top, 0), new THREE.Vector3(width - _config.config.inTriangle.right, -_config.config.inTriangle.top, 0), new THREE.Vector3(_config.config.inTriangle.left, -(height - _config.config.inTriangle.bottom), 0), new THREE.Vector3(_config.config.inTriangle.left, -_config.config.inTriangle.top, 0)];
+	        var innerGeometry = new THREE.Geometry();
+	        innerGeometry.vertices = vertices;
+	        var innerSetsquare = new THREE.Line(innerGeometry, new THREE.LineBasicMaterial({
+	            color: "#000000"
+	        }));
+	        innerSetsquare.position.z = 1;
+	        setsquareGroup.add(innerSetsquare);
+	    }
+	    //横向刻度
+
+	    var _right = _config.config.angle == 30 ? 50 : 30;
+	    var _x = _config.config.graduationWidth * 10 + 10; //X坐标
+	    var _len1 = _config.config.graduationLength[0],
+	        _len2 = _config.config.graduationLength[1],
+	        _len3 = _config.config.graduationLength[2]; //刻度的长度
+	    var _y = 0; //Y坐标
+	    var _count = _config.config.countX * 10 + 1; //刻度数+1
+	    var num = 0;
+	    for (var _i = 0; _i < _count; _i++) {
+	        num++;
+	        var mesh = void 0;
+	        if (_i % 10 == 0) {
+	            mesh = graduationMeshs[0].clone(); //厘米
+	            mesh.position.set(_x, -_len1 / 2, 1);
+	            var textMesh = textMeshs[_i / 10].clone();
+	            textMesh.position.set(_x, -(_y + _len1 + 8), 0);
+	            setsquareGroup.add(textMesh);
+	        } else if (_i % 5 == 0) {
+	            mesh = graduationMeshs[1].clone();
+	            mesh.position.set(_x, -_len2 / 2, 1); //半厘米
+	        } else {
+	            mesh = graduationMeshs[2].clone();
+	            mesh.position.set(_x, -_len3 / 2, 1); //毫米
+	        }
+	        setsquareGroup.add(mesh);
+	        _x = _x + _config.config.graduationWidth;
+	        if (_x > width - _config.config.graduationWidth * 10 - _right - 3) {
+	            break;
+	        }
+	    }
+
+	    // 纵向刻度
+	    _x = 0; //X坐标
+	    _y = _config.config.graduationWidth * 10 + 10; //Y坐标
+	    _count = _config.config.countY * 10 + 1; //刻度数+1
+	    for (var _i2 = 0; _i2 < num; _i2++) {
+	        var _mesh = void 0;
+	        if (_i2 % 10 == 0) {
+	            //厘米
+	            _mesh = graduationMeshs[0].clone();
+	            _mesh.rotation.z = Math.PI / 2;
+	            _mesh.position.set(_len1 / 2, -_y, 1);
+	            var _textMesh = textMeshs[_i2 / 10].clone();
+	            _textMesh.position.set(_x + _len1 + 8, -(_y + 1), 0);
+	            setsquareGroup.add(_textMesh);
+	            _textMesh.rotation.z = Math.PI / 2;
+	        } else if (_i2 % 5 == 0) {
+	            _mesh = graduationMeshs[1].clone();
+	            _mesh.rotation.z = Math.PI / 2;
+	            _mesh.position.set(_len2 / 2, -_y, 1); //半厘米
+	        } else {
+	            _mesh = graduationMeshs[2].clone();
+	            _mesh.rotation.z = Math.PI / 2;
+	            _mesh.position.set(_len3 / 2, -_y, 1); //毫米
+	        }
+	        setsquareGroup.add(_mesh);
+	        _y = _y + _config.config.graduationWidth;
+	        //if (_y > (height - config.graduationWidth * 10 - 30)) {
+	        //    break;
+	        //}
+	    }
+	    return setsquareGroup;
+	}
+
+	function createLineArea1(width) {
+	    var shape = new THREE.Shape();
+	    shape.moveTo(0, 0);
+	    shape.lineTo(_config.config.lineArea * Math.cos(Math.PI / 4), -_config.config.lineArea * Math.sin(Math.PI / 4));
+	    shape.lineTo(width, -_config.config.lineArea * Math.sin(Math.PI / 4));
+	    shape.lineTo(width, 0);
+	    shape.lineTo(0, 0);
+	    var geometry = new THREE.ShapeGeometry(shape);
+	    var mesh = createMesh(geometry);
+	    mesh.material.opacity = 0;
+	    return mesh;
+	}
+	function createLineArea2(height) {
+	    var shape = new THREE.Shape();
+	    shape.moveTo(0, 0);
+	    shape.lineTo(_config.config.lineArea * Math.cos(Math.PI / 4), -_config.config.lineArea * Math.sin(Math.PI / 4));
+	    shape.lineTo(_config.config.lineArea * Math.cos(Math.PI / 4), -height);
+	    shape.lineTo(0, -height);
+	    shape.lineTo(0, 0);
+	    var geometry = new THREE.ShapeGeometry(shape);
+	    var mesh = createMesh(geometry);
+	    mesh.material.opacity = 0;
+	    return mesh;
+	}
+
+	function createMesh(geometry) {
+	    var texture = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	    var material = new THREE.MeshBasicMaterial({
+	        map: texture,
+	        transparent: true,
+	        opacity: 1
+	    });
+	    return new THREE.Mesh(geometry, material);
+	}
+
+	function createBtnGeometry() {
+	    return new THREE.CircleGeometry(_config.config.closeButton.width / 2, 32);
+	}
+
+	exports.ShapeFactory = ShapeFactory;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.drawStretch = exports.drawRotate = exports.drawClose = undefined;
+
+	var _config = __webpack_require__(3);
+
+	function drawClose() {
+	    var canvas = document.createElement('canvas');
+	    var ctx = canvas.getContext('2d');
+	    //关闭按钮
+	    // _x = config.closeButton.left + config.split;
+	    // _y = config.closeButton.top + config.split;
+	    var _w = _config.config.closeButton.width;
+	    var _h = _config.config.closeButton.height;
+	    canvas.width = _w * 3.2;
+	    canvas.height = _h * 3.2;
+	    ctx.scale(3.2, 3.2);
+	    ctx.beginPath();
+	    ctx.lineWidth = 4;
+	    //ctx.strokeStyle = "black";
+	    var circle = {
+	        x: parseInt(_w / 2), //圆心的x轴坐标值
+	        y: parseInt(_h / 2), //圆心的y轴坐标值
+	        r: parseInt(_w / 2) - 5 //圆的半径
+	    };
+	    ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, false);
+	    //ctx.fill();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 6;
+	    ctx.moveTo(_w / 3, _h / 3);
+	    ctx.lineTo(_w * 2 / 3, _h * 2 / 3);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 6;
+	    ctx.moveTo(_w * 2 / 3, _h / 3);
+	    ctx.lineTo(_w / 3, _h * 2 / 3);
+	    ctx.closePath();
+	    ctx.stroke();
+	    var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	    texture.needsUpdate = true;
+	    return texture;
+	}
+
+	function drawStretch() {
+	    var canvas = document.createElement('canvas');
+	    var ctx = canvas.getContext('2d');
+	    //拉伸按钮
+	    var _w = _config.config.stretchButton.width;
+	    var _h = _config.config.stretchButton.height;
+	    canvas.width = _w * 3.2;
+	    canvas.height = _h * 3.2;
+	    ctx.scale(3.2, 3.2);
+	    ctx.beginPath();
+	    ctx.lineWidth = 4;
+	    //ctx.strokeStyle = "black";
+	    var circle = {
+	        x: parseInt(_w / 2), //圆心的x轴坐标值
+	        y: parseInt(_h / 2), //圆心的y轴坐标值
+	        r: parseInt(_w / 2) - 5 //圆的半径
+	    };
+	    ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, false);
+	    ctx.stroke();
+	    ctx.beginPath(); //横线
+	    ctx.lineWidth = 4;
+	    ctx.moveTo(_w / 5, _h / 2);
+	    ctx.lineTo(_w * 4 / 5, _h / 2);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 2; //左上箭头
+	    ctx.moveTo(_w / 5, _h / 2);
+	    ctx.lineTo(_w * 2 / 5 - 2, _h * 2 / 5);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 2;
+	    ctx.moveTo(_w / 5, _h / 2);
+	    ctx.lineTo(_w * 2 / 5 - 2, _h * 3 / 5);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 2;
+	    ctx.moveTo(_w * 4 / 5, _h / 2);
+	    ctx.lineTo(_w * 3 / 5 + 1, _h * 2 / 5);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 2;
+	    ctx.moveTo(_w * 4 / 5, _h / 2);
+	    ctx.lineTo(_w * 3 / 5, _h * 3 / 5);
+	    ctx.closePath();
+	    ctx.stroke();
+	    var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	    texture.needsUpdate = true;
+	    return texture;
+	}
+
+	function drawRotate() {
+	    var canvas = document.createElement('canvas');
+	    var ctx = canvas.getContext('2d');
+	    //旋转按钮
+	    var _w = _config.config.rotateButton.width;
+	    var _h = _config.config.rotateButton.height;
+	    canvas.width = _w * 3.2;
+	    canvas.height = _h * 3.2;
+	    ctx.scale(3.2, 3.2);
+	    ctx.beginPath();
+	    ctx.lineWidth = 4;
+	    //ctx.strokeStyle = "black";
+	    var circle = {
+	        x: parseInt(_w / 2), //圆心的x轴坐标值
+	        y: parseInt(_h / 2), //圆心的y轴坐标值
+	        r: parseInt(_w / 2) - 5 //圆的半径
+	    };
+	    ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2, false);
+	    ctx.stroke();
+	    ctx.beginPath();
+	    ctx.lineWidth = 4;
+	    circle.r = parseInt(_w / 4) - 2; //圆的半径
+	    ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 4 / 5, false);
+	    ctx.stroke();
+
+	    ctx.beginPath();
+	    ctx.lineWidth = 4;
+	    circle.r = parseInt(_w / 4) - 2; //圆的半径
+	    ctx.arc(circle.x, circle.y, circle.r, Math.PI, Math.PI * 9 / 5, false);
+	    ctx.stroke();
+
+	    ctx.beginPath();
+	    ctx.lineWidth = 2;
+	    ctx.moveTo(11, 22);
+	    ctx.lineTo(14, 28);
+	    ctx.lineTo(18, 22);
+	    ctx.fill();
+	    ctx.stroke();
+
+	    ctx.beginPath();
+	    ctx.lineWidth = 2;
+	    ctx.moveTo(29, 15);
+	    ctx.lineTo(22, 15);
+	    ctx.lineTo(25, 9);
+	    ctx.fill();
+	    ctx.stroke();
+	    var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	    texture.needsUpdate = true;
+	    return texture;
+	}
+
+	exports.drawClose = drawClose;
+	exports.drawRotate = drawRotate;
+	exports.drawStretch = drawStretch;
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function (message, parameters, scale) {
+	    var canvas = document.createElement('canvas');
+	    var size = 256; // CHANGED
+	    canvas.width = size;
+	    canvas.height = size;
+	    var context = canvas.getContext('2d');
+	    context.fillStyle = parameters.fillStyle ? parameters.fillStyle : '#000000'; // CHANGED
+	    context.strokeStyle = parameters.strokeStyle ? parameters.strokeStyle : '#000000';
+	    context.textAlign = 'center';
+	    var fontSize = parameters.fontSize ? parameters.fontSize : 24;
+	    var font = parameters.fontFamily ? parameters.fontFamily : 'microsoft yahei';
+	    var bold = parameters.bold ? "bold " : "";
+	    context.font = bold + fontSize + "px " + font;
+	    context.lineWidth = parameters.lineWidth ? parameters.lineWidth : 1;
+
+	    if (parameters.strokeStyle) {
+	        context.strokeText(message, size / 2, size / 2 + fontSize / 2);
+	    }
+	    context.fillText(message, size / 2, size / 2 + fontSize / 2);
+
+	    var amap = new THREE.Texture(canvas);
+	    amap.needsUpdate = true;
+	    var plane = new THREE.Mesh(new THREE.PlaneGeometry(size / 2, size / 2), new THREE.MeshBasicMaterial({
+	        map: amap,
+	        transparent: true,
+	        opacity: 1
+	    }));
+
+	    plane.scale.set(2, 2, 1); // CHANGED
+	    plane.textLength = context.measureText(message).width;
+	    return plane;
+	};
+
+/***/ }
+/******/ ]);]]></presenter><resources/></addon>

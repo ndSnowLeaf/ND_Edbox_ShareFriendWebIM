@@ -1,0 +1,970 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='PointSequencingRemake'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .pointsort .com_layout_main,.exam_skin_wood .pointsort .pointsort_board{vertical-align:middle;overflow:hidden;text-align:center}.exam_skin_wood .pointsort{position:relative;width:100%;height:100%}.exam_skin_wood .pointsort .com_layout_main:after{display:inline-block;width:0;height:100%;vertical-align:middle;content:""}.exam_skin_wood .pointsort .pointsort_board{position:relative;display:inline-block;margin-top:-1.25em;width:42.625em;height:29.41667em;border:2px solid #8b5e1d;border-radius:1.5em}.exam_skin_wood .pointsort .pointsort_board .pointsort_imgwrap{position:absolute;left:50%;top:50%}.exam_skin_wood .pointsort .point{overflow:hidden;display:inline-block;position:absolute;width:3.5em;height:3.5em;line-height:3.33333em;background:url(resources/wood/images/btn_point.png) center center no-repeat;background-size:100% 100%;text-align:center;color:#fff;z-index:9;cursor:pointer}.exam_skin_wood .pointsort .point.point-s,.exam_skin_wood .pointsort .point.point-three{line-height:3.5em}.exam_skin_wood .pointsort .point em{font-size:2.08333em}.exam_skin_wood .pointsort .point.point-s em,.exam_skin_wood .pointsort .point.point-three em{font-size:1.25em}.exam_skin_wood .pointsort .point.ui_btn_active,.exam_skin_wood .pointsort .point:active{background:url(resources/wood/images/btn_point_active.png) center center no-repeat;background-size:100% 100%}.exam_skin_wood .pointsort .point.ui_btn_hover{opacity:.6;filter:alpha(opacity=60)}.exam_skin_wood .pointsort .point.ui_btn_hover:active{background-image:url(resources/wood/images/btn_point.png)}.exam_skin_wood .pointsort .line{display:inline-block;position:absolute;min-width:.41667em;min-height:.29167em;background:-webkit-linear-gradient(top,#feb900,#fc8500);background:linear-gradient(to bottom,#feb900,#fc8500);z-index:8}.exam_skin_wood .pointsort .notice_tip_box .notice_tip_con{border-radius:.41667em}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content pointsort"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit" data-bind="text: title"></h2></div><div class="com_layout_main"><div class="pointsort_board"><span class="point _pointnode" style="display: none"><em></em></span></div></div><div class="notice_tip_box" style="display: none"><div class="notice_tip_con"><p class="notice_tip_text">你真棒！</p></div></div></div><div class="pointsort" style="position: absolute;left: 0;top: 5.6em;height: auto;bottom: 3.3em"><div class="pointsort_imgwrap" style="position: absolute;top: 50%;left: 50%;z-index: 555" data-bind="style: {width:bg_width,height:bg_height,marginLeft:bg_mLeft,marginTop:bg_mTop},
+                 event:{mousemove:move,mousecancel:up,mouseup:up,mouseleave:up,touchmove:move,touchcancel:up,touchend:up},
+                 foreach:items"><span data-bind="style: {left:cx,top:cy},
+                event:{mousedown:$parent.down,mouseup:$parent.up,touchstart:$parent.down,touchend:$parent.up},
+                css:{'point-three': tlength == 3, 'ui_btn_active': $parent.activeIndex() == index}, attr:{index:index, isStart: isStart}" class="point"><em data-bind="text:content"></em></span></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+function PointSequencingRemakeService(parent) {
+  this.parent = parent;
+  this.status = {};
+}
+
+PointSequencingRemakeService.prototype = {
+  getQuestionInfo: function() {
+    return {
+      id: this.parent.model.questionId,
+      type_code: 'pointsequencing',
+      type_name: '点排序',
+      url: this.parent.model.questionId,
+      dispatchOnly: true
+    }
+  },
+
+  //I18n支持
+  setLocationProperties: function(data) {
+    this.parent.$translator.setData(data);
+  },
+
+  //获取结果集状态
+  getResult: function() {
+    var returnAnswer = {
+      answer: {
+        "answer_result": this.parent.correct_answer.length == this.parent.user_answer.length,
+        "correct_response": this.parent.correct_answer,
+        "user_response": this.parent.user_answer
+      },
+      answerState: this.parent.answerState,
+      questionId: this.parent.model.questionId
+    };
+    this.parent.logger.debug("getResult " + JSON.stringify(returnAnswer));
+    return returnAnswer;
+  },
+  //E类统计调用接口
+  convertDataForStatistics: function(originalData) {
+    var studentList = this.parent._getAllStudents();
+    var value = originalData.value;
+    var users = value.users;
+    var submitList = this.parent._addStudentSubmitTime(users, studentList);
+    var correctAnswerObj = this.parent.correct_answer;
+    var answers = value.answers[0];
+    var questionType = value.questionType;
+    this.parent._updateStudentAnswerStatus(questionType, submitList, correctAnswerObj, answers);
+    var finishList = this.parent._getFinishStudents(submitList);
+    var correctUsers = this.parent._getFinishedStudents(finishList);
+    var unFinishList = this.parent._getUnfinishStudents(submitList);
+    submitList = finishList.concat(unFinishList);
+    this.parent.model.questionData.items = this.parent.viewModel.items();
+    value.convertedData = {
+      questionType: questionType, //题目类型
+      finished: finishList.length || 0, //已作答人数
+      unfinished: (unFinishList.length) || 0, //未完成人数
+      committed: (submitList.length) || 0, //提交总人数
+      total: studentList.length, //班级总人数
+      elapsedTime: value.elapsedTime || 0, //作业用时
+      submitList: submitList, //学生列表
+      correctAnswer: correctAnswerObj, //正确答案
+      finishList: finishList, //已完成学生列表
+      unFinishList: unFinishList, //未完成学生列表
+      correctUserIds: correctUsers, //正确的学生ID
+      questionData: this.parent.model.questionData
+    };
+    return originalData;
+  },
+  getStatisticClass: function() {
+    return 'E';
+  },
+  /**
+   * 显示答案
+   * @param answer 需要显示的答案,如果对象为空则显示正确答案
+   */
+  showAnswer: function(showAnswerType, commitedAnswer) {
+    this.parent.logger.debug("showAnswer showAnswerType:" + showAnswerType + "  commitedAnswer: " + commitedAnswer);
+    var result = '';
+    if (this.parent.isStatic) {
+      //统计模式
+      result = this.parent._showStaticAnswer();
+    } else {
+      //答题模式 显示已提交的答案
+      if (commitedAnswer) {
+        this.parent.user_answer = commitedAnswer.answer.user_response;
+        this.parent._showUserAnswer();
+      } else {
+        //状态恢复
+        this.parent.showAnswerInfo = {
+          hasShow: true,
+          type: showAnswerType
+        };
+
+        switch (showAnswerType) {
+          //显示正确答案
+          case "correct": {
+            this.parent._showCorrectAnswer();
+            this.parent._showImgBackground();
+            break;
+          }
+          //显示当前学生答案用
+          case "user": {
+            //this.parent._showUserAnswer();
+            break;
+          }
+          //统计使用
+          default: {
+            this.parent._showCorrectAnswer();
+            this.parent._toggleInteraction(false);
+            break;
+          }
+        }
+      }
+    }
+    return result;
+  },
+  showResultHint: function(option) {
+    this.parent.logger.debug("showResultHint " + option);
+    var isCorrect = true;
+    if (this.parent.isStudent) {
+      if (option.trigger === 'timer') {
+        //时间倒计时结束
+        if (!this.parent._isRight()) {
+          isCorrect = false;
+          this.parent._showTimeOverTip();
+        }
+      } else {
+        if (this.parent._isRight()) {
+          this.parent._showRightTip();
+        } else {
+          isCorrect = false;
+          this.parent._showWrongTip();
+        }
+      }
+    }
+    //状态恢复
+    this.parent.showHintInfo = {
+      hasShow: true,
+      result: isCorrect
+    };
+    this.parent._toggleInteraction(false);
+  },
+  //将题目重置为未作答状态
+  resetQuestion: function() {
+    this.parent.logger.debug("resetQuesion ");
+    //清空所有的作答结果
+    this.parent._hideImgBackground();
+    this.parent._removeAllLine();
+    this.parent._initPoint();
+    // this.parent._toggleInteraction(true);
+    this.parent.user_answer = [];
+    this.parent.isStatic = false;
+    this.parent.answerState = "NO_ANSWER";
+    //状态恢复
+    this.parent.showHintInfo = {
+      hasShow: false,
+      result: undefined
+    };
+    this.parent.showAnswerInfo = {
+      hasShow: false,
+      type: undefined
+    }
+    //通知状态变化
+    this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+  },
+  _getState: function() {
+    var state = {
+      userAnswers: this.parent.user_answer,
+      answerState: this.parent.answerState,
+      showAnswerInfo: this.parent.showAnswerInfo,
+      showHintInfo: this.parent.showHintInfo
+    };
+    this.parent.logger.debug("getState " + JSON.stringify(state));
+    return state;
+  },
+  getState: function() {
+    this.parent.playerController.startFlow('css_classroom_status_changed', {
+      presenterCode: this.parent.metaInfo.name
+    });
+    return this._getState();
+  },
+  setState: function(state) {
+    this.parent.logger.debug("setState " + JSON.stringify(state));
+    var stateObj = state;
+    if (stateObj) {
+      this.parent.user_answer = stateObj.userAnswers;
+
+      if (state.showAnswerInfo.hasShow) {
+        this.showAnswer(state.showAnswerInfo.type);
+      }
+      if (state.showHintInfo.hasShow) {
+        this.parent.showHintInfo = state.showHintInfo;
+        this.parent._toggleInteraction(false);
+      }
+
+      this.parent._showUserAnswer();
+      this.parent.answerState = stateObj.answerState;
+    }
+  },
+  getClassroomStatus: function() {
+    return this._getState();
+  },
+  setClassroomStatus: function(status) {
+    this.status = status;
+    !!this.status && this.setState(status);
+    this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+      presenterCode: this.parent.metaInfo.name
+    });
+  },
+  clearClassroomStatus: function() {
+    this.setClassroomStatus(null);
+  },
+  startStatistics: function() {
+    this.parent.logger.debug("startStatistics ");
+    this.parent.isStatic = true;
+  },
+  //将题目设置为不可作答状态
+  lockQuestion: function() {
+    this.parent.logger.debug("lockQuestion ");
+    this.parent._toggleInteraction(false);
+  },
+  //将题目设置为可作答状态
+  unlockQuestion: function() {
+    this.parent.logger.debug("unlockQuestion ");
+    this.parent._toggleInteraction(true);
+  },
+  //将题目设置为结束作答状态
+  finishQuestion: function() {
+    this.parent.logger.debug("finishQuestion ");
+    this.parent._toggleInteraction(true);
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (PointSequencingRemakeService);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_pointSequencingRemakeService_js__ = __webpack_require__(0);
+
+
+(function () {
+    var Presenter = BasicPresenter.extend({
+            metaInfo: {
+                name: "PointSequencingRemake",
+                type: PresenterType.PRESENTER_COMPONENT,
+                subtype: SubPresenterType.INTERACTION_QUESTION
+            },
+            /**
+             * Presenter的初始化方法
+             * @private
+             */
+            $init: function () {
+                this._super();
+                //编辑器圆的r半径
+                this.rfromeditor = 15;
+                //画线临时变量
+                this.lineNode = null;
+                //视图
+                this.$view = null;
+                //做到第几个点
+                this.start_index = -1;
+                //画线开始的坐标
+                this.startx = 0;
+                this.starty = 0;
+                //背景图片的url
+                this.imgUrl = null;
+                //是否可作答 默认false可作答
+                this.toggleSwitch = false;
+
+                //答案
+                this.correct_answer = [];
+                this.user_answer = [];
+
+                //是否为统计模式
+                this.isStatic = false;
+
+                //在图片加载后执行初始化
+                this.dtd = $.Deferred();
+
+                var self = this;
+                this.viewModel = {
+                    title: "",
+                    items: ko.observableArray([]),
+                    bg_width: ko.observable("400px"),
+                    bg_height: ko.observable("400px"),
+                    bg_mLeft: ko.observable("-200px"),
+                    bg_mTop: ko.observable("-200px"),
+                    activeIndex: ko.observable(0),
+                    down: function (data, event) {
+                        if (self.toggleSwitch) {
+                            return;
+                        }
+                        var x = data.cx.substring(0, data.cx.length - 2);
+                        var y = data.cy.substring(0, data.cy.length - 2);
+                        self.lineNode = document.createElement('span');
+                        self.startx = (parseInt(x) + self.nodewidth / 2);
+                        self.starty = (parseInt(y) + self.nodeheight / 2);
+                        $(self.lineNode).addClass("line").css("left", self.startx + "px")
+                            .css("top", self.starty + "px");
+                        self.start_index = data.index;
+                        self.$view.find(".pointsort_imgwrap").append(self.lineNode);
+                        if(event.type === 'touchstart'){        //移动端 选中状态
+                            self.viewModel.activeIndex(data.index);
+                        }
+                    },
+                    up: function (data, event) {
+                        if (self.toggleSwitch) {
+                            return;
+                        }
+                        //是图片触发还是点触发判断
+                        if (!data.title) {
+                            var pointx = 0;
+                            var pointy = 0;
+                            var centerx = 0;
+                            var centery = 0;
+                            var dataindex = -1;
+                            switch (event.type) {
+                                case "mouseup":
+                                {
+                                    dataindex = data.index;
+                                    pointx = event.clientX - self.imageoffset.left;
+                                    pointy = event.clientY - self.imageoffset.top;
+                                    centerx = parseInt(data.cx.substring(0, data.cx.length - 2)) + self.nodewidth / 2;
+                                    centery = parseInt(data.cy.substring(0, data.cy.length - 2)) + self.nodeheight / 2;
+                                    break;
+                                }
+                                case "touchend":
+                                {
+                                    var node = $(document.elementFromPoint(event.originalEvent.changedTouches[0].clientX, event.originalEvent.changedTouches[0].clientY));
+                                    dataindex = node.attr("index") ? node.attr("index") : node.parent() ? node.parent().attr("index") : -1;
+
+                                    var cx = node.hasClass("point") ? node.position().left : node.parent().hasClass("point") ? node.parent().position().left : -1;
+                                    var cy = node.hasClass("point") ? node.position().top : node.parent().hasClass("point") ? node.parent().position().top : -1;
+                                    pointx = event.originalEvent.changedTouches[0].clientX - self.imageoffset.left;
+                                    pointy = event.originalEvent.changedTouches[0].clientY - self.imageoffset.top;
+                                    centerx = cx + self.nodewidth / 2;
+                                    centery = cy + self.nodeheight / 2;
+                                    self.viewModel.activeIndex(0);          //取消选中状态
+                                    break;
+                                }
+                            }
+                        }
+                        if (self.lineNode && dataindex == self.start_index + 1 && self.viewModel.items()[self.start_index - 1].isStart() &&
+                            (pointx - centerx) * (pointx - centerx) + (pointy - centery) * (pointy - centery) < (self.nodewidth - 20) * (self.nodewidth - 20) / 4) {
+                            self.lineNode = null;
+                            if (self.viewModel.items().length != dataindex)
+                                self.viewModel.items()[dataindex - 1].isStart(true);
+                            self.viewModel.items()[self.start_index - 1].isStart(false);
+                            self.answerState = "NO_COMPLETE";
+                            self.user_answer.push(self.start_index);
+                            if (self._isRight()) {
+                                self._showImgBackground();
+                                // if(self.isApp || self.isStudent){
+                                //     self._showRightTip();
+                                // }
+                                self.answerState = "COMPLETE";
+                                self.user_answer.push(dataindex);
+                                self._toggleInteraction(false);
+                                //答题结束,自动提交
+                                self.$dispatchEvent($PresenterEvent['AnswerFlowController'].AUTO_SEND_ANSWER,
+                                    PresenterEventType.IC_PLAYER_EVENT, {
+                                        question_id: self.model.questionId,
+                                        question_type: 'PointSequencing'
+                                    });
+                            }
+                            //题目作答状态改变，按钮变为可提交
+                            self.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT, {canSubmit: true});
+                            self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT);
+                        } else {
+                            if (self.lineNode) {
+                                self.lineNode.remove();
+                                self.lineNode = null;
+                            }
+                        }
+                        self.start_index = -1;
+                        self.startx = 0;
+                        self.starty = 0;
+                    },
+                    move: function (data, event) {
+                        if (self.toggleSwitch) {
+                            return;
+                        }
+                        if (self.lineNode) {
+                            switch (event.type) {
+                                case 'mousemove':
+                                {
+                                    self._drawLine(self.lineNode, self.startx, self.starty,
+                                        event.clientX - self.imageoffset.left, event.clientY - self.imageoffset.top);
+                                    break;
+                                }
+                                case 'touchmove':
+                                {
+                                    self._drawLine(self.lineNode, self.startx, self.starty,
+                                        event.originalEvent.changedTouches[0].clientX - self.imageoffset.left, event.originalEvent.changedTouches[0].clientY - self.imageoffset.top);
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+                };
+                //答题情况三种状态
+                this.answerState = "NO_ANSWER";
+
+                //状态恢复
+                this.showHintInfo = {hasShow: false, result: undefined};
+                this.showAnswerInfo = {hasShow: false, type: undefined}
+
+                //定义日志
+                this.logger.appendHandler(function (message, context) {
+                    console.log("PointSequencingRemake: " + message);
+                }, {level: Logger.DEBUG});
+            },
+            /**
+             * Presenter对外暴露的方法
+             */
+            getService: function () {
+                if (!this._service_) { 
+                    this._service_ = new __WEBPACK_IMPORTED_MODULE_0__libs_pointSequencingRemakeService_js__["a" /* default */](this);
+                }
+                return this._service_;
+            },
+            /****以下开始为icPlayer的生命周期方法*****/
+            run: function (view, model) {
+                this.$view = $(view);
+                this.model = model;
+                //背景图片url
+                this.imgUrl = this.model.questionData.background.url.replace(/\$\{ref-path\}/ig, icCreatePlayer.ref_path);
+                //每个点的宽高
+                this.nodewidth = this.$view.find("._pointnode").width();
+                this.nodeheight = this.$view.find("._pointnode").height();
+                //标题
+                this.viewModel.title = this.model.questionData.title;
+                if (this.viewModel.title && this.viewModel.title.length > 38) {
+                    this.$view.find(".tit").addClass("s_tit");
+                }
+                ko.applyBindings(this.viewModel, this.$view[0]);
+                this._initImageProperty();
+                return this.dtd.promise();
+            },
+            /****获取图片宽高*****/
+            _initImageProperty: function () {
+                var self = this;
+                var hasGet = false;
+                var bg_img = new Image();
+                bg_img.src = this.imgUrl;
+                var scale = this.model.questionData.background.scale;
+                var scale_width = 0;
+                var scale_height = 0;
+
+                var check = function () {
+                    // 定时执行获取宽高
+                    if (!hasGet && (bg_img.width > 0 || bg_img.height > 0)) {
+                        clearInterval(settime);
+                        hasGet = true;
+                        scale_width = bg_img.width * scale;
+                        scale_height = bg_img.height * scale;
+                        self.viewModel.bg_height(scale_height + "px");
+                        self.viewModel.bg_width(scale_width + "px");
+                        self.viewModel.bg_mLeft((-scale_width / 2) + "px");
+                        self.viewModel.bg_mTop((-scale_height / 2) + "px");
+                        //图片在视图上的偏移量
+                        self.imageoffset = self.$view.find(".pointsort_imgwrap").offset();
+                        self._initPoint();
+                        self.dtd.resolve();
+                    }
+                };
+                var settime = setInterval(check, 40);
+                bg_img.onload = function () {
+                    // 加载完成获取宽高
+                    if (!hasGet) {
+                        clearInterval(settime);
+                        hasGet = true;
+                        scale_width = bg_img.width * scale;
+                        scale_height = bg_img.height * scale;
+                        self.viewModel.bg_height(scale_height + "px");
+                        self.viewModel.bg_width(scale_width + "px");
+                        self.viewModel.bg_mLeft((-scale_width / 2) + "px");
+                        self.viewModel.bg_mTop((-scale_height / 2) + "px");
+                        //图片在视图上的偏移量
+                        self.imageoffset = self.$view.find(".pointsort_imgwrap").offset();
+                        self._initPoint();
+                        self.dtd.resolve();
+                    }
+                };
+            },
+            _initPoint: function () {
+                var self = this;
+                var items = [];
+                //先清空后初始化
+                this.viewModel.items(items);
+                self.correct_answer = [];
+                var index = 0;
+                $.each(this.model.questionData.points, function (key, value) {
+                    items.push({
+                        cx: (value.x + self.rfromeditor - self.nodewidth / 2).toFixed(0) + "px",
+                        cy: (value.y + self.rfromeditor - self.nodeheight / 2).toFixed(0) + "px",
+                        index: value.num,
+                        r: 13,
+                        content: value.value,
+                        tlength: value.value.length,
+                        isStart: ko.observable(value.num == 1)
+                    });
+                    index++;
+                    self.correct_answer.push(index);
+                });
+                this.viewModel.items(items);
+            },
+            destroy: function () {
+
+            },
+            _showStaticAnswer: function () {
+                this._removeAllLine();
+                this._hideImgBackground();
+                this._showCorrectAnswer();
+                this._showImgBackground();
+                var clonediv = this.$view.find(".pointsort_imgwrap").clone(true);
+                return clonediv.prop("outerHTML");
+            },
+            //判断是否做对
+            _isRight: function () {
+                var isRight = true;
+                var items = this.viewModel.items();
+                $.each(items, function (key, value) {
+                    if (key !== items.length - 1 && value.isStart()) {
+                        isRight = false;
+                    }
+                });
+                return isRight;
+            },
+            //显示背景图片
+            _showImgBackground: function () {
+                this.$view.find(".pointsort_imgwrap").css("background-image", "url('" + this.imgUrl + "')");
+                this.$view.find(".pointsort_imgwrap").css("background-size", "100% 100%");
+            },
+            //隐藏背景图片
+            _hideImgBackground: function () {
+                this.$view.find(".pointsort_imgwrap").css("background-image", "");
+            },
+            //删除所有线
+            _removeAllLine: function () {
+                this.$view.find(".line").remove();
+            },
+            _showRightTip: function () {
+                var self = this;
+                self.$dispatchEvent("NoticeTip", "ic_player_event", {
+                    value: {
+                        type: "show",
+                        // text: "你真棒",
+                        text: self.$translate('notice_tip_correct'),
+                        duration: 3000
+                    }
+                });
+            },
+            _showWrongTip: function () {
+                var self = this;
+                self.$dispatchEvent("NoticeTip", "ic_player_event", {
+                    value: {
+                        type: "show",
+                        // text: "很遗憾，做错了",
+                        text: self.$translate('notice_tip_wrong'),
+                        duration: 3000
+                    }
+                });
+            },
+            _showTimeOverTip: function () {
+                var self = this;
+                self.$dispatchEvent("NoticeTip", "ic_player_event", {
+                    value: {
+                        type: "show",
+                        // text: "很遗憾，时间到了",
+                        text: self.$translate('notice_tip_timeout'),
+                        duration: 3000
+                    }
+                });
+            },
+            //显示正确答案
+            _showCorrectAnswer: function () {
+                var self = this;
+                var items = self.viewModel.items();
+                // fix: #129670， 先清空连线
+                this._removeAllLine();
+                $.each(items, function (key, value) {
+                    if (items[key] && items[key + 1]) {
+                        var line = document.createElement('span');
+                        $(line).addClass("line");
+                        self.$view.find(".pointsort_imgwrap").append(line);
+                        self._drawLine(line,
+                            parseInt(items[key].cx.substring(0, items[key].cx.length - 2)) + self.nodewidth / 2, parseInt(items[key].cy.substring(0, items[key].cy.length - 2)) + self.nodeheight / 2,
+                            parseInt(items[key + 1].cx.substring(0, items[key + 1].cx.length - 2)) + self.nodewidth / 2, parseInt(items[key + 1].cy.substring(0, items[key + 1].cy.length - 2)) + self.nodeheight / 2);
+                    }
+                });
+            },
+            //显示用户答案
+            _showUserAnswer: function () {
+                var self = this;
+                var items = self.viewModel.items();
+                // fix: #149979，注释代码
+                // if(this.$view.find('.line').length === this.user_answer.length - 1){
+                //     return;
+                // }
+                // fix: #129670， 先清空连线
+                this._removeAllLine();
+                $.each(items, function (key, value) {
+                    if (items[key] && items[key + 1] && self.user_answer[key]) {
+                        if (self.viewModel.items().length != key + 1)
+                            self.viewModel.items()[key + 1].isStart(true);
+                        self.viewModel.items()[key].isStart(false);
+                        var line = document.createElement('span');
+                        $(line).addClass("line");
+                        self.$view.find(".pointsort_imgwrap").append(line);
+                        self._drawLine(line,
+                            parseInt(items[key].cx.substring(0, items[key].cx.length - 2)) + self.nodewidth / 2, parseInt(items[key].cy.substring(0, items[key].cy.length - 2)) + self.nodeheight / 2,
+                            parseInt(items[key + 1].cx.substring(0, items[key + 1].cx.length - 2)) + self.nodewidth / 2, parseInt(items[key + 1].cy.substring(0, items[key + 1].cy.length - 2)) + self.nodeheight / 2);
+                    }
+                });
+
+                if(this.showHintInfo.result || this._isRight()){
+                    this._showImgBackground();
+                }
+            },
+            //画线
+            _drawLine: function (line, startx, starty, endx, endy) {
+                var length = Math.sqrt((endx - startx) * (endx - startx) + (endy - starty) * (endy - starty));
+                var angleInDegrees = Math.atan2((endy - starty), (endx - startx)) * 180 / Math.PI;
+                $(line)
+                    .css("left", startx + "px")
+                    .css("top", starty + "px")
+                    .css("width", length + "px")
+                    .css("transform", "rotate(" + angleInDegrees + "deg)")
+                    .css("transform-origin", "0% 0%")
+                    .css("-ms-transform", "rotate(" + angleInDegrees + "deg)")
+                    .css("-moz-transform-origin", "0% 0%")
+                    .css("-moz-transform", "rotate(" + angleInDegrees + "deg)")
+                    .css("-webkit-transform-origin", "0% 0%")
+                    .css("-webkit-transform", "rotate(" + angleInDegrees + "deg)")
+                    .css("-o-transform-origin", "0% 0%")
+                    .css("-o-transform", "rotate(" + angleInDegrees + "deg)")
+            },
+            //获取全部学生人数
+            _getAllStudents: function () {
+                var options = {
+                    order: [{
+                        orderProperty: 'seatNumberValue',
+                        orderType: 'asc'
+                    }, {
+                        orderProperty: 'studentNo',
+                        orderType: 'asc'
+                    }]
+                };
+                return ClassroomUtils.getCurrentStudents(options);
+            },
+            //获取学生的信息
+            _getStudentByUserId: function (userId, studentList) {
+                var options = {
+                    order: [{
+                        orderProperty: 'seatNumberValue',
+                        orderType: 'asc'
+                    }, {
+                        orderProperty: 'studentNo',
+                        orderType: 'asc'
+                    }]
+                };
+                if (!studentList) {
+                    studentList = ClassroomUtils.getCurrentStudents(options);
+                }
+
+                if (userId) {
+                    for (var i = 0; i < studentList.length; i++) {
+                        var student = studentList[i];
+                        if (userId === student.studentId) {
+                            return student;
+                        }
+                    }
+                }
+            },
+            //为每个学生增加提交时间
+            _addStudentSubmitTime: function (submitList, studentList) {
+                var result = [];
+                if (submitList && submitList.length > 0) {
+                    var length = submitList.length;
+                    for (var i = 0; i < length; i++) {
+                        var item = submitList[i];
+                        var userId = item.userId;
+                        var student = this._getStudentByUserId(userId, studentList);
+                        if (student) {
+                            student.submitTime = item.submitTime;
+                            if (student.submitTime === 0) {
+                                if (student.onlineStatus) {
+                                    student.answerStatus = 'unfinished';
+                                }
+                            }
+                            result.push(student);
+                        }
+                    }
+                }
+                return result;
+            },
+            //获取学生作答的答案
+            _getStudentAnswer: function (userId, answer) {
+                var userIds = answer.userIds;
+                if (userIds.indexOf(userId) != -1) {
+                    return answer.answer;
+                }
+            },
+            //更新学生的完成状态
+            _updateStudentAnswerStatus: function (questionType, submitList, correctAnswerObj, answers) {
+                for (var i = 0; i < answers.length; i++) {
+                    var answer = answers[i];
+                    var userIds = answer.userIds;
+                    for (var j = 0; j < userIds.length; j++) {
+                        var userId = userIds[j];
+                        var student = this._getStudentByUserId(userId, submitList);
+                        if (student) {
+                            var studentAnswerObj = this._getStudentAnswer(userId, answer);
+                            if (student.submitTime === 0) {
+                                //判断学生是否在线
+                                if (student.onlineStatus) {
+                                    student.answerStatus = 'unfinished';
+                                } else {
+                                    student.answerStatus = 'offline';
+                                }
+                            } else {
+                                if (studentAnswerObj) {
+                                    if (JSON.parse(studentAnswerObj).answer_result) {
+                                        student.answerStatus = 'finished';
+                                    } else {
+                                        student.answerStatus = 'unfinished';
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            //获取已完成的学生列表
+            _getFinishStudents: function (submitList) {
+                var result = [];
+                if (submitList && submitList.length > 0) {
+                    var length = submitList.length;
+                    for (var i = 0; i < length; i++) {
+                        var item = submitList[i];
+                        if (item.answerStatus == 'finished') {
+                            result.push(item);
+                        }
+                    }
+                }
+                result.sort(function (a, b) {
+                    if (a.submitTime > b.submitTime) {
+                        return 1;
+                    } else if (a.submitTime < b.submitTime) {
+                        return -1;
+                    } else {
+                        //判断学号是否为数字
+                        var numA = parseInt(a.studentNo);
+                        var numB = parseInt(b.studentNo);
+                        if (isNaN(numA) || isNaN(numB)) {
+                            if (a.studentNo > b.studentNo) {
+                                return 1;
+                            } else if (a.studentNo < b.studentNo) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        } else {
+                            if (numA > numB) {
+                                return 1;
+                            } else if (numA < numB) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                });
+                return result;
+            },
+            //获取已完成的学生的学号信息
+            _getFinishedStudents: function (finishList) {
+                var userIds = [];
+                for (var i = 0; i < finishList.length; i++) {
+                    var stu = finishList[i];
+                    if (stu && stu.studentId) {
+                        userIds.push(stu.studentId);
+                    }
+                }
+                return {
+                    allrightStu: userIds
+                };
+            },
+            //获取未完成的学生列表
+            _getUnfinishStudents: function (submitList) {
+                var result = [];
+                if (submitList && submitList.length > 0) {
+                    var length = submitList.length;
+                    for (var i = 0; i < length; i++) {
+                        var item = submitList[i];
+                        if (item.answerStatus == 'unfinished') {
+                            result.push(item);
+                        }
+                    }
+                }
+
+                result.sort(function (a, b) {
+                    var numA = parseInt(a.studentNo);
+                    var numB = parseInt(b.studentNo);
+                    if (isNaN(numA) || isNaN(numB)) {
+                        if (a.studentNo > b.studentNo) {
+                            return 1;
+                        } else if (a.studentNo < b.studentNo) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    } else {
+                        if (numA > numB) {
+                            return 1;
+                        } else if (numA < numB) {
+                            return -1;
+                        } else {
+                            return 0;
+                        }
+                    }
+                });
+                return result;
+            },
+            //是否可作答开关
+            _toggleInteraction: function (enabled) {
+                if (!enabled && this.lineNode) {
+                    this.lineNode.remove();
+                }
+                this.toggleSwitch = !enabled;
+            }
+        },
+        'PointSequencingRemake'
+    );
+
+    window.AddonPointSequencingRemake_create = function () {
+        return new Presenter();
+    }
+})
+();
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/btn_point.png' />
+<file src='./resources/wood/images/btn_point_active.png' />
+<file src='./resources/wood/images/point_line.png' />
+
+
+</resources>
+
+</addon>

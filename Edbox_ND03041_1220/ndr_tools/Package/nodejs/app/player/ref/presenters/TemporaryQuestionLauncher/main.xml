@@ -1,0 +1,461 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TemporaryQuestionLauncher'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_ObjectiveInteractionLayout .env-pptshell .liudi_style{z-index:350;pointer-events:none}.addon_ObjectiveInteractionLayout .env-pptshell.statistic-view .liudi_style{z-index:auto;pointer-events:auto}.exam-skin-wood .baseMod-com-layout .baseMod-com-layout-container,.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board .baseMod-com-header-box,.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board .baseMod-com-submit{pointer-events:auto}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .baseMod-com-header-box{z-index:2;text-align:center;top:0;width:72em;margin:0 auto;background:#f3e3c8;border:1px solid #d3b388;border-bottom-color:#ead6b4;height:2.25em;line-height:2.25em}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .com_time{position:absolute;color:#796647;left:3.5em;top:0;font-size:.91667em;width:auto;margin-right:2.91667em}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .upload .num{color:#796647}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .upload{display:block!important}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .baseMod-com-layout-container{background:#f8efde;border:1px solid #d3b388;border-top:none;box-sizing:border-box;border-radius:0 0 .83333em .83333em;box-shadow:0 1px 10px 0 rgba(0,0,0,.1)}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .components__stu-state{top:.2em}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .baseMod-com-header-box{left:1em;right:1em}.exam-skin-wood .baseMod-com-layout .baseMod-com-wrapper-board.temporary-board .addon_QuizProgress{z-index:1040!important}]]>
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function getStudentComponents(model) {
+    var modules = {
+        layout: 'ObjectiveInteractionLayout',
+        controllers: [
+            {
+                presenter: 'I18nFilter'
+            },
+            {
+                presenter: 'InteractionStateRecoverFilter'
+            },
+            {
+                presenter: 'AnswerFlowController',
+                depends: [
+                    {
+                        property: 'TimerService',
+                        presenter: 'TimerController'
+                    }
+                ]
+            },
+        ],
+        components: [
+            {
+                presenter: 'InteractionSubmitButton',
+                renderTo: 'TopRightPanel'
+            },
+            {
+                presenter: 'InteractionTimer',
+                renderTo: 'TopLeftPanel'
+            },
+            {
+                presenter: 'TemporaryQuestionFuncitonal',
+                renderTo: 'CenterPanel'
+            },
+        ]
+    };
+    var settings = [
+        {
+            name: 'ObjectiveInteractionLayout',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'questionType',
+                    type: 'string',
+                    value: 'BasicQuestionViewer'
+                },
+                {
+                    name: 'specialTemplate',
+                    type: 'string',
+                    value: 'true'
+                }
+            ])
+        },
+        {
+            name: 'TimerController',
+            type: 'string',
+            value: JSON.stringify([])
+        },
+        {
+            name: 'AnswerFlowController',
+            type: 'string',
+            value: JSON.stringify([{
+                    name: 'linkQuestionId',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                }])
+        },
+        {
+            name: 'TemporaryQuestionFuncitonal',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'id',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'questionId',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'questionCode',
+                    type: 'string',
+                    value: model.questionCode
+                }
+            ])
+        },
+        {
+            name: 'InteractionSubmitButton',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'can_modify',
+                    type: 'string',
+                    value: true
+                },
+                {
+                    name: 'linkQuestionType',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'linkQuestionId',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'view_type',
+                    type: 'string',
+                    value: 'new_em_button'
+                }
+            ])
+        },
+        {
+            name: 'InteractionTimer',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'view_type',
+                    type: 'string',
+                    value: 'new_timer'
+                }
+            ])
+        }
+    ];
+    settings.push({
+        name: 'Components',
+        type: 'json',
+        text: JSON.stringify(modules)
+    });
+    return settings;
+}
+exports.default = getStudentComponents;
+;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function getTeacherComponents(model) {
+    var modules = {
+        layout: 'ObjectiveInteractionLayout',
+        controllers: [
+            {
+                presenter: 'I18nFilter'
+            },
+            {
+                presenter: 'ObjectiveStatController'
+            },
+            {
+                presenter: 'TimerController'
+            }
+        ],
+        components: [
+            {
+                presenter: 'ObjectiveStatisticsRemake',
+                renderTo: 'StatisticsPanel'
+            },
+            {
+                presenter: 'TemporaryQuestionFuncitonal',
+                renderTo: 'CenterPanel'
+            },
+            {
+                presenter: 'InteractionTimer',
+                renderTo: 'TopLeftPanel'
+            }
+        ]
+    };
+    var settings = [
+        {
+            name: 'ObjectiveInteractionLayout',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'questionType',
+                    type: 'string',
+                    value: 'BasicQuestionViewer'
+                },
+                {
+                    name: 'specialTemplate',
+                    type: 'string',
+                    value: 'true'
+                }
+            ])
+        },
+        {
+            name: 'TimerController',
+            type: 'string',
+            value: JSON.stringify([])
+        },
+        {
+            name: 'AnswerFlowController',
+            type: 'string',
+            value: JSON.stringify([{
+                    name: 'linkQuestionId',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                }])
+        },
+        {
+            name: 'InteractionTimer',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'view_type',
+                    type: 'string',
+                    value: 'new_timer'
+                }
+            ])
+        },
+        {
+            name: 'TemporaryQuestionFuncitonal',
+            type: 'string',
+            value: JSON.stringify([
+                {
+                    name: 'id',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'questionId',
+                    type: 'string',
+                    value: 'TemporaryQuestionFuncitonal_id'
+                },
+                {
+                    name: 'questionCode',
+                    type: 'string',
+                    value: model.questionCode
+                }
+            ])
+        }
+    ];
+    settings.push({
+        name: 'Components',
+        type: 'json',
+        text: JSON.stringify(modules)
+    });
+    return settings;
+}
+exports.default = getTeacherComponents;
+;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Teacher_1 = __webpack_require__(1);
+var Student_1 = __webpack_require__(0);
+var TemporaryQuestionLauncher;
+(function (TemporaryQuestionLauncher) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this, 'TemporaryQuestionLauncher') || this;
+            _this.$view = null;
+            _this.metaInfo.name = 'TemporaryQuestionLauncher';
+            _this.metaInfo.type = ConstVariable.PresenterType.LAUNCHER;
+            return _this;
+        }
+        Object.defineProperty(Presenter.prototype, "__interface", {
+            get: function () {
+                return this._interface;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Presenter.prototype, "$View", {
+            get: function () {
+                return this.$view;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Presenter.prototype.$launch = function (options) {
+            var _this = this;
+            console.log('TemporaryQuestionLauncher launch');
+            this.$view = $(this.View);
+            this.$view.hide();
+            if (this.embedApplication("pptshell") || this.Environment.isPC) {
+                this.addEventListener('PresenterLoaded', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, function (data) {
+                    _this.dispatchEvent('TemporaryQuestionEvent', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, {
+                        'type': 'launch'
+                    });
+                });
+                var components = Teacher_1.default(this.Model);
+                this.requireComponent('ComponentLoader', components, this.$view, {
+                    left: 0,
+                    top: 0,
+                    width: 0,
+                    height: 0
+                });
+            }
+            else {
+                this._interface = new ContainerInterface(this);
+            }
+        };
+        Presenter.prototype.$release = function () {
+            console.log('run $release method');
+        };
+        return Presenter;
+    }(CommonClass));
+    TemporaryQuestionLauncher.Presenter = Presenter;
+    var ContainerInterface = (function () {
+        function ContainerInterface(context) {
+            this.hasBeenLoaded = false;
+            this.currentContext = context;
+        }
+        ContainerInterface.prototype.execute = function (model) {
+            var _this = this;
+            if (this.hasBeenLoaded) {
+                return;
+            }
+            console.log("TemporaryQuestionLauncher execute");
+            var components = Student_1.default(model);
+            this.currentContext.requireComponent('ComponentLoader', components, this.currentContext.$View, { left: 0, top: 0, width: 0, height: 0 })
+                .done(function () {
+                _this.hasBeenLoaded = true;
+            });
+        };
+        return ContainerInterface;
+    }());
+})(TemporaryQuestionLauncher || (TemporaryQuestionLauncher = {}));
+window['AddonTemporaryQuestionLauncher_create'] = function () {
+    return new TemporaryQuestionLauncher.Presenter();
+};
+
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=presenter.js.map]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

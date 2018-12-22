@@ -1,0 +1,464 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="common_css" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .rotatepoint_wrapper{background:#bfd3e2;position:relative;width:100%;height:100%}.exam_skin_wood .rotatepoint_inner{padding:2.9em;position:absolute;left:50%;top:50%;margin-top:-16.3165em;margin-left:-17.65em}.exam_skin_wood .rotatepoint_pan_bg{width:29.54167em;height:29.54167em;overflow:hidden;background:url(resources/wood/images/rotating_pan_bg.png) no-repeat;background-size:100% 100%;position:relative;z-index:14}.exam_skin_wood .rotatepoint_origin_bg{width:5em;height:5em;overflow:hidden;background:url(resources/wood/images/rotating_coordinate_bg.png) no-repeat;background-size:100% 100%;position:absolute;z-index:10;left:50%;top:50%;margin-left:-2.5em;margin-top:-2.5em}.exam_skin_wood .rotatepoint_point_bg{width:3.20833em;height:7.08333em;overflow:hidden;background:url(resources/wood/images/rotating_point_bg.png) no-repeat;background-size:100% 100%;position:absolute;left:50%;top:50%;margin-left:-1.60417em;margin-top:-7.08333em;z-index:9;transform-origin:center bottom;-webkit-transform-origin:center bottom}]]></css><view><![CDATA[<div class="exam_skin_wood" id="layout"><div class="rotatepoint_wrapper"><div class="rotatepoint_inner"><div class="rotatepoint_pan_bg"><div class="rotatepoint_origin_bg"></div><div class="rotatepoint_point_bg"></div></div></div><div class="roatepoint_box" style="position:absolute;width:40em;height:40em;left:50%;top:50%;margin-top: -18.7000em;margin-left: -20.0000em"><svg width="100%" height="100%"><defs><marker id="rotatepoint_arrow" viewBox="0 0 4 6" refX="3" refY="3" markerWidth="4" markerHeight="6" orient="auto"><path d="M 3 3 L 1 1" stroke="#F43F3F" fill="none" stroke-linecap="round"/><path d="M 3 3  L 1 5" stroke="#F43F3F" fill="none" stroke-linecap="round"/></marker></defs><path id="rotatingIndex_path" stroke="#F43F3F" stroke-width="12" fill="none" stroke-linecap="round" marker-end="url(#rotatepoint_arrow)"/></svg></div></div></div>]]></view><presenter><![CDATA["use strict";
+
+(function () {
+
+    var downFlag = false; //鼠标点击下事件标记
+
+    var $model = {}; //数据模型
+
+    var startDegree; //保存开始角度
+
+    var lastDegree = -1; //保存最近一次的角度
+
+    var lastRotateDir = null; //保存最近一次的旋转方向
+
+    // var tempLastRotateDir  =  -1;
+
+    var isMove = false;
+
+    var isOneCircle = false;
+
+    var tempLasterPosition = null;
+
+    var during = 16; //最小执行move事件的时间间隔
+
+    var PADING = 44; //旋转圈边距
+
+    var begin; //每次计时时间
+
+    var startTime = null; //开始时间
+
+    var centerPointer = {}; //中心点
+
+    var radus = 0; //半径
+
+    var pathAttr = [];
+
+    var DIR = {
+        CLOCKWISE: 1,
+        EASTERN: 0
+    };
+
+    var x1, y1, x2, y2;
+
+    var UpdataUi = {
+        /**
+         * @description 初始化开始位置
+         * @param _point
+         */
+        setStartStatus: function setStartStatus(deg) {
+            startDegree = deg;
+            $model.point.css({ "transform": "rotate(" + deg + "deg)" });
+            x1 = Math.sin(deg * Math.PI / 180) * (radus - PADING) + radus;
+            y1 = radus - Math.cos(deg * Math.PI / 180) * (radus - PADING);
+            x1 = +x1.toFixed(5);
+            y1 = +y1.toFixed(5);
+            console.log("move to the point:" + x1 + " " + y1);
+            pathAttr = ['m', x1, y1];
+            $model.cirle.attr({
+                "d": pathAttr.join(' ')
+            });
+            $model.cirle.removeAttr("marker-end");
+            isOneCircle = false;
+        },
+        //起始点5度吸附> 整圈5度吸附 , 起始点5度吸附 > 整点5度吸附
+        changeDegree: function changeDegree(deg, fromTeacherDir) {
+            var dir;
+            var temp;
+            var absorbtion;
+            var smallOrBig = 0;
+
+            if (fromTeacherDir != null) {
+                dir = fromTeacherDir;
+            } else {
+                dir = Utils.getDirection(deg);
+            }
+
+            $model.point.css({ "transform": "rotate(" + deg + "deg)" });
+
+            temp = Utils.getSeparationAngle(dir, startDegree, deg);
+            console.log("两个角度夹角：" + startDegree + " " + deg + " " + temp);
+
+            //起始5度 
+            if (temp < 5) {
+                if (temp == 0 && !isMove) {
+                    if (isOneCircle) {
+                        pathAttr = ['m', x1, y1, 'A', radus - PADING, radus - PADING, 0, smallOrBig, dir, x1, y1];
+                        $model.cirle.attr({
+                            "d": pathAttr.join(' ')
+                        });
+                        return;
+                    }
+                    pathAttr = ['m', x1, y1];
+                    $model.cirle.attr({
+                        "d": pathAttr.join(' ')
+                    });
+                    $model.cirle.removeAttr("marker-end");
+                    isOneCircle = false;
+                    return;
+                } else if (temp === 0 && isMove) {
+                    isOneCircle = true;
+                } else {
+                    pathAttr = ['m', x1, y1];
+                    $model.cirle.attr({
+                        "d": pathAttr.join(' ')
+                    });
+                    $model.cirle.removeAttr("marker-end");
+                    isOneCircle = false;
+                    return;
+                }
+            }
+
+            temp = Utils.getSeparationAngle(dir, deg, startDegree);
+            console.log(temp);
+            if (temp < 5) {
+                console.log("one circle");
+                $model.cirle.removeAttr("marker-end");
+                if (Utils.getSeparationAngle(dir, startDegree, deg) > 180) {
+                    smallOrBig = 1;
+                }
+                pathAttr = ['m', x1, y1, 'A', radus - PADING, radus - PADING, 0, smallOrBig, dir, x1, y1];
+                $model.cirle.attr({
+                    "d": pathAttr.join(' ')
+                });
+                return;
+            }
+
+            if (dir === 1) {
+                absorbtion = 30 * Math.ceil(deg / 30); //整 点角度 30度为一个小时
+            } else {
+                absorbtion = 30 * Math.floor(deg / 30); //整 点角度 30度为一个小时
+            }
+
+            temp = Utils.getSeparationAngle(dir, deg, absorbtion);
+            console.log("吸附后两个角度夹角：" + deg + " " + absorbtion + " " + temp);
+            if (temp < 5) {
+                deg = absorbtion;
+            }
+            $model.cirle.attr({
+                "marker-end": "url(#rotatepoint_arrow)"
+            });
+
+            $model.point.css({ "transform": "rotate(" + deg + "deg)" });
+
+            x2 = Math.sin(deg * Math.PI / 180) * (radus - PADING) + radus;
+            y2 = radus - Math.cos(deg * Math.PI / 180) * (radus - PADING);
+
+            x2 = +x2.toFixed(5);
+            y2 = +y2.toFixed(5);
+
+            if (Utils.getSeparationAngle(dir, startDegree, deg) > 180) {
+                smallOrBig = 1;
+            }
+
+            pathAttr = ['m', x1, y1, 'A', radus - PADING, radus - PADING, 0, smallOrBig, dir, x2, y2];
+            $model.cirle.attr({
+                "d": pathAttr.join(' ')
+            });
+        }
+    };
+    var Utils = {
+        /**
+         * @description 计算角度
+         * @param _point
+         * @returns {Number}
+         */
+        getDegree: function getDegree(_point) {
+            var centerX = centerPointer.centerX;
+            var centerY = centerPointer.centerY;
+            var endX = _point.x;
+            var endY = _point.y;
+            var x = (endX - centerX).toFixed(4);
+            var y = (endY - centerY).toFixed(4);
+
+            var dist = Math.sqrt(x * x + y * y);
+            var _deg = Math.round(Math.acos(-y / dist) * 180 / Math.PI);
+            if (x < 0 && _deg != 0) {
+                _deg = 360 - _deg;
+            }
+            console.log("获取角度:" + _deg);
+            return _deg;
+        },
+        /**
+         * @description 判断旋转方向
+         * @param _deg
+         * @returns {*}
+         */
+        getDirection: function getDirection(deg) {
+            var dir;
+            if (deg - lastDegree > 180) {
+                console.log("逆时针方向:" + deg + " " + lastDegree + " " + startDegree);
+                dir = DIR.EASTERN;
+            } else if (deg - lastDegree < 180 && deg - lastDegree > 0) {
+                console.log("顺时针方向:" + deg + " " + lastDegree + " " + startDegree);
+                dir = DIR.CLOCKWISE;
+            } else if (deg - lastDegree < 0 && deg - lastDegree > -180) {
+                console.log("逆时针方向:" + deg + " " + lastDegree) + " " + startDegree;
+                dir = DIR.EASTERN;
+            } else if (deg - lastDegree < -180) {
+                console.log("顺时针方向:" + deg + " " + lastDegree + " " + startDegree);
+                dir = DIR.CLOCKWISE;
+            } else {
+                console.log("其它情况:" + deg + " " + lastDegree + " " + startDegree);
+            }
+            // tempLastRotateDir = lastRotateDir;
+
+            if (lastRotateDir === null) {
+                lastRotateDir = dir;
+            } else if (lastRotateDir !== dir) {
+                UpdataUi.setStartStatus(lastDegree);
+                lastRotateDir = dir;
+                $model.cirle.removeAttr("marker-end");
+            }
+            lastDegree = deg;
+            return dir;
+        },
+        /**
+         * @description 获取位置 
+         * @param e
+         * @returns {{}}
+         * @private
+         */
+        _getPosition: function _getPosition(e) {
+            var _mPointer = {};
+            var _touchEvent;
+            var _ot = $model.pan.offset().top,
+                _ol = $model.pan.offset().left;
+            if (e && e.originalEvent && e.originalEvent.changedTouches) {
+                _touchEvent = e.originalEvent.changedTouches[0];
+                _mPointer = { x: _touchEvent.clientX - _ol, y: _touchEvent.clientY - _ot };
+                console.log("touch");
+            } else {
+                _mPointer = { x: e.pageX - _ol, y: e.pageY - _ot };
+                console.log("mouse");
+            }
+            _mPointer.x = +_mPointer.x.toFixed(3);
+            _mPointer.y = +_mPointer.y.toFixed(3);
+            return _mPointer;
+        },
+        getSeparationAngle: function getSeparationAngle(rotateDir, startAngle, endAngle) {
+            var angle = 0;
+            if (rotateDir === 1) {
+                angle = endAngle - startAngle;
+                if (endAngle < startAngle) angle = angle + 360;
+            } else if (rotateDir === 0) {
+                angle = startAngle - endAngle;
+                if (endAngle > startAngle) angle = 360 + angle;
+            }
+            return angle;
+        },
+        getDistance: function getDistance(p1, p2) {
+            var _s = Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+            console.log("new P:" + p2.x + " " + p2.y + " " + "old P:" + p1.x + " " + p1.y + " " + _s);
+            if (_s < 5) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    };
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "RotatingPointer",
+            type: "",
+            subtype: ""
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function $init() {
+            this._super();
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function constructor(parent) {
+                this.parent = parent;
+            },
+            getQuestionInfo: function getQuestionInfo() {
+                //推送学生端必须接口
+                return {
+                    'id': '',
+                    'type_code': 'RotatingPointer',
+                    'type_name': '旋转指针',
+                    'url': '',
+                    'notExistStatistics': true,
+                    'noNeedQuizProgress': true
+                };
+            },
+            getExtendData: function getExtendData() {
+                //推送学生端必须接口
+
+                var options = {
+                    width: '100%',
+                    rotatingPointerState: {
+                        //TODO teacher pc status
+                        startDeg: startDegree,
+                        endDeg: lastDegree,
+                        dir: lastRotateDir == 1 ? "right" : "left",
+                        isMove: isMove,
+                        isOneCircle: isOneCircle
+                        // lastDir:tempLastRotateDir
+                    }
+                };
+                console.log(options);
+                return options;
+            }
+        },
+        getService: function getService() {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function run(view, model) {
+            $model.model = model;
+            $model.$view = $(view);
+            $model.point = $model.$view.find('.rotatepoint_point_bg');
+            $model.pan = $model.$view.find('.rotatepoint_pan_bg');
+            $model.cirle = $model.$view.find('#rotatingIndex_path');
+            $model.box = $model.$view.find('.roatepoint_box');
+            $model.wrap = $model.$view.find('.rotatepoint_wrapper');
+            radus = $model.box.height() / 2;
+            $model.cirle.attr('stroke-width', 0.0148 * $model.wrap.height());
+            startDegree = null;
+            lastDegree = -1;
+            lastRotateDir = null;
+            startTime = null;
+            downFlag = false;
+            isMove = false;
+            isOneCircle = false;
+            centerPointer.centerX = $model.pan.width() / 2;
+            centerPointer.centerY = $model.pan.height() / 2;
+
+            var options = null;
+            options = model.__ExtendModel && model.__ExtendModel.rotatingPointerState;
+            if (options && options.startDeg != null && options.endDeg != null && options.dir != null) {
+                options.dir = options.dir == "right" ? 1 : 0;
+                // tempLastRotateDir = options.lastDir;
+                isMove = options.isMove || false;
+                lastRotateDir = options.dir;
+                startDegree = options.startDeg || 0;
+                lastDegree = options.endDeg == null ? -1 : options.endDeg;
+                UpdataUi.setStartStatus(startDegree);
+                isOneCircle = options.isOneCircle || false; //要在上一步的下面
+                UpdataUi.changeDegree(lastDegree, lastRotateDir);
+            }
+        },
+        __interface: {
+            resizeScreen: function resizeScreen(data) {
+                //console.log(data); 
+                var options = this._service_.getExtendData();
+                radus = $model.box.height() / 2;
+                if (data.ratio == '4/3') {
+                    PADING = PADING * 4 / 3;
+                } else {
+                    PADING = PADING * 1;
+                }
+                console.log('data resize', data.ratio);
+                $model.cirle.attr('stroke-width', 0.0148 * $model.wrap.height());
+                startDegree = null;
+                lastDegree = -1;
+                lastRotateDir = null;
+                startTime = null;
+                downFlag = false;
+                isMove = false;
+                isOneCircle = false;
+                centerPointer.centerX = $model.pan.width() / 2;
+                centerPointer.centerY = $model.pan.height() / 2;
+                options = options && options.rotatingPointerState;
+                if (options && options.startDeg != null && options.endDeg != null && options.dir != null) {
+                    options.dir = options.dir == "right" ? 1 : 0;
+                    // tempLastRotateDir = options.lastDir;
+                    isMove = options.isMove || false;
+                    lastRotateDir = options.dir;
+                    startDegree = options.startDeg || 0;
+                    lastDegree = options.endDeg == null ? -1 : options.endDeg;
+                    UpdataUi.setStartStatus(startDegree);
+                    isOneCircle = options.isOneCircle || false; //要在上一步的下面
+                    UpdataUi.changeDegree(lastDegree, lastRotateDir);
+                }
+            }
+        },
+        pageShow: function pageShow() {
+            this._bindEvent();
+        },
+        pageLeave: function pageLeave() {
+            this._unbindEvent();
+        },
+        destroy: function destroy() {
+            console.log("destroy");
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以 下两个方法删除掉**/
+        getState: function getState() {},
+        setState: function setState(state, options) {},
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function _bindEvent() {
+            $model.$view.on('touchstart mousedown', '.rotatepoint_wrapper', function (e) {
+                e.preventDefault();
+                console.log("start");
+                downFlag = true;
+                isMove = false;
+                startTime = null;
+                var _o = Utils._getPosition(e);
+                lastDegree = startDegree = Utils.getDegree(_o);
+                UpdataUi.setStartStatus(startDegree);
+                console.log("startDegree" + startDegree);
+            }).on('touchmove mousemove', '.rotatepoint_wrapper', function (e) {
+                isMove = true;
+                e.preventDefault();
+                if (downFlag) {
+                    begin = new Date();
+                    if (startTime == null) {
+                        startTime = begin;
+                    }
+                    if (begin - startTime >= during) {
+                        var position = Utils._getPosition(e);
+                        if (tempLasterPosition === null) {
+                            tempLasterPosition = $.extend({}, position);
+                        }
+
+                        if (!Utils.getDistance(tempLasterPosition, position)) {
+                            ///防止2.5上面手写笔乱触发的问题
+                            return;
+                        }
+
+                        tempLasterPosition = $.extend({}, position);
+
+                        var _deg = Utils.getDegree(position);
+                        if (_deg == lastDegree) return;
+                        console.log("mouseMove");
+                        UpdataUi.changeDegree(_deg);
+                        startTime = null;
+                    }
+                }
+            }).on('touchend mouseup', '.rotatepoint_wrapper', function (e) {
+                isMove = false;
+                //count = 0;
+                e.preventDefault();
+                console.log("up");
+                downFlag = false;
+                startTime = null;
+            }).on('mouseleave', '.rotatepoint_wrapper', function (e) {
+                isMove = false;
+                e.preventDefault();
+                console.log("up");
+                downFlag = false;
+                startTime = null;
+                $(this).trigger('mouseup');
+            });
+            //this.eventBus.addEventListener('pageLeaveEvents');
+        },
+        _unbindEvent: function _unbindEvent() {
+            console.log("unbind");
+            $model.$view.off('touchstart mousedown', '.rotatepoint_pan_bg').off('touchmove mousemove', '.rotatepoint_pan_bg').off('touchend mouseup', '.rotatepoint_pan_bg').off('mouseleave', '.rotatepoint_wrapper');
+        }
+    });
+
+    window.AddonRotatingPointer_create = function () {
+        return new Presenter();
+    };
+})();]]></presenter><resources><file src="./resources/style.scss"/><file src="./resources/wood/images/rotating_coordinate_bg.png"/><file src="./resources/wood/images/rotating_pan_bg.png"/><file src="./resources/wood/images/rotating_point_bg.png"/></resources></addon>

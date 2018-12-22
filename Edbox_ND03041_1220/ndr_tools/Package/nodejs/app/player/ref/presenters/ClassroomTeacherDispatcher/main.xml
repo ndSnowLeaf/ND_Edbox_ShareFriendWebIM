@@ -1,0 +1,899 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ClassroomTeacherDispatcher'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.ClassroomTeacherDispatcher.dialog_wrapper{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:99999;background-color:rgba(0,0,0,.7);border-radius:4px;padding:31px 52px;color:#fff;max-width:27em;text-align:center;display:none}.ClassroomTeacherDispatcher.dialog_wrapper .dialog_content{font-size:.75em;font-family:"微软雅黑";font-style:normal;line-height:1.5}.ClassroomTeacherDispatcher.dialog_wrapper .dialog_content .txt{display:inline-block;text-align:left;word-break:break-all;word-wrap:break-word}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="ClassroomTeacherDispatcher dialog_wrapper"><div class="dialog_content"><div class="txt">当前没有学生在线，请检查学生端状态</div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonClassroomTeacherDispatcher_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+/**
+ * 老师端习题服务
+ *
+ * @version 3.1.0
+ * @since 2016-11-16 14:18:33
+ * @description 增加重新发题
+ */
+
+var FROM_NATIVE_EVENT_NAME = 'ExamCallback';
+var TO_NATIVE_EVENT_NAME = 'Exam';
+var FROM_H5_EVENT_NAME = 'Exam';
+
+var bridgeListener;
+
+var self;
+
+function ExamService(parent) {
+    this.parent = parent;
+    this.log = function (message) {
+        parent.log("[习题]" + message);
+    };
+    this.warn = function (message) {
+        parent.warn("[习题]" + message);
+    };
+    this.sendH5 = parent.sendH5;
+    this.sendNative = parent.sendNative;
+
+    self = this;
+    if (typeof Bridge !== "undefined" && Bridge && Bridge.registerListener) {
+        bridgeListener = Bridge.registerListener(FROM_NATIVE_EVENT_NAME, function (eventData) {
+            var type = eventData && eventData.type;
+            self.log("老师端处理ExamCallback {type=" + type + "} 事件内容：" + JSON.stringify(eventData));
+            if (type && type.trim().length > 1) {
+                var methodName = type;
+                methodName = "on" + methodName[0].toUpperCase() + methodName.substring(1, methodName.length);
+                if ($.isFunction(self[methodName])) {
+                    self[methodName].call(self, eventData);
+                    return;
+                }
+            }
+            if (typeof type !== "undefined") {
+                self.warn("找不到type=" + type + "的处理器。");
+            } else {
+                self.warn("缺失type字段，无法找到处理器。")
+            }
+        });
+    }
+
+    // 注册相关Flow
+    this.playerController = parent.playerController;
+    this.eventBus = this.playerController.getEventBus();
+
+    if (this.eventBus) {
+        this.eventBus.addEventListener(FROM_H5_EVENT_NAME, self);
+    }
+
+    self.flowHandlers = {
+        exerciseStart: {
+            eventName: TO_NATIVE_EVENT_NAME,
+            sendToNative: true,
+            invokeFromNative: true,
+            invokeFromH5: true,
+            processCallback: self.createEventCallback("exerciseStart", "start"),
+            afterSuccess: function (eventData, originalData) {
+                self.sendH5("ExerciseInfo", originalData.value);
+                return true;
+            }
+        },
+        exerciseRedo: {
+            eventName: TO_NATIVE_EVENT_NAME,
+            sendToNative: true,
+            invokeFromNative: true,
+            invokeFromH5: true,
+            processCallback: self.createEventCallback("exerciseRedo", "continueToDo")
+        },
+        exerciseReset: {
+            eventName: TO_NATIVE_EVENT_NAME,
+            sendToNative: true,
+            invokeFromNative: true,
+            invokeFromH5: true,
+            //这个地方比较特殊， type=start，因为sdk那边没有按协议返回reDo的回调，而是按start流程来处理。
+            processCallback: self.createEventCallback("exerciseReset", "start"),
+            afterSuccess: function (eventData, originalData) {
+                self.sendH5("ExerciseInfo", originalData.value);
+                return true;
+            }
+        },
+    };
+
+    // 注册业务流
+    self.IcrFlows = {
+        //开始题目练习
+        exerciseStart: {
+            dataParse: "getExerciseData",
+            validate: function (data) {
+                return self.validateExercise(data.scope, data);
+            },
+            done: self.exerciseStartDone
+        },
+        //开始工具练习
+        exerciseToolStart: {
+            dataParse: "getExerciseData",
+            validate: function (data) {
+                return self.validateExercise(data.scope || ["tool", "common"], data);
+            },
+            done: self.exerciseStartDone
+        },
+        //退出练习
+        exerciseExit: {
+            validate: function () {
+                return {
+                    "type": "exit",
+                    "value": {}
+                };
+            },
+            done: self.exerciseExitDone
+        },
+        //继续做题
+        exerciseRedo: {
+            validate: function () {
+                return true;
+            },
+            done: self.exerciseRedoDone
+        },
+        exerciseReset: {
+            dataParse: "getExerciseData",
+            validate: function (data) {
+                return self.validateExercise(data.scope, data);
+            },
+            done: self.exerciseResetDone
+        }
+    };
+    for (var k in self.flowHandlers) {
+        self.flowHandlers[k] = $.extend({}, self.parent.CallbackHandler, self.flowHandlers[k]);
+    }
+    if (this.playerController.registerFlow) {
+        for (var key in self.IcrFlows) {
+            this.playerController.registerFlow(key, self.IcrFlows[key]);
+        }
+    }
+};
+
+ExamService.prototype = {
+    onEventReceived: function (eventName, eventData) {
+        self.log("收到h5的事件:" + eventName + ", 事件内容：" + JSON.stringify(eventData));
+        switch (eventName) {
+            case FROM_H5_EVENT_NAME:
+                self["handleTeacherExam"].call(self, eventData);
+                break;
+            default:
+                self.warn("无法处理的事件");
+                break;
+        }
+    },
+    /**
+     * 练习事件处理
+     *
+     * @public
+     * @param    {Object} eventData  事件参数
+     */
+    handleTeacherExam: function (eventData) {
+        var type = eventData.type;
+        switch (type) {
+            case "show":
+                self.playerController.startFlow("exerciseStart", {
+                    scope: ["page", "common"]
+                });
+                break;
+            case "hide":
+                self.log("关闭随堂练习");
+                self.playerController.startFlow("exerciseExit");
+                break;
+            default:
+                self.warn("无法处理的事件" + type);
+                break;
+        }
+    },
+    /**
+     * 通知随堂练习状态变更
+     */
+    notifyExerciseStateChange: function (type, value, result) {
+        value = value || {};
+        value.result = false !== result; // 默认值为true
+        self.sendH5("exerciseStateChange", {
+            type: type,
+            value: value
+        });
+    },
+    // 销毁
+    destroy: function () {
+        if (typeof Bridge !== "undefined" && Bridge && Bridge.unregisterListener) {
+            Bridge.unregisterListener(FROM_NATIVE_EVENT_NAME, bridgeListener);
+        }
+    },
+    // 开始
+    onStart: function (eventData) {
+        // 来自Native的消息，数据存放在data.value中
+        var value = eventData.value;
+
+        if (!value) {
+            self.warn("无有效value");
+            return;
+        }
+        if (value.result) {
+            var data = value.data;
+            var elapsedTime = data ? data.elapsedTime : 0;
+            var startTimestamp = data.startTimestamp;
+            var questionType = data.questionType;
+            var pageName = data.questionId;
+            var examId = data.examId;
+
+            self.sendH5("DefQuizProcess", {
+                item: eventData.item,
+                value: {
+                    questionId: pageName,
+                    questionType: questionType,
+                    url: data.url,
+                    elapsedTime: elapsedTime,
+                    startTimestamp: startTimestamp,
+                    examId: examId
+                }
+            });
+
+            self.sendH5("DefGameQuestion", {
+                type: "reset"
+            });
+
+            self.notifyExerciseStateChange("start", {
+                startTimestamp: startTimestamp,
+                examId: examId
+            });
+        } else {
+            self.notifyExerciseStateChange("start", {}, false);
+        }
+
+    }, // 结束
+    onStop: function (eventData) {
+        // 来自Native的消息，数据存放在data.value中
+        var value = eventData.value;
+
+        if (!value) {
+            self.warn("无有效value");
+            return;
+        }
+        // 结束成功
+        if (value.result) {
+            var data = value.data;
+            var stopTimestamp = data.stopTimestamp;
+            var examId = data.examId;
+            //添加课堂状态缓存  --收卷中
+            self.notifyExerciseStateChange("stop", {
+                stopTimestamp: stopTimestamp,
+                examId: examId
+            });
+        } else {
+            self.notifyExerciseStateChange("stop", {}, false);
+        }
+    },
+    /**
+     * 公布结果
+     */
+    onResult: function (eventData) {
+        // 来自Native的消息，数据存放在data.value中
+        var value = eventData.value;
+
+        if (!value) {
+            self.warn("无有效value");
+            return;
+        }
+        if (value.result) {
+            var data = value.data;
+            self.notifyExerciseStateChange("result", {
+                examId: data ? data.examId || "" : ""
+            });
+        } else {
+            self.notifyExerciseStateChange("result", {}, false);
+        }
+    },
+    /**
+     * 退出练习
+     */
+    exerciseExitDone: function (data, successFn, failFn) {
+        self.log("老师端关闭随堂练习界面");
+        self.sendNative(TO_NATIVE_EVENT_NAME, data);
+        self.notifyExerciseStateChange("exit", {});
+        // 隐藏答题过程
+        self.sendH5("QuizProcess", {
+            type: "hide"
+        });
+        // 隐藏答题统计
+        self.sendH5("QuizStatistics", {
+            type: "hide"
+        });
+        successFn();
+    },
+    /**
+     * 发题
+     *
+     * @param data
+     * @param success
+     * @param fail
+     */
+    exerciseStartDone: function (data, success, fail, type) {
+        //默认是开始发题
+        type = type || 'start';
+        var questionInfo = data.questionInfo;
+        var pageName = "";
+        if (self.isPage(data.scope)) {
+            var ps = self.playerController;
+            var presentation = ps.getPresentation();
+            var page;
+            if (typeof presentation.getCurrentPage === 'function' && presentation.getCurrentPage().getName) {
+                page = presentation.getCurrentPage();
+            } else {
+                page = presentation.getPage(ps.getCurrentPageIndex());
+            }
+            pageName = page.getName();
+        }
+
+        var startTimestamp = ClassroomUtils.getMasterSystemTimeMS();
+        if (!startTimestamp) {
+            self.warn("获取到的开始练习时间戳为空。无法下发题目");
+            return;
+        }
+        //exam
+        var parsedData = {
+            type: type,
+            item: questionInfo.item,
+            value: {
+                url: questionInfo.url,
+                questionType: questionInfo.type_code,
+                questionId: pageName,
+                randomSeed: questionInfo.randomSeed,
+                dispatchOnly: questionInfo.dispatchOnly || false,
+                startTimestamp: startTimestamp,
+                questionInfo: questionInfo
+            }
+        };
+        if (data.extraData) {
+            self.fillExtraData(parsedData, data.extraData);
+        }
+        self.notifyExerciseStateChange("mockStart", {
+            startTimestamp: startTimestamp
+        });
+        var eventData = parsedData || {};
+        if (type === 'start') {
+            self.flowHandlers["exerciseStart"].init(parsedData, success, fail);
+        } else {
+            self.flowHandlers["exerciseReset"].init(parsedData, success, fail);
+        }
+        self.sendNative(TO_NATIVE_EVENT_NAME, eventData);
+    },
+    // 校验随堂练习数据
+    validateExercise: function (scope, data) {
+        self.log("校验随堂练习数据" + data);
+
+        // 检测互动课堂环境
+        if ($.isFunction(icCreatePlayer.detector.isEnvLoaded) && icCreatePlayer.detector.isEnvLoaded() === false) {
+            self.parent.showMessage(self.parent.getMessage("NO_STUDENT_ONLINE"), 3000);
+            return false;
+        }
+
+        // 检查是否有学生在线
+        if ($.isFunction(icCreatePlayer.detector.isOnline) && icCreatePlayer.detector.isOnline() === false) {
+            self.parent.showMessage(self.parent.getMessage("NO_STUDENT_ONLINE"), 3000);
+            return false;
+        }
+
+        if (data && data.questionInfo) {
+            var questionInfo = data.questionInfo;
+            if (typeof questionInfo.url !== "undefined" && typeof questionInfo.url !== "string") {
+                self.warn("习题URL必须为字符串");
+                return false;
+            }
+            if (!questionInfo.type_code || !questionInfo.type_name) {
+                self.warn("缺少type_code或type_name参数");
+                return false;
+            }
+            return data;
+        } else {
+            if (self.isPage(scope)) {
+                var result = self.scanPageModules();
+                var questionInfos = result.questionInfos;
+                var extraDatas = result.extraDatas;
+
+                data = {
+                    scope: scope
+                };
+                var questionInfo;
+                if (questionInfos.length > 0) {
+                    questionInfo = questionInfos[0]; // 只取得第一个questionInfo
+                }
+                if (questionInfo) {
+                    if (typeof questionInfo.url !== "undefined" && typeof questionInfo.url !== "string") {
+                        self.warn("习题URL必须为字符串");
+                        return false;
+                    }
+                    if (questionInfo.statistics_type == "no_need") {
+                        questionInfo.notExistStatistics = true;
+                    }
+                    data.questionInfo = questionInfo;
+                    if (extraDatas.length > 0) {
+                        data.extraData = extraDatas[0];
+                    }
+                    return data;
+                }
+            }
+        }
+        return false;
+    },
+    /**
+     * 当前流程是否来自Page
+     */
+    isPage: function (scope) {
+        if ($.isArray(scope) && scope.indexOf("page") >= 0) {
+            return true;
+        } else if (typeof scope === 'string' && scope === "page") {
+            return true;
+        }
+        return false;
+    },
+    /**
+     * 填充额外数据
+     */
+    fillExtraData: function (options, extraData) {
+        if (extraData) {
+            options.value.files = [];
+            var extendData = {};
+            var eventName = extraData.eventName;
+            if (eventName) {
+                var eventData = extraData.eventData;
+                if (eventData && eventData.files) {
+                    var files = eventData.files;
+                    for (var i = 0; i < files.length; ++i) {
+                        options.value.files.push({
+                            "type": "resource",
+                            "source": "event",
+                            "url": files[i]
+                        });
+                    }
+                }
+                extendData.eventName = eventName;
+                extendData.eventData = eventData;
+            }
+            var toolKey = extraData.toolKey;
+            if (toolKey) {
+                var toolOptions = extraData.toolOptions;
+                if (toolOptions && toolOptions.files) {
+                    var toolFiles = toolOptions.files;
+                    for (var j = 0; j < toolFiles.length; ++j) {
+                        toolFiles[j].source = "tool";
+                        options.value.files.push(toolFiles[j]);
+                    }
+                }
+                extendData.toolKey = toolKey;
+                extendData.toolOptions = toolOptions;
+            }
+            options.value.extendData = JSON.stringify(extendData);
+        }
+    },
+    /**
+     * 获取指定页面题目集合
+     */
+    scanPageModules: function () {
+        var ps = self.playerController;
+        var questions = [];
+        var questionInfos = [];
+        var extraDatas = [];
+        if (ps.eachPresenter) {
+            ps.eachPresenter(function (module) {
+                try {
+                    self.getQuestionInfoAndExtraData(module.presenter, questionInfos, extraDatas);
+                } catch (ex) {
+                    self.warn("获取习题数据失败");
+                    self.warn(ex);
+                }
+            }, "page");
+        } else {
+            self.warn("controller没有eachPresenter方法，无法获取题目信息");
+        }
+        return {
+            questions: questions,
+            questionInfos: questionInfos,
+            extraDatas: extraDatas
+        };
+    },
+    /**
+     * 获取questionInfo和extraData数据
+     */
+    getQuestionInfoAndExtraData: function (module, questionInfos, extraDatas) {
+        self.getDataAndPushToList(module, "getQuestionInfo", questionInfos);
+        self.getDataAndPushToList(module, "getExtraData", extraDatas);
+    },
+    /**
+     * 监测某个对象是否有实现对应方法，如果有且返回了有效的结果，则加入list
+     */
+    getDataAndPushToList: function (obj, methodName, list) {
+        var fn = obj[methodName];
+        if ($.isFunction(fn)) {
+            var result = fn.apply(obj);
+            if (result && $.isArray(list)) {
+                list.push(result);
+            }
+            return result;
+        }
+    },
+    // 创建监听器的事件回调
+    createEventCallback: function (flowHandlerKey, type) {
+        return function (eventData) {
+            if (eventData && eventData.type === type && eventData.value) {
+                if (eventData.value.result) {
+                    return self.flowHandlers[flowHandlerKey].onSuccess(eventData);
+                } else {
+                    return self.flowHandlers[flowHandlerKey].onFail(eventData);
+                }
+            } else {
+                return false;
+            }
+        }
+    },
+    /**
+     * 继续做题
+     *
+     * @param data
+     * @param success
+     * @param fail
+     */
+    exerciseRedoDone: function (data, success, fail) {
+        self.log("exerciserRedo流done执行..");
+        self.flowHandlers["exerciseRedo"].init({}, success, fail);
+        self.sendNative(TO_NATIVE_EVENT_NAME, {
+            source: "CTD",
+            type: "continueToDo"
+        });
+        self.log("向native发出了Exam continueToDo事件.");
+    },
+    /**
+     * 重新做题
+     *
+     * @param data
+     * @param success
+     * @param fail
+     */
+    exerciseResetDone: function (data, success, fail) {
+        self.log("exerciseResetDone流done执行..");
+        self.exerciseStartDone(data, success, fail, 'reDo');
+        self.log("向native发出了Exam reDo事件.");
+    }
+
+};
+
+module.exports = ExamService;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 教师分发器
+ * @version  3.1.0
+ * @since    2016-8-26 15:23:07
+ *
+ */
+module.exports = function AddonClassroomTeacherDispatcher_create() {
+
+    var presenter = function () {};
+
+    var self = this;
+
+    // 对话框选择器
+    var DIALOG_SELECTOR = ".ClassroomTeacherDispatcher.dialog_wrapper";
+    // 国际化信息
+    var MESSAGES = {
+        NO_STUDENT_ONLINE: "当前没有学生在线，请检查学生端状态"
+    };
+
+    // 是否App端
+    presenter.isApp = ClassroomUtils.isApp();
+
+    /**
+     * 保存playerController
+     *
+     * @public
+     * @param {Object} controller icPlayer的PlayerController对象
+     */
+    presenter.setPlayerController = function (controller) {
+        presenter.playerController = controller;
+        presenter.eventBus = presenter.playerController.getEventBus();
+    };
+
+    /**
+     * 触发事件
+     *
+     * @param {string} eventName 事件名t称
+     * @param {Object} eventData 可选参数
+     * @param {string} eventData.item
+     * @param {string} eventData.value
+     * @param {string} eventData.type
+     * @param {string} eventData.isH5
+     * @param {boolean} isNative 如果该参数为真，则会给App端发送事件
+     */
+    var fireEvent = function (eventName, eventData, isNative) {
+        var option = eventData ? eventData : {};
+        option.source = eventData.source || presenter.model.ID;
+        option.isApp = !!isNative;
+        ClassroomUtils.fireEvent(eventName, option);
+        ClassroomUtils.log("发出的事件 eventName：" + eventName + "" + JSON.stringify(option));
+    };
+
+    /**
+     * 发送事件给Native
+     * @param {string} eventName
+     * @param {Object} eventData
+     */
+    presenter.sendNative = function (eventName, eventData) {
+        fireEvent(eventName, eventData, true);
+    };
+
+    /**
+     * 发送事件给H5
+     * @param {string} eventName
+     * @param {Object} eventData
+     */
+    presenter.sendH5 = function (eventName, eventData) {
+        fireEvent(eventName, eventData, false);
+    };
+
+    /**
+     * 销毁事件
+     */
+    presenter.destroy = function () {
+        if (this._examService) {
+            this._examService.destroy();
+        }
+    };
+
+    /**
+     * 记录日志
+     */
+    presenter.log = function (message) {
+        ClassroomUtils.log("[CTD][info]: " + message);
+        console.log("[CTD]: " + message);
+    };
+
+
+    /**
+     * 异常日志
+     */
+    presenter.warn = function (message) {
+        ClassroomUtils.log("[CTD][error]: " + message);
+        console.warn("[CTD]: " + message);
+    };
+
+    /**
+     * 播放
+     *
+     * @public
+     * @param {Object} view 视图DOM对象
+     * @param {Object} model 参数数据
+     */
+    presenter.run = function (view, model) {
+        //module 信息
+        presenter.model = model;
+        presenter.view = view;
+
+        // 同步、习题
+        var ExamService = __webpack_require__(0);
+        this._examService = new ExamService(this);
+    };
+
+    /**
+     * 翻页时重置状态
+     */
+    presenter.pageChange = function () {
+        presenter.log("翻页");
+        if (presenter.playerController && presenter.playerController.mediaPause) {
+            presenter.playerController.mediaPause();
+        }
+    };
+
+    // 监听处理器基类(未使用)
+    presenter.CallbackHandler = {
+        _data: null, // 原始数据
+        _successCallback: null, // 成功时执行的回调
+        _failCallback: null, // 失败时执行的回调
+        _bridgeListenerKey: null,
+        _live: false, // 激活标识，同时间只能执行一个flow
+        // 如果连续startFlow多次，由于无法区分不同flow的回调，在done时只会执行最后一次flow的回调。
+
+        // 初始化
+        init: function (data, successCallback, failCallback) {
+            this._live = true;
+            this._data = data;
+            this._successCallback = successCallback;
+            this._failCallback = failCallback;
+            var self = this;
+            if (this.invokeFromNative && !this._bridgeListenerKey) {
+                this._bridgeListenerKey = Bridge.registerListener(this.eventName + "Callback", function (eventData) {
+                    self.onCallback(eventData);
+                });
+            }
+            if (this.invokeFromH5) {
+                presenter.eventBus.addEventListener(this.eventName + "Callback", presenter);
+            }
+        },
+        // 销毁
+        destroy: function () {
+            this._live = false;
+            if (this._bridgeListenerKey) {
+                Bridge.unRegisterListener(this.eventName + "Callback", this._bridgeListenerKey);
+                this._bridgeListenerKey = null;
+            }
+        },
+        isLive: function () {
+            return this._live;
+        },
+        // 回调
+        onCallback: function (eventData) {
+            if (this.processCallback(eventData)) {
+                this.destroy();
+            }
+        },
+        // 默认的执行回调（直接执行成功）
+        processCallback: function (eventData) {
+            return this.onSuccess(eventData);
+        },
+        // 成功时执行的回调
+        onSuccess: function (eventData) {
+            var isResult = true;
+            if (this.beforeSuccess) {
+                isResult = isResult && this.beforeSuccess(eventData, this._data);
+            }
+            if (this._successCallback) {
+                isResult && this._successCallback(eventData, this._data);
+            }
+            if (this.afterSuccess) {
+                isResult = isResult && this.afterSuccess(eventData, this._data);
+            }
+            return isResult;
+        },
+        // 失败时执行的回调
+        onFail: function (eventData) {
+            var isResult = true;
+            if (this.beforeFail) {
+                isResult = isResult && this.beforeFail(eventData, this._data);
+            }
+            if (this._failCallback) {
+                isResult && this._failCallback(eventData, this._data);
+            }
+            if (this.afterFail) {
+                isResult = isResult && this.afterFail(eventData, this._data);
+            }
+            return isResult;
+        }
+    };
+
+    /**
+     * 显示对话框
+     */
+    presenter.showMessage = function (msg, timeout) {
+        var $selector = $(presenter.view).find(DIALOG_SELECTOR);
+        $selector.find(".txt").text(msg);
+        $selector.show().delay(3000).hide(0);
+    };
+
+    /**
+     * 国际化
+     */
+    presenter.setLocationProperties = function (properties) {
+        MESSAGES = properties;
+    };
+
+    /** 
+     * 返回国际化信息
+     */
+    presenter.getMessage = function (key) {
+        return MESSAGES[key];
+    };
+
+    return presenter;
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_HK/lang.json' />
+
+
+</resources>
+
+</addon>

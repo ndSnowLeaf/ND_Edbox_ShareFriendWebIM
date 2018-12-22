@@ -1,0 +1,1074 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TemporaryQuestionFuncitonal'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="objective-statistics-remake" version="1.5.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.nqti-player-skin-wood .nqti-base-temporary .nqti-module-content{margin:0 1.83333em 0 0;height:31em}.nqti-player-skin-wood .temporary-base__wrap--option{text-align:center;flex:1;display:flex;align-items:center;justify-content:center}.nqti-player-skin-wood .temporary-base__btn--option{display:inline-block;margin:2.91667em 3.75em;position:relative;min-width:12.16667em;padding:0 1.58333em;height:4.83333em;line-height:4.83333em;color:#5d390d;text-align:center;border-radius:4.83333em;background:-webkit-linear-gradient(top,#fcfcfc,#e6e6e6);background:linear-gradient(180deg,#fcfcfc,#e6e6e6);box-shadow:0 2px 2px rgba(4,0,0,.2),2px -2px 1px #eee9e1,-2px 0 1px #eee9e1}.nqti-player-skin-wood .temporary-base__btn--option .btn-text{font-style:normal;font-size:2.5em}.nqti-player-skin-wood .temporary-base__btn--option.ui-btn-active,.nqti-player-skin-wood .temporary-base__btn--option.ui_btn_active{color:#fe9a0e}.nqti-player-skin-wood .temporary-base__btn--option.ui-btn-active:before,.nqti-player-skin-wood .temporary-base__btn--option.ui_btn_active:before{content:"";position:absolute;left:0;top:0;right:0;bottom:-.08333em;border-radius:4.83333em;border:.125em solid #fe9a0e;box-shadow:0 0 0 1px #ffd200,inset 0 0 0 1px #ffd200}.temporary-base{height:100%;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-flow:column;flex-flow:column}.nqti-player-skin-wood .temporary-base__title{color:#603300;height:3.5em;border-bottom:4px double #ababab;padding:0}.nqti-player-skin-wood .temporary-base__title .t{font-size:2.08333em;color:#333;line-height:1.1}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="nqti-player-skin-wood temporary-base _temporary_question_container"><temporary-title></temporary-title><temporary-question-page :question-code="questionCode"></temporary-question-page></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UPDATE_MULTIPLE_ANSWER = 'updateMultipleAnswer';
+exports.UPDATE_JUDGMENT_ANSWER = 'updateJudgmentAnswer';
+exports.UPDATE_SINGLE_ANSWER = 'updateSingleAnswer';
+exports.LOCK = 'lock';
+exports.UPDATE_T_ANSWER = 'updateTAnswer';
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(3);
+var vue_class_component_1 = __webpack_require__(2);
+var TemporaryTitle = (function (_super) {
+    __extends(TemporaryTitle, _super);
+    function TemporaryTitle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TemporaryTitle.prototype.created = function () {
+        this.$set(this.title, 'info', this.presenter.i18nModel['title.info'] || "请选择正确的答案");
+    };
+    return TemporaryTitle;
+}(Vue));
+TemporaryTitle = __decorate([
+    vue_class_component_1.default({
+        name: 'TemporaryTitle',
+        template: __webpack_require__(11),
+        data: function () {
+            return {
+                title: {
+                    info: '',
+                    colon: ' :'
+                }
+            };
+        },
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+        }))
+    })
+], TemporaryTitle);
+exports.default = TemporaryTitle;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+function default_1(presenter) {
+    var parent = presenter;
+    var isApp = presenter.Environment.isApp;
+    return {
+        getQuestionInfo: function () {
+            if (isApp) {
+                var model = parent.model;
+                return {
+                    id: model.questionId,
+                    type_code: 'TemporaryQuestionFuncitonal',
+                    type_name: '口头作答',
+                    item: "TemporaryQuestionFuncitonal",
+                    url: model.questionId,
+                    dispatchOnly: true
+                };
+            }
+        },
+        showAnswer: function (type, answer) {
+            if (isApp) {
+                if (type === 'user') {
+                    parent.$vueRoot.$store.commit(types.LOCK, true);
+                    parent.isLock = true;
+                    parent.$vueRoot.$store.commit(types.UPDATE_T_ANSWER, answer.answer.user_response[0]['RESPONSE_1-1'].value);
+                    console.log(answer);
+                }
+                else if (type === 'correct') {
+                    console.log("show answer");
+                }
+            }
+        },
+        getResult: function () {
+            var model = parent.model;
+            var value = [];
+            if (isApp) {
+                value = parent.$vueRoot.$store.state[model.questionCode].answer;
+            }
+            var userResponse = [{
+                    'RESPONSE_1-1': {
+                        "state": "FAILED",
+                        "value": value
+                    }
+                }];
+            var result = {
+                questionId: model.questionId,
+                answerState: value.length > 0 ? 'COMPLETE' : 'NO_ANSWER',
+                answer: {
+                    answer_result: false,
+                    correct_response: [],
+                    user_response: userResponse
+                }
+            };
+            return $.extend(true, {}, result);
+        },
+        showResultHint: function () {
+            console.log("show result hint");
+        },
+        lockQuestion: function () {
+            if (isApp) {
+                console.log("lock question");
+                parent.$vueRoot.$store.commit(types.LOCK, true);
+                parent.isLock = true;
+            }
+        },
+        unlockQuestion: function () {
+            if (isApp) {
+                console.log("unlock question");
+                parent.$vueRoot.$store.commit(types.LOCK, false);
+                parent.isLock = false;
+            }
+        },
+        finishQuestion: function () {
+            console.log("finish question");
+        },
+        resetQuestion: function () {
+            console.log('reset question');
+        },
+        getStatisticClass: function () {
+            return "A";
+        },
+        convertDataForStatistics: function (oriData) {
+            var qtiAssessmentModel = {
+                "choice": {
+                    "correctAnswer": {
+                        "RESPONSE_1-1": {
+                            "baseType": "identifier",
+                            "cardinality": "single",
+                            "identifier": "RESPONSE_1-1",
+                            "value": []
+                        }
+                    },
+                    "modelMap": {
+                        "RESPONSE_1-1": {
+                            "modelId": "RESPONSE_1-1",
+                            "questionType": "choice",
+                            "simpleChoice": [
+                                {
+                                    "identifier": "A"
+                                },
+                                {
+                                    "identifier": "B"
+                                },
+                                {
+                                    "identifier": "C"
+                                },
+                                {
+                                    "identifier": "D"
+                                },
+                                {
+                                    "identifier": "E"
+                                },
+                                {
+                                    "identifier": "F"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "multichoice": {
+                    "correctAnswer": {
+                        "RESPONSE_1-1": {
+                            "baseType": "identifier",
+                            "cardinality": "multiple",
+                            "identifier": "RESPONSE_1-1",
+                            "value": []
+                        }
+                    },
+                    "modelMap": {
+                        "RESPONSE_1-1": {
+                            "modelId": "RESPONSE_1-1",
+                            "questionType": "multiplechoice",
+                            "simpleChoice": [
+                                {
+                                    "identifier": "A"
+                                },
+                                {
+                                    "identifier": "B"
+                                },
+                                {
+                                    "identifier": "C"
+                                },
+                                {
+                                    "identifier": "D"
+                                },
+                                {
+                                    "identifier": "E"
+                                },
+                                {
+                                    "identifier": "F"
+                                }
+                            ]
+                        }
+                    }
+                },
+                "judge": {
+                    "correctAnswer": {
+                        "RESPONSE_1-1": {
+                            "baseType": "identifier",
+                            "cardinality": "single",
+                            "identifier": "RESPONSE_1-1",
+                            "value": []
+                        }
+                    },
+                    "modelMap": {
+                        "RESPONSE_1-1": {
+                            "modelId": "RESPONSE_1-1",
+                            "questionType": "judge",
+                            "simpleChoice": [
+                                {
+                                    "identifier": "YES"
+                                },
+                                {
+                                    "identifier": "NO"
+                                }
+                            ]
+                        }
+                    }
+                }
+            };
+            if (window.__questionStatObjects && window.__questionStatObjects.choiceStatistics) {
+                oriData.questionInfo = { 'questionType': oriData.value.questionType, 'dynamic': true };
+                oriData.value.questionType = parent.model.questionCode;
+                oriData.QtiAssessmentModel = qtiAssessmentModel[oriData.value.questionType];
+                window.__questionStatObjects.choiceStatistics.init(oriData);
+                oriData.value["convertedData"] = window.__questionStatObjects.choiceStatistics.statisticsData;
+                return oriData;
+            }
+        },
+        startStatistics: function () {
+            console.log('start statistics');
+        },
+        setLocationProperties: function (i18nModel) {
+            if (isApp) {
+                parent.i18nModel = i18nModel;
+            }
+        }
+    };
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vuex = __webpack_require__(3);
+var types = __webpack_require__(0);
+var multiple_1 = __webpack_require__(18);
+var single_1 = __webpack_require__(19);
+var judgment_1 = __webpack_require__(17);
+exports.default = function (presenter) {
+    return new Vuex.Store({
+        state: {
+            presenter: presenter,
+            isLock: false
+        },
+        modules: {
+            multichoice: multiple_1.default(presenter),
+            choice: single_1.default(presenter),
+            judge: judgment_1.default(presenter)
+        },
+        mutations: (_a = {},
+            _a[types.LOCK] = function (state, isLock) {
+                state.isLock = isLock;
+                console.log('执行了Mutation：【LOCK】');
+            },
+            _a)
+    });
+    var _a;
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vue_class_component_1 = __webpack_require__(2);
+var MultipleQuestion_1 = __webpack_require__(14);
+var SingleQuestion_1 = __webpack_require__(15);
+var JudgmentQuestion_1 = __webpack_require__(13);
+var TemporaryQuestionPage = (function (_super) {
+    __extends(TemporaryQuestionPage, _super);
+    function TemporaryQuestionPage() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    TemporaryQuestionPage.prototype.viewClickHandler = function (e) {
+        console.log('you click me');
+    };
+    return TemporaryQuestionPage;
+}(Vue));
+TemporaryQuestionPage = __decorate([
+    vue_class_component_1.default({
+        name: 'TemporaryQuestionPage',
+        template: __webpack_require__(12),
+        props: ['questionCode'],
+        components: {
+            'multiple-question': MultipleQuestion_1.default,
+            'single-question': SingleQuestion_1.default,
+            'judgment-question': JudgmentQuestion_1.default
+        }
+    })
+], TemporaryQuestionPage);
+exports.default = TemporaryQuestionPage;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=temporary-base__block--option><a href=javascript:; class=temporary-base__btn--option v-for=\"(value,key,index) in choices\" @click=toggleItemSelectedState(key) v-bind:class=\"{ 'ui_btn_active': choices[key] }\"><em class=btn-text>{{ key }}</em></a></div>"
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=temporary-base__block--option><a href=javascript:; class=temporary-base__btn--option v-for=\"(value,key,index) in choices\" @click=toggleItemSelectedState(key); v-bind:class=\"{ 'ui_btn_active': choices[key] }\"><em class=btn-text>{{ key }}</em></a></div>"
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=temporary-base__block--option><a href=javascript:; class=temporary-base__btn--option v-for=\"(value,key,index) in choices\" @click=toggleItemSelectedState(key) v-bind:class=\"{ 'ui_btn_active': choices[key] }\"><em class=btn-text>{{ key }}</em></a></div>"
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=temporary-base__title><div class=t>{{ title.info }}{{ title.colon }}</div></div>"
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=temporary-base__wrap--option @click=viewClickHandler><multiple-question v-if=\"questionCode === 'multichoice'\"></multiple-question><single-question v-else-if=\"questionCode === 'choice'\"></single-question><judgment-question v-else-if=\"questionCode === 'judge'\"></judgment-question></div>"
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(3);
+var vue_class_component_1 = __webpack_require__(2);
+var types = __webpack_require__(0);
+var JudgmentQuestion = (function (_super) {
+    __extends(JudgmentQuestion, _super);
+    function JudgmentQuestion() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return JudgmentQuestion;
+}(Vue));
+JudgmentQuestion = __decorate([
+    vue_class_component_1.default({
+        name: 'JudgmentQuestion',
+        template: __webpack_require__(8),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            isLock: function (state) { return state.isLock; },
+            choices: function (state) { return state.judge.choices; }
+        })),
+        methods: {
+            toggleItemSelectedState: function (key) {
+                if (this.presenter.isLock) {
+                    return;
+                }
+                if (this.choices[key]) {
+                    return;
+                }
+                for (var choiceKey in this.choices) {
+                    if (key !== choiceKey && this.choices[choiceKey]) {
+                        this.choices[choiceKey] = false;
+                    }
+                }
+                this.choices[key] = true;
+                this.$store.commit({
+                    type: types.UPDATE_JUDGMENT_ANSWER,
+                    choices: this.choices
+                });
+                this.presenter.dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: true
+                });
+                console.log("\u9009\u9879\u201C " + key + " \u201D\u5207\u6362\u4E3A\uFF1A" + this.choices[key]);
+            }
+        }
+    })
+], JudgmentQuestion);
+exports.default = JudgmentQuestion;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(3);
+var vue_class_component_1 = __webpack_require__(2);
+var types = __webpack_require__(0);
+var MultipleQuestion = (function (_super) {
+    __extends(MultipleQuestion, _super);
+    function MultipleQuestion() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MultipleQuestion.prototype.beforeCreate = function () {
+        var d = new Date();
+        console.log("run beforeCreate " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.created = function () {
+        var d = new Date();
+        console.log("run created " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.beforeMount = function () {
+        var d = new Date();
+        console.log("run beforeMount " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.mounted = function () {
+        var d = new Date();
+        console.log("run mounted " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.beforeUpdate = function () {
+        var d = new Date();
+        console.log("run beforeUpdate " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.updated = function () {
+        var d = new Date();
+        console.log("run updated " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.beforeDestroy = function () {
+        var d = new Date();
+        console.log("run beforeDestroy " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    MultipleQuestion.prototype.destroyed = function () {
+        var d = new Date();
+        console.log("run destroyed " + d.getHours() + " - " + d.getMinutes() + " - " + d.getSeconds());
+    };
+    return MultipleQuestion;
+}(Vue));
+MultipleQuestion = __decorate([
+    vue_class_component_1.default({
+        name: 'MultipleQuestion',
+        template: __webpack_require__(9),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            isLock: function (state) { return state.isLock; },
+            choices: function (state) { return state.multichoice.choices; }
+        })),
+        methods: {
+            toggleItemSelectedState: function (key) {
+                if (this.presenter.isLock) {
+                    return;
+                }
+                this.choices[key] = !this.choices[key];
+                this.$store.commit({
+                    type: types.UPDATE_MULTIPLE_ANSWER,
+                    choices: this.choices
+                });
+                var isNoneSelected = true;
+                for (var key_1 in this.choices) {
+                    if (this.choices[key_1]) {
+                        isNoneSelected = false;
+                        break;
+                    }
+                }
+                if (isNoneSelected) {
+                    this.presenter.dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                        canSubmit: false
+                    });
+                }
+                else {
+                    this.presenter.dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                        canSubmit: true
+                    });
+                }
+                console.log("\u9009\u9879\u201C " + key + " \u201D\u5207\u6362\u4E3A\uFF1A" + this.choices[key]);
+            }
+        }
+    })
+], MultipleQuestion);
+exports.default = MultipleQuestion;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || Object.assign || function(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+            t[p] = s[p];
+    }
+    return t;
+};
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(3);
+var vue_class_component_1 = __webpack_require__(2);
+var types = __webpack_require__(0);
+var SingleQuestion = (function (_super) {
+    __extends(SingleQuestion, _super);
+    function SingleQuestion() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return SingleQuestion;
+}(Vue));
+SingleQuestion = __decorate([
+    vue_class_component_1.default({
+        name: 'SingleQuestion',
+        template: __webpack_require__(10),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            isLock: function (state) { return state.isLock; },
+            choices: function (state) { return state.choice.choices; }
+        })),
+        methods: {
+            toggleItemSelectedState: function (key) {
+                if (this.presenter.isLock) {
+                    return;
+                }
+                if (this.choices[key]) {
+                    return;
+                }
+                for (var choiceKey in this.choices) {
+                    if (key !== choiceKey && this.choices[choiceKey]) {
+                        this.choices[choiceKey] = false;
+                    }
+                }
+                this.choices[key] = true;
+                this.$store.commit({
+                    type: types.UPDATE_SINGLE_ANSWER,
+                    choices: this.choices
+                });
+                this.presenter.dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: true
+                });
+                console.log("\u9009\u9879\u201C " + key + " \u201D\u5207\u6362\u4E3A\uFF1A" + this.choices[key]);
+            }
+        }
+    })
+], SingleQuestion);
+exports.default = SingleQuestion;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var store_1 = __webpack_require__(6);
+var types = __webpack_require__(0);
+var TemporaryQuestionPage_1 = __webpack_require__(7);
+var Title_1 = __webpack_require__(4);
+var service_1 = __webpack_require__(5);
+var TemporaryQuestionFuncitonal;
+(function (TemporaryQuestionFuncitonal) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this) || this;
+            _this.model = null;
+            _this.isLock = false;
+            _this.metaInfo = {
+                name: 'TemporaryQuestionFuncitonal'
+            };
+            return _this;
+        }
+        Presenter.prototype._bindEvent = function () {
+            var _this = this;
+            this.addEventListener('getQuestionAnswer', PresenterEventType.NATIVE_EVENT, function (data) {
+                var result = _this._service.getResult();
+                _this.dispatchEvent('getQuestionAnswerCallback', PresenterEventType.NATIVE_EVENT, result);
+            });
+            this.addEventListener('sendAnswerCallback', PresenterEventType.IC_PLAYER_EVENT, function (data) {
+                if (!data.value.result) {
+                    console.log('学生端提交失败回调');
+                    _this.$vueRoot.$store.commit(types.LOCK, false);
+                }
+            });
+        };
+        Presenter.prototype.$launch = function (view, model) {
+            var self = this;
+            this.model = this.Model;
+            console.log("TemporaryQuestionFuncitonal launch");
+            if (this.Environment.isApp) {
+                this.$vueRoot = new Vue({
+                    el: '._temporary_question_container',
+                    store: store_1.default(this),
+                    data: {
+                        questionCode: self.model.questionCode
+                    },
+                    components: {
+                        'temporary-question-page': TemporaryQuestionPage_1.default,
+                        'temporary-title': Title_1.default
+                    }
+                });
+            }
+            else {
+                $(this.View).closest('.baseMod-com-wrapper-board').addClass('temporary-board');
+                $(this.View).hide();
+            }
+            this._bindEvent();
+        };
+        Presenter.prototype.getService = function () {
+            this._service = service_1.default(this);
+            return this._service;
+        };
+        Presenter.prototype.$release = function () {
+            console.log('TemporaryQuestionFuncitonal release');
+            this.$vueRoot.$destroy();
+            this.removeEventListener();
+        };
+        return Presenter;
+    }(CommonClass));
+    TemporaryQuestionFuncitonal.Presenter = Presenter;
+})(TemporaryQuestionFuncitonal || (TemporaryQuestionFuncitonal = {}));
+window['AddonTemporaryQuestionFuncitonal_create'] = function () {
+    return new TemporaryQuestionFuncitonal.Presenter();
+};
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+exports.default = function (presneter) {
+    var keyMap = {
+        'correct': presneter.i18nModel['judge.item_1'] || '正确',
+        'error': presneter.i18nModel['judge.item_2'] || '错误'
+    };
+    var choices = Object.assign({}, (_a = {},
+        _a[presneter.i18nModel['judge.item_1'] || "正确"] = false,
+        _a[presneter.i18nModel['judge.item_2'] || "错误"] = false,
+        _a));
+    return {
+        state: {
+            presneter: presneter,
+            answer: [],
+            choices: choices
+        },
+        mutations: (_b = {},
+            _b[types.UPDATE_JUDGMENT_ANSWER] = function (state, payload) {
+                var choices = payload.choices;
+                if (state.answer.length) {
+                    state.answer.length = 0;
+                }
+                if (choices) {
+                    for (var key in choices) {
+                        if (choices[key]) {
+                            if (key === keyMap['correct']) {
+                                state.answer.push('YES');
+                            }
+                            else if (key === keyMap['error']) {
+                                state.answer.push('NO');
+                            }
+                        }
+                    }
+                }
+                state.choices = payload.choices;
+                console.log('更新【判断题】用户答案，Mutation：【UPDATE_JUDGMENT_ANSWER】');
+            },
+            _b[types.UPDATE_T_ANSWER] = function (state, t_answer) {
+                for (var key in state.choices) {
+                    state.choices[key] = false;
+                }
+                t_answer.forEach(function (value) {
+                    if (value === 'YES') {
+                        state.choices[keyMap['correct']] = true;
+                    }
+                    else {
+                        state.choices[keyMap['error']] = true;
+                    }
+                });
+                console.log('执行了Mutation：【UPDATE_T_ANSWER】');
+            },
+            _b)
+    };
+    var _a, _b;
+};
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+exports.default = function (presneter) {
+    return {
+        state: {
+            presneter: presneter,
+            answer: [],
+            choices: {
+                A: false,
+                B: false,
+                C: false,
+                D: false,
+                E: false,
+                F: false
+            }
+        },
+        mutations: (_a = {},
+            _a[types.UPDATE_MULTIPLE_ANSWER] = function (state, payload) {
+                var choices = payload.choices;
+                if (state.answer.length) {
+                    state.answer.length = 0;
+                }
+                if (choices) {
+                    for (var key in choices) {
+                        state.choices[key] = choices[key];
+                        if (choices[key]) {
+                            state.answer.push(key);
+                        }
+                    }
+                }
+                state.choices = payload.choices;
+                console.log('更新【多选题】用户答案，Mutation：【UPDATE_MULTIPLE_ANSWER】');
+            },
+            _a[types.UPDATE_T_ANSWER] = function (state, t_answer) {
+                for (var key in state.choices) {
+                    state.choices[key] = false;
+                }
+                t_answer.forEach(function (value) {
+                    state.choices[value] = true;
+                });
+                console.log('执行了Mutation：【UPDATE_T_ANSWER】');
+            },
+            _a)
+    };
+    var _a;
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+exports.default = function (presneter) {
+    return {
+        state: {
+            presneter: presneter,
+            answer: [],
+            choices: {
+                A: false,
+                B: false,
+                C: false,
+                D: false,
+                E: false,
+                F: false
+            }
+        },
+        mutations: (_a = {},
+            _a[types.UPDATE_SINGLE_ANSWER] = function (state, payload) {
+                var choices = payload.choices;
+                if (state.answer.length) {
+                    state.answer.length = 0;
+                }
+                if (choices) {
+                    for (var key in choices) {
+                        if (choices[key]) {
+                            state.answer.push(key);
+                        }
+                    }
+                }
+                state.choices = payload.choices;
+                console.log('更新【单选题】用户答案，Mutation：【UPDATE_SINGLE_ANSWER】');
+            },
+            _a[types.UPDATE_T_ANSWER] = function (state, t_answer) {
+                for (var key in state.choices) {
+                    state.choices[key] = false;
+                }
+                t_answer.forEach(function (value) {
+                    state.choices[value] = true;
+                });
+                console.log('执行了Mutation：【UPDATE_T_ANSWER】');
+            },
+            _a)
+    };
+    var _a;
+};
+
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=presenter.js.map]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

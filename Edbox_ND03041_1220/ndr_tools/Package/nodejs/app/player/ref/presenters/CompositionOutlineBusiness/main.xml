@@ -1,0 +1,2735 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompositionOutlineBusiness'>
+<properties>
+
+                <property />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="es6-promise" version="1.0.0" />
+    <javaScript  name="vue-libs" version="2.1.3" />
+    <javaScript  name="ModuleComponent" version="1.0.0" />
+    <javaScript  name="MinderMap" version="1.1.0" />
+    <javaScript  name="third-part-canvg" version="1.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/*!   updated: 2017-07-12 20:23:52   */
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Toolbar = {
+    REDO_DISABLE: "toolbar/mutations/redo-disabled",
+    UNDO_DISABLE: "toolbar/mutations/undo-disabled",
+    FOCUS_DISABLE: "toolbar/mutations/focus-disabled",
+    GLOBAL_DISABLE: "toolbar/mutations/global-disabled",
+    SLIDER_DISABLE: "toolbar/mutations/slider-disabled",
+    TOOLBAR_DISABLE: "toolbar/mutations/toolbar-disabled",
+    SLIDER_CHANGE: "toolbar/mutations/slider-change"
+};
+exports.CheckList = {
+    POPUP_SHOW: "checkList/mutations/popup-show",
+    CHECK_FLAG: "checkList/mutations/check-flag",
+};
+exports.CheckListPrompt = {
+    POPUP_SHOW: "checkListPrompt/mutations/popup-show"
+};
+exports.ReferSample = {
+    POPUP_SHOW: "referSample/mutations/popup-show",
+    STYLE_CHANGE: "referSample/mutations/style-change",
+    SWITCH_TAB: "referSample/mutations/switch-tab"
+};
+exports.CompositionStyle = {
+    POPUP_SHOW: "compositionStyle/mutations/popup-show",
+    DROPDOWN_DISABLE: "compositionStyle/mutations/dropdown-disable",
+    DROPDOWN_SHOW: "compositionStyle/mutations/dropdown-show",
+    SELECT_STYLE: "compositionStyle/mutations/select-style"
+};
+exports.MinderMap = {
+    REDO: "minderMap/mutations/redo",
+    UNDO: "minderMap/mutations/undo",
+    FOCUS: "minderMap/mutations/focus",
+    GLOBAL: "minderMap/mutations/global",
+    SCALE: "minderMap/mutations/slider",
+    EDITABLE: "minderMap/mutations/editable",
+    LOCK: "minderMap/mutations/lock",
+    UNLOCK: "minderMap/mutations/unlock",
+    RESET: "minderMap/mutations/reset",
+    DESTROY: "minderMap/mutations/destroy"
+};
+exports.App = {
+    ALLOW_SUBMIT: "app/mutations/allow-submit"
+};
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MinderMap = {
+    Options: "minderMap/getter/options",
+    ExtraOptions: "minderMap/getter/extra-options",
+    Data: "minderMap/getter/data",
+    Interface: "minderMap/getter/interface"
+};
+exports.CheckList = {
+    Popup: "checkList/getter/popup",
+    PopupShow: "checkList/getter/popup-show",
+    Items: "checkList/getter/items"
+};
+exports.CheckListPrompt = {
+    Popup: "checkListPrompt/getter/popup",
+    PopupShow: "checkListPrompt/getter/popup-show"
+};
+exports.ReferSample = {
+    Popup: "referSample/getter/popup",
+    PopupShow: "referSample/getter/popup-show",
+    Data: "referSample/getter/data",
+    CompositionSample: "referSample/getter/composition-sample",
+    Context: "referSample/getter/context"
+};
+exports.CompositionStyle = {
+    Popup: "compositionStyle/getter/popup",
+    PopupShow: "compositionStyle/getter/popup-show",
+    DropDown: "compositionStyle/getter/drop-down",
+    DropDownShow: "compositionStyle/getter/drop-down-show",
+    Items: "compositionStyle/getter/items"
+};
+exports.Toolbar = {
+    Members: "toolbar/getter/members",
+    Disabled: "toolbar/getter/disabled"
+};
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PresenterName = "CompositionOutlineBusiness";
+exports.CourseWareObjectCode = "CompositionOutline";
+exports.CourseWareObjectName = "作文提纲教学";
+var AppActionTypes;
+(function (AppActionTypes) {
+    AppActionTypes[AppActionTypes["GET_QUESTION_ID"] = 0] = "GET_QUESTION_ID";
+    AppActionTypes[AppActionTypes["GET_STATE"] = 1] = "GET_STATE";
+    AppActionTypes[AppActionTypes["SET_STATE"] = 2] = "SET_STATE";
+    AppActionTypes[AppActionTypes["GET_RESULT"] = 3] = "GET_RESULT";
+    AppActionTypes[AppActionTypes["LOCK"] = 4] = "LOCK";
+    AppActionTypes[AppActionTypes["UNLOCK"] = 5] = "UNLOCK";
+    AppActionTypes[AppActionTypes["IS_MINDJET_CONTENT_CHANGED"] = 6] = "IS_MINDJET_CONTENT_CHANGED";
+    AppActionTypes[AppActionTypes["RESET_MINDJET_CONTENT"] = 7] = "RESET_MINDJET_CONTENT";
+    AppActionTypes[AppActionTypes["CLEAR_MINDJET_CONTENT"] = 8] = "CLEAR_MINDJET_CONTENT";
+})(AppActionTypes = exports.AppActionTypes || (exports.AppActionTypes = {}));
+;
+/**
+ * 作答状态
+ * @type {{NO_ANSWER: string, NO_COMPLETE: string, COMPLETE: string}}
+ */
+exports.QuestionAnswerState = {
+    NO_ANSWER: 'NO_ANSWER',
+    NO_COMPLETE: 'NO_COMPLETE',
+    COMPLETE: 'COMPLETE'
+};
+/**
+ * 布局容器组件相关
+ * @type {{ADD: string, REMOVE: string}}
+ */
+exports.WriteLayoutStyleActionType = {
+    ADD: 'add',
+    REMOVE: 'remove'
+};
+exports.CSS_COMPOSITION_OUTLINE_LAYOUT = "composition-outline-layout";
+exports.CSS_TAB_OUTLINE_WRITE = "show-mindmap-toolbar";
+exports.CSS_COMPOSITION_OUTLINE_STATIC_VIEW = "composition-outline-static-view";
+/**
+ * 思维导图事件名称
+ * @type {{SCALE: string, STATE_CHANGE: string, CONTENT_CHANGE: string}}
+ */
+exports.MinderMapEvent = {
+    SCALE: "scale",
+    STATE_CHANGE: "change",
+    CONTENT_CHANGE: "contentChange" //内容变化：节点结构、节点文字
+};
+//作文文体
+var CompositionStyle;
+(function (CompositionStyle) {
+    CompositionStyle[CompositionStyle["None"] = 0] = "None";
+    CompositionStyle[CompositionStyle["JiXu"] = 1] = "JiXu";
+    CompositionStyle[CompositionStyle["YiLun"] = 2] = "YiLun";
+    CompositionStyle[CompositionStyle["ShuoMing"] = 3] = "ShuoMing"; //说明文
+})(CompositionStyle = exports.CompositionStyle || (exports.CompositionStyle = {}));
+exports.CompositionStyleName = (_a = {},
+    _a[CompositionStyle.JiXu] = "label.style.jxw",
+    _a[CompositionStyle.YiLun] = "label.style.ylw",
+    _a[CompositionStyle.ShuoMing] = "label.style.smw",
+    _a);
+exports.CompositionStyleMap = (_b = {},
+    _b[CompositionStyle.JiXu] = "narration",
+    _b[CompositionStyle.YiLun] = "argumentation",
+    _b[CompositionStyle.ShuoMing] = "expositoryWriting",
+    _b);
+//提纲详略
+var OutlineLevel;
+(function (OutlineLevel) {
+    OutlineLevel[OutlineLevel["One"] = 1] = "One";
+    OutlineLevel[OutlineLevel["Two"] = 2] = "Two"; //二级提纲
+})(OutlineLevel = exports.OutlineLevel || (exports.OutlineLevel = {}));
+exports.OutlineLevelMap = (_c = {},
+    _c[OutlineLevel.One] = "level_1",
+    _c[OutlineLevel.Two] = "level_2",
+    _c);
+var _a, _b, _c;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Toolbar = {
+    REDO: "toolbar/actions/redo",
+    UNDO: "toolbar/actions/undo",
+    FOCUS: "toolbar/actions/focus",
+    GLOBAL: "toolbar/actions/global",
+    SLIDER: "toolbar/actions/slider",
+};
+exports.CompositionStyle = {
+    SELECT_STYLE: "compositionStyle/actions/select-style",
+};
+exports.MinderMap = {
+    SCALE: "minderMap/actions/scale",
+    EDITABLE: "minderMap/actions/editable",
+    LOCK: "minderMap/actions/lock",
+    UNLOCK: "minderMap/actions/unlock",
+    RESET: "minderMap/actions/reset",
+    DESTROY: "minderMap/actions/destroy"
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+module.exports = __ModuleComponent;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PresenterUtils = (function () {
+    function PresenterUtils() {
+    }
+    PresenterUtils.Svg2Base64 = function (svgEl, width, height) {
+        return new Promise(function (resolve, reject) {
+            try {
+                svgEl.setAttribute("width", width);
+                svgEl.setAttribute("height", height);
+                var svgAsXML = (new XMLSerializer).serializeToString(svgEl), canvas_1 = document.createElement('canvas');
+                canvg(canvas_1, svgAsXML, { ignoreMouse: true, ignoreAnimation: true, ignoreClear: true, renderCallback: function () {
+                        var imageSrc = canvas_1.toDataURL('image/png').replace(/^data:.+?;base64,/, '');
+                        resolve(imageSrc);
+                    } });
+            }
+            catch (e) {
+                reject('');
+            }
+        });
+    };
+    /**
+     * 截屏
+     * @param clientRect
+     * @param logger
+     * @constructor
+     */
+    PresenterUtils.ScreenShot = function (clientRect, logger) {
+        var $promise = $["Deferred"]().promise();
+        if (!!ClassroomUtils && typeof ClassroomUtils.screenShot === 'function') {
+            ClassroomUtils.screenShot({
+                "left": clientRect.left,
+                "top": clientRect.top,
+                "width": clientRect.width,
+                "height": clientRect.height,
+                "outputWidth": clientRect.width,
+                "outputHeight": clientRect.height
+            }).done(function (url) {
+                PresenterUtils.Image2Base64(url, function (base64) {
+                    base64 = base64.replace(/^data:.+?;base64,/, '');
+                    $promise.resolve(base64);
+                });
+            }).fail(function (reason) {
+                logger && logger.error("ScreenShot Error:: caused by:[", reason, "]");
+                $promise.resolve();
+            });
+        }
+        return $promise;
+    };
+    /**
+     * Image to base64
+     * @param url
+     * @param callback
+     * @constructor
+     */
+    PresenterUtils.Image2Base64 = function (url, callback) {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = function () {
+            var reader = new FileReader();
+            reader.onloadend = function () {
+                callback && callback(reader.result);
+            };
+            reader.readAsDataURL(xhr.response);
+        };
+        xhr.open("GET", url);
+        xhr.send();
+    };
+    /**
+     * is ND2.5 101PAD
+     * @returns {string|boolean}
+     * @constructor
+     */
+    PresenterUtils.IsND25 = function () {
+        if (!!navigator.userAgent) {
+            return navigator.userAgent.indexOf('101同学派') > -1;
+        }
+        return false;
+    };
+    /**
+     * 判断是否为同一个作用域
+     * @param componentA
+     * @param componentB
+     * @returns {boolean}
+     * @constructor
+     */
+    PresenterUtils.IsSameDomain = function (componentA, componentB) {
+        return componentA._APP_DOMAIN_ === componentB._APP_DOMAIN_;
+    };
+    /**
+     * 是否为统计详情模式
+     * @param model
+     * @returns {boolean}
+     */
+    PresenterUtils.IsStatisticDetail = function (model) {
+        return model.isStatisticDetail;
+    };
+    return PresenterUtils;
+}());
+exports.PresenterUtils = PresenterUtils;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var vuex_1 = __webpack_require__(2);
+var constants_1 = __webpack_require__(3);
+var ActionTypes = __webpack_require__(6);
+var MutationTypes = __webpack_require__(0);
+var store_1 = __webpack_require__(15);
+var views_1 = __webpack_require__(16);
+var base_1 = __webpack_require__(13);
+var event_bus_1 = __webpack_require__(11);
+/**
+ * 互动课堂应用组件
+ */
+var IcrApp = (function (_super) {
+    __extends(IcrApp, _super);
+    function IcrApp() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.isLocked = false;
+        return _this;
+    }
+    // 启动
+    IcrApp.prototype.run = function (view, model, compositionPanelService) {
+        var _this = this;
+        if (this.isExecuted)
+            return;
+        this.isExecuted = true;
+        this.QuestionId = model.QuestionId;
+        this.compositionPanelService = compositionPanelService;
+        //监听作文题干组件的切换Tab事件，从而改变布局容器的UI
+        event_bus_1.EventBus.onCompositionChangeViewContent(this.presenter, function (data) {
+            _this.$store.commit(MutationTypes.CompositionStyle.DROPDOWN_SHOW, false);
+            if (data.index === 2) {
+                _this.presenter.layoutService.changeLayoutBodyStyle(constants_1.WriteLayoutStyleActionType.ADD, constants_1.CSS_TAB_OUTLINE_WRITE);
+            }
+            else {
+                _this.presenter.layoutService.changeLayoutBodyStyle(constants_1.WriteLayoutStyleActionType.REMOVE, constants_1.CSS_TAB_OUTLINE_WRITE);
+            }
+        });
+        //Step1. 设置标题: 题型标题（作文提纲教学）、Tab标题（提纲书写）
+        this.compositionPanelService.setQuestionTitle(this.presenter.$translate('label.question.title'));
+        this.compositionPanelService.setTabTitle(this.presenter.$translate('btn.outline.write'));
+        //Step2. 构建视图
+        this.createView(view, model);
+        //状态恢复case，setState被调用时可能应用尚未启动（CompositionPanelService未载入）
+        if (this.lastQuestionState) {
+            this.setState(this.lastQuestionState);
+        }
+    };
+    // 构建视图
+    IcrApp.prototype.createView = function (view, model) {
+        //Step1. 构造状态对象
+        this.$store = this.createStore(model);
+        //Step2. 获取动态加载的题干面板
+        var $panel = this.compositionPanelService.getAutowiredPanel();
+        $panel.append(view);
+        //Step3. 加载视图组件
+        this.$view = new views_1.AnswerView({
+            store: this.$store,
+            methods: {
+                $i18n: this.presenter.$translate.bind(this.presenter),
+                $injectStyleBtn: this.compositionPanelService.setDom.bind(this.compositionPanelService),
+                onCompositionStyleChanged: this.onCompositionStyleChanged.bind(this),
+                onMinderMapScale: this.onMinderMapScale.bind(this),
+                onMinderMapStateChanged: this.onMinderMapStateChanged.bind(this),
+                onMinderMapContentChanged: this.onMinderMapContentChanged.bind(this),
+                gotoCheck: this.onGotoCheckList.bind(this)
+            }
+        });
+        this.$view.$mount(view);
+    };
+    // 创建Store
+    IcrApp.prototype.createStore = function (model) {
+        return new vuex_1.Store(store_1.AnswerStore, {
+            i18n: this.presenter.$translate.bind(this.presenter),
+            model: model.QuestionContent,
+            minderMapOption: this.getMinderMapOption(),
+            triggerCheckListDone: this.onCheckListDone.bind(this),
+            context: {
+                basePath: this.presenter.basePath,
+                currentLanguage: this.presenter.currentLanguage && this.presenter.currentLanguage.toLowerCase()
+            }
+        });
+    };
+    // 作文文体发生变化
+    IcrApp.prototype.onCompositionStyleChanged = function () { };
+    // 提纲缩放事件
+    IcrApp.prototype.onMinderMapScale = function (scale) {
+        this.$store.commit(MutationTypes.Toolbar.SLIDER_CHANGE, { scale: scale || 1 });
+        // 通知状态改变，并刷新状态时间戳
+        event_bus_1.EventBus.notifyPresenterStateChange(this.presenter);
+    };
+    // 提纲状态改变事件
+    IcrApp.prototype.onMinderMapStateChanged = function (state) {
+        if (!this.isLocked) {
+            this.$store.commit(MutationTypes.Toolbar.REDO_DISABLE, !state.hasRedo);
+            this.$store.commit(MutationTypes.Toolbar.UNDO_DISABLE, !state.hasUndo);
+        }
+    };
+    // 提纲内容改变事件
+    IcrApp.prototype.onMinderMapContentChanged = function () {
+        // 通知状态改变，并刷新状态时间戳
+        event_bus_1.EventBus.notifyPresenterStateChange(this.presenter);
+        this.refreshStateTimestamp();
+    };
+    // 查看检查清单
+    IcrApp.prototype.onGotoCheckList = function () {
+        this.$store.commit(MutationTypes.CheckList.POPUP_SHOW, true);
+        this.$store.commit(MutationTypes.CheckList.CHECK_FLAG, true);
+    };
+    // 已查看检查清单
+    IcrApp.prototype.onCheckListDone = function () { };
+    // 获取思维导图组件
+    IcrApp.prototype.getMinderMap = function () {
+        return this.$store.state.minderMap.interface;
+    };
+    /** 以下为PresenterService 提供的接口 */
+    IcrApp.prototype.receiveAction = function (actionType, payload) {
+        switch (actionType) {
+            case constants_1.AppActionTypes.GET_QUESTION_ID:
+                return this.getQuestionId();
+            case constants_1.AppActionTypes.GET_STATE:
+                return this.getState();
+            case constants_1.AppActionTypes.SET_STATE:
+                return this.setState(payload);
+            case constants_1.AppActionTypes.GET_RESULT:
+                return this.getResult();
+            case constants_1.AppActionTypes.LOCK:
+                return this.lock();
+            case constants_1.AppActionTypes.UNLOCK:
+                return this.unLock();
+            default:
+        }
+    };
+    // 获取习题ID
+    IcrApp.prototype.getQuestionId = function () {
+        return this.QuestionId || '0';
+    };
+    // 锁定
+    IcrApp.prototype.lock = function () {
+        this.isLocked = true;
+        this.compositionPanelService.stopMediaPlay && this.compositionPanelService.stopMediaPlay();
+        var $store = this.$store;
+        if ($store) {
+            //思维导图不可编辑
+            $store.dispatch(ActionTypes.MinderMap.EDITABLE, false);
+            //工具栏组件禁用
+            $store.commit(MutationTypes.Toolbar.REDO_DISABLE, true);
+            $store.commit(MutationTypes.Toolbar.UNDO_DISABLE, true);
+            //作文文体按钮不可点击，弹窗消失
+            $store.commit(MutationTypes.ReferSample.POPUP_SHOW, false);
+            $store.commit(MutationTypes.CheckList.POPUP_SHOW, false);
+            $store.commit(MutationTypes.CheckListPrompt.POPUP_SHOW, false);
+            $store.commit(MutationTypes.CompositionStyle.DROPDOWN_SHOW, false);
+        }
+    };
+    // 解锁
+    IcrApp.prototype.unLock = function () {
+        this.isLocked = false;
+        var $store = this.$store;
+        if ($store) {
+            //思维导图可编辑
+            $store.dispatch(ActionTypes.MinderMap.EDITABLE, true);
+            //工具栏组件启用
+            var minderMap = this.getMinderMap();
+            $store.commit(MutationTypes.Toolbar.UNDO_DISABLE, !minderMap.hasUndo());
+            $store.commit(MutationTypes.Toolbar.REDO_DISABLE, !minderMap.hasRedo());
+            //作文文体按钮可点击
+            $store.commit(MutationTypes.CompositionStyle.DROPDOWN_DISABLE, false);
+        }
+        //作答状态从修改->重新提交，先调用getState->unlockQuestion，所以这时的stateObj.isLocked===true
+        event_bus_1.EventBus.notifyPresenterStateChange(this.presenter);
+    };
+    // 获取作答结果
+    IcrApp.prototype.getResult = function () {
+        var minderMap = this.getMinderMap();
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                minderMap.global();
+                minderMap.getBase64().then(function (base64) {
+                    resolve({
+                        base64: base64,
+                        detail: minderMap.getData()
+                    });
+                });
+            }, 1);
+        });
+    };
+    // 获取状态
+    IcrApp.prototype.getState = function () {
+        var $state = this.$store.state;
+        return {
+            isLocked: this.isLocked,
+            isAllowSubmit: $state.globalApp.isAllowSubmit,
+            checkedFlag: $state.checkList.checkedFlag,
+            mapData: this.getMinderMap().getData(),
+            scale: $state.toolbar.slider.value,
+            style: $state.referSample.data.compositionStyle,
+            lastStateTimestamp: this.lastStateTimestamp
+        };
+    };
+    /**
+     * 设置状态
+     * @param state
+     */
+    IcrApp.prototype.setState = function (state) {
+        if (state) {
+            if (!this.isExecuted) {
+                this.lastQuestionState = state;
+            }
+            else {
+                delete this.lastQuestionState;
+                //最新状态的生效时间 主要应用于异常流恢复的特殊处理逻辑
+                this.lastStateTimestamp = state.lastStateTimestamp || 0;
+                //是否锁定
+                this.isLocked = state.isLocked;
+                //设置颗粒可提交状态
+                this.$store.commit(MutationTypes.App.ALLOW_SUBMIT, state.isAllowSubmit);
+                //设置颗粒可提交状态
+                this.$store.commit(MutationTypes.CheckList.CHECK_FLAG, state.checkedFlag);
+                //设置思维导图数据、缩放比例
+                this.$store.dispatch(ActionTypes.MinderMap.RESET, { data: state.mapData });
+                this.$store.dispatch(ActionTypes.MinderMap.SCALE, { scale: state.scale });
+                //设置作文文体
+                this.$store.dispatch(ActionTypes.CompositionStyle.SELECT_STYLE, { item: { value: state.style, text: constants_1.CompositionStyleName[state.style] } });
+                //state.__isSubmitSucceed 支持多次交互特性的场景:结束答题后，学生在老师修改并发起再次答题后状态恢复
+                if (state.isLocked && state.__isSubmitSucceed === true) {
+                    this.lock();
+                }
+                else {
+                    this.unLock();
+                }
+            }
+        }
+    };
+    /**
+     * 刷新最近状态时间戳：
+     *   why can not execute in method:getState?
+     *   because when this app start getState will be called. (maybe it's unreasonable)
+     */
+    IcrApp.prototype.refreshStateTimestamp = function () {
+        this.lastStateTimestamp = ClassroomUtils.getMasterSystemTimeMS();
+    };
+    return IcrApp;
+}(base_1.default));
+exports.default = IcrApp;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+//mixins: autoComponent
+exports.autoComponent = {
+    beforeCreate: function () {
+        var _this = this;
+        Object.keys(this.$options.components).forEach(function (key) {
+            var component = _this.$options.components[key];
+            if (component.template === 'automatic') {
+                var rootComponent = _this.$root.$options.components[key];
+                _this.$options.components[key] = rootComponent ? rootComponent : {
+                    template: ''
+                };
+            }
+        });
+    }
+};
+//mixins: i18n
+exports.i18n = {
+    beforeCreate: function () {
+        //root component
+        if (this !== this.$root) {
+            (this.$options.methods || (this.$options.methods = {}))['$i18n'] = function () {
+                return this.$root.$i18n.apply(this.$root, arguments);
+            };
+        }
+    }
+};
+//mixins: i18n
+exports.injectStyleBtn = {
+    beforeCreate: function () {
+        //root component
+        if (this !== this.$root) {
+            (this.$options.methods || (this.$options.methods = {}))['$injectStyleBtn'] = function () {
+                return this.$root.$injectStyleBtn.apply(this.$root, arguments);
+            };
+        }
+    }
+};
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Presenter Event Bus Utils
+ */
+var EventBus = (function () {
+    function EventBus() {
+    }
+    /**
+     * 通知答题流程控制器状态改变
+     * @param presenter
+     * @param state
+     */
+    EventBus.notifyQuestionStateChange = function (presenter, state) {
+        presenter.$dispatchEvent($PresenterEvent['AnswerFlowController']['QUESTION_STATE_CHANGE'], PresenterEventType.IC_PLAYER_EVENT, state);
+    };
+    /**
+     * 通知状态控制器状态改变
+     * @param presenter
+     * @param state
+     */
+    EventBus.notifyPresenterStateChange = function (presenter) {
+        presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter']['PRESENTER_STATE_CHANGE'], PresenterEventType.IC_PLAYER_EVENT);
+    };
+    /**
+     * 监听作文题干组件Tab切换事件
+     * @param presenter
+     * @param callback
+     */
+    EventBus.onCompositionChangeViewContent = function (presenter, callback) {
+        presenter.$addEventListener('CompositionChangeViewContent', PresenterEventType.IC_PLAYER_EVENT, callback);
+    };
+    /**
+     * 监听学生端提交按钮（不可提交状态下）的点击事件 （未检查清单）
+     * @param presenter
+     * @param callback
+     */
+    EventBus.onTry2SubmitWhenDisabled = function (presenter, callback) {
+        presenter.$addEventListener('Try2SubmitWhenDisabled', PresenterEventType.IC_PLAYER_EVENT, callback);
+    };
+    /**
+     * 接收来自老师修改的答案
+     * @param presenter
+     * @param callback
+     */
+    EventBus.receiveAnswerModifiedByTeacher = function (presenter, callback) {
+        presenter.$addEventListener('ModifyAnswer', PresenterEventType.IC_PLAYER_EVENT, callback);
+    };
+    /**
+     * 清空事件
+     * @param presenter
+     */
+    EventBus.clear = function (presenter) {
+        presenter.$removeEventListener();
+    };
+    return EventBus;
+}());
+exports.EventBus = EventBus;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var WeakMapImpl = window["WeakMap"];
+if (typeof WeakMapImpl != "function") {
+    WeakMapImpl = function () {
+        this.map = {};
+    };
+    WeakMapImpl.prototype.get = function (key) {
+        return this.map[key];
+    };
+    WeakMapImpl.prototype.set = function (key, value) {
+        this.map[key] = value;
+    };
+    WeakMapImpl.prototype.delete = function (key) {
+        return delete this.map[key];
+    };
+}
+var ProtectedWeakMap = (function () {
+    function ProtectedWeakMap() {
+        this.weakMap = new WeakMapImpl();
+    }
+    ProtectedWeakMap.prototype.get = function (key) {
+        return this.weakMap.get(key);
+    };
+    ProtectedWeakMap.prototype.set = function (key, value) {
+        this.weakMap.set(key, value);
+    };
+    ProtectedWeakMap.prototype.delete = function (key) {
+        return this.weakMap.delete(key);
+    };
+    return ProtectedWeakMap;
+}());
+exports.ProtectedWeakMap = ProtectedWeakMap;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var presenter_utils_1 = __webpack_require__(8);
+/**
+ * 互动课堂应用组件
+ */
+var BaseApp = (function () {
+    function BaseApp(presenter) {
+        this.isExecuted = false;
+        this.presenter = presenter;
+    }
+    // 销毁
+    BaseApp.prototype.destroy = function () {
+        this.$view && this.$view.$destroy();
+        delete this.$view;
+        delete this.$store;
+        delete this.isExecuted;
+        delete this.presenter;
+        delete this.compositionPanelService;
+    };
+    // 思维导图配置项(不同应用端特殊配置项有所不同)
+    BaseApp.prototype.getMinderMapOption = function () {
+        return {
+            maxScale: 2.5,
+            minScale: 0.1,
+            editAble: true,
+            showMenu: false,
+            hideMenuItem: ['visible'],
+            renderDataAutoLayout: false,
+            ignoreAttrTextVisible: false,
+            contentClickViewAble: false,
+            animate: !presenter_utils_1.PresenterUtils.IsND25(),
+            baseScale: 1.0,
+            type: 'right',
+            rootVertical: true,
+            showRequireStar: true,
+            remarkVisible: true,
+            langData: this.presenter.$locales,
+            position: ['left', 'top']
+        };
+    };
+    return BaseApp;
+}());
+exports.default = BaseApp;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var GetterTypes = __webpack_require__(1);
+var constants_1 = __webpack_require__(3);
+var presenter_utils_1 = __webpack_require__(8);
+var MinderMapComponent = (function (_super) {
+    __extends(MinderMapComponent, _super);
+    function MinderMapComponent() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    MinderMapComponent.prototype.mounted = function () {
+        this.createMinderMap(this['data']);
+    };
+    MinderMapComponent.prototype.createMinderMap = function (data) {
+        if (this.minderMap) {
+            this.minderMap.destroy();
+        }
+        //创建提纲
+        var minderMap = MinderMap.create(Object.assign(this['options'], {}));
+        this.minderMap = minderMap;
+        minderMap.setData(data);
+        minderMap.render(this.$el);
+        //暴露接口
+        this.exposeInterface();
+        //注册监听
+        this.registerListeners();
+        //位置适调
+        minderMap.matchParent();
+        minderMap.changePosition(['left', 'top']);
+    };
+    /**
+     * 暴露接口到状态对象上
+     */
+    MinderMapComponent.prototype.exposeInterface = function () {
+        var $interface = this['interface'];
+        $interface.redo = function () {
+            this.minderMap.redo();
+        }.bind(this);
+        $interface.undo = function () {
+            this.minderMap.undo();
+        }.bind(this);
+        $interface.focus = function () {
+            this.minderMap.rootCenter();
+            this.minderMap.changePosition(['left', 'top']);
+        }.bind(this);
+        $interface.global = function () {
+            this.minderMap.matchParent();
+            this.minderMap.changePosition(['left', 'top']);
+        }.bind(this);
+        $interface.scale = function (value) {
+            this.minderMap.scale(value);
+        }.bind(this);
+        $interface.setEditable = function (flag) {
+            this.minderMap.setEditAble(flag || false);
+        }.bind(this);
+        $interface.setLock = function (lock) {
+            this.minderMap.setLock(lock || false);
+        }.bind(this);
+        $interface.getData = function () {
+            return this.minderMap.getData();
+        }.bind(this);
+        $interface.getBase64 = function () {
+            var svgWrapEl = this.$el;
+            this.minderMap.blur();
+            return presenter_utils_1.PresenterUtils.Svg2Base64($(this.$el).find('svg:first')[0], svgWrapEl.clientWidth, svgWrapEl.clientHeight);
+        }.bind(this);
+        $interface.isValid = function () {
+            return this.minderMap.isValid();
+        }.bind(this);
+        $interface.hasUndo = function () {
+            return this.minderMap.hasUndo();
+        }.bind(this);
+        $interface.hasRedo = function () {
+            return this.minderMap.hasRedo();
+        }.bind(this);
+        $interface.isChanged = function () {
+            return this.minderMap.hasChange();
+        }.bind(this);
+        $interface.reset = function (data) {
+            this.createMinderMap(data);
+        }.bind(this);
+        $interface.destroy = function () {
+            if (this.minderMap) {
+                this.minderMap.destroy();
+                delete this.minderMap;
+            }
+        }.bind(this);
+    };
+    /**
+     * 注册思维导图事件监听
+     */
+    MinderMapComponent.prototype.registerListeners = function () {
+        var minderMap = this.minderMap;
+        minderMap.on(constants_1.MinderMapEvent.SCALE, function (scale) {
+            this.$emit('scale', scale);
+        }.bind(this));
+        minderMap.on(constants_1.MinderMapEvent.STATE_CHANGE, function () {
+            this.$emit('state-change', {
+                hasRedo: minderMap.hasRedo(),
+                hasUndo: minderMap.hasUndo(),
+            });
+        }.bind(this));
+        minderMap.on(constants_1.MinderMapEvent.CONTENT_CHANGE, function () {
+            this.$emit('content-change');
+        }.bind(this));
+    };
+    /**
+     * 组件销毁
+     */
+    MinderMapComponent.prototype.destroy = function () {
+        if (this.minderMap) {
+            this.minderMap.destroy();
+            delete this.minderMap;
+        }
+    };
+    return MinderMapComponent;
+}(Vue));
+MinderMapComponent = __decorate([
+    vue_class_component_1.default({
+        template: '<div></div>',
+        computed: vuex_1.mapGetters({
+            options: GetterTypes.MinderMap.Options,
+            extraOptions: GetterTypes.MinderMap.ExtraOptions,
+            data: GetterTypes.MinderMap.Data,
+            interface: GetterTypes.MinderMap.Interface
+        })
+    })
+], MinderMapComponent);
+exports.default = MinderMapComponent;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var modules_1 = __webpack_require__(39);
+var MutationTypes = __webpack_require__(0);
+var ActionTypes = __webpack_require__(6);
+var MinderMapStore = {
+    modules: {
+        minderMap: modules_1.MinderMap,
+        toolbar: modules_1.Toolbar
+    },
+    getters: {},
+    mutations: {},
+    actions: (_a = {},
+        _a[ActionTypes.Toolbar.REDO] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.REDO, payload);
+        },
+        _a[ActionTypes.Toolbar.UNDO] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.UNDO, payload);
+        },
+        _a[ActionTypes.Toolbar.FOCUS] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.FOCUS, payload);
+        },
+        _a[ActionTypes.Toolbar.GLOBAL] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.GLOBAL, payload);
+        },
+        _a[ActionTypes.Toolbar.SLIDER] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.SCALE, payload);
+        },
+        _a[ActionTypes.MinderMap.RESET] = function (_a, payload) {
+            var commit = _a.commit;
+            commit(MutationTypes.MinderMap.RESET, payload);
+            //�������ϵĳ�������ԭ��ť������
+            commit(MutationTypes.Toolbar.UNDO_DISABLE, true);
+            commit(MutationTypes.Toolbar.REDO_DISABLE, true);
+        },
+        _a[ActionTypes.MinderMap.DESTROY] = function (_a, payload) {
+            var commit = _a.commit;
+            return commit(MutationTypes.MinderMap.DESTROY, payload);
+        },
+        _a)
+};
+/**
+ * ͳ��ģʽ״̬����
+ */
+var StatisticStore = function (helpers) {
+    return MinderMapStore;
+};
+exports.StatisticStore = StatisticStore;
+/**
+ * ����ģʽ״̬����
+ */
+var AnswerStore = function (helpers) {
+    return {
+        modules: Object.assign({
+            globalApp: {
+                isAllowSubmit: false
+            },
+            checkList: modules_1.CheckList,
+            checkListPrompt: modules_1.CheckListPrompt,
+            compositionStyle: modules_1.CompositionStyle,
+            referSample: modules_1.ReferSample,
+        }, MinderMapStore.modules),
+        getters: Object.assign({}, MinderMapStore.getters),
+        mutations: Object.assign((_a = {},
+            _a[MutationTypes.App.ALLOW_SUBMIT] = function (state, flag) { return state.globalApp.isAllowSubmit = flag; },
+            _a), MinderMapStore.mutations),
+        actions: Object.assign((_b = {},
+            _b[ActionTypes.CompositionStyle.SELECT_STYLE] = function (_a, payload) {
+                var commit = _a.commit;
+                if (payload && payload.item) {
+                    commit(MutationTypes.CompositionStyle.POPUP_SHOW, false);
+                    commit(MutationTypes.CompositionStyle.SELECT_STYLE, payload);
+                    commit(MutationTypes.ReferSample.STYLE_CHANGE, payload.item.value);
+                }
+            },
+            _b[ActionTypes.MinderMap.SCALE] = function (_a, payload) {
+                var commit = _a.commit;
+                return commit(MutationTypes.MinderMap.SCALE, payload);
+            },
+            _b[ActionTypes.MinderMap.EDITABLE] = function (_a, editable) {
+                var commit = _a.commit;
+                return commit(MutationTypes.MinderMap.EDITABLE, editable);
+            },
+            _b[ActionTypes.MinderMap.LOCK] = function (_a, editable) {
+                var commit = _a.commit;
+                return commit(MutationTypes.MinderMap.LOCK, editable);
+            },
+            _b[ActionTypes.MinderMap.UNLOCK] = function (_a, editable) {
+                var commit = _a.commit;
+                return commit(MutationTypes.MinderMap.UNLOCK, editable);
+            },
+            _b), MinderMapStore.actions),
+    };
+    var _a, _b;
+};
+exports.AnswerStore = AnswerStore;
+var _a;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var answer_view_1 = __webpack_require__(43);
+exports.AnswerView = answer_view_1.default;
+var statistic_detail_1 = __webpack_require__(44);
+exports.StatisticView = statistic_detail_1.default;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var pc_1 = __webpack_require__(26);
+var whiteboard_1 = __webpack_require__(30);
+var web_1 = __webpack_require__(29);
+var student_1 = __webpack_require__(28);
+var statistic_1 = __webpack_require__(27);
+var presenter_utils_1 = __webpack_require__(8);
+var AppFactory = (function () {
+    function AppFactory() {
+    }
+    AppFactory.createIcrApp = function (presenter, model) {
+        if (presenter_utils_1.PresenterUtils.IsStatisticDetail(model)) {
+            return new statistic_1.default(presenter);
+        }
+        else {
+            if (presenter.isPPTShell) {
+                return new whiteboard_1.default(presenter);
+            }
+            else if (presenter.isPC) {
+                return new pc_1.default(presenter);
+            }
+            else if (presenter.isStudent) {
+                return new student_1.default(presenter);
+            }
+            else {
+                return new web_1.default(presenter);
+            }
+        }
+    };
+    return AppFactory;
+}());
+exports.AppFactory = AppFactory;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PresenterInterface = (function () {
+    function PresenterInterface(presenter) {
+        this.presenter = presenter;
+    }
+    /**
+     * 生生互评，启动生生互评启动器
+     * @param data
+     * @private
+     */
+    PresenterInterface.prototype.startCommentDataParse = function (data) {
+        var requireConfig = this.createRequireConfig(data);
+        this.presenter.$requireComponent(requireConfig.presenterId, requireConfig.properties, null, requireConfig.layout);
+    };
+    PresenterInterface.prototype.createRequireConfig = function (data) {
+        var studentData = JSON.parse(data.data);
+        var answerData = this.presenter.getService().getAnswerData()[0];
+        var background = {
+            type: 3,
+            url: '',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: 1095,
+            height: 537,
+            writer_width: 0,
+            writer_height: 0
+        };
+        answerData.extra = { answer_index: 0, background: background };
+        studentData.extra = { answer_index: 0, background: background };
+        var answerDataArray = [answerData]; //生生互评
+        return {
+            presenterId: 'StudentComment',
+            name: 'StudentComment',
+            layout: {
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%'
+            },
+            properties: [
+                { 'name': 'startTimestamp', 'type': 'int', 'value': data.startTimestamp },
+                { 'name': 'targetUserId', 'type': 'string', 'value': data.targetUserId },
+                { 'name': 'targetUserName', 'type': 'string', 'value': data.targetUserName },
+                { 'name': 'isAnonymous', 'type': 'string', 'value': data.isAnonymous.toString() },
+                { 'name': 'id', 'type': 'string', 'value': data.id || ClassroomUtils.uuid() },
+                { 'name': 'originalPageNum', 'type': 'int', 'value': 1 },
+                { 'name': 'data', 'type': 'json', value: studentData, text: JSON.stringify(studentData) },
+                { 'name': 'answerData', 'type': 'json', value: answerDataArray, text: JSON.stringify(answerDataArray) }
+            ]
+        };
+    };
+    return PresenterInterface;
+}());
+exports.PresenterInterface = PresenterInterface;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var constants_1 = __webpack_require__(3);
+var weak_map_1 = __webpack_require__(12);
+var PresenterMap = new weak_map_1.ProtectedWeakMap(); //Presenter私有变量属性存放
+var AppMap = new weak_map_1.ProtectedWeakMap(); //应用组件私有变量属性存放
+var PresenterService = (function () {
+    function PresenterService(presenter) {
+        this._SERVICE_ID_ = presenter._CLASS_ID_;
+        PresenterMap.set(this, presenter);
+        AppMap.set(this, { receiveAction: function () { } });
+    }
+    /**
+     * Override toString toLocaleString
+     *  to avoid window.WeakMap is unsupportable,
+     *  a service instance as key in {} equals to its _SERVICE_ID_, so that each instance is unique..
+     * @returns {any}
+     */
+    PresenterService.prototype.toString = function () {
+        return this._SERVICE_ID_;
+    };
+    PresenterService.prototype.toLocaleString = function () {
+        return this.toString();
+    };
+    /** 实现IPresenterService接口 */
+    /**
+     * 注入应用组件
+     * @param app
+     */
+    PresenterService.prototype.registerApp = function (app) {
+        if (app && app['presenter'] === PresenterMap.get(this)) {
+            AppMap.set(this, app);
+        }
+    };
+    /**
+     * 获取提交的答案数据
+     */
+    PresenterService.prototype.getAnswerData = function () {
+        return this._AnswerData_;
+    };
+    /**
+     * 服务销毁
+     */
+    PresenterService.prototype.destroy = function () {
+        PresenterMap.delete(this);
+        delete this._AnswerData_;
+    };
+    /** 实现IInteractionI18n接口 */
+    PresenterService.prototype.setLocationProperties = function (properties) {
+        var presenter = PresenterMap.get(this);
+        presenter.$locales = properties;
+        presenter.$translator.setData(properties);
+    };
+    /** 实现IMindJetManager接口 */
+    PresenterService.prototype.askMindJetContentIsChanged = function () {
+        return AppMap.get(this).receiveAction(constants_1.AppActionTypes.IS_MINDJET_CONTENT_CHANGED);
+    };
+    PresenterService.prototype.resetMindJetContent = function (data) {
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.RESET_MINDJET_CONTENT, data);
+    };
+    PresenterService.prototype.clearMindJetContent = function () {
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.CLEAR_MINDJET_CONTENT);
+    };
+    /** 实现IStatRecover接口 */
+    PresenterService.prototype.getState = function () {
+        return AppMap.get(this).receiveAction(constants_1.AppActionTypes.GET_STATE);
+    };
+    PresenterService.prototype.setState = function (state) {
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.SET_STATE, state);
+    };
+    /** 实现IAnswerIntercept接口 */
+    PresenterService.prototype.getInterceptId = function () {
+        return AppMap.get(this).receiveAction(constants_1.AppActionTypes.GET_QUESTION_ID);
+    };
+    PresenterService.prototype.beforeSendAnswer = function (sendData) {
+        if (!!sendData.answer && sendData.answer.user_response.length > 0) {
+            var userResponse = sendData.answer.user_response[0];
+            this._AnswerData_ = [
+                {
+                    type: "thumb",
+                    data_type: "image",
+                    value: userResponse.base64,
+                    extra: {}
+                },
+                {
+                    type: "detail",
+                    data_type: "raw",
+                    value: JSON.stringify(userResponse.detail || {}),
+                    extra: { submitTimestamp: ClassroomUtils.getMasterSystemTimeMS() }
+                }
+            ];
+            sendData.answer.data = this._AnswerData_;
+            delete sendData.answer.user_response;
+        }
+        return sendData;
+    };
+    PresenterService.prototype.afterSendAnswer = function (answer) {
+    };
+    /** 实现IInteractionQuestion接口 */
+    PresenterService.prototype.getQuestionInfo = function () {
+        return {
+            id: AppMap.get(this).receiveAction(constants_1.AppActionTypes.GET_QUESTION_ID) || ClassroomUtils.uuid(),
+            item: constants_1.CourseWareObjectCode,
+            url: "",
+            type_code: constants_1.CourseWareObjectCode,
+            type_name: constants_1.CourseWareObjectName,
+            dispatchOnly: true
+        };
+    };
+    PresenterService.prototype.getResult = function () {
+        var app = AppMap.get(this);
+        var state = app.receiveAction(constants_1.AppActionTypes.GET_STATE);
+        var result = {
+            questionId: app.receiveAction(constants_1.AppActionTypes.GET_QUESTION_ID),
+            answerState: (state && state.isAllowSubmit ? constants_1.QuestionAnswerState.COMPLETE : constants_1.QuestionAnswerState.NO_ANSWER),
+            answer: {
+                answer_result: true,
+                correct_response: null,
+                user_response: []
+            }
+        };
+        if (result.answerState === constants_1.QuestionAnswerState.NO_ANSWER) {
+            result.answer.user_response.push({});
+        }
+        else {
+            result.answer.user_response.push(new Promise(function (resolve, reject) {
+                app.receiveAction(constants_1.AppActionTypes.GET_RESULT).then(function (data) {
+                    resolve(data);
+                });
+            }));
+        }
+        return result;
+    };
+    PresenterService.prototype.lockQuestion = function (data) {
+        //老师结束答案后锁定布局组件容器（学生提交答案不锁定）
+        if (data != null && data.type === 'OnFinish') {
+            PresenterMap.get(this).layoutService.showMask(true);
+        }
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.LOCK);
+    };
+    PresenterService.prototype.unlockQuestion = function () {
+        PresenterMap.get(this).layoutService.showMask(false);
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.UNLOCK);
+    };
+    PresenterService.prototype.finishQuestion = function () {
+        AppMap.get(this).receiveAction(constants_1.AppActionTypes.UNLOCK);
+    };
+    PresenterService.prototype.resetQuestion = function () {
+    };
+    PresenterService.prototype.showAnswer = function (answer) {
+    };
+    PresenterService.prototype.showResultHint = function (data) {
+    };
+    return PresenterService;
+}());
+exports.PresenterService = PresenterService;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = "<modal :options=popup class=pop-chose-type><div class=\"ndui-box skin_notebook\"><div class=ndui-box-paper><div class=ndui-box-cntwrap><div class=ndui-box-txtwrap><p class=ndui-box-tip><span class=ndui-tip-txt v-once>{{ $i18n('popup.nocheck.tip') }}</span></p></div><div class=\"ndui-box-btnwrap clearfix\"><a href=javascript:; class=ndui-btn-woodskin @click=gotoCheck><span class=ndui-btn-txt>{{ $i18n('popup.nocheck.btn') }}</span></a></div></div></div></div></modal>"
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = "<modal :options=popup class=pop-checklist><div class=composition-outline-checklist-pop><div class=composition-outline-checklist-box><div class=composition-outline-cl-header><p class=title><span class=txt v-once>{{ $i18n('popup.checklist.title') }}</span></p><p class=remark><span class=txt v-once>{{ $i18n('popup.checklist.prompt') }}</span></p></div><check-list :data=items class=checklist><template scope=props><check-list-item :data=props.data></check-list-item></template></check-list></div></div></modal>"
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = "<div><div class=\"js_composition_style_button nqti-base-composition-chosetype\" v-bind:class=\"{'show-box': dropDownShow, 'hide-dom':!dropDown.styleSelected}\"><a href=javascript:; class=\"nqti-base-composition-chosetype-btn btn-typename\" v-if=!!dropDown.styleSelected @click=openStyleSelector v-bind:class=\"{'click-disabled': dropDown.isSpecified || dropDown.disabled}\"><span class=btn-txt>{{ $i18n(dropDown.styleSelected.text) }}</span></a><div class=nqti-base-composition-chosetype-box v-if=!dropDown.isSpecified><a href=javascript:; class=nqti-base-composition-chosetype-btn v-for=\"item in items\" @click=selectStyle(item)><span class=btn-txt>{{ $i18n(item.text) }}</span></a></div></div><modal :options=popup class=pop-chose-type v-if=!dropDown.isSpecified><div class=\"ndui-box skin_notebook\"><div class=ndui-box-paper><div class=ndui-box-cntwrap><div class=ndui-box-txtwrap><p class=ndui-box-tip><span class=ndui-tip-txt v-once>{{ $i18n('composition.style.title') }}</span></p><p class=ndui-box-tip><span class=ndui-tip-txt v-once>{{ $i18n('composition.style.prompt') }}</span></p></div><div class=\"ndui-box-btnwrap clearfix\"><a href=javascript:; class=ndui-btn-woodskin v-for=\"item in items\" @click=selectStyle(item) v-bind:class=\"{'ui-btn-select': item.isActive}\"><span class=ndui-btn-txt>{{ $i18n(item.text) }}</span></a></div></div></div></div></modal></div>"
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = "<modal :options=popup class=pop-viewcase><div class=composition-outline-viewcase-pop><div class=composition-outline-pop-header><ul class=composition-outline-pop-tab><li class=tabcell @click=switchTab(1) v-bind:class=\"{'ui-btn-select':isActiveTab(1)}\"><span class=cell-txt v-once>{{ $i18n('tab.outline.sample') }}</span></li><li class=tabcell @click=switchTab(2) v-bind:class=\"{'ui-btn-select':isActiveTab(2)}\"><span class=cell-txt v-once>{{ $i18n('tab.composition.sample') }}</span></li></ul></div><div class=composition-outline-pop-view><div class=\"composition-outline-minder-wrap js_outline_panel\" v-bind:class=\"{'hide-dom':!isActiveTab(1)}\"></div><div class=\"composition-outline-art-wrap js_composition_panel\" v-bind:class=\"{'hide-dom':!isActiveTab(2)}\"><p class=title>{{compositionSample.title}}</p><p class=para v-for=\"para in compositionSample.paragraph\">{{para}}</p></div></div></div></modal>"
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=composition-mindmap><toolbar class=mindmap-toolbar :members=toolbarMembers :disabled=toolbarDisabled></toolbar><ul class=composition-outline-outline-handle><li class=\"composition-outline-btn js_btn_sample\" @click=seeReferSample v-bind:class=\"{'ui-btn-select':referSamplePopupShow}\"><span class=mindbtn-txt v-once>{{ $i18n('btn.refer.sample') }}</span></li><li class=\"composition-outline-btn js_btn_checklist\" @click=seeCheckList v-bind:class=\"{'ui-btn-select':checkListPopupShow}\"><span class=mindbtn-txt v-once>{{ $i18n('btn.check.list') }}</span></li></ul><refer-sample @composition-style-changed=onCompositionStyleChanged></refer-sample><check-list></check-list><check-list-prompt @goto-check=gotoCheck></check-list-prompt><composition-style></composition-style><minder-map class=composition-mindmap-wrap @scale=onMinderMapScale @state-change=onMinderMapStateChanged @content-change=onMinderMapContentChanged></minder-map></div>"
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"width: 100%; height: 100%;\"><toolbar class=mindmap-toolbar :members=toolbarMembers :disabled=toolbarDisabled></toolbar><minder-map class=composition-mindmap-wrap @scale=onMinderMapScale @state-change=onMinderMapStateChanged @content-change=onMinderMapContentChanged></minder-map></div>"
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var icr_1 = __webpack_require__(9);
+/**
+ * PC端应用组件
+ */
+var PCApp = (function (_super) {
+    __extends(PCApp, _super);
+    function PCApp() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    PCApp.prototype.getMinderMapOption = function () {
+        return Object.assign(_super.prototype.getMinderMapOption.call(this), {
+            showMenu: true,
+            ignoreAttrTextVisible: false,
+            baseScale: 1.5
+        });
+    };
+    return PCApp;
+}(icr_1.default));
+exports.default = PCApp;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var vuex_1 = __webpack_require__(2);
+var constants_1 = __webpack_require__(3);
+var ActionTypes = __webpack_require__(6);
+var store_1 = __webpack_require__(15);
+var views_1 = __webpack_require__(16);
+var base_1 = __webpack_require__(13);
+/**
+ * 互动课堂应用组件
+ */
+var StatisticApp = (function (_super) {
+    __extends(StatisticApp, _super);
+    function StatisticApp() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    // 启动
+    StatisticApp.prototype.run = function (view, model, compositionPanelService) {
+        if (this.isExecuted)
+            return;
+        this.isExecuted = true;
+        this.compositionPanelService = compositionPanelService;
+        //Step2. 构建视图
+        this.createView(view, model);
+    };
+    // 构建视图
+    StatisticApp.prototype.createView = function (view, model) {
+        //Step1. 构造状态对象
+        this.$store = this.createStore(model);
+        //Step2. 加载视图组件
+        this.$view = new views_1.StatisticView({
+            store: this.$store,
+            methods: {
+                $i18n: this.presenter.$translate.bind(this.presenter)
+            }
+        });
+        this.$view.$mount(view);
+    };
+    // 创建Store
+    StatisticApp.prototype.createStore = function (model) {
+        return new vuex_1.Store(store_1.StatisticStore, {
+            i18n: this.presenter.$translate.bind(this.presenter),
+            model: model.QuestionContent,
+            minderMapOption: this.getMinderMapOption(),
+            context: {
+                basePath: this.presenter.basePath,
+                currentLanguage: this.presenter.currentLanguage
+            }
+        });
+    };
+    StatisticApp.prototype.getMinderMapOption = function () {
+        return Object.assign(_super.prototype.getMinderMapOption.call(this), {
+            showMenu: true,
+            ignoreAttrTextVisible: false,
+            baseScale: 1.3
+        });
+    };
+    /** 实现IMindJetManager接口 */
+    StatisticApp.prototype.receiveAction = function (actionType, payload) {
+        switch (actionType) {
+            case constants_1.AppActionTypes.IS_MINDJET_CONTENT_CHANGED:
+                return this.askMindJetContentIsChanged();
+            case constants_1.AppActionTypes.RESET_MINDJET_CONTENT:
+                return this.resetMindJetContent(payload);
+            case constants_1.AppActionTypes.CLEAR_MINDJET_CONTENT:
+                return this.clearMindJetContent();
+            default:
+        }
+    };
+    StatisticApp.prototype.askMindJetContentIsChanged = function () {
+        var minderMap = this.$store.state.minderMap.interface;
+        return {
+            isChanged: minderMap.isChanged(),
+            data: minderMap.getData()
+        };
+    };
+    StatisticApp.prototype.resetMindJetContent = function (data) {
+        this.$store.dispatch(ActionTypes.MinderMap.RESET, { data: data });
+    };
+    StatisticApp.prototype.clearMindJetContent = function () {
+        this.$store.dispatch(ActionTypes.MinderMap.DESTROY);
+    };
+    return StatisticApp;
+}(base_1.default));
+exports.default = StatisticApp;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var icr_1 = __webpack_require__(9);
+var event_bus_1 = __webpack_require__(11);
+var ActionTypes = __webpack_require__(6);
+var MutationTypes = __webpack_require__(0);
+/**
+ * 学生端应用组件
+ */
+var StudentApp = (function (_super) {
+    __extends(StudentApp, _super);
+    function StudentApp(presenter) {
+        var _this = _super.call(this, presenter) || this;
+        /**
+         * 监听学生端提交按钮（不可提交状态下）的点击事件
+         * 主要应用场景：已作答但未检查清单
+         */
+        event_bus_1.EventBus.onTry2SubmitWhenDisabled(_this.presenter, _this.onTry2SubmitWhenDisabled.bind(_this));
+        //学生端 监听相应事件来接收来自老师修改的作答结果
+        event_bus_1.EventBus.receiveAnswerModifiedByTeacher(_this.presenter, _this.receiveAnswerModifiedByTeacher.bind(_this));
+        return _this;
+    }
+    StudentApp.prototype.getMinderMapOption = function () {
+        return Object.assign(_super.prototype.getMinderMapOption.call(this), {
+            showMenu: false,
+            ignoreAttrTextVisible: true,
+            baseScale: 1.4
+        });
+    };
+    /**
+     * 重写父类的getResult方法，提交答案中锁定习题
+     */
+    StudentApp.prototype.getResult = function () {
+        this.lock();
+        return _super.prototype.getResult.call(this);
+    };
+    /**
+     * 重写父类的getResult方法，提交答案中锁定习题
+     */
+    StudentApp.prototype.lock = function () {
+        _super.prototype.lock.call(this);
+        var $store = this.$store;
+        if ($store) {
+            $store.commit(MutationTypes.CompositionStyle.POPUP_SHOW, false); //隐藏文体选择弹窗
+            $store.commit(MutationTypes.CompositionStyle.DROPDOWN_DISABLE, true); //禁用文体选择下拉菜单
+        }
+    };
+    /**
+     * 重写父类的unLock方法，添加再次答题的特性支持
+     */
+    StudentApp.prototype.unLock = function () {
+        if (this.$store.state.checkList.checkedFlag) {
+            setTimeout(function () {
+                this.$store.commit(MutationTypes.App.ALLOW_SUBMIT, true);
+                event_bus_1.EventBus.notifyQuestionStateChange(this.presenter, { canSubmit: true });
+            }.bind(this), 200);
+        }
+        _super.prototype.unLock.call(this);
+        this.syncAnswerFromTeacher();
+    };
+    /**
+     * 重写父类的onCompositionStyleChanged方法，作文文体发生变化，触发状态变化
+     */
+    StudentApp.prototype.onCompositionStyleChanged = function () {
+        event_bus_1.EventBus.notifyPresenterStateChange(this.presenter);
+    };
+    /**
+     * 重写父类的onMinderMapContentChanged方法，添加再次答题的特性支持
+     */
+    StudentApp.prototype.onMinderMapContentChanged = function () {
+        _super.prototype.onMinderMapContentChanged.call(this);
+        this.$store.commit(MutationTypes.App.ALLOW_SUBMIT, true);
+    };
+    /**
+     * 重写父类的onCheckListDone方法，实现可提交操作
+     */
+    StudentApp.prototype.onCheckListDone = function () {
+        this.$store.commit(MutationTypes.App.ALLOW_SUBMIT, true);
+        event_bus_1.EventBus.notifyQuestionStateChange(this.presenter, { canSubmit: true });
+    };
+    /**
+     * 监听学生端提交按钮（不可提交状态下）的点击事件
+     */
+    StudentApp.prototype.onTry2SubmitWhenDisabled = function () {
+        // 显示提示框：好的，去检查
+        this.$store.commit(MutationTypes.CheckListPrompt.POPUP_SHOW, true);
+    };
+    /**
+     * 接收来自老师修改的作答结果
+     * @param data
+     */
+    StudentApp.prototype.receiveAnswerModifiedByTeacher = function (data) {
+        this.answerModifiedByTeacher = data.value;
+        this.syncAnswerFromTeacher();
+    };
+    /**
+     * 同步更新来自老师修改的作答结果
+     * @returns {boolean}
+     */
+    StudentApp.prototype.syncAnswerFromTeacher = function () {
+        //收到老师修改的答案，并且当前处于可作答状态
+        if (this.answerModifiedByTeacher && this.isLocked === false) {
+            /**
+             * 通过时间戳的比对来识别收到的老师修改答案是否有效
+             *  该方案用于防止一个异常流的case：老师修改学生答案，然后再次发题给学生，学生在老师的基础上继续作答，在不提交的情况下异常重启，此时状态恢复：
+             *  1. setState接口被调用后，传入学生最新作答的结果数据，并显示在界面上
+             *  2. 收到ModifyAnswer事件，获取老师修改的答案，但此时这个数据是失效的，因为异常前学生已在老师修改的基础上作答了
+             *
+             *  补充：针对这种情况，如何互动课堂能够识别到而不向业务组件发送ModifyEvent事件，就不需要这样的处理方案；
+             *        仅仅这个异常流case而加入时间戳，挺不划算，业务组件本不应该耦合这类框架逻辑
+             * @type {*|number}
+             */
+            var modifyTimestamp = this.answerModifiedByTeacher.modifyAnswerTimestamp || 0, //老师修改时间
+            isValid = modifyTimestamp >= this.lastStateTimestamp; //老师修改时间 与 最新状态的生效时间
+            if (isValid) {
+                this.$store.dispatch(ActionTypes.MinderMap.RESET, { data: JSON.parse(this.answerModifiedByTeacher.answer) });
+            }
+            delete this.answerModifiedByTeacher;
+            return isValid;
+        }
+        return false;
+    };
+    return StudentApp;
+}(icr_1.default));
+exports.default = StudentApp;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var icr_1 = __webpack_require__(9);
+/**
+ * 白板端应用组件
+ */
+var WebApp = (function (_super) {
+    __extends(WebApp, _super);
+    function WebApp() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    WebApp.prototype.getMinderMapOption = function () {
+        return Object.assign(_super.prototype.getMinderMapOption.call(this), {
+            showMenu: true,
+            ignoreAttrTextVisible: false,
+            baseScale: 1.5
+        });
+    };
+    return WebApp;
+}(icr_1.default));
+exports.default = WebApp;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var icr_1 = __webpack_require__(9);
+/**
+ * 白板端应用组件
+ */
+var WhiteboardApp = (function (_super) {
+    __extends(WhiteboardApp, _super);
+    function WhiteboardApp() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    WhiteboardApp.prototype.getMinderMapOption = function () {
+        return Object.assign(_super.prototype.getMinderMapOption.call(this), {
+            showMenu: true,
+            ignoreAttrTextVisible: false,
+            baseScale: 1.5
+        });
+    };
+    return WhiteboardApp;
+}(icr_1.default));
+exports.default = WhiteboardApp;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vue_class_component_1 = __webpack_require__(5);
+var CheckListItem = (function (_super) {
+    __extends(CheckListItem, _super);
+    function CheckListItem() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CheckListItem;
+}(Vue));
+CheckListItem = __decorate([
+    vue_class_component_1.default({
+        template: '<p class="list-txt">{{ data }}</p>',
+        props: ['data']
+    })
+], CheckListItem);
+exports.default = CheckListItem;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var Modal = __webpack_require__(7).Modal;
+var mixins_1 = __webpack_require__(10);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var CheckListPrompt = (function (_super) {
+    __extends(CheckListPrompt, _super);
+    function CheckListPrompt() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    CheckListPrompt.prototype.gotoCheck = function () {
+        //关闭弹窗
+        this.$store.commit(MutationTypes.CheckListPrompt.POPUP_SHOW, false);
+        //发出事件通知
+        this.$emit('goto-check');
+    };
+    return CheckListPrompt;
+}(Vue));
+CheckListPrompt = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(20),
+        mixins: [mixins_1.i18n],
+        computed: vuex_1.mapGetters({
+            popup: GetterTypes.CheckListPrompt.Popup,
+            popupShow: GetterTypes.CheckListPrompt.PopupShow
+        }),
+        components: {
+            'modal': Modal
+        }
+    })
+], CheckListPrompt);
+exports.default = CheckListPrompt;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var _a = __webpack_require__(7), Modal = _a.Modal, BaseList = _a.BaseList;
+var check_list_item_1 = __webpack_require__(31);
+var mixins_1 = __webpack_require__(10);
+var GetterTypes = __webpack_require__(1);
+var CheckList = (function (_super) {
+    __extends(CheckList, _super);
+    function CheckList() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return CheckList;
+}(Vue));
+CheckList = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(21),
+        mixins: [mixins_1.i18n],
+        computed: vuex_1.mapGetters({
+            popup: GetterTypes.CheckList.Popup,
+            items: GetterTypes.CheckList.Items
+        }),
+        components: {
+            'modal': Modal,
+            'check-list': BaseList,
+            'check-list-item': check_list_item_1.default
+        }
+    })
+], CheckList);
+exports.default = CheckList;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var Modal = __webpack_require__(7).Modal;
+var mixins_1 = __webpack_require__(10);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var ActionTypes = __webpack_require__(6);
+var CompositionStyle = (function (_super) {
+    __extends(CompositionStyle, _super);
+    function CompositionStyle() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * Lifecycle Mounted
+     */
+    CompositionStyle.prototype.mounted = function () {
+        //调用CompositionPanelService注入作文文体按钮到CompositionPanel中
+        var compositionStyleBtn = $(this.$el).find('.js_composition_style_button');
+        this['$injectStyleBtn'](compositionStyleBtn[0]);
+    };
+    /**
+     * 打开作文文体选择列表
+     */
+    CompositionStyle.prototype.openStyleSelector = function () {
+        var $dropDown = this['dropDown'];
+        if (!$dropDown.isSpecified && !$dropDown.disabled) {
+            this.$store.commit(MutationTypes.CompositionStyle.DROPDOWN_SHOW, true);
+        }
+    };
+    /**
+     * 选择作文文体
+     * @param item
+     */
+    CompositionStyle.prototype.selectStyle = function (item) {
+        var $store = this.$store;
+        $store.dispatch(ActionTypes.CompositionStyle.SELECT_STYLE, { item: item });
+        $store.commit(MutationTypes.CompositionStyle.DROPDOWN_SHOW, false);
+        $store.commit(MutationTypes.CompositionStyle.POPUP_SHOW, false);
+    };
+    return CompositionStyle;
+}(Vue));
+CompositionStyle = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(22),
+        mixins: [mixins_1.i18n, mixins_1.injectStyleBtn],
+        computed: vuex_1.mapGetters({
+            popup: GetterTypes.CompositionStyle.Popup,
+            popupShow: GetterTypes.CompositionStyle.PopupShow,
+            dropDown: GetterTypes.CompositionStyle.DropDown,
+            dropDownShow: GetterTypes.CompositionStyle.DropDownShow,
+            items: GetterTypes.CompositionStyle.Items
+        }),
+        components: {
+            'modal': Modal
+        }
+    })
+], CompositionStyle);
+exports.default = CompositionStyle;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var Modal = __webpack_require__(7).Modal;
+var mixins_1 = __webpack_require__(10);
+var Constants = __webpack_require__(3);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var ActionTypes = __webpack_require__(6);
+var ReferSample = (function (_super) {
+    __extends(ReferSample, _super);
+    function ReferSample() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    ReferSample.prototype.mounted = function () {
+        //作文范例显示面板
+        this.compositionPanel = $(this.$el).find('.js_composition_panel')[0];
+        //注册监听
+        this._RegisterWatches();
+        //加载范例数据
+        var $data = this['data'];
+        this._LoadSampleData().then(function (samples) {
+            var styleCode = Constants.CompositionStyleMap[$data.compositionStyle]; //作文文体
+            //let levelCode = Constants.OutlineLevelMap[$data.outlineLevel];         //提纲详略
+            if ($data.isSpecifiedStyle) {
+                this.samples = (_a = {},
+                    _a[styleCode] = samples[styleCode],
+                    _a);
+            }
+            else {
+                this.samples = samples;
+            }
+            //未指定或选定作文文体，暂不做处理
+            if ($data.compositionStyle != Constants.CompositionStyle.None) {
+                this._Render();
+            }
+            var _a;
+        }.bind(this));
+    };
+    /**
+     * 切换Tab
+     * @param index
+     */
+    ReferSample.prototype.switchTab = function (index) {
+        this.$store.commit(MutationTypes.ReferSample.SWITCH_TAB, { index: index });
+    };
+    /**
+     * 判断指定Tab是否为当前Tab
+     * @param index
+     * @returns {boolean}
+     */
+    ReferSample.prototype.isActiveTab = function (index) {
+        var $data = this['data'];
+        return $data.currentTabIndex === index;
+    };
+    /**
+     * 组件销毁
+     */
+    ReferSample.prototype.destroy = function () {
+        delete this.compositionPanel;
+        delete this.outlineSample;
+        delete this.samples;
+        if (this.minderMap) {
+            this.minderMap.destroy();
+            delete this.minderMap;
+        }
+    };
+    /**
+     * 数据监控
+     * @private
+     */
+    ReferSample.prototype._RegisterWatches = function () {
+        var $data = this['data'];
+        this.$watch('popup.shown', function (shown) {
+            this._CreateMinderMap(this.outlineSample);
+            if (shown) {
+                this.scrollTopCompositionPanel();
+                this.$store.dispatch(ActionTypes.MinderMap.LOCK); //锁住编辑中的提纲
+            }
+            else {
+                this.$store.dispatch(ActionTypes.MinderMap.UNLOCK); //解锁编辑中的提纲
+            }
+        }.bind(this));
+        //文体不限，作文文体变化监听
+        if (!$data.isSpecifiedStyle) {
+            this.$watch('data.compositionStyle', function () {
+                this.$emit('composition-style-changed');
+                if (this.samples) {
+                    this._Render();
+                }
+            }.bind(this));
+            this.$watch('data.currentTabIndex', function () {
+                this.scrollTopCompositionPanel();
+                this._CreateMinderMap(this.outlineSample);
+            }.bind(this));
+        }
+    };
+    /**
+     * 加载范例数据
+     * @returns {*}
+     * @private
+     */
+    ReferSample.prototype._LoadSampleData = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var $context = _this['context'];
+            $.ajax({
+                url: $context.basePath + 'resources/data/' + $context.currentLanguage + '/samples.json',
+                async: true,
+                dataType: 'json',
+                success: function (data) {
+                    resolve(data);
+                },
+                error: function () {
+                    reject();
+                }
+            });
+        });
+    };
+    /**
+     * 渲染视图组件：参考范例 和 作文范例
+     * @private
+     */
+    ReferSample.prototype._Render = function () {
+        var $data = this['data'];
+        var styleCode = Constants.CompositionStyleMap[$data.compositionStyle];
+        var levelCode = Constants.OutlineLevelMap[$data.outlineLevel];
+        //加载提纲范例
+        this.outlineSample = this.getOutlineSample(styleCode, levelCode);
+        this._CreateMinderMap(this.outlineSample);
+        //加载作文范例
+        var sample = this.getCompositionSample(styleCode);
+        if (sample.hasOwnProperty(levelCode)) {
+            sample = sample[levelCode];
+        }
+        var $compositionSample = this['compositionSample'];
+        $compositionSample.title = sample.title;
+        $compositionSample.paragraph = sample.paragraph;
+        this.isCompositionStyleChanged = true;
+        this.scrollTopCompositionPanel();
+    };
+    /**
+     * 获取提纲范例
+     * @param styleCode  作文文体
+     * @param levelCode  提纲详略
+     * @returns {any}
+     */
+    ReferSample.prototype.getOutlineSample = function (styleCode, levelCode) {
+        return this.samples[styleCode]['outlineNodes'][levelCode];
+    };
+    /**
+     * 获取作文范例
+     * @param styleCode 作文文体
+     * @returns {any}
+     */
+    ReferSample.prototype.getCompositionSample = function (styleCode) {
+        return this.samples[styleCode]['compositionContent'];
+    };
+    /**
+     * 作文范例显示面板滚动条置顶显示
+     * 应用场景：1. 切换文体后
+     */
+    ReferSample.prototype.scrollTopCompositionPanel = function () {
+        var $popup = this['popup'];
+        var $data = this['data'];
+        if (this.isCompositionStyleChanged && $popup.shown && $data.currentTabIndex === 2) {
+            this.compositionPanel.scrollTop = 0; //it works when display != none
+            this.isCompositionStyleChanged = false;
+        }
+    };
+    /**
+     * 创建思维导图
+     * @param data
+     * @private
+     */
+    ReferSample.prototype._CreateMinderMap = function (data) {
+        var $popup = this['popup'];
+        var $data = this['data'];
+        /**
+         * 须满足以下三个条件：有范例数据、范例弹窗显示状态、显示提纲范例Tab页
+         */
+        if (!!this.outlineSample && $popup.shown && $data.currentTabIndex === 1) {
+            if (this.minderMap) {
+                this.minderMap.destroy();
+            }
+            this.minderMap = MinderMap.create({
+                maxScale: 2.5,
+                minScale: 0.1,
+                editAble: false,
+                showMenu: false,
+                renderDataAutoLayout: true,
+                ignoreAttrTextVisible: false,
+                contentClickViewAble: true,
+                baseScale: 0.8,
+                type: 'right',
+                rootVertical: true,
+                showRequireStar: true,
+                remarkVisible: false,
+                position: ['left', 'top'],
+                disableKeyMap: ['ctrl++/', 'space+wheel'] //禁用快捷键
+            });
+            this.minderMap.setData(data);
+            this.minderMap.render($(this.$el).find('.js_outline_panel')[0]);
+            this.minderMap.changePosition(['left', 'top']);
+            //避免重复构建
+            this.outlineSample = null;
+        }
+    };
+    return ReferSample;
+}(Vue));
+ReferSample = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(23),
+        mixins: [mixins_1.i18n],
+        computed: vuex_1.mapGetters({
+            popup: GetterTypes.ReferSample.Popup,
+            data: GetterTypes.ReferSample.Data,
+            compositionSample: GetterTypes.ReferSample.CompositionSample,
+            context: GetterTypes.ReferSample.Context
+        }),
+        components: {
+            'modal': Modal
+        }
+    })
+], ReferSample);
+exports.default = ReferSample;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var Store = function (helpers) {
+    return {
+        state: {
+            popup: {
+                shown: false,
+                masked: true,
+                closeButton: 'right',
+            }
+        },
+        getters: (_a = {},
+            _a[GetterTypes.CheckListPrompt.Popup] = function (state) {
+                return state.popup;
+            },
+            _a[GetterTypes.CheckListPrompt.PopupShow] = function (state) {
+                return state.popup.shown;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.CheckListPrompt.POPUP_SHOW] = function (state, flag) { return state.popup.shown = flag || false; },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var Store = function (helpers) {
+    var model = helpers.model;
+    return {
+        state: {
+            popup: {
+                shown: false,
+                masked: false,
+                closeButton: 'right',
+            },
+            checkedFlag: false,
+            items: model.checkList //�����嵥�б���ֵ
+        },
+        getters: (_a = {},
+            _a[GetterTypes.CheckList.Popup] = function (state) {
+                return state.popup;
+            },
+            _a[GetterTypes.CheckList.PopupShow] = function (state) {
+                return state.popup.shown;
+            },
+            _a[GetterTypes.CheckList.Items] = function (state) {
+                return state.items;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.CheckList.POPUP_SHOW] = function (state, flag) { return state.popup.shown = flag; },
+            _b[MutationTypes.CheckList.CHECK_FLAG] = function (state, flag) {
+                state.checkedFlag = flag;
+                if (flag === true) {
+                    helpers.triggerCheckListDone && helpers.triggerCheckListDone();
+                }
+            },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Constants = __webpack_require__(3);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+/**
+ * 构造作文文体按钮
+ * @param style
+ * @returns {{value: any, text: any}}
+ * @constructor
+ */
+function ConstructStyleBtn(style) {
+    return { value: style, text: Constants.CompositionStyleName[style] };
+}
+function ConstructStyleBtnList() {
+    return [
+        ConstructStyleBtn(Constants.CompositionStyle.JiXu),
+        ConstructStyleBtn(Constants.CompositionStyle.YiLun),
+        ConstructStyleBtn(Constants.CompositionStyle.ShuoMing)
+    ];
+}
+var Store = function (helpers) {
+    var model = helpers.model;
+    var unSpecifiedStyle = (model.compositionStyle == Constants.CompositionStyle.None || !Constants.CompositionStyleName.hasOwnProperty(model.compositionStyle)); //作文文体不限
+    return {
+        state: {
+            popup: {
+                shown: unSpecifiedStyle,
+                masked: true,
+                closeButton: 'right',
+            },
+            dropDown: {
+                disabled: false,
+                shown: false,
+                isSpecified: !unSpecifiedStyle,
+                styleSelected: (unSpecifiedStyle ? null : ConstructStyleBtn(model.compositionStyle)),
+            },
+            items: (unSpecifiedStyle ? ConstructStyleBtnList() : ConstructStyleBtn(model.compositionStyle)) //作文文体列表
+        },
+        getters: (_a = {},
+            _a[GetterTypes.CompositionStyle.Popup] = function (state) {
+                return state.popup;
+            },
+            _a[GetterTypes.CompositionStyle.PopupShow] = function (state) {
+                return state.popup.shown;
+            },
+            _a[GetterTypes.CompositionStyle.DropDown] = function (state) {
+                return state.dropDown;
+            },
+            _a[GetterTypes.CompositionStyle.DropDownShow] = function (state) {
+                return state.dropDown.shown;
+            },
+            _a[GetterTypes.CompositionStyle.Items] = function (state) {
+                return state.items;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.CompositionStyle.POPUP_SHOW] = function (state, shown) { return state.popup.shown = shown || false; },
+            _b[MutationTypes.CompositionStyle.DROPDOWN_SHOW] = function (state, shown) { return state.dropDown.shown = shown || false; },
+            _b[MutationTypes.CompositionStyle.DROPDOWN_DISABLE] = function (state, disabled) { return state.dropDown.disabled = disabled || false; },
+            _b[MutationTypes.CompositionStyle.SELECT_STYLE] = function (state, payload) {
+                if (!state.isSpecified) {
+                    if (payload && payload.item) {
+                        state.dropDown.styleSelected = payload.item;
+                    }
+                }
+            },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var check_list_1 = __webpack_require__(37);
+exports.CheckList = check_list_1.default;
+var check_list_prompt_1 = __webpack_require__(36);
+exports.CheckListPrompt = check_list_prompt_1.default;
+var composition_style_1 = __webpack_require__(38);
+exports.CompositionStyle = composition_style_1.default;
+var minder_map_1 = __webpack_require__(40);
+exports.MinderMap = minder_map_1.default;
+var refer_sample_1 = __webpack_require__(41);
+exports.ReferSample = refer_sample_1.default;
+var toolbar_1 = __webpack_require__(42);
+exports.Toolbar = toolbar_1.default;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var Store = function (helpers) {
+    var model = helpers.model;
+    return {
+        state: {
+            options: helpers.minderMapOption,
+            data: model.outlineTemplate,
+            extraOptions: {
+                listeners: ['scale', 'stateChange', 'contentChange']
+            },
+            interface: {}
+        },
+        getters: (_a = {},
+            _a[GetterTypes.MinderMap.Options] = function (state) {
+                return state.options;
+            },
+            _a[GetterTypes.MinderMap.ExtraOptions] = function (state) {
+                return state.extraOptions;
+            },
+            _a[GetterTypes.MinderMap.Data] = function (state) {
+                return state.data;
+            },
+            _a[GetterTypes.MinderMap.Interface] = function (state) {
+                if (!state.interface)
+                    state.interface = {};
+                return state.interface;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.MinderMap.REDO] = function (state, payload) { return state.interface.redo(); },
+            _b[MutationTypes.MinderMap.UNDO] = function (state, payload) { return state.interface.undo(); },
+            _b[MutationTypes.MinderMap.FOCUS] = function (state, payload) { return state.interface.focus(); },
+            _b[MutationTypes.MinderMap.GLOBAL] = function (state, payload) { return state.interface.global(); },
+            _b[MutationTypes.MinderMap.SCALE] = function (state, payload) { return state.interface.scale(payload.scale || 1); },
+            _b[MutationTypes.MinderMap.EDITABLE] = function (state, payload) { return state.interface.setEditable(payload); },
+            _b[MutationTypes.MinderMap.LOCK] = function (state, payload) { return state.interface.setLock(true); },
+            _b[MutationTypes.MinderMap.UNLOCK] = function (state, payload) { return state.interface.setLock(false); },
+            _b[MutationTypes.MinderMap.RESET] = function (state, payload) { return state.interface.reset(payload.data); },
+            _b[MutationTypes.MinderMap.DESTROY] = function (state, payload) { return state.interface.destroy(); },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Constants = __webpack_require__(3);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var Store = function (helpers) {
+    var model = helpers.model;
+    var unSpecifiedStyle = (model.compositionStyle == Constants.CompositionStyle.None || !Constants.CompositionStyleName.hasOwnProperty(model.compositionStyle)); //�������岻��
+    return {
+        state: {
+            popup: {
+                shown: false,
+                masked: true,
+                closeButton: 'right',
+            },
+            data: {
+                isSpecifiedStyle: !unSpecifiedStyle,
+                compositionStyle: model.compositionStyle,
+                outlineLevel: model.outlineLevel,
+                currentTabIndex: 1,
+                outlineTemplate: {},
+                compositionSample: {
+                    title: '',
+                    paragraph: []
+                }
+            },
+            context: {
+                basePath: helpers.context.basePath,
+                currentLanguage: helpers.context.currentLanguage
+            }
+        },
+        getters: (_a = {},
+            _a[GetterTypes.ReferSample.Popup] = function (state) {
+                return state.popup;
+            },
+            _a[GetterTypes.ReferSample.PopupShow] = function (state) {
+                return state.popup.shown;
+            },
+            _a[GetterTypes.ReferSample.Data] = function (state) {
+                return state.data;
+            },
+            _a[GetterTypes.ReferSample.CompositionSample] = function (state) {
+                return state.data.compositionSample;
+            },
+            _a[GetterTypes.ReferSample.Context] = function (state) {
+                return state.context;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.ReferSample.POPUP_SHOW] = function (state, payload) { return state.popup.shown = payload || false; },
+            _b[MutationTypes.ReferSample.STYLE_CHANGE] = function (state, payload) {
+                if (!state.data.isSpecifiedStyle) {
+                    state.data.compositionStyle = payload;
+                }
+            },
+            _b[MutationTypes.ReferSample.SWITCH_TAB] = function (state, payload) { return state.data.currentTabIndex = payload.index; },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var ActionTypes = __webpack_require__(6);
+/**
+ * ��������������״̬����
+ * @param helpers
+ * @returns {any}
+ */
+function CreateState(helpers) {
+    var state = {
+        disabled: false,
+        members: [] //�������б�
+    };
+    state.members.push((state.undo = {
+        text: helpers.i18n('toolbar.btn.undo'),
+        disabled: true,
+        style: 'ndui-btn-mindmap back',
+        disabledStyle: 'click_disabled',
+        handler: function ($vue) { return $vue.$store.dispatch(ActionTypes.Toolbar.UNDO); }
+    }));
+    state.members.push((state.redo = {
+        text: helpers.i18n('toolbar.btn.redo'),
+        disabled: true,
+        style: 'ndui-btn-mindmap reset',
+        disabledStyle: 'click_disabled',
+        handler: function ($vue) { return $vue.$store.dispatch(ActionTypes.Toolbar.REDO); }
+    }));
+    state.members.push((state.focus = {
+        text: helpers.i18n('toolbar.btn.focus'),
+        disabled: false,
+        style: 'ndui-btn-mindmap location',
+        disabledStyle: 'click_disabled',
+        handler: function ($vue) { return $vue.$store.dispatch(ActionTypes.Toolbar.FOCUS); }
+    }));
+    state.members.push((state.global = {
+        text: helpers.i18n('toolbar.btn.global'),
+        disabled: false,
+        style: 'ndui-btn-mindmap total',
+        disabledStyle: 'click_disabled',
+        handler: function ($vue) { return $vue.$store.dispatch(ActionTypes.Toolbar.GLOBAL); }
+    }));
+    state.members.push((state.slider = {
+        id: 'preset.slider.example',
+        min: 0.1,
+        max: 2.5,
+        value: 1,
+        step: 0.25,
+        disabled: false,
+        style: 'verticle',
+        disabledStyle: 'click_disabled',
+        button: true,
+        updateHandler: function ($vue, scale) { return $vue.$store.dispatch(ActionTypes.Toolbar.SLIDER, { scale: scale.value }); },
+        changeHandler: function ($vue, scale) { return $vue.$store.dispatch(ActionTypes.Toolbar.SLIDER, { scale: scale.value }); }
+    }));
+    return state;
+}
+var Store = function (helpers) {
+    return {
+        state: CreateState(helpers),
+        getters: (_a = {},
+            _a[GetterTypes.Toolbar.Members] = function (state) {
+                return state.members;
+            },
+            _a[GetterTypes.Toolbar.Disabled] = function (state) {
+                return state.disabled;
+            },
+            _a),
+        mutations: (_b = {},
+            _b[MutationTypes.Toolbar.REDO_DISABLE] = function (state, payload) { return state.redo.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.UNDO_DISABLE] = function (state, payload) { return state.undo.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.FOCUS_DISABLE] = function (state, payload) { return state.focus.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.GLOBAL_DISABLE] = function (state, payload) { return state.global.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.SLIDER_DISABLE] = function (state, payload) { return state.slider.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.TOOLBAR_DISABLE] = function (state, payload) { return state.disabled = payload || false; },
+            _b[MutationTypes.Toolbar.SLIDER_CHANGE] = function (state, payload) { return state.slider.value = payload.scale || 1; },
+            _b),
+        actions: {}
+    };
+    var _a, _b;
+};
+exports.default = Store;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var refer_sample_1 = __webpack_require__(35);
+var check_list_1 = __webpack_require__(33);
+var check_list_prompt_1 = __webpack_require__(32);
+var composition_style_1 = __webpack_require__(34);
+var minder_map_1 = __webpack_require__(14);
+var Toolbar = __webpack_require__(7).Toolbar;
+var AnswerView = (function (_super) {
+    __extends(AnswerView, _super);
+    function AnswerView() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * 查看参考范例
+     */
+    AnswerView.prototype.seeReferSample = function () {
+        this.$store.commit(MutationTypes.ReferSample.POPUP_SHOW, true);
+    };
+    /**
+     * 查看检查清单
+     */
+    AnswerView.prototype.seeCheckList = function () {
+        var $store = this.$store;
+        $store.commit(MutationTypes.CheckList.POPUP_SHOW, true);
+        $store.commit(MutationTypes.CheckList.CHECK_FLAG, true);
+    };
+    return AnswerView;
+}(Vue));
+AnswerView = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(24),
+        computed: vuex_1.mapGetters({
+            toolbarMembers: GetterTypes.Toolbar.Members,
+            toolbarDisabled: GetterTypes.Toolbar.Disabled,
+            referSamplePopupShow: GetterTypes.ReferSample.PopupShow,
+            checkListPopupShow: GetterTypes.CheckList.PopupShow
+        }),
+        components: {
+            'toolbar': Toolbar,
+            'refer-sample': refer_sample_1.default,
+            'check-list': check_list_1.default,
+            'check-list-prompt': check_list_prompt_1.default,
+            'composition-style': composition_style_1.default,
+            'minder-map': minder_map_1.default
+        }
+    })
+], AnswerView);
+exports.default = AnswerView;
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(4);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(5);
+var GetterTypes = __webpack_require__(1);
+var MutationTypes = __webpack_require__(0);
+var minder_map_1 = __webpack_require__(14);
+var Toolbar = __webpack_require__(7).Toolbar;
+var StatisticView = (function (_super) {
+    __extends(StatisticView, _super);
+    function StatisticView() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    StatisticView.prototype.onMinderMapScale = function (scale) {
+        this.$store.commit(MutationTypes.Toolbar.SLIDER_CHANGE, { scale: scale || 1 });
+    };
+    StatisticView.prototype.onMinderMapStateChanged = function (state) {
+        var $store = this.$store;
+        $store.commit(MutationTypes.Toolbar.REDO_DISABLE, !state.hasRedo);
+        $store.commit(MutationTypes.Toolbar.UNDO_DISABLE, !state.hasUndo);
+    };
+    StatisticView.prototype.onMinderMapContentChanged = function () { };
+    return StatisticView;
+}(Vue));
+StatisticView = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(25),
+        computed: vuex_1.mapGetters({
+            toolbarMembers: GetterTypes.Toolbar.Members,
+            toolbarDisabled: GetterTypes.Toolbar.Disabled,
+        }),
+        components: {
+            'toolbar': Toolbar,
+            'minder-map': minder_map_1.default
+        }
+    })
+], StatisticView);
+exports.default = StatisticView;
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Constants = __webpack_require__(3);
+var weak_map_1 = __webpack_require__(12);
+var event_bus_1 = __webpack_require__(11);
+var presenter_interface_1 = __webpack_require__(18);
+var presenter_service_1 = __webpack_require__(19);
+var presenter_utils_1 = __webpack_require__(8);
+var app_1 = __webpack_require__(17);
+var ApplicationMap = new weak_map_1.ProtectedWeakMap(); //应用视图组件私有变量包装
+var Presenter = (function (_super) {
+    __extends(Presenter, _super);
+    function Presenter() {
+        var _this = _super.call(this) || this;
+        _this.metaInfo = Object.assign((_this.metaInfo || {}), {
+            name: Constants.PresenterName,
+            type: PresenterType.PRESENTER_CONTROLLER
+        });
+        _this.logger.appendHandler(function (message, context) {
+            window.console.debug(message);
+        }, { level: Logger.DEBUG });
+        //颗粒服务
+        _this._service_ = new presenter_service_1.PresenterService(_this);
+        //启动生生互评接口
+        if (_this.isStudent) {
+            var thisInterface = new presenter_interface_1.PresenterInterface(_this);
+            _this.__interface.startCommentDataParse = thisInterface.startCommentDataParse.bind(thisInterface);
+        }
+        //等待CompositionService，方能启动应用组件
+        _this.promise = $.Deferred();
+        return _this;
+    }
+    /**
+     * Override toString toLocaleString
+     *  to avoid window.WeakMap is unsupportable,
+     *  a service instance as key in {} equals to its _CLASS_ID_, so that each instance is unique..
+     * @returns {any}
+     */
+    Presenter.prototype.toString = function () {
+        return this._CLASS_ID_;
+    };
+    Presenter.prototype.toLocaleString = function () {
+        return this.toString();
+    };
+    Presenter.prototype.$getInterfaceMethods = function () {
+        return [
+            {
+                interface: "ICompositionPanelService",
+                methods: ["getAutowiredPanel", "setComponent", "setQuestionTitle", "setTabTitle", "setDom"]
+            }
+        ];
+    };
+    Presenter.prototype.$afterPresenterRun = function (interfaceName, metaInfo, service) {
+        if (interfaceName === "ICompositionPanelService") {
+            this.promise && this.promise.resolve(service);
+        }
+    };
+    /**
+     * 获取颗粒服务
+     * @returns {IPresenterService}
+     */
+    Presenter.prototype.getService = function () {
+        return this._service_;
+    };
+    /**
+     * Presenter 入口
+     * @param view 视图对象
+     * @param model 数据模型
+     */
+    Presenter.prototype.run = function (view, model) {
+        //通过应用组件工厂实例化应用组件
+        var app = app_1.AppFactory.createIcrApp(this, model);
+        ApplicationMap.set(this, app);
+        this.getService().registerApp(app);
+        if (presenter_utils_1.PresenterUtils.IsStatisticDetail(model)) {
+            //运行应用视图组件
+            app.run(view, model);
+            delete this.promise;
+        }
+        else {
+            //给布局容器组件添加作文提纲教学样式
+            this.layoutService.changeLayoutBodyStyle(Constants.WriteLayoutStyleActionType.ADD, Constants.CSS_COMPOSITION_OUTLINE_LAYOUT);
+            this.promise.then(function (service) {
+                //运行应用视图组件
+                app.run(view, model, service);
+                delete this.promise;
+            }.bind(this));
+        }
+    };
+    /**
+     * 组件销毁
+     */
+    Presenter.prototype.destroy = function () {
+        var app = ApplicationMap.get(this);
+        app && app.destroy();
+        ApplicationMap.delete(this);
+        event_bus_1.EventBus.clear(this);
+        this._service_.destroy();
+    };
+    return Presenter;
+}(BaseController));
+window["Addon" + Constants.PresenterName + "_create"] = function () { return new Presenter(); };
+
+
+/***/ })
+/******/ ]);
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/data/en_us/samples.json' />
+<file src='./resources/data/zh_cn/samples.json' />
+<file src='./resources/data/zh_hk/samples.json' />
+
+
+</resources>
+
+</addon>

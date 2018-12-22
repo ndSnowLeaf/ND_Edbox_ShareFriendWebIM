@@ -1,0 +1,1092 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ClassifiedRemake'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.exam_skin_wood .classify_box .com_layout_main_exam{height:30em}.exam_skin_wood .classify_box{position:relative;z-index:333;height:37.5em}.exam_skin_wood .classify_box .com_layout_main{top:3.33333em;bottom:.75em}.exam_skin_wood .classify_box .com_layout_tit{margin:-.41667em -.75em 0}.exam_skin_wood .classify_box.show_number .list_num,.exam_skin_wood .classify_box.show_number .option_list_num{display:block!important}.exam_skin_wood .classify_box .move_container{display:none;position:absolute;top:0;left:0;z-index:9999;width:8.29167em;height:5.66667em;border:2px solid rgba(106,70,22,.2);line-height:.83333em;text-align:left;background:#fff;overflow:hidden;cursor:default}.exam_skin_wood .classify_box .move_container img{width:100%;height:100%}.exam_skin_wood .classify_box .move_container.cur_move{border-color:#ff3e02}.exam_skin_wood .classify{width:100%;height:100%}.exam_skin_wood .classify .grid{position:relative;float:left;padding-top:6.25em;padding-right:.41667em;height:100%;text-align:center;background:url(resources/wood/images/grid.png) right top no-repeat;background-size:.41667em 100%}.exam_skin_wood .classify .grid:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .classify .grid:last-child{background:0 0}.exam_skin_wood .classify .grid.grid_on{background-color:rgba(255,255,255,.25)}.exam_skin_wood .classify .grid .titlebox{position:absolute;top:0;left:-.33333em;right:0;width:94%;height:5em;text-align:center;margin:0 auto}.exam_skin_wood .classify .grid .classify_title{margin:.83333em 0 .41667em;display:inline-block;min-width:7.5em;height:4em;border:1px solid #8e5c1f;border-radius:.33333em;text-align:center;overflow:hidden;color:#5d390d;background-image:-webkit-linear-gradient(top,#f4bf7c,#daa055);background-image:linear-gradient(to bottom,#f4bf7c,#daa055)}.exam_skin_wood .classify .grid .classify_title .word{display:inline-block;line-height:1.2;font-size:1.75em;padding:0 .41667em;vertical-align:middle;word-break:break-all;word-wrap:break-word;text-align:left}.exam_skin_wood .classify .grid .classify_title.title_more .word{font-size:1.16667em}.exam_skin_wood .classify .grid .classify_title:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .classify .grid .list_box{display:inline-block;max-width:13.16667em;vertical-align:top}.exam_skin_wood .classify .grid .list_box .list{position:relative;float:left;margin:.16667em;cursor:default}.exam_skin_wood .classify .grid .list_box .list .list_container{width:6.25em;height:4.16667em;line-height:.83333em;background:#fff;border:2px solid rgba(106,70,22,.2);overflow:hidden;text-align:center}.exam_skin_wood .classify .grid .list_box .list .list_container .text{padding:.04167em .16667em;word-break:break-all;word-wrap:break-word;line-height:1.3;font-size:.83333em;display:inline-block;vertical-align:middle;text-align:left}.exam_skin_wood .classify .grid .list_box .list .list_container .text.small{line-height:1.1;font-size:.75em}.exam_skin_wood .classify .grid .list_box .list .list_num .word,.exam_skin_wood .option_box .option_list .option_list_num .word{line-height:1.5;font-size:.66667em}.exam_skin_wood .classify .grid .list_box .list .list_container:after{content:"";display:inline-block;height:100%;width:0;vertical-align:middle}.exam_skin_wood .classify .grid .list_box .list .list_num{display:none;text-align:center;color:#41a22b}.exam_skin_wood .classify .grid .list_box .list.click .list_container{border:.08333em solid #ff3e02}.exam_skin_wood .classify .grid .list_box .list.click .list_container .list_delete{display:block}.exam_skin_wood .classify .grid .list_box .list.correct .list_container{border:.08333em solid #5dad2c}.exam_skin_wood .classify .grid .list_box .list.error .list_container{border:.08333em solid #ff3e02}.exam_skin_wood .classify .grid .list_img{width:100%;height:100%}.exam_skin_wood .classify .grid .list_delete{display:none;position:absolute;top:0;right:0;width:1.04167em;height:1.125em;background:url(resources/wood/images/icon_delete.png) no-repeat rgba(0,0,0,.66);background-size:100% auto;border-radius:0 0 0 .29167em}.exam_skin_wood .classify .grid .list_delete:active{background:url(resources/wood/images/icon_delete.png) no-repeat rgba(0,0,0,.5);background-size:100% auto}.exam_skin_wood .classify.classify_two .grid{width:50%}.exam_skin_wood .classify.classify_three .grid{width:33.33%}.exam_skin_wood .classify.classify_four .grid{width:25%}.exam_skin_wood .classify.classify_five .grid{width:20%}.exam_skin_wood .classify_bottom{position:absolute;top:30.5em;left:.16667em;right:.16667em;height:7.33333em;background:rgba(144,85,24,.7);overflow:hidden;padding:.83333em .20833em .16667em .5em}.exam_skin_wood .classify_bottom .bottom_wrap{height:100%;overflow-x:hidden}.exam_skin_wood .classify_bottom .com_bottom_box_btn{margin-top:-3.75em;height:7.5em}.exam_skin_wood .option_box{display:inline-block;height:100%;white-space:nowrap;text-align:left}.exam_skin_wood .option_box .option_list{position:relative;display:inline-block;margin-right:.29167em;width:8.29167em;height:5.66667em;border:2px solid rgba(106,70,22,.2);cursor:default;vertical-align:middle}.exam_skin_wood .option_box .option_list .option_list_container{width:100%;height:100%;white-space:normal}.exam_skin_wood .option_box .option_list .option_list_num{display:none;text-align:center}.exam_skin_wood .option_box .option_list.click .option_list_container{border:.08333em solid #ff3e02}.exam_skin_wood .option_box .option_list.list_move{border-color:#ff3e02}.exam_skin_wood .option_box .option_img{width:100%;height:100%}.exam_skin_wood .option_text{height:100%;color:#2e2e2e;background:#fff;overflow:hidden;text-align:center}.exam_skin_wood .option_text:after{content:"";display:inline-block;height:100%;width:0;vertical-align:middle}.exam_skin_wood .option_text .text{padding:.04167em .41667em 0;word-break:break-all;word-wrap:break-word;line-height:1.3;font-size:1.16667em;display:inline-block;vertical-align:middle;text-align:left}.exam_skin_wood .option_text .text.small{line-height:1.1;font-size:.75em}.exam_skin_wood .com_wrapper_pad .classify_box .com_layout_main_exam{height:29.66667em}.exam_skin_wood .com_wrapper_pad .classify_bottom{top:30.25em}.exam_skin_wood .option_box .option_list .option_list_num{color:#333;position:absolute;left:0;bottom:0;background:#fff;border-radius:.4em;min-width:2em}.exam_skin_wood .option_box .option_list .option_list_num.green{color:#fff;background:green}.exam_skin_wood .classify_main .stat_number{text-align:center;color:#333;position:absolute;left:0;bottom:0;background:#fff;border-radius:.4em;min-width:2em;display:none}.exam_skin_wood .classify_main .stat_number.green{color:#fff;background:green}.exam_skin_wood .classify_main .stat_number em{line-height:1.5;font-size:.66667em}.exam_skin_wood .classify_main.show_number .stat_number{display:block}.exam_skin_wood .classify_main .list_num{display:none;color:#333;position:absolute;left:0;bottom:0;background:#fff;border-radius:.4em;min-width:2em}.exam_skin_wood .classify_main.show_number .list_num{display:block}.exam_skin_wood .classify .grid .list_box .list .list_num.green{color:#fff;background:green}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content classify_box classify_main _classify_main"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _tit"></h2></div><div class="com_layout_main"><div class="classify _classify"></div></div></div><div class="classify_bottom" style="padding-top:0"><div class="bottom_wrap _list_container"><ul class="option_box clearfix _option_box" style="padding-top:0.8em"></ul></div><a href="###" class="com_bottom_box_btn btn_left _icon_left"></a> <a href="###" class="com_bottom_box_btn btn_right _icon_right"></a></div><div class="move_container _move_container"></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function(window, $) {
+    var Classified = function() {
+        //是否锁定
+        this.locked = false;
+        this.questionId = null;
+        this.presenter = null;
+        //渲染区域
+        this.$view = null;
+        //标题
+        this.title = '';
+        this.categories = [
+            //            {                items: ['C1I1', 'C1I2', 'C1I3', 'C1I4'],                name: 'WWWWWWWWWWWWWWW',
+            // id: 'C1'            }
+        ];
+        this.options = [
+            //            {                type: 'text',                content: 'XXXXXXXXXXXXXX1',                id: 'C5I1'     }
+        ];
+        this.optionMap = {
+            //            'C5I1': {                type: 'text',                content: 'XXXXXXXXXXXXXX1',                id:
+            // 'C5I1'            }
+        };
+        //正确答案
+        this.correctAnswer = { /*键值对形式*/
+            //            p1: 'p2'
+        };
+        this.userAnswer = {}; /*键值对形式*/
+        this.showResult = false;
+        this.isOperate = false;
+        //区域类型和坐标及对象
+        this.areas = {
+            //            cid: {                $listBox: $listBox,                xMin: 0,                xMax: 0, yMin: 0,
+            //        yMax: 0,            }
+        };
+        this.moveId = null;
+        this.$moveOption = null;
+        this.$moveContainer = null;
+        this.$option = null;
+        this.$main = null;
+        this.startX = 0;
+        this.startY = 0;
+        this.endX = 0;
+        this.endY = 0;
+        this.nowDiff = 0; //分类题当前的区域与最初区域位置差值（统计界面会出现滚动条）
+        this.areaYmin = 0; //作答区最初的top位置
+        this.areaYmax = 0; //作答区最初的bottom位置
+        this.touchFeg = false;
+
+        //底部滚动
+        this.bottomListNum = 8; //底部放置li的最大数
+        this._icon_left = null;
+        this._icon_right = null;
+        this._list_container = null;
+
+        this.i18Model = {};
+    };
+    Classified.prototype = {
+        init: function(view, model, presenter) { /*初始化数据*/
+            this.questionId = model.question_id;
+            var question_url = model.question_url;
+            this.title = question_url.title;
+            this.categories = question_url.categories;
+            this.options = question_url.classified_options;
+            this.presenter = presenter;
+            this.$view = $(view);
+            //初始化选项序号
+            var num = 1;
+            var option;
+            for (var index = 0; index < this.options.length; index++) {
+                option = this.options[index];
+                option.num = num;
+                //标号
+                option.statNumCla = '';
+                num++;
+                this.optionMap[option.id] = option;
+            }
+            //初始化正确答案
+            var category;
+            var itemId;
+            for (var cIndex = 0; cIndex < this.categories.length; cIndex++) {
+                category = this.categories[cIndex];
+                for (var i = 0; i < category.items.length; i++) {
+                    itemId = category.items[i];
+                    this.correctAnswer[itemId] = category.id;
+                }
+            }
+        },
+        initView: function() { /*初始化视图*/
+            var that = this;
+            //计算显示区域起始屏幕坐标
+            that.$main = that.$view.find('._classify_main');
+            //头部标题
+            var $title = that.$view.find('._tit');
+            //分类项列数
+            var $classify = that.$view.find('._classify');
+            //选项区域
+            that.$option = that.$view.find('._option_box');
+
+            //底部滚动
+            that._list_container = that.$view.find("._list_container");
+            that._icon_left = that.$view.find("._icon_left");
+            that._icon_right = that.$view.find("._icon_right");
+            //初始化各个view
+            if (that.title.length > 35) {
+                $title.addClass('s_tit');
+            } else {
+                $title.removeClass('s_tit');
+            }
+            //$title.html(that.title);
+            $title.text(that.title);
+            var colClazz = '';
+            switch (that.categories.length) {
+                case 2:
+                    colClazz = 'classify_two';
+                    break;
+                case 3:
+                    colClazz = 'classify_three';
+                    break;
+                case 4:
+                    colClazz = 'classify_four';
+                    break;
+                case 5:
+                    colClazz = 'classify_five';
+                    break;
+            }
+            $classify.addClass(colClazz);
+            var category;
+            var gridTemp = '';
+            var cTitleClazz;
+            for (var index = 0; index < that.categories.length; index++) {
+                category = that.categories[index];
+                cTitleClazz = '';
+                if (category.name.length > 11) {
+                    cTitleClazz = 'title_more';
+                }
+                gridTemp += '<div class="grid _grid"><p class="titlebox"><span class="classify_title ' +
+                    cTitleClazz + '"><em class="word">' + category.name +
+                    '</em></span></p><ul class="list_box _list_box" data-cid="' + category.id +
+                    '"></ul></div>';
+            }
+            $classify.html(gridTemp);
+            //初始化作答结果区域信息
+            var $area;
+            var offset;
+            var width;
+            var height;
+            var area;
+            var cid;
+            var $listBox;
+            that.$view.find('._grid').each(function() {
+                $area = $(this);
+                offset = $area.offset();
+                width = $area.innerWidth();
+                height = $area.innerHeight();
+                $listBox = $area.find('._list_box');
+                cid = $listBox.data('cid');
+                area = {
+                    $listBox: $listBox,
+                    xMin: offset.left,
+                    xMax: offset.left + width,
+                    yMin: offset.top,
+                    yMax: offset.top + height
+                };
+                that.areas[cid] = area;
+            });
+            that.areaYmin = offset.top;
+            that.areaYmax = offset.top + height;
+            //移动区域
+            that.$moveContainer = that.$view.find('._move_container');
+            offset = that.$main.offset();
+            that.startX = offset.left - 10;
+            that.startY = offset.top - 10;
+            offset = that.$option.offset();
+            width = that.$option.width();
+            height = that.$option.height();
+            that.endX = offset.left + that.$main.innerWidth() + 10;
+            that.endY = offset.top + that.$main.innerWidth() + 10;
+
+            //底部滚动
+            if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*供外部两个就接口调用。*/
+            var that = this;
+            if (commitedAnswer) {
+                that.userAnswer = commitedAnswer.answer.user_response;
+                //清空作答区域
+                var area;
+                for (var cid in that.areas) { /*答题区*/
+                    area = that.areas[cid];
+                    area.$listBox.html('');
+                }
+                //渲染作答区域
+                var option;
+                var cid;
+                var html;
+                for (var id in that.userAnswer) { /*答题区*/
+                    option = that.optionMap[id];
+                    cid = that.userAnswer[id];
+                    if (cid) {
+                        html = that._createListHtml(option);
+                        area = that.areas[cid];
+                        area.$listBox.append(html);
+                    }
+                }
+                //渲染候选区域
+                var optionsHtml = '';
+                for (var i = 0; i < that.options.length; i++) { /*选项区*/
+                    option = that.options[i];
+                    if (!that.userAnswer[option.id]) {
+                        optionsHtml += that._createOptionHtml(option);
+                    }
+                }
+                that.$option.html(optionsHtml);
+
+                //底部滚动
+                if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                    that._icon_left.hide();
+                    that._icon_right.hide();
+                } else {
+                    that._icon_left.show();
+                    that._icon_right.show();
+                }
+            }
+            if (showAnswerType === 'user') {
+                that.showResult = true;
+                //通知状态变化
+                that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    /*先通知状态变化再修改dom结构*/
+                    PresenterEventType.IC_PLAYER_EVENT);
+                //答题显示正误
+                var area;
+                for (var cid in that.areas) {
+                    area = that.areas[cid];
+                    area.$listBox.find('.list').each(function() {
+                        var $that = $(this);
+                        var id = $that.data('option-id');
+                        if (that.correctAnswer[id] == cid) {
+                            $that.addClass('correct');
+                        } else {
+                            $that.addClass('error');
+                        }
+                    });
+                }
+                /*如果正在移动则还原*/
+
+                that.$moveContainer.hide();
+
+            } else {
+                //统计页面显示正确答案 清除用户作答
+                that.$view.find('._list_box').html('');
+                //清除选项
+                that.$option.html('');
+                //显示正确答案
+                var answerHtml;
+                var tmp;
+                var cid;
+                var area;
+                for (var i = 0; i < that.options.length; i++) {
+                    tmp = that.options[i];
+                    answerHtml = that._createListHtml(tmp);
+                    cid = that.correctAnswer[tmp.id];
+                    area = that.areas[cid];
+                    area.$listBox.append(answerHtml);
+                }
+
+            }
+            //锁定
+            that.lockQuestion();
+        },
+        getState: function() { /*状态恢复用*/
+            var state = {
+                userAnswer: this.userAnswer,
+                /*学生端状态只有两种，用户作答 和 是否已提交*/
+                showResult: this.showResult,
+                isOperate: this.isOperate,
+                isLock: this.locked
+            };
+            return state;
+        },
+        //恢复用户状态
+        setState: function(state) { /*状态恢复用*/
+            var that = this;
+            that.showResult = state.showResult;
+            that.userAnswer = state.userAnswer;
+            that.isOperate = state.isOperate;
+            that.locked = state.isLock;
+            //清空选项
+            that.$option.html('');
+            //渲染作答区域
+            var option;
+            var cid;
+            var html;
+            var area;
+            for (var id in that.userAnswer) { /*答题区*/
+                option = that.optionMap[id];
+                cid = that.userAnswer[id];
+                if (cid) {
+                    html = that._createListHtml(option);
+                    area = that.areas[cid];
+                    area.$listBox.append(html);
+                }
+            }
+            //渲染候选区域
+            var optionsHtml = '';
+            for (var i = 0; i < that.options.length; i++) { /*选项区*/
+                option = that.options[i];
+                if (!that.userAnswer[option.id]) {
+                    optionsHtml += that._createOptionHtml(option);
+                }
+            }
+            that.$option.html(optionsHtml);
+
+            //底部滚动
+            if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+            if (that.showResult) {
+                //答题显示正误
+                var area;
+                for (var cid in that.areas) {
+                    area = that.areas[cid];
+                    area.$listBox.find('.list').each(function() {
+                        var $that = $(this);
+                        var id = $that.data('option-id');
+                        if (that.correctAnswer[id] == cid) {
+                            $that.addClass('correct');
+                        } else {
+                            $that.addClass('error');
+                        }
+                    });
+                }
+            }
+        },
+        _createListHtml: function(option) {
+            var optionHtml = '';
+            if (option.type === 'text') {
+                var textSmall = option.content.length > 21 ? 'small' : ''; //超过21个字的时候span加class： small
+                optionHtml += '<li class="list" data-option-id="' + option.id + '" data-option-num="' +
+                    option.num + '"><div class="list_container"><span class="text ' + textSmall + '">' +
+                    option.content + '</span></div><div class="list_num _stat_number ' + option.statNumCla +
+                    '" data-num="' + (option.num - 1) + '"><em class="word">(' + option.num +
+                    ')</em></div></li>';
+            } else if (option.type === 'image') {
+                optionHtml += '<li class="list" data-option-id="' + option.id + '" data-option-num="' +
+                    option.num + '"><div class="list_container"><img alt="" class="list_img" src="' +
+                    option.content + '" /></div><div class="list_num _stat_number ' + option.statNumCla +
+                    '" data-num="' + (option.num - 1) + '"><em class="word">(' + option.num +
+                    ')</em></div></li>';
+            }
+            return optionHtml;
+        },
+        _createOptionHtml: function(option) {
+            var optionHtml = '';
+            if (option.type === 'text') {
+                var textSmall = option.content.length > 21 ? 'small' : ''; //超过21个字的时候span加class： small
+                optionHtml += '<li class="option_list" data-option-id="' + option.id +
+                    '" data-option-num="' + option.num +
+                    '"><div class="option_list_container"><p class="option_text"><span class="text ' +
+                    textSmall + '">' + option.content +
+                    '</span></p></div><div class="option_list_num _stat_number  ' + option.statNumCla +
+                    '" data-num="' + (option.num - 1) + '"><em class="word">(' + option.num +
+                    ')</em></div></li>';
+            } else if (option.type === 'image') {
+                optionHtml += '<li class="option_list" data-option-id="' + option.id +
+                    '" data-option-num="' + option.num +
+                    '"><div class="option_list_container"><img alt="" class="option_img" src="' + option.content +
+                    '" /></div><div class="option_list_num _stat_number  ' + option.statNumCla +
+                    '" data-num="' + (option.num - 1) + '"><em class="word">(' + option.num +
+                    ')</em></div></li>';
+            }
+            return optionHtml;
+        },
+        resetQuestion: function() { /*重新作答时调用*/
+            var that = this;
+            //   that.locked = false;
+            that.isOperate = false;
+            that.moveId = null;
+            that.$moveOption = null;
+            that.$main.removeClass('show_number');
+            //清除用户作答
+            that.$view.find('._list_box').html('');
+            that.userAnswer = {};
+            that.showResult = false;
+            //清除选项
+            that.$option.html('');
+            //重新渲染选项
+            var optionsHtml = '';
+            var tmp;
+            for (var i = 0; i < that.options.length; i++) {
+                tmp = that.options[i];
+                optionsHtml += that._createOptionHtml(tmp);
+            }
+            that.$option.html(optionsHtml);
+
+            //底部滚动
+            if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                that._icon_left.hide();
+                that._icon_right.hide();
+            } else {
+                that._icon_left.show();
+                that._icon_right.show();
+            }
+            //标号
+            for (var myoptionId in that.optionMap) {
+                that.optionMap[myoptionId].statNumCla = '';
+            }
+
+            //通知状态变化
+            that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        _getPostion: function(x, y) {
+            var that = this;
+            x = x - that.startX - 10;
+            // y = y - this.startY -10; 统计区域有滚动条，重新获取
+            var $mainOffTop = that.$main.offset().top;
+            that.nowDiff = $mainOffTop - that.startY;
+            y = y - $mainOffTop;
+
+            return { x: x, y: y };
+        },
+        _downHandler: function($option, x, y) {
+            var that = this;
+            if (that.locked === false) { /*这样锁住的时候就没有事件*/
+                //获取被选中的选项id
+                var optionId = $option.data('option-id');
+                that.moveId = optionId;
+                that.$moveOption = $option;
+                //初始化移动区域显示内容
+                var moveHtml = '';
+                var option = that.optionMap[optionId];
+                if (option.type === 'text') {
+                    var textSmall = option.content.length > 21 ? 'small' : ''; //超过21个字的时候span加class： small
+                    moveHtml += '<p class="option_text"><span class="text ' + textSmall + '">' + option.content +
+                        '</span></p><span class="stat_number _stat_number  ' + option.statNumCla +
+                        '" data-num="' + (option.num - 1) + '"><em>(' + option.num + ')</em></span>';
+                } else if (option.type === 'image') {
+                    moveHtml += '<img alt="" class="option_img" src="' + option.content +
+                        '"><span class="stat_number _stat_number  ' + option.statNumCla + '" data-num="' +
+                        (option.num - 1) + '"><em>(' + option.num + ')</em></span>';
+                }
+                that.$moveContainer.html(moveHtml);
+                var postion = that._getPostion(x, y);
+
+                /*判断在哪个区域内*/
+                var $listBox = null;
+                var area = null;
+                for (var cid in that.areas) {
+                    area = that.areas[cid];
+                    //改变作答区域可拖动边界
+                    area.yMin = that.areaYmin + that.nowDiff;
+                    area.yMax = that.areaYmax + that.nowDiff;
+                    if (x <= area.xMax && x >= area.xMin && y <= area.yMax && y >= area.yMin) {
+                        // $listBox = area.$listBox;
+                        that.downArea = area.$listBox;
+                        break;
+                    }
+                }
+                that.$moveContainer.css({
+                    top: postion.y - that.$moveContainer.height() / 2,
+                    left: postion.x - that.$moveContainer.width() / 2
+                });
+                //移除选中选项，显示移动区域
+                $option.hide(); /*不能直接remove，不然pad上之后的事件都没了*/
+                that.$moveContainer.show();
+            }
+        },
+        _upHandler: function(x, y) {
+
+            var that = this;
+            if (that.locked === false) {
+                if (that.moveId) {
+                    //判断是否移动到了作答区域
+                    var $listBox = null;
+                    var area;
+                    for (var cid in that.areas) {
+                        area = that.areas[cid];
+                        if (x <= area.xMax && x >= area.xMin && y <= area.yMax && y >= area.yMin) {
+                            $listBox = area.$listBox;
+                            break;
+                        }
+                    }
+                    var moveOption = that.optionMap[that.moveId];
+                    that.$moveContainer.hide();
+                    if ($listBox && $listBox.find("li").length < 6) {
+                        var cid = $listBox.data('cid');
+                        //记录用户答案
+                        that.userAnswer[that.moveId] = cid;
+                        that.isOperate = true;
+                        var html = that._createListHtml(moveOption);
+                        $listBox.append(html);
+                        //通知题目答题状态
+                        that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                            PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+                    } else {
+                        delete that.userAnswer[that.moveId];
+                        var html = that._createOptionHtml(moveOption);
+                        that.$option.append(html);
+                        var canSubmit = false;
+                        for (var id in that.userAnswer) {
+                            if (that.userAnswer[id]) {
+                                canSubmit = true;
+                            }
+                        }
+                        if (canSubmit === false) {
+                            //通知题目答题状态
+                            that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT, { canSubmit: false });
+                        }
+                    }
+                    that.moveId = null;
+                    if (that.$moveOption) {
+                        that.$moveOption.remove();
+                        that.$moveOption = null;
+                    }
+
+                    //通知状态变化
+                    that.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                        PresenterEventType.IC_PLAYER_EVENT);
+                }
+
+                //底部滚动
+                if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                    that._icon_left.hide();
+                    that._icon_right.hide();
+                } else {
+                    that._icon_left.show();
+                    that._icon_right.show();
+                }
+            }
+            $(document).off('mousemove');
+            $(document).off('mouseup');
+
+        },
+        _moveHandler: function(x, y) {
+            var that = this;
+            if (that.locked === false) {
+                if (that.moveId) {
+                    //移动 判断鼠标移动是否超出区域
+                    if (x <= that.startX || x >= that.endX || y <= that.startY || y >= that.endY) {
+                        //超出可移动区域,返回候选区域
+                        var moveOption = that.optionMap[that.moveId];
+                        var html = that._createOptionHtml(moveOption);
+                        that.$moveContainer.hide();
+                        that.$option.append(html);
+
+                        //底部滚动
+                        if (that.$option.find('.option_list').length <= that.bottomListNum) {
+                            that._icon_left.hide();
+                            that._icon_right.hide();
+                        } else {
+                            that._icon_left.show();
+                            that._icon_right.show();
+                        }
+
+                        if (that.$moveOption) {
+                            that.$moveOption.remove();
+                            that.$moveOption = null;
+                        }
+                        delete that.userAnswer[that.moveId];
+                        that.moveId = null;
+                        var canSubmit = false;
+                        for (var id in that.userAnswer) {
+                            if (that.userAnswer[id]) {
+                                canSubmit = true;
+                            }
+                        }
+                        if (canSubmit === false) {
+                            //通知题目答题状态
+                            that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                                PresenterEventType.IC_PLAYER_EVENT, { canSubmit: false });
+                        }
+
+                    } else {
+                        //移动
+                        var postion = that._getPostion(x, y);
+                        that.$moveContainer.css({
+                            top: postion.y - that.$moveContainer.height() / 2,
+                            left: postion.x - that.$moveContainer.width() / 2
+                        });
+                    }
+                }
+            }
+        },
+        bindEvent: function() {
+            var that = this;
+            //绑定候选区事件
+            that.$view.on('mousedown', '.option_box .option_list', function(e) {
+                var $this = $(this);
+                that._downHandler($this, e.pageX, e.pageY);
+
+                $(document).on('mousemove', function(e) {
+                    e.preventDefault();
+                    that._moveHandler(e.pageX, e.pageY);
+                }).on('mouseup', function(e) {
+                    that._upHandler(e.pageX, e.pageY);
+                });
+                return false;
+            });
+            //绑定作答区域事件
+            that.$view.on('mousedown', '.list_box .list', function(e) {
+                var $this = $(this);
+                that._downHandler($this, e.pageX, e.pageY);
+
+                $(document).on('mousemove', function(e) {
+                    e.preventDefault();
+                    that._moveHandler(e.pageX, e.pageY);
+                }).on('mouseup', function(e) {
+                    that._upHandler(e.pageX, e.pageY);
+                });
+                return false;
+            });
+            //
+            // that.$view.on('mousemove', function (e) {    e.preventDefault();    that._moveHandler(e.pageX, e.pageY);
+            // }).on('mouseup', function (e) {    that._upHandler(e.pageX, e.pageY); }); 移动 if (that.presenter.isStudent) { 绑定候选区事件
+            that.$view.on('touchstart', '.option_box .option_list', function(e) {
+                var $this = $(this);
+                if (!that.touchFeg) {
+                    that.touchFeg = true;
+                    var point = e.originalEvent.changedTouches[0];
+
+                    that._downHandler($this, point.clientX, point.clientY);
+                    $(document).on('touchmove', function(e) {
+                        var point = e.originalEvent.changedTouches[0];
+                        that._moveHandler(point.clientX, point.clientY);
+                    }).on('touchend', function(e) {
+                        var point = e.originalEvent.changedTouches[0];
+                        e.preventDefault();
+                        that._upHandler(point.clientX, point.clientY);
+                        that.touchFeg = false;
+                        $(document).off('touchmove');
+                        $(document).off('touchend');
+
+                    });
+                }
+                e.preventDefault();
+            });
+            //绑定作答区域事件
+            that.$view.on('touchstart', '.list_box .list', function(e) {
+                var $this = $(this);
+                if (!that.touchFeg) {
+                    that.touchFeg = true;
+                    var point = e.originalEvent.changedTouches[0];
+
+                    that._downHandler($this, point.clientX, point.clientY);
+                    $(document).on('touchmove', function(e) {
+                        var point = e.originalEvent.changedTouches[0];
+                        that._moveHandler(point.clientX, point.clientY);
+                    }).on('touchend', function(e) {
+                        var point = e.originalEvent.changedTouches[0];
+                        e.preventDefault();
+                        that._upHandler(point.clientX, point.clientY);
+                        that.touchFeg = false;
+                        $(document).off('touchmove');
+                        $(document).off('touchend');
+                    });
+                }
+                e.preventDefault();
+            });
+            //
+            // that.$view.on('touchmove', function (e) {    var point = e.originalEvent.changedTouches[0];
+            // that._moveHandler(point.clientX, point.clientY); }).on('touchend', function (e) {    var point =
+            // e.originalEvent.changedTouches[0];    e.preventDefault();    that._upHandler(point.clientX, point.clientY);
+            // that.touchFeg = false; }); }
+
+            if (that._icon_left) {
+                that._list_container.scrollLeft(0);
+                var FourOptionW = that.$view.find('.option_list').eq(0).width() * 4;
+                that._icon_right.on('click', function() {
+                    if (that._list_container.scrollLeft() + FourOptionW >= that.$option.width()) {
+                        //that._list_container.scrollLeft(that._listUl.width());
+                        that._list_container.animate({
+                            scrollLeft: that.$option.width()
+                        }, 300);
+                    } else {
+                        //that._list_container.scrollLeft(that._list_container.scrollLeft() + FourOptionW);
+                        that._list_container.animate({
+                            scrollLeft: that._list_container.scrollLeft() + FourOptionW
+                        }, 300);
+                    }
+                    return false;
+                });
+                that._icon_left.on('click', function() {
+                    if (that._list_container.scrollLeft() - FourOptionW <= 0) {
+                        // that._list_container.scrollLeft(0);
+                        that._list_container.animate({
+                            scrollLeft: 0
+                        }, 300);
+                    } else {
+                        //that._list_container.scrollLeft(that._list_container.scrollLeft() - FourOptionW);
+                        that._list_container.animate({
+                            scrollLeft: that._list_container.scrollLeft() - FourOptionW
+                        }, 300);
+                    }
+                    return false;
+                });
+            }
+
+            //标号点击事件
+            that.$main.on('mousedown', '._stat_number', function(event) {
+                //that.$view.find('._stat_number').on('mousedown',function(event){
+                if (that.$main.hasClass('show_number')) {
+                    var self = $(this);
+                    that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                        service: "statistic",
+                        method: "clickItem",
+                        args: [self.data('num'), 'B']
+                    });
+                    that.$view.find('._stat_number').removeClass('green');
+                    self.addClass("green");
+                    for (var myoptionId in that.optionMap) {
+                        that.optionMap[myoptionId].statNumCla = '';
+                    }
+                    var nowoptionId = self.closest('li').data('option-id');
+                    that.optionMap[nowoptionId].statNumCla = 'green';
+                    return false;
+                }
+            });
+            /*修改bug92981*/
+            that.$main.on('touchstart', '._stat_number', function(event) {
+                //that.$view.find('._stat_number').on('mousedown',function(event){
+                if (that.$main.hasClass('show_number')) {
+                    var self = $(this);
+                    that.presenter.$dispatchEvent("statistics_call", PresenterEventType.IC_PLAYER_EVENT, {
+                        service: "statistic",
+                        method: "clickItem",
+                        args: [self.data('num'), 'B']
+                    });
+                    that.$view.find('._stat_number').removeClass('green');
+                    self.addClass("green");
+                    for (var myoptionId in that.optionMap) {
+                        that.optionMap[myoptionId].statNumCla = '';
+                    }
+                    var nowoptionId = self.closest('li').data('option-id');
+                    that.optionMap[nowoptionId].statNumCla = 'green';
+                    return false;
+                }
+            });
+        },
+        lockQuestion: function() {
+            this.locked = true;
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        unlockQuestion: function() {
+            this.locked = false;
+            //通知状态变化
+            this.presenter.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                PresenterEventType.IC_PLAYER_EVENT);
+        },
+        startStatistics: function() { /*结束答题开始统计数据*/
+            // this.resetQuestion(); this.lockQuestion();
+            this.$main.addClass('show_number'); /*统计要加标号*/
+        },
+        convertDataForStatistics: function(oriData) { /*把统计数据转化为string，传出去。  oriData是101ppt产生的*/
+            var that = this;
+            var value = oriData.value;
+            var onlineNum = 0;
+            var item_key = [],
+                percent = [],
+                stuAnswerStat = []; /*最主要的就是stuAnswerStat和 convertedData*/
+            var convertedData = {};
+            var correctMap = {};
+            var correctNumMap = {};
+            convertedData['allrightStu'] = [];
+            if (value.correctAnswerTeacher) { /*老师端答案：比如所有学生都断线的情况，老师端一定有个答案，结构和getResult返回的结构一样*/
+                correctMap = value.correctAnswerTeacher.correct_response;
+                var num;
+                var ref_key; /*名称都是规定的，比如ref_key*/
+                for (var id in correctMap) {
+                    ref_key = that.optionMap[id].num;
+                    num = ref_key - 1; /*数组下标从0开始，所以减一*/
+                    correctNumMap[id] = num; /*正确答案一定要从老师端答案获取，因为有可能所有学生都断线的情况*/
+                    if (!stuAnswerStat[num]) {
+                        stuAnswerStat[num] = {
+                            right_userIds: [],
+                            wrong_userIds: [],
+                            unfinished_userIds: value.unfinishedUserIds,
+                            ref_key: ref_key
+                        };
+                    }
+                }
+            }
+            if (value.answers) { /*value.answer是个二维数组*/
+                //初始化正确答案信息
+                for (var i = 0, ilen = value.answers.length; i < ilen; i++) { /*value.answers长度只有一个*/
+                    if (!$.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length) {
+                        for (var j = 0, jlen = value.answers[i].length; j < jlen; j++) {
+                            if (typeof(value.answers[i][j]) != "object") { /*value.answers[i][j]结构跟getResult返回的结构一样*/
+                                break;
+                            }
+                            if (typeof(value.answers[i][j].answer) == "string") {
+                                value.answers[i][j].answer = JSON.parse(value.answers[i][j].answer); /*这一句是关键，其他都是复制粘贴，把json改为字符创，因为要通信*/
+                            } else if (typeof(value.answers[i][j].answer) == "object") {
+                                value.answers[i][j].answer = value.answers[i][j].answer;
+                            } else {
+                                break;
+                            }
+                            //构造当前学生答案
+                            var responseMap = value.answers[i][j].answer.user_response;
+                            //判断当前学生答案是否正确
+                            var isAllRight = true;
+                            var aNum;
+                            for (var item in correctMap) {
+                                aNum = correctNumMap[item];
+                                if (responseMap[item] && responseMap[item] === correctMap[item]) {
+                                    stuAnswerStat[aNum].right_userIds = stuAnswerStat[aNum].right_userIds.concat(
+                                        value.answers[i][j].userIds);
+                                } else {
+                                    isAllRight = false;
+                                    stuAnswerStat[aNum].wrong_userIds = stuAnswerStat[aNum].wrong_userIds.concat(
+                                        value.answers[i][j].userIds);
+                                }
+                            }
+                            if (isAllRight) {
+                                convertedData['allrightStu'] = convertedData['allrightStu'].concat(value.answers[
+                                    i][j].userIds);
+                            }
+                        }
+                    }
+                }
+            }
+            $.each(stuAnswerStat, function(k, item) {
+                item.rightNum = item.right_userIds.length;
+                item_key.push(item.ref_key);
+            });
+            onlineNum = value.finishedNum + value.unfinishedNum; /*所有人数*/
+            /**计算正确率**/
+            for (var ii = 0; ii < stuAnswerStat.length; ii++) {
+                percent[ii] = (onlineNum > 0) ? (stuAnswerStat[ii]['rightNum'] / onlineNum).toFixed(2) : 0;
+            }
+
+            convertedData['spend_time'] = value.elapsedTime ? value.elapsedTime : 0; /*数据传回去*/
+            convertedData['submit_count'] = onlineNum;
+            convertedData['answers'] = value.answers;
+            convertedData['item_key'] = item_key;
+            convertedData['percent'] = percent;
+            convertedData['unfinishedNum'] = value.unfinishedNum;
+            convertedData['unfinishedUserIds'] = value.unfinishedUserIds;
+            convertedData['stuAnswerStat'] = stuAnswerStat;
+            value['convertedData'] = convertedData;
+            return oriData;
+        },
+        getResult: function() { /*统计控制器调用*/
+            var answerState = 'NO_ANSWER';
+            var answer = {
+                correct_response: this.correctAnswer,
+                user_response: $.extend(true, {}, this.userAnswer),
+                answer_result: true
+            };
+            if (this.isOperate) {
+                answerState = 'NO_COMPLETE';
+                //判断是否作答
+                var answerNum = 0;
+                for (var id in this.userAnswer) {
+                    if (this.userAnswer[id]) {
+                        answerNum++;
+                    }
+                }
+                var correctAnswerNum = 0;
+                for (var id in this.correctAnswer) {
+                    correctAnswerNum++;
+                }
+                if (answerNum === correctAnswerNum) {
+                    answerState = 'COMPLETE';
+                }
+                //判断作答是否正确
+                for (var id in this.correctAnswer) {
+                    if (!this.userAnswer[id] || this.correctAnswer[id] !== this.userAnswer[id]) {
+                        answer.answer_result = false;
+                        break;
+                    }
+                }
+            }
+            var result = {
+                answer: answer,
+                answerState: answerState,
+                questionId: this.questionId
+            };
+            return result;
+        },
+        destroy: function() {
+            this.$moveContainer = null;
+            this.$option = null;
+            this.$view = null;
+            this.areas = null;
+            this.$main = null;
+        },
+        popTip: function(text, time) { /*提示框*/
+            $(".notice_tip_text").html(text);
+            $(".notice_tip_box").css("display", "block");
+            setTimeout(function() {
+                $(".notice_tip_box").css("display", "none");
+            }, time);
+        },
+        showResultHint: function() {
+            var result = this.getResult();
+            if (result.answerState == 'COMPLETE' && result.answer.answer_result) {
+                this.popTip(this.i18Model.correctTip, 3000);
+            } else {
+                this.popTip(this.i18Model.errorTip, 3000);
+            }
+        }
+    };
+
+    //对外提供服务
+    var Service = function(_classified) {
+        this.questionId = null;
+        this._classified = _classified;
+        this.status = {};
+    };
+    Service.prototype = {
+        init: function(model, classified) {
+            this.questionId = model.question_id;
+            this._classified = classified;
+            this.parent = this._classified.presenter;
+        },
+        getQuestionInfo: function() {
+            return {
+                id: this.questionId,
+                type_code: 'classified',
+                type_name: '分类题',
+                url: this.questionId,
+                dispatchOnly: true
+            };
+        },
+        getResult: function() {
+            return this._classified.getResult();
+        },
+        _getState: function() {
+            var state = this._classified.getState();
+            var result = JSON.stringify(state);
+            return result;
+        },
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: this.parent
+                    .metaInfo.name
+            });
+            return this._getState();
+        },
+        setState: function(state) {
+            var stateObj = JSON.parse(state);
+            if (stateObj) {
+                this._classified.setState(stateObj);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+                presenterCode: this.parent.metaInfo.name
+            });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        showAnswer: function(showAnswerType, commitedAnswer) { /*老师端和学生端调用的都是这个函数*/
+            return this._classified.showAnswer(showAnswerType, commitedAnswer);
+        },
+        showResultHint: function(option) { /*只有学生端调用的*/
+            this._classified.showResultHint();
+        },
+        resetQuestion: function() {
+            this._classified.resetQuestion();
+        },
+        lockQuestion: function() {
+            this._classified.lockQuestion();
+        },
+        unlockQuestion: function() {
+            this._classified.unlockQuestion();
+        },
+        finishQuestion: function() {},
+        getStatisticClass: function() { /*统计类型*/
+            return 'B';
+        },
+        startStatistics: function() { /*结束答题时调用*/
+            this._classified.startStatistics();
+        },
+        convertDataForStatistics: function(oriData) { /*转化统计数据*/
+            return this._classified.convertDataForStatistics(oriData);
+        },
+        //实现国际化
+        setLocationProperties: function(properties) {
+            this._classified.i18Model = properties;
+        }
+    };
+
+    //实现presenter
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'ClassifiedRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this._classified = new Classified();
+            this._service_ = new Service(this._classified);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            var that = this;
+            //初始化国际化数据 that._classified = new Classified();
+            that._classified.init(view, model, this);
+            that._classified.initView();
+            that._classified.resetQuestion();
+            //绑定交互事件
+            that._classified.bindEvent();
+            //初始化服务
+            that._service_.init(model, that._classified);
+        },
+        destroy: function() {
+            if (this._classified) {
+                this._classified.destroy();
+            }
+        },
+        /****以下开始为各个外部要求实现的service*****/
+        getService: function() {
+            return this._service_;
+        }
+
+    });
+    //实现icplayer入口调用函数
+    window.AddonClassifiedRemake_create = function() {
+        return new Presenter();
+    };
+})(window, $);
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/bg_fboard.png' />
+<file src='./resources/wood/images/grid.png' />
+<file src='./resources/wood/images/icon_delete.png' />
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,265 @@
+<div>
+    <ul class="fct_column menu_column_1">
+        <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+        <li><a href="javascript:void(0)" class="fct_menu_btn" ng-class="{'ui_btn_on':status.bold,'click_disabled ':isDisabled('bold')}"
+               ng-click="isDisabled('bold')||command('bold')">
+            <span class="fct_menu_btn_ico btn_icons_b"></span>
+            <span class="btn_title_tips">文字加粗</span>
+        </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn"  ng-class="{'ui_btn_on':status.italic,'click_disabled ':isDisabled('italic')}"  ng-click="isDisabled('italic')||command('italic')">
+                <span class="fct_menu_btn_ico btn_icons_i"></span>
+                <span class="btn_title_tips">文字斜体</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn"  ng-class="{'ui_btn_on':status.underline,'click_disabled ':isDisabled('underline')}"  ng-click="isDisabled('underline')||command('underline')">
+                <span class="fct_menu_btn_ico btn_icons_u"></span>
+                <span class="btn_title_tips">文字加下划线</span>
+            </a>
+        </li>
+        <li>
+            <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+            <a href="javascript:void(0)" class="fct_menu_btn "  ng-click="isDisabled('fontsize')||openMenu($event)"  ng-class="{'click_disabled ':isDisabled('fontsize')}">
+                <span class="fct_menu_btn_ico btn_icons_af"></span>
+                <span class="btn_title_tips">设置字体大小</span>
+            </a>
+            <div class="fct_top_submenu">
+                <ul class="ui_fcb_select_box">
+                    <li class="ui_fcb_select_list" ng-repeat="fontsize in fontsizes" ng-click="command('fontsize',fontsize,$event)">
+                        <span class="ui_fcb_select_text"  ng-bind="fontsize"></span>
+                    </li>
+
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn "   ng-click="isDisabled('color')||openMenu($event)" ng-class="{'click_disabled ':isDisabled('color')}">
+                <span class="fct_menu_btn_ico btn_icons_abg"></span>
+                <span class="btn_title_tips">设置文字颜色</span>
+            </a>
+            <div class="fct_top_submenu">
+                <ul class="freeCombination_popmenu_second">
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title color_auto_btn" ng-click="clearColor($event)">自动</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="freeCombination_pci_hover" ng-repeat="color in colors1" ng-click="selectColor($event,'color')"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                                            <span class="freeCombination_pci_second color{{color}}" ></span>
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper"><!--
+                                        --><span class="freeCombination_pci_hover" ng-repeat="color in colors2" ng-click="selectColor($event,'color')">
+                                            <span class="freeCombination_pci_second color{{color}}" ></span>
+                                        </span>
+                                    </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn"  ng-click="isDisabled('removeFormat')||command('removeFormat')" ng-class="{'click_disabled ':isDisabled('removeFormat')}">
+                <span class="fct_menu_btn_ico btn_icons_e"></span>
+                <span class="btn_title_tips">清除格式</span>
+            </a>
+        </li>
+    </ul>
+    <ul class="fct_column menu_column_2">
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn btn_has_submenu "  ng-click="isDisabled('shape_color')||openMenu($event)" ng-class="{'click_disabled ':isDisabled('shape_color')}">
+                <span class="fct_menu_btn_ico btn_icons_tf"></span>
+                <span class="fct_menu_btn_text">形状填充</span>
+            </a>
+            <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+            <div class="fct_top_submenu">
+                <ul class="freeCombination_popmenu_second">
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">颜色</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="freeCombination_pci_hover" ng-repeat="color in colors1" ng-click="selectColor($event,'shape_color')"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                                            <span class="freeCombination_pci_second color{{color}}" ></span>
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="freeCombination_pci_hover" ng-repeat="color in colors2" ng-click="selectColor($event,'shape_color')"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                                            <span class="freeCombination_pci_second color{{color}}" ></span>
+                                        </span>
+                                    </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn btn_has_submenu" ng-click="isDisabled('shape_border')||openMenu($event)" ng-class="{'click_disabled ':isDisabled('shape_border')}">
+                <span class="fct_menu_btn_ico btn_icons_ol"></span>
+                <span class="fct_menu_btn_text">形状轮廓</span>
+            </a>
+            <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+            <div class="fct_top_submenu">
+                <ul class="freeCombination_popmenu_second">
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">颜色</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="freeCombination_pci_hover" ng-repeat="color in colors1"  ng-click="selectColor($event,'shape_border')"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                                            <span class="freeCombination_pci_second color{{color}}"></span>
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                   <span class="freeCombination_pci_second_wrapper">
+                                        <span class="freeCombination_pci_hover" ng-repeat="color in colors2"  ng-click="selectColor($event,'shape_border')"><!--freeCombination_pci_hover加类ui_btn_select表示选中-->
+                                            <span class="freeCombination_pci_second color{{color}}"></span>
+                                        </span>
+                                    </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <ul class="fct_column menu_column_3">
+        <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+        <li><a href="javascript:void(0)" class="fct_menu_btn"  ng-click="changeIndex('upfirst')" ng-class="{'click_disabled ':isChangeIndexDisabled('upfirst')}">
+            <span class="fct_menu_btn_ico btn_icons_sp1"></span>
+            <span class="btn_title_tips">置于顶层</span>
+        </a>
+        </li>
+        <li><a href="javascript:void(0)" class="fct_menu_btn"  ng-click="changeIndex('downlast')" ng-class="{'click_disabled ':isChangeIndexDisabled('downlast')}">
+            <span class="fct_menu_btn_ico btn_icons_sp2"></span>
+            <span class="btn_title_tips">置于底层</span>
+        </a>
+        </li>
+        <li><a href="javascript:void(0)" class="fct_menu_btn"  ng-click="changeIndex('up')" ng-class="{'click_disabled ':isChangeIndexDisabled('up')}">
+            <span class="fct_menu_btn_ico btn_icons_sp3"></span>
+            <span class="btn_title_tips">上移一层</span>
+        </a>
+        </li>
+        <li><a href="javascript:void(0)" class="fct_menu_btn"  ng-click="changeIndex('down')" ng-class="{'click_disabled ':isChangeIndexDisabled('down')}">
+            <span class="fct_menu_btn_ico btn_icons_sp4"></span>
+            <span class="btn_title_tips">下移一层</span>
+        </a>
+        </li>
+    </ul>
+    <ul class="fct_column menu_column_4">
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn " title="插入文本"  ng-click="isDisabled('text')||addText($event)" ng-class="{'click_disabled ':isDisabled('text'),'ui_btn_on':context.drawtext}">
+                <span class="fct_menu_btn_ico btn_icons_txt"></span>
+                <span class="fct_menu_btn_text">文本</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn " title="插入图片" ng-click="isDisabled('image')||selectImage()" ng-class="{'click_disabled ':isDisabled('image')}">
+                <span class="fct_menu_btn_ico btn_icons_pic"></span>
+                <span class="fct_menu_btn_text">图片</span>
+            </a>
+        </li>
+        <li>
+            <!-- .fct_menu_btn 标签鼠标经过加类名 .ui_btn_hover 鼠标点击加类名 .ui_btn_active 子菜单被打开加类名 .ui_btn_open  -->
+            <a href="javascript:void(0)" class="fct_menu_btn btn_has_submenu " title="插入形状"  ng-click="isDisabled('shape')||openMenu($event)" ng-class="{'click_disabled ':isDisabled('shape'),'ui_btn_on':context.drawshape}">
+                <span class="fct_menu_btn_ico btn_icons_shape"></span>
+                <span class="fct_menu_btn_text">形状</span>
+            </a>
+            <div class="fct_top_submenu">
+                <ul class="freeCombination_popmenu_second popmenu_basic_shape">
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">基本形状</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="fct_basic_shapes fct_shapes_{{shape}}" ng-click="addShape($event,shape)" ng-show="isValidShape(shape)" ng-repeat="shape in shapes1">
+                                            <!--.fct_basic_shapes 加类 .ui_btn_select 表示选中-->
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">线条</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="fct_basic_shapes fct_shapes_{{shape}}" ng-click="addShape($event,shape)" ng-show="isValidShape(shape)" ng-repeat="shape in shapes2">
+                                            <!--.fct_basic_shapes 加类 .ui_btn_select 表示选中-->
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">箭头</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="fct_basic_shapes fct_shapes_{{shape}}" ng-click="addShape($event,shape)" ng-show="isValidShape(shape)" ng-repeat="shape in shapes3">
+                                            <!--.fct_basic_shapes 加类 .ui_btn_select 表示选中-->
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item_title">
+                        <span class="freeCombination_pc_title">公式形状</span>
+                    </li>
+                    <li class="freeCombination_pc_item">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="fct_basic_shapes fct_shapes_{{shape}}" ng-click="addShape($event,shape)" ng-show="isValidShape(shape)" ng-repeat="shape in shapes4">
+                                            <!--.fct_basic_shapes 加类 .ui_btn_select 表示选中-->
+                                        </span>
+                                    </span>
+                    </li>
+                    <li class="freeCombination_pc_item_title" ng-hide="true">
+                        <span class="freeCombination_pc_title">标注</span>
+                    </li>
+                    <li class="freeCombination_pc_item" ng-hide="true">
+                                    <span class="freeCombination_pci_second_wrapper">
+                                        <span class="fct_basic_shapes fct_shapes_{{shape}}" ng-click="addShape($event,shape)" ng-show="isValidShape(shape)" ng-repeat="shape in shapes5">
+                                            <!--.fct_basic_shapes 加类 .ui_btn_select 表示选中-->
+                                        </span>
+                                    </span>
+                    </li>
+                </ul>
+            </div>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn " title="插入视频" ng-click="isDisabled('video')||selectVideo()" ng-class="{'click_disabled ':isDisabled('video')}">
+                <span class="fct_menu_btn_ico btn_icons_video"></span>
+                <span class="fct_menu_btn_text">视频</span>
+            </a>
+        </li>
+        <li>
+            <a href="javascript:void(0)" class="fct_menu_btn " title="插入音频" ng-click="isDisabled('audio')||selectAudio()" ng-class="{'click_disabled ':isDisabled('audio')}">
+                <span class="fct_menu_btn_ico btn_icons_audio"></span>
+                <span class="fct_menu_btn_text">音频</span>
+            </a>
+        </li>
+        <li class="fct_relative" ng-hide="true">
+            <a href="javascript:void(0)" class="fct_menu_btn " title="插入表格"  ng-click="isDisabled('table')||addTable($event)" ng-class="{'click_disabled ':isDisabled('table')}">
+                <span class="fct_menu_btn_ico btn_icons_table"></span>
+                <span class="fct_menu_btn_text">表格</span>
+            </a>
+            <div table-config create-table="createTable(html,width,height)"></div>
+        </li>
+    </ul>
+
+<!--
+    <div class="html_tools">
+        <div class="qti-ed-editor-col">{{type}}
+
+
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="showColorPicker($event,'fillColor')" title="形状填充" ng-disabled="isDisabled('shape_color')">形状填充</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="showColorPicker($event,'edgeColor')" title="形状边框" ng-disabled="isDisabled('shape_border')">形状边框</span>
+
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="addText($event)" title="文本" ng-disabled="isDisabled('text')">文本</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="addTable($event)" title="表格" ng-disabled="isDisabled('table')">表格</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="selectImage()" title="图片" ng-disabled="isDisabled('image')">图片</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="addShape($event)" title="形状" ng-disabled="isDisabled('shape')">形状</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="selectVideo()" title="视频" ng-disabled="isDisabled('video')">视频</span>
+            <span class="qti-ed-editor-btn qti-ed-editor-btn-small" ng-click="selectAudio()" title="音频" ng-disabled="isDisabled('audio')">音频</span>
+
+        </div>
+    </div>-->
+    <div class="textarea_wrapper" style="width:0;height:0;z-index:-1;position:absolute;left:-200px;top:-300px;"><textarea></textarea></div>
+</div>

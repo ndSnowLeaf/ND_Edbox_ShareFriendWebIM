@@ -1,0 +1,60 @@
+<div class="ChineseCharacterDictation_pop_add" ng-click="onPanelClick($event);">
+    <div class="ChineseCharacterDictation_pop_add_bg ">
+        <div class="ChineseCharacterDictation_pop_add_bg_papper ">
+            <!-- 弹窗内容区 -->
+            <div class="ChineseCharacterDictation_pop_add_main" >
+                <div class="ChineseCharacterDictation_pop_add_main_bd">
+                    <!-- 匹配到字词没有释义 .ChineseCharacterDictation_has_word_txt_area 添加类名 no_explanation -->
+                    <div class="ChineseCharacterDictation_has_word_txt_area">
+                        <div class="ChineseCharacterDictation_add_txt_tips">
+                            <span ng-bind="tipMessage"></span>
+                        </div>
+                        <div class="ChineseCharacterDictation_add_txt_list">
+                            <ul class="ChineseCd_add_single_listBox">
+                                <li class="ChineseCd_add_single_w" ng-repeat="item in word.word track by $index">
+                                    <div class="ChineseCd_word_py">{{word.pinyin[$index]}}</div>
+                                    <div class="ChineseCd_word_pyw">{{item}}</div>
+                                </li>
+                                <!-- 发音按钮 不可点击添加类名 .click_disabled 发音中添加类名 .animation_go -->
+                                <a href="###" class="ChineseCharacterDictation_sound" ng-class="{'animation_go': isPlaying, 'click_disabled':!isCanPlay}" ng-click="play();">
+                                <span class="icons_horn">
+                                    <span class="icons_horn_w1"></span>
+                                    <span class="icons_horn_w2"></span>
+                                    <span class="icons_horn_w3"></span>
+                                </span>
+                                </a>
+                                <!-- 发音按钮 -->
+                            </ul>
+                        </div>
+                        <!-- 文字编辑的容器 显示编辑的时候 .ChineseCharacterDictation_add_txt_show 是 hide_dom -->
+                        <div class="ChineseCharacterDictation_add_txt_textarea" ng-show="isEditing">
+                            <textarea name="" id="" cols="30" rows="5" ng-model="definition"></textarea>
+                        </div>
+                        <!-- /文字编辑的容器 -->
+                        <!-- 文字显示的容器 显示文字的时候 .ChineseCharacterDictation_add_txt_textarea 是 hide_dom -->
+                        <div class="ChineseCharacterDictation_add_txt_show " ng-show="!isEditing">
+                            <span class="ChineseCd_txt js_definition_label" translate="dictation.label.word.definition"></span>
+                            <span class="ChineseCd_txt" ng-bind="word.definition"></span>
+                            <a href="###" class="ChineseCd_txt_edit" ng-click="doEdit();"></a>
+                        </div>
+                        <!-- /文字显示的容器 -->
+                    </div>
+                    <!-- /匹配到字词没有释义 -->
+                </div>
+                <div class="ChineseCharacterDictation_pop_main_ft" ng-show="isEditing">
+                    <!-- 按钮不可点击添加类名 .click_disabled -->
+                    <a class="ChineseCd_light_btn" href="javascript:;" ng-if="false" ng-click="exit(true);">
+                        <span class="ChineseCd_light_btn_txt" translate="dictation.btn.save"></span>
+                    </a>
+                </div>
+            </div>
+            <!-- /弹窗内容区 -->
+        </div>
+        <!-- 右上关闭按钮 -->
+        <a href="###" class="stati_com_btn_close" ng-click="exit(false);"></a>
+        <!-- /右上关闭按钮 -->
+    </div>
+    <!-- 关闭提示弹窗 -->
+    <!-- /关闭提示弹窗 -->
+    <audio class="hide_dom" style="display: none;width:0;height:0" preload="auto"></audio>
+</div>

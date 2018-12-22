@@ -1,0 +1,1 @@
+define(function(n){return seajs.use("nd-ngui-lcms-style"),n("nd-ngui-lcms"),function(){}});

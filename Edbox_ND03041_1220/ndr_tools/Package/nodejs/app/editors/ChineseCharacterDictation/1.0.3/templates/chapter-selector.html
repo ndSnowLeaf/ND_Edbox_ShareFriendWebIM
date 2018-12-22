@@ -1,0 +1,79 @@
+<div class="ChineseCharacterDictation_big_pop" ng-show="model.isVisible">
+    <div class="ChineseCharacterDictation_pop_bg">
+
+        <!-- 弹窗内容区 -->
+        <div class="ChineseCharacterDictation_pop_main" >
+
+            <div class="ChineseCharacterDictation_pop_main_hd">
+                <span class="ChineseCd_txt" ng-bind="model.currentItem.title"></span>
+            </div>
+
+            <div class="ChineseCharacterDictation_pop_main_bd">
+                <div class="ChineseCd_tabs" ng-class="{'tabs_3': model.currentLevel > 2}" ng-click="onClickTab($event);">
+                    <!-- 3个标题的时候 ChineseCd_tabs 加类名 tabs_3 , ChineseCd_tabs_progress当前添加on 完成添加 ok 默认为 2个tab的情况 宽度 是各50% 有几个tabs就设置宽度为 百分比的分数 -->
+                    <div class="ChineseCd_tabs_progress ok" data-tab-level="1">
+                        <div class="tabs_progress_bg">
+                            <span class="ChineseCd_txt" translate="dictation.chapter.select"></span>
+                        </div>
+                    </div>
+                    <div class="ChineseCd_tabs_progress" data-tab-level="2" ng-class="{'on': model.currentLevel > 1}">
+                        <div class="tabs_progress_bg">
+                            <span class="ChineseCd_txt" translate="dictation.section.select"></span>
+                        </div>
+                    </div>
+                    <div class="ChineseCd_tabs_progress on" data-tab-level="3" ng-show="model.currentLevel > 2">
+                        <div class="tabs_progress_bg">
+                            <span class="ChineseCd_txt" translate="dictation.n.section.select"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ChineseCd_tabs_area">
+                    <div class="ChineseCd_tabs_area_ul_box" ng-style="model.chapterTreeStyle">
+                        <div class="ChineseCd_tabs_area_ul_list _list_1">
+                            <ul class="tabs_area_box" ng-click="selectChapter($event, 1);">
+                                <!-- 勾选中 tabs_area_list 添加类名 on -->
+                                <li class="tabs_area_list" ng-class="{'list_go_on': item.children.length > 0}" ng-repeat="item in model.chapterTree[0] track by $index" ng-index="{{$index}}">
+                                    <span class="ChineseCd_txt" ng-bind="item.title"></span>
+                                </li>
+                            </ul>
+                        </div><div class="ChineseCd_tabs_area_ul_list _list_2">
+                            <ul class="tabs_area_box" ng-click="selectChapter($event, 2);">
+                                <!-- 勾选中 tabs_area_list 添加类名 on -->
+                                <li class="tabs_area_list" ng-class="{'list_go_on': item.children.length > 0}" ng-repeat="item in model.chapterTree[1] track by $index" ng-index="{{$index}}">
+                                    <span class="ChineseCd_txt" ng-bind="item.title"></span>
+                                </li>
+                            </ul>
+                        </div><div class="ChineseCd_tabs_area_ul_list _list_3">
+                            <ul class="tabs_area_box" ng-click="selectChapter($event, 3);">
+                                <!-- 勾选中 tabs_area_list 添加类名 on -->
+                                <li class="tabs_area_list" ng-class="{'list_go_on': item.children.length > 0}" ng-repeat="item in model.chapterTree[2] track by $index" ng-index="{{$index}}">
+                                    <span class="ChineseCd_txt" ng-bind="item.title"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ChineseCharacterDictation_pop_main_ft" ng-show="!model.isLoading">
+                <a class="ChineseCd_light_btn" href="javascript:;" ng-show="model.currentLevel > 1" ng-click="prevStep();">
+                    <span class="ChineseCd_light_btn_txt " translate="dictation.btn.step.prev"></span>
+                </a>
+                <a class="ChineseCd_light_btn btn_high_light" href="javascript:;" ng-class="{'click_disabled': model.isDisabled}" ng-click="beginAdd();">
+                    <span class="ChineseCd_light_btn_txt" translate="dictation.btn.add.begin"></span>
+                </a>
+            </div>
+
+            <nd-loader message="model.loadingMessage" ng-show="model.isLoading"></nd-loader>
+        </div>
+        <!-- /弹窗内容区 -->
+
+        <!-- 右边关闭按钮 -->
+        <a href="###" class="comui_btn_close comui_btn_rb" ng-click="exit();"><span></span></a>
+        <!-- /右边关闭按钮 -->
+
+        <!-- 左边关闭按钮 -->
+        <a href="###" class="stati_com_btn_close stati_com_btn_lb stati_com_btn_hide" ng-click="exit();"><span></span><!-- 下面的span做点击背景的预加载 --><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a>
+        <!-- /左边关闭按钮 -->
+    </div>
+</div>

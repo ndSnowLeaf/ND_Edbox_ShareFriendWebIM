@@ -1,0 +1,719 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SwitchToolbar'>
+<properties>
+
+                <property name="itemList" displayName="选项列表" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="mixedModule-switch" data-bind="css: viewStyle"><a href="javascript:void(0)" class="mixedModule-switch-btn js_question_stem"><em class="mixedModule-switch-text" data-bind="text: questionStem"></em></a><div class="mixedModule-subject-container"><div class="mixedModule-subject" data-bind="css: {'mixedModule-less': options.overOnePage() == false}"><a href="javascript:void(0)" class="mixedModule-subject-pre js_prev_page" data-bind="css: {click_disabled: options.hasPrevPage() == false}"><em class="mixedModule-switch-text"></em></a><ul class="mixedModule-subject-list js-toolbar" data-bind="foreach: items"><li class="mixedModule-subject-btn js-toolbar-item" data-bind="{css: state, attr:{'data-index': index, 'data-id': id, 'data-value': value}}"><em class="mixedModule-subject-num" data-bind="text: qIndex + 1"></em> <em class="mixedModule-subject-word" data-bind="text: text"></em></li></ul><a href="javascript:void(0)" class="mixedModule-subject-next js_next_page" data-bind="css: {click_disabled: options.hasNextPage() == false}"><em class="mixedModule-switch-text"></em></a></div></div><div class="mixedModule-shangxia-p"><a href="javascript:void(0)" class="mixedModule-prev js_prev_question" data-bind="css: {click_disabled: options.hasPrevQuestion() == false}"><em class="mixedModule-switch-text" data-bind="text: prevQuestion"></em> </a><a href="javascript:void(0)" class="mixedModule-next btn-next js_next_question" data-bind="css: {click_disabled: options.hasNextQuestion() == false}"><em class="mixedModule-switch-text" data-bind="text: nextQuestion"></em></a></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'SwitchToolbar',
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        /**
+         * 1.0.7
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.languageKeySet = {};
+            this.isLock = false;
+            this.viewModel = {};
+            this.takeOnce = 5;
+            if (this.isApp) {
+                this.takeOnce = 5;
+            }
+            //当前题目的索引号,从0开始
+            this.currentQuestionIndex = 0;
+            //当前题目在所在分页列表中的索引,取值范围[0, takeOnce)
+            this.currentIndex = 0;
+            //当前页的起始索引号
+            this.currentStartIndex = 0;
+            //当前题目的数量
+            this.questionCount = 0;
+            //当前阶段,从Loader传入
+            this.currentPhase = "Normal";
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                switch (context.level.name) {
+                    case 'DEBUG':
+                        console.debug(message);
+                        break;
+                    case 'INFO':
+                        console.info(message);
+                        break;
+                    case 'WARN':
+                        console.warn(message);
+                        break;
+                    case 'ERROR':
+                        console.error(message);
+                        break;
+                    default:
+                        console.log(message);
+                        break;
+                }
+            }, {level: Logger.DEBUG});
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            /**
+             * 设置工具栏状态为LOCK
+             * @param lock
+             */
+            setToolbarLocked: function (lock) {
+                this.parent.isLock = lock;
+            },
+            /**
+             * 设置题目状态
+             * @param id 题目ID
+             * @param type 题目类型
+             * @param answerState 作答状态: NO_ANSWER, COMPLETE, NO_COMPLETE
+             * @param correctState 正误反馈
+             * @param selectState 当前的选择状态
+             */
+            setQuestionState: function (id, type, answerState, correctState, selectState) {
+                var status = "";
+                var questionItem = _.find(this.parent.quesitonList, {value: id});
+                if (questionItem == undefined) {
+                    return;
+                }
+                var currentStatus = questionItem.state;
+                //如果是作答状态
+                if (this.parent.currentPhase === "Normal") {
+                    //如果没有作答状态
+                    if (selectState == true) {
+                        //题目被选中
+                        status = "answering answering-view";
+                        //当前题目已作答
+                        if(answerState && answerState !== 'NO_ANSWER'){
+                            status += " answered";
+                        }
+                    } else {
+                        //题目没有被选中
+                        if (answerState == 'NO_ANSWER' || answerState == false) {
+                            status = "";
+                        } else {
+                            status = "answered";
+                        }
+                    }
+                } else if (this.parent.currentPhase === "Statistical") {
+                    //如果是统计状态
+                    if (selectState == true) {
+                        status = "answering checking-view";
+                    } else {
+                        status = "";
+                    }
+                } else if (this.parent.currentPhase === 'ViewDetail') {
+                    if (selectState == true) {
+                        status = (currentStatus + " checking-view");
+                    } else {
+                        status = currentStatus.replace(/checking-view/g, "");
+                    }
+                } else {
+                    //如果是进入统计状态
+                    if (answerState == 'NO_ANSWER' || answerState == false) {
+                        status = 'noanswer';
+                        //该题没有作答或该题没有完成
+                        if ((!correctState || type == 'handwrite' || type == 'newhandwrite') && selectState == true) {//修复bug#115363 改题没有做的场景
+                            status = status + " checking-view";
+                        }
+                    } else if (answerState === "COMPLETE" || answerState == true || answerState === "NO_COMPLETE") {
+                        //该题已经完成
+                        if (correctState == undefined) {
+                            if (selectState == true) {
+                                status = (currentStatus + " checking-view");
+                            } else {
+                                status = currentStatus.replace(/checking-view/g, "");
+                            }
+                        } else {
+                            //完成且正确
+                            if (type == 'handwrite' || type == 'newhandwrite' || type == 'vote') {
+                                //手写题或投票题有做都算对
+                                status = "right";
+                            } else {
+                                //非手写题和投票
+                                status = correctState == true ? "right" : "wrong";
+                            }
+                            if (selectState == true) {//修复bug#115363
+                                status = (status + " checking-view");
+                            }
+                        }
+                    }
+                }
+                //查找当前题目
+                var question = _.find(this.parent.viewModel.items(), {value: id});
+                if (question != undefined) {
+                    //可以在当前页面中找到题目
+                    question.state(status);
+                }
+                questionItem.state = status;
+            },
+            /**
+             * 跳转到指定的题目所在的Page
+             * @param id 题目ID
+             */
+            jumpToQuestionPage: function(id) {
+                //如果要跳转的题目在当前的Page
+                var question = _.find(this.parent.viewModel.items(), {value: id});
+                if(question != undefined) {
+                    this.parent.currentIndex = question.index;
+                    this.parent.currentQuestionIndex = question.qIndex;
+                    this.parent._judgePrevOrNextState();
+                    return;
+                }
+                //如果要跳转的题目不再当前的Page
+                var questionItem = _.find(this.parent.quesitonList, {value: id});
+                if(questionItem == undefined) {
+                    return;
+                }
+                var pageIndex = Math.ceil((questionItem.index + 1) / this.parent.takeOnce);
+                this.parent._jumpToPage(pageIndex, questionItem.id, false);
+            },
+            /**
+             * 设置当前切题栏的状态
+             * @param phase
+             */
+            setCurrentPhase: function (phase, options) {
+                this.parent.currentPhase = phase;
+                this.parent.viewModel.state(phase);
+                if(typeof options !== 'undefined'){
+                    //更改切换栏子项限制数量
+                    if(typeof options.limit === 'number' && options.limit !== this.parent.takeOnce){
+                        this.parent.takeOnce = options.limit;
+                        this.parent._initViewModel(false);
+                    }
+                }
+            },
+            //重置切换栏状态
+            resetSwitchBar: function () {
+                //当前题目的索引号,从0开始
+                this.parent.currentQuestionIndex = 0;
+                //当前题目在所在分页列表中的索引,取值范围[0, takeOnce)
+                this.parent.currentIndex = 0;
+                //当前页的起始索引号
+                this.parent.currentStartIndex = 0;
+                this.parent._initViewModel(false);
+                // this.parent.$view.find('.js-toolbar-item').on('click', $.proxy(this.parent._onToolbarItemClick, this.parent));
+            },
+            /**
+             * 设置多语言数据
+             * @param properties
+             */
+            setLocationProperties: function (properties) {
+                this.parent.languageKeySet = properties;
+            },
+            /**
+             * 设置工具栏栏按钮可用性
+             * @param key 按钮的键值
+             * @param enabled 是否可用
+             */
+            setBarItemEnabled: function (key, enabled) {
+                if(key == 'question_stem') {
+                    var questionStem = this.parent.$view.find('.js_question_stem');
+                    enabled == true ? questionStem.removeClass('hide_dom') : questionStem.addClass('hide_dom');
+                }
+            },
+            /**
+             * 设置工具栏按钮状态
+             */
+            setBarItemState: function(key, state){
+                if(key === 'question_stem'){
+                    this.parent._toggleQuestionStem(state.status);
+                }
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.model = model;
+            this.quesitonList = this.model.itemList.items;
+            this._initViewModel(true);
+            //绑定到DOM元素
+            ko.applyBindings(this.viewModel, this.$view[0]);
+        },
+        pageShow: function () {
+            this._bindEvent();
+        },
+        pageLeave: function () {
+            this._unbindEvent();
+        },
+        destroy: function () {
+            ko.cleanNode(this.$view[0]);
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {
+            var self = this;
+            this.$view.find('.js-toolbar').on('click', '.js-toolbar-item', $.proxy(self._onToolbarItemClick, self));
+            this.$view.find('.js_question_stem').on('click', $.proxy(self._onQuestionStemClick, self));
+            this.$view.find('.js_prev_question').on('click', $.proxy(self._onPrevQuestionClick, self));
+            this.$view.find('.js_prev_page').on('click', $.proxy(self._onPrevPageClick, self));
+            this.$view.find('.js_next_page').on('click', $.proxy(self._onNextPageClick, self));
+            this.$view.find('.js_next_question').on('click', $.proxy(self._onNextQuestionClick, self));
+        },
+        _unbindEvent: function () {
+            this.$view.find('.js-toolbar').off('click');
+            this.$view.find('.js_question_stem').off('click');
+            this.$view.find('.js_prev_question').off('click');
+            this.$view.find('.js_prev_page').off('click');
+            this.$view.find('.js_next_page').off('click');
+            this.$view.find('.js_next_question').off('click');
+        },
+        _initViewModel: function (inRun) {
+            if (inRun) {
+                this.viewModel = {
+                    state: ko.observable(this.currentPhase),
+                    questionStem: ko.observable(this._getLanguageText('QUESTION_STEM_HIDE')),
+                    prevQuestion: this._getLanguageText('QUESTION_PREV'),
+                    prevPage: this._getLanguageText('QUESTION_PREV_PAGE'),
+                    nextPage: this._getLanguageText('QUESTION_NEXT_PAGE'),
+                    nextQuestion: this._getLanguageText('QUESTION_NEXT'),
+                    items: ko.observableArray([]),
+                    options: {
+                        overOnePage: ko.observable(false),  //超过一页
+                        hasPrevQuestion: ko.observable(false), //上一题可用
+                        hasNextQuestion: ko.observable(false), //下一题可用
+                        hasPrevPage: ko.observable(false),  //上一页是否可用
+                        hasNextPage: ko.observable(false)  //下一页是否可用
+                    },
+                };
+                this.viewModel.viewStyle = ko.pureComputed(function(){
+                    return 'status-' + (this.state() || 'normal').toLowerCase();
+                }, this.viewModel);
+            } else {
+                this.viewModel.items([]);
+                this.viewModel.options.overOnePage(false);
+                this.viewModel.options.hasPrevQuestion(false);
+                this.viewModel.options.hasNextQuestion(false);
+                this.viewModel.options.hasPrevPage(false);
+                this.viewModel.options.hasNextPage(false);
+            }
+
+            //处理ViewModel数据
+            if (this.quesitonList && this.quesitonList.length > 0) {
+                this.questionCount = this.quesitonList.length;
+                if (this.quesitonList.length <= this.takeOnce) {
+                    this._updateItemList(this.quesitonList, 'next');
+                } else {
+                    //超过一页
+                    this.viewModel.options.overOnePage(true);
+                    this.viewModel.options.hasNextPage(true);
+                    //中间的页面
+                    var tempList = _.slice(this.quesitonList, 0, this.takeOnce);
+                    this._updateItemList(tempList, 'next');
+                }
+            }
+            //处理首次加载的状况
+            if (this.currentIndex === 0 && this.questionCount > 1) {
+                this.viewModel.options.hasNextQuestion(true);
+            }
+        },
+        /**
+         * 更新题目列表
+         * @param list 待更新的题目列表
+         * @param prevOrNext 向前或向后翻页
+         * @private
+         */
+        _updateItemList: function (list, prevOrNext, questionId) {
+            var self = this;
+            var firstItem = true;
+            self.viewModel.items([]);
+            //添加页面按钮
+            $.each(list, function (index, item) {
+                var text = '';
+                // text 可能是文本或者对象
+                if(typeof item.text === 'string'){
+                    text = item.text;
+                }else if(typeof item.text === 'object'){
+                    switch(self.currentPhase){
+                        case 'Statistical':
+                            text = item.text.statis;
+                            break;
+                        default: 
+                            text = item.text.normal;
+                            break;
+                    }
+                }
+                self.viewModel.items.push({
+                    index: index,
+                    qIndex: item.index,
+                    id: item.id,
+                    text: text,
+                    value: item.value,
+                    state: ko.observable(item.state)
+                });
+                if (firstItem) {
+                    self.currentStartIndex = item.index;
+                    firstItem = false;
+                }
+            });
+            // 注释原因：汉字听写优化，翻页时不改变当前选中，复合题同步此设计
+            // var selectedItem = null;
+            // if (prevOrNext == 'prev') {
+            //     //如果是翻前一页
+            //     selectedItem = _.last(self.viewModel.items());
+            //     self.currentIndex = self.viewModel.items().length - 1;
+            // } else if (prevOrNext === 'next') {
+            //     //如果是翻后一页或跳页
+            //     selectedItem = _.head(self.viewModel.items());
+            //     self.currentIndex = 0;
+            // } else if(prevOrNext == 'jump') {
+            //     self.currentIndex = _.findIndex(self.viewModel.items(), {id: questionId});
+            //     selectedItem = self.viewModel.items()[self.currentIndex];
+            // }
+            // self.currentQuestionIndex = selectedItem.index;
+        },
+        /**********事件处理方法************/
+        _onToolbarItemClick: function (e) {
+            var index = window.parseInt(e.currentTarget.dataset.index);
+            //如果点击了已经选择的题目
+            var current = this.viewModel.items()[index];
+            if(+current.qIndex === this.currentQuestionIndex){
+                return;
+            }
+            // var items = this.viewModel.items();
+            // items[this.currentIndex].state('');
+            this.currentIndex = index;
+            this.currentQuestionIndex = current.qIndex;
+            // 注释原因：汉字听写优化中修改，因为翻页时不更改选中项，故不自动翻页。复合题也同步此设计。
+            // var lastItem = _.last(items);
+            //如果当前选择的最后一个题目
+            // if(lastItem.index == this.currentIndex) {
+            //     this.$view.find('.js-toolbar-item').off();
+            //     this._onClickLastPageItem(lastItem);
+            //     //重新绑定事件
+            //     this.$view.find('.js-toolbar-item').on('click', $.proxy(this._onToolbarItemClick, this));
+            // }
+            this._dispatchQuestionSwitch();
+            this._judgePrevOrNextState();
+        },
+        //点击最后一题
+        _onClickLastPageItem: function (lastItem) {
+            var lastQuestion = _.last(this.quesitonList);
+            var startIndex, endIndex, tempList;
+            if(lastQuestion.index == lastItem.qIndex) {
+                //如果点击的是最后一个题目
+                return;
+            } else if((lastItem.qIndex + this.takeOnce) <= lastQuestion.index) {
+                //如果还有足够的题目构成下一页
+                startIndex = lastItem.qIndex;
+                endIndex = lastItem.qIndex + this.takeOnce;
+
+            } else {
+                //如果已经没有足够的题目来构成最后一页
+                startIndex = lastQuestion.index - this.takeOnce + 1;
+                endIndex = lastQuestion.index + 1;
+                this.viewModel.options.hasNextPage(false);
+            }
+            tempList = _.slice(this.quesitonList, startIndex, endIndex);
+            this._updateItemList(tempList, 'jump', lastItem.id);
+        },
+
+        //查看-隐藏题干
+        _onQuestionStemClick: function () {
+            this._toggleQuestionStem(this.viewModel.questionStem() === this._getLanguageText('QUESTION_STEM_SHOW')? 'show': 'hide');
+        },
+        _toggleQuestionStem: function(type){
+            if(type === 'show'){
+                this.viewModel.questionStem(this._getLanguageText('QUESTION_STEM_HIDE'));
+            }else{
+                this.viewModel.questionStem(this._getLanguageText('QUESTION_STEM_SHOW'));
+            }
+            this.$dispatchEvent('SwitchToolbarItemClick', PresenterEventType.IC_PLAYER_EVENT, {
+                id: 'question_stem',
+                value: type
+            });
+        },
+        //上一题
+        _onPrevQuestionClick: function () {
+            if (this.viewModel.options.hasPrevQuestion() === false) {
+                return;
+            }
+            var items = this.viewModel.items();
+            this.logger.debug('PREV QUESTION currentIndex:' + this.currentIndex, 'currentQuestionIndex:' + this.currentQuestionIndex,
+                'currentStartIndex:' + this.currentStartIndex);
+            if (this.currentIndex == 0) {
+                //如果已经是第一题
+                if (this.viewModel.options.hasPrevPage() === true) {
+                    this._onPrevPageClick({source: "PrevQuestion"});
+                } else {
+                    //如果已经没有上一页
+                    this.viewModel.options.hasPrevQuestion(false);
+                }
+            } else {
+                items[this.currentIndex].state('');
+                //当前题目-1
+                // this.currentIndex--;
+                // if (items[this.currentIndex]) {
+                //     //设置当前题目状态
+                //     //items[this.currentIndex].state('answering');
+                //     //设置当前题目真实索引
+                //     this.currentQuestionIndex = items[this.currentIndex].qIndex;
+                //     this._dispatchQuestionSwitch();
+                // }
+            }
+            if(this.quesitonList[this.currentQuestionIndex - 1]){
+                var prevQuestion = this.quesitonList[this.currentQuestionIndex - 1];
+                var prev = _.find(this.viewModel.items(), {id: prevQuestion.id});
+                if(!prev){
+                    this._jumpToPage(Math.ceil((prevQuestion.index + 1) / this.takeOnce), prevQuestion.id, false);
+                    prev = _.find(this.viewModel.items(), {id: prevQuestion.id});
+                }
+                if(prev){
+                    this.currentIndex = prev.index;
+                    this.currentQuestionIndex = prev.qIndex;
+                }
+                this._dispatchQuestionSwitch();
+            }
+            this._judgePrevOrNextState();
+        },
+        //上一页
+        _onPrevPageClick: function (options) {
+            if (this.viewModel.options.hasPrevPage() === false) {
+                return;
+            }
+            //解除绑定的事件
+            this.$view.find('.js-toolbar-item').off();
+            //设置下一页按钮可用
+            this.viewModel.options.hasNextPage(true);
+            var items = this.viewModel.items();
+            //去掉当前页上所有题目的状态
+            $.each(items, function (index, item) {
+                item.state('');
+            });
+
+            var startIndex = this.currentStartIndex - this.takeOnce < 0 ? 0 : this.currentStartIndex - this.takeOnce;
+            var endIndex = this.currentStartIndex + (this.takeOnce - (this.currentStartIndex - startIndex));
+
+            var tempList = _.slice(this.model.itemList.items, startIndex, endIndex);
+            if(options.source && options.source == 'PrevQuestion') {
+                // this._updateItemList(tempList, 'jump', tempList[this.currentIndex].id);
+                //修复#94454
+                this._updateItemList(tempList, 'jump', tempList[(this.currentStartIndex-this.currentStartIndex)>0?(tempList.length - 1):(_.findIndex(tempList,{index:this.currentStartIndex-1}))].id);
+            } else {
+                this._updateItemList(tempList, 'prev');
+            }
+            if (startIndex <= 0) {
+                this.viewModel.options.hasPrevPage(false);
+            }
+            this.logger.debug('PREV PAGE:currentIndex:' + this.currentIndex, 'currentQuestionIndex:' + this.currentQuestionIndex,
+                'currentStartIndex:' + this.currentStartIndex);
+            //重新绑定事件
+            // this.$view.find('.js-toolbar-item').on('click', $.proxy(this._onToolbarItemClick, this));
+            // 注释原因：汉字听写优化，翻页时不改变当前选中，复合题同步此设计
+            // this._dispatchQuestionSwitch();
+            this._judgePrevOrNextState();
+        },
+        //下一页
+        _onNextPageClick: function () {
+            if (this.viewModel.options.hasNextPage() === false) {
+                return;
+            }
+            //解除绑定的事件
+            this.$view.find('.js-toolbar-item').off();
+            //设置上一页按钮可用
+            this.viewModel.options.hasPrevPage(true);
+            var items = this.viewModel.items();
+            //去掉当前页上所有题目的状态
+            $.each(items, function (index, item) {
+                item.state('');
+            });
+            //从题目列表中加载下一页的题目数据
+            var startIndex = this.currentStartIndex + this.takeOnce;
+            var endIndex = (this.currentStartIndex + this.takeOnce * 2) < this.questionCount ?
+                this.currentStartIndex + this.takeOnce * 2 : this.questionCount;
+            var keepIndex = false;
+            if(endIndex == this.questionCount) {
+                //获取最后一页的数据
+                if(endIndex - startIndex < this.takeOnce) {
+                    //最后一页不足以显示所有题目标签
+                    // this.currentIndex = this.takeOnce - (endIndex - startIndex);
+                    startIndex = endIndex - this.takeOnce;
+                    keepIndex = true;
+                }
+            }
+            var tempList = _.slice(this.model.itemList.items, startIndex, endIndex);
+            if(keepIndex) {
+                this._updateItemList(tempList, 'jump', tempList[this.currentIndex].id);
+            } else {
+                this._updateItemList(tempList, 'next');
+            }
+            if (endIndex == this.questionCount) {
+                this.viewModel.options.hasNextPage(false);
+            }
+            this.logger.info('NEXT PAGE: currentIndex:' + this.currentIndex, 'currentQuestionIndex:' + this.currentQuestionIndex,
+                'currentStartIndex:' + this.currentStartIndex);
+            //重新绑定事件
+            // this.$view.find('.js-toolbar-item').on('click', $.proxy(this._onToolbarItemClick, this));
+            // 注释原因：汉字听写优化，翻页时不改变当前选中，复合题同步此设计
+            // this._dispatchQuestionSwitch();
+            this._judgePrevOrNextState();
+        },
+        //跳转到特定页面
+        _jumpToPage: function (pageIndex, questionId, clickLastItem) {
+            //解除绑定的事件
+            this.$view.find('.js-toolbar-item').off();
+            var items = this.viewModel.items();
+            //去掉当前页上的状态
+            $.each(items, function (index, item) {
+                item.state('');
+            });
+            //计算跳转Page的起始Index
+            this.currentStartIndex = clickLastItem ? (pageIndex - 1) * this.takeOnce - (pageIndex - 1) : (pageIndex - 1) * this.takeOnce;
+            //计算跳转Page的结束Index
+            var endIndex = (this.currentStartIndex + this.takeOnce) < this.questionCount ?
+                this.currentStartIndex + this.takeOnce : this.questionCount;
+            // 不够一页
+            if (endIndex - this.currentStartIndex < this.takeOnce - 1) {
+                this.currentStartIndex = endIndex >= this.takeOnce - 1 ? endIndex - (this.takeOnce - 1) : 0;
+            }
+            var tempList = _.slice(this.model.itemList.items, this.currentStartIndex, endIndex);
+            this._updateItemList(tempList, 'jump', questionId);
+            this.currentIndex = _.findIndex(this.viewModel.items(), {id: questionId});
+            this.currentQuestionIndex = this.viewModel.items()[this.currentIndex].qIndex;
+            //上下页都可用
+            this.viewModel.options.hasNextPage(true);
+            this.viewModel.options.hasPrevPage(true);
+            //其实为0
+            if(this.currentStartIndex == 0) {
+                this.viewModel.options.hasPrevPage(false);
+            }
+            //结束序号
+            if (endIndex == this.questionCount) {
+                this.viewModel.options.hasNextPage(false);
+            }
+            this.logger.info('JUMP PAGE: currentIndex:' + this.currentIndex, 'currentQuestionIndex:' + this.currentQuestionIndex,
+                'currentStartIndex:' + this.currentStartIndex);
+            //重新绑定事件
+            // this.$view.find('.js-toolbar-item').on('click', $.proxy(this._onToolbarItemClick, this));
+            this._dispatchQuestionSwitch();
+            this._judgePrevOrNextState();
+        },
+        //下一题
+        _onNextQuestionClick: function () {
+            if (this.viewModel.options.hasNextQuestion() === false) {
+                return;
+            }
+            //设置上一题按钮可用
+            this.viewModel.options.hasPrevQuestion(true);
+            var items = this.viewModel.items();
+            this.logger.info('NEXT QUESTION currentIndex:' + this.currentIndex, 'currentQuestionIndex:' + this.currentQuestionIndex,
+                'currentStartIndex:' + this.currentStartIndex);
+            if (this.currentIndex == items.length - 1) {
+                //如果已经是最后一题
+                if (this.viewModel.options.hasNextPage() === true) {
+                    //如果有下一页
+                    this._onNextPageClick();
+                } else {
+                    //如果没有下一页
+                    this.viewModel.options.hasNextQuestion(false);
+                }
+            } else {
+                //去掉当前题目上的状态
+                items[this.currentIndex].state('');
+                //当前题目+1
+                // this.currentIndex++;
+                // if (items[this.currentIndex]) {
+                //     //设置当前题目状态
+                //     //items[this.currentIndex].state('answering');
+                //     //设置当前题目真实索引
+                //     this.currentQuestionIndex = items[this.currentIndex].qIndex;
+                //     this._dispatchQuestionSwitch();
+                // }
+            }
+            if(this.quesitonList[this.currentQuestionIndex + 1]){
+                var nextQuestion = this.quesitonList[this.currentQuestionIndex + 1];
+                var next = _.find(this.viewModel.items(), {id: nextQuestion.id});
+                if(!next){
+                    this._jumpToPage(Math.ceil((nextQuestion.index) / this.takeOnce), nextQuestion.id, false);
+                    next = _.find(this.viewModel.items(), {id: nextQuestion.id});
+                }
+                if(next){
+                    this.currentIndex = next.index;
+                    this.currentQuestionIndex = next.qIndex;
+                }
+                this._dispatchQuestionSwitch();
+            }
+            this._judgePrevOrNextState();
+        },
+        //发出题目变更的事件
+        _dispatchQuestionSwitch: function () {
+            var selectItem = this.viewModel.items()[this.currentIndex];
+            this.logger.debug('Dispatch Switch Event:', selectItem.id, selectItem.value);
+            this.$dispatchEvent('SwitchToolbarItemClick', PresenterEventType.IC_PLAYER_EVENT, {
+                id: selectItem.id,
+                value: selectItem.value
+            });
+        },
+        //集中判断上一题,下一题, 上一页, 下一页按钮的可用性
+        _judgePrevOrNextState: function () {
+            var items = this.viewModel.items();
+            //先判断翻页是否可用
+            if(this.questionCount < this.takeOnce) {
+                //如果总数小于Task Once
+                this.viewModel.options.hasPrevPage(false);
+                this.viewModel.options.hasNextPage(false);
+            } else {
+                var firstItem = _.head(items), lastItem = _.last(items);
+                this.viewModel.options.hasPrevPage(!(firstItem.qIndex == 0));
+                this.viewModel.options.hasNextPage(!(lastItem.qIndex == (this.questionCount - 1)));
+            }
+            // 上一题是否可用
+            this.viewModel.options.hasPrevQuestion(this.currentQuestionIndex !== 0);
+            // 下一题是否可用
+            this.viewModel.options.hasNextQuestion(this.currentQuestionIndex !== this.questionCount - 1);
+        },
+        //获取语言包的配置
+        _getLanguageText: function (key) {
+            if (this.languageKeySet[key] == undefined)
+                return "ERROR";
+            return this.languageKeySet[key];
+        }
+    }, 'SwitchToolbar');
+
+    window.AddonSwitchToolbar_create = function () {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

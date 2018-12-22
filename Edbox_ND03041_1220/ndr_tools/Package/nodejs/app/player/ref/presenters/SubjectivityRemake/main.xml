@@ -1,0 +1,1935 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SubjectivityRemake'>
+<properties>
+
+                <property name="id" displayName="题目id" type="string" isLocalized="false" />
+                <property name="type_code" displayName="题目类型编码" type="string" values="choice,multiplechoice,vote,textentry,order,match,judge,graphicgapmatch,textentrymultiple,handwrite,data" isLocalized="false" />
+                <property name="type_name" displayName="题目的类型名称" type="string" isLocalized="false" />
+                <property name="url" displayName="题目xml地址" type="question" isLocalized="false" />
+                <property name="theme" displayName="题目主题" type="string" isLocalized="false" />
+                <property name="data" displayName="题干" type="json" />
+                <property name="tip" displayName="提示" type="json" />
+                <property name="isTool" displayName="是否截图做题" type="string" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="out_frame" version="1.0.9" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_SubjectivityRemake .layout-mask{position:absolute;top:0;left:0;right:0;bottom:0;width:auto;height:auto;z-index:1999}.addon_SubjectivityRemake .layout-all-mask{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1999}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content subjective"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit">主观题</h2></div><div class="com_layout_main scrollbar_style_gray"><div class="subjective_desc_box"><div class="subjective_desc"></div><a href="javascript:;" class="subjective_btn_desc" data-closetxt="展开全文" data-opentxt="收起全文"><ins class="arrow"></ins></a></div><div class="subjective_media_box subjective_material_media"><div class="fct_res_list_box"><ul data-count="0"></ul></div><a href="javascript:;" class="subjective_media_prev click_disabled"></a> <a href="javascript:;" class="subjective_media_next"></a></div><p class="subjective_answer_tip"><span class="txt lang_Enter_Answer_Down_Area"></span> <a href="javascript:;" class="subjective_btn_tip"><span class="subjective_btn_tip_act"></span> <span class="subjective_btn_tip_lh"></span> <span class="subjective_btn_tip_icon"></span> <span class="subjective_btn_tip_icon_txt lang_Hints"></span></a></p><div class="subjective_input_area"><textarea name="" id="" class="scrollbar_style_gray" disabled="disabled"></textarea></div><div class="subjective_btn_item"><a href="javascript:;" class="subjective_btn subjective_btn_write"><span class="txt lang_Written"></span></a> <a href="javascript:;" class="subjective_btn subjective_btn_img"><span class="txt lang_Take_Picture"></span></a><a href="javascript:;" class="subjective_btn subjective_btn_radio"><span class="txt lang_Record_Sound"></span></a></div><div class="subjective_upmedia_box"><ul></ul></div></div><div class="subjective_tips_wrap"><div class="subjective_tips_bar tips_hide"><a href="javascript:;" class="subjective_tips_close"></a><div class="subjective_tips_bar_bd scrollbar_style_gray"><h3 class="subjective_tips_tit"><span class="txt lang_Hints"></span></h3><div class="subjective_tips_text_content"></div><div class="subjective_media_box subjective_tips_media"><div class="fct_res_list_box"><ul data-count="0"></ul></div><a href="javascript:;" class="subjective_media_prev click_disabled"></a> <a href="javascript:;" class="subjective_media_next"></a></div></div></div></div></div><div class="com_layout_main_exam hide_dom"><div class="subjective_input_hd"><a class="com_btn_round js_save_text" href="javascript:;"><span class="text_box lang_Save"></span> </a><a href="javascript:;" class="subjective_btn_back"><span class="txt lang_Return"></span></a></div><div class="subjective_input_bd"><p class="subjective_input_tit"><span class="txt lang_Enter_Answer_Down_Area"></span></p><div class="subjective_inputarea"><textarea class="scrollbar_style_gray"></textarea></div></div></div></div><div class="subjective_mask hide_dom subjective"><div class="subjective_modal subjective_modal_media hide_dom"><a href="javascript:;" class="subjective_modal_close"></a><div class="subjective_modal_media_view"></div><div class="subjective_media_tips hide_dom" style="top: 41%"><p class="txt lang_Delete_Select_Text"></p><div class="subjective_media_btn_item"><a href="javascript:;" class="subjective_btn_confirm"></a> <a href="javascript:;" class="subjective_btn_cancel"></a></div></div><div class="subjective_modal_media_list"><div class="subjective_media_box"><div class="fct_res_list_box"><ul></ul></div><a href="javascript:;" class="subjective_media_prev click_disabled"></a> <a href="javascript:;" class="subjective_media_next"></a></div></div></div><div class="subjective_modal subjective_modal_record hide_dom"><a href="javascript:;" class="subjective_modal_close"></a><div class="subjective_modal_record_bd" data-state=""><div class="subjective_CD"><ins class="subjective_CD_box"></ins> <a href="javascript:;" class="subjective_CD_btn" data-state="default"></a><audio class="subjective_audio_src"></audio></div><p class="subjective_time"><span class="txt">00:00</span></p><div class="subjective_branch"><span class="subjective_leaf1"></span> <span class="subjective_leaf2"></span></div><a href="javascript:;" class="subjective_record_btn subjective_record_left" data-state="reset"><span class="txt lang_Re_Record"></span> </a><a href="javascript:;" class="subjective_record_btn subjective_record_right" data-state="start"><span class="txt lang_Begin_Record"></span></a></div></div></div><div class="layout-mask" style="display:none"><div class="mask"></div></div><div class="layout-all-mask" style="display:none"><div class="mask"></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    var MATERIAL_LIST_SHOW_NUM = 6;
+    var TIP_LIST_SHOW_NUM = 6;
+    var STUDENT_MATERIAL_LIST_SHOW_NUM = 7;
+    var STUDENT_TIP_LIST_SHOW_NUM = 6;
+    var WIN_LIST_SHOW_NUM = 5;
+    var RECORD_LIMIT = 300;
+    var self = null;
+
+    //媒体列表类型枚举
+    var enum_materialType = {};
+    (function (type) {
+        type[type.material = 1] = 'material',
+            type[type.tip = 2] = 'tip',
+            type[type.answer = 3] = 'answer'
+    })(enum_materialType);
+
+    // 学生数据
+    var answerData = null;
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'SubjectivityRemake',
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            self = this;
+            this._super();
+            this.i18nModel = {};
+            //用于国际化的语言设置deferred
+            this.$translateDeferred = $.Deferred();
+            this.viewModel = {};
+
+            /**
+             * 判断运行环境
+             *
+             * 获取Module当前的运行环境, 通过icPlayer提供的接口
+             * 已定义的环境枚举包括
+             * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)
+             * icCreatePlayer.RUNTIME.STUDENT_MOBILE(学生端)
+             * icCreatePlayer.RUNTIME.PROJECTION_MOBILE(投影端)
+             * icCreatePlayer.RUNTIME.WEB(WEB端 )
+             * icCreatePlayer.RUNTIME.TEACHER_PC(PC端)
+             * 判断例子
+             * if(currentRuntime === icCreatePlayer.RUNTIME.TEACHER_MOBILE)
+             */
+            this.viewModel.isApp = false;//true:PAD或者白板,false:web端
+            this.viewModel.isTeacher = false;//true:PAD端老师
+            this.viewModel.isTeacherPc = false;//true:白板端老师
+            this.viewModel.isStudent = false;//true:学生端
+            this.viewModel.isProjector = false;//true:投影端
+            this.viewModel.isPPTshell = false; //101教育PPT
+            this.viewModel.isWeb = false; //Web端
+
+            (function () {
+                var currentRuntime = player.getPlayerServices().getRuntime();
+                self.viewModel.isApp = (currentRuntime != icCreatePlayer.RUNTIME.WEB);
+
+                if (currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                    self.viewModel.isStudent = true;
+                } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_MOBILE) {
+                    self.isTeacher = true;
+                } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_PC) {
+                    self.viewModel.isTeacherPc = true;
+                } else if (currentRuntime == icCreatePlayer.RUNTIME.PROJECTION_MOBILE) {
+                    self.viewModel.isProjector = true;
+                } else if (currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                    self.viewModel.isWeb = true;
+                }
+            })();
+
+            answerData = {
+                studentId: 123456,
+                examId: '',
+                materialNum: 0,
+                datas: [],
+                datasMap: {},
+                simpleData: {
+                    data: [],
+                    isComplete: true
+                },
+                extendData: {
+                    datas: []
+                }
+            };
+
+            //调用Presenter的Uuid
+            this.currentUserInfo = null, this.instanceId = undefined, this.callbacks = {};
+            this.domEventsBind = [];
+            this.mediaplayer = null;
+            //当前弹出框指向的数据列表
+            this.currentMedialist = null, this.currentMediaType = null, this.currentMediaUuid = undefined, this.currentWriteUuid = undefined;
+            this.currentBoxListDOM = null;
+            this.isEditWrite = false, this.isOpenMaterialWin = false;
+            // 录音结束后存储临时AudioItem
+            this.audioMaterial = null, this.canStopRecord = false;
+            // 提交类型
+            this.sendingAnswer = false;
+            this.submitType = 1;//1主动提交， 2结束练习
+            // 点击修改后isModifying==true
+            this.isModifying = null, this.isActiveSubmitted = false;
+            this.isEndAnswer = false;
+            this.isScreenshot = false;
+            this.viewModel.recordSecond = 0;
+            this.isTextareaScroll = false;
+            this.isTeacherLock = false;
+            this.lockAnswerBtn = false;
+            // 课堂状态恢复
+            this.status = {
+                media: {},
+                text: '',
+                expand: false,
+                scrollTop: 0
+            }
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            // 设置多语言
+            setLocationProperties: function (location) {
+                self.i18nModel = location;
+                this.parent.$translateDeferred.resolve();
+            },
+            //获取题目信息
+            getQuestionInfo: function () {
+                return this.parent._getQuestionInfo()
+            },
+            // 获取答案
+            getResult: function () {
+                var state = 'NO_ANSWER'; //(this.parent.currentStatus !== WriteStatus.incomplete ? 'COMPLETE' : 'NO_ANSWER');
+                var value = self.$view.find('.subjective_input_area textarea').html();
+                if (answerData.datas.length > 0 || value !== self.i18nModel['Enter_Text_Answers']) {
+                    state = 'COMPLETE';
+                }
+                var result = {
+                    answer: {
+                        answer_result: true,
+                        correct_response: null,
+                        user_response: [
+                            this.parent._submitData()
+                        ]
+                    },
+                    questionId: this.parent.model.id,
+                    answerState: state
+                };
+                return result;
+            },
+            showAnswer: function () {
+
+            },
+            // 锁屏
+            lockQuestion: function () {
+                if (self.viewModel.isStudent) {
+                    self.$view.find('.layout-mask').show();
+                    if (!self.$view.find('.subjective_mask').hasClass('hide_dom')) {
+                        if (!self.$view.find('.subjective_modal_record').hasClass('hide_dom')) {
+                            self.$view.find('.subjective_mask').addClass('hide_dom');
+                            self.$view.find('.subjective_modal_record').addClass('hide_dom');
+                            subjectivityNative.stopRecord();
+                            subjectivityNative.resetRecordingView();
+                        }
+                        if (!self.$view.find('.subjective_modal_media').hasClass('hide_dom')) {
+                            self.currentWriteUuid = undefined;
+                            subjectivityRender.closeMaterialWin();
+                        }
+                    }
+                    //关闭文本、手写板、相机
+                    utils.sendToPresenter('event_close_win', true);
+                } else {
+                    self.isTeacherLock = true;
+                    if (!self.$view.find('.subjective_input_hd').parent().hasClass('hide_dom')) {
+                        self.$view.find('.com_layout_main_exam').first().removeClass('hide_dom');
+                        self.$view.find('.subjective_input_hd').parent().addClass('hide_dom');
+                    }
+                }
+                if (!self.$view.find('.subjective_tips_bar').hasClass('tips_hide')) {
+                    self.$view.find('.subjective_tips_bar').addClass('tips_hide');
+                }
+            },
+            // 解锁
+            unlockQuestion: function () {
+                if (self.viewModel.isStudent) {
+                    self.$view.find('.layout-mask').hide();
+                } else {
+                    self.isTeacherLock = false;
+                }
+            },
+            finishQuestion: function () {
+                //do nothing
+            },
+            resetQuestion: function () {
+                if (!self.viewModel.isStudent) {
+                    self.$view.find('.subjective_input_area textarea').html(self.i18nModel['Enter_Text_Answers']);
+                }
+            },
+            showResultHint: function () {
+                //do nothing
+            },
+            getInterceptId: function () {
+                return this.parent.model.id;
+            },
+            beforeSendAnswer: function (data) {
+                data.questionType = 'subjectivity';
+                //this.parent.logger.debug('beforeSendAnswer', JSON.stringify(data.answer.user_response));
+                data.answer = data.answer.user_response != null ? data.answer.user_response[0] : null;
+                return data;
+            },
+            afterSendAnswer: function (data) {
+                //self.isCommited = true;
+                //// 提交成功后上报状态
+                //if (data.result === true) {
+                //    this.parent._changeAnswerStatus(WriteStatus[WriteStatus.committed]);
+                //}
+            },
+            /**
+             * 获取课堂状态
+             */
+            getClassroomStatus: function () {
+                ClassroomUtils.log('[Subjectivity] getClassroomStatus ' + JSON.stringify(this.parent.status));
+                var $defer = $.Deferred();
+                var _status = $.extend(true, {}, this.parent.status);
+                $defer.resolve(_status);
+                return $defer.promise();
+            },
+            /**
+             * 设置课堂状态 
+             */
+            setClassroomStatus: function (status) {
+                ClassroomUtils.log('[Subjectivity] setClassroomStatus ' + JSON.stringify(this.parent.status));
+                this.parent.status = status;
+                self.$view.find('.subjective_input_area textarea').html(status.text === '' ? self.i18nModel['Enter_Text_Answers'] : status.text);
+                //恢复收缩题干
+                subjectivityEvent._extendTitle(status.expand);
+                //恢复滚动条
+                self.$view.find('.com_layout_main').scrollTop(status.scrollTop);
+                //通知数据恢复完成
+                this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: this.parent.metaInfo.name });
+            },
+            /**
+             * 清除课堂状态
+             */
+            clearClassroomStatus: function () {
+
+            }
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            self.$view = $(view);
+            self.$allview = $('.exam_skin_wood');
+            self.model = model;
+            self.data = JSON.parse(model.data);
+            self.tip = JSON.parse(model.tip);
+            self.fontSize = self.$view.parent().data('fontsize');
+
+            this.instanceId = utils.uuid();
+            console.log('-----------------------instanceId------------------------');
+            console.log(this.instanceId);
+            ClassroomUtils.log('[Subjectivity] instanceId ' + this.instanceId);
+            console.log(JSON.stringify(this.model));
+
+            this.__interface = {};
+            $.extend(this.__interface, {
+                startCommentDataParse: self._createDelegate(self._startCommentDataParse, [], true, self)
+            });
+
+            if (self.model.isTool == '1') {
+                self.isScreenshot = true;
+            }
+            if (self.viewModel.isStudent) {
+                MATERIAL_LIST_SHOW_NUM = STUDENT_MATERIAL_LIST_SHOW_NUM;
+                TIP_LIST_SHOW_NUM = STUDENT_TIP_LIST_SHOW_NUM;
+            }
+            subjectivityRender.renderModuleData();
+            if (!self.viewModel.isWeb) {
+                self.currentUserInfo = self.$dispatchEvent('getCurrentUserInfo', PresenterEventType.NATIVE_EVENT, {});
+                answerData.studentId = self.currentUserInfo.studentId;
+            }
+            subjectivityNative.createNativePresenter();
+
+            //生生互评数据提供给外部
+            this.answerData = answerData;
+        },
+        pageShow: function () {
+            this._bindEvent();
+            self._initI18N();
+            //subjectivityRender.renderModuleView(false);
+            subjectivityNative.syncTimer();
+            subjectivityNative.makeMarkDiv(false);
+        },
+        pageLeave: function () {
+
+        },
+        destroy: function () {
+            this._unbindEvent();
+
+            self.$dispatchEvent('destroyPresenter', PresenterEventType.NATIVE_EVENT, {
+                'instanceId': self.instanceId
+            });
+            NDMediaPlayer.destroy();
+            self.mediaplayer = null;
+            self.viewModel = null;
+            answerData = null;
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function () {
+
+        },
+        setState: function (state, options) {
+
+        },
+        getAssessmentModel: function () {
+            var qtiplayer = QtiPlayer.createPlayer({
+                refPath: icCreatePlayer.ref_path
+            });
+            return qtiplayer.getAssessmentModel();
+        },
+        /****以下开始为Presenter的私有方法*****/
+        // 题目数据
+        _getQuestionInfo: function () {
+            return {
+                id: self.model.id,
+                type_code: "subjectivity",
+                type_name: "主观题",
+                url: self.model.url,
+                item: "subjectivity",
+                dispatchOnly: true
+            };
+        },
+        _initI18N: function () {
+            var self = this;
+            var v = this.$view;
+
+            this.$translateDeferred.done(function () {
+                v.find('.tit').html(self.i18nModel['Subject_Question']);
+                v.find('.subjective_btn_desc').attr('data-closeTxt', self.isScreenshot === true ? self.i18nModel['See_Origin_Picture'] : self.i18nModel['Expend_All']);
+                v.find('.subjective_btn_desc').attr('data-openTxt', self.i18nModel['Fold']);
+                v.find('.lang_Enter_Answer_Down_Area').html(self.i18nModel['Enter_Answer_Down_Area']);
+                v.find('.lang_Hints').html(self.i18nModel['Hints']);
+                v.find('.lang_Save').html(self.i18nModel['Save']);
+                v.find('.lang_Return').html(self.i18nModel['Return']);
+                v.find('.lang_Re_Record').html(self.i18nModel['Re_Record']);
+                v.find('.lang_Begin_Record').html(self.i18nModel['Begin_Record']);
+                v.find('.lang_Written').html(self.i18nModel['Written']);
+                v.find('.lang_Take_Picture').html(self.i18nModel['Take_Picture']);
+                v.find('.lang_Record_Sound').html(self.i18nModel['Record_Sound']);
+                v.find('.lang_Delete_Select_Text').html(self.i18nModel['Delete_Select_Text']);
+            });
+
+        },
+        _bindEvent: function () {
+            //展开收起题干
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_desc'], subjectivityEvent.extendTitle);
+            //截图做题点击图片展开题干
+            self.$attachDelegateEvent('click', ['.subjective_desc img'], subjectivityEvent.extendTitle);
+            //开关闭提示
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_tip'], subjectivityEvent.openTip);
+            self.$attachDelegateEvent('mouseup', ['.subjective_tips_close'], subjectivityEvent.closeTip);
+            //输入答案框TextArea
+            self.$attachDelegateEvent('mouseup', ['.subjective_input_area textarea'], subjectivityEvent.openWholeTextarea);
+            self.$attachDelegateEvent('mousedown', ['.subjective_input_area textarea'], subjectivityEvent.mousedownTextarea);
+            self.$attachDelegateEvent('mouseup', ['.js_save_text'], subjectivityEvent.saveTextarea);
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_back'], subjectivityEvent.gobackTextarea);
+            //素材列表左右移动
+            self.$attachDelegateEvent('mouseup', ['.subjective_media_next'], subjectivityEvent.scrollRightMaterial);
+            self.$attachDelegateEvent('mouseup', ['.subjective_media_prev'], subjectivityEvent.scrollLeftMaterial);
+            //打开素材播放
+            self.$attachDelegateEvent('mouseup', ['.subjective_material_win'], subjectivityEvent.openMaterialWin);
+            //关闭素材播放窗口
+            self.$attachDelegateEvent('mouseup', ['.subjective_modal_media .subjective_modal_close'], subjectivityEvent.closeMaterialWin);
+            //删除素材
+            //self.$attachDelegateEvent('mouseup', ['.subjective_media_delete'], subjectivityEvent.deleteMaterial);
+            self.$attachDelegateEvent('mouseup', ['.subjective_media_delete'], subjectivityEvent.deleteMaterial);
+            //答案列表的删除
+            self.$attachDelegateEvent('mouseup', ['.subjective_upmedia_box .subjective_upmedia_delete'], subjectivityEvent.deleteMaterialOnList);
+            //从答案列表打开素材
+            self.$attachDelegateEvent('mouseup', ['.subjective_upmedia_main'], subjectivityEvent.openMaterialWinOnAnswer);
+            //从答案素材窗口打开素材
+            self.$attachDelegateEvent('mouseup', ['.subjective_answer_material_win'], subjectivityEvent.openMaterialWinOnAnswer);
+            //创建手写素材
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_write'], subjectivityEvent.createWrite);
+            //创建照片素材
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_img'], subjectivityEvent.createPhoto);
+            //创建录音
+            self.$attachDelegateEvent('mouseup', ['.subjective_btn_radio'], subjectivityEvent.createRecording);
+            //关闭录音弹窗
+            self.$attachDelegateEvent('mouseup', ['.subjective_modal_record .subjective_modal_close'], subjectivityEvent.closeRecordingWin);
+            //开始录音、停止录音、完成录音
+            self.$attachDelegateEvent('mouseup', ['.subjective_record_right'], subjectivityEvent.recording);
+            //重新录音
+            self.$attachDelegateEvent('mouseup', ['.subjective_record_left'], subjectivityEvent.repeatRecording);
+            //录音结束后开始试听
+            self.$attachDelegateEvent('mouseup', ['.subjective_CD_btn'], subjectivityEvent.playTempAudio);
+            //录音结束后结束试听
+            utils.bindOtherEvent(self.$view.find('.subjective_audio_src'), 'ended', subjectivityEvent.stopTempAudio);
+            //主页面滚动事件：记录滚动距离
+            self.$view.find('.com_layout_main').scroll(function () {
+                self.status.scrollTop = $(this).scrollTop();
+                self._commitStatusUpdate();
+            });
+
+            //Native回调
+            self.$addEventListener('callback_photo_data', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackPhotoData);
+            self.$addEventListener('callback_writer_data', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackWriterData);
+            self.$addEventListener('callback_audio_data', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackAudioData);
+            self.$addEventListener('callback_submit', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackSubmit);
+            self.$addEventListener('callback_del_answer', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackDelAnswer);
+            //答案输入框回调
+            self.$addEventListener('callback_text_input', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackTextInput);
+            //手写框返回
+            self.$addEventListener('callback_return_mainview', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackReturnMainView);
+            //清空手写轨迹
+            self.$addEventListener('callback_show_messagebox', PresenterEventType.NATIVE_EVENT, subjectivityEvent.callbackShowMessageBox);
+            self.$addEventListener('writeShowMessageBox', PresenterEventType.NATIVE_EVENT, subjectivityEvent.writeShowMessageBox);
+            //发送详细答案回调
+            self.$addEventListener('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT, subjectivityEvent.sendExtendAnswer)
+
+        },
+        _unbindEvent: function () {
+            this.$removeEventListener();
+            utils.unOtherEvent();
+        },
+        _startCommentDataParse: function (data) {
+            data.result = true;
+            data.id = ClassroomUtils.uuid();
+            var pageNum = 0;
+            for (var i = 0; i < answerData.simpleData.data.length; i++) {
+                var type = answerData.simpleData.data[i].data_type;
+                if (type === 'write' || type === 'raw') {
+                    pageNum++;
+                }
+            }
+            this.playerController.require({
+                presenterId: 'StudentComment',
+                name: 'StudentComment',
+                layout: {
+                    left: 0,
+                    top: 0,
+                    width: '100%',
+                    height: '100%'
+                },
+                properties: [
+                    { 'name': 'startTimestamp', 'type': 'int', 'value': data.startTimestamp },
+                    { 'name': 'targetUserId', 'type': 'string', 'value': data.targetUserId },
+                    { 'name': 'targetUserName', 'type': 'string', 'value': data.targetUserName },
+                    { 'name': 'isAnonymous', 'type': 'string', 'value': data.isAnonymous.toString() },
+                    { 'name': 'data', 'type': 'json', 'value': JSON.parse(data.data) },
+                    { 'name': 'id', 'type': 'string', 'value': data.id },
+                    { 'name': 'originalPageNum', 'type': 'int', 'value': pageNum }
+                ]
+            });
+        },
+        _submitData: function () {
+            self.getSubmitDataDeffer = $.Deferred();
+            utils.sendToPresenter('event_submit', {
+                'uuids': answerData.datas
+            });
+            return self.getSubmitDataDeffer.promise();
+        },
+        //提交答案
+        _sendAnswer: function (data, notSubmit) {
+            self.sendingAnswer = true;
+            var isComplete = true;
+
+            if (data !== '' && data !== null && data.datas.length > 0) {
+                answerData.simpleData = {
+                    data: [],
+                    isComplete: true
+                };
+
+                //拼装简要答案
+                for (var i = 0, len = data.datas.length; i < len; i++) {
+                    var item = {};
+                    switch (data.datas[i].type) {
+                        case 'write_stroke':
+                            item.type = 'write';
+                            item.data_type = 'write';
+                            item.value = data.datas[i].data;
+                            break;
+                        case 'text':
+                            item.type = 'string';
+                            item.data_type = 'raw';
+                            item.value = data.datas[i].data;
+                            break;
+                        case 'photo':
+                            item.type = 'image';
+                            item.data_type = 'file';
+                            item.value = data.datas[i].thumb;
+                            isComplete = false;
+                            break;
+                        case 'audio':
+                            item.type = 'audio';
+                            item.data_type = 'file';
+                            item.value = '';
+                            isComplete = false;
+                            break;
+                    }
+
+                    answerData.simpleData.data.push(item);
+                }
+            }
+
+            answerData.simpleData.isComplete = isComplete;
+            console.log(answerData.simpleData);
+            ClassroomUtils.log('[Subjectivity] sendAnswer simpleData ' + JSON.stringify(answerData.simpleData));
+
+            self.getSubmitDataDeffer.resolve(answerData.simpleData);
+        },
+        /**
+         * 状态变更通知
+         */
+        _commitStatusUpdate: function () {
+            if (self.viewModel.isTeacherPc) {
+                this.logger.debug('发送css_classroom_status_changed保存课堂状态事件');
+                this.playerController.startFlow('css_classroom_status_changed', {
+                    presenterCode: this.metaInfo.name // 当前模块代码,也就是metaInfo.name
+                });
+            }
+        }
+    });
+
+
+    /*
+     * --------------------------------------------渲染方法------------------------------------------------------
+     */
+    var subjectivityRender = {
+        //Module数据加载
+        renderModuleData: function () {
+            //题干
+            var titleDom = self.$view.find('.subjective_desc');
+            titleDom.html(self.data.text);
+            //计算五行的高度
+            var fiveLineHeight = 14 * self.fontSize;
+            if (self.isScreenshot) {
+                var img = titleDom.find('img');
+                img.css({
+                    'max-height': fiveLineHeight,
+                    'max-width': '100%'
+                });
+            }
+            if (titleDom[0].scrollHeight <= fiveLineHeight) {
+                if (!self.isScreenshot) {
+                    self.$view.find('.subjective_btn_desc').hide();
+                }
+            }
+
+            //素材
+            if (self.data.asset.length == 0) {
+                self.$view.find('.com_layout_main').find('.subjective_media_box').hide();
+            }
+            if (self.viewModel.isApp) {
+                if (!self.viewModel.isStudent) {
+                    self.$view.find('.subjective_upmedia_box').hide();
+                } else {
+                    self.$view.find('.subjective_upmedia_box').show();
+                }
+            }
+
+            //初始化答案输入框
+            if (self.$view.find('.subjective_input_area textarea').val() === '') {
+                self.$view.find('.subjective_input_area textarea').html(self.i18nModel["Enter_Text_Answers"]);
+            }
+            var noTip = false;
+            if (self.tip.contentData !== undefined && self.tip.contentData.text === '' && self.tip.contentData.asset.length === 0) {
+                noTip = true;
+            }
+            //提示
+            if (self.tip.content === '' || noTip === true) {
+                self.$view.find('.subjective_btn_tip').hide();
+            } else {
+                subjectivityRender.renderTipView();
+            }
+            //显示公式
+            if (typeof MathJax !== 'undefined') {
+                MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+            }
+            //题干素材初始化UUID
+            for (var i = 0, len = self.data.asset.length; i < len; i++) {
+                self.data.asset[i].index = i;
+            }
+            subjectivityRender.reloadMaterialPlayList(self.$view.find('.com_layout_main').find('.fct_res_list_box ul'), enum_materialType.material, self.data.asset);
+        },
+
+        //Module视图渲染
+        renderModuleView: function (isPreview) {
+            //Step1. 时间控件: 备课，学生端显示时间按钮, PC白板端、101教育PPT端的时间控件合并到提交按钮中
+            //Step2. 提交按钮事件绑定
+
+            //Step3. 界面左右的收缩，不遮挡工具栏
+            //if (self.viewModel.isTeacherPc || self.viewModel.isPPTshell) { //PC白板端、101教育PPT端
+            //    self.$allview.find('.com_layout_header').css('paddingLeft', '70px').css('paddingRight', '70px');
+            //    self.$allview.find('.com_layout_container').css('paddingLeft', '70px').css('paddingRight', '70px');
+            //}
+        },
+
+        // 渲染提示面板
+        renderTipView: function () {
+            var textDom = self.$view.find('.subjective_tips_bar_bd .subjective_tips_text_content');
+
+            if (self.tip.contentData === undefined) {
+                textDom.html(self.tip.content);
+                self.$view.find('.subjective_tips_wrap').find('.subjective_media_box').hide();
+            } else {
+                textDom.html(self.tip.contentData.text);
+
+                var assets = self.tip.contentData.asset;
+                var assetsDom = self.$view.find('.subjective_tips_wrap').find('.fct_res_list_box ul');
+
+                if (assets.length > 0) {
+                    for (var i = 0; i < assets.length; i++) {
+                        assets[i].index = i;
+                    }
+                    this.reloadMaterialPlayList(assetsDom, enum_materialType.tip, assets);
+                } else {
+                    self.$view.find('.subjective_tips_wrap .subjective_media_box').hide();
+                }
+            }
+        },
+        // 重新加载弹窗的媒体列表
+        reloadMaterialPlayList: function (listBoxDom, type, list) {
+            self.currentMediaType = type;
+            self.currentMedialist = list;
+            var assetNum = list.length;
+            listBoxDom.empty();
+            var maxNum = self.isOpenMaterialWin == true ? WIN_LIST_SHOW_NUM : (type === enum_materialType.material ? MATERIAL_LIST_SHOW_NUM : TIP_LIST_SHOW_NUM);
+            for (var i = 0; i < assetNum; i++) {
+                var item = list[i];
+
+                switch (item.type) {
+                    case 'video':
+                        VideoItem(listBoxDom, type, item);
+                        break;
+                    case 'image':
+                    case 'photo':
+                        ImageItem(listBoxDom, type, item);
+                        break;
+                    case 'audio':
+                        AudioItem(listBoxDom, type, item);
+                        break;
+                    case 'write_stroke':
+                        WriteItem(listBoxDom, type, item);
+                        break;
+                }
+            }
+
+            if (assetNum <= maxNum) {
+                listBoxDom.parent().parent().find('.subjective_media_next').addClass('click_disabled');
+            }
+            self.currentBoxListDOM = listBoxDom;
+        },
+        //加载答案列表
+        reloadAnswerList: function (list) {
+            var listBoxDom = self.$view.find('.subjective_upmedia_box ul');
+            listBoxDom.empty();
+            var assetNum = list.length;
+            for (var i = 0; i < assetNum; i++) {
+                var item = list[i];
+                switch (item.type) {
+                    case 'photo':
+                        new ImageItem(listBoxDom, enum_materialType.answer, item);
+                        break;
+                    case 'audio':
+                        new AudioItem(listBoxDom, enum_materialType.answer, item);
+                        break;
+                    case 'write_stroke':
+                        new WriteItem(listBoxDom, enum_materialType.answer, item);
+                        break;
+                }
+            }
+            self.$view.find('.subjective_upmedia_box .subjective_upmedia_delete').show();
+        },
+        // 播放素材(视频、音频、图片)
+        playingMaterial: function (type, url, uuid) {
+            var container = self.$view.find('.subjective_modal_media_view');
+            container.empty();
+            if (!url) {
+                console.log('cannot find url value');
+                return;
+            }
+            console.log('prepare play, url=' + url);
+            var divDom = document.createElement('div');
+            $(divDom).attr("data-uuid", uuid);
+            container.append(divDom);
+            var dom = null;
+            var currentType = enum_materialType[container.parent().find('.subjective_modal_media_list .fct_slide_a').filter('.on').attr("data-type")];
+            var currentIndex = container.parent().find('.subjective_modal_media_list .fct_slide_a').filter('.on').attr("data-index");
+            if (type === 'video') {
+                divDom.className = "subjective_video_item";
+                dom = document.createElement('video');
+                dom.setAttribute('preload', 'auto');
+                dom.setAttribute('src', url);
+                $(divDom).append(dom);
+                if (self.currentMediaType === enum_materialType.answer) {
+                    var deleBtn = $.parseHTML('<a href="javascript:;" class="subjective_media_delete"></a>');
+                    $(divDom).append(deleBtn);
+                }
+
+                var option = {
+                    autoAdaptSize: true,
+                    returnInstances: true,
+                    video: {
+                        width: 37.20833 * self.fontSize,
+                        height: 24.375 * self.fontSize,
+                        supportFullscreen: false,
+                        showFullscreenBtn: true
+                    },
+                    containerId: 'media-view'
+                };
+
+                //PC端和PPTShell不支持全屏
+                if (self.viewModel.isTeacherPc || self.viewModel.isPPTshell) {
+                    option.video.showFullscreenBtn = false;
+                }
+
+                self.mediaplayer = NDMediaPlayer.render(self.$view.find('.subjective_video_item'), option);
+                var key = type + "-" + currentType + "-" + currentIndex + "-0";
+                if (self.currentMediaUuid !== 'undefined') {
+                    key = self.currentMediaUuid;
+                }
+                if (self.status.media) {
+                    if (self.status.media.hasOwnProperty(key)) {
+                        var _media = self.status.media[key];
+                        var _currentTime = _media.currentTime - 1 < 0 ? 0 : _media.currentTime - 1;
+                        NDMediaPlayer.mediaSkip(_media.mediaType, _media.index, _currentTime);
+                    }
+                }
+                NDMediaPlayer.mediaOnTimeupdate(function (o) {
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = o.currentTime;
+                    self._commitStatusUpdate();
+                });
+                NDMediaPlayer.mediaOnEnded(function (o) {
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = 0;
+                    self._commitStatusUpdate();
+                });
+                // 播放
+                for (var mkey in self.mediaplayer) {
+                    self.mediaplayer[mkey].mediaPlay();
+                }
+            } else if (type === 'audio') {
+                divDom.className = "subjective_audio_item";
+                dom = document.createElement('audio');
+                dom.setAttribute('preload', 'auto');
+                dom.setAttribute('src', url);
+                $(divDom).append(dom);
+                if (self.currentMediaType === enum_materialType.answer) {
+                    var deleBtn = $.parseHTML('<a href="javascript:;" class="subjective_media_delete"></a>');
+                    $(divDom).append(deleBtn);
+                }
+                self.mediaplayer = NDMediaPlayer.render(self.$view.find('.subjective_audio_item'), {
+                    autoAdaptSize: true,
+                    returnInstances: true,
+                    audio: {
+                        width: 37.20833 * self.fontSize,
+                        height: 24.375 * self.fontSize
+                    },
+                    containerId: 'media-view'
+                });
+                var key = type + "-" + currentType + "-" + currentIndex + "-0";
+                if (self.currentMediaUuid !== 'undefined') {
+                    key = self.currentMediaUuid;
+                }
+                if (self.status.media) {
+                    if (self.status.media.hasOwnProperty(key)) {
+                        var _media = self.status.media[key];
+                        var _currentTime = _media.currentTime - 1 < 0 ? 0 : _media.currentTime - 1;
+                        NDMediaPlayer.mediaSkip(_media.mediaType, _media.index, _currentTime);
+                    }
+                }
+                NDMediaPlayer.mediaOnTimeupdate(function (o) {
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = o.currentTime;
+                    self._commitStatusUpdate();
+                });
+                NDMediaPlayer.mediaOnEnded(function (o) {
+                    self.status.media[key] = {};
+                    self.status.media[key]['mediaType'] = o.mediaType;
+                    self.status.media[key]['index'] = o.index;
+                    self.status.media[key]['currentTime'] = 0;
+                    self._commitStatusUpdate();
+                });
+                // 播放
+                for (var mkey in self.mediaplayer) {
+                    self.mediaplayer[mkey].mediaPlay();
+                }
+            } else {
+                divDom.className = "subjective_img_item";
+
+                var img = document.createElement('img');
+                $(img).attr('src', url);
+                $(divDom).append(img);
+                if (self.currentMediaType === enum_materialType.answer) {
+                    var deleBtn = $.parseHTML('<a href="javascript:;" class="subjective_media_delete"></a>');
+                    $(divDom).append(deleBtn);
+                }
+            }
+
+        },
+        closeMaterialWin: function () {
+            // 停止播放
+            for (var key in self.mediaplayer) {
+                self.mediaplayer[key].mediaPause();
+            }
+            QtiPlayer.resetMedia();
+            self.$view.find('.subjective_mask').addClass("hide_dom");
+            self.$view.find('.subjective_modal_media').addClass('hide_dom');
+            self.isOpenMaterialWin = false;
+        }
+    };
+
+    /*
+     * --------------------------------------------涉及Native相关方法------------------------------------------------------
+     */
+    var subjectivityNative = {
+        //显示手写板/拍照/录音的Presenter
+        createNativePresenter: function () {
+            if (self.viewModel.isApp) {
+                if (self.viewModel.isStudent == true) {
+                    console.log('-----------------create subjectivity presetner-------------------');
+                    console.log('instanceId: ' + self.instanceId);
+                    ClassroomUtils.log('[Subjectivity] create subjectivity presetner ' + self.instanceId);
+
+                    self.$dispatchEvent('createPresenter', PresenterEventType.NATIVE_EVENT, {
+                        'presenterId': 'subject',
+                        'instanceId': self.instanceId,
+                        'initData': JSON.stringify({
+                            "studentId": self.currentUserInfo.studentId,
+                            "client": player.getPlayerServices().getRuntime()
+                        })
+                    });
+                    //utils.callNative('createPresenter', {
+                    //    'presenterId': 'subject',
+                    //    'instanceId': self.instanceId,
+                    //    'initData': JSON.stringify({
+                    //        "studentId": self.currentUserInfo.studentId,
+                    //        "client": player.getPlayerServices().getRuntime()
+                    //    })
+                    //});
+                }
+            }
+        },
+        //拍照的主界面遮罩
+        makeMarkDiv: function (isMake) {
+            if (isMake) {
+                self.$view.find('.mask-dialog').show();
+                self.$view.find('.dialog').hide();
+            } else {
+                if (self.isEndAnswer === false) {
+                    self.$view.find('.mask-dialog').hide();
+                }
+                self.$view.find('.dialog').show();
+            }
+        },
+        //同步时间
+        syncTimer: function () {
+            if (self.viewModel.isStudent) {
+                self.$dispatchEvent('TaskInfo', PresenterEventType.IC_PLAYER_EVENT, { 'item': 'exam', 'type': 'query' });
+            }
+        },
+        //确认是否删除
+        confirmDeleteMaterial: function () {
+            if (!self.viewModel.isApp) {
+                self.$view.find('.subjective_media_tips').removeClass("hide_dom");
+            } else {
+                ClassroomUtils.showMessageBox([{
+                    html: self.i18nModel["Cancel"],
+                    target: 'h5'
+                }, {
+                    html: self.i18nModel['Confirm'],
+                    style: 'primary',
+                    target: 'h5',
+                    callback: {
+                        eventName: 'callback_del_answer',
+                        eventData: { value: 1 }
+                    }
+                }], self.i18nModel['Delete_Select_Text']);
+            }
+        },
+        //判断是否已超过该类型的答案素材数量
+        hasMaterialType: function (type) {
+            var num = 0;
+            var limit = {
+                'write_stroke': 1,
+                'photo': 5,
+                'audio': 1
+            };
+
+            for (var i = 0, len = answerData.datas.length; i < len; i++) {
+                if (answerData.datas[i].type === type) {
+                    num++;
+                }
+            }
+
+            return (num >= limit[type] ? true : false);
+        },
+        //显示手写板
+        showHandWrite: function (uuid) {
+            uuid = uuid || '';
+            console.log('--------------------show handwriter----------------------');
+            console.log('instanceId: ' + self.instanceId + ' uuid: ' + uuid);
+            utils.sendToPresenter('event_writer_toggle', {
+                'toggle': 1,
+                'index': uuid
+            });
+        },
+        //显示拍照
+        showCamera: function () {
+            console.log('----------------------show Camera------------------------');
+            console.log('instanceId: ' + self.instanceId);
+            this.makeMarkDiv(true);
+            utils.sendToPresenter('event_photo_toggle', {
+                'toggle': 1
+            });
+        },
+        //显示录音
+        showRecording: function () {
+            self.$view.find('.subjective_modal_record_bd').attr('data-state', '');
+            self.$view.find('.subjective_mask').removeClass('hide_dom');
+            self.$view.find('.subjective_modal_record').removeClass('hide_dom');
+            self.$view.find('.subjective_record_left').hide();
+        },
+        //停止录音
+        stopRecord: function () {
+            this.callStopRecording(self.viewModel.recordSecond);
+
+            self.$view.find('.subjective_CD_btn').attr('data-state', 'play');
+            self.$view.find('.subjective_record_left').show();
+            self.$view.find('.subjective_record_right').attr('data-state', 'complete');
+            self.$view.find('.subjective_record_right .txt').html(self.i18nModel['Finish']);
+            self.$view.find('.subjective_modal_record_bd').attr('data-state', 'default');
+
+            clearInterval(self.viewModel.timer);
+            self.viewModel.timer = null;
+            self.viewModel.recordSecond = 0;
+        },
+        //通知Native开始录音
+        callStartRecording: function () {
+            console.log('--------------------start Recording-----------------------');
+            console.log('instanceId: ' + self.instanceId);
+            utils.sendToPresenter('event_audio_start', {
+                'toggle': 1
+            });
+        },
+        //通知Native停止录音
+        callStopRecording: function (seconds) {
+            console.log('--------------------stop Recording-----------------------');
+            console.log('instanceId: ' + self.instanceId);
+            utils.sendToPresenter('event_audio_stop', seconds);
+        },
+        //改变提交按钮状态
+        disableSubmitBtn: function () {
+            var value = self.$view.find('.subjective_input_area textarea').html();
+
+            console.log('-----------------change SubmitBtn State-------------------');
+            console.log('data length ' + answerData.datas.length + ' and ' + value);
+            ClassroomUtils.log('[Subjectivity] change SubmitBtn State: data length ' + answerData.datas.length + ' and ' + value);
+
+            if (answerData.datas.length === 0 && value === self.i18nModel['Enter_Text_Answers']) {
+                self.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: false,
+                    linkQuestionId: self.model.id
+                });
+            } else {
+                self.$dispatchEvent('questionStateChange', PresenterEventType.IC_PLAYER_EVENT, {
+                    canSubmit: true,
+                    linkQuestionId: self.model.id
+                });
+            }
+        },
+        //更新录音时长
+        updateRecordingTime: function () {
+            self.viewModel.recordSecond += 1;
+            var span = self.$view.find('.subjective_time').children(':first');
+            span.html(utils.parseTimer(self.viewModel.recordSecond));
+            if (self.viewModel.recordSecond == RECORD_LIMIT - 5) {
+                span.css('color', 'red');
+            }
+
+            //限制时长
+            if (self.viewModel.recordSecond >= RECORD_LIMIT) {
+                subjectivityNative.stopRecord();
+                span.html('05:00');
+            }
+        },
+        // 重置录音界面
+        resetRecordingView: function () {
+            self.$view.find('.subjective_modal_record_bd').attr('data-state', 'default');
+            self.$view.find('.subjective_CD_btn').attr('data-state', 'default');
+            self.$view.find('.subjective_record_left').hide();
+            self.$view.find('.subjective_record_right').attr('data-state', 'start');
+            self.$view.find('.subjective_record_right .txt').html(self.i18nModel['Begin_Record']);
+            self.$view.find('.subjective_time').children(':first').css('color', '#000');
+            self.viewModel.recordSecond = 0;
+            var span = self.$view.find('.subjective_time span');
+            span.html('00:00');
+
+            var audio = self.$view.find('.subjective_audio_src');
+            audio[0].pause();
+        }
+
+    }
+
+    /*
+     * --------------------------------------------界面方法widget------------------------------------------------------
+     */
+    var VideoItem = function (dom, materialListType, data) {
+        var video = document.createElement('li');
+        var html = [];
+        if (materialListType == enum_materialType.answer && dom.parent().hasClass('subjective_upmedia_box')) {
+            $(video).addClass('subjective_upmedia_cell');
+            $(video).addClass('insert_video');
+            html.push('<div class="subjective_upmedia_main" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="icon"></span>');
+            html.push('<span class="play"></span>');
+            html.push('</div>');
+            html.push('<a href="javascript:;" class="subjective_upmedia_delete"></a>')
+        } else {
+            var openAnswerMaterialClass = 'subjective_material_win';
+            if (materialListType == enum_materialType.answer) {
+                openAnswerMaterialClass = 'subjective_answer_material_win';
+            }
+            html.push('<a href="###" class="fct_slide_a insert_video ' + openAnswerMaterialClass + '" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="icon"></span>');
+            html.push('<span class="play"></span>');
+            html.push('</a>');
+        }
+        video.innerHTML = html.join('');
+        $(dom).append(video);
+        return video;
+    };
+
+    var AudioItem = function (dom, materialListType, data) {
+        var audio = document.createElement('li');
+        var html = [];
+        if (materialListType == enum_materialType.answer && dom.parent().hasClass('subjective_upmedia_box')) {
+            $(audio).addClass('subjective_upmedia_cell');
+            $(audio).addClass('insert_audio');
+            html.push('<div class="subjective_upmedia_main" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="icon"></span>');
+            html.push('<span class="play"></span>');
+            html.push('</div>');
+            html.push('<a href="javascript:;" class="subjective_upmedia_delete"></a>')
+        } else {
+            var openAnswerMaterialClass = 'subjective_material_win';
+            if (materialListType == enum_materialType.answer) {
+                openAnswerMaterialClass = 'subjective_answer_material_win';
+            }
+            html.push('<a href="###" class="fct_slide_a insert_audio ' + openAnswerMaterialClass + '" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="icon"></span>');
+            html.push('<span class="play"></span>');
+            html.push('</a>');
+        }
+        audio.innerHTML = html.join('');
+        $(dom).append(audio);
+        return audio;
+    };
+
+    var ImageItem = function (dom, materialListType, data, icon) {
+        icon = icon || 'insert_picture';
+        var image = document.createElement('li');
+        var html = [];
+        if (materialListType == enum_materialType.answer && dom.parent().hasClass('subjective_upmedia_box')) {
+            $(image).addClass('subjective_upmedia_cell');
+            $(image).addClass(icon);
+            html.push('<div class="subjective_upmedia_main" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="item_vertical_mc"><img src="' + data.src + '" alt=""></span>');
+            html.push('<span class="icon"></span>');
+            html.push('</div>');
+            html.push('<a href="javascript:;" class="subjective_upmedia_delete"></a>')
+        } else {
+            var openAnswerMaterialClass = 'subjective_material_win';
+            if (materialListType == enum_materialType.answer) {
+                openAnswerMaterialClass = 'subjective_answer_material_win';
+            }
+            html.push('<a href="###" class="fct_slide_a ' + openAnswerMaterialClass + ' ' + icon + '" data-uuid="' + data.uuid + '" data-type="' + materialListType + '" data-index="' + data.index + '">');
+            html.push('<span class="item_vertical_mc"><img src="' + data.src + '" alt=""></span>');
+            html.push('<span class="icon"></span>');
+            html.push('</a>');
+        }
+        image.innerHTML = html.join('');
+        $(dom).append(image);
+        return image;
+    };
+
+    var WriteItem = function (dom, materialListType, data) {
+        return ImageItem(dom, materialListType, data, 'insert_write');
+    };
+
+
+    /*
+     * ----------------------------------------------事件方法------------------------------------------------------
+     */
+    var subjectivityEvent = {
+        //展开收起题干
+        extendTitle: function (selectors, e) {
+            e.preventDefault();
+            var tar = self.$view.find('.subjective_desc_box');
+            subjectivityEvent._extendTitle(!tar.hasClass('open'));
+            self.status.expand = tar.hasClass('open');
+            self._commitStatusUpdate();
+        },
+        _extendTitle: function (expand) {
+            var tar = self.$view.find('.subjective_desc_box');
+            if (tar.hasClass('open') === expand) {
+                return;
+            }
+            tar.toggleClass("open");
+            var fiveLineHeight = 14 * self.fontSize;
+            if (self.isScreenshot) {
+                if (tar.hasClass('open') === true) {
+                    tar.find('img').css({
+                        'height': 'auto',
+                        'max-width': '100%',
+                        'max-height': ''
+                    });
+                } else {
+                    tar.find('img').css({
+                        'max-height': fiveLineHeight,
+                        'max-width': '100%',
+                        'height': ''
+                    });
+                }
+            }
+        },
+        //打开提示
+        openTip: function (selectors, e) {
+            e.preventDefault();
+            self.$view.find('.subjective_tips_bar').removeClass('tips_hide');
+        },
+        //关闭提示
+        closeTip: function (selectors, e) {
+            e.preventDefault();
+            self.$view.find('.subjective_tips_bar').addClass('tips_hide');
+        },
+        //打开完整的TextArea
+        openWholeTextarea: function (selectors, e) {
+            e.preventDefault();
+            if (self.isTextareaScroll || self.isTeacherLock) {
+                return;
+            }
+            var value = e.target.value.replace(/<br>/gi, '\n');
+            if (value === self.i18nModel['Enter_Text_Answers']) {
+                value = '';
+            }
+            if (!self.viewModel.isApp || self.viewModel.isTeacherPc || self.viewModel.isPPTshell) {
+                self.$view.find('.com_layout_main_exam').first().addClass('hide_dom');
+                self.$view.find('.subjective_input_hd').parent().removeClass('hide_dom');
+                self.$view.find('.subjective_inputarea textarea').val(value);
+                self.$view.find('.subjective_inputarea textarea').focus();
+            } else {
+                if (!self.lockAnswerBtn) {
+                    self.lockAnswerBtn = true;
+                    setTimeout(function () {
+                        self.lockAnswerBtn = false;
+                    }, 500);
+                    self.$view.find('.layout-all-mask').show();
+                    utils.sendToPresenter('event_text_panel_toggle', {
+                        'text': value
+                    });
+                }
+            }
+        },
+        mousedownTextarea: function (selectors, e) {
+            var tar = $(e.target);
+            var clickX = e.clientX || e.originalEvent.touches[0].clientX;
+            var offsetX = clickX - tar.offset().left;
+            var textWidth = tar.outerWidth();
+            if ($(e.target)[0].scrollHeight > 6.875 * self.fontSize && (textWidth - offsetX) / textWidth <= (1 / 80)) {//滚动条的宽度占比
+                self.isTextareaScroll = true;
+            } else {
+                self.isTextareaScroll = false;
+            }
+        },
+        //返回TextArea
+        gobackTextarea: function (selectors, e) {
+            e.preventDefault();
+            self.$view.find('.com_layout_main_exam').first().removeClass('hide_dom');
+            self.$view.find('.subjective_input_hd').parent().addClass('hide_dom');
+        },
+        //保存TextArea
+        saveTextarea: function (selectors, e) {
+            e.preventDefault();
+            //var value = self.$view.find('.subjective_inputarea textarea').val().replace(/\n/gi, '<br/>');
+            var value = self.$view.find('.subjective_inputarea textarea').val();
+            if (value === '') {
+                value = self.i18nModel['Enter_Text_Answers'];
+            }
+            self.$view.find('.subjective_input_area textarea').html(value);
+            self.$view.find('.com_layout_main_exam').first().removeClass('hide_dom');
+            self.$view.find('.subjective_input_hd').parent().addClass('hide_dom');
+            self.status.text = value;
+            self._commitStatusUpdate();
+        },
+        //题干素材列表左右移动
+        scrollRightMaterial: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            if (tar.hasClass('click_disabled')) {
+                return;
+            }
+            var maxNum = self.isOpenMaterialWin == true ? WIN_LIST_SHOW_NUM : (tar.parent().hasClass('subjective_material_media') ? MATERIAL_LIST_SHOW_NUM : TIP_LIST_SHOW_NUM);
+            var list = tar.parent().find("ul");
+            var moveNum = 0;
+            var rest = list.children().length - (-Number(list.attr("data-count"))) / 10 - maxNum;
+            if (rest <= maxNum) {
+                moveNum = rest;
+            } else {
+                moveNum = maxNum;
+            }
+            list.attr("data-count", Number(list.attr("data-count")) - 10 * moveNum);
+            list.css({ transform: "translateX(" + list.attr("data-count") + "em)" });
+            if (rest - moveNum <= 0) {
+                tar.addClass('click_disabled');
+            }
+            tar.parent().find('.subjective_media_prev').removeClass('click_disabled');
+        },
+        scrollLeftMaterial: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            if (tar.hasClass('click_disabled')) {
+                return;
+            }
+            var maxNum = self.isOpenMaterialWin == true ? WIN_LIST_SHOW_NUM : (tar.parent().hasClass('subjective_material_media') ? MATERIAL_LIST_SHOW_NUM : TIP_LIST_SHOW_NUM);
+            var list = tar.parent().find("ul");
+            var moveNum = 0;
+            var hasMovedNum = -Number(list.attr("data-count")) / 10;
+            if (hasMovedNum >= maxNum) {
+                moveNum = maxNum;
+            } else {
+                moveNum = hasMovedNum;
+            }
+            list.attr("data-count", Number(list.attr("data-count")) + 10 * moveNum);
+            list.css({ transform: "translateX(" + list.attr("data-count") + "em)" });
+            if (hasMovedNum - moveNum <= 0) {
+                tar.addClass('click_disabled');
+            }
+            tar.parent().find('.subjective_media_next').removeClass('click_disabled');
+        },
+        //点击素材选项，弹出媒体窗口
+        openMaterialWin: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            while (!tar.hasClass('fct_slide_a')) {
+                tar = tar.parent();
+            }
+            var isScrollToTop = false;
+            var type = parseInt(tar.attr('data-type'));
+            if (self.isOpenMaterialWin === false) {
+                isScrollToTop = true;
+            }
+            self.isOpenMaterialWin = true;
+            self.currentMediaUuid = tar.attr('data-uuid');
+            if (type === enum_materialType.tip) {
+                self.currentMedialist = self.tip.contentData.asset;
+            } else if (type === enum_materialType.material) {
+                self.currentMedialist = self.data.asset;
+            }
+            self.$view.find('.subjective_mask').removeClass('hide_dom');
+            self.$view.find('.subjective_modal_media').removeClass('hide_dom');
+
+            var maskUl = self.$view.find('.subjective_modal_media_list .fct_res_list_box ul');
+            var dataIndex = Number(tar.attr('data-index'));
+            if (tar.parents('.subjective_modal_media_list').length <= 0) { //判断是否是弹窗,如果非弹窗
+                if (dataIndex - 2 > 0 && self.currentMedialist.length > WIN_LIST_SHOW_NUM) { //要偏移
+                    if (self.currentMedialist.length - dataIndex <= 2) {//如果选择倒一、倒二个
+                        maskUl.attr("data-count", -(self.currentMedialist.length - 5) * 10);
+                    } else {
+                        maskUl.attr("data-count", -(dataIndex - 2) * 10);
+                    }
+                    maskUl.css({ transform: "translateX(" + maskUl.attr("data-count") + "em)" });
+                    if (maskUl.attr("data-count") >= 0) {
+                        self.$view.find('.subjective_modal_media_list .subjective_media_prev').addClass('click_disabled');
+                    } else {
+                        self.$view.find('.subjective_modal_media_list .subjective_media_prev').removeClass('click_disabled');
+                    }
+                    if (dataIndex >= self.currentMedialist.length - 3) {
+                        self.$view.find('.subjective_modal_media_list .subjective_media_next').addClass('click_disabled');
+                    } else {
+                        self.$view.find('.subjective_modal_media_list .subjective_media_next').removeClass('click_disabled');
+                    }
+                } else {
+                    maskUl.attr("data-count", "0");
+                    maskUl.css({ transform: "translateX(0em)" });
+                    self.$view.find('.subjective_modal_media_list .subjective_media_prev').addClass('click_disabled');
+                    if (self.currentMedialist.length > WIN_LIST_SHOW_NUM) {
+                        self.$view.find('.subjective_modal_media_list .subjective_media_next').removeClass('click_disabled');
+                    }
+                }
+
+                subjectivityRender.reloadMaterialPlayList(maskUl, type, self.currentMedialist);
+            }
+            maskUl.find('.fct_slide_a').removeClass('on');
+            maskUl.find('.fct_slide_a:eq(' + dataIndex + ')').addClass('on');
+            //
+            var index = tar.attr('data-index');
+            var item = self.currentMedialist[index];
+            subjectivityRender.playingMaterial(item.type, item.src, self.currentMediaUuid);
+        },
+        //点击答案素材选项，弹出媒体窗口
+        openMaterialWinOnAnswer: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            while (!tar.hasClass('subjective_upmedia_main') && !tar.hasClass('fct_slide_a')) {
+                tar = tar.parent();
+            }
+            var id = self.currentMediaUuid;
+            self.currentMediaUuid = tar.attr('data-uuid');
+            if (self.currentMediaUuid === undefined) {
+                self.currentMediaUuid = tar.find('[data-uuid]').attr('data-uuid');
+            }
+            self.currentMedialist = answerData.datas;
+            // 停止播放
+            for (var key in self.mediaplayer) {
+                self.mediaplayer[key].mediaPause();
+            }
+
+            if (answerData.datasMap[self.currentMediaUuid].type === 'write_stroke') {
+                self.currentWriteUuid = self.currentMediaUuid;
+                //弹出手写板
+                self.currentMediaType = Number(tar.filter('[data-uuid]').attr('data-type'));
+                subjectivityEvent.editWrite(e, self.currentMediaUuid, self.currentMediaType);
+                if (self.isOpenMaterialWin === true) {
+                    //弹窗模式没有删除手写的操作，如果记录currentMediaUuid，会造成想删除其他答案却删除了手写
+                    self.currentMediaUuid = ((id === undefined || answerData.datasMap[id] === undefined) ? self.currentMediaUuid : id);
+                }
+            } else {
+                self.$view.find('.subjective_mask').removeClass('hide_dom');
+                self.$view.find('.subjective_modal_media').removeClass('hide_dom');
+                self.isOpenMaterialWin = true;
+                var maskUl = self.$view.find('.subjective_modal_media_list .fct_res_list_box ul');
+                var dataIndex = 0;
+                for (var i = 0; i < self.currentMedialist.length; i++) {
+                    if (self.currentMedialist[i].uuid == tar.attr('data-uuid')) {
+                        dataIndex = i;
+                    }
+                }
+                if (tar.parents('.subjective_modal_media_list').length <= 0) { //判断是否是弹窗,如果非弹窗
+                    if (dataIndex - 2 > 0 && self.currentMedialist.length > WIN_LIST_SHOW_NUM) { //要偏移
+                        if (self.currentMedialist.length - dataIndex <= 2) {//如果选择倒一、倒二个
+                            maskUl.attr("data-count", -(self.currentMedialist.length - 5) * 10);
+                        } else {
+                            maskUl.attr("data-count", -(dataIndex - 2) * 10);
+                        }
+                        maskUl.css({ transform: "translateX(" + maskUl.attr("data-count") + "em)" });
+                        if (maskUl.attr("data-count") >= 0) {
+                            self.$view.find('.subjective_modal_media_list .subjective_media_prev').addClass('click_disabled');
+                        } else {
+                            self.$view.find('.subjective_modal_media_list .subjective_media_prev').removeClass('click_disabled');
+                        }
+                        if (dataIndex >= self.currentMedialist.length - 3) {
+                            self.$view.find('.subjective_modal_media_list .subjective_media_next').addClass('click_disabled');
+                        } else {
+                            self.$view.find('.subjective_modal_media_list .subjective_media_next').removeClass('click_disabled');
+                        }
+                    } else {
+                        maskUl.attr("data-count", "0");
+                        maskUl.css({ transform: "translateX(0em)" });
+                        self.$view.find('.subjective_modal_media_list .subjective_media_prev').addClass('click_disabled');
+                        if (self.currentMedialist.length > WIN_LIST_SHOW_NUM) {
+                            self.$view.find('.subjective_modal_media_list .subjective_media_next').removeClass('click_disabled');
+                        }
+                    }
+                    var answerMediaList = [];
+                    $.extend(true, answerMediaList, self.currentMedialist);
+                    for (var i = 0; i < answerMediaList.length; i++) {
+                        answerMediaList[i].index = i;
+                    }
+                    subjectivityRender.reloadMaterialPlayList(maskUl, enum_materialType.answer, answerMediaList);
+                }
+                maskUl.find('.fct_slide_a').removeClass('on');
+                maskUl.find('.fct_slide_a:eq(' + dataIndex + ')').addClass('on');
+
+                var item = answerData.datasMap[self.currentMediaUuid];
+                subjectivityRender.playingMaterial(item.type, item.src, self.currentMediaUuid);
+            }
+        },
+
+        //关闭媒体弹窗
+        closeMaterialWin: function (selectors, e) {
+            e.preventDefault();
+            self.currentWriteUuid = undefined;
+            subjectivityRender.closeMaterialWin();
+        },
+        //删除答案素材
+        deleteMaterial: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            self.currentMediaUuid = tar.parent().attr('data-uuid');
+            self.currentMediaType = enum_materialType.answer;
+            self.currentBoxListDOM = self.$view.find('.subjective_modal_media_list .fct_res_list_box ul');
+            subjectivityNative.confirmDeleteMaterial();
+        },
+        //素材列表上删除答案素材
+        deleteMaterialOnList: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            var items = tar.parent().find('[data-type]');
+            if (items.length > 0) {
+                self.currentMediaType = Number(items.first().attr('data-type'));
+                self.currentMediaUuid = items.first().attr('data-uuid');
+                self.currentBoxListDOM = self.$view.find('.subjective_upmedia_box ul');
+                subjectivityNative.confirmDeleteMaterial();
+            }
+            e.stopPropagation();
+        },
+        //创建手写素材
+        createWrite: function (selectors, e) {
+            e.preventDefault();
+            if (!subjectivityNative.hasMaterialType('write_stroke') && !self.lockAnswerBtn) {
+                self.lockAnswerBtn = true;
+                setTimeout(function () {
+                    self.lockAnswerBtn = false;
+                }, 500);
+                self.isEditWrite = false;
+                subjectivityNative.showHandWrite();
+            }
+        },
+        //修改手写素材
+        editWrite: function (e, uuid, type) {
+            e.preventDefault();
+            var tar = $(e.target);
+            if (self.viewModel.isApp && self.viewModel.isStudent) {
+                var item = tar.find('[data-type]');
+                var id = uuid || item.attr('data-uuid');
+                if (self.isOpenMaterialWin === false) {
+                    //弹窗模式没有删除手写的操作，如果记录currentMediaUuid，会造成想删除其他答案却删除了手写
+                    self.currentMediaUuid = id;
+                }
+                self.currentMediaType = type || Number(item.attr('data-type'));
+                self.isEditWrite = true;
+                subjectivityNative.showHandWrite(id);
+            }
+        },
+        //创建拍照素材
+        createPhoto: function (selectors, e) {
+            e.preventDefault();
+            if (self.viewModel.isApp && self.viewModel.isStudent) {
+                if (!subjectivityNative.hasMaterialType('photo') && !self.lockAnswerBtn) {
+                    self.lockAnswerBtn = true;
+                    setTimeout(function () {
+                        self.lockAnswerBtn = false;
+                    }, 500);
+                    subjectivityNative.showCamera();
+                }
+            }
+        },
+        //创建录音素材
+        createRecording: function (selectors, e) {
+            e.preventDefault();
+            //subjectivityNative.showRecording();
+            if (self.viewModel.isApp && self.viewModel.isStudent) {
+                if (!subjectivityNative.hasMaterialType('audio') && !self.lockAnswerBtn) {
+                    self.lockAnswerBtn = true;
+                    setTimeout(function () {
+                        self.lockAnswerBtn = false;
+                    }, 500);
+                    subjectivityNative.showRecording();
+                }
+            }
+        },
+        //关闭录音窗口
+        closeRecordingWin: function (selectors, e) {
+            e.preventDefault();
+            self.$view.find('.subjective_mask').addClass('hide_dom');
+            self.$view.find('.subjective_modal_record').addClass('hide_dom');
+            subjectivityNative.stopRecord();
+            subjectivityNative.resetRecordingView();
+        },
+        //开始录音
+        recording: function (selectors, e) {
+            e.preventDefault();
+            var tar = $(e.target);
+            while (!tar.hasClass('subjective_record_right')) {
+                tar = tar.parent();
+            }
+            if (tar.attr("data-state") == "start") {
+                subjectivityNative.callStartRecording();
+
+                subjectivityNative.updateRecordingTime();
+                self.viewModel.timer = setInterval(subjectivityNative.updateRecordingTime, 1000);
+
+                tar.attr("data-state", 'stop');
+                tar.find('.txt').html(self.i18nModel['End_Record']);
+                self.$view.find('.subjective_modal_record_bd').attr("data-state", 'active');
+
+                // 防止快速点击录音按钮
+                setTimeout(function () {
+                    self.canStopRecord = true;
+                }, 500);
+            } else if (tar.attr("data-state") == "stop") {
+                if (self.canStopRecord == true) {
+                    subjectivityNative.stopRecord();
+                    self.canStopRecord = false;
+                }
+            } else {//完成录音
+                self.$view.find('.subjective_mask').addClass('hide_dom');
+                self.$view.find('.subjective_modal_record').addClass('hide_dom');
+                subjectivityNative.resetRecordingView();
+                if (self.audioMaterial != null) {
+                    //加入answerData
+                    subjectivityEvent.setAnswerData(self.audioMaterial);
+                    subjectivityNative.disableSubmitBtn();
+                    subjectivityNative.syncTimer();
+                }
+            }
+        },
+        //重新录音
+        repeatRecording: function (selectors, e) {
+            e.preventDefault();
+            subjectivityNative.resetRecordingView();
+        },
+        //录音结束后开始试听
+        playTempAudio: function (selectors, e) {
+            e.preventDefault();
+            var btn = $(e.target);
+            if (btn.attr("data-state") == "default") {
+                return;
+            }
+            var audio = self.$view.find('.subjective_audio_src');
+            if (!audio[0].paused) {
+                btn.attr("data-state", "play");
+                audio[0].pause();
+            } else {
+                btn.attr("data-state", "stop");
+                audio[0].play();
+            }
+        },
+        //录音结束后停止试听
+        stopTempAudio: function (e) {
+            e.preventDefault();
+            self.$view.find('.subjective_CD_btn').attr("data-state", "play");
+        },
+
+
+        //--------------------------------------Callback Event-------------------------------------------------
+        callbackTextInput: function (eventData) {
+            var type = 'save';
+            if (eventData.type !== undefined) {
+                type = eventData.type;
+            }
+            var value = eventData.text;
+            if (value === '') {
+                value = self.i18nModel["Enter_Text_Answers"];
+            }
+            self.$view.find('.subjective_input_area textarea').html(value);
+            if (type === 'save') {
+                subjectivityNative.disableSubmitBtn();
+            }
+            if (self.viewModel.isStudent) {
+                setTimeout(function () {
+                    self.$view.find('.layout-all-mask').hide();
+                }, 500);
+            }
+        },
+        //手写框返回
+        callbackReturnMainView: function () {
+            subjectivityNative.makeMarkDiv(false);
+        },
+        //清空手写轨迹
+        callbackShowMessageBox: function (eventData) {
+            ClassroomUtils.showMessageBox([{
+                html: self.i18nModel["Cancel"],
+                target: 'h5'
+            }, {
+                html: self.i18nModel["Confirm"],
+                style: 'primary',
+                target: 'h5',
+                callback: {
+                    eventName: 'writeShowMessageBox',
+                    eventData: { value: 1 }
+                }
+            }], self.i18nModel["Clear_All_Text"]);
+        },
+        writeShowMessageBox: function (eventData) {
+            if (parseInt(eventData.value) === 1) {
+                utils.sendToPresenter('event_clean_stroke', {});
+            }
+        },
+        //拍照回调
+        callbackPhotoData: function (data) {
+            subjectivityEvent.setAnswerData(data);
+            subjectivityNative.disableSubmitBtn();
+            subjectivityNative.syncTimer();
+            subjectivityNative.makeMarkDiv(false);
+        },
+
+        //手写回调
+        callbackWriterData: function (data) {
+            if (self.viewModel.isStudent) {
+                self.$view.find('.layout-all-mask').show();
+            }
+            subjectivityEvent.setAnswerData(data);
+            subjectivityNative.disableSubmitBtn();
+            subjectivityNative.syncTimer();
+            if (self.viewModel.isStudent) {
+                setTimeout(function () {
+                    self.$view.find('.layout-all-mask').hide();
+                }, 500);
+            }
+        },
+
+        //录音回调
+        callbackAudioData: function (data) {
+            self.audioMaterial = data;
+            if (!self.$view.find('.subjective_modal_record').hasClass('hide_dom')) {
+                self.$view.find('.subjective_CD_btn').attr('data-state', "play");
+                self.$view.find('.subjective_audio_src').attr('src', data.url);
+            }
+        },
+        //设置答案数据
+        setAnswerData: function (data) {
+            var listBoxDom = self.$view.find('.subjective_upmedia_box ul');
+            var material = {
+                uuid: data.index,
+                type: data.type.toLowerCase(),
+                poster: data.thumbnail,
+                src: data.url || data.thumbnail,
+                data: ''
+            };
+            if (material.type === 'audio') {
+                //material.poster = '../resources/demopic/pic3.png';
+            }
+            if (material.type === 'write_stroke' && self.isEditWrite === true) {
+                //编辑手写答案素材
+                delete answerData.datasMap[self.currentWriteUuid];
+                answerData.datasMap[material.uuid] = material;
+                for (var i = 0, len = answerData.datas.length; i < len; i++) {
+                    if (answerData.datas[i].uuid === self.currentWriteUuid) {
+                        listBoxDom.children(':nth-child(' + (i + 1) + ')').remove();
+                        answerData.datas.splice(i, 1);
+                        answerData.datas.push(material);
+                        break;
+                    }
+                }
+                self.currentWriteUuid = undefined;
+                subjectivityRender.closeMaterialWin();
+            } else {
+                answerData.materialNum += 1;
+                answerData.datas.push(material);
+                answerData.datasMap[material.uuid] = material;
+            }
+            var item = null;
+            switch (material.type) {
+                case 'photo':
+                    item = new ImageItem(listBoxDom, enum_materialType.answer, material);
+                    break;
+                case 'audio':
+                    item = new AudioItem(listBoxDom, enum_materialType.answer, material);
+                    break;
+                case 'write_stroke':
+                    item = new WriteItem(listBoxDom, enum_materialType.answer, material);
+                    break;
+            }
+
+            self.$view.find('.subjective_upmedia_box .subjective_upmedia_delete').show();
+        },
+        // H5向Native请求答案数据的回调
+        callbackSubmit: function (eventData) {
+            var resultData = {
+                datas: []
+            };
+            var value = self.$view.find('.subjective_input_area textarea').html();
+            if (value !== self.i18nModel["Enter_Text_Answers"]) {
+                resultData.datas.push({
+                    data: value,
+                    thumb: null,
+                    type: 'text'
+                });
+            }
+
+            if (eventData && eventData.datas) {
+                for (var i = 0, len = eventData.datas.length; i < len; i++) {
+                    answerData.datas[i].data = eventData.datas[i].data;
+                    resultData.datas.push({
+                        data: eventData.datas[i].data,
+                        thumb: eventData.datas[i].thumb,
+                        type: answerData.datas[i].type
+                    });
+                }
+            }
+
+            self._sendAnswer(resultData);
+        },
+        //删除答案
+        callbackDelAnswer: function (eventData) {
+            if (parseInt(eventData.value) === 1) {
+                answerData.materialNum -= 1;
+                delete answerData.datasMap[self.currentMediaUuid];
+                var i = 0;
+                for (var len = answerData.datas.length; i < len; i++) {
+                    if (answerData.datas[i].uuid === self.currentMediaUuid) {
+                        answerData.datas.splice(i, 1);
+                        break;
+                    }
+                }
+                //停止播放
+                for (var key in self.mediaplayer) {
+                    self.mediaplayer[key].mediaPause();
+                }
+                subjectivityRender.reloadMaterialPlayList(self.currentBoxListDOM, enum_materialType.answer, answerData.datas);
+
+                //如果是弹窗，播放下个素材
+                if (self.isOpenMaterialWin === true) {
+                    if (answerData.datas.length > 0) {
+                        var item = answerData.datas[i] || answerData.datas[i - 1];
+                        self.currentMediaUuid = item.uuid;
+                        self.$view.find('.subjective_modal_media_list .fct_res_list_box ul').find('.fct_slide_a').removeClass('on');
+                        self.$view.find('.subjective_modal_media_list .fct_res_list_box ul').find("[data-uuid='" + self.currentMediaUuid + "']").addClass('on');
+                        subjectivityRender.playingMaterial(item.type, item.src, item.uuid);
+                    } else {
+                        self.$view.find('.subjective_mask').addClass('hide_dom');
+                        self.$view.find('.subjective_modal_media').addClass('hide_dom');
+                        self.isOpenMaterialWin = false;
+                    }
+                }
+
+                //刷新主界面的答案素材列表
+                subjectivityRender.reloadAnswerList(answerData.datas);
+                subjectivityNative.disableSubmitBtn();
+
+                // 删除status.media里保存的改答案的属性
+                if (self.status.media.hasOwnProperty(self.currentMediaUuid)) {
+                    delete self.status.media[self.currentMediaUuid];
+                }
+
+                //发送Native消息
+                //var items = $(this).parent().find('[data-type]');
+                //if (items.length > 0) {
+                //    console.log('---------------- delete a material----------------------------');
+                //    console.log(items[0]);
+                //    ClassroomUtils.log('[Subjectivity] delete a material ');
+                //
+                //    var type = '';
+                //    switch (items[0].attr('data-type')) {
+                //        case 'write_stroke':
+                //            type = 'event_writer_delete';
+                //            break;
+                //        case 'photo':
+                //            type = 'event_photo_delete';
+                //            break;
+                //        case 'audio':
+                //            type = 'event_audio_delete';
+                //            break;
+                //    }
+                //    utils.sendToPresenter(type, {
+                //        'index': items[0].attr('data-uuid')
+                //    });
+                //}
+            }
+        },
+        //提交拓展答案
+        sendExtendAnswer: function (eventData) {
+            if (eventData.type == 'get') {
+                var hasText = 0;
+                answerData.extendData = {
+                    'datas': []
+                };
+                var value = self.$view.find('.subjective_input_area textarea').html();
+                if (value !== self.i18nModel["Enter_Text_Answers"]) {
+                    hasText = 1;
+                }
+                for (var i = 0; i < answerData.datas.length; i++) {
+                    if (answerData.datas[i].type === 'photo' || answerData.datas[i].type === 'audio') {
+                        answerData.extendData.datas.push({
+                            url: answerData.datas[i].src,
+                            meta: JSON.stringify({
+                                index: i + hasText
+                            })
+                        });
+                    }
+                }
+                var data = {
+                    'source': '主观题',
+                    'type': 'submit',
+                    'value': {
+                        'examId': answerData.examId,
+                        'answerFiles': answerData.extendData.datas
+                    }
+                };
+                self.$dispatchEvent('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT, data);
+
+                console.log('-------------------------SubmitDetail Submit-----------------------------');
+                console.log(data);
+                ClassroomUtils.log('[Subjectivity] SubmitDetail Submit ' + JSON.stringify(data));
+            }
+        },
+    };
+
+    /*
+     * --------------------------------------------Base Utils Tool------------------------------------------------------
+     */
+    var utils = {
+        uuid: function () {
+            var s = [], hexDigits = "0123456789abcdef";
+
+            for (var i = 0; i < 36; i++) {
+                s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+            }
+
+            s[14] = "4";
+            s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+            s[8] = s[13] = s[18] = s[23] = "-";
+
+            return s.join("");
+        },
+        callNative: function (eventName, data) {
+            if (self.viewModel.isApp && Bridge && Bridge.callNative) {
+                return Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", eventName, data);
+            }
+            return false;
+        },
+        sendToPresenter: function (type, data) {
+            self.$dispatchEvent('sendToPresenter', PresenterEventType.NATIVE_EVENT, {
+                instanceId: self.instanceId,
+                type: type,
+                data: data
+            });
+        },
+        parseTimer: function (seconds) {
+            var minute = parseInt(seconds / 60);
+            var second = Math.ceil(seconds % 60);
+
+            if (minute < 10 && minute > 0) {
+                minute = '0' + minute;
+            } else if (minute >= 10) {
+                minute = minute;
+            } else {
+                minute = '00';
+            }
+            if (second < 10 && second > 0) {
+                second = '0' + second;
+            } else if (second >= 10) {
+                second = second;
+            } else {
+                second = '00';
+            }
+            return minute + ':' + second;
+        },
+        //绑定事件到DOM对象
+        bindOtherEvent: function ($element, eventNames, handler) {
+            self.domEventsBind.push({
+                element: $element,
+                eventNames: eventNames
+            });
+
+            return $element.on(eventNames, handler);
+        },
+        //解除DOM对象事件绑定
+        unOtherEvent: function ($element, eventNames) {
+            if (!$element) {
+                $.each(self.domEventsBind, function () {
+                    this.element.off(this.eventNames);
+                });
+
+                self.domEventsBind = [];
+            } else {
+                $element.off(eventNames);
+            }
+        }
+    };
+
+    window.AddonSubjectivityRemake_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

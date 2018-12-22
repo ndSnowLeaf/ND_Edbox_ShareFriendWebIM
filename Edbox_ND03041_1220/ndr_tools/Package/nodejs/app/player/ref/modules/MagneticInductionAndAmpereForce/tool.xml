@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool type="resizable" height="100%" width="100%">
+    <presenters> <!-- 描述对 module的引用，其中href为可选，若填写时为私有presenter -->
+        <presenter id="SubjectToolLauncher" />
+    </presenters>
+    <properties> <!-- 内容模块 key/value 属性 -->
+        <property name="independent" type="boolean" value="false"/>
+        <property name="singleton" type="boolean" value="true"/>
+        <property name="icon" type="image" value="resources/images/icon.png"/>
+		<property name="smallIcon" type="image" value="resources/images/smallicon.png"/>
+		<property name="toolKey" type="string" value="MagneticInductionAndAmpereForce"/>
+        <property name="toolName" type="string" value="磁感应强度和安培力"/>
+        <property name="execute" type="method" value="execute"/>
+        <property name="push" type="boolean" value="true" />
+        <property name="enableFull" type="boolean" value="true" />
+       
+    </properties>
+    <modules> <!-- 内容模块实例 -->
+        <Module id="main" presenterId="SubjectToolLauncher" height="100%" width="100%" left="0" top="0">
+            <properties>
+                <property name="toolName" displayName="启动工具名称" type="string" value="MagneticInductionAndAmpereForce" isLocalized="false"/>
+                <property name="initModel" displayName="初始工具模型" type="json" isLocalized="false">
+                    <![CDATA[
+                    [
+                      {
+                        "name": "questionId",
+                        "displayName": "题目ID",
+                        "type": "string",
+                        "isLocalized": false
+                      },
+                      {
+                        "name": "questionData",
+                        "displayName": "题目内容",
+                        "type": "jsonFile",
+                        "value": "resources/MagneticInductionAndAmpereForce.json",
+                        "isLocalized": false
+                      }
+                    ]
+                    ]]>
+                </property>
+            </properties>
+        </Module>
+    </modules>
+</tool>

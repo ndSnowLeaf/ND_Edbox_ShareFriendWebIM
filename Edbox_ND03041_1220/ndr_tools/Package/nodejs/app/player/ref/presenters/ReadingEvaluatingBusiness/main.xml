@@ -1,0 +1,2177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ReadingEvaluatingBusiness'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="swiper" version="3.2.7.1" />
+    <javaScript  name="vue-libs" version="2.1.3" />
+    <javaScript  name="RoleReadService" version="1.2.0" />
+    <javaScript  name="common_css" version="1.1.1" />
+    <javaScript  name="common_stat_css" version="2.0.0" />
+    <javaScript  name="ClassroomUtils" version="2.0.8" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content englishWord_box englishWord_guide _reading_evaluating_container"><router-view></router-view></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 28);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.FIRST_USE_CHECK = 'firstUseCheck';
+exports.CHANGE_AUDIO_SRC = 'changeAudioSrc';
+exports.CHANGE_DURATION = 'changeDuration';
+exports.CHANGE_CURRENT_TIME = 'changeCurrentTime';
+exports.AUDIO_PLAY = 'audioPlay';
+exports.AUDIO_END = 'audioEnd';
+exports.QUESTION_INIT_DATA = 'questionInitData';
+exports.QUESTION_CHANGE_DATA = 'questionChangeData';
+exports.QUESTION_CHANGE_CURRENT_QUESTION_INDEX = 'questionChangeCurrentQuestionIndex';
+exports.QUESTION_CHANGE_MY_RECORD_AUDIO = 'questionChangeMyRecordAudio';
+exports.QUESTION_CHANGE_STANDARD_AUDIO = 'questionChangeStandardAudio';
+exports.QUESTION_CHANGE_EVALUATE_VOICE_ID = 'questionChangeEvaluateVoiceId';
+exports.TIP_SHOW = 'tipShow';
+exports.TIP_SHOW_INFO = 'tipShowInfo';
+exports.TIP_TIMER = 'tipTimer';
+exports.RECORD_DEMONSTRATION_READING_ACTIVE = 'demonstrationReadingActive';
+exports.RECORD_RECORDING_ACTIVE = 'recordingActive';
+exports.RECORD_MY_RECORD_READING_ACTIVE = 'myRecordReadingActive';
+exports.RECORD_STOP_RECORDING = 'stopRecording';
+exports.CHANGE_VOLUME = 'CHANGE_VOLUME';
+exports.LOCK_FOOTER_BAR = 'LOCK_FOOTER_BAR';
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+module.exports = Vue;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+module.exports = Vuex;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+module.exports = VueClassComponent;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var Guide_1 = __webpack_require__(26);
+var PageContent = (function (_super) {
+    __extends(PageContent, _super);
+    function PageContent() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.logger = _this.$service.services.logger;
+        return _this;
+    }
+    PageContent.prototype.scoreClass = function (word) {
+        return _a = {},
+            _a['grade_' + word.toLowerCase()] = true,
+            _a;
+        var _a;
+    };
+    PageContent.prototype.mounted = function () {
+        var _this = this;
+        this.$store.commit(types.QUESTION_INIT_DATA, this.presenter.Model.questionContent);
+        this.$nextTick(function () {
+            var self = _this;
+            self._swiper = new Swiper('.swiper-container', {
+                prevButton: '._btn_turn_previous',
+                nextButton: '._btn_turn_next',
+                observer: true,
+                observeParents: true,
+                onTransitionEnd: function (swiper) {
+                    self.logger.debug('【PageContent】', '滑动到索引页：', self._swiper.activeIndex);
+                    self.guideShow && self.$store.commit(types.FIRST_USE_CHECK, {
+                        show: false,
+                        shouldShow: self.guideShouldShow
+                    });
+                    self.$store.commit(types.AUDIO_END);
+                    if (self.recordingActive) {
+                        var question = self.questions[self.currentQuestionIndex];
+                        var option = {
+                            voiceId: question.sectionId,
+                            isCancel: true
+                        };
+                        self.$service.services.recordService.stopRecord(option);
+                        self.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+                        self.logger.debug('【PageFooter】', '取消录音');
+                    }
+                    self.$store.commit(types.QUESTION_CHANGE_CURRENT_QUESTION_INDEX, self._swiper.activeIndex);
+                }
+            });
+        });
+    };
+    return PageContent;
+}(Vue));
+PageContent = __decorate([
+    vue_class_component_1.default({
+        name: 'PageContent',
+        template: __webpack_require__(18),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            i18nModel: function (state) { return state.presenter.i18nModel; },
+            guideShow: function (state) { return state.guide.show; },
+            guideShouldShow: function (state) { return state.guide.shouldShow; },
+            currentQuestionIndex: function (state) { return state.question.currentQuestionIndex; },
+            questions: function (state) { return state.question.questions; },
+            demonstrationReadingActive: function (state) { return state.record.demonstrationReadingActive; },
+            recordingActive: function (state) { return state.record.recordingActive; },
+            myRecordReadingActive: function (state) { return state.record.myRecordReadingActive; }
+        }), { question: function () {
+                if (this.questions[this.currentQuestionIndex]) {
+                    return this.questions[this.currentQuestionIndex];
+                }
+                else {
+                    return {};
+                }
+            } }),
+        watch: {
+            currentQuestionIndex: function (newVal, oldVal) {
+                this.logger.debug('【PageContent】', "\u5F53\u524D\u9898\u76EE\u7D22\u5F15\u53D1\u751F\u53D8\u5316,\u65B0\u7D22\u5F15[" + newVal + "],\u65E7\u7D22\u5F15[" + oldVal + "]");
+                this._swiper.slideTo(newVal);
+                if (this.recordingActive) {
+                    var option = {
+                        voiceId: this.questions[oldVal].sectionId,
+                        isCancel: true
+                    };
+                    this.$service.services.recordService.stopRecord(option);
+                    this.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+                    this.logger.debug('【PageFooter】', '取消录音');
+                }
+            }
+        },
+        components: {
+            guide: Guide_1.default
+        }
+    })
+], PageContent);
+exports.default = PageContent;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var AudioPlayer_1 = __webpack_require__(25);
+var PageFooter = (function (_super) {
+    __extends(PageFooter, _super);
+    function PageFooter() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.logger = _this.$service.services.logger;
+        return _this;
+    }
+    PageFooter.prototype.demonstrationReading = function (e) {
+        if (!this.question.standardAudio) {
+            return;
+        }
+        this.logger.debug('【PageFooter】', '点击示范朗读', !this.demonstrationReadingActive);
+        if (this.recordingActive) {
+            var option = {
+                voiceId: this.question.sectionId
+            };
+            this.$service.services.recordService.stopRecord(option);
+        }
+        this.$store.commit(types.RECORD_DEMONSTRATION_READING_ACTIVE, {
+            active: !this.demonstrationReadingActive
+        });
+        this.$store.commit(types.RECORD_MY_RECORD_READING_ACTIVE, { active: false });
+        this.$store.commit(types.CHANGE_AUDIO_SRC, { audioSrc: this.question.standardAudio });
+        this.demonstrationReadingActive ? this.$refs.audioPlayer.play() : this.$refs.audioPlayer.pause();
+    };
+    PageFooter.prototype.startRecording = function (e) {
+        if (this.isLockFooterBar) {
+            return;
+        }
+        this.logger.debug('【PageFooter】', '点击录音', !this.recordingActive);
+        this.demonstrationReadingActive && this.$refs.audioPlayer.pause();
+        this.$store.commit(types.RECORD_DEMONSTRATION_READING_ACTIVE, { active: false });
+        this.myRecordReadingActive && this.$refs.audioPlayer.pause();
+        this.$store.commit(types.RECORD_MY_RECORD_READING_ACTIVE, { active: false });
+        var option = {
+            voiceId: this.question.sectionId,
+            evaluationType: this.question.type,
+            content: this.question.vocabulary,
+            overSecond: this.question.overSecond
+        };
+        this.$service.services.recordService.startRecord(option);
+    };
+    PageFooter.prototype.myRecordReading = function (e) {
+        if (!this.question.myRecordAuio) {
+            return;
+        }
+        this.logger.debug('【PageFooter】', '点击我的录音', !this.myRecordReadingActive);
+        if (this.recordingActive) {
+            var option = {
+                voiceId: this.question.sectionId
+            };
+            this.$service.services.recordService.stopRecord(option);
+        }
+        this.$store.commit(types.RECORD_MY_RECORD_READING_ACTIVE, {
+            active: !this.myRecordReadingActive
+        });
+        this.$store.commit(types.RECORD_DEMONSTRATION_READING_ACTIVE, { active: false });
+        this.$store.commit(types.CHANGE_AUDIO_SRC, { audioSrc: this.question.myRecordAuio });
+        this.myRecordReadingActive ? this.$refs.audioPlayer.play() : this.$refs.audioPlayer.pause();
+    };
+    PageFooter.prototype.readedVoice = function (e) {
+        if (this.recordingActive) {
+            var option = {
+                voiceId: this.question.sectionId
+            };
+            this.$service.services.recordService.stopRecord(option);
+            this.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+            this.logger.debug('【PageFooter】', '读完录音');
+        }
+    };
+    PageFooter.prototype.cancelVoice = function (e) {
+        if (this.recordingActive) {
+            var option = {
+                voiceId: this.question.sectionId,
+                isCancel: true
+            };
+            this.$service.services.recordService.stopRecord(option);
+            this.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+            this.logger.debug('【PageFooter】', '取消录音');
+        }
+    };
+    return PageFooter;
+}(Vue));
+PageFooter = __decorate([
+    vue_class_component_1.default({
+        name: 'PageFooter',
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            i18nModel: function (state) { return state.presenter.i18nModel; },
+            duration: function (state) { return state.audioPlayer.duration; },
+            currentTime: function (state) { return state.audioPlayer.currentTime; },
+            end: function (state) { return state.audioPlayer.end; },
+            question: function (state) { return state.question.questions.length === 0 ? {} : state.question.questions[state.question.currentQuestionIndex]; },
+            demonstrationReadingActive: function (state) { return state.record.demonstrationReadingActive; },
+            recordingActive: function (state) { return state.record.recordingActive; },
+            myRecordReadingActive: function (state) { return state.record.myRecordReadingActive; },
+            volume: function (state) { return state.record.volume; },
+            isLockFooterBar: function (state) { return state.isLockFooterBar; }
+        }), { isRecordAgain: function () {
+                this.logger.debug('[isRecordAgain]', this.question);
+                return !!this.question && !!this.question.myRecordAuio;
+            }, progress: function () {
+                var p = 302;
+                if (!this.duration) {
+                    return p;
+                }
+                p = 302 + (604 - 302) * (this.currentTime / this.duration);
+                return p >= 604 ? 604 : p;
+            } }),
+        watch: {
+            end: function (newValue) {
+                if (newValue) {
+                    this.$store.commit(types.RECORD_DEMONSTRATION_READING_ACTIVE, { active: false });
+                    this.$store.commit(types.RECORD_MY_RECORD_READING_ACTIVE, { active: false });
+                    this.$refs.audioPlayer.pause();
+                }
+            },
+            isLockFooterBar: function (newValue) {
+                if (newValue) {
+                    if (this.recordingActive) {
+                        var option = {
+                            voiceId: this.question.sectionId
+                        };
+                        this.$service.services.recordService.stopRecord(option);
+                    }
+                    this.demonstrationReadingActive && this.$refs.audioPlayer.pause();
+                    this.$store.commit(types.RECORD_DEMONSTRATION_READING_ACTIVE, { active: false });
+                    this.myRecordReadingActive && this.$refs.audioPlayer.pause();
+                    this.$store.commit(types.RECORD_MY_RECORD_READING_ACTIVE, { active: false });
+                }
+            }
+        },
+        components: {
+            'audio-player': AudioPlayer_1.default
+        },
+        template: __webpack_require__(19)
+    })
+], PageFooter);
+exports.default = PageFooter;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var Shade = (function (_super) {
+    __extends(Shade, _super);
+    function Shade() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Shade.prototype.shadeClickHandler = function (e) {
+        this.$store.commit(types.FIRST_USE_CHECK, { show: false });
+    };
+    return Shade;
+}(Vue));
+Shade = __decorate([
+    vue_class_component_1.default({
+        name: 'Shade',
+        computed: __assign({}, vuex_1.mapState({
+            show: function (state) { return state.guide.show; }
+        })),
+        template: __webpack_require__(21)
+    })
+], Shade);
+exports.default = Shade;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var Tip = (function (_super) {
+    __extends(Tip, _super);
+    function Tip() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Tip.prototype.scoreClass = function (word) {
+        if (!word) {
+            return;
+        }
+        return _a = {},
+            _a['score_' + word.toLowerCase()] = true,
+            _a;
+        var _a;
+    };
+    Tip.prototype.detailScoreClass = function (word) {
+        if (!word) {
+            return;
+        }
+        return _a = {},
+            _a['en_color_' + word.toLowerCase()] = true,
+            _a;
+        var _a;
+    };
+    return Tip;
+}(Vue));
+Tip = __decorate([
+    vue_class_component_1.default({
+        name: 'Tip',
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            i18nModel: function (state) { return state.presenter.i18nModel; },
+            show: function (state) {
+                var show = state.tip.show && (state.tip.index === state.question.currentQuestionIndex);
+                return show;
+            },
+            content: function (state) { return state.tip.content; },
+            index: function (state) { return state.tip.index; },
+            currentQuestionIndex: function (state) { return state.question.currentQuestionIndex; },
+            question: function (state) { return state.question.questions.length === 0 ? {} : state.question.questions[state.question.currentQuestionIndex]; }
+        }), { infoShow: function () {
+                return this.index === -1 && this.content != '';
+            },
+            errorShow: function () {
+                return this.show && this.question.isEvaluatedFail;
+            },
+            wordShow: function () {
+                return this.show && !this.question.isEvaluatedFail && this.question.type === 'word';
+            },
+            sentenceSectionsShow: function () {
+                return this.show && !this.question.isEvaluatedFail && (this.question.type === 'sentence' || this.question.type === 'sections');
+            } }),
+        template: __webpack_require__(22)
+    })
+], Tip);
+exports.default = Tip;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports) {
+
+module.exports = VueService;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+module.exports = VueServiceDecorator;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Router = __webpack_require__(15);
+var ReadingEvaluatingClassroom_1 = __webpack_require__(35);
+var ReadingEvaluatingPage_1 = __webpack_require__(36);
+var router = new Router({
+    matchMode: 'IgnoreNoMatch',
+    routes: [
+        {
+            path: "/reading_evaluating/classroom",
+            component: ReadingEvaluatingClassroom_1.default
+        }, {
+            path: "/reading_evaluating/exercise",
+            component: ReadingEvaluatingPage_1.default
+        }
+    ]
+});
+exports.default = router;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    encode: function (path) {
+        return path.split("/").pop().replace(".wav", "");
+    },
+    decode: function (questions, recordId) {
+        var recordSrc = [];
+        for (var i = 0, iLen = questions.length; i < iLen; i++) {
+            if (questions[i].myRecordAuio) {
+                recordSrc = questions[i].myRecordAuio.split("/");
+                break;
+            }
+        }
+        if (recordSrc.length === 0) {
+            throw new Error("获取音频路径前缀出错");
+        }
+        recordSrc.pop();
+        recordSrc.push(recordId + ".wav");
+        return recordSrc.join("/");
+    }
+};
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+function default_1(presenter) {
+    var parent = presenter;
+    var logger = presenter.Logger;
+    return {
+        getQuestionInfo: function () {
+            var model = parent.Model;
+            return {
+                id: model.question_id,
+                type_code: 'ReadingEvaluating',
+                type_name: '朗读评测',
+                item: "ReadingEvaluatingBusiness",
+                url: model.question_id,
+                dispatchOnly: true,
+                subjective: true
+            };
+        },
+        showAnswer: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010showAnswer\u3011");
+        },
+        getResult: function () {
+            var answerState = 'NO_ANSWER';
+            var model = parent.Model;
+            var userResponse = [];
+            var questions = parent.vueRoot.$store.state.question.questions;
+            for (var _i = 0, questions_1 = questions; _i < questions_1.length; _i++) {
+                var q = questions_1[_i];
+                var er = q.evaluationResult;
+                var respone = {
+                    sectionId: q.sectionId,
+                    resourceId: q.resourceId,
+                    content: q.vocabulary,
+                    phonogram: q.phonogram,
+                    type: q.type,
+                    myRecordAuio: !!q.myRecordAuio ? q.myRecordAuio : '',
+                    audioPath: '',
+                    isEvaluated: q.isEvaluated,
+                    isEvaluatedFail: q.isEvaluatedFail
+                };
+                if (q.isEvaluated) {
+                    answerState = 'COMPLETE';
+                    if (q.type === 'word') {
+                        respone = $.extend(respone, {
+                            evaluationResult: {
+                                overall: er.overall,
+                                scores: er.details[0].phone
+                            }
+                        });
+                    }
+                    else if (q.type === 'sentence') {
+                        respone = $.extend(respone, {
+                            evaluationResult: {
+                                overall: er.overall,
+                                accuracy: er.accuracy,
+                                integrity: er.integrity,
+                                fluency: er.fluency.overall,
+                                scores: er.details
+                            }
+                        });
+                    }
+                    else if (q.type === 'sections') {
+                        respone = $.extend(respone, {
+                            evaluationResult: {
+                                overall: er.overall,
+                                accuracy: er.pron,
+                                integrity: er.integrity,
+                                fluency: er.fluency,
+                                scores: er.details
+                            }
+                        });
+                    }
+                }
+                userResponse.push(respone);
+            }
+            var result = {
+                questionId: model.question_id,
+                answerState: answerState,
+                answer: {
+                    answer_result: true,
+                    correct_response: [],
+                    user_response: userResponse
+                }
+            };
+            return result;
+        },
+        showResultHint: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010showResultHint\u3011");
+        },
+        lockQuestion: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010lockQuestion\u3011");
+            var questions = parent.vueRoot.$store.state.question.questions;
+            var question = questions[parent.vueRoot.$store.state.question.currentQuestionIndex];
+            if (parent.vueRoot.$store.state.record.recordingActive) {
+                var option = {
+                    voiceId: question.sectionId,
+                    isCancel: true
+                };
+                parent.voiceService.stopRecord(option);
+                parent.vueRoot.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+                logger.debug('【PageFooter】', '取消录音');
+            }
+            parent.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: true });
+        },
+        unlockQuestion: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010unlockQuestion\u3011");
+            parent.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: false });
+        },
+        finishQuestion: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010finishQuestion\u3011");
+        },
+        resetQuestion: function () {
+            logger.debug("\u3010service\u3011\u8C03\u7528\u3010resetQuestion\u3011");
+            var questions = parent.vueRoot.$store.state.question.questions;
+            var question = questions[parent.vueRoot.$store.state.question.currentQuestionIndex];
+            if (parent.vueRoot.$store.state.record.recordingActive) {
+                var option = {
+                    voiceId: question.sectionId,
+                    isCancel: true
+                };
+                parent.voiceService.stopRecord(option);
+                parent.vueRoot.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+                this.logger.debug('【PageFooter】', '取消录音');
+            }
+            for (var i = 0, iLen = questions.length; i < iLen; i++) {
+                parent.vueRoot.$store.commit('questionChangeData', {
+                    index: i,
+                    myRecordAuio: false,
+                    isEvaluatedFail: false,
+                    isEvaluated: false,
+                    scoreLevel: '',
+                    evaluatedContent: '',
+                    evaluatedPhonogram: ''
+                });
+            }
+        },
+        getStatisticClass: function () {
+            return "G";
+        },
+        convertDataForStatistics: function (originalData) {
+            var questions = parent.vueRoot.$store.state.question.questions;
+            var value = originalData.value;
+            var unfinishedUserIds = value.unfinishedUserIds;
+            var answers = value.answers[0];
+            var questionType = questions[0].type;
+            var elapsedTime = value.elapsedTime || 0;
+            var users = value.users, usersObj = {};
+            var totalNum = users.length, commitNum = totalNum - value.unfinishedNum;
+            var correctAnswerTeacher = $.extend(value.correctAnswerTeacher, {}, true);
+            var result = [];
+            for (var i = 0, len = correctAnswerTeacher.user_response.length; i < len; i++) {
+                correctAnswerTeacher.user_response[i].evaluationResult = {};
+                correctAnswerTeacher.user_response[i].isEvaluated = false;
+                correctAnswerTeacher.user_response[i].isEvaluatedFail = false;
+                correctAnswerTeacher.user_response[i].myRecordAuio = '';
+            }
+            var levelTranslate = function (num) {
+                var result = 0;
+                if (typeof num === 'number') {
+                    if (num >= 90) {
+                        result = 'A';
+                    }
+                    else if (num >= 80 && num < 90) {
+                        result = 'B';
+                    }
+                    else if (num >= 70 && num < 80) {
+                        result = 'C';
+                    }
+                    else if (num < 70) {
+                        result = 'D';
+                    }
+                }
+                return result;
+            };
+            if (window.ClassroomUtils && ClassroomUtils.getCurrentStudents) {
+                var options = {
+                    order: [
+                        {
+                            orderProperty: 'seatNumberValue',
+                            orderType: 'asc'
+                        }, {
+                            orderProperty: 'studentNo',
+                            orderType: 'asc'
+                        }
+                    ]
+                };
+                var currentStudent = ClassroomUtils.getCurrentStudents(options);
+                var tmpStu, stuId;
+                var i, j, len, finded;
+                for (j = 0, len = users.length; j < len; j++) {
+                    finded = false;
+                    for (i = 0; i < currentStudent.length; i++) {
+                        tmpStu = currentStudent[i];
+                        stuId = tmpStu["studentId"];
+                        if (stuId == users[j]["userId"]) {
+                            currentStudent.splice(i, 1);
+                            usersObj[stuId] = {
+                                userId: stuId,
+                                submitTime: users[j]["submitTime"],
+                                name: tmpStu["studentName"],
+                                studentNo: tmpStu["studentNo"],
+                                img: tmpStu['headIcon']
+                            };
+                            finded = true;
+                            break;
+                        }
+                    }
+                    if (!finded) {
+                        usersObj[users[j]["userId"]] = {
+                            userId: users[j]["userId"],
+                            submitTime: users[j]["submitTime"],
+                            name: users[j]["userId"],
+                            studentNo: users[j]["userId"],
+                            img: ""
+                        };
+                    }
+                }
+                var item, answer, r, jlen;
+                for (i = 0, len = answers.length; i < len; i++) {
+                    item = answers[i];
+                    if (typeof item.answer === 'string') {
+                        answer = JSON.parse(item.answer);
+                        var evaluationResult, k, klen, score;
+                        for (j = 0, jlen = answer.user_response.length; j < jlen; j++) {
+                            if (!answer.user_response[j].isEvaluated) {
+                                continue;
+                            }
+                            evaluationResult = answer.user_response[j].evaluationResult;
+                            evaluationResult.accuracy = evaluationResult.accuracy === undefined ? levelTranslate(evaluationResult.pron) : levelTranslate(evaluationResult.accuracy);
+                            evaluationResult.fluency = levelTranslate(evaluationResult.fluency);
+                            evaluationResult.integrity = levelTranslate(evaluationResult.integrity);
+                            evaluationResult.overall = levelTranslate(evaluationResult.overall);
+                            for (k = 0, klen = evaluationResult.scores.length; k < klen; k++) {
+                                score = evaluationResult.scores[k];
+                                score.score = levelTranslate(score.score);
+                            }
+                        }
+                        r = {
+                            answer: answer,
+                            answerState: "COMPLETE",
+                            time: '',
+                            user: null
+                        };
+                        for (j = 0, jlen = item.userIds.length; j < jlen; j++) {
+                            if (usersObj[item.userIds[j]]) {
+                                r['user'] = usersObj[item.userIds[j]];
+                                result.push(r);
+                            }
+                        }
+                    }
+                }
+                for (i = 0, len = unfinishedUserIds.length; i < len; i++) {
+                    result.push({
+                        answerState: "NO_ANSWER",
+                        user: usersObj[unfinishedUserIds[i]],
+                        answer: correctAnswerTeacher
+                    });
+                }
+            }
+            value.convertedData = {
+                questionType: questionType,
+                elapsedTime: elapsedTime,
+                commitNum: commitNum,
+                totalNum: totalNum,
+                result: result,
+                correctAnswerTeacher: correctAnswerTeacher
+            };
+            return originalData;
+        },
+        startStatistics: function () {
+            parent.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: true });
+        }
+    };
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var phoneMap_1 = __webpack_require__(29);
+var SERVICE_EVENT = 'ServiceEvent';
+function _isSymbol(str) {
+    var allSurpportFlag = ",.!?;@$%*&();";
+    for (var i = 0; i < str.length; i++) {
+        if (allSurpportFlag.indexOf(str.charAt(i)) == -1) {
+            return false;
+        }
+    }
+    return true;
+}
+function _getColor(score) {
+    if (score >= 90) {
+        return 'en_color_a';
+    }
+    else if (score >= 80) {
+        return 'en_color_b';
+    }
+    else if (score >= 70) {
+        return 'en_color_c';
+    }
+    else {
+        return 'en_color_d';
+    }
+}
+function _updateSentenceScore(details, sentence) {
+    if (!details) {
+        return;
+    }
+    var symbolmap = {};
+    for (var sindex = 0; sindex < sentence.length; sindex++) {
+        if (_isSymbol(sentence[sindex])) {
+            symbolmap[sindex + ""] = sentence[sindex];
+        }
+    }
+    var newStr = "";
+    if (sentence) {
+        var _loop_1 = function (index) {
+            var detail_start = sentence.toLowerCase().indexOf(details[index]["char"]);
+            if (detail_start != -1) {
+                var colorClass_1 = _getColor(details[index].score);
+                if (index == details.length - 1) {
+                    newStr += "<span class=\"" + colorClass_1 + "\"><em class=\"new_ui_text\">" + sentence.substring(detail_start, detail_start + details[index]["char"].length) + "</em></span>";
+                }
+                else
+                    newStr += "<span class=\"" + colorClass_1 + "\"><em class=\"new_ui_text\">" + sentence.substring(detail_start, detail_start + details[index]["char"].length) + " </em></span>";
+                if (details[index] && details[index + 1]) {
+                    $.each(symbolmap, function (key, value) {
+                        if (details[index]["beginindex"] < key && details[index + 1]["beginindex"] > key) {
+                            newStr += "<span class=\"" + colorClass_1 + "\"><em class=\"new_ui_text\">" + symbolmap[key] + "</em></span>";
+                        }
+                    });
+                }
+                sentence = sentence.substring(detail_start + details[index]["char"].length);
+            }
+            if (index == details.length - 1) {
+                newStr += sentence;
+            }
+        };
+        for (var index = 0; index < details.length; index++) {
+            _loop_1(index);
+        }
+    }
+    return newStr;
+}
+function _updateSectionsScore(detail, text) {
+    var html = "";
+    var start = 0;
+    text = text.replace(/\s+/g, ' ');
+    var sentences = text.match(/[^\.,!\?]+[\.,!\?]+/g);
+    var otext = text;
+    text = text.toLocaleLowerCase();
+    if (detail && sentences) {
+        var length_1 = detail.length;
+        for (var index = 0; index < length_1; index++) {
+            var stext = detail[index]["text"].toLocaleLowerCase();
+            var slength = detail[index]["text"].length;
+            var sindex = text.indexOf(stext);
+            var colorClass = void 0;
+            if (detail[index].score === 4) {
+                colorClass = 'en_color_a';
+            }
+            else if (detail[index].score === 3) {
+                colorClass = 'en_color_b';
+            }
+            else if (detail[index].score === 2) {
+                colorClass = 'en_color_c';
+            }
+            else {
+                colorClass = 'en_color_d';
+            }
+            html += "<span class=\"" + colorClass + "\"><em class=\"new_ui_text\">" + otext.substr(sindex + start, slength) + "</em></span>";
+            text = text.substr(sindex + slength);
+            start += sindex + slength;
+        }
+    }
+    else {
+        for (var index = 0; index < sentences.length; index++) {
+            html += "<span class=\"new_ui_text\">" + sentences[index] + "</span>";
+        }
+    }
+    return html;
+}
+var callbacks = {
+    _voiceVolumeCallback: function (eventData) {
+        this.Logger.debug('【serviceEventHandler】', '音量回调', JSON.stringify(eventData));
+        this.vueRoot.$store.commit(types.CHANGE_VOLUME, { volume: eventData.volume });
+    },
+    _recordVoiceCallback: function (eventData) {
+        if (+eventData.code === 0) {
+            this.Logger.debug('【serviceEventHandler】', '录音完成的成功回调', JSON.stringify(eventData));
+            var currentQuestionInex = void 0;
+            for (var i = 0, iLen = this.vueRoot.$store.state.question.questions.length; i < iLen; i++) {
+                var q = this.vueRoot.$store.state.question.questions[i];
+                if (q.sectionId === eventData.data.voiceId) {
+                    currentQuestionInex = i;
+                    break;
+                }
+            }
+            if (currentQuestionInex === undefined) {
+                this.Logger.error('【serviceEventHandler】', '录音完成回调的数据有错', JSON.stringify(eventData));
+                return;
+            }
+            this.vueRoot.$store.commit(types.QUESTION_CHANGE_DATA, {
+                index: currentQuestionInex,
+                myRecordAuio: eventData.data.url
+            });
+        }
+        else {
+            this.Logger.debug('【serviceEventHandler】', '录音完成的失败回调', JSON.stringify(eventData));
+        }
+        this.vueRoot.$store.commit(types.RECORD_RECORDING_ACTIVE, { active: false });
+    },
+    _startRecordVoiceCallback: function (eventData) {
+        this.Logger.debug('【serviceEventHandler】', '开始录音回调', JSON.stringify(eventData));
+        this.vueRoot.$store.commit(types.RECORD_RECORDING_ACTIVE, {
+            active: !eventData.isError
+        });
+    },
+    _evaluatingVoiceCallback: function (eventData) {
+        this.Logger.debug('【serviceEventHandler】', '语音评测结果回调', JSON.stringify(eventData));
+        eventData = (typeof eventData === 'string' ? JSON.parse(eventData) : eventData);
+        var data = eventData.data;
+        data = (typeof data === 'string' ? JSON.parse(data) : data);
+        var result = data.evaluationResult;
+        typeof result === 'string' && (result = JSON.parse(result));
+        result = result.result;
+        var currentQuestionInex;
+        if (eventData.code === 0) {
+            var question = null;
+            for (var i = 0, iLen = this.vueRoot.$store.state.question.questions.length; i < iLen; i++) {
+                var q = this.vueRoot.$store.state.question.questions[i];
+                if (q.sectionId === data.voiceId) {
+                    currentQuestionInex = i;
+                    question = q;
+                    break;
+                }
+            }
+            if (question === null) {
+                this.Logger.error('【serviceEventHandler】', '语音评测结果数据错误', JSON.stringify(eventData));
+                return;
+            }
+            var scoreLevel = void 0;
+            if (result.overall >= 90) {
+                scoreLevel = 'A';
+            }
+            else if (result.overall >= 80) {
+                scoreLevel = 'B';
+            }
+            else if (result.overall >= 70) {
+                scoreLevel = 'C';
+            }
+            else {
+                scoreLevel = 'D';
+            }
+            if (question.type === 'word') {
+                var wordHtml = '';
+                var phoneHtml = '';
+                for (var _i = 0, _a = result.details; _i < _a.length; _i++) {
+                    var word = _a[_i];
+                    wordHtml = word.char;
+                    if (!!word.stress && word.stress.length > 0) {
+                        var index = 0;
+                        for (var _b = 0, _c = word.stress; _b < _c.length; _b++) {
+                            var s = _c[_b];
+                            var phoneStr = '';
+                            if (s.ref === 1) {
+                                phoneStr += "'";
+                            }
+                            var phones = s.char.split('_');
+                            for (var _d = 0, phones_1 = phones; _d < phones_1.length; _d++) {
+                                var p = phones_1[_d];
+                                var phone = word.phone[index++];
+                                if (phone.score >= 90) {
+                                    phoneHtml += "<span class=\"en_color_a\">" + (phoneStr + phoneMap_1.default.getPhoneMap(p)) + "</span>";
+                                }
+                                else if (phone.score >= 80) {
+                                    phoneHtml += "<span class=\"en_color_b\">" + (phoneStr + phoneMap_1.default.getPhoneMap(p)) + "</span>";
+                                }
+                                else if (phone.score >= 70) {
+                                    phoneHtml += "<span class=\"en_color_c\">" + (phoneStr + phoneMap_1.default.getPhoneMap(p)) + "</span>";
+                                }
+                                else {
+                                    phoneHtml += "<span class=\"en_color_d\">" + (phoneStr + phoneMap_1.default.getPhoneMap(p)) + "</span>";
+                                }
+                                phoneStr = '';
+                            }
+                        }
+                    }
+                    else {
+                        for (var _e = 0, _f = word.phone; _e < _f.length; _e++) {
+                            var phone = _f[_e];
+                            if (phone.score >= 90) {
+                                phoneHtml += "<span class=\"en_color_a\">" + phoneMap_1.default.getPhoneMap(phone.char) + "</span>";
+                            }
+                            else if (phone.score >= 80) {
+                                phoneHtml += "<span class=\"en_color_b\">" + phoneMap_1.default.getPhoneMap(phone.char) + "</span>";
+                            }
+                            else if (phone.score >= 70) {
+                                phoneHtml += "<span class=\"en_color_c\">" + phoneMap_1.default.getPhoneMap(phone.char) + "</span>";
+                            }
+                            else {
+                                phoneHtml += "<span class=\"en_color_d\">" + phoneMap_1.default.getPhoneMap(phone.char) + "</span>";
+                            }
+                        }
+                    }
+                }
+                this.vueRoot.$store.commit(types.QUESTION_CHANGE_DATA, {
+                    index: currentQuestionInex,
+                    isEvaluated: true,
+                    isEvaluatedFail: false,
+                    scoreLevel: scoreLevel,
+                    evaluatedContent: wordHtml,
+                    evaluatedPhonogram: "[" + phoneHtml + "]",
+                    evaluationResult: result
+                });
+            }
+            else if (question.type === 'sentence') {
+                var wordHtml = '';
+                wordHtml = _updateSentenceScore(result.details, question.vocabulary);
+                var accuracyScoreLevel = void 0;
+                if (result.accuracy >= 90) {
+                    accuracyScoreLevel = 'A';
+                }
+                else if (result.accuracy >= 80) {
+                    accuracyScoreLevel = 'B';
+                }
+                else if (result.accuracy >= 70) {
+                    accuracyScoreLevel = 'C';
+                }
+                else {
+                    accuracyScoreLevel = 'D';
+                }
+                var integrityScoreLevel = void 0;
+                if (result.integrity >= 90) {
+                    integrityScoreLevel = 'A';
+                }
+                else if (result.integrity >= 80) {
+                    integrityScoreLevel = 'B';
+                }
+                else if (result.integrity >= 70) {
+                    integrityScoreLevel = 'C';
+                }
+                else {
+                    integrityScoreLevel = 'D';
+                }
+                var fluencyScoreLevel = void 0;
+                if (result.fluency.overall >= 90) {
+                    fluencyScoreLevel = 'A';
+                }
+                else if (result.fluency.overall >= 80) {
+                    fluencyScoreLevel = 'B';
+                }
+                else if (result.fluency.overall >= 70) {
+                    fluencyScoreLevel = 'C';
+                }
+                else {
+                    fluencyScoreLevel = 'D';
+                }
+                this.vueRoot.$store.commit(types.QUESTION_CHANGE_DATA, {
+                    index: currentQuestionInex,
+                    isEvaluated: true,
+                    isEvaluatedFail: false,
+                    scoreLevel: scoreLevel,
+                    accuracyScoreLevel: accuracyScoreLevel,
+                    integrityScoreLevel: integrityScoreLevel,
+                    fluencyScoreLevel: fluencyScoreLevel,
+                    evaluatedContent: wordHtml,
+                    evaluationResult: result
+                });
+            }
+            else if (question.type === 'sections') {
+                var wordHtml = '';
+                var colorClass = '';
+                for (var _g = 0, _h = result.details; _g < _h.length; _g++) {
+                    var word = _h[_g];
+                    if (word.score === 4) {
+                        colorClass = 'en_color_a';
+                    }
+                    else if (word.score === 3) {
+                        colorClass = 'en_color_b';
+                    }
+                    else if (word.score === 2) {
+                        colorClass = 'en_color_c';
+                    }
+                    else {
+                        colorClass = 'en_color_d';
+                    }
+                    wordHtml += "<span class=\"" + colorClass + "\"><em class=\"new_ui_text\">" + (word.text + ' ') + "</em></span>";
+                }
+                var accuracyScoreLevel = void 0;
+                if (result.pron === 4) {
+                    accuracyScoreLevel = 'A';
+                }
+                else if (result.pron === 3) {
+                    accuracyScoreLevel = 'B';
+                }
+                else if (result.pron === 2) {
+                    accuracyScoreLevel = 'C';
+                }
+                else {
+                    accuracyScoreLevel = 'D';
+                }
+                var integrityScoreLevel = void 0;
+                if (result.integrity === 4) {
+                    integrityScoreLevel = 'A';
+                }
+                else if (result.integrity === 3) {
+                    integrityScoreLevel = 'B';
+                }
+                else if (result.integrity === 2) {
+                    integrityScoreLevel = 'C';
+                }
+                else {
+                    integrityScoreLevel = 'D';
+                }
+                var fluencyScoreLevel = void 0;
+                if (result.fluency === 4) {
+                    fluencyScoreLevel = 'A';
+                }
+                else if (result.fluency === 3) {
+                    fluencyScoreLevel = 'B';
+                }
+                else if (result.fluency === 2) {
+                    fluencyScoreLevel = 'C';
+                }
+                else {
+                    fluencyScoreLevel = 'D';
+                }
+                this.vueRoot.$store.commit(types.QUESTION_CHANGE_DATA, {
+                    index: currentQuestionInex,
+                    isEvaluated: true,
+                    isEvaluatedFail: false,
+                    scoreLevel: scoreLevel,
+                    accuracyScoreLevel: accuracyScoreLevel,
+                    integrityScoreLevel: integrityScoreLevel,
+                    fluencyScoreLevel: fluencyScoreLevel,
+                    evaluatedContent: wordHtml,
+                    evaluationResult: result
+                });
+            }
+            try {
+                this.dispatchEvent('firstUseCheck', ConstVariable.PresenterEventType.NATIVE_EVENT, { instanceId: 'voice_evaluating' });
+            }
+            catch (error) {
+                this.Logger.warn('【serviceEventHandler】', '发送[firstUseCheck]事件失败');
+            }
+            this.dispatchEvent('questionStateChange', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, { canSubmit: true });
+        }
+        else {
+            var evaluationErrorContent = '';
+            switch (eventData.code) {
+                case 10001:
+                case 10002:
+                case 10003:
+                    evaluationErrorContent = this.i18nModel['reb_error_pronunciation_not_completion'];
+                    break;
+                case 10004:
+                    evaluationErrorContent = this.i18nModel['reb_error_adjust_mic_position_too_far'];
+                    break;
+                case 10005:
+                    evaluationErrorContent = this.i18nModel['reb_error_adjust_mic_position_too_close'];
+                    break;
+                case 10006:
+                    evaluationErrorContent = this.i18nModel['reb_error_sound_quality_not_clear'];
+                    break;
+                case 10007:
+                    evaluationErrorContent = this.i18nModel['reb_error_not_english'];
+                    break;
+                case 10008:
+                    evaluationErrorContent = this.i18nModel['reb_error_sound_truncated'];
+                    break;
+                case 60010:
+                    evaluationErrorContent = this.i18nModel['reb_error_network'];
+                    break;
+                default:
+                    evaluationErrorContent = this.i18nModel['reb_error_unknown'];
+                    break;
+            }
+            this.vueRoot.$store.commit(types.QUESTION_CHANGE_DATA, {
+                index: currentQuestionInex,
+                isEvaluatedFail: true,
+                evaluationErrorContent: evaluationErrorContent
+            });
+        }
+        this.vueRoot.$store.dispatch(types.TIP_SHOW, {
+            show: true,
+            index: currentQuestionInex
+        });
+    }
+};
+function serviceCallback(eventData) {
+    !!callbacks['_' + eventData.method] && callbacks['_' + eventData.method].call(this, eventData);
+}
+function default_1(presenter) {
+    presenter.addEventListener(SERVICE_EVENT, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, serviceCallback.bind(presenter));
+}
+exports.default = default_1;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vuex = __webpack_require__(2);
+var types = __webpack_require__(0);
+var guide_1 = __webpack_require__(31);
+var audioPlayer_1 = __webpack_require__(30);
+var tip_1 = __webpack_require__(34);
+var question_1 = __webpack_require__(32);
+var record_1 = __webpack_require__(33);
+var storeIndex = function (presenter) {
+    var state = {
+        isLockFooterBar: true
+    };
+    Object.defineProperty(state, 'presenter', {
+        value: presenter,
+        configurable: false
+    });
+    return new Vuex.Store({
+        state: state,
+        mutations: (_a = {},
+            _a[types.LOCK_FOOTER_BAR] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).isLock, isLock = _b === void 0 ? false : _b;
+                state.isLockFooterBar = isLock;
+            },
+            _a),
+        modules: {
+            guide: guide_1.default(presenter),
+            audioPlayer: audioPlayer_1.default(presenter),
+            tip: tip_1.default(presenter),
+            question: question_1.default(presenter),
+            record: record_1.default(presenter)
+        }
+    });
+    var _a;
+};
+exports.default = storeIndex;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+module.exports = VueRouter;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+module.exports = "<div v-show=show><audio class=audio_player :src=audioSrc @ended=end @timeupdate=timeupdate @oncanplay=onCanPlay @onreadystatechange=onReadyStateChange>Your browser does not support the audio tag.</audio></div>"
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=guidetxtwrap v-if=show><div class=\"guidetxt style_d\" style=\"left: 20%\"><p class=color v-text=\"i18nModel['reb_red']\"></p><p class=txt v-text=\"i18nModel['reb_red_non_standard']\"></p></div><div class=\"guidetxt style_a\" style=\"left: 70%\"><p class=color v-text=\"i18nModel['reb_green']\"></p><p class=txt v-text=\"i18nModel['reb_green_very_standard']\"></p></div><div class=\"guidetxt style_c guide_down\" style=\"left: 25%\"><p class=color v-text=\"i18nModel['reb_yellow']\"></p><p class=txt v-text=\"i18nModel['reb_yellow_few_standard']\"></p></div><div class=\"guidetxt style_b guide_down\" style=\"left: 70%\"><p class=color v-text=\"i18nModel['reb_blue']\"></p><p class=txt v-text=\"i18nModel['reb_blue_stanard']\"></p></div></div>"
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=com_layout_main_exam><div class=com_layout_tit><h2 class=tit v-text=\"i18nModel['reb_sections_reading_english_pls']\"></h2></div><div class=english_title_left><p class=en_title_num v-text=\"(currentQuestionIndex + 1) + '/' + (questions.length)\"></p><p class=en_title_score><span class=new_ui_text>score:</span> <em class=word v-if=question.isEvaluated><span class=new_ui_text v-text=question.scoreLevel></span></em></p></div><div class=\"com_layout_main scrollbar_style_default\"><div class=swiper-container><div class=swiper-wrapper><div class=swiper-slide v-for=\"(item,index) in questions\"><div class=\"content scrollbar_style_default\"><div class=canto :class=\"{canto_sentence:item.type==='stentence'}\"><p class=en_word_element v-html=item.evaluatedContent v-if=item.isEvaluated></p><p class=en_word_element v-else><span class=new_ui_text v-html=item.vocabulary></span></p><p class=en_word_pronunciation v-if=\"item.type === 'word'\" v-html=\"item.isEvaluated ?item.evaluatedPhonogram:item.phonogram\"></p><p class=en_word_mean v-if=\"item.type === 'word'\"><span v-html=item.wordProp></span><span v-html=item.paraphrase></span></p></div><guide></guide></div></div></div></div><a href=javascript:; class=\"btn_turn_previous _btn_turn_previous\" :class=\"{com_btn_disabled : currentQuestionIndex == 0}\"></a><a href=javascript:; class=\"btn_turn_next _btn_turn_next\" :class=\"{com_btn_disabled : currentQuestionIndex + 1 == questions.length}\"></a><div class=result v-if=question.isEvaluated><span class=text><span class=new_ui_text v-text=\"i18nModel['reb_fluency']\"></span> <i :class=scoreClass(question.fluencyScoreLevel)><span class=new_ui_text v-text=question.fluencyScoreLevel></span></i></span> <span class=text><span class=new_ui_text v-text=\"i18nModel['reb_integrity']\"></span> <i :class=scoreClass(question.integrityScoreLevel)><span class=new_ui_text v-text=question.integrityScoreLevel></span></i></span> <span class=text><span class=new_ui_text v-text=\"i18nModel['reb_accuracy']\"></span> <i :class=scoreClass(question.accuracyScoreLevel)><span class=new_ui_text v-text=question.accuracyScoreLevel></span></i></span></div></div></div>"
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=contral_box><div class=contral02 v-if=recordingActive><div class=barbox><i class=bar_icon></i><p class=bar><span class=in :style=\"{width: volume+'%'}\"></span></p></div><p class=btnbox><a href=javascript:; class=\"contrbtn btn04\" :class={none:isLockFooterBar} @click.prevent=readedVoice></a><span class=text v-text=\"i18nModel['reb_recorded']\"></span></p><p class=btnbox><a href=javascript:; class=\"contrbtn btn05\" :class={none:isLockFooterBar} @click.prevent=cancelVoice></a><span class=text v-text=\"i18nModel['reb_cancel']\"></span></p></div><div class=contral03 v-if=!recordingActive><p class=btnbox><a href=javascript:; class=\"contrbtn btn01\" :class={active:demonstrationReadingActive,on:demonstrationReadingActive} @click=demonstrationReading><svg class=mobile-process version=1.1 xmlns=http://www.w3.org/2000/svg viewBox=0,0,100,100><circle class=circleicon cx=50 cy=50 r=42></circle><circle :style={strokeDasharray:progress} class=process cx=50 cy=50 r=48 stroke=#27db6b stroke-width=2 fill=none></circle></svg></a><span class=text v-text=\"i18nModel['reb_demonstration_reading']\"></span></p><p class=\"btnbox btn-voice\" ref=btnRecord><a href=javascript:; class=\"contrbtn btn02 voice_lv3\" :class={active:recordingActive,none:isLockFooterBar} @click=startRecording></a><span class=text v-if=recordingActive v-text=\"i18nModel['reb_recording']\"></span> <span class=text v-else-if=isRecordAgain v-text=\"i18nModel['reb_read_record_again']\"></span> <span class=text v-else v-text=\"i18nModel['reb_click_record']\"></span></p><p class=btnbox v-if=question.myRecordAuio><a href=javascript:; class=\"contrbtn btn03\" :class={active:myRecordReadingActive} @click=myRecordReading><svg class=mobile-process version=1.1 xmlns=http://www.w3.org/2000/svg viewBox=0,0,100,100><circle class=circleicon cx=50 cy=50 r=42></circle><circle :style={strokeDasharray:progress} class=process cx=50 cy=50 r=48 stroke=#fe9700 stroke-width=2 fill=none></circle></svg></a><span class=text v-text=\"i18nModel['reb_my_record']\"></span></p></div><audio-player ref=audioPlayer></audio-player></div>"
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"com_m_sideboard_1 english_sider\" v-if=\"question.type == 'sentence'\"><div class=com_m_sidehead><p class=title v-text=\"i18nModel['reb_sentence_list']\"></p></div><div class=com_m_sidecon><ul class=\"word_content scrollbar_style_gray\"><li class=list v-for=\"(q,index) in questions\" @click=changeSentence(index)><a href=javascript:; class=word :class=\"{on : currentQuestionIndex == index}\"><span class=text v-text=\"(index + 1) + '.' + q.vocabulary\"></span><em class=english_score :class=sentenceScoreLevelClass(q)><span class=new_ui_text v-text=q.scoreLevel></span></em></a></li></ul></div></div>"
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=guidewrap v-if=show @click=shadeClickHandler></div>"
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports) {
+
+module.exports = "<div><div class=afubox v-show=infoShow><span class=afu></span><div class=textbox><div class=textbox_top></div><p class=\"text text-tip\"><span class=text02 v-text=content></span></p></div></div><div class=afubox v-show=errorShow><span class=afu></span><div class=textbox><div class=textbox_top></div><p class=\"text text-tip\"><span class=text02 v-text=question.evaluationErrorContent></span></p></div></div><div class=afubox :class=scoreClass(question.scoreLevel) v-show=wordShow><span class=afu></span><div class=textbox><div class=textbox_top></div><p class=text><span class=text01>score:</span> <i class=afu_a><span class=new_ui_text>A</span></i> <i class=afu_b><span class=new_ui_text>B</span></i> <i class=afu_c><span class=new_ui_text>C</span></i> <i class=afu_d><span class=new_ui_text>D</span></i> <span class=\"text02 text_ab\" v-text=\"i18nModel['reb_reading_good']\"></span> <span class=\"text02 text_c\" v-text=\"i18nModel['reb_reading_ordinary']\"></span> <span class=\"text02 text_d\" v-text=\"i18nModel['reb_reading_poor']\"></span></p></div></div><div class=\"afubox afu_sentence\" :class=scoreClass(question.scoreLevel) v-show=sentenceSectionsShow><span class=afu></span><div class=textbox><div class=textbox_top></div><p class=text><span class=text01 v-text=\"i18nModel['reb_reading_average_score']\"></span> <i class=afu_a><span class=new_ui_text>A</span></i> <i class=afu_b><span class=new_ui_text>B</span></i> <i class=afu_c><span class=new_ui_text>C</span></i> <i class=afu_d><span class=new_ui_text>D</span></i> <span class=sentence_detail><span class=detail_tit v-text=\"i18nModel['reb_fluency']\"></span> <em class=detail_con :class=detailScoreClass(question.fluencyScoreLevel) v-text=question.fluencyScoreLevel>A</em> <span class=detail_tit v-text=\"i18nModel['reb_integrity']\"></span> <em class=detail_con :class=detailScoreClass(question.integrityScoreLevel) v-text=question.integrityScoreLevel>B</em> <span class=detail_tit v-text=\"i18nModel['reb_accuracy']\"></span> <em class=detail_con :class=detailScoreClass(question.accuracyScoreLevel) v-text=question.accuracyScoreLevel>C</em></span> <span class=\"text02 text_ab\" v-text=\"i18nModel['reb_reading_good']\"></span> <span class=\"text02 text_c\" v-text=\"i18nModel['reb_reading_ordinary']\"></span> <span class=\"text02 text_d\" v-text=\"i18nModel['reb_reading_poor']\"></span></p></div></div></div>"
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=englishWord_box_2 :class=\"{englishWord_article:question.type=='sections'}\"><shade></shade><page-content></page-content><page-footer></page-footer><sentence-wrap></sentence-wrap><tip></tip></div>"
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = "<div style=\"height: 100%\" @click=viewClickHandler><shade></shade><page-content></page-content><page-footer></page-footer><tip></tip></div>"
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var AudioPlayer = (function (_super) {
+    __extends(AudioPlayer, _super);
+    function AudioPlayer() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.logger = _this.$service.services.logger;
+        _this.show = true;
+        _this.audio = null;
+        return _this;
+    }
+    AudioPlayer.prototype.mounted = function () {
+        this.audio = this.$el.querySelector(".audio_player");
+    };
+    AudioPlayer.prototype.play = function () {
+        var _this = this;
+        if (!this.audioSrc) {
+            this.logger.debug('【AudioPlayer】', '音频资源为空，无法播放');
+            return;
+        }
+        this.logger.debug('【AudioPlayer】', '播放音频:', this.audioSrc);
+        this.$nextTick(function () {
+            _this.logger.debug('this.audio值1', _this.audio);
+            console.log('this.audio', _this.audio);
+            try {
+                _this.audio.currentTime = 0;
+                _this.audio.load();
+            }
+            catch (error) { }
+            console.log('this.audio', _this.audio);
+            _this.$store.commit(types.AUDIO_END, { end: false });
+            _this.logger.debug('this.audio值2', _this.audio);
+            _this.audio.play();
+        });
+    };
+    AudioPlayer.prototype.onCanPlay = function () {
+        this.logger.debug('onCanPlay可以播放了');
+    };
+    AudioPlayer.prototype.onReadyStateChange = function (e) {
+        this.logger.debug('onreadystatechange可以播放了');
+    };
+    AudioPlayer.prototype.pause = function () {
+        this.audio.pause();
+    };
+    AudioPlayer.prototype.timeupdate = function (e) {
+        this.$store.commit(types.CHANGE_DURATION, { duration: this.audio.duration });
+        this.$store.commit(types.CHANGE_CURRENT_TIME, { currentTime: this.audio.currentTime });
+    };
+    AudioPlayer.prototype.end = function () {
+        this.$store.commit(types.AUDIO_END);
+        this.$store.commit(types.CHANGE_DURATION, { duration: 0 });
+        this.$store.commit(types.CHANGE_CURRENT_TIME, { currentTime: 0 });
+    };
+    return AudioPlayer;
+}(Vue));
+AudioPlayer = __decorate([
+    vue_class_component_1.default({
+        template: __webpack_require__(16),
+        computed: __assign({}, vuex_1.mapState({
+            audioSrc: function (state) { return state.audioPlayer.audioSrc; },
+            playState: function (state) { return state.audioPlayer.play; }
+        })),
+        watch: {
+            playState: {
+                handler: function (newValue, oldValue) {
+                    this.logger.debug('【AudioPlayer】', '音频状态切换：', newValue);
+                    newValue ? this.play() : this.pause();
+                },
+                sync: true
+            },
+            audioSrc: function (newValue) {
+                this.logger.debug('【AudioPlayer】', '音频地址变化:', newValue);
+            }
+        }
+    })
+], AudioPlayer);
+exports.default = AudioPlayer;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var Guide = (function (_super) {
+    __extends(Guide, _super);
+    function Guide() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Guide.prototype.mounted = function () {
+        var _this = this;
+        this.presenter.addEventListener('firstUseCheckCallback', ConstVariable.PresenterEventType.NATIVE_EVENT, function (data) {
+            data = typeof data === 'string' ? JSON.parse(data) : data;
+            _this.$store.commit(types.FIRST_USE_CHECK, { shouldShow: data.data.show });
+        });
+    };
+    return Guide;
+}(Vue));
+Guide = __decorate([
+    vue_class_component_1.default({
+        name: 'Guide',
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            show: function (state) { return state.guide.show; },
+            i18nModel: function (state) { return state.presenter.i18nModel; }
+        })),
+        template: __webpack_require__(17)
+    })
+], Guide);
+exports.default = Guide;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var SentenceWrap = (function (_super) {
+    __extends(SentenceWrap, _super);
+    function SentenceWrap() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    SentenceWrap.prototype.sentenceScoreLevelClass = function (ques) {
+        return _a = {},
+            _a['english_score_' + ques.scoreLevel.toLowerCase()] = ques.isEvaluated,
+            _a['score'] = ques.isEvaluated,
+            _a;
+        var _a;
+    };
+    SentenceWrap.prototype.changeSentence = function (index) {
+        this.$store.commit(types.QUESTION_CHANGE_CURRENT_QUESTION_INDEX, index);
+    };
+    return SentenceWrap;
+}(Vue));
+SentenceWrap = __decorate([
+    vue_class_component_1.default({
+        name: 'SentenceWrap',
+        computed: __assign({}, vuex_1.mapState({
+            i18nModel: function (state) { return state.presenter.i18nModel; },
+            show: function (state) { return state.guide.show; },
+            questions: function (state) { return state.question.questions; },
+            currentQuestionIndex: function (state) { return state.question.currentQuestionIndex; },
+            question: function (state) { return state.question.questions.length === 0 ? {} : state.question.questions[state.question.currentQuestionIndex]; }
+        })),
+        template: __webpack_require__(20)
+    })
+], SentenceWrap);
+exports.default = SentenceWrap;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vue_presenter_decorator_1 = __webpack_require__(9);
+var VueService = __webpack_require__(8);
+var types = __webpack_require__(0);
+var store_1 = __webpack_require__(14);
+var router_1 = __webpack_require__(10);
+var service_1 = __webpack_require__(12);
+var serviceEventHandler_1 = __webpack_require__(13);
+var recordPathParse_1 = __webpack_require__(11);
+var ReadingEvaluatingBusiness;
+(function (ReadingEvaluatingBusiness) {
+    var Presenter = (function (_super) {
+        __extends(Presenter, _super);
+        function Presenter() {
+            var _this = _super.call(this, 'ReadingEvaluatingBusiness') || this;
+            _this.metaInfo.name = 'ReadingEvaluatingBusiness';
+            _this.metaInfo.type = ConstVariable.PresenterType.FUNCTIONAL;
+            return _this;
+        }
+        Presenter.prototype._voiceServiceFilter = function () {
+            if (this.Environment.isApp) {
+                return "IcrAndroidVoiceService";
+            }
+            else if (this.QueryString['isPreview']) {
+                return "IcrPreviewVoiceService";
+            }
+            else {
+                return "IcrPCVoiceService";
+            }
+        };
+        Presenter.prototype._initService = function () {
+            var _this = this;
+            var recordOption = {
+                presenterId: 'voice_recorder',
+                instanceId: ClassroomUtils.uuid(),
+                position: {
+                    left: 0,
+                    top: 0
+                },
+                size: {
+                    width: 0,
+                    height: 0
+                },
+                initData: {
+                    initVisible: false,
+                    amplitudeStyle: 'normal'
+                }
+            };
+            this.voiceService.setContext(this);
+            this.voiceService.init();
+            this.voiceService.created(recordOption).done(function () {
+                if (_this.QueryString['isPreview'] === 'true') {
+                    _this.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: true });
+                }
+                else {
+                    _this.vueRoot.$store.dispatch(types.TIP_SHOW, {
+                        show: true,
+                        content: _this.i18nModel['reb_evaluating_service_load_success']
+                    });
+                    _this.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: false });
+                }
+            });
+        };
+        Presenter.prototype._bindEvent = function () {
+            var _this = this;
+            this.addEventListener('getQuestionAnswer', ConstVariable.PresenterEventType.NATIVE_EVENT, function (data) {
+                var result = _this._service.getResult();
+                _this.dispatchEvent('getQuestionAnswerCallback', ConstVariable.PresenterEventType.NATIVE_EVENT, result);
+            });
+        };
+        Presenter.prototype._unbindEvent = function () { };
+        Presenter.prototype._exerciseSubInfoDataParse = function (options) {
+            var _this = this;
+            this.Logger.debug("[ReadingEvaluatingBusiness][_exerciseSubInfoDataParse]\u6536\u9898\u6570\u636E\uFF1A" + JSON.stringify(options));
+            if (typeof options.subExamId !== 'string') {
+                throw new Error("subExamId不是字符串！");
+            }
+            this._audioDeferred = $.Deferred();
+            var recordSrc = recordPathParse_1.default.decode(this.vueRoot.$store.state.question.questions, options.subExamId);
+            this.voiceService.requestAudioBase64(recordSrc).done(function (eventData) {
+                _this.Logger.debug("[ReadingEvaluatingBusiness][_exerciseSubInfoDataParse]\u6536\u5230\u7684base64\u97F3\u9891\uFF1A" + JSON.stringify(eventData));
+                var answer = {
+                    data: [
+                        {
+                            type: "audio",
+                            value: eventData.data.value
+                        }
+                    ],
+                    isComplete: true
+                };
+                options.answer = JSON.stringify(answer);
+                _this._audioDeferred.resolve(options);
+            });
+            return this._audioDeferred.promise();
+        };
+        Presenter.prototype._exerciseSubInfoSuccess = function () {
+            this.Logger.debug("[ReadingEvaluatingBusiness][_exerciseSubInfoSuccess]\u63D0\u4EA4\u6210\u529F");
+        };
+        Presenter.prototype._exerciseSubInfoFail = function () {
+            this.Logger.debug("[ReadingEvaluatingBusiness][_exerciseSubInfoSuccess]\u63D0\u4EA4\u5931\u8D25");
+        };
+        Presenter.prototype.getService = function () {
+            this._service = service_1.default(this);
+            return this._service;
+        };
+        Presenter.prototype.$launch = function (option) {
+            this.Logger.debug("[ReadingEvaluatingBusiness]\u8FD0\u884C$launch\u65B9\u6CD5,\u53C2\u6570\u503C\uFF1A" + JSON.stringify(option));
+            this.i18nModel = option.lang;
+            this.serviceX = new VueService.ServiceX({
+                services: {
+                    recordService: this.voiceService,
+                    logger: this.Logger
+                }
+            });
+            this._vueRoot = new Vue({ el: '._reading_evaluating_container', service: this.serviceX, router: router_1.default, store: store_1.default(this) });
+            serviceEventHandler_1.default(this);
+            if (this.Model.scene === 'exercise') {
+                router_1.default.push('/reading_evaluating/exercise');
+            }
+            else {
+                router_1.default.push('/reading_evaluating/classroom');
+            }
+            this._bindEvent();
+            if (this.Environment.isApp) {
+                this.__interface = {
+                    exerciseSubInfoDataParse: this._exerciseSubInfoDataParse.bind(this),
+                    exerciseSubInfoSuccess: this._exerciseSubInfoSuccess.bind(this),
+                    exerciseSubInfoFail: this._exerciseSubInfoFail.bind(this)
+                };
+            }
+            if (this.QueryString['isPreview'] === 'true') {
+                this.vueRoot.$store.commit('LOCK_FOOTER_BAR', { isLock: true });
+            }
+            this._initService();
+        };
+        Presenter.prototype.$release = function () {
+            this.Logger.debug('[ReadingEvaluatingBusiness]运行$release方法');
+            this._vueRoot.$destroy();
+            this.voiceService.destroy();
+            this._unbindEvent();
+        };
+        Object.defineProperty(Presenter.prototype, "vueRoot", {
+            get: function () {
+                return this._vueRoot;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Presenter.prototype, "i18nModel", {
+            get: function () {
+                return this._i18nModel;
+            },
+            set: function (_i18nModel) {
+                this._i18nModel = _i18nModel;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Presenter;
+    }(CommonClass));
+    __decorate([
+        vue_presenter_decorator_1.autoWired({ namespace: 'voiceservice', filter: '_voiceServiceFilter' })
+    ], Presenter.prototype, "voiceService", void 0);
+    ReadingEvaluatingBusiness.Presenter = Presenter;
+})(ReadingEvaluatingBusiness || (ReadingEvaluatingBusiness = {}));
+window['AddonReadingEvaluatingBusiness_create'] = function () {
+    return new ReadingEvaluatingBusiness.Presenter();
+};
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = (function () {
+    var keyMap = {
+        "ih": "ɪ",
+        "ax": "ə",
+        "oh": "ɒ",
+        "uh": "ʊ",
+        "ah": "ʌ",
+        "eh": "e",
+        "ae": "æ",
+        "iy": "iː",
+        "er": "ɜː",
+        "axr": "ɚ",
+        "ao": "ɔː",
+        "uw": "uː",
+        "aa": "ɑː",
+        "ey": "eɪ",
+        "ay": "aɪ",
+        "oy": "ɔɪ",
+        "aw": "aʊ",
+        "ow": "әʊ",
+        "ia": "ɪə",
+        "ea": "ɛә",
+        "ua": "ʊə",
+        "p": "p",
+        "b": "b",
+        "t": "t",
+        "d": "d",
+        "k": "k",
+        "g": "g",
+        "l": "l",
+        "r": "r",
+        "m": "m",
+        "n": "n",
+        "ng": "ŋ",
+        "hh": "h",
+        "s": "s",
+        "z": "z",
+        "th": "θ",
+        "dh": "ð",
+        "f": "f",
+        "v": "v",
+        "w": "w",
+        "y": "j",
+        "sh": "ʃ",
+        "zh": "ʒ",
+        "ch": "tʃ",
+        "jh": "dʒ"
+    };
+    return {
+        getPhoneMap: function (key) {
+            if (typeof keyMap[key] === 'string') {
+                return keyMap[key];
+            }
+            return key;
+        }
+    };
+})();
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var audioPlayer = function (presenter) {
+    return {
+        state: {
+            audioSrc: '',
+            play: false,
+            end: false,
+            duration: 0,
+            currentTime: 0
+        },
+        mutations: (_a = {},
+            _a[types.CHANGE_AUDIO_SRC] = function (state, _a) {
+                var audioSrc = _a.audioSrc, _b = _a.play, play = _b === void 0 ? false : _b, _c = _a.end, end = _c === void 0 ? false : _c;
+                state.audioSrc = audioSrc;
+                state.play = play;
+                state.end = end;
+            },
+            _a[types.AUDIO_PLAY] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).play, play = _b === void 0 ? true : _b;
+                state.play = play;
+                state.end = false;
+                state.duration = 0;
+                state.currentTime = 0;
+            },
+            _a[types.AUDIO_END] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).end, end = _b === void 0 ? true : _b;
+                state.play = false;
+                state.end = end;
+                state.duration = 0;
+                state.currentTime = 0;
+            },
+            _a[types.CHANGE_DURATION] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).duration, duration = _b === void 0 ? 0 : _b;
+                state.duration = duration;
+            },
+            _a[types.CHANGE_CURRENT_TIME] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).currentTime, currentTime = _b === void 0 ? 0 : _b;
+                state.currentTime = currentTime;
+            },
+            _a)
+    };
+    var _a;
+};
+exports.default = audioPlayer;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var guide = function (presenter) {
+    return {
+        state: {
+            presenter: presenter,
+            show: false,
+            shouldShow: false
+        },
+        mutations: (_a = {},
+            _a[types.FIRST_USE_CHECK] = function (state, _a) {
+                var _b = _a === void 0 ? {} : _a, _c = _b.show, show = _c === void 0 ? false : _c, _d = _b.shouldShow, shouldShow = _d === void 0 ? false : _d;
+                state.show = show;
+                state.shouldShow = shouldShow;
+            },
+            _a)
+    };
+    var _a;
+};
+exports.default = guide;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var question = function (presneter) {
+    return {
+        state: {
+            currentQuestionIndex: 0,
+            questions: []
+        },
+        mutations: (_a = {},
+            _a[types.QUESTION_CHANGE_EVALUATE_VOICE_ID] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).evaluateVoiceId, evaluateVoiceId = _b === void 0 ? '' : _b;
+                state.evaluateVoiceId = evaluateVoiceId;
+            },
+            _a[types.QUESTION_INIT_DATA] = function (state, questions) {
+                state.questions = questions;
+            },
+            _a[types.QUESTION_CHANGE_DATA] = function (state, _a) {
+                var _b = _a === void 0 ? {} : _a, index = _b.index, isEvaluated = _b.isEvaluated, isEvaluatedFail = _b.isEvaluatedFail, evaluateVoiceId = _b.evaluateVoiceId, vocabulary = _b.vocabulary, wordProp = _b.wordProp, paraphrase = _b.paraphrase, phonogram = _b.phonogram, type = _b.type, standardAudio = _b.standardAudio, myRecordAuio = _b.myRecordAuio, evaluatedContent = _b.evaluatedContent, evaluatedPhonogram = _b.evaluatedPhonogram, score = _b.score, scoreLevel = _b.scoreLevel, accuracyScoreLevel = _b.accuracyScoreLevel, integrityScoreLevel = _b.integrityScoreLevel, fluencyScoreLevel = _b.fluencyScoreLevel, evaluationResult = _b.evaluationResult, evaluationErrorContent = _b.evaluationErrorContent;
+                var qIndex = index === undefined ? state.currentQuestionIndex : index;
+                state.questions[qIndex].isEvaluated = isEvaluated === undefined ? state.questions[qIndex].isEvaluated : isEvaluated;
+                state.questions[qIndex].isEvaluatedFail = isEvaluatedFail === undefined ? state.questions[qIndex].isEvaluatedFail : isEvaluatedFail;
+                state.questions[qIndex].scoreLevel = scoreLevel === undefined ? state.questions[qIndex].scoreLevel : scoreLevel;
+                state.questions[qIndex].score = score === undefined ? state.questions[qIndex].score : score;
+                state.questions[qIndex].evaluatedPhonogram = evaluatedPhonogram === undefined ? state.questions[qIndex].evaluatedPhonogram : evaluatedPhonogram;
+                state.questions[qIndex].evaluatedContent = evaluatedContent === undefined ? state.questions[qIndex].evaluatedContent : evaluatedContent;
+                state.questions[qIndex].myRecordAuio = myRecordAuio === undefined ? state.questions[qIndex].myRecordAuio : myRecordAuio;
+                state.questions[qIndex].standardAudio = standardAudio === undefined ? state.questions[qIndex].standardAudio : standardAudio;
+                state.questions[qIndex].evaluateVoiceId = evaluateVoiceId === undefined ? state.questions[qIndex].evaluateVoiceId : evaluateVoiceId;
+                state.questions[qIndex].vocabulary = vocabulary === undefined ? state.questions[qIndex].vocabulary : vocabulary;
+                state.questions[qIndex].wordProp = wordProp === undefined ? state.questions[qIndex].wordProp : wordProp;
+                state.questions[qIndex].paraphrase = paraphrase === undefined ? state.questions[qIndex].paraphrase : paraphrase;
+                state.questions[qIndex].phonogram = phonogram === undefined ? state.questions[qIndex].phonogram : phonogram;
+                state.questions[qIndex].type = type === undefined ? state.questions[qIndex].type : type;
+                state.questions[qIndex].evaluationResult = evaluationResult === undefined ? state.questions[qIndex].evaluationResult : evaluationResult;
+                state.questions[qIndex].accuracyScoreLevel = accuracyScoreLevel === undefined ? state.questions[qIndex].accuracyScoreLevel : accuracyScoreLevel;
+                state.questions[qIndex].integrityScoreLevel = integrityScoreLevel === undefined ? state.questions[qIndex].integrityScoreLevel : integrityScoreLevel;
+                state.questions[qIndex].fluencyScoreLevel = fluencyScoreLevel === undefined ? state.questions[qIndex].fluencyScoreLevel : fluencyScoreLevel;
+                state.questions[qIndex].evaluationErrorContent = evaluationErrorContent === undefined ? state.questions[qIndex].evaluationErrorContent : evaluationErrorContent;
+            },
+            _a[types.QUESTION_CHANGE_CURRENT_QUESTION_INDEX] = function (state, currentQuestionIndex) {
+                state.currentQuestionIndex = currentQuestionIndex;
+            },
+            _a)
+    };
+    var _a;
+};
+exports.default = question;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var record = function (presenter) {
+    return {
+        state: {
+            presenter: presenter,
+            demonstrationReadingActive: false,
+            recordingActive: false,
+            myRecordReadingActive: false,
+            volume: 0
+        },
+        mutations: (_a = {},
+            _a[types.RECORD_DEMONSTRATION_READING_ACTIVE] = function (state, _a) {
+                var active = (_a === void 0 ? {} : _a).active;
+                state.demonstrationReadingActive = active;
+            },
+            _a[types.RECORD_RECORDING_ACTIVE] = function (state, _a) {
+                var active = (_a === void 0 ? {} : _a).active;
+                state.recordingActive = active;
+            },
+            _a[types.RECORD_MY_RECORD_READING_ACTIVE] = function (state, _a) {
+                var active = (_a === void 0 ? {} : _a).active;
+                state.myRecordReadingActive = active;
+            },
+            _a[types.CHANGE_VOLUME] = function (state, _a) {
+                var volume = _a.volume;
+                state.volume = volume;
+            },
+            _a)
+    };
+    var _a;
+};
+exports.default = record;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var types = __webpack_require__(0);
+var tip = function (presenter) {
+    return {
+        state: {
+            presenter: presenter,
+            show: false,
+            index: -1,
+            content: '',
+            tipTimer: null
+        },
+        mutations: (_a = {},
+            _a[types.TIP_SHOW] = function (state, _a) {
+                var _b = _a === void 0 ? {} : _a, _c = _b.show, show = _c === void 0 ? true : _c, _d = _b.index, index = _d === void 0 ? -1 : _d, _e = _b.content, content = _e === void 0 ? '' : _e;
+                state.show = show;
+                state.index = index;
+                state.content = content;
+            },
+            _a[types.TIP_TIMER] = function (state, _a) {
+                var _b = (_a === void 0 ? {} : _a).timer, timer = _b === void 0 ? null : _b;
+                state.tipTimer = timer;
+            },
+            _a),
+        actions: (_b = {},
+            _b[types.TIP_SHOW] = function (_a, _b) {
+                var rootState = _a.rootState, state = _a.state, commit = _a.commit;
+                var _c = _b === void 0 ? {} : _b, _d = _c.show, show = _d === void 0 ? true : _d, _e = _c.index, index = _e === void 0 ? -1 : _e, _f = _c.content, content = _f === void 0 ? '' : _f;
+                commit(types.TIP_SHOW, { show: show, index: index, content: content });
+                if (show) {
+                    state.tipTimer && clearTimeout(state.tipTimer);
+                    var timer = setTimeout(function () {
+                        commit(types.TIP_SHOW, { show: false });
+                        commit(types.TIP_TIMER);
+                        if (rootState.guide.shouldShow) {
+                            commit(types.FIRST_USE_CHECK, {
+                                show: true,
+                                shouldShow: false
+                            });
+                        }
+                    }, 2000);
+                    commit(types.TIP_TIMER, { timer: timer });
+                }
+                else {
+                    if (rootState.guide.shouldShow) {
+                        commit(types.FIRST_USE_CHECK, {
+                            show: true,
+                            shouldShow: false
+                        });
+                    }
+                }
+            },
+            _b)
+    };
+    var _a, _b;
+};
+exports.default = tip;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var Shade_1 = __webpack_require__(6);
+var PageContent_1 = __webpack_require__(4);
+var PageFooter_1 = __webpack_require__(5);
+var SentenceWrap_1 = __webpack_require__(27);
+var Tip_1 = __webpack_require__(7);
+var ReadingEvaluatingClassroom = (function (_super) {
+    __extends(ReadingEvaluatingClassroom, _super);
+    function ReadingEvaluatingClassroom() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    return ReadingEvaluatingClassroom;
+}(Vue));
+ReadingEvaluatingClassroom = __decorate([
+    vue_class_component_1.default({
+        name: 'ReadingEvaluatingClassroom',
+        template: __webpack_require__(23),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            question: function (state) { return state.question.questions.length === 0 ? {} : state.question.questions[state.question.currentQuestionIndex]; }
+        })),
+        components: {
+            'shade': Shade_1.default,
+            'page-content': PageContent_1.default,
+            'page-footer': PageFooter_1.default,
+            'sentence-wrap': SentenceWrap_1.default,
+            'tip': Tip_1.default
+        }
+    })
+], ReadingEvaluatingClassroom);
+exports.default = ReadingEvaluatingClassroom;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Vue = __webpack_require__(1);
+var vuex_1 = __webpack_require__(2);
+var vue_class_component_1 = __webpack_require__(3);
+var types = __webpack_require__(0);
+var Shade_1 = __webpack_require__(6);
+var PageContent_1 = __webpack_require__(4);
+var PageFooter_1 = __webpack_require__(5);
+var Tip_1 = __webpack_require__(7);
+var ReadingEvaluatingPage = (function (_super) {
+    __extends(ReadingEvaluatingPage, _super);
+    function ReadingEvaluatingPage() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.logger = _this.$service.services.logger;
+        return _this;
+    }
+    ReadingEvaluatingPage.prototype.viewClickHandler = function (e) {
+        this.logger.debug('【ReadingEvaluatingPage】被点击，关闭引导提示框');
+        this.guideShow && this.$store.commit(types.FIRST_USE_CHECK, { show: false });
+        this.tipShow && this.$store.dispatch(types.TIP_SHOW, { show: false });
+    };
+    return ReadingEvaluatingPage;
+}(Vue));
+ReadingEvaluatingPage = __decorate([
+    vue_class_component_1.default({
+        name: 'ReadingEvaluatingPage',
+        template: __webpack_require__(24),
+        computed: __assign({}, vuex_1.mapState({
+            presenter: function (state) { return state.presenter; },
+            guideShow: function (state) { return state.guide.show; },
+            tipShow: function (state) { return state.tip.show; }
+        })),
+        components: {
+            'shade': Shade_1.default,
+            'page-content': PageContent_1.default,
+            'page-footer': PageFooter_1.default,
+            'tip': Tip_1.default
+        }
+    })
+], ReadingEvaluatingPage);
+exports.default = ReadingEvaluatingPage;
+
+
+/***/ })
+/******/ ]);
+//# sourceMappingURL=presenter.js.map]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/mobile/images/btn-example-active.png' />
+<file src='./resources/mobile/images/btn-example.png' />
+<file src='./resources/mobile/images/btn-myrecord-active.png' />
+<file src='./resources/mobile/images/btn-myrecord.png' />
+<file src='./resources/mobile/images/btn-record-active.png' />
+<file src='./resources/mobile/images/btn-record-active1.png' />
+<file src='./resources/mobile/images/btn-record-active2.png' />
+<file src='./resources/mobile/images/btn-record-active3.png' />
+<file src='./resources/mobile/images/btn-record-voice1.png' />
+<file src='./resources/mobile/images/btn-record-voice2.png' />
+<file src='./resources/mobile/images/btn-record-voice3.png' />
+<file src='./resources/mobile/images/btn-record.png' />
+<file src='./resources/mobile/images/guide-arrow-a.png' />
+<file src='./resources/mobile/images/guide-arrow-b.png' />
+<file src='./resources/mobile/images/guide-arrow-c.png' />
+<file src='./resources/mobile/images/guide-arrow-d.png' />
+<file src='./resources/mobile/images/guide-arrow-green.png' />
+<file src='./resources/mobile/images/guide-arrow-red.png' />
+<file src='./resources/mobile/images/guide-arrow-yellow.png' />
+<file src='./resources/mobile/images/person-score-a.png' />
+<file src='./resources/mobile/images/person-score-b.png' />
+<file src='./resources/mobile/images/person-score-c.png' />
+<file src='./resources/mobile/images/person-score-d.png' />
+<file src='./resources/mobile/images/person-score1.png' />
+<file src='./resources/mobile/images/person-score2.png' />
+<file src='./resources/mobile/images/person-tip-arrow.png' />
+<file src='./resources/mobile/images/person-tip.png' />
+
+
+</resources>
+
+</addon>

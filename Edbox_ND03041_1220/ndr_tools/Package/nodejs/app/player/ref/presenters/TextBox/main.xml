@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TextBox'>
+  <properties>
+    <property name="text" displayName="text" type="html" isLocalized="false" />
+    <property name="isVertical" displayName="isVertical" type="boolean" isLocalized="false" />
+  </properties>
+
+  <css>
+
+    .textbox-text{
+    width:100%;
+    word-wrap: break-word;
+    overflow: hidden;
+    line-height: 1.1;
+    font-size: 30px;
+    }
+
+    .textbox-text > p:first-child{
+    margin: 0;
+    }
+	.text-vertical ol,.text-vertical ul{
+	  padding-top: 10px;
+	  list-style-position: inside;
+    }
+    .text-vertical{
+    -webkit-text-orientation: upright;
+    -moz-text-orientation: upright;
+    -ms-text-orientation: upright;
+    text-orientation: upright;
+    -ms-writing-mode: tb-rl;
+    -webkit-writing-mode: vertical-rl;
+    -moz-writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+    }
+    .text-horizontal{
+    -webkit-text-orientation: leftup;
+    -moz-text-orientation: leftup;
+    -ms-text-orientation: leftup;
+    text-orientation: leftup;
+    -ms-writing-mode: rl-tb;
+    -webkit-
+    writing-mode: horizontal-tb;
+    -moz-writing-mode: horizontal-tb;
+    -ms-writing-mode: horizontal-tb;
+    writing-mode: horizontal-tb;
+    }
+
+  </css>
+
+  <view>
+    &lt;div&lt;/div&gt;
+  </view>
+
+  <preview>
+    &lt;div style=&quot;width:100%; &quot;&gt;&lt;/div&gt;
+  </preview>
+
+  <presenter>
+    function AddonTextBox_create() {
+
+    var text;
+
+    var presenterLogic = function (view, model, isPreview) {
+    };
+
+    var presenter = function () { };
+
+    presenter.createPreview = function (view, model) {
+    presenter.initialize(view, model, false);
+    };
+
+    presenter.run = function (view, model) {
+    presenter.initialize(view, model, false);
+    presenterLogic(view, model, false);
+    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    };
+
+    presenter.initialize = function (view, model, isPreview) {
+    var upgradedModel = presenter.upgradeModel(model);
+
+    presenter.$view = $(view);
+
+    createView(view, upgradedModel, isPreview);
+    };
+
+    presenter.upgradeModel = function (model) {
+    return presenter.upgradeEnableLoop(model);
+    };
+
+    presenter.upgradeEnableLoop = function (model) {
+    var upgradedModel = {};
+    $.extend(true, upgradedModel, model); // Deep copy of model object
+
+    if (!upgradedModel[&quot;enableLoop&quot;]) {
+    upgradedModel[&quot;enableLoop&quot;] = &quot;&quot;;
+    }
+
+    return upgradedModel;
+    };
+
+    function createView(view, model, isPreview) {
+    var isVertical = model.isVertical == 'true';
+    var cssclass= isVertical ? "text-vertical":"text-horizontal";
+    text = model.text;
+    $(view).html(text);
+    $(view).addClass(cssclass);
+    $(view).addClass("textbox-text");
+    }
+
+    return presenter;
+    }
+
+  </presenter>
+  <resources>
+  </resources></addon>

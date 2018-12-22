@@ -1,0 +1,266 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <script src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script>
+    <script src="jquery.inputevent.js"></script>
+    <style>
+        .mark_punctuation {
+            border: solid 1px green;
+            margin-right: 3px;
+            margin-left: 3px;
+            cursor:pointer;
+        }
+        .mark_punctuation.as_answer{
+            border: solid 1px red;
+        }
+        .mark_punctuation:after{
+            content: " "
+        }
+    </style>
+
+<head>
+<body>
+
+<div id="input" class="text" style="width: 300px;" contenteditable="true">
+    "I am a boy".replace("boy","girl"),输出："I am a
+</div>
+
+<input type="button" onclick="text()" value="处理" style="margin: 5px;"/>
+<input type="button" onclick="saveCursor()" value="保存光标" style="margin: 5px;"/>
+<input type="button" onclick="resetCursor()" value="恢复光标" style="margin: 5px;"/>
+
+<p>结果:<span class="size"></span>/200</p>
+
+<div class="result" style="width: 300px;" contenteditable="true">
+首先对于第一个参数为字符串的我们不再需要多说"I am a boy".replace("boy","girl"),输出："I am a
+    girl"。在这里想说的是第一个参数为正则的情形。对于正则表达式来说首先会根据是否全局的（全局//g）决定替换行为，如果是全部的则替换全部替换，非全局的只有替换首个匹配的字符串。
+</div>
+
+
+<script type="text/javascript">
+
+    /**
+     * 是否包含全角字符
+     */
+    function hasDBC(str) {
+        for (var i = 0; i < str.length; i++) {
+            var strCode = str.charCodeAt(i);
+            if ((strCode > 65248) || (strCode == 12288)) {
+                return true;
+            }
+        }
+    }
+
+    /**
+     * 转全角字符
+     */
+    function toDBC(str) {
+        var result = "";
+        var len = str.length;
+        for (var i = 0; i < len; i++) {
+            var cCode = str.charCodeAt(i);
+            //全角与半角相差（除空格外）：65248(十进制)
+            cCode = (cCode >= 0x0021 && cCode <= 0x007E) ? (cCode + 65248) : cCode;
+            //处理空格
+            cCode = (cCode == 0x0020) ? 0x03000 : cCode;
+            result += String.fromCharCode(cCode);
+        }
+        return result;
+    }
+
+    /**
+     * 转半角字符并将英文标点转换成中文标点
+     */
+    function toSBC(str) {
+        var result = "";
+        var len = str.length;
+        var tmp  = '';
+        for (var i = 0; i < len; i++) {
+            var cCode = str.charCodeAt(i);           
+            if(String.fromCharCode(cCode) == cursorCharacter){
+                result += cursorCharacter;
+            }
+            else{
+                //全角与半角相差（除空格外）：65248（十进制）
+                cCode = (cCode >= 0xFF01 && cCode <= 0xFF5E) ? (cCode - 65248) : cCode;
+                //处理空格
+                cCode = (cCode == 0x03000) ? 0x0020 : cCode;
+                //result += String.fromCharCode(cCode);
+                tmp = String.fromCharCode(cCode);
+                //console.log(tmp,toChinesePunctuation(tmp));
+                //将英文标点转化成中文标点
+                tmp = toChinesePunctuation(tmp) || tmp;
+                result += tmp;
+            }
+            
+        }
+        return result;
+    }
+
+    /**
+     * 半角英文标点转化成半角中文标点
+     */
+    function toChinesePunctuation(str) {
+        var enPuncations = [",",".",":",";","?","!","'","\""],
+            cnPuncations = ["，","。","：","；","？","！","’","”"];
+
+        for (var i = 0; i < enPuncations.length; i++) {
+           if(str == enPuncations[i]){
+               return cnPuncations[i];
+           }
+        }
+    }
+
+    function formatText(input){
+        return toSBC(input);
+    }
+
+    /**
+     * 将半角的标点符号转化成全角的标点符号
+     */
+    function formatPunctuation(input) {
+        var pReg = /[\u0021|\u0022|\u0023|\u0024|\u0025|\u0026|\u0027|\u0028|\u0029|\u002a|\u002b|\u002c|\u002d|\u002e|\u002f|\u003a|\u003b|\u003c|\u003d|\u003e|\u003f|\u0040|\u005b|\u005c|\u005d|\u005e|\u005f|\u0060|\u007b|\u007c|\u007d|\u007e]/g;
+        return input.replace(pReg, function (p) {
+            return toDBC(p);
+        });
+    }
+
+    /**
+     * 标记出全部的中文标点符号
+     */
+    function markPunctuation(input) {
+        //。 ？ ！ ， 、 ； ： “ ” ‘ ’ （ ） 《 》 〈 〉 【 】 『 』 「 」 ﹃ ﹄ 〔 〕 … — ～ ? ￥
+        var pReg =　/[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/g;
+        return input.replace(pReg, function (p) {
+            //console.log(p,p.charCodeAt(0).toString(16));
+            return "<span class='mark_punctuation' contenteditable='false'>" + p + "</span>";
+        });
+    }
+   
+    $(function(){    
+        var element = $('.text');   
+        element.bind("keydown", function(event) {            
+            if(event.keyCode == 229){
+                nohandle = true;
+            }
+            else{
+                nohandle = false;            
+            }
+        });      
+        element.bind("input", function(event) {              
+            if(!nohandle){
+                text();
+            }else{
+                var selection = window.getSelection();
+                if(selection&&selection.rangeCount>0){
+                    var range = selection.getRangeAt(0);        
+                    var differ = range.endOffset-range.startOffset;
+                    if(differ == 0){
+                        //console.log("handle chinese input ");
+                        text();
+                    }
+                }
+            }            
+        });
+        text();
+    });
+     
+
+    function text() {        
+        saveCursor();
+        var text = $('.text');     
+        handleElement(text[0]);        
+        resetCursor();  
+        $(".text .mark_punctuation").unbind("click");        
+        $(".text .mark_punctuation").click(function(){           
+            if($(this).hasClass("as_answer")){
+                $(this).removeClass("as_answer");
+            }
+            else{
+                $(this).addClass("as_answer");
+            }
+        });        
+        $(".size").html(text.text().trim().length);
+    }
+    
+    function handleElement(parent){
+        var children = parent.childNodes;
+        for(var i=0;i<children.length;i++){
+            if(children[i].nodeType==1){  
+                if($(children[i]).hasClass('mark_punctuation')===false){
+                    //element
+                    handleElement(children[i]);                    
+                }
+                
+            }
+            //text node 
+            else if(children[i].nodeType==3){     
+                var text = children[i].data;
+                text = formatText(text);
+                var result = markPunctuation(text);
+                if(result.indexOf("<span")==-1){
+                    children[i].data = result;
+                }
+                else{
+                    var ele = $("<span></span>").html(result);
+                    $(children[i]).replaceWith(ele);
+                }               
+            }   
+        }
+    }
+    var cursorCharacter= "\uF155";    
+    function saveCursor(){
+        var selection = window.getSelection();
+        if(selection&&selection.rangeCount>0){
+            var range = selection.getRangeAt(0);      
+            if(range.endContainer.data){
+                range.endContainer.data = range.endContainer.data.substring(0,range.endOffset)+cursorCharacter+range.endContainer.data.substring(range.endOffset);        
+            }            
+        }        
+    }
+    function findCursorChild(parent){       
+        if(!parent){
+            return null;
+        }
+        var children = parent.childNodes;
+        for(var i=0;i<children.length;i++){
+            if(children[i].nodeType==1){                
+                //element
+                var result = findCursorChild(children[i]);
+                if(result){
+                    return result;
+                }
+            }
+            //text node 
+            else if(children[i].nodeType==3&&children[i].data.indexOf(cursorCharacter)!=-1){     
+                return children[i];
+            }   
+        }
+        return null;
+    }
+    function resetCursor(){
+        var container = $('.text');
+        var cursorElement = findCursorChild(container[0]);
+        if(cursorElement){            
+            var range = document.createRange();   
+            var text = cursorElement.data;            
+            var index = text.indexOf(cursorCharacter);
+            text = text.replace(cursorCharacter,'');
+            cursorElement.data = text;
+            range.setStart(cursorElement,index);
+            range.collapse(true);  
+            var selection = window.getSelection();
+            selection.removeAllRanges();            
+            selection.addRange(range);             
+        }
+        /*
+        
+        */
+    }
+    
+
+</script>
+
+</body>
+
+</html>

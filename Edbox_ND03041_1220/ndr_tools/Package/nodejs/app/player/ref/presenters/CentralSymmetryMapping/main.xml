@@ -1,0 +1,1984 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="false"/><property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="tools_common" version="1.3.0"/><javaScript name="snap_svg" version="1.0.0"/><javaScript name="lodash" version="4.11.1"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .centerSymmertryMapping{position:relative;width:100%;height:100%;background:#bfd3e2;text-align:center;overflow:hidden}.exam_skin_wood .centerSymmertryMapping .com_popTips_content_text{text-align:center}.exam_skin_wood .centerSymmertryMapping_bd{position:absolute;top:2.66667em;left:4em;right:4em;bottom:5.75em;text-align:right}.exam_skin_wood .centerSymmertryMapping_bd:after{content:"";display:inline-block;vertical-align:middle;width:0;height:100%}.exam_skin_wood .centerSymmertryMapping_ft{position:absolute;left:0;right:0;bottom:0;padding:0 4.16667em;height:5.75em;background:#cfdee9;z-index:30}.exam_skin_wood .centerSymmertryMapping_main{position:absolute;left:0;top:0;width:100%;height:100%;overflow:hidden}.exam_skin_wood .centerSymmertryMapping_scale{position:absolute;right:9.5em;bottom:8.2em;white-space:nowrap;margin-right:.5em}.exam_skin_wood .centerSymmertryMapping_scale .csm_tool_sacle_btn{display:inline-block;width:2em;height:2em;background-position:50%;background-repeat:no-repeat;background-size:1.91667em auto;margin-right:.5em}.exam_skin_wood .centerSymmertryMapping_scale .csm_tool_sacle_btn .ui_btn_active,.exam_skin_wood .centerSymmertryMapping_scale .csm_tool_sacle_btn:active{opacity:.8}.exam_skin_wood .centerSymmertryMapping_scale .csm_tool_sacle_btn.click_disabled{opacity:.4}.exam_skin_wood .centerSymmertryMapping_scale .zoom_out{background-image:url(resources/wood/images/icon_tool_szo.png)}.exam_skin_wood .centerSymmertryMapping_scale .zoom_in{background-image:url(resources/wood/images/icon_tool_szi.png)}.exam_skin_wood .centerSymmertryMapping_side{position:relative;display:inline-block;vertical-align:middle;width:7.33333em;overflow:hidden;border-radius:.5em;margin-right:2em}.exam_skin_wood .centerSymmertryMapping_mode_list{background:#b0c9dc;cursor:pointer}.exam_skin_wood .centerSymmertryMapping_mode_list .mode_pic{height:6.58333em;margin:0 1.16667em;border-bottom:1px solid #7f9cb2;background-position:50%;background-repeat:no-repeat}.exam_skin_wood .centerSymmertryMapping_mode_list .mode_pic.mode_item1{background-image:url(resources/wood/images/icon_tool_m1.png);background-size:3.125em auto}.exam_skin_wood .centerSymmertryMapping_mode_list .mode_pic.mode_item2{background-image:url(resources/wood/images/icon_tool_m2.png);background-size:3.125em auto}.exam_skin_wood .centerSymmertryMapping_mode_list .mode_pic.mode_item3{background-image:url(resources/wood/images/icon_tool_m3.png);background-size:3.125em auto}.exam_skin_wood .centerSymmertryMapping_mode_list.on{background:#95b7d1}.exam_skin_wood .centerSymmertryMapping_mode_list:last-child .mode_pic{border:none}.exam_skin_wood .centerSymmertryMapping_foot_box{height:5.75em;text-align:center}.exam_skin_wood .centerSymmertryMapping_ul_add{display:inline-block;padding-top:.5em;position:relative;height:100%;vertical-align:top;width:39%}.exam_skin_wood .centerSymmertryMapping_ul_add:after{content:"";position:absolute;width:1px;background:#e7f3fc;border-right:1px solid #b3c1cb;top:.5em;bottom:.5em;right:-.5em}.exam_skin_wood .centerSymmertryMapping_ul_add .centerSymmertryMapping_list_box{width:50%;float:left}.exam_skin_wood .centerSymmertryMapping_ul_nor{display:inline-block;padding-top:.5em;height:100%;vertical-align:top;width:60%}.exam_skin_wood .centerSymmertryMapping_list_box{display:inline-block;width:32%}.exam_skin_wood .centerSymmertryMapping_list_box .tool_operate_bar{display:inline-block;min-width:5em}.exam_skin_wood .centerSymmertryMapping_pop{position:absolute;left:0;top:0;right:0;bottom:0;text-align:center;z-index:1009}.exam_skin_wood .centerSymmertryMapping_pop.pop_has_mask{background:rgba(0,0,0,.4)}.exam_skin_wood .centerSymmertryMapping_pop:after{display:inline-block;width:0;height:100%;content:"";vertical-align:middle}.exam_skin_wood .centerSymmertryMapping_pop_mask{position:absolute;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:1001}.exam_skin_wood .centerSymmertryMapping_pop_main{width:57.5em;height:38em;display:inline-block;vertical-align:middle;background:rgba(242,246,249,.95);border-radius:.5em}.exam_skin_wood .centerSymmertryMapping_pop_hd{margin:1.5em 1em;text-align:center}.exam_skin_wood .centerSymmertryMapping_pop_hd .csm_tool_txt{color:#000;font-size:1.75em}.exam_skin_wood .centerSymmertryMapping_pop_hd .spolr_ntm_txt_ajust{vertical-align:middle;display:inline-block;margin-top:-.35em}.exam_skin_wood .centerSymmertryMapping_pop_bd{height:27em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_box{padding:1em 0 0 5.5em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list{width:25em;float:left;position:relative;padding-left:11em;height:14em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list.guide_list_nmu1 .centerSm_guide_list_pic{background-image:url(resources/wood/images/icon_tg_01.png);background-position:50%;background-size:3.25em auto}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list.guide_list_nmu2 .centerSm_guide_list_pic{background-image:url(resources/wood/images/icon_tg_02.png);background-position:50%;background-size:8.75em auto}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list.guide_list_nmu3 .centerSm_guide_list_pic{background-image:url(resources/wood/images/icon_tg_03.png);background-position:50%;background-size:9.70833em auto}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list.guide_list_nmu4 .centerSm_guide_list_pic{background-image:url(resources/wood/images/icon_tg_04.png);background-position:50%;background-size:2.79167em auto}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list_pic{position:absolute;left:0;top:0;width:10.41667em;height:10.41667em;border:1px solid #95b7d1;background-color:#bfd3e2;background-repeat:no-repeat;border-radius:.16667em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_list_txt{text-align:left;position:relative;padding:0 1.75em;margin-top:1.75em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_num{position:absolute;left:0;top:.08333em;width:1.33333em;height:1.33333em;background:#95b7d1;border-radius:50%;text-align:center;line-height:1.33333em}.exam_skin_wood .centerSymmertryMapping_pop_bd .centerSm_guide_num .num_txt{font-size:1.08333em;color:#fff}.exam_skin_wood .centerSymmertryMapping_pop_bd .csm_tool_txt{font-size:1.08333em;line-height:1.5;word-break:break-word}.exam_skin_wood .centerSymmertryMapping_pop_ft{padding:1.5em 1em;text-align:center}.exam_skin_wood .centerSymmertryMapping_pop_ft .csm_toolpop_btn{height:3em;line-height:3em;min-width:10em}.exam_skin_wood .centerSymmertryMapping_pop_ft .btns-primary-txt{font-size:1.5em}.typefaces_long .exam_skin_wood .centerSymmertryMapping .tool_operate_bar .tool_operate_imgcnt{height:2.91667em}.typefaces_long .exam_skin_wood .centerSymmertryMapping .com_popTips_content_txt{max-width:68em}.typefaces_long .exam_skin_wood .centerSymmertryMapping .com_popTips_content_txt .cptc_txt{text-align:center}.typefaces_ru_RU .exam_skin_wood .centerSymmertryMapping .tool_operate_bar .tool_operate_imgcnt{height:2.91667em}.typefaces_ru_RU .exam_skin_wood .centerSymmertryMapping .com_popTips_content_txt{max-width:68em}.typefaces_ru_RU .exam_skin_wood .centerSymmertryMapping .com_popTips_content_txt .cptc_txt{text-align:center}.exam_skin_wood .comTips_ui_box.arrow_left{margin-left:6em;margin-top:.5em}.exam_skin_wood .comTips_ui_box.arrow_right{margin-left:1em;margin-top:.5em}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="centerSymmertryMapping"><div class="centerSymmertryMapping_bd"><div class="centerSymmertryMapping_main"><div class="js_csm_draw" style="height:100%"><div class="js_csm_moveCenter" style="height:100%"><div class="js_csm_move" style="height:100%"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="js_csm_svg" viewBox="0 0 1296 658" style="width: 100%;height: 100%"/></div></div></div></div><div class="centerSymmertryMapping_side"><ul class="centerSymmertryMapping_mode_ul js_csm_rightbar"><li class="centerSymmertryMapping_mode_list" data-bind="css:{'on':buttonStatus.currentSet() == 'line'},click:chooseSet.bind($data,'line')"><div class="mode_pic mode_item1"></div></li><li class="centerSymmertryMapping_mode_list" data-bind="css:{'on':buttonStatus.currentSet() == 'square'},click:chooseSet.bind($data,'square')"><div class="mode_pic mode_item2"></div></li><li class="centerSymmertryMapping_mode_list" data-bind="css:{'on':buttonStatus.currentSet() == 'custom'},click:chooseSet.bind($data,'custom')"><div class="mode_pic mode_item3"></div></li></ul></div><div class="centerSymmertryMapping_scale" data-bind="css:{'hide_dom':!buttonStatus.currentZoom.show()}"><a href="javascript:;" class="csm_tool_sacle_btn zoom_out" data-bind="css:{'click_disabled':!buttonStatus.currentZoom.smallActive()},click:buttonStatus.currentZoom.small.bind($data)"></a> <a href="javascript:;" class="csm_tool_sacle_btn zoom_in" data-bind="css:{'click_disabled':!buttonStatus.currentZoom.bigActive()},click:buttonStatus.currentZoom.big.bind($data)"></a></div></div><div class="centerSymmertryMapping_ft"><div class="centerSymmertryMapping_foot_box"><ul class="centerSymmertryMapping_ul_add" data-bind="css:{'hide_dom':buttonStatus.currentSet() != 'custom'}"><li class="centerSymmertryMapping_list_box"><a href="javascript:;" class="tool_operate_bar" data-bind="css:{'click_disabled':!buttonStatus.currentPen(),'ui_btn_active':buttonStatus.currentPenActive()},click:pen.bind($data)"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_pencil"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.pen()"></span></a></li><li class="centerSymmertryMapping_list_box"><a href="javascript:;" class="tool_operate_bar" data-bind="css:{'click_disabled':!buttonStatus.currentClear()},click:clear.bind($data,false)"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_empty"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.penClear()"></span></a></li></ul><ul class="centerSymmertryMapping_ul_nor"><li class="centerSymmertryMapping_list_box"><a href="javascript:;" class="tool_operate_bar" data-bind="css:{'click_disabled':!buttonStatus.currentDraw()},click:draw.bind($data)"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_mapping"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.draw()"></span></a></li><li class="centerSymmertryMapping_list_box"><a href="javascript:;" class="tool_operate_bar" data-bind="css:{'click_disabled':!buttonStatus.currentCheck()},click:check.bind($data)"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_verify"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.check()"></span></a></li><li class="centerSymmertryMapping_list_box"><a href="javascript:;" class="tool_operate_bar" data-bind="css:{'click_disabled':!buttonStatus.currentReset()},click:reset.bind($data)"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_reset"></i> </span><span class="tool_operate_text" data-bind="text:i18nText.reset()"></span></a></li></ul></div></div><div class="centerSymmertryMapping_pop pop_has_mask js_csm_guid" data-bind="css:{'hide_dom':!dialog_guid.show()}"><div class="centerSymmertryMapping_pop_main"><div class="centerSymmertryMapping_pop_hd"><span class="csm_tool_txt" data-bind="text:i18nText.introduction()"></span></div><div class="centerSymmertryMapping_pop_bd"><ul class="centerSm_guide_box"><li class="centerSm_guide_list guide_list_nmu1"><div class="centerSm_guide_list_pic"></div><div class="centerSm_guide_list_txt"><span class="centerSm_guide_num"><span class="num_txt">1</span></span> <span class="csm_tool_txt" data-bind="text:i18nText.step1()"></span></div></li><li class="centerSm_guide_list guide_list_nmu2"><div class="centerSm_guide_list_pic"></div><div class="centerSm_guide_list_txt"><span class="centerSm_guide_num"><span class="num_txt">2</span></span> <span class="csm_tool_txt" data-bind="text:i18nText.step2()"></span></div></li><li class="centerSm_guide_list guide_list_nmu3"><div class="centerSm_guide_list_pic"></div><div class="centerSm_guide_list_txt"><span class="centerSm_guide_num"><span class="num_txt">3</span></span> <span class="csm_tool_txt" data-bind="text:i18nText.step3()"></span></div></li><li class="centerSm_guide_list guide_list_nmu4"><div class="centerSm_guide_list_pic"></div><div class="centerSm_guide_list_txt"><span class="centerSm_guide_num"><span class="num_txt">4</span></span> <span class="csm_tool_txt" data-bind="text:i18nText.step4()"></span></div></li></ul></div><div class="centerSymmertryMapping_pop_ft"><a class="com_btns btns-primary csm_toolpop_btn" href="javascript:;" data-bind="click:dialog_guid.sure.bind($data)"><span class="btns-primary-txt" data-bind="text:i18nText.makeSure()"></span></a></div></div></div><div class="comTips_ui_box arrow_left js_csm_arrowtip" data-bind="css:{'arrow_left':start_tip.direct() == 'left','arrow_right':start_tip.direct() == 'right','hide_dom':!start_tip.show()},style:{'left':start_tip.left(),'top':start_tip.top()}"><div class="comTips_ui_box_bg"></div><div class="comTips_ui_box_txt"><span data-bind="text:start_tip.text()"></span></div></div><div class="com_popTips_wrapper js_csm_centertip" data-bind="css:{'hide_dom':!text_tip.show()}"><div class="com_popTips_content_txt"><span class="cptc_txt" data-bind="text:text_tip.text()"></span></div></div><div class="com_popTips_wrapper js_csm_dialog" data-bind="css:{'hide_dom':!dialog_tip.show()}"><div class="com_popTips_content"><div class="com_popTips_content_bd"><div class="com_popTips_content_text"><span class="cptc_txt" data-bind="text:i18nText.clearReDraw()"></span></div></div><div class="com_popTips_content_ft"><a class="com_btns btns-primary" href="javascript:;" data-bind="click:dialog_tip.sure.bind($data)"><span class="btns-primary-txt" data-bind="text:i18nText.sure()"></span> </a><a class="com_btns btns-primary" href="javascript:;" data-bind="click:dialog_tip.cancel.bind($data)"><span class="btns-primary-txt" data-bind="text:i18nText.cancel()"></span></a></div></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Service = __webpack_require__(1);
+
+	var _Service2 = _interopRequireDefault(_Service);
+
+	var _Config = __webpack_require__(2);
+
+	var _I18nModel = __webpack_require__(3);
+
+	var _I18nModel2 = _interopRequireDefault(_I18nModel);
+
+	var _ViewModel = __webpack_require__(4);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	var _OperateAction = __webpack_require__(9);
+
+	var _OperateAction2 = _interopRequireDefault(_OperateAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  // 继承了BasicPresenter，可以简单的使用已经封装好的功能，是代码更简洁
+	  var Presenter = BasicPresenter.extend({
+	    // 该信息与国际化文件的命名获取相关，需要注意名称大小写及拼写
+	    metaInfo: {
+	      name: 'CentralSymmetryMapping',
+	      type: PresenterType.PRESENTER_COMPONENT
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	      this.config = (0, _Config.getConfig)();
+	      this.viewModel = new _ViewModel2.default(this);
+	      this.i18nModel = _I18nModel2.default;
+	    },
+	    // 获取完整地址前缀
+	    setBasePath: function setBasePath(path) {
+	      this.basePath = path;
+	    },
+	    // SubjectToolLauncher通过该接口获取服务，实现调用如：国际化接口
+	    getService: function getService() {
+	      return new _Service2.default(this);
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      var me = this;
+	      me.initData(view, model);
+	      me.initI18n();
+	      ko.applyBindings(this.viewModel, me.$view[0]);
+	    },
+	    __interface: {
+	      resizeScreen: function resizeScreen(data) {
+	        var me = this;
+	        me.config.ratio.h = me.$svgContainer.width() / me.config.showSetting.toolWidth;
+	        me.config.ratio.v = me.$svgContainer.height() / me.config.showSetting.toolHeight;
+	        me.moveRatio = {
+	          h: 1 - me.config.showSetting.toolWidth / me.$svgContainer.width(),
+	          v: 1 - me.config.showSetting.toolHeight / me.$svgContainer.height()
+	        };
+	        me.viewModel.start_tip.left(parseFloat(me.viewModel.start_tip.left()) * eval(data.ratio) + 'px');
+	        me.viewModel.start_tip.top(parseFloat(me.viewModel.start_tip.top()) * eval(data.ratio) + 'px');
+	      }
+	    },
+	    initData: function initData(view, model) {
+	      var me = this;
+	      me.$view = $(view);
+	      me.model = model;
+	      me.snap = Snap('#js_csm_svg');
+	      me.$svgContainer = me.$view.find('#js_csm_svg');
+	      me.rect = me.snap.rect(0, 0, me.config.showSetting.textWidth, me.config.showSetting.textHeight, 0);
+	      me.rect.attr({
+	        fill: 'none'
+	      });
+	      me.group = me.snap.paper.g();
+	      me.group.attr({
+	        id: 'js_csm_group',
+	        transform: 'matrix(1 0 0 1 0 0)'
+	      });
+	      me.$group = me.$view.find('#js_csm_group');
+	      _OperateAction2.default._chooseSet('line', me);
+	      me.config.ratio.h = me.$svgContainer.width() / me.config.showSetting.toolWidth;
+	      me.config.ratio.v = me.$svgContainer.height() / me.config.showSetting.toolHeight;
+	      me.moveRatio = {
+	        h: 1 - me.config.showSetting.toolWidth / me.$svgContainer.width(),
+	        v: 1 - me.config.showSetting.toolHeight / me.$svgContainer.height()
+	      };
+	    },
+	    initI18n: function initI18n() {
+	      var me = this;
+	      $.each(me.viewModel.i18nText, function (k, v) {
+	        if ($.isFunction(v)) {
+	          v(me.i18nModel[k]);
+	        }
+	      });
+	    },
+	    destroy: function destroy() {}
+	  });
+	  window.AddonCentralSymmetryMapping_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Service = function () {
+	  function Service(parent) {
+	    _classCallCheck(this, Service);
+
+	    this.parent = parent;
+	  }
+	  // 获取需要同步给学生端的信息，如需编辑推送功能必须实现该接口
+
+
+	  _createClass(Service, [{
+	    key: 'getExtendData',
+	    value: function getExtendData() {
+	      return {};
+	    }
+	    // 获取题目信息，及对应配置
+
+	  }, {
+	    key: 'getQuestionInfo',
+	    value: function getQuestionInfo() {
+	      return {
+	        id: this.parent.model.question_id || '',
+	        type_code: 'CentralSymmetryMapping',
+	        type_name: '中心对称的作图',
+	        statistics_type: 'no_need',
+	        noExistStatistics: true,
+	        noNeedQuizProgress: true
+	      };
+	    }
+	  }, {
+	    key: 'setLocationProperties',
+	    value: function setLocationProperties(location) {
+	      if (location && !$.isEmptyObject(location)) {
+	        this.parent.i18nModel = location;
+	      }
+	    }
+	  }]);
+
+	  return Service;
+	}();
+
+	exports.default = Service;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.getConfig = getConfig;
+	function getConfig() {
+	  // 显示参数
+	  return { showSetting: {
+	      toolWidth: 1296,
+	      toolHeight: 658,
+	      textWidth: 40,
+	      textHeight: 50,
+	      currentZoom: 1,
+	      maxZoom: 1.5,
+	      minZoom: 0.5,
+	      hasReset: false,
+	      hasClear: false,
+	      canMoveCenter: true,
+	      movingCenter: false,
+	      canMove: false,
+	      isPlaying: false,
+	      zooming: false,
+	      showDashTime: 800,
+	      checkTime: 2000,
+	      countLetter: 0,
+	      maxPoint: 6,
+	      currentPlist: [],
+	      currentLlist: [],
+	      currentRelectData: null,
+	      initArray: [],
+	      currentArray: [],
+	      currentCenter: null,
+	      currentAnim: {},
+	      currentStep: 0,
+	      customArray: [],
+	      cPosition: null,
+	      pointR: 12,
+	      centerPointR: 14,
+	      pointType: {
+	        Point: 'Point',
+	        CenterPoint: 'CenterPoint',
+	        StartPoint: 'StartPoint'
+	      },
+	      lineType: {
+	        initLine: 'initLine',
+	        mapLine: 'mapLine',
+	        reflectLine: 'reflectLine'
+	      },
+	      equalColors: ['#e60c0c', '#e87b2b', '#158bc9', '#f7c747', '#109196', '#9d09db']
+	    },
+	    ratio: { h: 1, v: 1 },
+	    zIndex: {
+	      IndexCounter: 0,
+	      CenterPoint: 8000,
+	      CenterPoint_Text: 7500,
+	      StartPoint: 5998,
+	      StartPoint_Text: 3998,
+	      Point: 6000,
+	      Point_Text: 4000,
+	      Line: 1000,
+	      equalLine: 700,
+	      dashLine: 300
+	    }
+	  };
+	}
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  max_point_tip: '抱歉，最多选择六个点',
+	  point_center: '请确定对称中心',
+	  draw: '作图',
+	  check: '验证',
+	  reset: '重置',
+	  pen: '铅笔',
+	  penClear: '清除',
+	  introduction: '操作指引示意图',
+	  step1: '点击空白处创建点',
+	  step2: '多次点击连点成线',
+	  step3: '再次点击第一个点，完成闭合图形的创建',
+	  step4: '点击空白处创建对称中心',
+	  makeSure: '我知道了',
+	  reClick_tip: '再次点击可使图形闭合',
+	  clearReDraw: '是否清除图形重画？',
+	  cancel: '取消',
+	  sure: '清除'
+	};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (context) {
+	  return {
+	    presenter: context,
+	    chooseSet: _OperateAction2.default._chooseSet,
+	    pen: _OperateAction2.default._pen,
+	    clear: _OperateAction2.default._penClear,
+	    check: _OperateAction2.default._check,
+	    draw: _OperateAction2.default._draw,
+	    reset: _OperateAction2.default._reset,
+	    buttonStatus: {
+	      currentSet: ko.observable(''),
+	      currentDraw: ko.observable(true),
+	      currentCheck: ko.observable(false),
+	      currentReset: ko.observable(false),
+	      currentPen: ko.observable(false),
+	      currentClear: ko.observable(false),
+	      currentPenActive: ko.observable(false),
+	      currentZoom: {
+	        show: ko.observable(false),
+	        bigActive: ko.observable(false),
+	        smallActive: ko.observable(false),
+	        big: _ZoomAction2.default._zoom_in,
+	        small: _ZoomAction2.default._zoom_out
+	      }
+	    },
+	    start_tip: {
+	      direct: ko.observable('left'),
+	      show: ko.observable(false),
+	      left: ko.observable('100px'),
+	      top: ko.observable('100px'),
+	      text: ko.observable()
+	    },
+	    text_tip: {
+	      show: ko.observable(false),
+	      text: ko.observable('')
+	    },
+	    dialog_tip: {
+	      show: ko.observable(false),
+	      sure: function sure() {
+	        _OperateAction2.default._penClear(true, this);
+	        this.dialog_tip.show(false);
+	      },
+	      cancel: function cancel() {
+	        this.dialog_tip.show(false);
+	      }
+	    },
+	    dialog_guid: {
+	      show: ko.observable(false),
+	      sure: function sure() {
+	        this.dialog_guid.show(false);
+	      }
+	    },
+	    i18nText: {
+	      draw: ko.observable(),
+	      check: ko.observable(),
+	      reset: ko.observable(),
+	      pen: ko.observable(),
+	      penClear: ko.observable(),
+	      introduction: ko.observable(),
+	      step1: ko.observable(),
+	      step2: ko.observable(),
+	      step3: ko.observable(),
+	      step4: ko.observable(),
+	      makeSure: ko.observable(),
+	      reClick_tip: ko.observable(),
+	      clearReDraw: ko.observable(),
+	      cancel: ko.observable(),
+	      sure: ko.observable()
+	    }
+	  };
+	};
+
+	var _ZoomAction = __webpack_require__(5);
+
+	var _ZoomAction2 = _interopRequireDefault(_ZoomAction);
+
+	var _OperateAction = __webpack_require__(9);
+
+	var _OperateAction2 = _interopRequireDefault(_OperateAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _DrawAction = __webpack_require__(6);
+
+	var _DrawAction2 = _interopRequireDefault(_DrawAction);
+
+	var _OperateAction = __webpack_require__(9);
+
+	var _OperateAction2 = _interopRequireDefault(_OperateAction);
+
+	var _MoveAction = __webpack_require__(8);
+
+	var _MoveAction2 = _interopRequireDefault(_MoveAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var ZoomAction = {
+	  zoomDe: _.debounce(function (context) {
+	    var me = context;
+	    if (me.config.showSetting.hasReset) {
+	      return;
+	    }
+	    var array = me.config.showSetting.currentArray;
+	    _OperateAction2.default._animation(me, me.config.showSetting.currentCenter.position, array, me.config.showSetting.currentRelectData, true);
+	    for (var index = 0; index < array.length; index++) {
+	      _DrawAction2.default._drawPoint(me, array[index], null, { data: me.config.showSetting.currentPlist[index], showText: true });
+	    }
+	  }, 800, false),
+	  _zoom: function _zoom(context, scale) {
+	    var me = context;
+	    var array = me.config.showSetting.currentArray = ZoomAction._scale(me.config.showSetting.initArray, me.config.showSetting.currentCenter.position, scale);
+	    for (var index = 0; index < array.length; index++) {
+	      var data = me.config.showSetting.currentLlist[index];
+	      if (data && !$.isEmptyObject(data)) {
+	        _DrawAction2.default._drawLine(me, array[index], array[index + 1 === array.length ? 0 : index + 1], { data: data });
+	      }
+	    }
+	    _OperateAction2.default._animation(me, me.config.showSetting.currentCenter.position, array, me.config.showSetting.currentRelectData, false);
+	    for (var _index = 0; _index < array.length; _index++) {
+	      _DrawAction2.default._drawPoint(me, array[_index], null, { data: me.config.showSetting.currentPlist[_index], showText: false });
+	    }
+	    me.config.showSetting.hasReset = false;
+	    ZoomAction.zoomDe(me);
+	  },
+	  // 转换坐标
+	  _scale: function _scale(array, center, scale) {
+	    var m = new Snap.Matrix();
+	    m.scale(scale, scale, center.x, center.y);
+	    var result = [];
+	    for (var index = 0; index < array.length; index++) {
+	      result.push({ x: m.x(array[index].x, array[index].y), y: m.y(array[index].x, array[index].y) });
+	    }
+	    return result;
+	  },
+	  // 缩小
+	  _zoom_out: function _zoom_out(context) {
+	    var me = context.presenter || context;
+	    if (!me.viewModel.buttonStatus.currentZoom.smallActive()) {
+	      return;
+	    }
+	    if (me.config.showSetting.zooming) {
+	      return;
+	    }
+	    me.config.showSetting.zooming = true;
+	    me.config.showSetting.currentZoom = parseFloat((me.config.showSetting.currentZoom - 0.1).toFixed(1));
+	    if (me.config.showSetting.currentZoom >= me.config.showSetting.minZoom) {
+	      ZoomAction._zoom(me, me.config.showSetting.currentZoom);
+	      me.viewModel.buttonStatus.currentZoom.bigActive(true);
+	      if (!_MoveAction2.default._isExceedBoundary(me)) {
+	        me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	      }
+	      if (me.config.showSetting.currentZoom === me.config.showSetting.minZoom) {
+	        me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	      }
+	    } else {
+	      me.config.showSetting.currentZoom = me.config.showSetting.minZoom;
+	      me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	    }
+	    me.config.showSetting.zooming = false;
+	  },
+	  // 放大
+	  _zoom_in: function _zoom_in(context) {
+	    var me = context.presenter || context;
+	    if (!me.viewModel.buttonStatus.currentZoom.bigActive()) {
+	      return;
+	    }
+	    if (me.config.showSetting.zooming) {
+	      return;
+	    }
+	    me.config.showSetting.zooming = true;
+	    me.config.showSetting.currentZoom = parseFloat((me.config.showSetting.currentZoom + 0.1).toFixed(1));
+	    if (me.config.showSetting.currentZoom <= me.config.showSetting.maxZoom) {
+	      ZoomAction._zoom(me, me.config.showSetting.currentZoom);
+	      if (me.config.showSetting.currentZoom > me.config.showSetting.minZoom) {
+	        if (_MoveAction2.default._isExceedBoundary(me)) {
+	          me.config.showSetting.canMove = true;
+	          me.viewModel.buttonStatus.currentZoom.smallActive(true);
+	        } else {
+	          me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	        }
+	      }
+	      if (me.config.showSetting.currentZoom === me.config.showSetting.maxZoom) {
+	        me.viewModel.buttonStatus.currentZoom.bigActive(false);
+	      }
+	    } else {
+	      me.config.showSetting.currentZoom = me.config.showSetting.maxZoom;
+	      me.viewModel.buttonStatus.currentZoom.bigActive(false);
+	    }
+	    me.config.showSetting.zooming = false;
+	  }
+	};
+
+	exports.default = ZoomAction;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Utils = __webpack_require__(7);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	var _MoveAction = __webpack_require__(8);
+
+	var _MoveAction2 = _interopRequireDefault(_MoveAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DrawAction = {
+	  _customDraw: function _customDraw(me) {
+	    var $mainContent = me.$view.find('.centerSymmertryMapping_main');
+	    var drawArea = me.$view.find('.js_csm_draw');
+	    var fixPosition = false;
+	    $mainContent.off(_Utils2.default.event.start);
+	    $mainContent.bind(_Utils2.default.event.start, function (e) {
+	      var offset = $(this).offset();
+	      if (me.viewModel.start_tip.show() && !fixPosition) {
+	        fixPosition = true;
+	        me.viewModel.start_tip.left(_Utils2.default._getX(e) - offset.left + 'px');
+	        me.viewModel.start_tip.top(_Utils2.default._getY(e) - offset.top + 'px');
+	      }
+	    });
+	    drawArea.off(_Utils2.default.event.start);
+	    drawArea.bind(_Utils2.default.event.start, function (e) {
+	      var po = {
+	        x: (_Utils2.default._getX(e) - me.$svgContainer.offset().left) / me.config.ratio.h,
+	        y: (_Utils2.default._getY(e) - me.$svgContainer.offset().top) / me.config.ratio.v
+	      };
+	      if (me.config.showSetting.currentStep === 1) {
+	        var pList = me.config.showSetting.currentPlist;
+	        // 只有一个初始点时，初始点周围不可点击
+	        if (pList.length === 1 && _Utils2.default._isInsideCircle(po, pList[0].position, 60)) {
+	          return;
+	        }
+	        if (pList.length === 0 && (po.y < 50 || po.y > 620)) {
+	          return;
+	        }
+	        if (pList.length > 1) {
+	          // 是否在初始点范围内
+	          if (_Utils2.default._isInsideCircle(po, pList[0].position, 40)) {
+	            me.config.showSetting.currentLlist.push(DrawAction._drawLine(me, pList[0].position, pList[pList.length - 1].position, {
+	              immediately: true,
+	              dashType: me.config.showSetting.lineType.initLine
+	            }));
+	            pList[0].point.attr({
+	              fill: '#e06313',
+	              strokeWidth: 0,
+	              r: me.config.showSetting.pointR
+	            });
+	            _Utils2.default._updateSVGOrder(me);
+	            me.viewModel.start_tip.show(false);
+	            me.viewModel.text_tip.show(true);
+	            me.viewModel.text_tip.text(me.i18nModel.point_center);
+	            me.config.showSetting.countLetter = 0;
+	            for (var index = 0; index < me.config.showSetting.currentPlist.length; index++) {
+	              var v = me.config.showSetting.currentPlist[index];
+	              if (v && v.point) {
+	                me.config.showSetting.currentPlist[index] = DrawAction._drawPoint(me, v.position, me.config.showSetting.pointType.Point, {
+	                  hide: false,
+	                  showText: true,
+	                  text: _Utils2.default.nextChar(me),
+	                  data: { point: v.point }
+	                });
+	                me.config.showSetting.currentPlist[index].position = v.position;
+	              }
+	            }
+	            me.config.showSetting.showTipId = setTimeout(function () {
+	              me.config.showSetting.currentStep = 2;
+	              if (me.viewModel.text_tip.show()) {
+	                me.viewModel.text_tip.show(false);
+	              }
+	            }, 2000);
+	            return;
+	          }
+	          // 非初始点周边不可点击,防止太近
+	          for (var _index = 1; _index < pList.length; _index++) {
+	            if (_Utils2.default._isInsideCircle(po, pList[_index].position, 60)) {
+	              return;
+	            }
+	          }
+	        }
+	        // 最多画多少个点
+	        if (pList.length === me.config.showSetting.maxPoint) {
+	          if (!_Utils2.default._isInsideCircle(po, pList[0].position, 40)) {
+	            me.viewModel.text_tip.show(true);
+	            me.viewModel.text_tip.text(me.i18nModel.max_point_tip);
+	            setTimeout(function () {
+	              if (me.viewModel.text_tip.show()) {
+	                me.viewModel.text_tip.show(false);
+	              }
+	            }, 2000);
+	          }
+	          return;
+	        }
+	        // 画点
+	        if (pList.length < me.config.showSetting.maxPoint) {
+	          me.viewModel.buttonStatus.currentClear(true);
+	          var result = DrawAction._drawPoint(me, po, pList.length === 0 ? me.config.showSetting.pointType.StartPoint : me.config.showSetting.pointType.Point, {
+	            showText: false,
+	            text: _Utils2.default.nextChar(me)
+	          });
+	          result.position = po;
+	          pList.push(result);
+	          if (pList.length > 1) {
+	            me.config.showSetting.currentLlist.push(DrawAction._drawLine(me, pList[pList.length - 2].position, pList[pList.length - 1].position, {
+	              immediately: true,
+	              dashType: me.config.showSetting.lineType.initLine
+	            }));
+	            _Utils2.default._updateSVGOrder(me);
+	          }
+	          if (pList.length === 1) {
+	            fixPosition = false;
+	            me.viewModel.start_tip.text(me.i18nModel.reClick_tip);
+	            me.viewModel.start_tip.show(true);
+	            if (po.x > 850) {
+	              me.viewModel.start_tip.direct('right');
+	            } else {
+	              me.viewModel.start_tip.direct('left');
+	            }
+	          }
+	        }
+	      }
+	      // 画中心点
+	      if (me.config.showSetting.currentStep === 2) {
+	        me.config.showSetting.currentCenter = DrawAction._drawPoint(me, po, me.config.showSetting.pointType.CenterPoint, {
+	          showText: true,
+	          text: 'O'
+	        });
+	        me.config.showSetting.currentCenter.position = po;
+	        _MoveAction2.default._moveCenter(me);
+	        me.config.showSetting.cPosition = po;
+	        me.config.showSetting.countLetter = 0;
+	        me.viewModel.buttonStatus.currentDraw(true);
+	        me.viewModel.buttonStatus.currentPen(false);
+	        me.viewModel.buttonStatus.currentPenActive(false);
+	        me.config.showSetting.currentStep = 0;
+	        var list = me.config.showSetting.currentPlist;
+	        var array = me.config.showSetting.customArray = me.config.showSetting.currentArray = me.config.showSetting.initArray = [];
+	        if (list.length > 1 && me.config.showSetting.currentCenter) {
+	          for (var _index2 = 0; _index2 < list.length; _index2++) {
+	            array.push(list[_index2].position);
+	          }
+	        }
+	      }
+	    });
+	  },
+	  // 画点
+	  _drawPoint: function _drawPoint(me, center, zIndexType, option) {
+	    var result = {};
+	    if (!center) {
+	      return;
+	    }
+	    if (option && option.data && option.data.point) {
+	      option.data.point.attr({
+	        cx: center.x,
+	        cy: center.y
+	      });
+	      if (!option.hide) {
+	        option.data.point.attr({
+	          display: ''
+	        });
+	      }
+	      if (option.data.text) {
+	        if (option.showText) {
+	          option.data.text.attr({
+	            display: ''
+	          });
+	        } else {
+	          option.data.text.attr({
+	            display: 'none'
+	          });
+	        }
+	      }
+	      result = option.data;
+	    } else {
+	      var p = me.snap.circle(center.x, center.y, zIndexType === me.config.showSetting.pointType.Point ? me.config.showSetting.pointR : me.config.showSetting.centerPointR);
+	      me.group.add(p);
+	      _Utils2.default._updateSVGOrder(me);
+	      p.attr({
+	        'zIndex': me.config.zIndex[zIndexType] + me.GLOBAL_INDEX_COUNTER++,
+	        'shape-rendering': 'geometricPrecision'
+	      });
+	      switch (zIndexType) {
+	        case me.config.showSetting.pointType.Point:
+	          {
+	            p.attr({
+	              fill: '#e06313',
+	              strokeWidth: 0
+	            });
+	            break;
+	          }
+	        case me.config.showSetting.pointType.CenterPoint:
+	          {
+	            p.attr({
+	              fill: '#e60c0c',
+	              strokeWidth: 0
+	            });
+	            break;
+	          }
+	        case me.config.showSetting.pointType.StartPoint:
+	          {
+	            p.attr({
+	              r: '' + (me.config.showSetting.pointR - 2),
+	              fill: '#bfd3e2',
+	              strokeWidth: 4,
+	              stroke: '#e06313'
+	            });
+	            break;
+	          }
+	      }
+
+	      if (option && option.hide) {
+	        p.attr({
+	          display: 'none'
+	        });
+	      }
+	      result.point = p;
+	    }
+	    if (option && option.showText) {
+	      var textZindex = zIndexType + '_Text';
+	      if (option.data && option.data.text) {
+	        DrawAction._drawText(me, null, center, textZindex, option.hide, option.data.text);
+	      } else {
+	        result.text = DrawAction._drawText(me, option.text || 'Z', center, textZindex, option.hide);
+	        _Utils2.default._updateSVGOrder(me);
+	      }
+	    }
+	    return result;
+	  },
+	  // 画字母
+	  _drawText: function _drawText(me, text, position, zIndexType, hide, t) {
+	    var calcuP = DrawAction._calcuTextPosition(me, position, t);
+	    if (t) {
+	      t.attr({
+	        x: calcuP.x,
+	        y: calcuP.y
+	      });
+	      if (!hide) {
+	        t.attr({
+	          display: ''
+	        });
+	      }
+	      return t;
+	    } else {
+	      var tx = me.snap.paper.text(calcuP.x, calcuP.y, text);
+	      me.group.add(tx);
+	      tx.attr({
+	        'zIndex': me.config.zIndex[zIndexType] + me.GLOBAL_INDEX_COUNTER++,
+	        'text-anchor': 'middle',
+	        class: 'nd_NewRoman_italic',
+	        'shape-rendering': 'geometricPrecision'
+	      });
+	      switch (zIndexType) {
+	        case me.config.showSetting.pointType.Point + '_Text':
+	        case me.config.showSetting.pointType.StartPoint + '_Text':
+	          {
+	            tx.attr({
+	              'font-size': '60px',
+	              fill: '#333'
+	            });
+	            break;
+	          }
+	        case me.config.showSetting.pointType.CenterPoint + '_Text':
+	          {
+	            tx.attr({
+	              'font-size': '85px',
+	              fill: '#cb2627'
+	            });
+	            break;
+	          }
+	      }
+	      if (hide) {
+	        tx.attr({
+	          display: 'none'
+	        });
+	      }
+	      return tx;
+	    }
+	  },
+	  // 计算字母的位置
+	  _calcuTextPosition: function _calcuTextPosition(context, position, text) {
+	    var me = context.presenter || context;
+	    var start = { x: position.x - 20, y: position.y - 80 };
+	    var allPosition = [{
+	      x: start.x,
+	      y: start.y
+	    }, {
+	      x: start.x,
+	      y: start.y + 2 * me.config.showSetting.textHeight + 20
+	    }, {
+	      x: start.x - me.config.showSetting.textWidth - 20,
+	      y: start.y + me.config.showSetting.textHeight + 10
+	    }, {
+	      x: start.x + me.config.showSetting.textWidth,
+	      y: start.y
+	    }, {
+	      x: start.x + me.config.showSetting.textWidth,
+	      y: start.y + me.config.showSetting.textHeight
+	    }, {
+	      x: start.x + me.config.showSetting.textWidth,
+	      y: start.y + 2 * me.config.showSetting.textHeight
+	    }, {
+	      x: start.x - me.config.showSetting.textWidth,
+	      y: start.y + 2 * me.config.showSetting.textHeight
+	    }, {
+	      x: start.x - me.config.showSetting.textWidth,
+	      y: start.y
+	    }];
+	    var smallestInsectTimes = 0;
+	    var pos = 0;
+	    // const startTime = new Date().getTime()
+	    $.each(allPosition, function (k, v) {
+	      var insectTimes = 0;
+	      me.rect.attr({
+	        x: v.x,
+	        y: v.y
+	      });
+	      var rbbox = me.rect.getBBox();
+	      $.each(me.config.showSetting.currentLlist, function (k, v) {
+	        if (v && v.line) {
+	          if (Snap.path.isBBoxIntersect(v.line.getBBox(), rbbox)) {
+	            insectTimes++;
+	          }
+	        }
+	      });
+	      $.each(me.config.showSetting.currentPlist, function (k, v) {
+	        if (v && v.point) {
+	          if (Snap.path.isBBoxIntersect(v.point.getBBox(), rbbox)) {
+	            insectTimes++;
+	          }
+	        }
+	      });
+	      if (me.config.showSetting.currentRelectData) {
+	        $.each(me.config.showSetting.currentRelectData.reflectLine, function (k, v) {
+	          if (v && v.line) {
+	            if (Snap.path.isBBoxIntersect(v.line.getBBox(), rbbox)) {
+	              insectTimes++;
+	            }
+	          }
+	        });
+	        $.each(me.config.showSetting.currentRelectData.dashLine, function (k, v) {
+	          if (v && v.end) {
+	            if (Snap.path.isBBoxIntersect(v.end.point.getBBox(), rbbox)) {
+	              insectTimes++;
+	            }
+	            if (text && text === v.end.text) {
+	              return true;
+	            }
+	            if (Snap.path.isBBoxIntersect(v.end.text.getBBox(), rbbox)) {
+	              insectTimes++;
+	            }
+	          }
+	        });
+	      }
+
+	      if (insectTimes === 0) {
+	        pos = k;
+	        return false;
+	      } else if (insectTimes < smallestInsectTimes) {
+	        pos = k;
+	        smallestInsectTimes = insectTimes;
+	      }
+	    });
+	    var result = {};
+	    result.x = allPosition[pos].x + me.config.showSetting.textWidth / 2;
+	    result.y = allPosition[pos].y + me.config.showSetting.textHeight;
+	    return result;
+	  },
+	  // 画实线
+	  _drawLine: function _drawLine(me, start, end, option) {
+	    if (option && option.data) {
+	      option.data.line.attr('path', 'M' + start.x + ' ' + start.y + 'L' + end.x + ' ' + end.y);
+	      if (option.data.flag && option.data.flag.length === 4) {
+	        if (!option.hide) {
+	          option.data.flag[0].attr('display', 'none');
+	          option.data.flag[1].attr('display', 'none');
+	          option.data.flag[2].attr('display', 'none');
+	          option.data.flag[3].attr('display', 'none');
+	        } else {
+	          var points = DrawAction._calEqualFlag(me, start, end);
+	          option.data.flag[0].attr('path', 'M' + points.s1.x + ' ' + points.s1.y + 'L' + points.e1.x + ' ' + points.e1.y);
+	          option.data.flag[1].attr('path', 'M' + points.s2.x + ' ' + points.s2.y + 'L' + points.e2.x + ' ' + points.e2.y);
+	          points = DrawAction._calEqualFlag(me, _Utils2.default._getSymmetryPoints(end, start), start);
+	          option.data.flag[2].attr('path', 'M' + points.s1.x + ' ' + points.s1.y + 'L' + points.e1.x + ' ' + points.e1.y);
+	          option.data.flag[3].attr('path', 'M' + points.s2.x + ' ' + points.s2.y + 'L' + points.e2.x + ' ' + points.e2.y);
+	          option.data.flag[0].attr('display', '');
+	          option.data.flag[1].attr('display', '');
+	          option.data.flag[2].attr('display', '');
+	          option.data.flag[3].attr('display', '');
+	        }
+	      }
+	      if (option.data.end) {
+	        DrawAction._drawPoint(me, end, me.config.showSetting.pointType.Point, {
+	          hide: false,
+	          showText: option.hide,
+	          data: option.data.end
+	        });
+	      }
+	    } else {
+	      var pathStr = 'M' + start.x + ' ' + start.y + 'L' + start.x + ' ' + start.y;
+	      if (option && option.immediately) {
+	        pathStr = 'M' + start.x + ' ' + start.y + 'L' + end.x + ' ' + end.y;
+	      }
+	      var l = me.snap.paper.path(pathStr);
+	      me.group.add(l);
+	      l.attr({
+	        'shape-rendering': 'geometricPrecision'
+	      });
+	      switch (option && option.dashType) {
+	        case me.config.showSetting.lineType.mapLine:
+	          {
+	            l.attr({
+	              'zIndex': me.config.zIndex['dashLine'] + me.GLOBAL_INDEX_COUNTER++,
+	              'stroke-dasharray': '10,5',
+	              'stroke-width': '4',
+	              stroke: '#767778'
+	            });
+	            break;
+	          }
+	        case me.config.showSetting.lineType.initLine:
+	          {
+	            l.attr({
+	              'zIndex': me.config.zIndex['Line'] + me.GLOBAL_INDEX_COUNTER++,
+	              'stroke-width': '9',
+	              stroke: '#005797'
+	            });
+	            break;
+	          }
+	        case me.config.showSetting.lineType.reflectLine:
+	          {
+	            l.attr({
+	              'zIndex': me.config.zIndex['Line'] + me.GLOBAL_INDEX_COUNTER++,
+	              'stroke-width': '9',
+	              stroke: '#cb1f1f'
+	            });
+	            break;
+	          }
+	      }
+	      _Utils2.default._updateSVGOrder(me);
+	      var list = [];
+	      var result = void 0;
+	      if (option && option.immediately === false) {
+	        var now = mina.time();
+	        var anim = mina([start.x, start.y], [end.x, end.y], now + me.config.showSetting.showDashTime * option.order, now + me.config.showSetting.showDashTime * (option.order + 1), mina.time, function (val) {
+	          if (!isNaN(val[0]) && !isNaN(val[1])) {
+	            l.attr('path', 'M' + start.x + ' ' + start.y + 'L' + val[0] + ' ' + val[1]);
+	          }
+	        }, mina.easeout);
+	        me.config.showSetting.currentAnim[anim.id] = anim;
+	        if (option.order % 2 === 1) {
+	          var _points = DrawAction._calEqualFlag(me, start, end);
+	          list.push(me.snap.paper.path('M' + _points.s1.x + ' ' + _points.s1.y + 'L' + _points.e1.x + ' ' + _points.e1.y));
+	          list.push(me.snap.paper.path('M' + _points.s2.x + ' ' + _points.s2.y + 'L' + _points.e2.x + ' ' + _points.e2.y));
+	          _points = DrawAction._calEqualFlag(me, _Utils2.default._getSymmetryPoints(end, start), start);
+	          list.push(me.snap.paper.path('M' + _points.s1.x + ' ' + _points.s1.y + 'L' + _points.e1.x + ' ' + _points.e1.y));
+	          list.push(me.snap.paper.path('M' + _points.s2.x + ' ' + _points.s2.y + 'L' + _points.e2.x + ' ' + _points.e2.y));
+	          me.group.add(list);
+	          $.each(list, function (k, v) {
+	            v.attr({
+	              'zIndex': me.config.zIndex['equalLine'] + me.GLOBAL_INDEX_COUNTER++,
+	              'shape-rendering': 'geometricPrecision'
+	            });
+	          });
+	          result = DrawAction._drawPoint(me, end, me.config.showSetting.pointType.Point, {
+	            hide: true,
+	            showText: true,
+	            text: _Utils2.default.nextChar(me) + "'"
+	          });
+	          result.position = end;
+	          _Utils2.default._updateSVGOrder(me);
+	          eve.once('mina.finish.' + anim.id, function () {
+	            delete me.config.showSetting.currentAnim[anim.id];
+	            me.config.showSetting.currentAnim[anim.id] = anim;
+	            $.each(list, function (k, v) {
+	              v.attr({
+	                stroke: me.config.showSetting.equalColors[(option.order - 1) / 2],
+	                'stroke-width': '4'
+	              });
+	            });
+	            DrawAction._drawPoint(me, end, me.config.showSetting.pointType.Point, {
+	              hide: false,
+	              showText: false,
+	              data: result
+	            });
+	            if ($.isFunction(option.last)) {
+	              option.last();
+	              _Utils2.default._updateSVGOrder(me);
+	            }
+	          });
+	        }
+	        if ($.isFunction(option.finish)) {
+	          eve.once('mina.finish.' + anim.id, function () {
+	            delete me.config.showSetting.currentAnim[anim.id];
+	            option.finish();
+	          });
+	        }
+	      }
+	      return { line: l, flag: list, end: result };
+	    }
+	    if (option && option.data) {
+	      return option.data;
+	    }
+	  },
+	  // 计算双等号起始点和终点
+	  _calEqualFlag: function _calEqualFlag(me, start, end) {
+	    if (!start || !end) {
+	      return;
+	    }
+	    var dis = 5; // 等号与虚线交点到中点的距离
+	    var halfLen = 10; // 等号的长度一半
+	    var eStart1 = {};
+	    var eEnd1 = {};
+	    var eStart2 = {};
+	    var eEnd2 = {};
+	    var middle = {};
+	    middle.x = parseFloat(start.x + end.x) / 2.0;
+	    middle.y = parseFloat(start.y + end.y) / 2.0;
+
+	    if (start.x !== end.x) {
+	      var k1 = parseFloat(end.y - start.y) / parseFloat(end.x - start.x); // 斜率
+	      var k2 = parseFloat(-1) / k1; // 垂线斜率
+	      var tempL = me.snap.paper.path('M' + middle.x + ' ' + middle.y + 'L' + start.x + ' ' + start.y);
+	      var center1 = tempL.getPointAtLength(dis);
+	      tempL.remove();
+	      var ll = Math.sqrt(halfLen * halfLen / (1 + k2 * k2));
+	      var lh = k2 * ll;
+	      eStart1.x = center1.x - ll;
+	      eStart1.y = center1.y - lh;
+	      eEnd1 = _Utils2.default._getSymmetryPoints(eStart1, center1);
+	      eStart2 = _Utils2.default._getSymmetryPoints(eStart1, middle);
+	      eEnd2 = _Utils2.default._getSymmetryPoints(eEnd1, middle);
+	    } else {
+	      // 垂直X轴的情况
+	      eStart1.x = middle.x - halfLen;
+	      eEnd1.x = middle.x + halfLen;
+	      eStart1.y = middle.y - dis;
+	      eEnd1.y = middle.y - dis;
+
+	      eStart2.x = middle.x - halfLen;
+	      eEnd2.x = middle.x + halfLen;
+	      eStart2.y = middle.y + dis;
+	      eEnd2.y = middle.y + dis;
+	    }
+	    return { s1: eStart1, e1: eEnd1, s2: eStart2, e2: eEnd2 };
+	  }
+	};
+
+	exports.default = DrawAction;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  _getX: function _getX(e) {
+	    if (e.type.indexOf('mouse') !== 0) {
+	      return e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientX || e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0] && e.originalEvent.touches[0].clientX;
+	    } else {
+	      return e.clientX;
+	    }
+	  },
+	  _getY: function _getY(e) {
+	    if (e.type.indexOf('mouse') !== 0) {
+	      return e.changedTouches && e.changedTouches[0] && e.changedTouches[0].clientY || e.originalEvent && e.originalEvent.touches && e.originalEvent.touches[0] && e.originalEvent.touches[0].clientY;
+	    } else {
+	      return e.clientY;
+	    }
+	  },
+	  // 获得对称点坐标
+	  _getSymmetryPoints: function _getSymmetryPoints(point, center) {
+	    if (!center || !point) {
+	      return;
+	    }
+	    return { x: center.x * 2 - point.x, y: center.y * 2 - point.y };
+	  },
+	  event: {
+	    start: 'touchstart mousedown',
+	    move: 'touchmove mousemove',
+	    end: 'touchend mouseup',
+	    cancel: 'mouseleave'
+	  },
+	  // 判断是否在点击范围内
+	  _isInsideCircle: function _isInsideCircle(position, center, r) {
+	    return (position.x - center.x) * (position.x - center.x) + (position.y - center.y) * (position.y - center.y) <= r * r;
+	  },
+	  // 计算显示的字母
+	  nextChar: function nextChar(me) {
+	    return String.fromCharCode('A'.charCodeAt(0) + me.config.showSetting.countLetter++);
+	  },
+	  // 更新svg的顺序
+	  _updateSVGOrder: function _updateSVGOrder(me) {
+	    var orderlist = [];
+	    $.each($(me.$group[0]).children(), function (k, v) {
+	      if (v.attributes['zIndex'] && v.attributes['zIndex'].value) {
+	        orderlist.push(v);
+	      }
+	    });
+	    orderlist.sort(function (v1, v2) {
+	      return v2.attributes['zIndex'].value - v1.attributes['zIndex'].value;
+	    });
+	    for (var index = 0; index < orderlist.length - 1; index++) {
+	      $(orderlist[index]).before($(orderlist[index + 1]));
+	    }
+	  },
+	  _display: function _display(me, status) {
+	    $.each(me.config.showSetting.currentLlist, function (k, v) {
+	      if (v && v.line) {
+	        v.line.attr({
+	          display: status
+	        });
+	      }
+	    });
+	    $.each(me.config.showSetting.currentPlist, function (k, v) {
+	      if (v && v.point) {
+	        v.point.attr({
+	          display: status
+	        });
+	      }
+	    });
+	    if (me.config.showSetting.currentRelectData) {
+	      $.each(me.config.showSetting.currentRelectData.dashLine, function (k, v) {
+	        if (v.end && v.end.point) {
+	          v.end.point.attr({
+	            display: status
+	          });
+	        }
+	      });
+	    }
+
+	    if (me.config.showSetting.currentRelectData) {
+	      $.each(me.config.showSetting.currentRelectData.reflectLine, function (k, v) {
+	        if (v && v.line) {
+	          v.line.attr({
+	            display: status
+	          });
+	        }
+	      });
+	    }
+	  }
+
+	};
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _Utils = __webpack_require__(7);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	var _DrawAction = __webpack_require__(6);
+
+	var _DrawAction2 = _interopRequireDefault(_DrawAction);
+
+	var _ZoomAction = __webpack_require__(5);
+
+	var _ZoomAction2 = _interopRequireDefault(_ZoomAction);
+
+	var _OperateAction = __webpack_require__(9);
+
+	var _OperateAction2 = _interopRequireDefault(_OperateAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var MoveAction = {
+	  // 移动中心点
+	  _moveCenter: function _moveCenter(me) {
+	    var moveArea = me.$view.find('.js_csm_moveCenter');
+	    var that = {};
+	    var pt = me.config.showSetting.currentCenter;
+	    var moveF = _OperateAction2.default._animation;
+	    var hasStarted = false;
+	    var m = null;
+	    var downF = function downF(e) {
+	      hasStarted = me.config.showSetting.canMoveCenter;
+	      if (hasStarted) {
+	        that.currentMatrix = me.$group[0].getAttributeNS(null, 'transform').slice(7, -1).split(',');
+	        m = new Snap.Matrix(that.currentMatrix[0], that.currentMatrix[1], that.currentMatrix[2], that.currentMatrix[3], that.currentMatrix[4], that.currentMatrix[5]);
+	        me.config.showSetting.movingCenter = true;
+	        that.left = me.$svgContainer.offset().left;
+	        that.top = me.$svgContainer.offset().top;
+	        that.height = me.$svgContainer.height();
+	        that.width = me.$svgContainer.width();
+	        that.svgLeft = m.x(that.left, that.top);
+	        that.svgTop = m.y(that.left, that.top);
+	        // record history position
+	        that.hPos = pt.position;
+	        pt.point.attr({
+	          strokeWidth: 4,
+	          stroke: '#fff'
+	        });
+	      }
+	    };
+	    // 计算字母的位置，防止1s内多次计算
+	    var drawTextPo = _.throttle(function () {
+	      if (!me.config.showSetting.hasReset) {
+	        moveF.call(me, me, that.cPos, me.config.showSetting.currentArray, me.config.showSetting.currentRelectData, true);
+	      }
+	    }, 500, { leading: false, trailing: true });
+
+	    var upF = function upF(e) {
+	      if (hasStarted) {
+	        hasStarted = false;
+	        me.config.showSetting.movingCenter = false;
+	        pt.point.attr({
+	          strokeWidth: 0
+	        });
+	        if (that.cPos) {
+	          _DrawAction2.default._drawPoint(me, that.cPos, me.config.showSetting.pointType.CenterPoint, { showText: true, data: pt });
+	        }
+
+	        if ($.isFunction(moveF) && me.config.showSetting.currentRelectData && that.cPos) {
+	          me.config.showSetting.hasReset = false;
+	          drawTextPo();
+	        }
+	        if (MoveAction._isExceedBoundary(me)) {
+	          if (me.viewModel.buttonStatus.currentZoom.show()) {
+	            if (me.config.showSetting.currentZoom === me.config.showSetting.minZoom) {
+	              me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	            } else {
+	              me.viewModel.buttonStatus.currentZoom.smallActive(true);
+	            }
+	            if (me.config.showSetting.currentZoom === me.config.showSetting.maxZoom) {
+	              me.viewModel.buttonStatus.currentZoom.bigActive(false);
+	            } else {
+	              me.viewModel.buttonStatus.currentZoom.bigActive(true);
+	            }
+	            me.config.showSetting.initArray = me.config.showSetting.currentArray;
+	            me.config.showSetting.initArray = _ZoomAction2.default._scale(me.config.showSetting.initArray, me.config.showSetting.currentCenter.position, 1 / me.config.showSetting.currentZoom);
+	          }
+	          // 作图之前不能移动
+	          if (!me.viewModel.buttonStatus.currentDraw()) {
+	            me.config.showSetting.canMove = true;
+	          }
+	        } else {
+	          if (me.viewModel.buttonStatus.currentZoom.show()) {
+	            me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	            if (me.config.showSetting.currentZoom === me.config.showSetting.maxZoom) {
+	              me.viewModel.buttonStatus.currentZoom.bigActive(false);
+	            } else {
+	              me.viewModel.buttonStatus.currentZoom.bigActive(true);
+	            }
+	            me.config.showSetting.initArray = me.config.showSetting.currentArray;
+	            me.config.showSetting.initArray = _ZoomAction2.default._scale(me.config.showSetting.initArray, me.config.showSetting.currentCenter.position, 1 / me.config.showSetting.currentZoom);
+	          }
+	        }
+	      }
+	    };
+	    var cancel = function cancel() {
+	      if (hasStarted) {
+	        hasStarted = false;
+	        me.config.showSetting.movingCenter = false;
+	        pt.point.attr({
+	          strokeWidth: 0
+	        });
+	        if (that.hPos) {
+	          that.cPos = null;
+	          _DrawAction2.default._drawPoint(me, that.hPos, me.config.showSetting.pointType.CenterPoint, { showText: true, data: pt });
+	          me.config.showSetting.currentCenter.position = that.hPos;
+	          if ($.isFunction(moveF) && me.config.showSetting.currentRelectData) {
+	            moveF.call(me, me, that.hPos, me.config.showSetting.currentArray, me.config.showSetting.currentRelectData, true);
+	          }
+	        }
+	      }
+	    };
+	    var move = function move(e) {
+	      if (hasStarted) {
+	        var tempX = (_Utils2.default._getX(e) - that.svgLeft) / me.config.ratio.h - parseFloat(that.currentMatrix[4]) * me.moveRatio.h;
+	        var tempY = (_Utils2.default._getY(e) - that.svgTop) / me.config.ratio.v - parseFloat(that.currentMatrix[5]) * me.moveRatio.v;
+	        if (e && e.type.indexOf('mouse') !== 0) {
+	          var boundx = _Utils2.default._getX(e) - that.left;
+	          var boundy = _Utils2.default._getY(e) - that.top;
+	          if (boundx < 0 || boundx > that.width || boundy < 0 || boundy > that.height) {
+	            cancel();
+	            return;
+	          }
+	        }
+	        // record current position
+	        that.cPos = {
+	          x: tempX,
+	          y: tempY
+	        };
+	        _DrawAction2.default._drawPoint(me, that.cPos, me.config.showSetting.pointType.CenterPoint, { showText: false, data: pt });
+	        me.config.showSetting.currentCenter.position = that.cPos;
+	        if ($.isFunction(moveF) && me.config.showSetting.currentRelectData) {
+	          moveF.call(me, me, that.cPos, me.config.showSetting.currentArray, me.config.showSetting.currentRelectData, false);
+	        }
+	      }
+	    };
+
+	    pt.point.mousedown(downF);
+	    pt.point.touchstart(downF);
+	    pt.point.mouseup(upF);
+	    pt.point.touchend(upF);
+
+	    moveArea.off(_Utils2.default.event.start);
+	    moveArea.off(_Utils2.default.event.cancel);
+	    moveArea.off(_Utils2.default.event.move);
+
+	    moveArea.bind(_Utils2.default.event.end, upF);
+	    moveArea.bind(_Utils2.default.event.cancel, cancel);
+	    moveArea.bind(_Utils2.default.event.move, move);
+	  },
+	  // 围绕中心旋转
+	  _rotate: function _rotate(me, list, center, angle) {
+	    var count = 0;
+	    if (!me.viewModel.buttonStatus.currentCheck()) {
+	      return;
+	    }
+	    me.viewModel.buttonStatus.currentCheck(false);
+	    me.config.showSetting.hasClear = false;
+	    $.each(list, function (k, v) {
+	      var now = mina.time();
+	      var anim = mina(0, angle, now, now + me.config.showSetting.checkTime, mina.time, function (val) {
+	        v.transform(new Snap.Matrix().rotate(val, center.x, center.y));
+	        if (val === angle) {
+	          count++;
+	        }
+	        if (count === list.length) {
+	          $.each(list, function (k, v) {
+	            v.remove();
+	          });
+	          var flashTime = 2;
+	          var times = 0;
+	          me.config.showSetting.flashId = setInterval(function () {
+	            if (me.config.showSetting.hasClear) {
+	              return;
+	            }
+	            times++;
+	            var status = times % 2 === 1 ? 'none' : '';
+	            _Utils2.default._display(me, status);
+	            if (times === flashTime * 2) {
+	              clearInterval(me.config.showSetting.flashId);
+	              me.viewModel.buttonStatus.currentCheck(true);
+	              me.config.showSetting.canMoveCenter = true;
+	              me.config.showSetting.isPlaying = false;
+	              me.viewModel.buttonStatus.currentPen(true);
+	              me.viewModel.buttonStatus.currentPenActive(false);
+	              me.viewModel.buttonStatus.currentZoom.show(true);
+	            }
+	          }, 1000 / flashTime / 2);
+	        }
+	      }, mina.easeout);
+	      me.config.showSetting.currentAnim[anim.id] = anim;
+	      eve.once('mina.finish.' + anim.id, function () {
+	        delete me.config.showSetting.currentAnim[anim.id];
+	      });
+	    });
+	  },
+	  // 移动
+	  _move: function _move(context) {
+	    var me = context;
+	    var moveArea = me.$view.find('.js_csm_move');
+	    var that = {};
+	    var hasStarted = false;
+	    var downF = function downF(e) {
+	      if (me.config.showSetting.movingCenter) {
+	        return;
+	      }
+	      if (!me.config.showSetting.canMove) {
+	        return;
+	      }
+	      hasStarted = true;
+	      that.startPosition = { clientX: _Utils2.default._getX(e), clientY: _Utils2.default._getY(e) };
+	      that.currentMatrix = me.$group[0].getAttributeNS(null, 'transform').slice(7, -1).split(',');
+	      for (var i = 0; i < that.currentMatrix.length; i++) {
+	        that.currentMatrix[i] = parseFloat(that.currentMatrix[i]);
+	      }
+	      that.transX = that.currentMatrix[4];
+	      that.transY = that.currentMatrix[5];
+	      that.normalMX = that.transX;
+	      that.normalMY = that.transY;
+	      that.vdis = me.group.getBBox().height / 2;
+	      that.hdis = me.group.getBBox().width / 2;
+	      that.diaonal = Math.sqrt(that.vdis * that.vdis + that.hdis * that.hdis);
+	      that.length = me.config.showSetting.currentPlist.length;
+	      that.center = me.config.showSetting.currentCenter.position;
+	      that.polist = [];
+	      $.each(me.config.showSetting.currentPlist, function (k, v) {
+	        if (v && v.point) {
+	          that.polist.push({
+	            x: v.point.node.attributes.cx.value,
+	            y: v.point.node.attributes.cy.value
+	          });
+	        }
+	      });
+	    };
+	    var upF = function upF(e) {
+	      hasStarted = false;
+	    };
+	    moveArea.off(_Utils2.default.event.start);
+	    moveArea.off(_Utils2.default.event.end);
+	    moveArea.off(_Utils2.default.event.cancel);
+	    moveArea.off(_Utils2.default.event.move);
+
+	    moveArea.bind(_Utils2.default.event.start, downF);
+	    moveArea.bind(_Utils2.default.event.end, upF);
+	    moveArea.bind(_Utils2.default.event.cancel, upF);
+	    moveArea.bind(_Utils2.default.event.move, function (e) {
+	      if (hasStarted) {
+	        var moveX = (_Utils2.default._getX(e) - that.startPosition.clientX) / me.config.ratio.h;
+	        var moveY = (_Utils2.default._getY(e) - that.startPosition.clientY) / me.config.ratio.v;
+	        that.currentMatrix[4] = moveX + that.transX;
+	        that.currentMatrix[5] = moveY + that.transY;
+	        var m = new Snap.Matrix(that.currentMatrix[0], that.currentMatrix[1], that.currentMatrix[2], that.currentMatrix[3], that.currentMatrix[4], that.currentMatrix[5]);
+	        var centerx = m.x(that.center.x, that.center.y);
+	        var centery = m.y(that.center.x, that.center.y);
+	        var rightCount = 0;
+	        var leftCount = 0;
+	        $.each(that.polist, function (k, v) {
+	          var po = { x: m.x(v.x, v.y), y: m.y(v.x, v.y) };
+	          if (centerx >= po.x) {
+	            rightCount++;
+	          }
+	          // if (centery >= po.y) {
+	          //   downCount++
+	          // }
+	          if (centerx < po.x) {
+	            leftCount++;
+	          }
+	          // if (centery < po.y) {
+	          //   upCount++
+	          // }
+	        });
+	        // if (rightCount == that.length) {
+	        //   console.log('on the right')
+	        // }
+	        // if (leftCount == that.length) {
+	        //   console.log('on the left')
+	        // }
+	        // if (downCount == that.length) {
+	        //   console.log('on the down')
+	        // }
+	        // if (upCount == that.length) {
+	        //   console.log('on the up')
+	        // }
+	        // todo需要计算其他的角度
+	        // moveY > 0 means gesture up to down
+	        var forbidUpToDown = centery - (rightCount > 0 && rightCount <= that.length ? that.diaonal : that.vdis) > 10 && moveY > 0;
+	        var isDownExceed = centery + that.vdis < me.config.showSetting.toolHeight - 10;
+	        // moveY < 0 means gesture down to up
+	        var forbidDownToUp = centery + (leftCount > 0 && leftCount <= that.length ? that.diaonal : that.vdis) < me.config.showSetting.toolHeight - 10 && moveY < 0;
+	        var isUpDownExceed = centery - that.vdis > 10;
+	        // moveX < 0 means gesture right to left
+	        var forbidRightToLeft = centerx - that.hdis < 10 && moveX < 0;
+	        var isRightExceed = centerx + that.hdis > me.config.showSetting.toolWidth - 10;
+	        // moveX > 0 means gesture left to right
+	        var forbidLeftToRight = centerx + that.hdis > me.config.showSetting.toolWidth - 10 && moveX > 0;
+	        var isLeftExceed = centerx - that.hdis < 10;
+
+	        if (forbidUpToDown && !isDownExceed) {
+	          that.currentMatrix[5] = that.normalMY;
+	        } else if (forbidDownToUp && !isUpDownExceed) {
+	          that.currentMatrix[5] = that.normalMY;
+	        } else {
+	          that.normalMY = that.currentMatrix[5];
+	        }
+	        if (forbidRightToLeft && !isRightExceed) {
+	          that.currentMatrix[4] = that.normalMX;
+	        } else if (forbidLeftToRight && !isLeftExceed) {
+	          that.currentMatrix[4] = that.normalMX;
+	        } else {
+	          that.normalMX = that.currentMatrix[4];
+	        }
+	        me.group.attr({
+	          transform: 'matrix(' + that.currentMatrix.join(' ') + ')'
+	        });
+	      }
+	    });
+	  },
+	  _isExceedBoundary: function _isExceedBoundary(context) {
+	    var me = context.presenter || context;
+	    if (me.config.showSetting.currentCenter && me.config.showSetting.currentPlist) {
+	      var that = {};
+	      var rDis = 0;
+	      that.currentMatrix = me.$group[0].getAttributeNS(null, 'transform').slice(7, -1).split(',');
+	      for (var i = 0; i < that.currentMatrix.length; i++) {
+	        that.currentMatrix[i] = parseFloat(that.currentMatrix[i]);
+	      }
+	      that.polist = [];
+	      $.each(me.config.showSetting.currentPlist, function (k, v) {
+	        if (v && v.point) {
+	          that.polist.push({
+	            x: v.point.node.attributes.cx.value,
+	            y: v.point.node.attributes.cy.value
+	          });
+	        }
+	      });
+	      var m = new Snap.Matrix(that.currentMatrix[0], that.currentMatrix[1], that.currentMatrix[2], that.currentMatrix[3], that.currentMatrix[4], that.currentMatrix[5]);
+	      that.center = me.config.showSetting.currentCenter.position;
+	      var centerx = m.x(that.center.x, that.center.y);
+	      var centery = m.y(that.center.x, that.center.y);
+	      that.vdis = me.group.getBBox().height / 2;
+	      that.hdis = me.group.getBBox().width / 2;
+	      that.diaonal = Math.sqrt(that.vdis * that.vdis + that.hdis * that.hdis);
+	      that.length = me.config.showSetting.currentPlist.length;
+	      var rightCount = 0;
+	      var leftCount = 0;
+	      $.each(that.polist, function (k, v) {
+	        var po = { x: m.x(v.x, v.y), y: m.y(v.x, v.y) };
+	        var dis = Math.sqrt((centerx - po.x) * (centerx - po.x) + (centery - po.y) * (centery - po.y));
+	        if (dis > rDis) {
+	          rDis = dis;
+	        }
+	        if (centerx >= po.x) {
+	          rightCount++;
+	        }
+	        // if (centery >= po.y) {
+	        //   downCount++
+	        // }
+	        if (centerx < po.x) {
+	          leftCount++;
+	        }
+	        // if (centery < po.y) {
+	        //   upCount++
+	        // }
+	      });
+	      // if (rightCount == that.length) {
+	      //   console.log('on the right')
+	      // }
+	      // if (leftCount == that.length) {
+	      //   console.log('on the left')
+	      // }
+	      // if (downCount == that.length) {
+	      //   console.log('on the down')
+	      // }
+	      // if (upCount == that.length) {
+	      //   console.log('on the up')
+	      // }
+	      var isDownExceed = centery + (leftCount > 0 && leftCount <= that.length ? rDis : that.vdis) > me.config.showSetting.toolHeight;
+	      var isUpExceed = centery - (rightCount > 0 && rightCount <= that.length ? rDis : that.vdis) < 0;
+	      var isRightExceed = centerx + that.hdis > me.config.showSetting.toolWidth - 10;
+	      var isLeftExceed = centerx - that.hdis < 10;
+	      if (isDownExceed) {
+	        return true;
+	      }
+	      if (isUpExceed) {
+	        return true;
+	      }
+	      if (isRightExceed) {
+	        return true;
+	      }
+	      if (isLeftExceed) {
+	        return true;
+	      }
+	    }
+	    return false;
+	  }
+
+	};
+
+	exports.default = MoveAction;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var _Utils = __webpack_require__(7);
+
+	var _Utils2 = _interopRequireDefault(_Utils);
+
+	var _MoveAction = __webpack_require__(8);
+
+	var _MoveAction2 = _interopRequireDefault(_MoveAction);
+
+	var _DrawAction = __webpack_require__(6);
+
+	var _DrawAction2 = _interopRequireDefault(_DrawAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var OperateAction = {
+	  /** **以下为界面操作接口*****/
+	  _chooseSet: function _chooseSet(type, context) {
+	    var me = context.presenter || context;
+	    if (type === me.viewModel.buttonStatus.currentSet() || me.config.showSetting.isPlaying) {
+	      return;
+	    }
+	    var array = null;
+	    var center = null;
+	    OperateAction._clear(me);
+	    me.viewModel.buttonStatus.currentSet(type);
+	    me.viewModel.start_tip.show(false);
+	    me.viewModel.buttonStatus.currentZoom.show(false);
+	    // 切换预设后不可移动
+	    me.config.showSetting.canMove = false;
+	    // 默认绑定可移动
+	    _MoveAction2.default._move(me);
+
+	    switch (type) {
+	      case 'line':
+	        {
+	          array = [{ x: 240, y: 300 }, { x: 340, y: 520 }];
+	          center = { x: 600, y: 410 };
+	          me.config.showSetting.showDashTime = 800;
+	          me.config.showSetting.checkTime = 2000;
+	          me.viewModel.buttonStatus.currentCheck(false);
+	          me.viewModel.buttonStatus.currentDraw(true);
+	          me.viewModel.buttonStatus.currentReset(false);
+	          me.config.showSetting.customArray = [];
+	          OperateAction._preSet(me, array, center);
+	          break;
+	        }
+	      case 'square':
+	        {
+	          array = [{ x: 110, y: 340 }, { x: 320, y: 340 }, { x: 320, y: 550 }, { x: 110, y: 550 }];
+	          center = { x: 560, y: 445 };
+	          me.config.showSetting.showDashTime = 500;
+	          me.config.showSetting.checkTime = 2000;
+	          me.viewModel.buttonStatus.currentCheck(false);
+	          me.viewModel.buttonStatus.currentDraw(true);
+	          me.viewModel.buttonStatus.currentReset(false);
+	          me.config.showSetting.customArray = [];
+	          OperateAction._preSet(me, array, center);
+	          break;
+	        }
+	      case 'custom':
+	        {
+	          me.config.showSetting.showDashTime = 500;
+	          me.config.showSetting.checkTime = 2000;
+	          // 重置
+	          if (me.config.showSetting.customArray.length > 0) {
+	            me.viewModel.buttonStatus.currentDraw(true);
+	            me.viewModel.buttonStatus.currentClear(true);
+	            me.viewModel.buttonStatus.currentCheck(false);
+	            me.viewModel.buttonStatus.currentReset(false);
+	            me.viewModel.buttonStatus.currentPen(false);
+	            OperateAction._preSet(me, me.config.showSetting.customArray, me.config.showSetting.cPosition);
+	            _DrawAction2.default._customDraw(me);
+	          } else {
+	            // 预置切换 清除
+	            me.viewModel.dialog_guid.show(true);
+	            me.viewModel.buttonStatus.currentCheck(false);
+	            me.viewModel.buttonStatus.currentDraw(false);
+	            me.viewModel.buttonStatus.currentReset(false);
+	            me.viewModel.buttonStatus.currentClear(false);
+	            me.viewModel.buttonStatus.currentPen(true);
+	            me.viewModel.buttonStatus.currentPenActive(true);
+	            me.config.showSetting.currentLlist = [];
+	            me.config.showSetting.currentPlist = [];
+	            me.config.showSetting.currentStep = 1;
+	            _DrawAction2.default._customDraw(me);
+	          }
+	          break;
+	        }
+	    }
+	  },
+	  // 作图
+	  _draw: function _draw(context) {
+	    var me = context.presenter || context;
+	    if (!me.viewModel.buttonStatus.currentDraw()) {
+	      return;
+	    }
+	    if (me.viewModel.buttonStatus.currentSet() === 'custom') {
+	      me.viewModel.buttonStatus.currentClear(false);
+	    }
+	    if (_MoveAction2.default._isExceedBoundary(me)) {
+	      me.config.showSetting.canMove = true;
+	    }
+	    me.viewModel.buttonStatus.currentDraw(false);
+	    me.viewModel.buttonStatus.currentReset(true);
+	    me.config.showSetting.canMoveCenter = false;
+	    me.config.showSetting.isPlaying = true;
+	    me.config.showSetting.currentRelectData = OperateAction._animation(me, me.config.showSetting.currentCenter.position, me.config.showSetting.currentArray, null, null, function () {
+	      me.viewModel.buttonStatus.currentCheck(true);
+	      me.config.showSetting.canMoveCenter = true;
+	      me.config.showSetting.isPlaying = false;
+	      me.viewModel.buttonStatus.currentZoom.show(true);
+	      $.each(me.config.showSetting.currentRelectData.dashLine, function (k, v) {
+	        if (v && v.end) {
+	          _DrawAction2.default._drawPoint(me, v.end.position, me.config.showSetting.pointType.Point, {
+	            hide: false,
+	            showText: true,
+	            data: v.end
+	          });
+	        }
+	      });
+	      if (_MoveAction2.default._isExceedBoundary(me)) {
+	        me.viewModel.buttonStatus.currentZoom.smallActive(true);
+	        me.viewModel.buttonStatus.currentZoom.bigActive(true);
+	        me.config.showSetting.canMove = true;
+	      } else {
+	        me.viewModel.buttonStatus.currentZoom.smallActive(false);
+	        me.viewModel.buttonStatus.currentZoom.bigActive(true);
+	        me.config.showSetting.canMove = false;
+	      }
+	    });
+	  },
+	  // 验证
+	  _check: function _check(context) {
+	    var me = context.presenter || context;
+	    if (!me.viewModel.buttonStatus.currentCheck()) {
+	      return;
+	    }
+	    me.viewModel.buttonStatus.currentZoom.show(false);
+	    me.config.showSetting.canMoveCenter = false;
+	    me.config.showSetting.isPlaying = true;
+	    var array = me.config.showSetting.currentArray;
+	    var center = me.config.showSetting.currentCenter.position;
+	    var list = [];
+	    list = list.concat(OperateAction._assembleGraph(me, array, true));
+	    for (var index = 0; index < array.length; index++) {
+	      // 点到中心点的线
+	      list.push(_DrawAction2.default._drawLine(me, array[index], center, {
+	        dashType: me.config.showSetting.lineType.mapLine,
+	        immediately: true
+	      }).line);
+	    }
+	    _Utils2.default._updateSVGOrder(me);
+	    _MoveAction2.default._rotate(me, list, center, 180);
+	  },
+	  // 重置
+	  _reset: function _reset(context) {
+	    var me = context.presenter || context;
+	    if (!me.viewModel.buttonStatus.currentReset()) {
+	      return;
+	    }
+	    me.config.showSetting.hasReset = true;
+	    me.viewModel.buttonStatus.currentReset(false);
+	    $.each(me.config.showSetting.currentAnim, function (k, v) {
+	      if (v) {
+	        v.stop();
+	      }
+	    });
+	    if (me.config.showSetting.flashId) {
+	      clearInterval(me.config.showSetting.flashId);
+	      _Utils2.default._display(me, '');
+	    }
+	    me.config.showSetting.canMoveCenter = true;
+	    me.config.showSetting.isPlaying = false;
+	    OperateAction._clear(me);
+	    var type = me.viewModel.buttonStatus.currentSet();
+	    me.viewModel.buttonStatus.currentSet('');
+	    OperateAction._chooseSet(type, me);
+	  },
+	  // 画笔
+	  _pen: function _pen(context) {
+	    var me = context.presenter || context;
+	    // pen not enable
+	    if (!me.viewModel.buttonStatus.currentPen()) {
+	      return;
+	    }
+	    // pen is enable and not active
+	    if (me.viewModel.buttonStatus.currentPen() && !me.viewModel.buttonStatus.currentPenActive()) {
+	      me.viewModel.dialog_tip.show(true);
+	      return;
+	    }
+	    if (me.config.showSetting.currentStep !== 0) {
+	      return;
+	    }
+	    me.viewModel.buttonStatus.currentPenActive(true);
+	    me.config.showSetting.currentStep = 1;
+	  },
+	  // 清除自定义
+	  _penClear: function _penClear(forClear, context) {
+	    var me = context.presenter || context;
+	    if (!(forClear === true) && !me.viewModel.buttonStatus.currentClear()) {
+	      return;
+	    }
+	    me.config.showSetting.hasClear = true;
+	    OperateAction._clear(me);
+	    me.viewModel.start_tip.show(false);
+	    me.viewModel.text_tip.show(false);
+	    me.viewModel.buttonStatus.currentClear(false);
+	    me.viewModel.buttonStatus.currentPen(true);
+	    me.viewModel.buttonStatus.currentPenActive(true);
+	    me.viewModel.buttonStatus.currentDraw(false);
+	    me.viewModel.buttonStatus.currentCheck(false);
+	    me.viewModel.buttonStatus.currentReset(false);
+	    me.viewModel.buttonStatus.currentZoom.show(false);
+	    me.config.showSetting.currentStep = 1;
+	    if (me.config.showSetting.showTipId) {
+	      clearInterval(me.config.showSetting.showTipId);
+	    }
+	    if (me.group) {
+	      me.group.attr({
+	        transform: 'matrix(1 0 0 1 0 0)'
+	      });
+	    }
+	    if (forClear === true) {
+	      // forbiden move center
+	      me.config.showSetting.canMoveCenter = false;
+	    }
+	    me.config.showSetting.canMove = false;
+	  },
+	  // 清除
+	  _clear: function _clear(context) {
+	    var me = context.presenter || context;
+	    if (me.$group) {
+	      me.$group.empty();
+	      me.group.attr({
+	        transform: 'matrix(1 0 0 1 0 0)'
+	      });
+	      me.config.showSetting.currentPlist = [];
+	      me.config.showSetting.currentLlist = [];
+	      me.config.showSetting.currentRelectData = null;
+	      me.config.showSetting.initArray = [];
+	      me.config.showSetting.currentArray = [];
+	      me.config.showSetting.currentCenter = null;
+	      me.config.showSetting.currentAnim = {};
+	      me.config.showSetting.currentStep = 0;
+	      me.config.showSetting.countLetter = 0;
+	      me.GLOBAL_INDEX_COUNTER = 0;
+	      me.config.showSetting.canMoveCenter = true;
+	      me.config.showSetting.isPlaying = false;
+	      me.config.showSetting.currentZoom = 1;
+	    }
+	  },
+	  // 预设线段组装
+	  _preSet: function _preSet(me, array, center) {
+	    me.config.showSetting.currentArray = me.config.showSetting.initArray = array;
+	    var centerP = _DrawAction2.default._drawPoint(me, center, me.config.showSetting.pointType.CenterPoint, {
+	      showText: true,
+	      text: 'O'
+	    });
+	    OperateAction._assembleGraph(me, array, false);
+	    centerP.position = center;
+	    me.config.showSetting.currentCenter = centerP;
+	    _MoveAction2.default._moveCenter(me);
+	  },
+	  // 组装图形
+	  _assembleGraph: function _assembleGraph(me, array, forCheck) {
+	    var result = [];
+	    if (!forCheck) {
+	      me.config.showSetting.currentLlist = [];
+	      // 重新开始计算字母
+	      me.config.showSetting.countLetter = 0;
+	    }
+
+	    for (var index = 0; index < array.length; index++) {
+	      if (array.length === 2 && index === 1) {
+	        break;
+	      }
+	      var data = _DrawAction2.default._drawLine(me, array[index], array[index + 1 === array.length ? 0 : index + 1], {
+	        immediately: true,
+	        dashType: me.config.showSetting.lineType.initLine
+	      });
+	      result.push(data.line);
+	      if (!forCheck) {
+	        me.config.showSetting.currentLlist.push(data);
+	      }
+	    }
+	    $.each(array, function (k, v) {
+	      var point = _DrawAction2.default._drawPoint(me, v, me.config.showSetting.pointType.Point, {
+	        showText: !forCheck,
+	        text: _Utils2.default.nextChar(me)
+	      });
+	      result.push(point.point);
+	      if (!forCheck) {
+	        me.config.showSetting.currentPlist.push(point);
+	      }
+	    });
+	    if (!forCheck) {
+	      // 重新开始计算字母
+	      me.config.showSetting.countLetter = 0;
+	    }
+	    return result;
+	  },
+	  // 作图
+	  _animation: function _animation(me, center, array, data, hide, cb) {
+	    if (data) {
+	      if (hide === undefined) {
+	        hide = true;
+	      }
+	      for (var index = 0; index < array.length; index++) {
+	        _DrawAction2.default._drawLine(me, array[index], center, {
+	          data: data.dashLine[index * 2],
+	          hide: hide
+	        });
+	        _DrawAction2.default._drawLine(me, center, _Utils2.default._getSymmetryPoints(array[index], center), {
+	          data: data.dashLine[index * 2 + 1],
+	          hide: hide
+	        });
+	      }
+	      for (var cindex = array.length - 1; cindex >= 0; cindex--) {
+	        if (array.length === 2 && cindex === 0) {
+	          break;
+	        }
+	        _DrawAction2.default._drawLine(me, _Utils2.default._getSymmetryPoints(array[cindex], center), _Utils2.default._getSymmetryPoints(array[cindex - 1 === -1 ? array.length - 1 : cindex - 1], center), {
+	          immediately: true,
+	          order: 0,
+	          data: data.reflectLine[cindex]
+	        });
+	      }
+	    } else {
+	      var _ret = function () {
+	        var result = { dashLine: [], reflectLine: [] };
+	        for (var _index = 0; _index < array.length; _index++) {
+	          // 点到中心点的线
+	          result.dashLine[_index * 2] = _DrawAction2.default._drawLine(me, array[_index], center, {
+	            dashType: me.config.showSetting.lineType.mapLine,
+	            immediately: false,
+	            order: _index * 2
+	          });
+	          // 中心点到终点的线
+	          result.dashLine[_index * 2 + 1] = _DrawAction2.default._drawLine(me, center, _Utils2.default._getSymmetryPoints(array[_index], center), {
+	            dashType: me.config.showSetting.lineType.mapLine,
+	            immediately: false,
+	            order: _index * 2 + 1,
+	            last: _index === array.length - 1 ? function () {
+	              for (var _cindex = array.length - 1; _cindex >= 0; _cindex--) {
+	                if (array.length === 2 && _cindex === 0) {
+	                  break;
+	                }
+	                result.reflectLine[_cindex] = _DrawAction2.default._drawLine(me, _Utils2.default._getSymmetryPoints(array[_cindex - 1 === -1 ? array.length - 1 : _cindex - 1], center), _Utils2.default._getSymmetryPoints(array[_cindex], center), {
+	                  dashType: me.config.showSetting.lineType.reflectLine,
+	                  immediately: false,
+	                  order: 0,
+	                  finish: _cindex - 1 === -1 ? cb : array.length === 2 ? cb : undefined
+	                });
+	              }
+	            } : null
+	          });
+	        }
+	        return {
+	          v: result
+	        };
+	      }();
+
+	      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+	    }
+	  }
+
+	};
+
+	exports.default = OperateAction;
+
+/***/ })
+/******/ ]);]]></presenter><resources><file src="./resources/wood/images/icon_tg_01.png"/><file src="./resources/wood/images/icon_tg_02.png"/><file src="./resources/wood/images/icon_tg_03.png"/><file src="./resources/wood/images/icon_tg_04.png"/><file src="./resources/wood/images/icon_tool_m1.png"/><file src="./resources/wood/images/icon_tool_m2.png"/><file src="./resources/wood/images/icon_tool_m3.png"/><file src="./resources/wood/images/icon_tool_szi.png"/><file src="./resources/wood/images/icon_tool_szo.png"/></resources></addon>

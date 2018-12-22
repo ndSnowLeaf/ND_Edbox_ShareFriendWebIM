@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Table'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="string" isLocalized="false" />
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="时间" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="5.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this.model = [];
+            this.componentSetting = {};
+        },
+        //getQuestionInfo: function () { //去掉解决异常流bug
+        //    return {
+        //        id: this.model.question_id,
+        //        type_code: 'table',
+        //        type_name: "分类表格题",
+        //        url: this.model.question_id,
+        //        dispatchOnly: true
+        //    };
+        //},
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            view.style['width'] = 0;
+            view.style['height'] = 0; /*为了解决有些布局问题*/
+            var self = this;
+            self._getCompareContent(model)
+                .then(function() {
+                    //适配颗粒中定义的数据
+                    self._adaptedOriginData(model);
+                    //构建组件配置
+                    self._configComponents();
+                    //加载启动器
+                    self.model.push({
+                        name: "Components",
+                        type: "json",
+                        text: JSON.stringify(self.componentSetting)
+                    });
+                })
+                .then(function() {
+                    return self.$requireComponent('ComponentLoader', self.model, $(view));
+                });
+        },
+        destroy: function() {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _adaptedOriginData: function(model) {
+            //添加题型所需要的数据
+            this.model.push({
+                name: "TimerController",
+                type: "string",
+                value: JSON.stringify([{
+                        name: "timer_type",
+                        type: "string",
+                        value: model.question_url.timer.timer_type /*timer_type：正计时和倒计时*/
+                    },
+                    {
+                        name: "time_limit",
+                        type: "string",
+                        value: model.question_url.timer.time_limit /*倒计时时间*/
+                    }
+                ])
+            });
+            this.model.push({
+                name: "InteractionSubmitButton",
+                /*提交控制器*/
+                type: "string",
+                value: JSON.stringify([{
+                        name: "can_modify",
+                        /*can_modify：是否可重复作答，和showResultSubmit一起用*/
+                        type: "string",
+                        /*can_modify=false 并且 showResultSubmit=true，表示只能提交一次，反之则可以重复作答*/
+                        value: true
+                    },
+                    {
+                        name: "linkQuestionType",
+                        type: "string",
+                        value: "table"
+                    },
+                    {
+                        name: "linkQuestionId",
+                        type: "string",
+                        value: model.question_id
+                    },
+                    {
+                        name: "view_type",
+                        type: "string",
+                        value: "new_em_button" /*不加这个类 则 按钮是旧版按钮，加这个类才是新版按钮*/
+                    }
+                ])
+            });
+            this.model.push({
+                name: "TableRemake",
+                type: "string",
+                value: JSON.stringify([{
+                        "name": "question_id",
+                        "type": "string",
+                        "value": model.question_id
+                    },
+                    {
+                        name: "question_url",
+                        type: "json",
+                        text: JSON.stringify(model.question_url)
+                    }
+                ])
+            });
+            this.model.push({
+                name: "ObjectiveInteractionLayout",
+                /*布局控制器*/
+                type: "string",
+                value: JSON.stringify([{
+                    name: "questionType",
+                    type: "string",
+                    value: "Table" /*改为题型的名字*/
+                }])
+            });
+            this.model.push({
+                name: "AnswerFlowController",
+                /*答题控制器*/
+                type: "string",
+                value: JSON.stringify([{
+                    name: "showResultOnSubmit",
+                    /*can_modify：是否可重复作答，和showResultSubmit一起用*/
+                    type: "string",
+                    /*can_modify=false 并且 showResultSubmit=true，表示只能提交一次，反之则可以重复作答*/
+                    value: "false"
+                }])
+            });
+            this.model.push({
+                name: "ObjectiveStatisticsRemake",
+                /*统计控制器*/
+                type: "string",
+                value: JSON.stringify([])
+            });
+            this.model.push({
+                name: "InteractionTimer",
+                /*时间控制器*/
+                type: "string",
+                value: JSON.stringify([{
+                    "name": "view_type",
+                    "type": "string",
+                    "value": "new_timer"
+                }])
+            });
+            this.model.push({
+                name: 'ClassroomStatusController',
+                type: 'string',
+                value: JSON.stringify([{
+                    name: 'questionId',
+                    type: 'string',
+                    value: model.question_id
+                }])
+            });
+        },
+        _configComponents: function() {
+            //根据不同的运行场景定义需要加载的组件
+            if (this.isPPTShell || this.currentRuntime == icCreatePlayer.RUNTIME.WEB) { //启动器配置问题：web环境应该和老师端配置环境一致
+                //如果是PPTShell的场景
+                this.componentSetting = {
+                    controllers: [{
+                            presenter: "InteractionStateRecoverFilter"
+                        },
+                        {
+                            presenter: "I18nFilter"
+                        },
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: [{
+                                property: "TimerService",
+                                presenter: "TimerController"
+                            }]
+                        },
+                        {
+                            presenter: "ObjectiveStatController"
+                        }, {
+                            presenter: 'ClassroomStatusController'
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [
+                        { presenter: "InteractionTimer", renderTo: "TopLeftPanel" },
+                        { presenter: "InteractionSubmitButton", renderTo: "BottomPanel" },
+                        { presenter: "TableRemake", renderTo: "CenterPanel" },
+                        { presenter: "ObjectiveStatisticsRemake", renderTo: "StatisticsPanel" } /*学生端不需要统计控制器*/
+                    ]
+                };
+            } else if (this.currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                //如果是学生端Pad或Web的场景
+                this.componentSetting = {
+                    controllers: [{
+                            presenter: "InteractionStateRecoverFilter"
+                        },
+                        {
+                            presenter: "I18nFilter"
+                        },
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: [{
+                                property: "TimerService",
+                                presenter: "TimerController"
+                            }]
+                        },
+                        {
+                            presenter: "AnswerProgressController"
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [
+                        { presenter: "InteractionTimer", renderTo: "TopLeftPanel" },
+                        { presenter: "InteractionSubmitButton", renderTo: "TopRightPanel" },
+                        { presenter: "TableRemake", renderTo: "CenterPanel" }
+                    ]
+                };
+            }
+        },
+        _getCompareContent: function(model) {
+            var that = this;
+            var deffer = $.Deferred();
+            if (typeof model.question_url === 'string') { //model为xml格式
+                var newQuestionUrl = {
+                    skin: {
+                        code: 'wood'
+                    },
+                    timer: {
+                        timer_type: 'sequence',
+                        time_limit: 300
+                    },
+                    title: '',
+                    description: {},
+                    horizontal_items: [],
+                    vertical_items: [],
+                    items: []
+                };
+                //读取时间信息
+                newQuestionUrl.timer.timer_type = model.timer_type;
+                newQuestionUrl.timer.time_limit = model.time_limit;
+                //读取qti数据
+                var refPath = icCreatePlayer.ref_path;
+                var xmlUrl = model.question_url;
+                var qtiDtd = $.Deferred();
+
+                QtiPlayerOldStyle.load(xmlUrl, { refPath: refPath }, function(modelInfo) {
+                    //答案
+                    var correctAnswer = {};
+                    for (var id in modelInfo.correctAnswer) {
+                        var corrOld = modelInfo.correctAnswer[id];
+                        for (var j = 0; j < corrOld.value.length; j++) {
+                            correctAnswer[corrOld.value[j].split(" ")[0]] = corrOld.value[j].split(
+                                " ")[1];
+                        }
+                    }
+                    //异步获取xml数据
+                    var itemModel = modelInfo.model[0];
+                    //解析题目标题
+                    var prompt = $(itemModel.prompt);
+                    var asset_type = '';
+                    if (prompt[1]) {
+                        if (prompt[1].nodeName == 'IMG') {
+                            asset_type = 'image';
+                        } else if (prompt[1].nodeName == 'AUDIO') {
+                            asset_type = 'audio';
+                        } else {
+                            asset_type = 'vedio';
+                        }
+                    } else {
+                        asset_type = 'default';
+                    }
+                    newQuestionUrl.description = {
+                        'text': prompt[0].innerHTML.replace(/&nbsp;/ig, ''),
+                        'asset_type': asset_type,
+                        'asset': prompt[1] ? prompt[1].src : '',
+                        "image_extend": {
+                            "rotate": "",
+                            "resize": ""
+                        }
+                    }
+                    //解析选项
+                    var gapTexts = itemModel.gapText;
+                    for (var i = 0; i < gapTexts.length; i++) {
+                        var gapText = {},
+                            contentDom, content, content_type, id;
+                        id = gapTexts[i].identifier;
+                        contentDom = $(gapTexts[i].content)[0];
+                        if (contentDom.nodeName == 'P') {
+                            content = contentDom.innerHTML;
+                            content_type = 'text';
+                        } else {
+                            content = contentDom.src;
+                            content_type = 'image';
+                        }
+                        gapText = {
+                            'id': id,
+                            "content_type": content_type,
+                            "content": content,
+                            "horizontal_index": correctAnswer[id].split('_')[0].substring(1) -
+                                1,
+                            "vertical_index": correctAnswer[id].split('_')[1] - 1
+                        };
+                        newQuestionUrl.items.push(gapText);
+                    }
+
+                    var tableMatchContent = itemModel.tableMatchContent;
+                    var trReg = /<tr>([\s\S]*?)<\/tr>/g;
+                    var tdReg = /<td>([\s\S]*?)<\/td>/g;
+                    var trArray = tableMatchContent.match(trReg);
+                    for (var k = 0; k < trArray.length; k++) {
+                        var tdArray = trArray[k].match(tdReg);
+                        for (var m = 0; m < tdArray.length; m++) {
+                            var td = tdArray[m];
+                            if (k == 0) {
+                                newQuestionUrl.horizontal_items.push($(td)[0].innerHTML);
+                            } else {
+                                newQuestionUrl.vertical_items.push($(td)[0].innerHTML);
+                                break;
+                            }
+                        }
+                    }
+                    qtiDtd.resolve();
+                });
+                $.when(qtiDtd).done(function() {
+                    //旧数据转换完成
+                    model.question_url = newQuestionUrl;
+                    deffer.resolve();
+                });
+
+            } else {
+                //新数据结构，不需要转换
+                deffer.resolve();
+            }
+            console.log(newQuestionUrl);
+
+            return deffer.promise();
+        }
+    });
+
+    window.AddonTable_create = function() {
+        return new Presenter();
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

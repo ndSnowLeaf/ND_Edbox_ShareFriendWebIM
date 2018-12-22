@@ -1,0 +1,1219 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WordPuzzlesRemake'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="AlamedaRequire" version="0.3.2" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .wordpuzzle{position:relative;width:100%;height:100%}.exam_skin_wood .wordpuzzle .sideboard{position:relative;float:right;height:100%;width:17.125em;margin:0 .41667em;text-align:left}.exam_skin_wood .wordpuzzle .sideboard:first-child{margin-right:.625em}.exam_skin_wood .wordpuzzle .sidehead{position:absolute;left:0;top:0;right:0;height:3.5em;border-radius:.75em .75em 0 0;text-align:left;z-index:2}.exam_skin_wood .wordpuzzle .sidehead .tit{padding-left:1.66667em;font-weight:700;color:#824f06;line-height:3.5em}.exam_skin_wood .wordpuzzle .sidehead .tit .em{font-size:1.5em}.exam_skin_wood .wordpuzzle .sidecon{height:100%;border-bottom:.25em solid transparent;border-radius:0 0 .75em .75em;overflow:auto;z-index:1}.exam_skin_wood .wordpuzzle .manage_right{position:absolute;top:1em;right:0;left:0;bottom:1em;padding:2.58333em 0 0;border-radius:.75em;border:.04167em solid #d09c4a;background:linear-gradient(180deg,#e1c08f,#cda569);box-shadow:0 .25em .5em 0 #c4975f}.exam_skin_wood .wordpuzzle .sidecon_box{padding:0 .29167em .625em}.exam_skin_wood .wordpuzzle .tip_normal{position:relative;padding:0 2.5em 0 .66667em;line-height:2.33333em;margin-top:.33333em;color:#333}.exam_skin_wood .wordpuzzle .tip_normal .num,.exam_skin_wood .wordpuzzle .tip_normal .word{word-wrap:break-word;word-break:break-word;font-size:1.66667em}.exam_skin_wood .wordpuzzle .tip_normal.correct{background-color:#f3e1b6;border:.04167em solid #ead0a1}.exam_skin_wood .wordpuzzle .tip_normal.correct:after{content:"";position:absolute;top:.5em;right:.41667em;width:1.25em;height:1.375em;background:url(resources/wood/images/correct.png) 50% no-repeat;background-size:contain}.exam_skin_wood .wordpuzzle .cellMiddle{white-space:nowrap}.exam_skin_wood .wordpuzzle .cellMiddle:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .wordpuzzle .manage_right{vertical-align:middle;margin:0}.exam_skin_wood .wordpuzzle .manage_right .com_m_sidehead{text-align:center;z-index:5}.exam_skin_wood .wordpuzzle .com_m_sidecon{box-shadow:none!important}.exam_skin_wood .wordpuzzle .manage_right_tit{color:#fff6e4;line-height:2.41667em;font-size:1.08333em}.exam_skin_wood .wordpuzzle .manage_left{height:100%;overflow:hidden;text-align:center}.exam_skin_wood .wordpuzzle .manage_left .mainbox{display:inline-block;position:relative}.exam_skin_wood .wordpuzzle .manage_left .mainbox .bluebox_container{position:absolute;left:0;right:0;top:0;bottom:0}.exam_skin_wood .wordpuzzle .manage_left .mainbox .bluebox{position:absolute;border:.16667em solid #27b1ea;border-radius:.70833em;z-index:11;overflow:hidden;pointer-events:none}.exam_skin_wood .wordpuzzle .manage_left .mainbox .bluebox.blue_x{height:2.95833em;width:6.33333em;left:.66667em;top:1em}.exam_skin_wood .wordpuzzle .manage_left .mainbox .bluebox.blue_y{width:2.95833em;height:9.875em;right:4.04167em;top:1em;border-color:#73b108}.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_x,.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_y{position:absolute;top:0;z-index:11;min-width:.83333em;min-height:.91667em;padding:0 .20833em;line-height:.91667em;color:#fff}.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_x .num,.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_y .num{font-size:1em}.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_x{left:0;background:#27b1ea;border-radius:.41667em 0}.exam_skin_wood .wordpuzzle .manage_left .mainbox .num_box_y{border-radius:0 .41667em;right:0;background:#73b108}.exam_skin_wood .wordpuzzle .manage_left .manage_box{display:inline-block;padding:.625em .83333em;vertical-align:middle;background:hsla(34,60%,62%,.35);border-radius:.70833em;box-shadow:0 -1px .20833em 1px #b8894c}.exam_skin_wood .wordpuzzle .manage_left .box_normal{float:left;position:relative;width:2.79167em;height:2.79167em;text-align:center;margin:.125em .16667em;background:rgba(168,114,42,.51);border-radius:.58333em;overflow:hidden}.exam_skin_wood .wordpuzzle .manage_left .box_normal:before{z-index:9;content:"";position:absolute;left:-.125em;right:-.125em;top:-.125em;bottom:-.125em;background:url(resources/wood/images/shadow_01.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .wordpuzzle .manage_left .box_normal.done{background:0 0}.exam_skin_wood .wordpuzzle .manage_left .box_normal.done:before{z-index:9;content:"";position:absolute;left:0;right:0;top:0;bottom:0;background:url(resources/wood/images/bg_done.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .wordpuzzle .manage_left .box_normal.disabled{background:rgba(168,114,42,.15)}.exam_skin_wood .wordpuzzle .manage_left .box_normal .word{position:relative;z-index:10;width:100%;height:93%;padding:0;background:0 0;border:none;text-align:center;color:#422701;font-size:1.91667em}.exam_skin_wood .wordpuzzle .manage_left .largeBox.less{width:17.41667em}.exam_skin_wood .wordpuzzle .manage_left .largeBox.many{width:20.625em}.exam_skin_wood .wordpuzzle .manage_left .normalBox.less{width:23.54167em}.exam_skin_wood .wordpuzzle .manage_left .normalBox.many{width:26.66667em}.exam_skin_wood .wordpuzzle .manage_left .smallBox.less{width:30em}.exam_skin_wood .wordpuzzle .manage_left .smallBox.many{width:32.91667em}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content wordpuzzle"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit" data-bind="html:title,css:{s_tit: title.length > 38}"></h2></div><div class="com_layout_main"><div class="sideboard"><div class="manage_right"><div class="sidehead"><span class="tit"><em class="em" data-bind="text:translations.vertical_hint"></em></span></div><div class="sidecon scrollbar_style_brown"><ul class="sidecon_box" data-bind="foreach:hints_v"><li class="tip_normal" data-bind="css:{'correct':isVCorrect() && $root.showAnswer()}"><em class="num" data-bind="text:$index()+1+'.'"></em> <em class="word" data-bind="text:hint"></em></li></ul></div></div></div><div class="sideboard"><div class="manage_right"><div class="sidehead"><span class="tit"><em class="em" data-bind="text:translations.horizontal_hint"></em></span></div><div class="sidecon scrollbar_style_brown"><ul class="sidecon_box" data-bind="foreach:hints_h"><li class="tip_normal" data-bind="css:{'correct':isHCorrect() && $root.showAnswer()}"><em class="num" data-bind="text:$index()+1+'.'"></em> <em class="word" data-bind="text:hint"></em></li></ul></div></div></div><div class="manage_left cellMiddle"><div class="mainbox"><ul class="bluebox_container" data-bind="foreach:blueBoxes"><li class="bluebox" data-bind="style:style,css:{blue_x:direction === 'horizontal',blue_y:direction === 'vertical'},visible:(($root.currentPoint.x() >= startX && $root.currentPoint.x() <= endX) && ($root.currentPoint.y() >= startY && $root.currentPoint.y() <= endY) || $root.isInStat()) && $root.showBlueBox()"></li></ul><ul data-bind="foreach:words,css:boxStyle"><li class="box_normal" data-bind="ifnot:hide,css:{'disabled':hide,'done':word() !== ''}"><span class="num_box_x" data-bind="click:function(data,event){orderNum.click('horizontal')},visible:(($root.focus.x_h()==x && $root.focus.y_h()==y) || ($root.isInStat() && orderNum.num.horizontal>0)) && $root.showBlueBox()"><em class="num" data-bind="text:orderNum.num.horizontal"></em> </span><span class="num_box_y" data-bind="click:function(data,event){orderNum.click('vertical')},visible:(($root.focus.x_v()==x && $root.focus.y_v()==y) || ($root.isInStat() && orderNum.num.vertical>0)) && $root.showBlueBox()"><em class="num" data-bind="text:orderNum.num.vertical"></em> </span><input type="text" class="word" data-bind="enable:$root.editable,textInput:word,hasFocus:isSelected,click:click,event:{textInput:textInputHandle,keyup:keyUpHandle}"></li></ul></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: 'WordPuzzlesRemake',
+            type: 'presenterComponent',
+            subtype: 'interactionQuestion'
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+
+            //用于国际化的语言设置deferred
+            this.$translateDeferred = $.Deferred();
+        },
+        getService: function() {
+            var self = this;
+
+            return require(['WordPuzzlesService'], function(service) {
+                self._service_ = new service(self);
+            });
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            this.view = view;
+            this.model = model;
+            this._initPresenter(view, model);
+        },
+        pageShow: function() {
+            this._bindEvent();
+        },
+        pageLeave: function() {
+            this._unbindEvent();
+        },
+        destroy: function() {
+
+
+        },
+        /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+        getState: function() {
+
+        },
+        setState: function(state, options) {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function() {
+
+        },
+        _unbindEvent: function() {
+
+        },
+        _initPresenter: function(view, model) {
+            var self = this,
+                questionUrl = model.question_url,
+                questionModel = { //存放渲染题目需要的数据
+                    title: questionUrl.title,
+                    width: questionUrl.border.width,
+                    height: questionUrl.border.height,
+                    hints_h: [],
+                    hints_v: [],
+                    words: [],
+                    blueBoxes: []
+                },
+                hints = {},
+                words = {},
+                blueBoxes = {};
+
+            //根据给到的题目内容判断是否是英文题目
+            this._util.isEn = this._isEnglishQuestion(questionUrl);
+
+            //提取横向和纵向提示
+            hints = this._getHints(questionUrl);
+
+            //所有空格的处理
+            words = this._getWords(questionUrl);
+
+            //获取蓝色框
+            blueBoxes = this._getBlueBoxes(questionUrl);
+
+            //合并处理
+            $.extend(true, questionModel, hints, words, blueBoxes);
+
+            //ko绑定
+            self.viewModel = new self._util.viewModel(questionModel);
+
+            this.$translateDeferred.done(function() {
+                //国际化处理
+                self._setLanguage(self.viewModel);
+            });
+
+            ko.applyBindings(self.viewModel, view);
+        },
+        //国际化处理
+        _setLanguage: function(viewModel) {
+            if (!this.i18nModel) {
+                return;
+            }
+
+            for (var prop in viewModel.translations) {
+                if (this.i18nModel[prop]) {
+                    viewModel.translations[prop](this.i18nModel[prop]);
+                }
+            }
+
+        },
+        //判断是否是英语题目
+        _isEnglishQuestion: function(questionUrl) {
+            var code = questionUrl.words[0].word.charCodeAt(0);
+
+            return code >= 65 && code <= 122;
+        },
+        //提取横向和纵向的提示
+        _getHints: function(questionUrl) {
+            var hints_h = [],
+                hints_v = [],
+                tempChar = {},
+                words = $.extend(true, [], questionUrl.words),
+                chars = $.extend(true, [], questionUrl.chars);
+
+
+            //遍历word找出对应word的hint
+            words.forEach(function(word, wordIndex, wordsArray) {
+                word.click = null; //提示上点击,todo
+                word.isHCorrect = ko.observable(false);
+                word.isVCorrect = ko.observable(false);
+
+                //数组的find方法不支持，故用filter代替
+                tempChar = chars.filter(function(char, charIndex, charsArray) {
+                    return char.x === word.start_axis.x && char.y === word.start_axis.y
+                })[0];
+
+                if (word.direction === 'horizontal') {
+                    word.hint = tempChar.hints.horizontal;
+                    word.index = hints_h.length + 1;
+                    hints_h.push(word);
+                } else {
+                    word.hint = tempChar.hints.vertical;
+                    word.index = hints_v.length + 1;
+                    hints_v.push(word);
+                }
+            });
+
+            //chars.forEach(function(v,i,a){
+            //    v.click = null;//提示上点击效果，todo
+            //    v.isHCorrect = ko.observable(false);
+            //    v.isVCorrect = ko.observable(false);
+            //
+            //    if(v.hints.horizontal){
+            //        v.index = hints_h.length + 1;
+            //        hints_h.push(v);
+            //    }else{
+            //        v.index = hints_v.length + 1;
+            //        hints_v.push(v);
+            //    }
+            //});
+
+            return { 'hints_h': hints_h, 'hints_v': hints_v }
+        },
+        _getWords: function(questionUrl) {
+            var self = this,
+                width = questionUrl.border.width,
+                height = questionUrl.border.height,
+                status = null, //每个格子的状态
+                words = [],
+                x, y; //格子坐标
+
+            self._util.basicInfo.width = width;
+            self._util.basicInfo.height = height;
+
+            for (var i = 1, len = width * height; i <= len; i++) {
+                x = Math.ceil(i / width);
+                y = i % width == 0 ? width : i % width;
+                status = this._getWordStatus(x, y);
+
+                var word = ko.observable(""),
+                    isSelected = ko.observable(false);
+
+                var obj = {
+                    word: word,
+                    curValue: '', //空格当前，也就是本次输入未完成前，上一次的值
+                    hide: status.hide,
+                    isSelected: isSelected,
+                    x: x,
+                    y: y,
+                    click: function(data) {
+                        self._input_click(data);
+                    },
+                    textInputHandle: function(data, e) {
+                        console.log('textInput');
+                        self._handleTextInput.apply(this, [data, e, words, self]);
+                    },
+                    keyUpHandle: function(data, e) {
+                        console.log('keyup');
+                        if (e.keyCode === 8) {
+                            this.curValue = '';
+                        }
+                    },
+                    direction: status.direction,
+                    correctWord: status.correctWord,
+                    hasOrderNum: status.hasOrderNum, //是否有序号
+                    orderNum: {
+                        num: status.orderNum,
+                        click: function(direction) {
+                            if (self.viewModel.isInStat()) {
+                                var d = direction === 'horizontal' ? 'h' : 'v';
+                                self.$dispatchEvent("statistics_call",
+                                    'ic_player_event', {
+                                        service: "statistic",
+                                        method: "clickItem",
+                                        args: [this.num[direction] - 1, d, "B"]
+                                    });
+                            }
+                        }
+                    }
+                };
+
+                words.push(obj);
+
+                //格子的内容变化时调用
+                obj.word.subscribe(function(value) {
+                    console.log('subscribe:', value);
+
+                    self._handleSubscribe.apply(this, [value, words, self]);
+                }, obj);
+            }
+
+            return { "words": words };
+        },
+        //获取蓝色框的数组
+        _getBlueBoxes: function(questionUrl) {
+            var self = this,
+                blueBoxes = [],
+                hIndex = 0,
+                vIndex = 0;
+
+            questionUrl.words.forEach(function(value, index, array) {
+                var box = {
+                        'startX': value.start_axis.x,
+                        'startY': value.start_axis.y,
+                        'endX': value.end_axis.x,
+                        'endY': value.end_axis.y,
+                        'direction': value.direction,
+                        'index': value.direction === "horizontal" ? ++hIndex : ++vIndex,
+                        'style': ''
+                    },
+                    top, left, width, height;
+
+
+                //定位起点
+                //top = 0.625 + (value.start_axis.x - 1) * (2.79167 + 0.25) + 'em';
+                //left = 0.8733 + (value.start_axis.y - 1) * (2.79167 + 0.16667 * 2) + 'em';
+
+                top = 0.625 + (value.start_axis.x - 1) * 3.041 + 'em';
+                left = 0.873 + (value.start_axis.y - 1) * 3.128 + 'em';
+
+                box.style = {
+                    top: top,
+                    left: left
+                };
+
+                if (value.direction === 'horizontal') {
+                    //width = (value.end_axis.y - value.start_axis.y + 1) * 2.79167 + (value.end_axis.y - value.start_axis.y) * 0.16667 * 2 + 'em';
+                    width = (value.end_axis.y - value.start_axis.y + 1) * 3.130 - 0.11 + 'em';
+                    box.style.width = width;
+                } else {
+                    //height = (value.end_axis.x - value.start_axis.x + 1) * 2.79167 + (value.end_axis.x - value.start_axis.x) * 0.25 + 'em';
+                    height = (value.end_axis.x - value.start_axis.x + 1) * 3.016 - 0.016 + 'em';
+                    box.style.height = height;
+                }
+
+                blueBoxes.push(box);
+            });
+
+            return { blueBoxes: blueBoxes };
+        },
+        //获取每个格子的初始状态
+        _getWordStatus: function(x, y) {
+            var words = this.model.question_url.words,
+                chars = this.model.question_url.chars,
+                hasOrderNum = false,
+                index = {
+                    horizontal: 0,
+                    vertical: 0
+                },
+                hIndex = 0,
+                vIndex = 0,
+                hide = true,
+                direction = {
+                    'horizontal': false,
+                    'vertical': false
+                },
+                c, w,
+                correctWord = "";
+
+
+            for (var i = 0, length = chars.length; i < length; i++) {
+                c = chars[i];
+                hIndex = 0;
+                vIndex = 0;
+
+                //遍历words匹配序号
+                for (var j = 0, jLen = words.length; j < jLen; j++) {
+                    w = words[j];
+
+                    if (c.hints.horizontal && w.direction === 'horizontal') {
+                        hIndex++;
+
+                        if (c.x === w.start_axis.x && c.y === w.start_axis.y) {
+                            break;
+                        }
+                    }
+
+                }
+
+                for (var j = 0, jLen = words.length; j < jLen; j++) {
+                    w = words[j];
+
+                    if (c.hints.vertical && w.direction === 'vertical') {
+                        vIndex++;
+                        if (c.x === w.start_axis.x && c.y === w.start_axis.y) {
+                            break;
+                        }
+                    }
+                }
+
+
+                //得到序号
+                //if(c.hints.horizontal){
+                //    hIndex++;
+                //}
+                //if(c.hints.vertical){
+                //    vIndex++;
+                //}
+
+
+                if (c.x == x && c.y == y) {
+                    hasOrderNum = true;
+
+                    if (c.hints.vertical) {
+                        direction.vertical = true;
+                        correctWord = c.word['vertical'][0];
+                        index.vertical = vIndex;
+                    }
+
+                    if (c.hints.horizontal) {
+                        direction.horizontal = true;
+                        correctWord = c.word['horizontal'][0];
+                        index.horizontal = hIndex;
+                    }
+
+                    hide = false;
+                    break;
+                }
+
+                if (c.hints["vertical"] && y == c.y && x > c.x && x < (c.x + c.word["vertical"].length)) {
+                    hide = false;
+                    direction.vertical = true;
+                    correctWord = c.word['vertical'][x - c.x];
+                }
+
+                if (c.hints["horizontal"] && x == c.x && y > c.y && y < (c.y + c.word["horizontal"].length)) {
+                    hide = false;
+                    direction.horizontal = true;
+                    correctWord = c.word['horizontal'][y - c.y];
+                }
+
+            }
+
+            return { hide: hide, direction: direction, correctWord: correctWord, hasOrderNum: hasOrderNum, orderNum: index };
+        },
+        //格子的值发生变化时的处理函数
+        _handleSubscribe: function(value, words, parent) {
+            //值发生变化时，通知提交按钮，通知状态恢复
+            var canSubmit = words.some(function(value, index, array) {
+                return value.word() !== '';
+            });
+
+            //题目作答状态改变，通知按钮
+            parent.$dispatchEvent('questionStateChange', "ic_player_event", { canSubmit: canSubmit });
+
+            //通知保存状态
+            parent.$dispatchEvent("interaction_presenter_state_change", "ic_player_event");
+        },
+        _handleTextInput: function(data, e, words, parent) {
+            var isEn = parent._util.isEn,
+                value = e.originalEvent.data.trim(),
+                isAllChinese = true,
+                hasChinese = false,
+                i, code;
+
+            //是否是允许输入的字符，英文或者汉字
+            var isEnableCode = /^[\u4e00-\u9fa5]+$/i.test(value) || /^([\u0041-\u005A]|[\u0061-\u007A])+$/i.test(value);
+
+            if (value.length < 1)
+                return;
+
+            //如果不是单纯的汉字或字母，则返回
+            if (!isEnableCode) {
+                this.word(this.curValue);
+                return;
+            }
+
+            String.prototype.insert=function (params) {
+                return '';
+            }
+
+            for (i in value) {
+                if (!value.hasOwnProperty(i)) {
+                    continue;
+                }
+                code = value[i].charCodeAt(0);
+
+                if (code >= 65 && code <= 122) {
+                    isAllChinese = false;
+                } else {
+                    hasChinese = true;
+                }
+            }
+
+            //英文题目下输入了中文 或者
+            if ((isEn && hasChinese) || (!isEn && !isAllChinese)) {
+                e.preventDefault();
+
+                //如果是学生端直接清空
+                if (parent.isStudent) {
+                    this.word('');
+                } else {
+                    this.word(this.curValue);
+                }
+
+                return false;
+            }
+
+            parent._updateWords.apply(this, [value, parent]);
+
+        },
+        _updateWords: function(value, parent) {
+            var currentDirection = parent._util.currentDirection,
+                viewModel = parent.viewModel,
+                words = viewModel.words(),
+                w = this,
+                x = this.x,
+                y = this.y,
+                width = viewModel.width,
+                nextDirection = 'vertical',
+                next;
+
+            if (value.length > 0) {
+                this.word(value.substr(0, 1));
+                this.curValue = this.word();
+                value = value.substr(1);
+            }
+
+            //判断输入方向
+
+
+            if (w.direction.horizontal) {
+                nextDirection = 'horizontal';
+            }
+
+
+            do {
+                //(currentDirection == '') && (currentDirection = w.direction);
+
+                //!nextDirection && w.direction.horizontal && (nextDirection = '');
+
+                if (nextDirection == 'horizontal') {
+                    next = words[(x - 1) * width + y];
+                    x = x;
+                    y = y + 1;
+                    nextDirection = 'horizontal';
+                    if (y > width)
+                        next = null;
+                } else if (nextDirection == 'vertical') {
+                    next = words[x * width + y - 1];
+                    x = x + 1;
+                    y = y;
+                    nextDirection = 'vertical';
+                }
+
+                if (next) {
+                    if (next.hide) {
+                        w.isSelected(false);
+                    } else {
+                        w = next;
+                        w.isSelected(true);
+                        parent._input_click({ x: x, y: y });
+
+                        if (value.length == 0) break;
+
+                        w.word(value.substr(0, 1));
+                        w.curValue = w.word();
+                        value = value.substr(1);
+                    }
+                } else {
+                    w.isSelected(false);
+                    break;
+                }
+
+            } while (value.length >= 0);
+
+        },
+        _input_click: function(d, isClick) {
+            var parent = this,
+                util = parent._util,
+                viewModel = parent.viewModel,
+                words = parent.model.question_url.words,
+                x = d.x,
+                y = d.y,
+                currentDirection;
+            if (isClick)
+                util.currentDirection = '';
+
+            //输入方向
+
+            //当前选中的格子
+            viewModel.currentPoint.x(x);
+            viewModel.currentPoint.y(y);
+
+            viewModel.currentTip.index(0);
+            viewModel.currentTip.direction("");
+
+
+
+            //当前选中格子所在行列的起点
+            viewModel.focus.x_h(0);
+            viewModel.focus.y_h(0);
+            viewModel.focus.x_v(0);
+            viewModel.focus.y_v(0);
+
+            for (var i = 0, length = words.length; i < length; i++) {
+                var w = words[i];
+                if (w.direction == "horizontal") {
+                    if (y >= w.start_axis.y && y <= w.end_axis.y && x == w.start_axis.x) {
+                        viewModel.focus.x_h(w.start_axis.x);
+                        viewModel.focus.y_h(w.start_axis.y);
+                        currentDirection = 'horizontal';
+                    }
+                } else {
+                    if (x >= w.start_axis.x && x <= w.end_axis.x && y == w.start_axis.y) {
+                        viewModel.focus.x_v(w.start_axis.x);
+                        viewModel.focus.y_v(w.start_axis.y);
+                        currentDirection = 'vertical';
+                    }
+                }
+            }
+
+            !util.currentDirection && (util.currentDirection = currentDirection);
+        },
+        _util: {
+            showAnswerInfo: {}, //状态恢复用，是否显示过答案
+            answerResult: {}, //作答结果
+            isEn: false, //是否是英文字谜
+            currentDirection: '',
+            oldValue: '', //每次keydown时记录之前的值
+            basicInfo: {
+                width: 0,
+                height: 0
+            },
+            viewModel: function(model) {
+                //标题
+                this.title = model.title;
+                //方格宽高
+                this.width = model.width;
+                this.height = model.height;
+                //当前提示位置
+                this.currentTip = {
+                    index: ko.observable(0),
+                    direction: ko.observable("")
+                };
+                this.currentPoint = {
+                    x: ko.observable(0),
+                    y: ko.observable(0)
+                };
+                //格子框的样式
+                this.boxStyle = ko.pureComputed(function() {
+                    var boxStyle = 'manage_box',
+                        width = model.width;
+
+                    switch (width) {
+                        case 5:
+                        case 6:
+                            boxStyle += ' largeBox';
+                            break;
+                        case 7:
+                        case 8:
+                            boxStyle += ' normalBox';
+                            break;
+                        case 9:
+                        case 10:
+                            boxStyle += ' smallBox';
+                            break;
+                    }
+
+
+                    boxStyle += (width == 5 || width == 7 || width == 9) ? ' less' : ' many';
+
+                    return boxStyle;
+                }, this);
+                //当前聚焦行列起始点
+                this.focus = {
+                    x_h: ko.observable(0),
+                    y_h: ko.observable(0),
+                    x_v: ko.observable(0),
+                    y_v: ko.observable(0)
+                };
+                //可做题
+                this.editable = ko.observable(true);
+                this.showAnswer = ko.observable(false);
+                this.showBlueBox = ko.observable(true);
+                this.blur = ko.observable(false);
+                //是否在统计状态
+                this.isInStat = ko.observable(false);
+                //右侧提示
+                this.hints_h = ko.observableArray(model.hints_h);
+                this.hints_v = ko.observableArray(model.hints_v);
+                //左侧蓝色框
+                this.blueBoxes = ko.observableArray(model.blueBoxes);
+                //每个格子的词
+                this.words = ko.observableArray(model.words);
+
+                this.translations = {
+                    "horizontal_hint": ko.observable("横向提示"),
+                    "vertical_hint": ko.observable("纵向提示")
+                };
+            }
+        }
+    }, 'WordPuzzlesRemake');
+
+    window.AddonWordPuzzlesRemake_create = function() {
+        return new Presenter();
+    }
+})();
+define('WordPuzzlesService', function() {
+    var service = function(parent) {
+        this.parent = parent;
+        this.viewModel = parent.viewModel;
+        this.status = {};
+    };
+
+    service.prototype = {
+        constructor: service,
+
+        getQuestionInfo: function() {
+            var model = this.parent.model;
+
+            return {
+                id: model.question_id,
+                type_code: 'wordpuzzles',
+                type_name: '字谜游戏',
+                item: "wordpuzzles",
+                url: model.question_id,
+                dispatchOnly: true
+            }
+        },
+        //填充特定的答案
+        showAnswer: function(answerType, specificAnswer) {
+            var parent = this.parent,
+                util = parent._util,
+                viewModel = parent.viewModel,
+                words = viewModel.words(),
+                user_response,
+                correct_response;
+
+            //如果不在统计状态，就去掉蓝色框
+            if (!viewModel.isInStat()) {
+                viewModel.showBlueBox(false);
+            }
+            if (specificAnswer) {
+                user_response = specificAnswer.answer.user_response;
+                words.forEach(function(value, index, array) {
+                    value.word(user_response[index].word);
+                });
+            } else {
+                //状态恢复用
+                util.showAnswerInfo = {
+                    hasShow: true,
+                    answerType: answerType,
+                    specificAnswer: specificAnswer
+                };
+
+                switch (answerType) {
+                    //显示学生答案
+                    case 'user':
+
+                        break;
+                        //显示正确答案
+                    case 'correct':
+                    default:
+                        words.forEach(function(value, index, array) {
+                            value.word(value.correctWord);
+                        });
+                        //公布正确答案后不可操作，20160718修改
+                        viewModel.editable(false);
+                }
+            }
+
+            this.showAnswerCheck(answerType, specificAnswer);
+
+            //通知状态变化
+            this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+
+        },
+        //显示正误反馈
+        showAnswerCheck: function(answerType, specificAnswer) {
+            //右侧正误反馈
+
+            var result = this.parent._util.answerResult,
+                answerH, answerV;
+
+
+
+            if (result.hasOwnProperty("answerH")) {
+                answerH = result.answerH.user_response;
+            }
+            if (result.hasOwnProperty("answerV")) {
+                answerV = result.answerV.user_response;
+            }
+
+            var hints_h = this.viewModel.hints_h(),
+                hints_v = this.viewModel.hints_v(),
+                hLen = hints_h.length,
+                vLen = hints_v.length,
+                hContent,
+                vContent;
+            if (result.hasOwnProperty("answerH")) {
+                //循环比对，判断是否某行或某列作答正确
+                for (var i = 0; i < hLen; i++) {
+                    hContent = hints_h[i].word;
+                    if (hContent == answerH[i]) {
+                        hints_h[i].isHCorrect(true);
+                    } else {
+                        hints_h[i].isHCorrect(false);
+                    }
+                }
+            }
+
+            if (result.hasOwnProperty("answerV")) {
+                for (var j = 0; j < vLen; j++) {
+                    vContent = hints_v[j].word;
+                    if (vContent == answerV[j]) {
+                        hints_v[j].isVCorrect(true);
+                    } else {
+                        hints_v[j].isVCorrect(false);
+                    }
+                }
+            }
+
+            //这两种情况下显示正误反馈
+            if (answerType === 'user' || specificAnswer) {
+                this.parent.viewModel.showAnswer(true);
+            }
+        },
+        getResult: function() {
+            var parent = this.parent,
+                viewModel = this.viewModel,
+                words = viewModel.words(),
+                width = viewModel.width,
+                hints_h = viewModel.hints_h(),
+                hints_v = viewModel.hints_v(),
+                isAllBlank = true, //全部为空，未作答
+                isAllDone = true, //所有空都能填了
+                answerState = 'COMPLETE',
+                answerResult = true,
+                data;
+
+            var correct_response = [],
+                user_response = [],
+                answerV = {
+                    correct_response: [],
+                    user_response: []
+                },
+                answerH = {
+                    correct_response: [],
+                    user_response: []
+                };
+
+            var i,
+                iLen,
+                j,
+                jLen,
+                h,
+                w,
+                x,
+                y,
+                h_result,
+                v_result;
+
+            //遍历words，按顺序将正确答案和学生作答结果存储
+            words.forEach(function(value, index, a) {
+                correct_response.push({ x: value.x, y: value.y, word: value.correctWord });
+
+                user_response.push({ x: value.x, y: value.y, word: value.word() });
+            });
+
+            //遍历横向
+            for (i = 0, iLen = hints_h.length; i < iLen; i++) {
+                h = hints_h[i];
+                h_result = "";
+                x = h.start_axis.x;
+                y = h.start_axis.y;
+
+                //correct_response.push(h.word.horizontal);
+                answerH.correct_response.push(h.word);
+                for (j = y, jLen = y + h.word.length; j < jLen; j++) {
+                    w = words[(x - 1) * width + j - 1];
+                    h_result += w.word();
+                }
+                // user_response.push(h_result);
+                answerH.user_response.push(h_result);
+
+                if (h.word !== h_result) {
+                    answerResult = false;
+                }
+            }
+
+            //遍历纵向
+            for (i = 0, iLen = hints_v.length; i < iLen; i++) {
+                h = hints_v[i];
+                v_result = "";
+                x = h.start_axis.x;
+                y = h.start_axis.y;
+                //correct_response.push(h.word.vertical);
+                answerV.correct_response.push(h.word);
+                for (j = x, jLen = x + h.word.length; j < jLen; j++) {
+                    w = words[(j - 1) * width + y - 1];
+                    v_result += w.word();
+                }
+                //user_response.push(v_result);
+                answerV.user_response.push(v_result);
+
+                if (h.word !== v_result) {
+                    answerResult = false;
+                }
+            }
+            //答题结果
+            data = {
+                answer_result: answerResult,
+                correct_response: correct_response,
+                //user_response使用数组来存储每一个格子的值，取代之前的字符串
+                user_response: user_response,
+                answerH: answerH,
+                answerV: answerV
+            };
+
+            parent._util.answerResult = data;
+
+            //遍历words
+            words.forEach(function(value, index, a) {
+                if (value.word() === '') {
+                    isAllDone = false;
+                } else {
+                    isAllBlank = false;
+                }
+            });
+
+            //判断answerState应该为什么值
+            if (isAllBlank && !isAllDone) {
+                answerState = 'NO_ANSWER';
+            }
+
+            if (isAllDone && !isAllBlank) {
+                answerState = 'COMPLETE';
+            }
+
+            if (!isAllDone && !isAllBlank) {
+                answerState = 'NO_COMPLETE';
+            }
+
+            return { 'questionId': parent.model.question_id, 'answerState': answerState, 'answer': data };
+        },
+        //提示信息
+        showResultHint: function() {},
+        //重置
+        resetQuestion: function() {
+            this.parent._util.showAnswerInfo = {};
+
+            //绑定的每个空格数据清空
+            this.viewModel.words().forEach(function(value, index, a) {
+                value.word('')
+            });
+
+            //右侧正误反馈置为false
+            this.viewModel.hints_h().forEach(function(value, index, a) {
+                value.isHCorrect(false);
+                value.isVCorrect(false);
+            });
+
+            this.viewModel.hints_v().forEach(function(value, index, a) {
+                value.isHCorrect(false);
+                value.isVCorrect(false);
+            });
+
+            this.viewModel.showAnswer(false);
+            this.viewModel.focus.x_h(0);
+            this.viewModel.focus.y_h(0);
+            this.viewModel.focus.x_v(0);
+            this.viewModel.focus.y_v(0);
+
+            this.viewModel.currentPoint.x(0);
+            this.viewModel.currentPoint.y(0);
+            this.viewModel.showBlueBox(true);
+
+            //退出统计会调用reset,在这里对标号事件解绑
+            this.viewModel.isInStat(false);
+
+            //通知状态变化
+            this.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+
+        },
+        //不允许作答
+        lockQuestion: function() {
+            this.viewModel.editable(false);
+        },
+        //允许作答
+        unlockQuestion: function() {
+            this.viewModel.editable(true);
+        },
+        //退出本题
+        finishQuestion: function() {
+            this.viewModel.editable(true);
+        },
+        _getState: function() {
+            //保存所有需要的数据
+            var parent = this.parent,
+                viewModel = this.viewModel,
+                state;
+
+            state = {
+                words: [], //每个格子的值
+                editable: viewModel.editable(), //是否可做题
+                focus: { //当前聚焦的某行或某列
+                    x_h: viewModel.focus.x_h(),
+                    y_h: viewModel.focus.y_h(),
+                    x_v: viewModel.focus.x_v(),
+                    y_v: viewModel.focus.y_v()
+                },
+                showAnswerInfo: parent._util.showAnswerInfo, //是否显示过答案
+                answer_result: parent._util.answerResult
+            };
+
+            viewModel.words().forEach(function(value, index, array) {
+                state.words.push(value.word());
+            });
+
+            return state;
+        },
+        //保存状态
+        getState: function() {
+            this.parent.playerController.startFlow('css_classroom_status_changed', { presenterCode: this.parent.metaInfo.name });
+            return this._getState();
+        },
+        //状态恢复
+        setState: function(state) {
+            var parent = this.parent,
+                viewModel = this.viewModel,
+                showAnswerInfo = state.showAnswerInfo,
+                answerResult = state.answer_result;
+            this.parent._util.answerResult = answerResult;
+
+            //是否可做题
+            viewModel.editable(state.editable);
+            viewModel.showBlueBox(state.editable);
+            
+            if(state.focus.x_h>0||state.focus.y_h>0) {
+                viewModel.currentPoint.x(state.focus.x_h);
+                viewModel.currentPoint.y(state.focus.y_h);
+            }
+                
+            if(state.focus.x_v>0||state.focus.y_v>0) {
+                viewModel.currentPoint.x(state.focus.x_v);
+                viewModel.currentPoint.y(state.focus.y_v);
+            }
+            //之前聚焦的行列
+            viewModel.focus.x_h(state.focus.x_h);
+            viewModel.focus.y_h(state.focus.y_h);
+            viewModel.focus.x_v(state.focus.x_v);
+            viewModel.focus.y_v(state.focus.y_v);
+               
+            //每个格子的值
+            viewModel.words().forEach(function(value, index, array) {
+                value.word(state.words[index]);
+            });
+
+            //如果之前已经公布过答案
+            if (showAnswerInfo.hasShow) {
+                this.showAnswer(showAnswerInfo.answerType, showAnswerInfo.specificAnswer);
+            }
+        },
+        getClassroomStatus: function() {
+            return this._getState();
+        },
+        setClassroomStatus: function(status) {
+            this.status = status;
+            !!this.status && this.setState(status);
+            this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, { presenterCode: this.parent.metaInfo.name });
+        },
+        clearClassroomStatus: function() {
+            this.setClassroomStatus(null);
+        },
+        //统计类型
+        getStatisticClass: function() {
+            return 'B';
+        },
+        //进入统计
+        startStatistics: function() {
+            //判断是否显示过答案，重置题目
+            if (this.parent._util.showAnswerInfo.hasShow) {
+                this.resetQuestion();
+            }
+            //进入统计，显示蓝色框
+            this.viewModel.isInStat(true);
+        },
+        //统计过程
+        convertDataForStatistics: function(oriData) {
+            var value = oriData.value;
+            var onlineNum = 0;
+            var correctAnswer,
+                item_key = {
+                    h: [],
+                    v: []
+                },
+                percent = {
+                    h: [],
+                    v: []
+                },
+                stuAnswerStat = {
+                    h: [],
+                    v: []
+                };
+            var convertedData = {};
+            var correctMap = {};
+
+            convertedData["allrightStu"] = [];
+
+            if (value.answers) {
+                for (var i = 0, ilen = value.answers.length; i < ilen; i++) {
+                    if (!Array.isArray(value.answers[i])) {
+                        break;
+                    }
+                    if (value.answers[i].length) {
+                        for (var j = 0, jlen = value.answers[i].length; j < jlen; j++) {
+                            if (typeof value.answers[i][j] !== 'object') {
+                                break;
+                            }
+                            if (typeof value.answers[i][j].answer === 'string') {
+                                value.answers[i][j].answer = JSON.parse(value.answers[i][j].answer);
+                            } else if (typeof value.answers[i][j].answer !== 'object') {
+                                value.answers[i][j].answer = value.answers[i][j].answer;
+                            } else {
+                                break;
+                            }
+
+                            var isAllRight = true;
+                            var isIn = false;
+                            for (var k1 = 0, k1len = value.answers[i][j].answer.answerV.correct_response.length; k1 < k1len; k1++) {
+                                isIn = true;
+                                if (!stuAnswerStat.v[k1]) {
+                                    stuAnswerStat.v[k1] = {
+                                        right_userIds: [],
+                                        wrong_userIds: [],
+                                        unfinished_userIds: value.unfinishedUserIds,
+                                        ref_key: (k1 + 1)
+                                    };
+                                    item_key.v.push(k1 + 1);
+                                }
+                                if (value.answers[i][j].answer.answerV.correct_response[k1] === value.answers[i][j].answer.answerV.user_response[k1]) {
+                                    stuAnswerStat.v[k1].right_userIds = stuAnswerStat.v[k1].right_userIds.concat(value.answers[i][j].userIds);
+                                } else {
+                                    isAllRight = false;
+                                    stuAnswerStat.v[k1].wrong_userIds = stuAnswerStat.v[k1].wrong_userIds.concat(value.answers[i][j].userIds);
+                                }
+                            }
+                            for (var k2 = 0, k2len = value.answers[i][j].answer.answerH.correct_response.length; k2 < k2len; k2++) {
+                                isIn = true;
+                                if (!stuAnswerStat.h[k2]) {
+                                    stuAnswerStat.h[k2] = {
+                                        right_userIds: [],
+                                        wrong_userIds: [],
+                                        unfinished_userIds: value.unfinishedUserIds,
+                                        ref_key: (k2 + 1)
+                                    };
+                                    item_key.h.push(k2 + 1);
+                                }
+                                if (value.answers[i][j].answer.answerH.correct_response[k2] === value.answers[i][j].answer.answerH.user_response[k2]) {
+                                    stuAnswerStat.h[k2].right_userIds = stuAnswerStat.h[k2].right_userIds.concat(value.answers[i][j].userIds);
+                                } else {
+                                    isAllRight = false;
+                                    stuAnswerStat.h[k2].wrong_userIds = stuAnswerStat.h[k2].wrong_userIds.concat(value.answers[i][j].userIds);
+                                }
+                            }
+                            if (isAllRight && isIn) {
+                                convertedData["allrightStu"] = convertedData["allrightStu"].concat(value.answers[i][j].userIds);
+                            }
+                        }
+                    } else {
+
+                        for (var k1 = 0, k1len = value.correctAnswerTeacher.answerV.correct_response.length; k1 < k1len; k1++) {
+                            if (!stuAnswerStat.v[k1]) {
+                                stuAnswerStat.v[k1] = {
+                                    rightNum: 0,
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k1 + 1)
+                                };
+                                item_key.v.push(k1 + 1);
+                            }
+                        }
+                        for (var k2 = 0, k2len = value.correctAnswerTeacher.answerH.correct_response.length; k2 < k2len; k2++) {
+                            if (!stuAnswerStat.h[k2]) {
+                                stuAnswerStat.h[k2] = {
+                                    rightNum: 0,
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k2 + 1)
+                                };
+                                item_key.h.push(k2 + 1);
+                            }
+                        }
+                        convertedData["allrightStu"] = [];
+                    }
+                }
+            }
+            $.each(stuAnswerStat.v, function(k, item) {
+                item.rightNum = item.right_userIds.length;
+            });
+            $.each(stuAnswerStat.h, function(k, item) {
+                item.rightNum = item.right_userIds.length;
+            });
+            onlineNum = value.finishedNum + value.unfinishedNum;
+            /**计算正确率**/
+            for (var iiv = 0; iiv < stuAnswerStat.h.length; iiv++) {
+                percent.h[iiv] = (onlineNum > 0) ? (stuAnswerStat.h[iiv]["rightNum"] / onlineNum).toFixed(2) : 0;
+            }
+
+            /**计算正确率**/
+            for (var iih = 0; iih < stuAnswerStat.v.length; iih++) {
+                percent.v[iih] = (onlineNum > 0) ? (stuAnswerStat.v[iih]["rightNum"] / onlineNum).toFixed(2) : 0;
+            }
+
+            convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+            convertedData["submit_count"] = onlineNum;
+            convertedData["answers"] = value.answers;
+            convertedData["item_key"] = item_key;
+            convertedData["percent"] = percent;
+            convertedData["unfinishedNum"] = value.unfinishedNum;
+            convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+            convertedData["stuAnswerStat"] = stuAnswerStat;
+
+            value["convertedData"] = convertedData;
+        },
+        //国际化语言处理
+        setLocationProperties: function(i18nModel) {
+            this.parent.i18nModel = i18nModel;
+            this.parent.$translateDeferred.resolve();
+        }
+    };
+
+    return service;
+});]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/bg_done.png' />
+<file src='./resources/wood/images/bg_sideboard.png' />
+<file src='./resources/wood/images/bg_sideboard2.jpg' />
+<file src='./resources/wood/images/bg_sidecon1.png' />
+<file src='./resources/wood/images/bg_sidetit1.png' />
+<file src='./resources/wood/images/correct.png' />
+<file src='./resources/wood/images/decl_sidecon.png' />
+<file src='./resources/wood/images/decm_sidecon.png' />
+<file src='./resources/wood/images/decr_sidecon.png' />
+<file src='./resources/wood/images/delete.png' />
+<file src='./resources/wood/images/shadow_01.png' />
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,424 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='InteractionHint'>
+<properties>
+
+                <property name="linked_presenter" displayerName="关联的Presenter" type="string" isLocalized="false" />
+                <property name="hint_data" displayerName="提示信息数据" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="knockout" version="3.3.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_InteractionHint *{box-sizing:border-box;vertical-align:baseline;font:12px/1.5 'Microsoft YaHei',Helvetica,Arial,sans-serif}.addon_InteractionHint .com_btn_hints{position:absolute;top:32px;left:25px;display:inline-block;height:34px;min-width:40px;line-height:34px;border-radius:4.67px;border:1px solid #8f5211;padding:0 24px;background:#dea358;background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#f4bf7b),color-stop(100%,#cd8d3a));background:-webkit-linear-gradient(top,#f4bf7b 0,#cd8d3a 100%);background:linear-gradient(to bottom,#f4bf7b 0,#cd8d3a 100%);text-align:center}.addon_InteractionHint .com_btn_hints a{font-size:16px;color:#5d390d;text-shadow:.33px .58px 0 rgba(255,255,255,.2);text-decoration:none}.addon_InteractionHint .com_btn_hints:active{background:#f4bf7b;background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#cd8d3a),color-stop(100%,#f4bf7b));background:-webkit-linear-gradient(top,#cd8d3a 0,#f4bf7b 100%);background:linear-gradient(to bottom,#cd8d3a 0,#f4bf7b 100%)}.addon_InteractionHint .com_btn_hints .hints_num{position:absolute;top:-10px;right:-10px;background:#e00101;background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#e90706),color-stop(100%,#d30201));background:-webkit-linear-gradient(top,#e90706 0,#d30201 100%);background:linear-gradient(to bottom,#e90706 0,#d30201 100%);border-radius:21.33px;box-shadow:0 1px 1px rgba(0,0,0,.25);height:21.33px;line-height:21.33px;min-width:21.33px;text-align:center;color:#fff}.addon_InteractionHint .com_m_pop_hits{position:fixed;z-index:99999;left:0;top:0;width:100%;height:100%;text-align:center;background:rgba(0,0,0,.7);display:block;opacity:0}.addon_InteractionHint .com_m_pop_hits:after{display:inline-block;vertical-align:middle;content:"";width:0;height:100%}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box{position:relative;display:inline-block;vertical-align:middle;width:70%;height:70%}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_title{position:relative;height:42.67px;line-height:42.67px;background:url(resources/images/bg_sidetit1.png) repeat-x;background-size:auto 100%;border-top-left-radius:8.67px;border-top-right-radius:8.67px;z-index:2;text-align:left;color:#4f2f07;text-shadow:1px 1px 1px rgba(255,255,255,.5);padding:0 20px;font-size:18.67px}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_title .com_h_pop_close{position:absolute;right:0;top:2px;display:inline-block;width:36px;height:36px;background:url(resources/images/com_h_close.png) left center no-repeat;background-size:50% auto;text-align:center;text-indent:-9999px;overflow:hidden}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_title .com_h_pop_close:hover{opacity:.8;filter:alpha(opacity=80)}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_title .com_h_pop_close:active{opacity:.6;filter:alpha(opacity=60)}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_main{position:absolute;left:0;top:33.33px;right:0;bottom:0;padding:22px 10px 22px 20px;border-bottom:4px solid transparent;background-image:url(resources/images/decl_sidecon.png),url(resources/images/decr_sidecon.png),url(resources/images/decm_sidecon.png),url(resources/images/bg_sidecon1.png);background-repeat:no-repeat,no-repeat,repeat-x,repeat;background-position:left bottom,right bottom,center bottom,left top;background-size:14px auto,14px auto,6px auto,43.33px auto;background-origin:border-box,border-box,border-box,content-box;box-shadow:1.5px 2.6px 19px 0 rgba(75,40,0,.75);border-bottom-left-radius:10.67px;border-bottom-right-radius:10.67px}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content{position:relative;height:100%;overflow:auto;text-align:left;padding-right:12px}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content ul{margin:0;padding:0;list-style:none}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .hits_text_box .hits_text_list{padding:5.33px 0 5.33px 58px;margin-bottom:14px;position:relative}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .hits_text_box .hits_text_list .order_num{position:absolute;left:20px;top:6px;width:28px;height:28px;line-height:28px;text-align:center;font-size:18.67px;color:#4f2f07;text-shadow:1px 1px 1px rgba(255,255,255,.5);border-radius:50%;background:#e7af69;background:-webkit-gradient(linear,left top,left bottom,color-stop(0,#f4c07f),color-stop(100%,#dba157));background:-webkit-linear-gradient(top,#f4c07f 0,#dba157 100%);background:linear-gradient(to bottom,#f4c07f 0,#dba157 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4c07f', endColorstr='#dba157', GradientType=0)}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .hits_text_box .hits_text_list .text_hits{font-size:18.67px;color:#333;width:100%;outline:0;line-height:1.8;vertical-align:middle}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .show_hits_box{text-align:center}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .show_hits_box .com_u_btn4{margin:6px 0 17.33px 17.33px;height:38px;line-height:38px;font-size:17.33px;min-width:96px;box-shadow:0 1px 2px rgba(0,0,0,.5),inset 0 1px 0 0 rgba(255,243,228,.5);display:inline-block;background:-webkit-linear-gradient(bottom,#daa055,#f4bf7c);background:linear-gradient(to top,#daa055,#f4bf7c);text-align:center;color:#5d390d;text-shadow:.5px .87px 0 rgba(255,255,255,.31);border-radius:6px;text-decoration:none}.addon_InteractionHint .com_m_pop_hits .com_m_pop_hits_box .com_m_pop_hits_content .show_hits_box .com_u_btn4.hint-next{display:none}.addon_InteractionHint .com_btn_remind{position:absolute;left:26px;top:25px;height:57.35px;width:49.26px;background:url(resources/images/remind.png) left top no-repeat;background-size:100% auto;z-index:50;display:none}.addon_InteractionHint .com_btn_remind.reserved_top{top:99px}.addon_InteractionHint .com_btn_remind:hover{opacity:.7}.addon_InteractionHint .com_btn_remind:active{opacity:.9}.addon_InteractionHint .com_btn_remind .num{display:inline-block;position:absolute;top:0;right:-3.68px;height:14.71px;line-height:14.71px;padding:0 4.41px;border-radius:7.35px;font-size:11.76px;text-align:center;color:#fff;background:#cb1f1f}.addon_InteractionHint .com_btn_remind.right{background:url(resources/images/remind.png) left bottom no-repeat;background-size:100% auto}.addon_InteractionHint .com_btn_remind.right .num{left:-3.68px;right:auto!important}.addon_InteractionHint .com_btn_remind.i18n_ja,.addon_InteractionHint .com_btn_remind.i18n_ja_JP{background:url(resources/images/remind_jp.png) left top no-repeat;background-size:100% auto}.addon_InteractionHint .com_btn_remind.i18n_ja.right,.addon_InteractionHint .com_btn_remind.i18n_ja_JP.right{background:url(resources/images/remind_jp.png) left bottom no-repeat;background-size:100% auto}.addon_InteractionHint .com_btn_remind.i18n_en,.addon_InteractionHint .com_btn_remind.i18n_en_US{background:url(resources/images/remind_us.png) left top no-repeat;background-size:100% auto}.addon_InteractionHint .com_btn_remind.i18n_en.right,.addon_InteractionHint .com_btn_remind.i18n_en_US.right{background:url(resources/images/remind_us.png) left bottom no-repeat;background-size:100% auto}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<a class="com_btn_remind" href="javascript:void(0);"><span class="num" data-bind="text:totalCount"></span></a><div class="com_m_pop_hits hint-dialog" onselectstart="return false;"><div class="com_m_pop_hits_box"><div class="com_m_pop_hits_title"><label style="font-size: inherit" data-bind="text:labelHint"></label><a href="javascript:void(0);" class="com_h_pop_close hint-close"></a></div><div class="com_m_pop_hits_main"><div class="com_m_pop_hits_content"><ul class="hits_text_box" data-bind="foreach:hints"><li class="hits_text_list"><span class="order_num" data-bind="text:index"></span><div class="text_hits" data-bind="html:content"></div></li></ul><div class="show_hits_box"><a href="javascript:void(0);" class="com_u_btn4 hint-next" data-bind="text:labelNextone">下一条</a></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[function AddonInteractionHint_create() {
+    var $view;
+    var $document, hintModal, hintContent, hintNext, hintIndex, hintClose, btnRemind;
+    var bindHints = {}, bridgeListeners = {};
+    var reservedTop = false;
+    var currentLanguage = null;
+    var eventBus = null;
+    var INTERACTION_HINT_EVENT = 'InteractionHintNotify';
+    var PROPERTY_HINT_DATA = 'hint_data';
+    var PROPERTY_QUESTION_URL = 'question_url';
+
+    /** 判断运行环境  */
+    var runtimeContext = {};
+    runtimeContext.isWeb = false;
+    runtimeContext.isApp = false;
+    runtimeContext.isTeacher = false;//true:PAD端老师
+    runtimeContext.isTeacherPc = false;//true:白板端老师
+    runtimeContext.isStudent = false;//true:学生端
+    runtimeContext.isProjector = false;//true:投影端
+    runtimeContext.isPPTshell = false; //101教育PPT
+
+    (function () {
+        var currentRuntime = player.getPlayerServices().getRuntime();
+        if(currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+            runtimeContext.isWeb = true;
+        } else if (currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+            runtimeContext.isStudent = true;
+            runtimeContext.isApp = true;
+        } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_MOBILE) {
+            runtimeContext.isTeacher = true;
+            runtimeContext.isApp = true;
+        } else if (currentRuntime == icCreatePlayer.RUNTIME.TEACHER_PC) {
+            runtimeContext.isTeacherPc = true;
+        } else if (currentRuntime == icCreatePlayer.RUNTIME.PROJECTION_MOBILE) {
+            runtimeContext.isProjector = true;
+        }
+    })();
+
+    /**
+     * 基础工具类
+     */
+    var Utils = {
+        //注册Bridge监听器
+        'registerBridgeListener': function (eventName, eventHandler) {
+            if (runtimeContext.isApp && Bridge && Bridge.registerListener) {
+                bridgeListeners[eventName] = Bridge.registerListener(eventName, eventHandler);
+            }
+        },
+        //注销Bridge监听器
+        'unRegisterBridgeListener': function () {
+            if (runtimeContext.isApp && Bridge && Bridge.unRegisterListener) {
+                if (bridgeListeners) {
+                    for (var key in bridgeListeners) {
+                        if (bridgeListeners.hasOwnProperty(key) && bridgeListeners[key]) {
+                            Bridge.unRegisterListener(key, bridgeListeners[key]);
+                        }
+                    }
+
+                    bridgeListeners = {};
+                }
+            }
+        },
+        //调用本地方法
+        'callNative': function (eventName, data) {
+            if (runtimeContext.isApp && Bridge && Bridge.callNative) {
+                return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+            }
+
+            return false;
+        }
+    };
+
+    /**
+     * Module的逻辑
+     * @param view 视图对象, 根据是否为预览状态传入不同的视图对象
+     * @param model 模型对象
+     * @param isPreview 是否为编辑环境, true=编辑环境, false=运行环境
+     */
+    var presenterLogic = function (view, model, isPreview) {
+        if (isPreview) {
+            return;
+        }
+		/**
+		 * Modified by Linxq 2016-01-08
+		 * 打包兼容性处理，在线备课端针对jsonFile的model属性名称必须是question_url，
+		 * 否则无法将hint.json打入包中(esp-slides做了限制),这样离线课件包将无法正常播放
+		 **/
+		if(!!!model[PROPERTY_HINT_DATA] && !!model[PROPERTY_QUESTION_URL]) {
+			model[PROPERTY_HINT_DATA] = model[PROPERTY_QUESTION_URL];
+		}
+
+        hintContent = model[PROPERTY_HINT_DATA].hints;
+        //如果没有任何提示, 提示按钮就不要出现了
+        if (hintContent == null || hintContent.length == 0) {
+            //btnRemind.hide();
+            return;
+        }
+        btnRemind.show();
+
+		/**
+		 * 修复bug-37390: 因为从编辑器前端传来的文本不保留样式，所以需要在Presenter端对回车进行特殊处理: "\n" 替换成 html的<br/>标签
+		 **/
+        $.each(model[PROPERTY_HINT_DATA].hints, function() {
+            if (!!this.content) {
+                this.content = this.content
+                    .replace(/&/g, '&amp;')
+                    .replace(/>/g, '&gt;')
+                    .replace(/</g, '&lt;')
+                    .replace(/"/g, '&quot;')
+                    .replace(/\n/g, '<br/>');
+            }
+        });
+
+        bindHints.hints = ko.observableArray([]);
+        bindHints.labelHint = getLocationMessage('label.hint');
+        bindHints.labelNextone = getLocationMessage('label.nextone');
+
+        bindHints.totalCount = model[PROPERTY_HINT_DATA].hints.length;
+        bindHints.hints.push(model[PROPERTY_HINT_DATA].hints[0]);
+        hintIndex = 1;
+
+        bindHints.totalCount > 1 && hintNext.css({'display': 'inline-block'}); //修复bug-39307
+
+        ko.applyBindings(bindHints, view);
+    };
+
+    var presenter = function () {
+    };
+
+    /**
+     * 编辑环境下, 创建/刷新预览视图的方法;
+     * Module在编辑环境下,model改变; 位置改变; DOM结构改变时都会促发该方法
+     * @param view 预览视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     */
+    presenter.createPreview = function (view, model) {
+        presenterLogic(view, model, true);
+    };
+
+    //传入页面的url参数
+    presenter.setUrlParams = function (urlParams) {
+        if (!!urlParams && urlParams.sys === 'pptshell') {
+            runtimeContext.isPPTShell = true;
+        }
+
+        //学生端或WEB端(不包括101PPT), Presenter顶部预留空间，所以提示按钮的初始样式添加[reserved_top]
+        if (runtimeContext.isStudent || runtimeContext.isWeb) {
+            reservedTop = true;
+        }
+
+        if(!!urlParams) {
+            currentLanguage = urlParams['_lang_'];
+        }
+    };
+
+    /**
+     * 定义该函数，可以使用player的方法
+     * @param controller Object controller是Player Controller 。内部api太多，具体参考Player-services.htm
+     */
+    presenter.setPlayerController = function (controller) {
+        eventBus = controller.getEventBus();
+    };
+
+    //国际化处理
+    presenter.setLocationProperties = function (properties) {
+        runtimeContext.i18nProperties = properties;
+    };
+
+    //获取本地化信息
+    function getLocationMessage(msgCode, params) {
+        if (!!runtimeContext.i18nProperties) {
+            var message = runtimeContext.i18nProperties[msgCode];
+            if (message == undefined) {
+                message = "";
+            } else if ($.isArray(params) && params.length > 0) {
+                message = message.replace(/\{\d+\}/g, function ($0) {
+                    var index = parseInt($0.substring(1, $0.length - 1));
+                    if (index < params.length) {
+                        return params[index];
+                    }
+
+                    return $0;
+                });
+            } else if (typeof params === 'string') {
+                message = message.replace(/\{0\}/g, params);
+            }
+
+            return message;
+        }
+
+        return msgCode;
+    }
+
+    /**
+     * 运行环境下, 初始化Module的方法
+     * @param view 运行视图(DOM对象)
+     * @param model Module的模型, Key-Value结构
+     * @remark 该方法为Module生命周期方法,仅在Module初始化时执行一次
+     */
+    presenter.run = function (view, model) {
+        $view = $(view);
+
+
+        //获取对象
+        $document = $(document);
+        btnRemind = $view.find('.com_btn_remind').addClass('i18n_' + currentLanguage).addClass('i18n_' + currentLanguage.substr(0, currentLanguage.indexOf('_')));
+        btnRemind.parent().css('position', 'fixed');
+        hintModal = $view.find('.hint-dialog');
+        hintNext = $view.find('.hint-next');
+        hintClose = $view.find('.hint-close');
+        reservedTop && btnRemind.addClass('reserved_top');
+
+        hintModal.hide();
+        hintModal.css('opacity', 1); //修复bug-37758
+
+        //初始化逻辑
+        presenterLogic(view, model, false);
+        //绑定Module事件
+        bindEvent();
+    };
+
+    /**
+     * 运行环境下, 销毁Module时执行的方法
+     * @remark 该方法为Module生命周期方法, 仅在ICPlayer切换页面时执行
+     */
+    presenter.destroy = function () {
+        //解除绑定的Module事件
+        unBindEvent();
+    };
+
+    var inMove = false, hasMoved, eventOriginPos, documentWidth, documentHeight, btnWidth, btnHeight, btnOriginLeft, btnOriginTop;
+    var MIN_OFFSET = 10;
+
+    var ExamCallbackHandler = function(data) {
+        //PMS-42194 fixed: 老师端结束练习后，学生端收起提示窗口
+        if (data.type === 'stop') {
+            closeHint();
+        }
+    };
+
+    /**
+     * 绑定事件的方法
+     */
+    function bindEvent() {
+        //PMS-42194 fixed: 监听结束练习事件
+        if(runtimeContext.isStudent) {
+            Utils.registerBridgeListener('ExamCallback', ExamCallbackHandler);
+        }
+
+        hintNext.on('click', nextHint);
+        hintClose.on('click', closeHint);
+
+        btnRemind.on('mousedown touchstart', onMousedown).on('mouseup touchend', onMouseup);
+    }
+
+    function onMousedown(e) {
+        inMove = true;
+
+        var rect = btnRemind[0].getBoundingClientRect();
+        btnWidth = rect.width;
+        btnHeight = rect.height;
+        btnOriginLeft = rect.left;
+        btnOriginTop = rect.top;
+        documentWidth = $document.width();
+        documentHeight = $document.height();
+        eventOriginPos = getCursorPosition(e);
+
+        $document.on('mousemove touchmove', onMoveHandler).on('mouseup touchend', onLeaveHandler);
+    }
+
+    function onMouseup(e) {
+        !hasMoved && showHints();
+        hasMoved = false;
+    }
+
+    function onMoveHandler(e) {
+        e.preventDefault();
+
+        if (inMove) {
+            var currentPos = getCursorPosition(e);
+            if(Math.abs(currentPos.x - eventOriginPos.x) > MIN_OFFSET ||
+                Math.abs(currentPos.y - eventOriginPos.y) > MIN_OFFSET) {
+                hasMoved = true;
+
+                //不超出边界
+                var left = Math.min(Math.max(0, (btnOriginLeft + (currentPos.x - eventOriginPos.x))), documentWidth - btnWidth),
+                    top = Math.min(Math.max(0, (btnOriginTop + (currentPos.y - eventOriginPos.y))), documentHeight - btnHeight);
+
+                btnRemind.css({
+                    left: left + 'px',
+                    top: top + 'px'
+                });
+
+                if (left >= documentWidth / 2) {
+                    btnRemind.addClass('right');
+                } else if (btnRemind.hasClass('right')) {
+                    btnRemind.removeClass('right');
+                }
+            }
+        }
+    }
+
+    function onLeaveHandler(e) {
+        inMove = false;
+        $document.off('mousemove touchmove', onMoveHandler).off('mouseup touchend', onLeaveHandler);
+    }
+
+    /**
+     * 解除事件绑定的方法
+     */
+    function unBindEvent() {
+        Utils.unRegisterBridgeListener();
+
+        !!btnRemind && btnRemind.off('mousedown touchstart', onMousedown).off('mouseup touchend', onMouseup);
+        !!hintNext && hintNext.off('click', nextHint);
+        !!hintClose && hintClose.off('click', closeHint);
+
+        !!$document && $document.off('mousemove touchmove', onMoveHandler).off('mouseup touchend', onLeaveHandler);
+    }
+
+    //获取光标位置
+    function getCursorPosition(evt) {
+        if (evt.type.indexOf('touch') > -1) {
+            var touch = evt.originalEvent.changedTouches[0];
+            return {x: touch.pageX, y: touch.pageY};
+        } else {
+            return {x: evt.pageX, y: evt.pageY};
+        }
+    }
+
+    //显示提示的弹窗
+    function showHints() {
+        hintModal.show();
+
+        //发送H5事件通知组词题，当前提示已打开，禁用手写功能
+        eventBus.sendEvent(INTERACTION_HINT_EVENT, {type: 'open'});
+    }
+
+    //隐藏提示弹窗
+    function closeHint() {
+        hintModal.hide();
+
+        //发送H5事件通知组词题，当前提示已关闭，启用手写功能
+        eventBus.sendEvent(INTERACTION_HINT_EVENT, {type: 'close'});
+    }
+
+    //显示下一条提示
+    function nextHint() {
+        if (hintIndex < hintContent.length) {
+            bindHints.hints.push(hintContent[hintIndex]);
+            hintIndex++;
+        }
+        if (hintIndex == hintContent.length) {
+            hintNext.hide();
+        }
+    }
+
+    return presenter;
+}
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/bg_sidecon1.png' />
+<file src='./resources/images/bg_sidetit1.png' />
+<file src='./resources/images/com_h_close.png' />
+<file src='./resources/images/decl_sidecon.png' />
+<file src='./resources/images/decm_sidecon.png' />
+<file src='./resources/images/decr_sidecon.png' />
+<file src='./resources/images/remind.png' />
+<file src='./resources/images/remind_jp.png' />
+<file src='./resources/images/remind_us.png' />
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/en/lang.json' />
+<file src='./resources/locations/en_US/lang.json' />
+<file src='./resources/locations/es/lang.json' />
+<file src='./resources/locations/es_EC/lang.json' />
+<file src='./resources/locations/ja/lang.json' />
+<file src='./resources/locations/ja_JP/lang.json' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+
+
+</resources>
+
+</addon>

@@ -1,0 +1,615 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ClassroomStatusController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utils = {
+    deepClone: function (status) {
+        if (status && typeof status === 'object') {
+            return JSON.parse(JSON.stringify(status));
+        }
+        return status;
+    }
+};
+exports.default = Utils;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ControllerService = (function () {
+    function ControllerService(context) {
+        this.mContext = context;
+    }
+    ControllerService.prototype.isUnderControl = function () {
+        return false;
+    };
+    ControllerService.prototype.beforePresenterRun = function (interfaceName, metaInfo, service) {
+    };
+    ControllerService.prototype.afterPresenterRun = function (interfaceName, metaInfo, service) {
+        switch (interfaceName) {
+            case "IClassroomStatus":
+                this.mContext.presenterService.pushService(metaInfo.name, service);
+                break;
+        }
+    };
+    ControllerService.prototype.afterSetLayoutService = function (service) {
+    };
+    ControllerService.prototype.getInterfaceMethods = function () {
+        var interfaces = [];
+        var ClassroomStatus = { name: undefined, methods: [] };
+        ClassroomStatus.name = "IClassroomStatus";
+        ClassroomStatus.methods = ["getClassroomStatus", "setClassroomStatus", "clearClassroomStatus"];
+        interfaces.push(ClassroomStatus);
+        return interfaces;
+    };
+    return ControllerService;
+}());
+exports.default = ControllerService;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PresenterService = (function () {
+    function PresenterService(context) {
+        this.services = {};
+        this.mContext = context;
+    }
+    PresenterService.prototype.pushService = function (name, service) {
+        this.services[name] = service;
+        if (this.mContext.statusManager && this.mContext.statusManager.loadStatus) {
+            this.mContext.statusManager.loadStatus.setLazyLoadStatus(name);
+        }
+    };
+    PresenterService.prototype.has = function (name) {
+        return !!this.services[name];
+    };
+    PresenterService.prototype.getServiceKeys = function () {
+        return Object.keys(this.services);
+    };
+    PresenterService.prototype.getClassroomStatus = function (name) {
+        if (this.services[name]) {
+            return this.services[name].getClassroomStatus();
+        }
+    };
+    PresenterService.prototype.setClassroomStatus = function (name, status, dependenceStatus) {
+        if (this.services[name]) {
+            this.services[name].setClassroomStatus(status, dependenceStatus);
+        }
+    };
+    PresenterService.prototype.getClassroomStatusDependence = function (name) {
+        if (this.services[name] && this.services[name].getClassroomStatusDependence) {
+            return this.services[name].getClassroomStatusDependence();
+        }
+        return [];
+    };
+    PresenterService.prototype.clearClassroomStatus = function (name) {
+        if (name) {
+            this.services[name] && this.services[name].clearClassroomStatus();
+        }
+        else {
+            for (var key in this.services) {
+                var service = this.services[key];
+                service.clearClassroomStatus();
+            }
+        }
+    };
+    return PresenterService;
+}());
+exports.default = PresenterService;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Schedule_1 = __webpack_require__(6);
+var PcStatus_1 = __webpack_require__(5);
+var LoadStatus_1 = __webpack_require__(4);
+var Utils_1 = __webpack_require__(0);
+var CLASSROOM_STATUS_CHANGED = 'css_classroom_status_changed';
+var CLASSROOM_STATUS_STATICAL = 'css_classroom_status_statical';
+var AnswerFlowController = 'AnswerFlowController';
+var StatusManager = (function () {
+    function StatusManager(context) {
+        this.mContext = context;
+        this.schedule = new Schedule_1.default(500, this.scheduleTask.bind(this));
+        this.pcStatus = new PcStatus_1.default(context);
+        this.status = {
+            questionId: this.mContext.questionId,
+            status: {}
+        };
+        this.exerciseStart = false;
+    }
+    StatusManager.prototype.setStatus = function (lastStatus) {
+        this.status = lastStatus;
+    };
+    StatusManager.prototype.setExerciseStart = function (exerciseStart) {
+        this.exerciseStart = exerciseStart;
+    };
+    StatusManager.prototype.init = function () {
+        var that = this;
+        this.loadStatus = new LoadStatus_1.default(this.mContext, this.pcStatus);
+        this.loadStatus.setLoadCallback(function (mode, extra) {
+            if (mode === 'excise') {
+                that.status.status = extra || {};
+            }
+            else if (mode === 'statical') {
+                that.setExerciseStart(true);
+            }
+        });
+        this.loadStatus.init();
+        this.bindChangeEvent();
+        this.mContext.addEventListener('exerciseStateChange', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, this.onExerciseStateChanged.bind(this));
+    };
+    StatusManager.prototype.bindChangeEvent = function () {
+        var that = this;
+        var data = {
+            scope: 'page',
+            validate: function (data) {
+                var defaultOption = {
+                    presenterCode: '',
+                    op: ''
+                };
+                if (!data.presenterCode) {
+                    throw new Error('ClassroomStatusController: presenterCode can not be null');
+                }
+                return data;
+            },
+            done: function (eventData) {
+                that.changedExecute(eventData);
+            }
+        };
+        that.mContext.PlayerController.registerFlow(CLASSROOM_STATUS_CHANGED, data);
+    };
+    StatusManager.prototype.onExerciseStateChanged = function (eventData) {
+        if (eventData && eventData.type === 'start' && eventData.value) {
+            if (eventData.value.result == true) {
+                this.resetStatus();
+                this.exerciseStart = true;
+            }
+        }
+    };
+    StatusManager.prototype.resetStatus = function () {
+        this.status.status = {};
+        this.pcStatus.pushClassroomStatus(this.status);
+    };
+    StatusManager.prototype.changedExecute = function (eventData) {
+        var that = this;
+        if (!that.loadStatus.getLoadCompleted()) {
+            return;
+        }
+        var name = eventData.presenterCode;
+        if (eventData.op === 'clearall') {
+            this.resetStatus();
+        }
+        else {
+            var status = this.mContext.presenterService.getClassroomStatus(name);
+            if (status && typeof status.then == 'function') {
+                status.done(function (data) {
+                    that.status.status[name] = Utils_1.default.deepClone(data);
+                    that.schedule.do();
+                });
+            }
+            else {
+                if (!status) {
+                    delete this.status.status[name];
+                }
+                else {
+                    this.status.status[name] = Utils_1.default.deepClone(status);
+                }
+                this.schedule.do();
+            }
+        }
+    };
+    StatusManager.prototype.scheduleTask = function () {
+        if (JSON.stringify(this.status) !== JSON.stringify(this.lastStatus) && !this.exerciseStart && this.loadStatus.getLoadCompleted()) {
+            this.mContext.Logger.debug('pushClassroomStatus', this.status, JSON.stringify(this.status));
+            this.pcStatus.pushClassroomStatus(this.status);
+            this.lastStatus = $.extend(true, {}, this.status);
+        }
+    };
+    return StatusManager;
+}());
+exports.default = StatusManager;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Utils_1 = __webpack_require__(0);
+var CLASSROOM_STATUS_STATICAL = 'css_classroom_status_statical';
+var AnswerFlowController = 'AnswerFlowController';
+var LoadStatus = (function () {
+    function LoadStatus(context, pcStatus) {
+        this.mContext = context;
+        this.pcStatus = pcStatus;
+        this.presenterStatus = {};
+        this.presenterKeys = [];
+        this.loadCompleted = false;
+        this.recoverCompleted = false;
+        this.unLoadedPresenter = [];
+    }
+    LoadStatus.prototype.setLoadCallback = function (loadCallback) {
+        this.loadCallback = loadCallback;
+    };
+    LoadStatus.prototype.init = function () {
+        var that = this;
+        this.mContext.addEventListener('PresenterLoaded', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, function () {
+            that.start().then(function (status) {
+                that.preProcess(status);
+            }, function () {
+                that.loadCompleted = true;
+            });
+        });
+    };
+    LoadStatus.prototype.start = function () {
+        var that = this, deffer = $.Deferred();
+        this.pcStatus.getClassroomStatus(this.mContext.questionId, function (status) {
+            that.mContext.Logger.debug('getClassroomStatus', status);
+            var mode = status.status;
+            var extra = status.extra;
+            if (typeof that.loadCallback === 'function') {
+                that.loadCallback(mode, Utils_1.default.deepClone(extra));
+            }
+            if (mode === 'normal') {
+                deffer.reject();
+            }
+            else if (mode === 'statical') {
+                extra.questionId = that.mContext.questionId;
+                that.mContext.dispatchEvent(CLASSROOM_STATUS_STATICAL, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, extra);
+                deffer.reject();
+            }
+            else if (mode === 'excise') {
+                if (!extra) {
+                    deffer.reject();
+                }
+                else {
+                    deffer.resolve(extra);
+                }
+            }
+        });
+        if (!icCreatePlayer.detector.isOnline()) {
+            that.loadCompleted = true;
+            if (typeof that.loadCallback === 'function') {
+                that.loadCallback('');
+            }
+        }
+        return deffer.promise();
+    };
+    LoadStatus.prototype.getLoadCompleted = function () {
+        return this.loadCompleted;
+    };
+    LoadStatus.prototype.setLazyLoadStatus = function (name) {
+        if (this.recoverCompleted) {
+            return;
+        }
+        var unLoadedPresenter = this.unLoadedPresenter, index = unLoadedPresenter.indexOf(name);
+        if (index >= 0) {
+            this.mContext.Logger.debug('setLazyLoadStatus', name);
+            unLoadedPresenter.splice(index, 1);
+            var presenterStatus = this.presenterStatus[name];
+            try {
+                this.mContext.presenterService.setClassroomStatus(name, presenterStatus);
+            }
+            catch (e) {
+            }
+        }
+    };
+    LoadStatus.prototype.preProcess = function (status) {
+        var that = this;
+        this.presenterStatus = status;
+        this.presenterKeys = Object.keys(status);
+        var index = this.presenterKeys.indexOf(AnswerFlowController);
+        this.presenterKeys.splice(index, 1);
+        if (!this.presenterKeys.length) {
+            this.end();
+        }
+        this.mContext.addEventListener('css_recover_complete', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            if (!that.recoverCompleted) {
+                that.process(data.presenterCode);
+            }
+        });
+        for (var key in status) {
+            if (key === AnswerFlowController) {
+                continue;
+            }
+            if (status.hasOwnProperty(key)) {
+                if (that.mContext.presenterService.has(key)) {
+                    var presenterStatus = status[key];
+                    var dependence = that.mContext.presenterService.getClassroomStatusDependence(key);
+                    var dependenceStatus = dependence.map(function (dep) {
+                        return status[dep];
+                    });
+                    that.mContext.presenterService.setClassroomStatus(key, presenterStatus, dependenceStatus);
+                }
+                else {
+                    this.unLoadedPresenter.push(key);
+                }
+            }
+        }
+    };
+    LoadStatus.prototype.process = function (presenterCode) {
+        var index = this.presenterKeys.indexOf(presenterCode);
+        this.presenterKeys.splice(index, 1);
+        if (!this.presenterKeys.length || presenterCode === 'CompoundQuestionLoader') {
+            this.end();
+        }
+    };
+    LoadStatus.prototype.end = function () {
+        var asStatus = this.presenterStatus[AnswerFlowController];
+        if (asStatus) {
+            this.mContext.presenterService.setClassroomStatus(AnswerFlowController, asStatus);
+        }
+        this.loadCompleted = true;
+        this.recoverCompleted = true;
+    };
+    return LoadStatus;
+}());
+exports.default = LoadStatus;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var PcStatus = (function () {
+    function PcStatus(context) {
+        this.mContext = context;
+        this.mContext.addEventListener('getClassroomStatusCallback', ConstVariable.PresenterEventType.NATIVE_EVENT, this.getClassroomStatusCallback.bind(this));
+    }
+    PcStatus.prototype.getClassroomStatus = function (questionId, callback) {
+        this.statusCallback = callback;
+        this.callNative('getClassroomStatus', {
+            questionId: questionId
+        });
+    };
+    PcStatus.prototype.getClassroomStatusCallback = function (eventData, eventName) {
+        if (this.statusCallback) {
+            this.statusCallback(eventData);
+        }
+    };
+    PcStatus.prototype.pushClassroomStatus = function (data) {
+        this.callNative('pushClassroomStatus', data);
+    };
+    PcStatus.prototype.callNative = function (event, data) {
+        this.mContext.dispatchEvent(event, ConstVariable.PresenterEventType.PPT_NATIVE_EVENT, data);
+    };
+    return PcStatus;
+}());
+exports.default = PcStatus;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Schedule = (function () {
+    function Schedule(period, task) {
+        this.timeId = 0;
+        this.period = period;
+        this.task = task;
+        this.lastTime = Date.now();
+    }
+    Schedule.prototype.do = function () {
+        this.task();
+    };
+    Schedule.prototype.scheduleDo = function () {
+        var that = this;
+        var sub = Date.now() - this.lastTime;
+        if (sub > this.period) {
+            sub = 0;
+        }
+        else if (sub < this.period) {
+            sub = this.period - sub;
+        }
+        window.clearTimeout(this.timeId);
+        if (sub === 0) {
+            that.lastTime = Date.now();
+            that.task();
+        }
+        else {
+            this.timeId = setTimeout(function () {
+                that.lastTime = Date.now();
+                that.task();
+            }, sub);
+        }
+    };
+    Schedule.prototype.destroy = function () {
+        clearTimeout(this.timeId);
+    };
+    return Schedule;
+}());
+exports.default = Schedule;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ControllerService_1 = __webpack_require__(1);
+var PresenterService_1 = __webpack_require__(2);
+var StatusManager_1 = __webpack_require__(3);
+var ClassroomStatusController = (function (_super) {
+    __extends(ClassroomStatusController, _super);
+    function ClassroomStatusController() {
+        var _this = _super.call(this, 'ClassroomStatusController') || this;
+        _this.metaInfo.name = "ClassroomStatusController";
+        _this.metaInfo.type = ConstVariable.PresenterType.CONTROLLER;
+        _this.ControlService = new ControllerService_1.default(_this);
+        _this._presenterService = new PresenterService_1.default(_this);
+        return _this;
+    }
+    Object.defineProperty(ClassroomStatusController.prototype, "presenterService", {
+        get: function () {
+            return this._presenterService;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClassroomStatusController.prototype, "statusManager", {
+        get: function () {
+            return this._statusManager;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ClassroomStatusController.prototype, "questionId", {
+        get: function () {
+            return this._questionId;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ClassroomStatusController.prototype.$launch = function (option) {
+        this.Logger.setLevel(ConstVariable.PresenterLogLevel.DEBUG);
+        this._questionId = this.Model.questionId;
+        if (this.Environment.isPC) {
+            this._statusManager = new StatusManager_1.default(this);
+            this._statusManager.init();
+        }
+    };
+    ClassroomStatusController.prototype.$release = function () {
+    };
+    return ClassroomStatusController;
+}(CommonController));
+exports.ClassroomStatusController = ClassroomStatusController;
+window['AddonClassroomStatusController_create'] = function () {
+    return new ClassroomStatusController();
+};
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

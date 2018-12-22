@@ -1,0 +1,1 @@
+CKEDITOR.dialog.add("video",create_media_dialog("video"));

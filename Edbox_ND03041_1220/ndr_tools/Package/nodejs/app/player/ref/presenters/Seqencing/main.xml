@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Seqencing'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="限制时长" type="integer" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="5.0.0" />
+    <javaScript  name="sortable" version="1.4.2.3" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonSeqencing_create = function () {
+        //return new Presenter();
+        return new BasicLauncher({
+            'defaultConfig': 'standard',
+            'presenterParserMapping': {
+                'answerFlowController': function (config, model) {
+                    config.value.showResultOnSubmit = 'false';
+                },
+                'objectiveInteractionLayout': function (config, model) {
+                    config.value.questionType = 'Seqencing'
+                },
+                'timerController': function (config, model) {
+                    config.value.timer_type = model.timer_type;
+                    config.value.time_limit = model.time_limit;
+                },
+                'interactionSubmitButton': function (config, model) {
+                    $.extend(config.value, {
+                        can_modify: 'false',
+                        linkQuestionType: 'seqencing',
+                        linkQuestionId: model.question_id
+                    });
+                },
+                'classroomStatusController': function (config, model) {
+                    $.extend(config.value, {questionId: model.question_id});
+                }
+            },
+            getComponent: function (model) {
+                return {
+                    presenter: 'SeqencingRemake',
+                    renderTo: this.mainContainer,
+                    autowired: ['question_id', 'question_url']
+                };
+            },
+            getController: function (model) {
+                return [
+                    {
+                        presenter: 'ClassroomStatusController',
+                        ref: 'classroomStatusController'
+                    }
+                ];
+            },
+            'dataParse': function (model, pageModels) {
+                var deffer = $.Deferred();
+                var self = this;
+                if (typeof model.question_url === 'string') {
+                    //旧版数据
+                    var option = {
+                        'refPath': icCreatePlayer.ref_path
+                    };
+
+                    var qtiDtd = $.Deferred();
+                    var questionBody = {};
+
+                    QtiPlayerOldStyle.load(model.question_url, option, function (modelInfo) {
+                        var questionModel = modelInfo.model[0];
+                        questionBody.correctAnswer = modelInfo.correctAnswer[questionModel.modelId];
+                        questionBody.model = questionModel;
+                        qtiDtd.resolve();
+                    });
+                    $.when(qtiDtd).done(function () {
+                        model.question_url = questionBody;
+                        deffer.resolve(model);
+                    });
+                } else {
+                    //新数据结构，不需要转换
+                    deffer.resolve(model);
+                }
+                var self = this;
+                return deffer.promise().done(function (model) {
+                    self.model = model
+                });
+            }
+        });
+    };
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/seqencing.xml' />
+
+
+</resources>
+
+</addon>

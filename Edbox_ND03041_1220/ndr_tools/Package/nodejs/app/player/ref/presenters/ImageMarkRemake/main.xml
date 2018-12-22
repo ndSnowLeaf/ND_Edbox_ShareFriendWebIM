@@ -1,0 +1,2332 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ImageMarkRemake'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.exam_skin_wood .imagemark,.exam_skin_wood .imagemark .imgmark .imgbig{position:relative;height:100%}.exam_skin_wood .imagemark .com_layout_main{overflow:hidden;left:.66667em;right:.66667em;bottom:.83333em}.exam_skin_wood .imagemark .com_layout_main:after{display:inline-block;width:0;height:100%;vertical-align:middle;content:""}.exam_skin_wood .imagemark .imgmark{position:relative;height:100%;padding:0 0 8.54167em;text-align:center}.exam_skin_wood .imagemark .imgmark .imgbig .img{max-width:60%;max-height:100%;display:inline-block;border:1px solid #7f4f15;border-radius:1.5em;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .imgbig .list{position:absolute;margin:0}.exam_skin_wood .imagemark .imgmark .imgbig .mark_img{overflow:hidden;display:inline-block;width:100%;height:100%}.exam_skin_wood .imagemark .imgmark .imgbig .mark_img:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .imgbig .text_marks,.exam_skin_wood .imagemark .imgmark .mark_round{position:absolute;left:0;top:0;width:100%;height:100%}.exam_skin_wood .imagemark .imgmark .round{position:absolute;width:1.04167em;height:1.04167em;border:1px solid #fff;border-radius:50%;line-height:0}.exam_skin_wood .imagemark .imgmark .round.on{border:none}.exam_skin_wood .imagemark .imgmark .round.correct .mark,.exam_skin_wood .imagemark .imgmark .round.movein .mark{border-color:rgba(0,158,45,.5);background:#33e064}.exam_skin_wood .imagemark .imgmark .round.wrong .mark{border-color:rgba(240,190,190,.5);background:red}.exam_skin_wood .imagemark .imgmark .round .mark{display:inline-block;width:100%;height:100%;border-radius:50%;border-width:.20833em;border-style:solid;border-color:rgba(255,255,255,.5);background:#ff9500}.exam_skin_wood .imagemark .imgmark .round_circle{position:absolute;text-align:center}.exam_skin_wood .imagemark .imgmark .round_circle:after{content:'';display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .round_circle .list{position:relative}.exam_skin_wood .imagemark .imgmark .com_bottom_box{padding:0 1.25em}.exam_skin_wood .imagemark .imgmark .listwrap{height:100%;white-space:nowrap;text-align:left}.exam_skin_wood .imagemark .imgmark .listwrap:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .list_text{display:inline-block;overflow:hidden;width:100%;white-space:pre-wrap;word-wrap:break-word;font-size:1.5em;line-height:1.35;text-align:left;color:#5d390d;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .list_img{display:inline-block;width:6.125em;height:5.54167em;border:2px solid #f2b35a;text-align:center;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .list{display:inline-block;position:relative;overflow:hidden;min-width:3.75em;max-width:16.25em;margin:0 .75em;border:.16667em solid #de8200;border-radius:.29167em;padding:.08333em .66667em .33333em 1.66667em;background:#ffdba8;height:auto;max-height:7.58333em;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .list:before{content:"";position:absolute;left:.5em;top:.5em;display:block;width:.54167em;height:.54167em;background:url(resources/wood/images/tip_point.png) center no-repeat;background-size:100% auto}.exam_skin_wood .imagemark .imgmark .list.imglist{width:11.25em;height:7.33333em;text-align:center}.exam_skin_wood .imagemark .imgmark .list.imglist:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .imagemark .imgmark .list.over .list_text{font-size:1.33333em}.exam_skin_wood .imagemark .imgmark .list.move{position:fixed;background:#e9be81}.exam_skin_wood .imagemark .imgmark .list.correct,.exam_skin_wood .imagemark .imgmark .list.on{border:.16667em solid #5dad2c}.exam_skin_wood .imagemark .imgmark .list.wrong{border:.16667em solid #f25657}.exam_skin_wood .imagemark .imgmark .list.out{opacity:.6;background:#fff}@media screen and (max-width:1025px){.exam_skin_wood .imagemark .imgmark .list.over:after{right:.83333em;bottom:.33333em;width:1.66667em;display:none}}.addon_ImageMarkRemake #svgLines,.imagemarkforquizstatistics #svgLines{position:absolute;top:0;left:0}.addon_ImageMarkRemake ._mark_wrapper,.imagemarkforquizstatistics ._mark_wrapper{margin:0 auto}.addon_ImageMarkRemake ._move[data-type=image] ._list_img,.imagemarkforquizstatistics ._move[data-type=image] ._list_img{display:inline-block}.addon_ImageMarkRemake ._move[data-type=image] ._list_text,.addon_ImageMarkRemake ._move[data-type=text] ._list_img,.imagemarkforquizstatistics ._move[data-type=image] ._list_text,.imagemarkforquizstatistics ._move[data-type=text] ._list_img{display:none}.addon_ImageMarkRemake ._move[data-type=text] ._list_text,.imagemarkforquizstatistics ._move[data-type=text] ._list_text{display:inline-block}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="com_layout_exam_content imagemark _container"><div class="com_layout_main_exam"><div class="com_layout_tit"><h2 class="tit _title" data-bind="html:title"></h2></div><div class="com_layout_main"><div class="imgmark _img_mark"><div class="imgbig _mark_wrapper"><div class="mark_img _mark_img"><img src="demopic/demo01.png" alt="" class="img"></div><svg id="svgLines" width="1131px" height="416px" version="1.1" xmlns="http://www.w3.org/2000/svg"></svg><div class="text_marks _text_marks"></div><ul class="mark_round _marks"></ul></div><div class="com_bottom_box _footer_container"><div class="bottom_wrap _bottom_wrap" style="overflow: hidden"><ul class="listwrap _list_wrap"></ul></div><a href="###" class="com_bottom_box_btn btn_left _btn_left"></a> <a href="###" class="com_bottom_box_btn btn_right _btn_right"></a></div><div class="list move hide_dom _move"><img src="" class="list_img _list_img"><p class="list_text _list_text"></p></div></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonImageMarkRemake_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+function ImageMarkRemakeService(parent) {
+    this.parent = parent;
+    this.status = {};
+}
+
+ImageMarkRemakeService.prototype = {
+    getQuestionInfo: function () {
+        var self = this;
+        return {id: self.parent.model.questionId, type_code: 'ImageMark', type_name: self.parent.helper.i18n['imagemark_imagemark'], url: self.parent.model.questionId, dispatchOnly: true}
+    },
+    getResult: function () {
+        var self = this;
+        //FIXME onTimeOver当老师端与学生端有时间误差时，onTimeOver不会被回调到，临时这样处理。
+        self.onTimeOver();
+
+        self.parent.logger.debug("ImageMarkRemake getResult ");
+        var resultData = self.parent._getResultData();
+        var answerState = 'NO_ANSWER';
+        if (self.parent.helper.canSubmit) {
+            answerState = 'COMPLETE';
+        }
+        return {
+            questionId: self.parent.model.questionId, //输入参数的question_id
+            answerState: answerState,
+            answer: {
+                answer_result: self.parent._isCorrect(),
+                correct_response: resultData,
+                user_response: resultData
+            }
+        };
+    },
+    getStatisticClass: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake getStatisticClass ");
+        return 'B';
+    },
+    convertDataForStatistics: function (oriData) {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake convertDataForStatistics ");
+
+        var value = oriData.value;
+        var onlineNum;
+        var item_key = [],
+            percent = [],
+            stuAnswerStat = [];
+        var convertedData = {};
+        convertedData["allrightStu"] = [];
+        if (value.answers) {
+            for (var i = 0, ilen = value.answers.length; i < ilen; i++) {
+                if (Object.prototype.toString.call(value.answers[i]) !== '[object Array]') {
+                    break;
+                }
+                if (value.answers[i].length) {
+                    for (var j = 0, jlen = value.answers[i].length; j < jlen; j++) {
+                        if (Object.prototype.toString.call(value.answers[i][j]) !== '[object Object]') {
+                            break;
+                        }
+                        if (Object.prototype.toString.call(value.answers[i][j].answer) === '[object String]') {
+                            value.answers[i][j].answer = JSON.parse(value.answers[i][j].answer);
+                        } else if (Object.prototype.toString.call(value.answers[i][j].answer) === '[object Object]') {
+                            value.answers[i][j].answer = value.answers[i][j].answer;
+                        } else {
+                            break;
+                        }
+                        if (Object.prototype.toString.call(value.answers[i][j].answer.user_response) === '[object String]') {
+                            value.answers[i][j].answer.user_response = JSON.parse(value.answers[i][j].answer.user_response);
+                        } else if (Object.prototype.toString.call(value.answers[i][j].answer.user_response) === '[object Object]') {
+                            value.answers[i][j].answer.user_response = value.answers[i][j].answer.user_response;
+                        } else {
+                            break;
+                        }
+                        $.each(value.answers[i][j].answer.user_response.tags, function (itemk, item) {
+                            var k = item.serialNum - 1;
+                            if (!stuAnswerStat[k]) {
+                                stuAnswerStat[k] = {
+                                    right_userIds: [],
+                                    wrong_userIds: [],
+                                    unfinished_userIds: value.unfinishedUserIds,
+                                    ref_key: (k + 1)
+                                };
+                                item_key.push(k + 1);
+                            }
+                            if (item.answer) {
+                                stuAnswerStat[k].right_userIds = stuAnswerStat[k].right_userIds.concat(value.answers[i][j].userIds);
+                            } else {
+                                stuAnswerStat[k].wrong_userIds = stuAnswerStat[k].wrong_userIds.concat(value.answers[i][j].userIds);
+                            }
+                        });
+                        if (value.answers[i][j].answer.answer_result) {
+                            convertedData["allrightStu"] = convertedData["allrightStu"].concat(value.answers[i][j].userIds);
+                        }
+                    }
+                } else {
+                    if (Object.prototype.toString.call(value.correctAnswerTeacher.user_response) === '[object String]') {
+                        value.correctAnswerTeacher.user_response = JSON.parse(value.correctAnswerTeacher.user_response);
+                    } else if (Object.prototype.toString.call(value.correctAnswerTeacher.user_response) === '[object Object]') {
+                        value.correctAnswerTeacher.user_response = value.correctAnswerTeacher.user_response;
+                    } else {
+                        break;
+                    }
+                    $.each(value.correctAnswerTeacher.user_response.tags, function (itemk, item) {
+                        var k = item.serialNum - 1;
+                        if (!stuAnswerStat[k]) {
+                            stuAnswerStat[k] = {
+                                rightNum: 0,
+                                right_userIds: [],
+                                wrong_userIds: [],
+                                unfinished_userIds: value.unfinishedUserIds,
+                                ref_key: (k + 1)
+                            };
+                            item_key.push(k + 1);
+                        }
+                    });
+                    convertedData["allrightStu"] = [];
+                }
+
+            }
+        }
+        $.each(stuAnswerStat, function (k, item) {
+            item.rightNum = item.right_userIds.length;
+        });
+        onlineNum = value.finishedNum + value.unfinishedNum;
+        /**计算正确率**/
+        for (var ii = 0; ii < stuAnswerStat.length; ii++) {
+            percent[ii] = (onlineNum > 0) ? (stuAnswerStat[ii]["rightNum"] / onlineNum).toFixed(2) : 0;
+        }
+
+        convertedData["spend_time"] = value.elapsedTime ? value.elapsedTime : 0;
+        convertedData["submit_count"] = onlineNum;
+        convertedData["answers"] = value.answers;
+        convertedData["item_key"] = item_key;
+        convertedData["percent"] = percent;
+        convertedData["unfinishedNum"] = value.unfinishedNum;
+        convertedData["unfinishedUserIds"] = value.unfinishedUserIds;
+        convertedData["stuAnswerStat"] = stuAnswerStat;
+
+        value["convertedData"] = convertedData;
+    },
+    /**
+     * 显示答案
+     * @param answer 需要显示的答案,如果对象为空则显示正确答案
+     */
+    showAnswer: function (answerType, answer) {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake showAnswer ");
+        switch (answerType) {
+            case 'user':
+                if (!!answer) {
+                    self.parent._setUserResponse(JSON.parse(answer.answer.user_response));
+                }
+                self.parent._isCorrect(true);
+                break;
+            case 'correct':
+            default:
+                self.lockQuestion();
+                self.parent._resetQuestionView();
+                var correctAnswer = self.parent._getUserResponse(true);
+                $.each(correctAnswer, function (k, v) {
+                    if (!!v.serialNum && !!v.userResponse) {
+                        self.parent._recoverView(v, k);
+                    }
+                });
+        }
+    },
+    showResultHint: function (option) {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake showResultHint ");
+    },
+    //将题目重置为未作答状态
+    resetQuestion: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake resetQuestion ");
+        self.parent._resetQuestionView();
+        self.parent.isLocked = false;
+
+        //通知状态变化
+        self.parent.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+    },
+    _getState: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake getState ");
+        return JSON.stringify({answers: self.parent._getUserResponse(), isLocked: self.parent.isLocked});
+
+    },
+    getState: function () {
+        this.parent.playerController.startFlow('css_classroom_status_changed', {presenterCode: this.parent.metaInfo.name});
+        return this._getState();
+    },
+    setState: function (state) {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake setState ");
+        var stateObj;
+        if (!!state) {
+            stateObj = JSON.parse(state);
+            self.parent._recoverState(stateObj);
+
+            //是否锁屏
+            if (stateObj.isLocked) {
+                self.lockQuestion();
+            } else {
+                self.unlockQuestion();
+            }
+        }
+    },
+    getClassroomStatus: function () {
+        return this._getState();
+    },
+    setClassroomStatus: function (status) {
+        this.status = status;
+        !!this.status && this.setState(status);
+        this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {presenterCode: this.parent.metaInfo.name});
+    },
+    clearClassroomStatus: function () {
+        this.setClassroomStatus(null);
+    },
+    startStatistics: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake startStatistics ");
+    },
+    //将题目设置为不可作答状态
+    lockQuestion: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake lockQuestion ");
+        if (self.parent.isLocked) {
+            return;
+        }
+        self.parent.isLocked = true;
+        self.parent._undelegateEvent();
+    },
+    //将题目设置为可作答状态
+    unlockQuestion: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake unlockQuestion ");
+        if (!self.parent.isLocked) {
+            return;
+        }
+        self.parent.isLocked = false;
+        self.parent._delegateEvent();
+    },
+    //将题目设置为结束作答状态
+    finishQuestion: function () {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake finishQuestion ");
+    },
+    //计时结束后回调
+    onTimeOver: function (value) {
+        var self = this;
+        self.parent.logger.debug("ImageMarkRemake onTimeOver ");
+        var serialNum = self.parent.domObj.move.data('serialNum');
+        self.parent.domObj.footerMarks.find('li[data-serial-num=' + serialNum + ']').removeClass('out');
+        self.parent.domObj.move.addClass('hide_dom');
+    },
+    setLocationProperties: function (properties) {
+        var self = this;
+        self.parent.helper.i18n = properties;
+    }
+};
+
+module.exports = ImageMarkRemakeService;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Service = __webpack_require__(0);
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: "ImageMarkRemake",
+        type: PresenterType.PRESENTER_COMPONENT,
+        subtype: SubPresenterType.INTERACTION_QUESTION
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        var self = this;
+        self._super();
+        self.STABLE_SVG_WIDTH = 1131;
+        self.STABLE_SVG_HEIGHT = 416;
+        self.STABLE_LIST_WIDTH = 148.66667;
+        self.STABLE_LIST_HEIGHT = 116.66667;
+        self.OPTION_BOX_HEIGHT = 140.66667;
+        self.PADDING_TOP = 10;
+        self.PADDING_BOTTOM = 160;
+        // self.MARK_WRAPPER_TOP = 20; 底部滚动条每次滚动的宽度
+        self.SCROLL_WIDTH = 300;
+        self.listTextClass = 'normal';
+        self.view = null;
+        self.model = null;
+        self.viewModel = {
+            view: null,
+            model: null
+        };
+
+        self.domObj = {}; // 储存各组件
+        self.marks = []; // 存放圆点对象
+        self.lines = []; // 存储链接线的原点与终点的坐标
+        self.components = []; // 存放组件
+        self.events = {}; //事件源
+        self.types = {
+            MARK_LINE_TYPE: "line",
+            MARK_AREA_TYPE: "area",
+            MARK_IMAGE_TYPE: "image",
+            MARK_TEXT_TYPE: "text"
+        };
+        self.directions = {
+            DIR_LEFT_UP: "leftUp",
+            DIR_LEFT_DOWN: "leftDown",
+            DIR_RIGHT_UP: "rightUp",
+            DIR_RIGHT_DOWN: "rightDown"
+        };
+        self.helper = {
+            i18n: {},
+            svgWidth: 0,
+            svgHeight: 0,
+            pointRadius: 10,
+            textWidth: 130,
+            textHeight: 45,
+            textLen: 10,
+            lineShow: [],
+            footerMarkWidth: 150,
+            footerMarginWidth: 20,
+            footerHtml: '',
+            isCommit: false,
+            canSubmit: false,
+            isFinish: false,
+            isCommitAgain: false,
+            hideToastTime: 3000,
+            isAnimation: false,
+            animateTime: 300,
+            answerCount: 0,
+            footerMarkCount: 5,
+            isTeacher: true,
+            hasPosition: false,
+            mixDistance: 60,
+            acceptArea: [],
+            acceptLinesArea: [],
+            acceptCircleArea: [],
+            moveFeatures: {},
+            response: [],
+            answer: [],
+            moveText: {
+                text: '',
+                serialNum: '',
+                width: '',
+                height: '',
+                type: ''
+            },
+            bgImgWidth: 0,
+            bgImgHeight: 0,
+            bgImgRotate: 0,
+            markType: null,
+            roundWH: 16.66667,
+            markWH: 14.66667
+        };
+
+        self.$dragingObj = null;
+        self.zIndex = 11;
+        self.oldRate = null;
+        self.isRecover = false;
+        // 渲染组件
+        self.render = self._getRender();
+        //定义日志
+        self.logger.appendHandler(function (message, context) {
+            console.log(message);
+
+        }, {
+            level: Logger.DEBUG
+        });
+    },
+    getService: function () {
+        if (!this._service_) {
+            this._service_ = new Service(this);
+        }
+        return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        var self = this;
+        self.view = view;
+        self.model = model;
+        self.viewModel.view = view;
+        self.viewModel.question = {
+            title: model.questionData.title
+        };
+        ko.applyBindings(this.viewModel.question, view);
+        self._initComponent(view);
+        var data = model.questionData;
+        data = self._dataReplace(data);
+        self.render.init(view, data);
+        self._presenterInit();
+    },
+    pageShow: function () {
+        this._bindEvent();
+    },
+    pageLeave: function () {
+        this._unbindEvent();
+    },
+    destroy: function () {},
+    /****以下开始为Presenter的私有方法*****/
+    _presenterInit: function () {
+        var self = this;
+        var questionData = self.model.questionData;
+        if (questionData.title && questionData.title.length > 38) {
+            $(self.view).find('._title').addClass('s_tit');
+        }
+    },
+    _bindEvent: function () {
+        var self = this;
+        var scrollCount = 0;
+        $(self.view).find('._btn_left').on('click', function () {
+            scrollCount = self.domObj.bottomWrap.scrollLeft() - self.SCROLL_WIDTH;
+            if (scrollCount <= 0) {
+                scrollCount = 0;
+            }
+            self.domObj.bottomWrap.scrollLeft(scrollCount);
+        });
+        $(self.view).find('._btn_right').on('click', function () {
+            scrollCount = self.domObj.bottomWrap.scrollLeft() + self.SCROLL_WIDTH;
+            self.domObj.bottomWrap.scrollLeft(scrollCount);
+            if (scrollCount > self.domObj.bottomWrap.scrollLeft()) {
+                scrollCount = self.domObj.bottomWrap.scrollLeft();
+                self.domObj.bottomWrap.scrollLeft(scrollCount);
+            }
+        });
+    },
+    _unbindEvent: function () {},
+    _getRender: function () {
+        var self = this;
+        return {
+            _data: "",
+            init: function (view, data) {
+                this.view = $(view);
+                this.background = data.background;
+                this.markType = data.mark_type;
+                this.tags = data.tags;
+                this._data = data;
+                self.helper.markType = data.mark_type;
+                this.run();
+            },
+            run: function () {
+                this.setContent();
+                this.setFooter();
+                this.setMarks();
+
+                //不是老师端的都可以进行操作
+                if (!self.isTeacher) {
+                    self._delegateEvent();
+                }
+            },
+
+            // 设置题干图片区的图片与标签
+            setContent: function () {
+                this.setImage();
+            },
+
+            // 设置学生答题区
+            setFooter: function () {
+                var footerMarksWidth = 0;
+                var footerMark = null;
+                var random = 0;
+                for (var i = 0, len = this.tags.length; i < len; i++) {
+                    var that = this.tags[i];
+                    var newMark = $('<li class="list _list"></li>').attr('data-serial-num', that.serial_num).attr('data-type', that.type);
+                    if (that.type == self.types.MARK_TEXT_TYPE) {
+                        var wordLen = that.value.length;
+                        if (wordLen > 27) {
+                            newMark.addClass('over');
+                        } else {
+                            newMark.removeClass('over');
+                        }
+                        newMark.html('<p data-serial-num="' + that.serial_num + '" data-type="' + that.type + '" class="list_text _list_text">' + that.value + '</p>');
+                    } else if (that.type == self.types.MARK_IMAGE_TYPE) {
+                        newMark.addClass('imglist').html('<img data-serial-num="' + that.serial_num + '" data-type="' + that.type + '" class="list_img _list_img" src="' + that.value + '">');
+                    }
+                    footerMarksWidth += that.width + self.helper.footerMarginWidth;
+                    footerMark = newMark;
+                    if (self.isTeacher || self.isPC || self.isWeb || self.isPPTShell) { //非学生端和web端的
+                        self.domObj.footerMarks.append(newMark); //使用有序
+                    } else {
+                        random = Math.random();
+                        if (random >= 0.5) {
+                            self.domObj.footerMarks.append(newMark);
+                        } else {
+                            self.domObj.footerMarks.prepend(newMark);
+                        }
+                    }
+
+                }
+            },
+
+            // 设置题干图片区的图片
+            setImage: function () {
+                if (self.domObj.markImg != undefined) {
+                    self.domObj.markImg.html(this.background);
+                    var img = new Image();
+                    var image = self.domObj.markImg.find("img");
+                    img.onload = function () {
+                        var rate = self._getEqualScale();
+                        var maxWidth = image.attr('max-width');
+                        var maxHeight = image.attr('max-height');
+                        var xrate = rate;
+                        var yrate = rate;
+                        var amiHeight;
+                        var amiWidth;
+                        if (self.oldRate && self.oldRate.ratex) {
+                            xrate *= self.oldRate.ratex;
+                        }
+                        if (self.oldRate && self.oldRate.ratey) {
+                            yrate *= self.oldRate.ratey;
+                        }
+                        self.helper.bgImgWidth = image.width();
+                        self.helper.bgImgHeight = image.height();
+                        if (image.attr('reset-width') && image.attr('reset-height')) {
+                            console.log('已重置过高宽');
+                        } else {
+                            amiHeight = self.helper.bgImgHeight * yrate;
+                            amiWidth = self.helper.bgImgWidth * xrate;
+                            image.css({
+                                'max-width': maxWidth + 'px',
+                                'max-height': maxHeight + 'px'
+                            });
+                            //注释 修复 62068
+                            if (amiHeight > maxHeight && amiWidth > maxWidth) {
+                                if (amiHeight / maxHeight > amiWidth / maxWidth) {
+                                    //image.width(maxWidth);
+                                } else {
+                                    //image.height(maxHeight);
+                                }
+                            } else if (amiHeight > maxHeight) {
+                                image.height(maxHeight);
+                            } else if (amiWidth > maxWidth) {
+                                image.width(maxWidth);
+                            } else {
+                                if (rate > 1) {
+                                    image.height(amiHeight);
+                                    image.width(amiWidth);
+                                }
+                            }
+                        }
+                        self.helper.bgImgRotate = image.css("transform") || image.css("-webkit-transform") || image.css("-moz-transform") || image.css("-ms-transform") || image.css("-o-transform");
+                        if (self.helper.isFinish) {
+                            self._isCorrect(true);
+                        }
+                    };
+                    img.src = image.attr("src");
+                }
+            },
+
+            // 设置题干图片区的标签
+            setMarks: function () {
+                for (var i = 0, len = this.tags.length; i < len; i++) {
+                    var options = {
+                        "pointX": this.tags[i].x,
+                        "pointY": this.tags[i].y,
+                        "recX": this.tags[i].rec_x,
+                        "recY": this.tags[i].rec_y,
+                        "recW": this.tags[i].width,
+                        "recH": this.tags[i].height,
+                        "type": this.tags[i].type,
+                        "value": this.tags[i].value,
+                        "tempvalue": this.tags[i].tempvalue,
+                        "radius": this.tags[i].radius,
+                        "serialNum": this.tags[i].serial_num
+                    };
+                    var component = self._getComponent(this.markType, options);
+                    var result = component.createComponent();
+                    if (this.markType == self.types.MARK_LINE_TYPE) {
+                        self.domObj.marks.append(result.point);
+                        self.domObj.textMarks.append(result.text);
+                        self.helper.lineShow.push({
+                            "isShow": false,
+                            "isRender": false
+                        });
+                    } else if (this.markType == self.types.MARK_AREA_TYPE) {
+                        self.domObj.marks.append(result.circle);
+                    }
+                    self.components.push(component);
+                }
+            }
+        };
+    },
+    _initComponent: function (view) {
+        var self = this;
+        var $view = $(view);
+        self.domObj.view = $view;
+        self.domObj.markImg = $view.find("._mark_img");
+        self.domObj.markWrapper = $view.find("._mark_wrapper");
+        self.domObj.move = $view.find('._move');
+        self.domObj.moveImg = self.domObj.move.find('._list_img');
+        self.domObj.moveText = self.domObj.move.find('._list_text');
+        self.domObj.footerContainer = $view.find('._footer_container');
+        self.domObj.bottomWrap = $view.find('._bottom_wrap');
+        self.domObj.footerMarks = $view.find('._list_wrap');
+        self.domObj.marks = $view.find("._marks");
+        self.domObj.textMarks = $view.find("._text_marks");
+        self.domObj.svg = $view.find("#svgLines");
+    },
+    _showToast: function (toastInfo, isHide, time) {
+        var self = this;
+        self.domObj.maskWrapper.find('.dialog').text(toastInfo);
+        self.domObj.maskWrapper.removeClass('hide_dom');
+        if (isHide) {
+            setTimeout(function () {
+                self.domObj.maskWrapper.addClass('hide_dom');
+            }, time);
+        }
+    },
+    _setMove: function (options) {
+        var self = this;
+        var text = options.text;
+        var serialNum = options.serialNum;
+        var width = options.width;
+        var height = options.height;
+        var type = options.type;
+        var src = options.src;
+        self.helper.moveText.text = text;
+        self.helper.moveText.serialNum = serialNum;
+        self.helper.moveText.width = width;
+        self.helper.moveText.height = height;
+        self.helper.moveText.type = type;
+        self.helper.moveText.image = src;
+
+        self.domObj.move.attr({
+            "data-type": type,
+            "data-serial-num": serialNum
+        });
+        if (type == 'text') {
+            self.domObj.move.removeClass('imglist');
+        } else {
+            self.domObj.move.addClass('imglist');
+        }
+        self.domObj.moveImg.attr('src', src);
+        self.domObj.moveText.html(text);
+        if (text.length > 27) {
+            self.domObj.move.addClass('over');
+        } else {
+            self.domObj.move.removeClass('over');
+        }
+    },
+    _getOptions: function (obj) {
+        return {
+            text: obj.find('._list_text').text(),
+            serialNum: obj.data('serialNum'),
+            width: obj.width(),
+            height: obj.height(),
+            type: obj.data("type"),
+            src: obj.find('._list_img').attr("src")
+        };
+    },
+    _getChildOptions: function (obj) {
+        var child = obj.children();
+        return {
+            text: child.text(),
+            serialNum: child.data('serialNum'),
+            width: obj.width(),
+            height: obj.height(),
+            type: child.data("type"),
+            src: child.attr("src")
+        };
+    },
+    _checkPosition: function () {
+        var self = this;
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self._lineAnswerPosition();
+        } else if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+            self._areaAnswerPosition();
+        } else {
+            self._lineAnswerPosition();
+        }
+    },
+    _delegateEvent: function () {
+        var self = this;
+        var mousedown = false;
+        var clickOffset = {};
+        var $that = null;
+        var isMove = false;
+        var isClick = true;
+        var isChange = false;
+        var isChangeDo = true;
+        //对应底部选项拖动的对象
+        var $dragDiv = null;
+        var startX,
+            startY,
+            endX,
+            endY;
+        self.domObj.view.delegate('._footer_container ._list', 'touchstart mousedown', function (e) {
+            if (!self.domObj.move.hasClass('hide_dom')) { //如果有移动对象显示，说明目前在显示，就不处理
+                return;
+            }
+            e.preventDefault();
+            //如果有显示正确错误答案的标记类要去掉
+            if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                self.domObj.marks.find('li div._list').removeClass('correct wrong');
+            } else {
+                self.domObj.textMarks.find('._list').removeClass('correct wrong');
+                self.domObj.marks.find('li').removeClass('correct wrong');
+            }
+
+            //已提交或已结束是不能再操作
+            if (self.helper.isCommit || self.helper.isFinish) {
+                return;
+            }
+            if (self.helper.isAnimation) {
+                return;
+            }
+            isClick = false;
+            self.$dragingObj = $(this);
+            self._setMove(self._getOptions(self.$dragingObj));
+            self.$dragingObj.addClass("out");
+            self._checkPosition();
+
+            // 相对组件的坐标
+            clickOffset.left = self._getOffsetX(e);
+            clickOffset.top = self._getOffsetY(e);
+            mousedown = true;
+            self.domObj.move.css({
+                'left': self._getClientX(e) - clickOffset.left + 'px',
+                'top': self._getClientY(e) - clickOffset.top + 'px'
+            }).removeClass('hide_dom');
+
+            startX = self._getPageX(e);
+            startY = self._getPageY(e);
+        }).delegate('._text_marks ._list, ._marks ._list', 'touchstart mousedown', function (e) {
+            if (!self.domObj.move.hasClass('hide_dom')) { //如果有移动对象显示，说明目前在显示，就不处理
+                return;
+            }
+            if (!$(this).children().length) {
+                return;
+            }
+            e.preventDefault();
+            $that = $(this);
+            //如果有显示正确错误答案的标记类要去掉
+            if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                self.domObj.marks.find('li div._list').removeClass('correct wrong');
+            } else {
+                self.domObj.textMarks.find('._list').removeClass('correct wrong');
+                self.domObj.marks.find('li').removeClass('correct wrong');
+            }
+
+            clickOffset.left = self._getOffsetX(e);
+            clickOffset.top = self._getOffsetY(e);
+            if (self.helper.isCommit || self.helper.isFinish) {
+                return;
+            }
+            if (self.helper.isAnimation) {
+                return;
+            }
+
+            isChange = true;
+            isClick = true;
+            var options = self._getChildOptions($that);
+            self._setMove(options);
+            self._checkPosition();
+            mousedown = true;
+
+            if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                $that.css('opacity', 0);
+            } else {
+                var num = $that.data("serialNum");
+                self.helper.lineShow[num - 1].isShow = false;
+                self._clearLine(num);
+                $that.addClass('hide_dom');
+            }
+            isChangeDo = false;
+
+            self.domObj.footerMarks.children().each(function () {
+                if ($(this).data("serialNum") == options.serialNum) {
+                    $dragDiv = $(this);
+                    $dragDiv.addClass('out');
+                }
+            });
+            self.domObj.move.css({
+                'left': self._getClientX(e) - clickOffset.left + 'px',
+                'top': self._getClientY(e) - clickOffset.top + 'px'
+            }).removeClass('hide_dom');
+        });
+
+        self.domObj.view.on('touchend mouseup', function (e) {
+            if (self.helper.isCommit || self.helper.isFinish) {
+                return;
+            }
+            if (mousedown || isChange) {
+                if (!isChangeDo) {
+                    isChangeDo = true;
+                    if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                        self._cancelAreaAnswer($that.data("serialNum"));
+
+                    } else {
+                        self._cancelLineAnswer($that.data("serialNum"));
+                    }
+                }
+
+                var b = false;
+                if (!isClick) {
+                    if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                        b = self._areasToTakeIt(self.domObj.move, clickOffset, mousedown);
+                    } else if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+                        b = self._judgeToTakeIt(self.domObj.move);
+                    }
+                }
+
+                if (b) {
+                    if (isChange) {
+                        $dragDiv.removeClass("out");
+                        $dragDiv.addClass('hide_dom');
+                    } else {
+                        self.$dragingObj.addClass('hide_dom');
+                        self.domObj.move.removeClass('hide_dom');
+                    }
+                } else {
+                    if (isChange) {
+                        $dragDiv.removeClass("out");
+                        self.domObj.move.addClass('hide_dom');
+                    } else {
+                        self.$dragingObj.parent().removeClass('hide_dom');
+                        self.domObj.move.addClass('hide_dom');
+                    }
+                }
+                self.$dragingObj.removeClass("out");
+
+                mousedown = false;
+                isChange = false;
+                isMove = false;
+            }
+            self._saveState();
+        });
+        self.domObj.view.on('touchmove mousemove', function (e) {
+            if (self.helper.isCommit || self.helper.isFinish) {
+                return;
+            }
+            isClick = false;
+            if (mousedown || isChange) {
+                e.preventDefault();
+                var left = self._getClientX(e) - clickOffset.left;
+                var top = self._getClientY(e) - clickOffset.top;
+                self.domObj.move.css({
+                    'left': left + 'px',
+                    'top': top + 'px'
+                }).removeClass('hide_dom');
+
+                if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                    self._areasToTakeIt(self.domObj.move, clickOffset, false);
+                } else {
+                    self._judgeToTakeIt(self.domObj.move, true);
+                }
+
+                if (!isMove) {
+                    isMove = true;
+                }
+                endX = self._getPageX(e);
+                endY = self._getPageY(e);
+            }
+        });
+
+    },
+    _undelegateEvent: function () {
+        var self = this;
+        self.domObj.view.undelegate('._footer_container ._list', 'touchstart mousedown');
+        self.domObj.view.undelegate('._text_marks ._list, ._marks ._list', 'touchstart mousedown');
+        self.domObj.view.off('touchend mouseup');
+        self.domObj.view.off('touchmove mousemove');
+
+    },
+    _isCorrect: function (isShowCheck) {
+        var self = this;
+        var count = 0;
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self.domObj.textMarks.find('._list').each(function (i) {
+                var $this = $(this);
+                var child = $this.children();
+                var answer = self.components[i].serialNum == child.data("serialNum") ? true : false;
+                if (answer) {
+                    count++;
+                    if (isShowCheck) {
+                        $this.addClass('correct');
+                        self.domObj.marks.find('li[data-serial-num=' + self.components[i].serialNum + ']').addClass('correct');
+                    }
+                } else {
+                    if (isShowCheck) {
+                        $this.addClass('wrong');
+                        self.domObj.marks.find('li[data-serial-num=' + self.components[i].serialNum + ']').addClass('wrong');
+                    }
+                }
+            });
+        } else if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+            self.domObj.marks.children("li").each(function (i) {
+                var $this = $(this);
+                var child = $this.children();
+                var answer = self.components[i].serialNum == child.children().data("serialNum") ? true : false;
+                if (answer) {
+                    count++;
+                    if (isShowCheck) {
+                        child.addClass('correct');
+                    }
+                } else {
+                    if (isShowCheck) {
+                        child.addClass('wrong');
+                    }
+                }
+            });
+        }
+        if (self.components.length == count) {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    _showAnswers: function () {
+        var self = this;
+        if (self._isCorrect(true)) {
+            self._showToast(self.helper.i18n['imagemark_answer_right'], true, self.helper.hideToastTime);
+        } else {
+            self._showToast(self.helper.i18n['imagemark_answer_wrong'], true, self.helper.hideToastTime);
+        }
+    },
+    _finishAnswer: function () {
+        var self = this;
+        self._showAnswers();
+    },
+    _finishAnswerPad: function () {
+        var self = this;
+        self.helper.isFinish = true;
+        self.domObj.move.addClass('hide_dom');
+
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self.domObj.textMarks.find('._list').each(function (index) {
+                if ($(this).children().css('opacity') == 0) {
+                    self._cancelLineAnswer($(this).data("serialNum"));
+                }
+            });
+        } else {
+            var $circleText = self.domObj.marks.find("._circle ._circle_text");
+            $circleText.each(function (index) {
+                if ($(this).children().css('opacity') == 0) {
+                    self._cancelAreaAnswer($(this).data("serialNum"));
+                }
+            });
+        }
+
+        self.domObj.footerMarks.children("li").each(function () {
+            $(this).removeClass("out");
+            $(this).children().removeClass("out");
+        });
+
+        self._clearTakIt();
+    },
+    _saveState: function () {
+        var self = this;
+        var userResponse = self._getUserResponse();
+        self.helper.canSubmit = false;
+        for (var i = 0, iLen = userResponse.length; i < iLen; i++) {
+            if (userResponse[i].userResponse !== '') {
+                self.helper.canSubmit = true;
+                break;
+            }
+        }
+        //发出按钮状态的事件
+        self.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT, {
+            canSubmit: self.helper.canSubmit
+        });
+        //发出状态发生变化的事件
+        self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT);
+    },
+    _setUserResponse: function (response) {
+        var self = this;
+        self._resetQuestionView();
+        var answers = [];
+        $.each(response.tags, function (k, v) {
+            var width,
+                height;
+            var dom = self.domObj.footerMarks.find('li[data-serial-num=' + v.serialNum + ']');
+            width = parseFloat(dom.css('borderLeft')) + parseFloat(dom.css('paddingLeft')) + dom.width() + parseFloat(dom.css('paddingRight')) + parseFloat(dom.css('borderRight'));
+            height = parseFloat(dom.css('borderTop')) + parseFloat(dom.css('paddingTop')) + dom.height() + parseFloat(dom.css('paddingBottom')) + parseFloat(dom.css('borderBottom'));
+            answers.push({
+                userResponse: v.userSerialNum,
+                serialNum: v.serialNum,
+                width: width,
+                height: height
+            });
+        });
+        var state = {
+            answers: answers
+        };
+        self._recoverState(state);
+    },
+    _getUserResponse: function (isRight) {
+        var self = this;
+        var answers = [];
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self.domObj.textMarks.find('._list').each(function (i) {
+                var $this = $(this);
+                var $child = $this.children();
+                var serialNum = $this.data("serialNum");
+                var userResponse = '';
+                if ($child.length) {
+                    userResponse = $child.data("serialNum");
+                }
+                if (isRight) {
+                    userResponse = serialNum;
+                }
+                answers.push({
+                    userResponse: userResponse,
+                    serialNum: serialNum,
+                    width: $this.width(),
+                    height: $this.height()
+                });
+            });
+        } else if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+            self.domObj.marks.children("li").each(function (i) {
+                var $this = $(this);
+                var $child = $this.children().children();
+                var serialNum = $this.data("serialNum");
+                var userResponse = '';
+                if ($child.length) {
+                    userResponse = $child.data("serialNum");
+                }
+                if (isRight) {
+                    userResponse = serialNum;
+                }
+                answers.push({
+                    userResponse: userResponse,
+                    serialNum: serialNum,
+                    width: $this.children().width(),
+                    height: $this.children().height()
+                });
+            });
+        }
+        return answers;
+    },
+    _saveData: function (num) {
+        var self = this;
+        var correctResponse = [];
+        var userResponse = [];
+        for (var i = 0, len = self.components.length; i < len; i++) {
+            correctResponse.push(self.components[i].serialNum);
+            userResponse.push(self.components[i].getTextSerialNum());
+        }
+
+        //发出按钮可提交状态的事件
+        self.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE, PresenterEventType.IC_PLAYER_EVENT, {
+            canSubmit: self.helper.canSubmit
+        });
+
+        return {
+            correct_response: correctResponse,
+            user_response: userResponse
+        };
+    },
+    _commitData: function (time) {
+        var self = this;
+        var result = self._saveData();
+        var status = !self.helper.isCommit ? "unfinished" : "complete"; //  complete|unfinished(完成, 未提交)
+        return {
+            status: status,
+            time: time,
+            correct_response: result.correctResponse,
+            user_response: result.userResponse
+        }
+    },
+    _areaAnswerPosition: function () {
+        var self = this;
+        if (!self.helper.hasPosition) {
+            self.helper.hasPosition = true;
+            $.each(self.domObj.markWrapper.find('._marks ._circle'), function (k, v) {
+                var $v = $(v);
+                var offset = $v.offset();
+                self.helper.acceptCircleArea.push({
+                    obj: $v,
+                    left: offset.left,
+                    top: offset.top,
+                    width: parseInt($v.attr("radius")) * 2,
+                    height: parseInt($v.attr("radius")) * 2
+                });
+            });
+        }
+    },
+    _lineAnswerPosition: function () {
+        var self = this;
+        self.helper.acceptArea = [];
+        self.helper.acceptLinesArea = [];
+        $.each(self.domObj.markWrapper.find('._marks ._mark'), function (k, v) {
+            var $v = $(v);
+            var offset = $v.offset();
+            self.helper.acceptArea.push({
+                obj: v.parentNode,
+                left: offset.left - self.helper.moveText.width,
+                top: offset.top - self.helper.moveText.height,
+                width: self.helper.moveText.width,
+                height: self.helper.moveText.height
+            });
+        });
+        for (var i = 0; i < self.lines.length; i++) {
+            var line = self.lines[i];
+            self.helper.acceptLinesArea.push({
+                num: i + 1,
+                left: line.endX + self.domObj.svg.offset().left - self.helper.moveText.width,
+                top: line.endY + self.domObj.svg.offset().top - self.helper.moveText.height,
+                width: self.helper.moveText.width,
+                height: self.helper.moveText.height
+            });
+        }
+    },
+    _areasToTakeIt: function (ele, clickOffset, mousedown) {
+        var self = this;
+        var point = ele.offset();
+        var left = point.left + clickOffset.left;
+        var top = point.top + clickOffset.top;
+        var width = ele.width();
+        var height = ele.height();
+        var areas = self.helper.acceptCircleArea;
+        self._clearTakIt();
+        for (var i = 0, len = areas.length; i < len; i++) {
+            if (left >= areas[i].left && top >= areas[i].top && left <= areas[i].left + areas[i].width && top <= areas[i].top + areas[i].height) {
+                var serialNum = areas[i].obj.data("serialNum");
+                areas[i].obj.css({
+                    "opacity": 1,
+                    "background": "rgba(255,255,255,0.4)",
+                    "box-shadow": "0 0 10px rgba(0,0,0,0.3)"
+                });
+                if (mousedown) {
+                    self._moveToArea(serialNum, ele, width, height);
+                }
+                return true;
+            } else {
+                if (areas[i].obj.children().html() == "") {
+                    areas[i].obj.css({
+                        "opacity": 0
+                    });
+                } else {
+                    areas[i].obj.css({
+                        "opacity": 1,
+                        "background": "rgba(255,255,255,0)",
+                        "box-shadow": "0 0 0 rgba(0,0,0,0)"
+                    });
+                }
+            }
+        }
+        return false;
+    },
+    _clearTakIt: function () {
+        var self = this;
+        var areas = self.helper.acceptCircleArea;
+        for (var i = 0, len = areas.length; i < len; i++) {
+            areas[i].obj.css({
+                "background": "rgba(255,255,255,0)",
+                "box-shadow": "0 0 0 rgba(0,0,0,0)"
+            });
+        }
+    },
+    _judgeToTakeIt: function (ele, isCheckIn) {
+        var self = this;
+        var point = ele.offset();
+        var left = point.left;
+        var top = point.top;
+        var width = ele.width();
+        var height = ele.height();
+        var area = self.helper.acceptArea;
+        var linesArea = self.helper.acceptLinesArea;
+        //self.domObj.marks.find('.movein').removeClass('movein');
+        for (var i = 0, len = linesArea.length; i < len; i++) {
+            if (self.helper.lineShow[i].isShow) {
+                if (left >= linesArea[i].left && top >= linesArea[i].top && left <= linesArea[i].left + linesArea[i].width && top <= linesArea[i].top + linesArea[i].height) {
+                    var serialNum = linesArea[i].num;
+                    if (isCheckIn) {
+                        //self.domObj.marks.find('[data-serial-num="' + serialNum + '"]').addClass('movein');
+                    } else {
+                        self._moveText(serialNum, ele, width, height);
+                    }
+                    return true;
+                }
+            }
+        }
+
+        for (var i = 0, len = area.length; i < len; i++) {
+            if (left >= area[i].left && top >= area[i].top && left <= area[i].left + area[i].width && top <= area[i].top + area[i].height) {
+                var serialNum = $(area[i].obj).data("serialNum");
+                if (isCheckIn) {
+                    //self.domObj.marks.find('[data-serialNum="' + serialNum + '"]').addClass('movein');
+                } else {
+                    self._moveText(serialNum, ele, width, height);
+                }
+                return true;
+            }
+        }
+        return false;
+    },
+    _moveToArea: function (serialNum, ele, width, height, isFromRecover) {
+        var self = this;
+        var circles = $("._circle");
+        var marks = self.domObj.footerMarks.find('li');
+        circles.each(function () {
+            var $that = $(this);
+            var l,
+                t;
+            if ($that.data("serialNum") == serialNum) {
+                $that.children().addClass('hide_dom');
+                self.helper.isAnimation = true;
+                l = $that.offset().left + parseInt($that.attr("radius")) - width / 2;
+                t = $that.offset().top + parseInt($that.attr("radius")) - height / 2;
+                if ($that.children().html() != "") {
+                    var num = $that.children().children("span").data("serialNum") || $that.children().children("img").data("serialNum");
+                    marks.each(function () {
+                        if ($(this).data("serialNum") == num) {
+                            $(this).removeClass('hide_dom');
+                        }
+                    });
+                    self.helper.answerCount--;
+                }
+                $that.css({
+                    "opacity": 1,
+                    "background": "rgba(255,255,255,0)",
+                    "box-shadow": "0 0 0 rgba(0,0,0,0)"
+                });
+                ele.css({
+                    "left": l + "px",
+                    "top": t + "px",
+                    "transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-webkit-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-moz-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-ms-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-o-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s"
+                });
+
+                function setArea() {
+                    var dom = self.domObj.move;
+                    var domW = parseFloat(dom.css('borderLeft')) + parseFloat(dom.css('paddingLeft')) + dom.width() + parseFloat(dom.css('paddingRight')) + parseFloat(dom.css('borderRight'));
+                    $that.children().css('z-index', getAreaZindex);
+                    if (self.helper.moveText.type == self.types.MARK_TEXT_TYPE) {
+                        //js浮点计算会有误差，所以再加一 修复：73760
+                        $that.children().css({
+                            'width': domW + 1
+                        });
+                        //字数超过27个字，加over类
+                        var wordLen = self.helper.moveText.text.length;
+                        if (wordLen > 27) {
+                            $that.children().addClass('over');
+                        } else {
+                            $that.children().removeClass('over');
+                        }
+
+                        $that.children().html("<span data-type='" + self.helper.moveText.type + "' data-serial-num='" + self.helper.moveText.serialNum + "' class='list_text _list_text'>" + self.helper.moveText.text + "</span></span>");
+                        $that.children().removeClass('imglist');
+                    } else {
+                        $that.children().html("<img data-type='" + self.helper.moveText.type + "' class='list_img _list_img' data-serial-num='" + self.helper.moveText.serialNum + "' src='" + self.helper.moveText.image + "'>");
+                        $that.children().addClass('imglist');
+                    }
+
+                    ele.css({
+                        "left": 0,
+                        "top": 0,
+                        "transition": "",
+                        "-webkit-transition": "",
+                        "-moz-transition": "",
+                        "-ms-transition": "",
+                        "-o-transition": ""
+                    });
+                    ele.addClass('hide_dom');
+                    $that.children().removeClass('hide_dom');
+                    $that.children().css('opacity', 1);
+                    self.helper.isAnimation = false;
+                    self.helper.answerCount++;
+                    self._saveData(serialNum);
+                }
+
+                function getAreaZindex() {
+                    var zindex = 0;
+                    for (var i = 0, iLen = circles.length; i < iLen; i++) {
+                        if ($(circles[i]).find('span').size() == 0) {
+                            continue;
+                        }
+                        var z = $(circles[i]).children().css('z-index');
+                        if (isNaN(z)) {
+                            continue;
+                        }
+                        zindex = Number(z) > zindex ? Number(z) : zindex;
+                    }
+                    return zindex + 1;
+                }
+
+                if (isFromRecover) {
+                    ele.removeClass('hide_dom');
+                    setArea();
+                } else {
+                    setTimeout(function () {
+                        setArea();
+                        self._saveState();
+                    }, self.helper.animateTime);
+                }
+
+                self.components[serialNum - 1].setTextSerialNum(self.helper.moveText.serialNum);
+            }
+        });
+    },
+    _moveText: function (serialNum, ele, width, height, isFromRecover, index) {
+        var self = this;
+        var texts = self.domObj.textMarks.find('._list');
+        var marks = self.domObj.footerMarks.find('li');
+
+        function textIndex(index) {
+            var $that = $(texts[index]);
+            var direction = $that.data("direction");
+            var l,
+                t,
+                oX,
+                oY;
+
+            if ($that.data("serialNum") == serialNum) {
+                self.components[serialNum - 1].createText();
+                $that.addClass('hide_dom');
+                self.helper.isAnimation = true;
+                setTextPosition();
+                oX = parseInt($that.css("left"));
+                oY = parseInt($that.css("top"));
+                l = oX + self.domObj.textMarks.offset().left;
+                t = oY + self.domObj.textMarks.offset().top;
+                if ($that.html() != "") {
+                    var num = $that.children("span").data("serialNum") || $that.children("img").data("serialNum");
+                    marks.each(function () {
+                        if ($(this).data("serialNum") == num) {
+                            $(this).removeClass('hide_dom');
+                        }
+                    });
+                    self.helper.answerCount--;
+                }
+                ele.css({
+                    "left": l + "px",
+                    "top": t + "px",
+                    "transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-webkit-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-moz-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-ms-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s",
+                    "-o-transition": "left " + self.helper.animateTime / 1000 + "s, top " + self.helper.animateTime / 1000 + "s"
+                });
+                self._clearLine(serialNum);
+                self._showLine(serialNum);
+
+                function setText() {
+                    $that.removeClass('hide_dom');
+                    $that.css('z-index', ++self.zIndex);
+                    if (self.helper.moveText.type == self.types.MARK_TEXT_TYPE) {
+                        var wordLen = self.helper.moveText.text.length;
+                        if (wordLen > 27) {
+                            $that.addClass('over');
+                        } else {
+                            $that.removeClass('over');
+                        }
+                        var dom = self.domObj.move;
+                        var domW = parseFloat(dom.css('borderLeft')) + parseFloat(dom.css('paddingLeft')) + dom.width() + parseFloat(dom.css('paddingRight')) + parseFloat(dom.css('borderRight'));
+                        //var right = self.domObj.textMarks.width() - self.components[$that.data('serialNum') - 1].recX - domW;
+                        var right = self.domObj.textMarks.width() - parseFloat($that.css('left')) - domW;
+                        var zIndex,
+                            left,
+                            top;
+                        if ($(self.view).width() / 2 > right && ($that.data('direction') == 'leftUp' || $that.data('direction') == 'leftDown')) {
+                            zIndex = $that.css('zIndex');
+                            top = $that.css('top');
+                            $that.removeAttr('style');
+                            //正常一个选项min-width要197px if (domW < 197) {     right = right - (197 - domW); }
+                            $that.css({
+                                'top': top,
+                                'right': right,
+                                'z-index': zIndex
+                            });
+                        } else {
+                            zIndex = $that.css('zIndex');
+                            top = $that.css('top');
+                            left = $that.css('left');
+                            $that.removeAttr('style');
+                            $that.css({
+                                'left': left,
+                                'top': top,
+                                'z-index': zIndex
+                            });
+                        }
+
+                        $that.html("<span data-type='" + self.helper.moveText.type + "' data-serial-num='" + self.helper.moveText.serialNum + "' class='list_text _list_text'>" + self.helper.moveText.text + "</span>");
+                        $that.removeClass('imglist');
+                    } else {
+                        $that.html("<img data-type='" + self.helper.moveText.type + "' class='list_img _list_img' data-serial-num='" + self.helper.moveText.serialNum + "' src='" + self.helper.moveText.image + "'></span>");
+                        $that.addClass('imglist');
+                    }
+
+                    ele.css({
+                        "left": 0,
+                        "top": 0,
+                        "transition": "",
+                        "-webkit-transition": "",
+                        "-moz-transition": "",
+                        "-ms-transition": "",
+                        "-o-transition": ""
+                    });
+                    ele.addClass('hide_dom');
+                    self.helper.isAnimation = false;
+                    self.helper.answerCount++;
+                    self._saveData(serialNum);
+                }
+
+                function setTextPosition() {
+                    var eleWidth = ele.width() + parseFloat(ele.css('paddingLeft')) + parseFloat(ele.css('paddingRight')) + parseFloat(ele.css('border')) * 2;
+                    var eleHeight = ele.height() + parseFloat(ele.css('paddingTop')) + parseFloat(ele.css('paddingBottom')) + parseFloat(ele.css('border')) * 2;
+                    var line = self.lines[serialNum - 1];
+                    switch ($that.data('direction')) {
+                        case self.directions.DIR_LEFT_UP:
+                            $that.css({
+                                'left': line.endX,
+                                'top': line.endY
+                            });
+                            break;
+                        case self.directions.DIR_LEFT_DOWN:
+                            $that.css({
+                                'left': line.endX,
+                                'top': line.endY - eleHeight
+                            });
+                            break;
+                        case self.directions.DIR_RIGHT_UP:
+                            $that.css({
+                                'left': line.endX - eleWidth,
+                                'top': line.endY
+                            });
+                            break;
+                        case self.directions.DIR_RIGHT_DOWN:
+                            $that.css({
+                                'left': line.endX - eleWidth,
+                                'top': line.endY - eleHeight
+                            });
+                            break;
+                    }
+                }
+
+                if (isFromRecover) {
+                    setText();
+                } else {
+                    setTimeout(function () {
+                        setText();
+                        self._saveState();
+                    }, self.helper.animateTime);
+                }
+
+                self.components[serialNum - 1].setTextSerialNum(self.helper.moveText.serialNum);
+            }
+        }
+
+        if (isFromRecover) {
+            ele.removeClass('hide_dom');
+            textIndex(index);
+        } else {
+            texts.each(textIndex);
+        }
+
+    },
+    _getComponent: function (markType, options) {
+        var self = this;
+        var com = new Object();
+
+        com.options = options || "";
+        com.markType = markType;
+        com.pointX = com.options.pointX || 0;
+        com.pointY = com.options.pointY || 0;
+        com.recX = com.options.recX || 0;
+        com.recY = com.options.recY || 0;
+        com.recW = com.options.recW || 0;
+        com.recH = com.options.recH || 0;
+        com.radius = com.options.radius || 0;
+        com.serialNum = com.options.serialNum || 0;
+        com.value = com.options.value || '';
+        com.tempvalue = com.options.tempvalue || '';
+        com.type = com.options.type || '';
+        com.textSerialNum = 0;
+        com.pointPosition = ""; // leftUP,leftDown,rightUp,rightDown
+        com.recPosition = ""; // leftUP,leftDown,rightUp,rightDown
+
+        com.setTextSerialNum = function (serialNum) {
+            com.textSerialNum = serialNum;
+        };
+
+        com.getTextSerialNum = function () {
+            return com.textSerialNum;
+        };
+
+        // 确认圆点所分部的方位
+        com.getPosition = function () {
+            if (com.pointX <= self.helper.svgWidth / 2 && com.pointY <= self.helper.svgHeight / 2) {
+                com.pointPosition = self.directions.DIR_LEFT_UP;
+            } else if (com.pointX <= self.helper.svgWidth / 2 && com.pointY > self.helper.svgHeight / 2) {
+                com.pointPosition = self.directions.DIR_LEFT_DOWN;
+            } else if (com.pointX <= self.helper.svgWidth && com.pointY <= self.helper.svgHeight / 2) {
+                com.pointPosition = self.directions.DIR_RIGHT_UP;
+            } else if (com.pointX <= self.helper.svgWidth && com.pointY > self.helper.svgHeight / 2) {
+                com.pointPosition = self.directions.DIR_RIGHT_DOWN;
+            }
+        };
+        //确认选项连线的方位
+        com.getRecPosition = function () {
+            if (com.pointX <= com.recX && com.pointY <= com.recY) {
+                com.recPosition = self.directions.DIR_LEFT_UP;
+            } else if (com.pointX <= com.recX && com.pointY > com.recY) {
+                com.recPosition = self.directions.DIR_LEFT_DOWN;
+            } else if (com.pointX > com.recX && com.pointY <= com.recY) {
+                com.recPosition = self.directions.DIR_RIGHT_UP;
+            } else if (com.pointX > com.recX && com.pointY > com.recY) {
+                com.recPosition = self.directions.DIR_RIGHT_DOWN;
+            }
+        };
+
+        // 根据圆点的方位确定文本框的位置
+        com.setTextPosition = function () {
+            var startX,
+                startY,
+                endX,
+                endY;
+            var rate = self._getEqualScale();
+            var maxWidth = self.STABLE_SVG_WIDTH * rate;
+            var maxHeight = self.STABLE_SVG_HEIGHT * rate;
+            var gap = 2 * rate;
+            var maxWidth2 = maxWidth - gap;
+            var maxHeight2 = maxHeight - gap;
+
+            switch (com.recPosition) {
+                case self.directions.DIR_LEFT_UP:
+                    startX = com.pointX + self.helper.pointRadius;
+                    if (startX >= maxWidth) {
+                        startX = maxWidth2;
+                    } else if (startX <= 0) {
+                        startX = gap;
+                    }
+                    startY = com.pointY + self.helper.pointRadius;
+                    if (startY >= maxHeight) {
+                        startY = maxHeight2;
+                    } else if (startY <= 0) {
+                        startY = gap;
+                    }
+                    endX = com.recX;
+                    if (endX >= maxWidth) {
+                        endX = maxWidth2;
+                    } else if (endX <= 0) {
+                        endX = gap;
+                    }
+                    endY = com.recY;
+                    if (endY >= maxHeight) {
+                        endY = maxHeight2;
+                    } else if (endY <= 0) {
+                        endY = gap;
+                    }
+                    self.lines.push({
+                        "startX": startX,
+                        "startY": startY,
+                        "endX": endX,
+                        "endY": endY,
+                        "position": self.directions.DIR_LEFT_UP
+                    });
+                    break;
+                case self.directions.DIR_LEFT_DOWN:
+                    startX = com.pointX + self.helper.pointRadius;
+                    if (startX >= maxWidth) {
+                        startX = maxWidth2;
+                    } else if (startX <= 0) {
+                        startX = gap;
+                    }
+                    startY = com.pointY + self.helper.pointRadius;
+                    if (startY >= maxHeight) {
+                        startY = maxHeight2;
+                    } else if (startY <= 0) {
+                        startY = gap;
+                    }
+                    endX = com.recX;
+                    if (endX >= maxWidth) {
+                        endX = maxWidth2;
+                    } else if (endX <= 0) {
+                        endX = gap;
+                    }
+                    endY = com.recY + com.recH;
+                    if (endY >= maxHeight) {
+                        endY = maxHeight2;
+                    } else if (endY <= 0) {
+                        endY = gap;
+                    }
+                    self.lines.push({
+                        "startX": startX,
+                        "startY": startY,
+                        "endX": endX,
+                        "endY": endY,
+                        "position": self.directions.DIR_LEFT_DOWN
+                    });
+                    break;
+                case self.directions.DIR_RIGHT_UP:
+                    startX = com.pointX + self.helper.pointRadius;
+                    if (startX >= maxWidth) {
+                        startX = maxWidth2;
+                    } else if (startX <= 0) {
+                        startX = gap;
+                    }
+                    startY = com.pointY + self.helper.pointRadius;
+                    if (startY >= maxHeight) {
+                        startY = maxHeight2;
+                    } else if (startY <= 0) {
+                        startY = gap;
+                    }
+                    endX = com.recX + com.recW;
+                    if (endX >= maxWidth) {
+                        endX = maxWidth2;
+                    } else if (endX <= 0) {
+                        endX = gap;
+                    }
+                    endY = com.recY;
+                    if (endY >= maxHeight) {
+                        endY = maxHeight2;
+                    } else if (endY <= 0) {
+                        endY = gap;
+                    }
+                    self.lines.push({
+                        "startX": startX,
+                        "startY": startY,
+                        "endX": endX,
+                        "endY": endY,
+                        "position": self.directions.DIR_RIGHT_UP
+                    });
+                    break;
+                case self.directions.DIR_RIGHT_DOWN:
+                    startX = com.pointX + self.helper.pointRadius;
+                    if (startX >= maxWidth) {
+                        startX = maxWidth2;
+                    } else if (startX <= 0) {
+                        startX = gap;
+                    }
+                    startY = com.pointY + self.helper.pointRadius;
+                    if (startY >= maxHeight) {
+                        startY = maxHeight2;
+                    } else if (startY <= 0) {
+                        startY = gap;
+                    }
+                    endX = com.recX + com.recW;
+                    if (endX >= maxWidth) {
+                        endX = maxWidth2;
+                    } else if (endX <= 0) {
+                        endX = gap;
+                    }
+                    endY = com.recY + com.recH;
+                    if (endY >= maxHeight) {
+                        endY = maxHeight2;
+                    } else if (endY <= 0) {
+                        endY = gap;
+                    }
+                    self.lines.push({
+                        "startX": startX,
+                        "startY": startY,
+                        "endX": endX,
+                        "endY": endY,
+                        "position": self.directions.DIR_RIGHT_DOWN
+                    });
+                    break;
+            }
+
+            var text = com.createText();
+            return text;
+        };
+
+        // 创建圆点
+        com.createPoint = function () {
+            var rate = self._getEqualScale();
+            var point = $('<li class="round _round" style="width:' + (self.helper.roundWH * rate) + 'px;height:' + (self.helper.roundWH * rate) + 'px;"></li>').css({
+                "left": com.pointX + "px",
+                "top": com.pointY + "px"
+            }).attr("data-serial-num", com.serialNum).attr("data-direction", com.recPosition).html('<span data-serial-num="' + com.serialNum + '" class="mark _mark" style="width:' + (self.helper.markWH * rate) + 'px;height:' + (self.helper.markWH * rate) + 'px;"></span>');
+            return point;
+        };
+
+        // 创建圆圈
+        com.createCircle = function () {
+            var width = com.radius * 2;
+            var height = width;
+            var circle = $('<li class="round_circle _round_white _circle"></li>').css({
+                "left": com.pointX + "px",
+                "top": com.pointY + "px",
+                "width": width + "px",
+                "height": height + "px",
+                "border-radius": "50%"
+            }).attr({
+                'data-serial-num': com.serialNum,
+                'data-direction': com.pointPosition,
+                radius: com.radius
+            }).html('<div data-serial-num="' + com.serialNum + '" class="list hide_dom _list"></div>');
+            return circle;
+        };
+
+        // 创建文本框
+        com.createText = function (offset) {
+            var left,
+                top;
+            if (offset) {
+                left = offset.left;
+                top = offset.top;
+            } else {
+                left = com.recX;
+                top = com.recY;
+            }
+            var text = $('<div class="list hide_dom _list"></div>').css({
+                "left": left - 2 + "px",
+                "top": top - 2 + "px"
+            }).attr("data-serial-num", com.serialNum).attr("data-direction", com.recPosition);
+            return text;
+        };
+
+        // 返回组件
+        com.createComponent = function () {
+            com.getPosition();
+            com.getRecPosition();
+            if (com.markType == self.types.MARK_LINE_TYPE) {
+                return {
+                    point: com.createPoint(),
+                    text: com.setTextPosition()
+                };
+            } else if (com.markType == self.types.MARK_AREA_TYPE) {
+                return {
+                    circle: com.createCircle()
+                };
+            }
+        };
+        return com;
+    },
+    _cancelAreaAnswer: function (num) {
+        var self = this;
+        self.domObj.marks.children("li").each(function (i) {
+            var $that = $(this);
+            var child = $that.children();
+            if (child.data("serialNum") == num) {
+                child.removeClass('wrong').removeClass('correct');
+                if (child.html() != "") {
+                    var showNum = child.children().data("serialNum");
+                    self.domObj.footerMarks.children("li").each(function () {
+                        if ($(this).data("serialNum") == showNum) {
+                            $(this).removeClass('hide_dom');
+                            $(this).removeClass("out");
+                            child.addClass('hide_dom');
+                            child.html("");
+                        }
+                    });
+                }
+            }
+        });
+    },
+    _cancelLineAnswer: function (num) {
+        var self = this;
+        self.domObj.textMarks.find('._list').each(function (i) {
+            if ($(this).data("serialNum") == num && $(this).html() != "") {
+                var $that = $(this);
+                self.domObj.marks.find('li[data-serial-num=' + num + ']').removeClass('correct wrong');
+                var showNum = $that.children().data("serialNum");
+                $that.addClass('hide_dom');
+                $that.removeClass('wrong').removeClass('correct');
+                self.domObj.footerMarks.children("li").each(function () {
+                    if ($(this).data("serialNum") == showNum) {
+                        $(this).removeClass('hide_dom');
+                        $(this).removeClass("out");
+                        $that.addClass('hide_dom');
+                        $that.html("");
+                    }
+                });
+            }
+        });
+    },
+    _createSVGTag: function (tag, attrs) {
+        var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+        for (var k in attrs) {
+            el.setAttribute(k, attrs[k]);
+        }
+        return el;
+    },
+    _getSvgLine: function (num) {
+        var self = this;
+        var svgLine = self._createSVGTag('line', {
+            x1: parseInt(self.lines[num - 1].startX),
+            y1: parseInt(self.lines[num - 1].startY),
+            x2: parseInt(self.lines[num - 1].endX),
+            y2: parseInt(self.lines[num - 1].endY),
+            stroke: '#ff9500',
+            'stroke-width': 3,
+            'data-serial-num': num
+        });
+        return svgLine;
+    },
+    _showLine: function (nums, taps, ele) {
+        var self = this;
+        if (self.helper.isCommit || self.helper.isFinish) {
+            return;
+        }
+        var num = nums;
+        var tap = taps || false;
+        if (num) {
+            if (tap) {
+                if (self.helper.lineShow[num - 1].isShow) {
+                    self.helper.lineShow[num - 1].isShow = false;
+                    self._clearLine(num);
+                    self._cancelLineAnswer(num);
+                    return;
+                }
+            }
+            self.helper.lineShow[num - 1].isShow = true;
+            self.domObj.svg.append(self._getSvgLine(num));
+        } else {
+            self._clearLine();
+            for (var i = 0, iLen = self.helper.lineShow.length; i < iLen; i++) {
+                if (self.helper.lineShow[i].isShow) {
+                    self.domObj.svg.append(self._getSvgLine(i + 1));
+                }
+            }
+        }
+    },
+    _clearLine: function (serialNum) {
+        var self = this;
+        if (self.helper.isCommit || self.helper.isFinish) {
+            return;
+        }
+        if (serialNum) {
+            var $lines = self.domObj.svg.children('line');
+            $lines.each(function (i) {
+                var $me = $(this);
+                if ($me.data('serialNum') == serialNum) {
+                    $me.remove();
+                    return false;
+                }
+            });
+        } else {
+            self.domObj.svg.empty();
+        }
+    },
+    _getClientX: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            //Jquery事件对象,原生用e.changedTouches[0].clientX
+            return e.originalEvent.changedTouches[0].clientX;
+        } else {
+            return e.clientX;
+        }
+    },
+    _getClientY: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            //Jquery事件对象,原生用e.changedTouches[0].clientY
+            return e.originalEvent.changedTouches[0].clientY;
+        } else {
+            return e.clientY;
+        }
+    },
+    _getPageX: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            return e.originalEvent.changedTouches[0].pageX;
+        } else {
+            return e.pageX;
+        }
+    },
+    _getPageY: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            return e.originalEvent.changedTouches[0].pageY;
+        } else {
+            return e.pageY;
+        }
+    },
+    _getOffsetX: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            return self._getClientX(e) - $(e.currentTarget).offset().left;
+        } else {
+            return e.offsetX;
+        }
+    },
+    _getOffsetY: function (e) {
+        var self = this;
+        if (self._isTouchEvent(e.type)) {
+            return self._getClientY(e) - $(e.currentTarget).offset().top;
+        } else {
+            return e.offsetY;
+        }
+    },
+    _isTouchEvent: function (type) {
+        var isTE = false;
+        switch (type) {
+            case 'touchstart':
+                isTE = true;
+                break;
+            case 'touchmove':
+                isTE = true;
+                break;
+            case 'touchend':
+                isTE = true;
+                break;
+            case 'touchcancel':
+                isTE = true;
+                break;
+            default:
+                isTE = false;
+        }
+        return isTE;
+    },
+    _dataReplace: function (data) {
+        var self = this;
+        var dataRep = {};
+
+        var markIndex = data.mark_type.indexOf('&');
+        var isNew = false;
+        if (markIndex > -1) {
+            isNew = true;
+            data.mark_type = data.mark_type.substr(0, markIndex);
+        }
+        self._dataChange(data, isNew);
+        dataRep.mark_type = data.mark_type;
+        dataRep.title = data.title;
+        dataRep.skin = data.skin;
+        dataRep.skin.css_url = data.skin.css_url.replace(/\$\{ref-path\}/ig, icCreatePlayer.ref_path);
+        dataRep.skin.package_url = data.skin.package_url.replace(/\$\{ref-path\}/ig, icCreatePlayer.ref_path);
+        dataRep.timer = data.timer;
+        dataRep.background = self._resizeBackground(data.background.replace(/\$\{ref-path\}/ig, icCreatePlayer.ref_path));
+        dataRep.tags = data.tags;
+        for (var i = 0, len = dataRep.tags.length; i < len; i++) {
+            if (dataRep.tags[i].type == self.types.MARK_IMAGE_TYPE) {
+                dataRep.tags[i].tempvalue = dataRep.tags[i].value.replace(icCreatePlayer.ref_path, '$\{ref-path\}');
+                dataRep.tags[i].value = dataRep.tags[i].value.replace(/\$\{ref-path\}/ig, icCreatePlayer.ref_path);
+            }
+        }
+        return dataRep;
+    },
+    _resizeBackground: function (backgournd) {
+        var self = this;
+
+        var $img = $(backgournd);
+        var rate = self._getEqualScale();
+        var width = $img.width() * rate;
+        var height = $img.height() * rate;
+        var maxWidth = parseFloat($img.attr('max-width')) * rate;
+        var maxHeight = parseFloat($img.attr('max-height')) * rate;
+
+        if (width) {
+            $img.width(width);
+            $img.attr('reset-width', true);
+        }
+        if (height) {
+            $img.height(height);
+            $img.attr('reset-height', true);
+        }
+        $img.attr('max-width', maxWidth);
+        $img.attr('max-height', maxHeight);
+        $img.addClass('img');
+        return $img[0];
+    },
+    _getEqualScale: function () {
+        var self = this;
+        var $view = $(self.view).find('._container');
+        var STABLE_WIDTH = 1242;
+        var STABLE_HEIGHT = 686.6667;
+        var moduleWidth = $view.width();
+        var moduleHeight = $view.height();
+        var widthRate = moduleWidth / STABLE_WIDTH;
+        var heightRate = moduleHeight / STABLE_HEIGHT;
+        var rate;
+        if (widthRate < heightRate) {
+            rate = widthRate;
+        } else {
+            rate = heightRate;
+        }
+        return rate;
+    },
+    _changeFontSize: function (listWidth) {
+        var self = this;
+        if (listWidth < 105) {
+            self.listTextClass = 'small';
+        } else if (listWidth < 125) {
+            self.listTextClass = 'middle';
+        }
+        self.domObj.moveText.addClass(self.listTextClass);
+    },
+    _setResizeData: function () {
+        var self = this;
+        var rate = self._getEqualScale();
+        var svgW = self.STABLE_SVG_WIDTH * rate;
+        var svgH = self.STABLE_SVG_HEIGHT * rate;
+        var listW = self.STABLE_LIST_WIDTH * rate;
+        var listH = self.STABLE_LIST_HEIGHT * rate;
+        var boxH = self.OPTION_BOX_HEIGHT * rate;
+        var imgmarkPaddingTop = self.PADDING_TOP * rate;
+        var imgmarkPaddingBottom = self.PADDING_BOTTOM * rate;
+        self.domObj.markWrapper.width(svgW);
+        self.domObj.markWrapper.height(svgH);
+        self.domObj.svg.attr('width', svgW);
+        self.domObj.svg.attr('height', svgH);
+        self.domObj.view.find('._img_mark').css('padding', imgmarkPaddingTop + 'px 0 ' + imgmarkPaddingBottom + 'px');
+        // self.domObj.markWrapper.css({     'margin-top': (-svgH / 2) + 'px',     'margin-left': (-svgW / 2) + 'px', });
+        self.domObj.footerContainer.height(boxH);
+        var marginLeft = -listW / 2;
+        var marginTop = -listH / 2;
+        self._changeFontSize(listW);
+        // self.domObj.view.prepend('<style>.addon_ImageMark ._round_white ._list {margin-left: ' + marginLeft + 'px !important;
+        // margin-top: ' + marginTop + 'px !important;}</style>'); self.domObj.view.prepend('<style>.addon_ImageMark ._list
+        // {width: ' + listW + 'px !important; height: ' + listH + 'px !important;}</style>');
+        // self.domObj.view.prepend('<style>.imagemarkforquizstatistics ._round_white ._list {margin-left: ' + marginLeft + 'px
+        // !important; margin-top: ' + marginTop + 'px !important;}</style>');
+        // self.domObj.view.prepend('<style>.imagemarkforquizstatistics ._list {width: ' + listW + 'px !important; height: ' +
+        // listH + 'px !important;}</style>');
+        self.helper.svgWidth = self.domObj.svg.width();
+        self.helper.svgHeight = self.domObj.svg.height();
+        return rate;
+    },
+    _isNumber: function (obj) {
+        return Object.prototype.toString.call(obj) === '[object Number]';
+    },
+    _changeX: function (x, nowWidth, oldWidth) {
+        var x1 = x - oldWidth / 2;
+        var x2 = x1 * (nowWidth / oldWidth);
+        return x2 + (nowWidth / 2);
+    },
+    _changeY: function (y, nowHeight, oldHeight) {
+        var y1 = oldHeight / 2 - y;
+        var y2 = y1 * (nowHeight / oldHeight);
+        return (nowHeight / 2) - y2;
+    },
+    _reWriteData: function (data) {
+        var self = this;
+        var minWidth = self.STABLE_LIST_WIDTH;
+        var minHeight = self.STABLE_LIST_HEIGHT;
+        var w1000 = 1000 - self.STABLE_LIST_WIDTH;
+        var h550 = 550 - self.STABLE_LIST_HEIGHT;
+        var $img = $(data.background);
+        var ratex = 1131 / 1000;
+        var ratey = 416 / 550;
+        $img.attr('max-width', 1131);
+        $img.attr('max-height', 416);
+        data.background = $('<div></div>').append($img).html();
+        $.each(data.tags, function (tagK, tag) {
+            var minRadius = Math.sqrt(self.STABLE_LIST_WIDTH * self.STABLE_LIST_WIDTH / 4 + self.STABLE_LIST_HEIGHT * self.STABLE_LIST_HEIGHT / 4);
+            if (tag.radius < minRadius) {
+                tag.radius = minRadius;
+                w1000 = 1000 - minRadius;
+                h550 = 550 - minRadius;
+                minWidth = minHeight = minRadius;
+            }
+            tag.rec_x = self._changeX(tag.rec_x, 1131, 1000);
+            tag.x = self._changeX(tag.x, 1131, 1000);
+            tag.rec_y = self._changeY(tag.rec_y, 416, 550);
+            tag.y = self._changeY(tag.y, 416, 550);
+        });
+        return {
+            ratex: ratex,
+            ratey: ratey
+        };
+    },
+    _checkXY: function (pointPart, max, step) {
+        var min = 2;
+        max = max - step;
+        if (pointPart > max) {
+            pointPart = max;
+        }
+        if (pointPart < min) {
+            pointPart = min;
+        }
+        return pointPart;
+    },
+    _dataChange: function (data, isNew) {
+        var self = this;
+        var rate = self._setResizeData();
+        if (!isNew) {
+            self.oldRate = self._reWriteData(data);
+        }
+        $.each(data.tags, function (tagK, tag) {
+            $.each(tag, function (k, v) {
+                if (self._isNumber(v) && k !== 'serial_num') {
+                    if (k.indexOf('x') !== -1) {
+                        tag[k] = self._changeX(tag[k], self.STABLE_SVG_WIDTH * rate, self.STABLE_SVG_WIDTH);
+                    } else if (k.indexOf('y') !== -1) {
+                        tag[k] = self._changeY(tag[k], self.STABLE_SVG_HEIGHT * rate, self.STABLE_SVG_HEIGHT);
+                    } else {
+                        tag[k] *= rate;
+                    }
+                }
+            });
+            tag.width = self.STABLE_LIST_WIDTH * rate;
+            tag.height = self.STABLE_LIST_HEIGHT * rate;
+            tag.rec_y = self._checkXY(tag.rec_y, self.STABLE_SVG_HEIGHT * rate, tag.height);
+            tag.rec_x = self._checkXY(tag.rec_x, self.STABLE_SVG_WIDTH * rate, tag.width);
+        });
+        return data;
+    },
+    _resetQuestionView: function () {
+        var self = this;
+        //移除圆点的绿色红色标记
+        self.domObj.marks.find('li').removeClass('correct').removeClass('wrong');
+        self.domObj.view.find('._list').removeClass('wrong').removeClass('correct');
+        $.each(self.domObj.footerContainer.find('._list'), function (k, v) {
+            var num = $(v).data('serialNum');
+            if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+                self._cancelAreaAnswer(num);
+            } else {
+                self._clearLine(num);
+                self._cancelLineAnswer(num);
+            }
+        });
+        //底部滚动条恢复到初始状态
+        self.domObj.bottomWrap.scrollLeft(0);
+    },
+    _setButtonRedo: function () {
+        showPPTShellMask();
+        submitbtn.toggleView();
+    },
+    _popConfirm: function () {
+        var self = this;
+        GameMessageBox.showPop(self.domObj.view, {
+            mode: 'wood',
+            type: 'confirm',
+            buttons: [{
+                text: self.helper.i18n['imagemark_confirm'],
+                handle: function () {
+                    self._setButtonRedo();
+                    var isRight = self._isCorrect(true);
+                    var type = 'error';
+                    var text;
+                    if (isRight) {
+                        type = 'right';
+                        text = self.helper.i18n['message_box_correct'];
+                    } else {
+                        text = self.helper.i18n['message_box_wrong'];
+                    }
+                    GameMessageBox.showPop(self.domObj.view, {
+                        mode: 'wood',
+                        type: type,
+                        text: text
+                    });
+                }
+            }, {
+                text: self.helper.i18n['cancel']
+            }]
+        });
+    },
+    _recoverView: function (data, k) {
+        var self = this;
+        var serialNum = data.serialNum;
+        var userResponse = data.userResponse;
+        var width = data.width;
+        var height = data.height;
+        self.$dragingObj = self.domObj.footerMarks.find('li[data-serial-num="' + userResponse + '"]');
+        self._setMove(self._getOptions(self.$dragingObj));
+        self.helper.moveText.width = width;
+        self.helper.moveText.height = height;
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self._moveText(serialNum, self.domObj.move, width, height, true, k);
+        } else if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+            self._moveToArea(serialNum, self.domObj.move, width, height, true, k);
+        } else {
+            self._moveText(serialNum, self.domObj.move, width, height, true, k);
+        }
+        self.$dragingObj.addClass('hide_dom');
+    },
+    _recoverState: function (state) {
+        var self = this;
+        self.isRecover = true;
+        var answers = state.answers;
+        $.each(answers, function (k, v) {
+            if (!!v.serialNum && !!v.userResponse) {
+                self.helper.canSubmit = true;
+                self._recoverView(v, k);
+            }
+        });
+
+    },
+    _getResultData: function () {
+        var self = this;
+        var data = {};
+        data.markType = self.helper.markType;
+        data.answer = self._isCorrect(false);
+        data.tags = [];
+        if (self.helper.markType == self.types.MARK_LINE_TYPE) {
+            self.domObj.textMarks.find('._list').each(function (i) {
+                var tag = {};
+                var $this = $(this);
+                var child = $this.children();
+                var answer = self.components[i].serialNum == child.data("serialNum") ? true : false;
+                tag.serialNum = self.components[i].serialNum;
+                tag.userSerialNum = child.data("serialNum");
+                tag.type = self.components[i].type;
+                if (tag.type == self.types.MARK_IMAGE_TYPE) {
+                    tag.value = self.components[i].tempvalue;
+                } else {
+                    tag.value = self.components[i].value;
+                }
+                tag.answer = answer;
+                data.tags.push(tag);
+            });
+        } else if (self.helper.markType == self.types.MARK_AREA_TYPE) {
+            self.domObj.marks.children("li").each(function (i) {
+                var tag = {};
+                var $this = $(this);
+                var child = $this.children();
+                var userSerialNum = child.children().data("serialNum");
+                var answer = self.components[i].serialNum == userSerialNum ? true : false;
+                tag.serialNum = self.components[i].serialNum;
+                tag.userSerialNum = userSerialNum;
+                tag.type = self.components[i].type;
+                if (tag.type == self.types.MARK_IMAGE_TYPE) {
+                    tag.value = self.components[i].tempvalue;
+                } else {
+                    tag.value = self.components[i].value;
+                }
+                tag.answer = answer;
+                data.tags.push(tag);
+            });
+        }
+
+        return JSON.stringify(data);
+    }
+    //end
+
+});
+
+module.exports = function () {
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/wood/images/tip_point.png' />
+
+
+</resources>
+
+</addon>

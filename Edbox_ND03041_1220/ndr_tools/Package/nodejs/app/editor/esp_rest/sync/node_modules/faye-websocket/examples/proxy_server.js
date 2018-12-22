@@ -1,0 +1,1 @@
+var ProxyServer=require("../spec/proxy_server"),port=process.argv[2],secure="tls"===process.argv[3],proxy=new ProxyServer({debug:!0,tls:secure});proxy.listen(port);

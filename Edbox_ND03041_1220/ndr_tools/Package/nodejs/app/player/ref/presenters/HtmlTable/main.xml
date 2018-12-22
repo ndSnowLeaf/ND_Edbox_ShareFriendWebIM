@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='HtmlTable'>
+    <properties>
+        <property name="table_url" displayName="题目" type="jsonFile" isLocalized="false" />
+    </properties>
+
+    <dependencies>
+        <androidDependency>
+        </androidDependency>
+        <iosDependency>
+        </iosDependency>
+        <jsDependency>
+        </jsDependency>
+    </dependencies>
+
+    <css>
+
+        table[nd-table]{
+        width: 100%;
+        height: 100%;
+        color: black;
+        table-layout: fixed;
+        }
+
+        table[nd-table] td{
+        width: 100px;
+        height: 30px;
+        padding: 8px;
+        cursor: text;
+        line-height:1;
+        }
+
+        table[nd-table] td > div{
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+        padding: 0px;
+        outline: none;
+        word-wrap: break-word;
+        display: inline;
+        font-size: 30px;
+        }
+
+        table[nd-table] td > div > p{
+        margin: 0px;
+        padding: 0px;
+        }
+
+        .nd-table-style1 {
+        border-collapse: collapse;
+        border: solid 1px black;
+        background-color: white;
+        }
+
+        .nd-table-style1 td{
+        border: solid 1px black;
+        }
+
+        .nd-table-style2 {
+        border-collapse:separate;
+        border: none;
+        border-spacing: 2px;
+        }
+
+        .nd-table-style2 tr:nth-child(odd) {
+        background-color:ghostwhite;
+        }
+
+        .nd-table-style2 tr:nth-child(even) {
+        background-color:lightsteelblue;
+        }
+
+        .nd-table-style2 tr:first-child{
+        background-color:steelblue;
+        }
+    </css>
+
+    <view>
+    </view>
+
+    <preview>
+    </preview>
+
+    <presenter>
+
+        function AddonHtmlTable_create() {
+
+            function createElement(name){
+                return $(document.createElement(name));
+            };
+
+            function render(view,data){
+                var table = createElement("table").appendTo(view),
+                rows=data.rows;
+                table.attr("nd-table","");
+                table.addClass(data.cssClass);
+                for (var i = 0, rowSize = rows.length; i &lt; rowSize; i++) {
+                    var row = rows[i],
+                    tr = createElement("tr").appendTo(table);
+                    for (var j = 0, cellSize = row.length; j &lt; cellSize; j++) {
+                        var cell = row[j];
+                        td = createElement("td").appendTo(tr),
+                        div = createElement("div").appendTo(td);
+                        td.css(cell.style);
+                        div.html(cell.content);
+                    }
+                }
+            }
+
+            var presenter = function() {};
+
+            presenter.run = function (view, model) {
+                render(view,model.table_url);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            };
+
+            return presenter;
+
+        }
+
+    </presenter>
+    <resources>
+    </resources>
+</addon>

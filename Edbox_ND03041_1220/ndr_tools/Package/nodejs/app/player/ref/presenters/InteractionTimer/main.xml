@@ -1,0 +1,321 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='InteractionTimer'>
+<properties>
+
+                <property name="timer_type" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="time_limit" displayName="时间限制" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_InteractionTimer .timeNum {
+  position: relative;
+  display: inline-block;
+  width: 104px;
+  height: 98.66667px;
+  line-height: 90px;
+  margin-right: -20px;
+  font-size: 46.66667px;
+  color: #dfdfdf;
+  text-align: center;
+  background: url("resources/bg_time.png") no-repeat center center;
+  background-size: 100% auto;
+  overflow: hidden; }
+
+.addon_InteractionTimer .timeNum:before {
+  position: absolute;
+  left: 16px;
+  top: 52px;
+  content: "";
+  width: 68px;
+  height: 1px;
+  margin-top: -6px;
+  border-top: 1px solid #000; }
+
+.addon_InteractionTimer .time_info {
+  padding: 10px 0 0 50px;
+  position: relative; }
+  .addon_InteractionTimer .time_info.show {
+    display: inline-block; }
+  .addon_InteractionTimer .time_info .icon_timeclock {
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: url("resources/icon_timeclock.png") no-repeat;
+    background-size: 44px auto;
+    position: absolute;
+    top: 0;
+    left: 0; }
+  .addon_InteractionTimer .time_info em {
+    display: block; }
+    .addon_InteractionTimer .time_info em.e1 {
+      font-family: "Helvetica Neue', Helvetica, Arial, sans-serif";
+      font-style: normal;
+      font-size: 28px;
+      color: #ea8501;
+      font-weight: bold;
+      line-height: 28px; }
+    .addon_InteractionTimer .time_info em.e2 {
+      font-family: "Helvetica Neue', Helvetica, Arial, sans-serif";
+      font-style: normal;
+      font-size: 16px;
+      color: #666666;
+      line-height: 18px; }
+
+.editor-timer-module-component-preview {
+  padding: 10px 0 0 50px;
+  position: relative; }
+  .editor-timer-module-component-preview.show {
+    display: inline-block; }
+  .editor-timer-module-component-preview .icon_timeclock {
+    display: block;
+    width: 44px;
+    height: 44px;
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNS1jMDIxIDc5LjE1NTc3MiwgMjAxNC8wMS8xMy0xOTo0NDowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKFdpbmRvd3MpIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkQwNUYwQzA2ODNBQTExRTU4RDc4QzcyRDk2RjFCQjQ4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkQwNUYwQzA3ODNBQTExRTU4RDc4QzcyRDk2RjFCQjQ4Ij4gPHhtcE1NOkRlcml2ZWRGcm9tIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6RDA1RjBDMDQ4M0FBMTFFNThENzhDNzJEOTZGMUJCNDgiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6RDA1RjBDMDU4M0FBMTFFNThENzhDNzJEOTZGMUJCNDgiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz5PSQYBAAAM5UlEQVR42uRb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") no-repeat;
+    background-size: 44px auto;
+    position: absolute;
+    top: 0;
+    left: 0; }
+  .editor-timer-module-component-preview em {
+    font-family: "Helvetica Neue', Helvetica, Arial, sans-serif";
+    font-style: normal;
+    display: block; }
+    .editor-timer-module-component-preview em.e1 {
+      font-size: 28px;
+      color: #ea8501;
+      font-weight: bold;
+      line-height: 28px; }
+    .editor-timer-module-component-preview em.e2 {
+      font-size: 16px;
+      color: #666666;
+      line-height: 18px; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class='timerContainer' style="display:none">
+    <span class='timeNum' id='min'>
+    </span>
+    <span class='timeNum time_s' id='sec'>
+    </span>
+</div>
+<span class="time_info" style="display:none">
+  <ins class="icon_timeclock"></ins>
+  <em id="timer-text" class="e1">00:00</em>
+</span>
+<!-- 新框架时间组件 -->
+<div class="time_default " style="display:none">
+    <b class="time_text" id="_answertime">答题时间：</b>
+    <span class="time_m"><em class="time_default_minutes">00</em></span>
+    <b class="time_text" id="_minute">分</b>
+    <i>:</i>
+    <span class="time_s"><em class="time_default_seconds">00</em></span>
+    <b class="time_text" id="_second">秒</b>
+</div>
+]]>
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+var TIMER_VIEW_TYPE_CODE = {
+    PAGING_VIEW: 'type_paging',
+    TEXT_VIEW: 'type_text',
+    NEW_TIMER_VIEW: 'new_timer'
+};
+(function () {
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.$view = null;
+            this.timerSetting = {
+                min: 0,
+                sec: 0
+            };
+            this.type = TIMER_VIEW_TYPE_CODE.PAGING_VIEW;
+            this.languageKeySet = {};
+
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {level: Logger.DEBUG});
+        },
+        /**
+         * Presenter对外暴露的方法
+         */
+        _service_: {
+            /**
+             *设置初始时间,以秒为单位
+             * @param second
+             */
+            initTimeValue: function (second) {
+                this.parent.logger.debug("InteractionTimer initTimeValue " + second);
+                if (second >= 0) {
+                    var min = parseInt(second / 60);
+                    var sec = second % 60;
+                    if (min >= 0 && sec >= 0) {
+                        this.parent._setTimeValue(min, sec);
+                    }
+                }
+            },
+            /**
+             *设置当前时间,以秒为单位
+             * @param second
+             */
+            setTimeValue: function (second) {
+                if (second >= 0) {
+                    var min = parseInt(second / 60);
+                    var sec = second % 60;
+                    if (min >= 0 && sec >= 0) {
+                        this.parent._setTimeValue(min, sec);
+                    }
+                }
+            },
+            constructor: function (parent) {
+                this.parent = parent;
+            },
+            setVisible: function (enable) {
+                this.parent.logger.debug("InteractionTimer setVisible " + enable);
+                if (enable) {
+                    this.parent.$view.show();
+                } else {
+                    this.parent.$view.hide();
+                }
+            },
+            setLocationProperties: function (properties) {
+                this.parent.languageKeySet = properties;
+            }
+        },
+        metaInfo: {
+            name: "InteractionTimer",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.UTILITY_COMPONENT
+        },
+        getService: function () {
+            this._service_.constructor(this);
+            return this._service_;
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            this.$view = $(view);
+            this.hasInit = true;
+            this.model = model;
+            this._initTimerI18nView();
+            if (model.view_type) {
+                this.type = model.view_type;
+            } else {
+                this.type = TIMER_VIEW_TYPE_CODE.PAGING_VIEW;
+            }
+            this.logger.debug("InteractionTimer view_type " + this.type);
+            switch (this.type) {
+                case TIMER_VIEW_TYPE_CODE.TEXT_VIEW:
+                {
+                    this.$view.find(".time_info").css("display", "");
+                    break;
+                }
+                case TIMER_VIEW_TYPE_CODE.PAGING_VIEW:
+                {
+                    this.$view.find(".timerContainer").css("display", "");
+                    break;
+                }
+                case TIMER_VIEW_TYPE_CODE.NEW_TIMER_VIEW:
+                {
+                    this.$view.find(".time_default").css("display", "");
+                    break;
+                }
+                default:
+                {
+                    this.$view.find(".timerContainer").css("display", "");
+                    break;
+                }
+            }
+        },
+        pageShow: function () {
+
+        },
+        pageLeave: function () {
+
+        },
+        destroy: function () {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _setTimeValue: function (min, sec) {
+            this.timerSetting.min = min;
+            this.timerSetting.min = min;
+            switch (this.type) {
+                case TIMER_VIEW_TYPE_CODE.TEXT_VIEW:
+                {
+                    this.$view.find('em.e1#timer-text').text(this._format(min) + ":" + this._format(sec));
+                    break;
+                }
+                case TIMER_VIEW_TYPE_CODE.PAGING_VIEW:
+                {
+                    this.$view.find('span.timeNum#min').text(this._format(min));
+                    this.$view.find('span.timeNum#sec').text(this._format(sec));
+                    break;
+                }
+                case TIMER_VIEW_TYPE_CODE.NEW_TIMER_VIEW:
+                {
+                    this.$view.find('.time_default_minutes').text(this._format(min));
+                    this.$view.find('.time_default_seconds').text(this._format(sec));
+                    break;
+                }
+                default:
+                {
+                    this.$view.find('span.timeNum#min').text(this._format(min));
+                    this.$view.find('span.timeNum#sec').text(this._format(sec));
+                    break;
+                }
+            }
+
+        },
+        _format: function (num) {
+            if (num < 10) {
+                return '0' + num;
+            }
+            return num;
+        },
+        _getLanguageText: function (key) {
+            if(this.languageKeySet[key] == undefined)
+                return "ERROR";
+            return this.languageKeySet[key];
+        },
+        _initTimerI18nView: function(){
+            this.$view.find('#_answertime').text(this._getLanguageText('answertime'));
+            this.$view.find('#_minute').text(this._getLanguageText('minute'));
+            this.$view.find('#_second').text(this._getLanguageText('second'));
+        }
+    }, "InteractionTimer");
+
+    window.AddonInteractionTimer_create = function () {
+        return new Presenter();
+    }
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/bg_time.png' />
+<file src='./resources/icon_timeclock.png' />
+
+
+</resources>
+
+</addon>

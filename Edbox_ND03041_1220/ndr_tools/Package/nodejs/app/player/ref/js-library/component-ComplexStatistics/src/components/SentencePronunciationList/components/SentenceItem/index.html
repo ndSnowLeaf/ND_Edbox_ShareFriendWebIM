@@ -1,0 +1,50 @@
+<div>
+    <div class="single-level__head clearfix">
+        <!-- 等级与人数图标 -->
+        <div class="single-level__group-other">
+            <a class="single-level__tab" :class="[setGradeColorClass(item.grade), activeGradeBtn(index)]" v-for="(item,index) in sentenceData.grades"
+                @click="clickGradeTab(index,$event)">
+                <div class="single-level__tab-cnt">
+                    <span class="tab-t">{{item.grade==='NO_ANSWER'? langNoAnswer: item.grade}}</span>
+                    <span class="tab-t margin-reduce">-</span>
+                    <span class="tab-t num">{{item.users.length}}</span>
+                    <i class="tab-i"></i>
+                </div>
+            </a>
+        </div>
+        <!-- /等级与人数图标 -->
+        <!--句子内容-->
+        <div class="single-level__sentence clearfix">
+            <div class="sentence-num">
+                <span class="sentence-t">{{sentenceData.index +1}}.</span>
+            </div>
+            <p class="sentence-word">
+                <span class="sentence-t">{{sentenceData.content}}</span>
+            </p>
+        </div>
+        <!--句子内容-->
+    </div>
+    <!-- 一行可以摆14个学生，当为1行时，用类row-1，2行row-2，3行row-3，4行row-4，5行row-5，6行row-6 -->
+    <!--颜色：bg-green,bg-blue,bg-orange,bg-red,bg-gray-->
+    <!--关闭state-close-->
+    <div class="single-level__container--stu" :class="getUserContainerClass">
+        <div class="single-level__content--stu">
+            <i class="content-stu-arrow"></i>
+            <!--没有学生-->
+            <div class="single-level__wrap-nostu" v-if="getCurrentUsers.length==0">
+                <div class="ndui__components--nostu">
+                    <i class="nostu-i"></i>
+                    <span class="nostu-t" ref="lang_chapters.list.empty"></span>
+                </div>
+            </div>
+            <!--没有学生-->
+            <!-- 学生列表组件 -->
+            <base-list :data="getCurrentUsers" class="uicom_user_list english-list" v-else>
+                <template scope="props">
+                    <User :user-data="props.data"></User>
+                </template>
+            </base-list>
+            <!-- /学生列表组件 -->
+        </div>
+    </div>
+</div>

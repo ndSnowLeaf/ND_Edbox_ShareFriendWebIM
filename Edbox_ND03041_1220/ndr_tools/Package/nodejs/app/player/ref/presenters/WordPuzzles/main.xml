@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WordPuzzles'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" />
+                <property name="timer_type" displayName="计时类型" type="string" />
+                <property name="time_limit" displayName="限制时常" type="string" />
+                <property name="question_url" type="jsonFile" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_WordPuzzles .cellMiddle:after,.addon_WordPuzzles .manage_left ul,.wordpuzzles_getAnswer ul{display:inline-block;vertical-align:middle}.addon_WordPuzzles .com_m_sidecon{padding-top:0!important}.addon_WordPuzzles .com_lay_header .pptshell_btn{text-align:center}.addon_WordPuzzles .cellMiddle{white-space:nowrap}.addon_WordPuzzles .cellMiddle:after{content:'';width:0;height:100%}.addon_WordPuzzles .manage_right{float:right!important;margin:0 20px!important}.addon_WordPuzzles .manage_right .com_m_sidehead{text-align:center;z-index:5}.addon_WordPuzzles .manage_right ul{padding:15px 35px 15px 10px}.addon_WordPuzzles .manage_right ul li{position:relative;padding:8px 10px;line-height:20px;margin:15px 15px 15px 0;font-size:18px;color:#333}.addon_WordPuzzles .manage_right ul li em{word-break:break-all;word-wrap:break-word}.addon_WordPuzzles .manage_right ul li.correct{background-color:#e0e0e0;color:#8e8e8e}.addon_WordPuzzles .manage_right ul li.correct:after{content:'';position:absolute;top:0;right:-40px;width:27px;height:30px;background:url(resources/images/correct.png) center center no-repeat;background-size:contain}.addon_WordPuzzles .manage_right ul li.current_y{background:#f2efc3}.addon_WordPuzzles .manage_right ul li.current_x{background-color:#f1e1c5}.addon_WordPuzzles .manage_right_tit{color:#fff6e4;line-height:42px;font-size:20px;text-align:center}.addon_WordPuzzles .manage_left{text-align:center}.addon_WordPuzzles .manage_left ul li{position:relative;float:left;margin:-1px 0 0 -1px;background-color:#fff8e6;border:1px solid #9d866a;box-shadow:inset 0 0 20px 0 rgba(233,199,159,.15);color:#443c32;text-align:center;font-size:33px}.addon_WordPuzzles .manage_left ul li input{width:100%;height:100%;text-align:center;font-size:33px;border:none;margin:-6px 0 0}.addon_WordPuzzles .manage_left ul li input.on{background-color:#f2c16e;box-shadow:inset 0 0 20px 0 rgba(75,47,0,.05)}.addon_WordPuzzles .manage_left ul li input.ed{background-color:#f1e0c4}.addon_WordPuzzles .manage_left ul li input.current{background-color:#fbcd5e;box-shadow:inset 0 0 20px 0 rgba(75,47,0,.05)}.addon_WordPuzzles .manage_left ul li .horizontalIndex,.addon_WordPuzzles .manage_left ul li .verticalIndex{position:absolute;width:13.33px;height:13.33px;padding-left:2px;color:#fff;font-size:9.33px;line-height:13.33px;text-align:left;background-size:cover}.addon_WordPuzzles .manage_left ul li .horizontalIndex{top:5px;left:5px}.addon_WordPuzzles .manage_left ul li .verticalIndex{top:5px;right:5px;text-decoration:underline;background-size:cover;text-align:center;line-height:10.67px;padding:0}.addon_WordPuzzles .manage_left ul.smallBox.less{width:442px}.addon_WordPuzzles .manage_left ul.smallBox.many{width:491px}.addon_WordPuzzles .manage_left ul.smallBox li{width:50px;height:50px;line-height:50px}.addon_WordPuzzles .manage_left ul.normalBox.less{width:428px}.addon_WordPuzzles .manage_left ul.normalBox.many{width:489px}.addon_WordPuzzles .manage_left ul.normalBox li{width:62px;height:62px;line-height:62px}.addon_WordPuzzles .manage_left ul.largeBox.less{width:406px}.addon_WordPuzzles .manage_left ul.largeBox.many{width:487px}.addon_WordPuzzles .manage_left ul.largeBox li{width:82px;height:82px;line-height:82px}.addon_WordPuzzles .manage_result{float:left;margin:20px 0 0 35%;color:#5e390c;font-size:24px}.addon_WordPuzzles .manage_result span{color:#fd9000;font-size:40px}.addon_WordPuzzles .loading{position:absolute;width:100%;height:100%;left:0;top:0;z-index:99;background-color:rgba(0,0,0,.7)}.addon_WordPuzzles .loading_content{background-color:rgba(0,0,0,.7);border-radius:10px;width:300px;height:100px;margin:350px auto;color:#fff;line-height:100px;text-align:center;font-size:24px}.wordpuzzles_getAnswer{padding:10px}.wordpuzzles_getAnswer ul{padding:0;margin:0;background-color:#fff8e6;list-style:none}.wordpuzzles_getAnswer ul li{position:relative;float:left;margin:-1px 0 0 -1px;background-color:#fff8e6;border:1px solid #9d866a;box-shadow:inset 0 0 20px 0 rgba(233,199,159,.15);color:#443c32;text-align:center;font-size:20px;width:32px;height:32px;line-height:32px}.wordpuzzles_getAnswer ul li.ed{background-color:#f1e0c4}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="exam_wood" style="width: 100%;height: 100%"><div class="com_layout"><div class="com_lay_header"><div class="com_u_timebox"></div><div class="com_lay_toptool"></div></div><div class="com_lay_contain"><div class="com_lay_mboard"><div class="com_lay_boardtit"><h2 class="com_u_boardtit" id="addon_title" data-bind="html:title"></h2></div><div class="com_lay_board"><div class="com_m_sideboard_1 com_grid_2 manage_right"><div class="com_m_sidehead"><span class="manage_right_tit" data-bind="text:i18nModel.vertical_hint"></span></div><div class="com_m_sidecon"><ul class="less" data-bind="foreach:hints_v"><li data-bind="click:click,css:{'current_y':$root.focus.x_v()==x && $root.focus.y_v()==y && $root.showAnswer(),'correct':isVCorrect()  && $root.showAnswer()}"><span data-bind="text:$index()+1+'.'"></span> <em data-bind="html:hints.vertical"></em></li></ul></div></div><div class="com_m_sideboard_1 com_grid_2 manage_right"><div class="com_m_sidehead"><span class="manage_right_tit" data-bind="text:i18nModel.horizontal_hint"></span></div><div class="com_m_sidecon"><ul class="less" data-bind="foreach:hints_h"><li data-bind="click:click,css:{'current_x':$root.focus.x_h()==x && $root.focus.y_h()==y && !$root.showAnswer(),'correct':isHCorrect() && $root.showAnswer()}"><span data-bind="text:$index()+1+'.'"></span> <em data-bind="html:hints.horizontal"></em></li></ul></div></div><div class="com_m_mainboard_1 manage_left cellMiddle"><ul data-bind="foreach:words,css:{'normalBox':width==7 || width==8,'many':width==6 || width==8 || width==10,'smallBox':width==9 || width==10,'largeBox':width==5 || width==6,'less':width==5 || width==7 || width==9}"><li data-bind="ifnot:hide"><span class="horizontalIndex" data-bind="text:direction.horizontal==1?tip.horizontal:''"></span> <input class="on" data-bind="css:{'current':isSelected,'ed':correctWord==word() && $root.showAnswer(),'active':tip[$root.currentTip.direction()]==$root.currentTip.index()},enable:$root.editable,value:word,hasFocus:isSelected,click:click,valueUpdate:'keyup'"> <span class="verticalIndex" data-bind="text:direction.vertical==1?tip.vertical:''"></span></li></ul></div></div></div></div></div><div class="loading" data-bind="visible:showMessage"><div class="loading_content" data-bind="html:message"></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+    window.AddonWordPuzzles_create = function () {
+        return new BasicLauncher({
+            'defaultConfig': 'standard',
+            'presenterParserMapping': {
+                "objectiveInteractionLayout": function (config, model) {
+                    config.value.questionType = 'WordPuzzles';
+                    config.value.specialTemplate = false;
+                },
+                "answerFlowController": function (config, model) {
+                    config.value.showResultOnSubmit = false;
+                },
+                "timerController": function (config, model) {},
+                "interactionSubmitButton": function (config, model) {
+                    $.extend(config.value, {
+                        "can_modify": true,
+                        "linkQuestionType": "wordpuzzles",
+                        "linkQuestionId": model['question_id']
+                    });
+                },
+                'classroomStatusController': function (config, model) {
+                    $.extend(config.value, {questionId: model.question_id});
+                }
+            },
+            getComponent: function (model) {
+                return {
+                    presenter: 'WordPuzzlesRemake',
+                    renderTo: this.mainContainer,
+                    autowired: ['question_id', 'question_url']
+                };
+            },
+            getController: function (model) {
+                return [
+                    {
+                        presenter: 'ClassroomStatusController',
+                        ref: 'classroomStatusController'
+                    }
+                ];
+            },
+            'dataParse': function (model, pageModels) {
+                this.model = model;
+                return model;
+            }
+        });
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/correct.png' />
+<file src='./resources/locations/bo/lang.json' />
+<file src='./resources/locations/bo/lang.po' />
+<file src='./resources/locations/bo_CN/lang.json' />
+<file src='./resources/locations/bo_CN/lang.po' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh/lang.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/lang.po' />
+
+
+</resources>
+
+</addon>

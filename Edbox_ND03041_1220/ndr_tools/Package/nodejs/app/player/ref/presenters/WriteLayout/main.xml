@@ -1,0 +1,457 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WriteLayout'>
+<properties>
+
+                <property name="setting_file" displayName="配置文件路径" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="common_basequestion_css" version="1.0.0" />
+    <javaScript  name="write_css" version="1.0.6" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_WriteLayout .exam_skin_wood .com_layout .com_wrapper_board .com_layout_container{width:72em;height:38.125em}.addon_WriteLayout .exam_skin_wood .layout_handWrite .handWrite_txt_wrap{height:38.125em}.addon_WriteLayout .exam_skin_wood .com_layout .com_layout_mask{position:fixed;top:7.5em;left:0;width:100%;height:100%;z-index:1999}.addon_WriteLayout .layout_footbar{z-index:301;position:absolute;right:3.8em;top:40.3em;visibility:hidden}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul{margin:0;padding:0;position:absolute;float:none;top:0;display:inline-block;white-space:nowrap}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul.left{left:-72.4em}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul.right{right:0}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul .footbar-progress .com_btn_pic{background:url(resources/images/icon_progress.png);background-size:100% auto}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul .footbar-endexam .com_btn_pic{background:url(resources/images/icon_endexam.png);background-size:100% auto}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul li{display:inline-block;width:4.58333em;height:4.58333em;text-align:center;color:#0c0701;background:url(resources/images/btn_br_board.png) center top no-repeat;background-size:100% auto;text-decoration:none;position:relative;cursor:pointer}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul li .com_btn_pic{display:inline-block;width:2.58333em;height:2.58333em;margin:0 auto;background-size:100% auto}.addon_WriteLayout .layout_footbar ul.statistics_footbar_ul li .com_btn_text{display:block;color:#0c0701;font-size:.78667em;line-height:1.25em;font-family:'Microsoft YaHei',Helvetica,Arial,sans-serif}.addon_WriteLayout.isPreview .baseMod-com-header-box,.addon_WriteLayout.isPreview .com_board_sdt_box .addon_SendQuestionComponent{display:none}]]>
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+var self;
+var layoutTemplateConfig;
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: 'WriteLayout',
+        type: PresenterType.PRESENTER_LAYOUT
+    },
+    // Presenter的初始化方法
+    $init: function () {
+        this._super();
+        this.i18nModel = {};
+        this.areaSelector = {
+            'timer': '.com_lay_timer',
+            'submit': '.com_lay_submit',
+            'panel': '.com_lay_panel',
+            'write': '.com_lay_write',
+            'BottomRightPanel': '.com_lay_send',
+            'FootBarPanel': '.layout_footbar'
+        };
+        this.position = {};
+        this.initLayout = false;
+        this.$initLayoutDeffer = $.Deferred();
+        // 模板配置
+        this.templateSettings = {};
+        layoutTemplateConfig = {
+            Common: {
+                student_pad: {
+                    template_url: 'resources/template/<%questionType%>/student_pad.html'
+                },
+                teacher_pc: {
+                    template_url: 'resources/template/<%questionType%>/teacher_pc.html'
+                },
+                teacher_web: {
+                    template_url: 'resources/template/<%questionType%>/teacher_web.html'
+                },
+                teacher_pptshell: {
+                    template_url: 'resources/template/<%questionType%>/teacher_pptshell.html'
+                },
+                teacher_statics: {
+                    template_url: 'resources/template/<%questionType%>/teacher_statics.html'
+                }
+            }
+        };
+        // 日志记录
+        this.logger.appendHandler(function (message, context) {
+            console.log(message);
+            ClassroomUtils.log(JSON.stringify(message));
+        }, {
+                level: Logger.DEBUG
+            });
+    },
+    // Presenter对外暴露的方法
+    _service_: {
+        constructor: function (parent) {
+            this.parent = parent;
+        },
+        // 初始化容器
+        initContainer: function () {
+            var deffer = $.Deferred();
+            var self = this.parent;
+            var url = self.basePath + '/' + self.templateSettings.template_url;
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    self.logger.debug('layout loaded', url);
+                    self.$view.append(data);
+                    self._initLayoutTemplate();
+                    deffer.resolve();
+                }
+            });
+            return deffer;
+        },
+        // 获取容器，控制器使用
+        getContainer: function (key) {
+            if (this.parent && this.parent.container) {
+                return this.parent.container[key];
+            }
+            return null;
+        },
+        // 获取容器位置
+        getContainerPosition: function () {
+            return this.parent._getContainerPosition();
+        },
+        // 获取容器位置,promise方式
+        getContainerPositionPromise: function () {
+            var defer = $.Deferred();
+            if (this.parent.initLayout) {
+                return this.parent._getContainerPosition();
+            } else {
+                var me = this;
+                this.parent.$initLayoutDeffer.done(function () {
+                    var position = me.parent._getContainerPosition()
+                    defer.resolve(position);
+                });
+                return defer.promise();
+            }
+        },
+        // 修改作文题容器样式
+        changeLayoutBodyStyle: function (actionType, styleName) {
+            var container = self.find('.baseMod-com-layout-body');
+            if (container.length <= 0) {
+                return;
+            }
+            if (actionType === 'add') {
+                container.addClass(styleName);
+            } else {
+                container.removeClass(styleName);
+            }
+        },
+        adjustLayoutForStartAnswer: function () {
+            self.find('.com_header_time p').show();
+            self.find('.baseMod-com-header-box p').show();
+        },
+        adjustLayoutForEndAnswer: function () {
+            self.find('.com_header_time p').hide();
+            self.find('.baseMod-com-header-box p').hide();
+        },
+        setLocationProperties: function (location) {
+            this.parent.i18nModel = location;
+        },
+        showMask: function (isShow) {
+            var mask = self.find('.com_layout_mask');
+            if (mask != null) {
+                if (isShow) {
+                    mask.show();
+                } else {
+                    mask.hide();
+                }
+            }
+        }
+    },
+    getService: function () {
+        this._service_.constructor(this);
+        return this._service_;
+    },
+    /**
+     * 以下开始为icPlayer的生命周期方法
+     */
+    run: function (view, model) {
+        this.model = model;
+        self = this.$view = $(view);
+        var templateConfig = layoutTemplateConfig['Common'];
+        // 开始处理
+        if (this.currentRuntime === icCreatePlayer.RUNTIME.WEB) {
+            this.templateSettings = templateConfig['teacher_web'];
+        } else if (this.currentRuntime === icCreatePlayer.RUNTIME.TEACHER_PC) {
+            this.templateSettings = templateConfig['teacher_pc'];
+        } else if (this.currentRuntime === icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+            this.templateSettings = templateConfig['student_pad'];
+        }
+        // 如果是PPTShell
+        if (this.isPPTShell) {
+            this.templateSettings = templateConfig['teacher_pptshell'];
+        }
+        // 如果是统计平台
+        var sys = this._getQueryString('sys');
+        if (sys != null && sys.toLowerCase() === 'icrstatisticsplatform') {
+            this.templateSettings = templateConfig['teacher_statics'];
+        }
+        // 替换<%questionType%>
+        this.templateSettings.template_url = this.templateSettings.template_url.replace('<%questionType%>', model.questionType);
+        this._bindEvent();
+    },
+    pageShow: function () {
+        this._initI18N();
+    },
+    pageLeave: function () {
+        this._unbindEvent();
+    },
+    destroy: function () { },
+    /**
+     * 以下开始为Presenter的私有方法
+     */
+    _bindEvent: function () {
+        this.$addEventListener('QuizProgressEvent', PresenterEventType.IC_PLAYER_EVENT, this._QuizProgressEvent);
+        this.$addEventListener('showHandWrite', PresenterEventType.IC_PLAYER_EVENT, this._showHandWrite);
+        this.$addEventListener('enter_comment_result_interface', PresenterEventType.IC_PLAYER_EVENT, this._hideTimerAndButton);
+    },
+    _unbindEvent: function () {
+        this.$removeEventListener();
+    },
+    _initLayoutTemplate: function () {
+        var writerContainer = this.$view.find(this.areaSelector['write']);
+        var panelContainer = this.$view.find(this.areaSelector['panel']);
+
+        this.container = {
+            'timer': this.$view.find(this.areaSelector['timer']),
+            'submit': this.$view.find(this.areaSelector['submit']),
+            'panel': panelContainer,
+            'write': writerContainer,
+            'BottomRightPanel': this.$view.find(this.areaSelector['BottomRightPanel']),
+            'FootBarPanel': this.$view.find(this.areaSelector['FootBarPanel'])
+        };
+        this._resetPresentersStyle();
+        writerContainer.data('fontsize', this.fontSize);
+        panelContainer.data('fontsize', this.fontSize);
+        this.$view.find('.com_header_time p').hide();
+        this.$view.find('.baseMod-com-header-box p').hide();
+
+        // 加入预览自适应
+        var isPreview = this._getQueryString('isPreview');
+        if (isPreview === 'true') { // 如果是pptshell预览状态
+            this.$view.addClass('isPreview');
+        } else {
+            this.$view.removeClass('isPreview');
+        }
+        if (this.model.noSendQuestion !== undefined && this.model.noSendQuestion === true) {
+            this.$view.find('.com_lay_send').hide();
+        }
+        // 加载完毕事件
+        if (this.model.questionType === 'write') {
+            this.initLayout = true;
+            this.$initLayoutDeffer.resolve();
+        } else {
+            this.$dispatchEvent('WriteLayoutLoaded', PresenterEventType.IC_PLAYER_EVENT, {
+                view: self,
+                questionType: this.model.questionType
+            });
+        }
+    },
+    _resetPresentersStyle: function () {
+        function winSize() {
+            return {
+                width: self.width(),
+                height: self.height()
+            }
+        }
+
+        if (this.model.questionType === 'studentcomment') {
+            this.$view.css({
+                'position': 'fixed',
+                'left': '0px',
+                'top': '0px'
+            });
+        }
+
+        var t = this.$view[0],
+            e = 1920,
+            n = 1080,
+            i = 24,
+            o = function () {
+                var o = winSize(),
+                    d = 0,
+                    h = o.width,
+                    c = o.height;
+                o.width / o.height <= e / n ? (d = o.width / e * i, h = o.width < e ? o.width : e, c = n * h / e, o.height > c) : (d = o.height / n * i, c = o.height < n ? o.height : n, h = e * c / n);
+                return d;
+            };
+        var d = o();
+        this.$view.css('font-size', d + 'px');
+        this.fontSize = d;
+    },
+    _QuizProgressEvent: function (eventData) {
+        if (eventData && eventData['type'] === 'changeStudentNum') {
+            var val = eventData['value'];
+            var dom = self.find('.upload');
+            if (dom !== undefined) {
+                dom.html(this.i18nModel['submitted'] + '：<span class="num">' + val['finishedNum'] + '</span>/' + val['count']);
+            }
+        }
+    },
+    _showHandWrite: function (eventData) {
+        this.$view.find(this.areaSelector['write']).show();
+    },
+    _hideTimerAndButton: function (eventData) {
+        var v = this.$view.find('.nqti-base-peerreview');
+        if (v.length > 0) {
+            v.addClass('nqti-base-peerreview-finish');
+        }
+    },
+    _initI18N: function () {
+        var v = this.$view;
+        v.find('.upload').html(this.i18nModel['submitted'] + '：<span class="num">0</span>/0');
+    },
+    _getQueryString: function (name) {
+        var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    },
+    _getContainerPosition() {
+        var container = self.find('.js-container');
+        var position = {};
+        if (container.length > 0) {
+            position = {
+                'top': parseInt(container.offset().top),
+                'left': parseInt(container.offset().left),
+                'width': parseInt(container.outerWidth()),
+                'height': parseInt(container.outerHeight())
+            }
+        }
+        return position;
+    }
+}, 'WriteLayout');
+
+module.exports = Presenter;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Presenter = __webpack_require__(0);
+
+window.AddonWriteLayout_create = function () {
+    return new Presenter();
+};
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/btn_br_board.png' />
+<file src='./resources/images/icon_endexam.png' />
+<file src='./resources/images/icon_progress.png' />
+<file src='./resources/template/composition/student_pad.html' />
+<file src='./resources/template/composition/teacher_pc.html' />
+<file src='./resources/template/composition/teacher_pptshell.html' />
+<file src='./resources/template/composition/teacher_web.html' />
+<file src='./resources/template/makeword/student_pad.html' />
+<file src='./resources/template/makeword/teacher_pc.html' />
+<file src='./resources/template/makeword/teacher_pptshell.html' />
+<file src='./resources/template/makeword/teacher_statics.html' />
+<file src='./resources/template/makeword/teacher_web.html' />
+<file src='./resources/template/studentcomment/student_pad.html' />
+<file src='./resources/template/write/student_pad.html' />
+<file src='./resources/template/write/teacher_pc.html' />
+<file src='./resources/template/write/teacher_pptshell.html' />
+<file src='./resources/template/write/teacher_statics.html' />
+<file src='./resources/template/write/teacher_web.html' />
+<file src='./resources/wood/images/bg_field.png' />
+<file src='./resources/wood/images/bg_field_pad.png' />
+<file src='./resources/wood/images/bg_lattice_pad.png' />
+<file src='./resources/wood/images/bg_rice_pad.png' />
+<file src='./resources/wood/images/bg_underline.png' />
+<file src='./resources/wood/images/icon_add.png' />
+<file src='./resources/wood/images/icon_delete.png' />
+<file src='./resources/wood/images/icon_next.png' />
+<file src='./resources/wood/images/icon_prev.png' />
+
+
+</resources>
+
+</addon>

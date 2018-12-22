@@ -1,0 +1,1487 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties><property name="question_id" displayName="题目ID" type="string" isLocalized="undefined"/><property name="question_url" displayName="undefined" type="jsonFile" isLocalized="false"/></properties><dependencies><jsDependency><javaScript name="out_frame" version="1.0.8"/><javaScript name="snap_svg" version="1.0.0"/><javaScript name="cutting" version="1.0.0"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .cutgraph_box{background:#bfd3e2;width:100%;height:100%;padding:5.83333em 7.5em 8.33333em;position:relative}.exam_skin_wood .cutgraph_main{padding-right:16.25em;width:100%;height:100%}.exam_skin_wood .cutgraph_main_content{position:relative;width:100%;height:100%;background:url(resources/wood/images/cutgraph_main_bg.png) repeat #b8cbd9;border-radius:.41667em}.exam_skin_wood .cutgraph_main_content.no_bg{background:#b8cbd9}.exam_skin_wood .cutgraph_aside{height:100%;float:right;width:6.66667em}.exam_skin_wood .cutgraph_list_type_parent{position:relative;background:#b0c9dc;border-radius:.41667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1{width:100%;height:7.70833em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:active .shape_parent{border:none}.exam_skin_wood .cutgraph_list_type_parent .item_level_1.current{background:#95b7d1}.exam_skin_wood .cutgraph_list_type_parent .item_level_1.current .shape_parent{border:none}.exam_skin_wood .cutgraph_list_type_parent .item_level_1.current:first-child{border-top-left-radius:.41667em;border-top-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1.current:last-child{border-bottom-left-radius:.41667em;border-bottom-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1.current .cutgraph_list_type_child{display:block}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:first-child .cutgraph_list_type_child .arrow_right{top:4.375em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:nth-child(2) .cutgraph_list_type_child .arrow_right{top:12.75em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:nth-child(3) .cutgraph_list_type_child .arrow_right{top:18.75em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:nth-child(4) .cutgraph_list_type_child ul{position:absolute;left:0;top:auto;bottom:0;-webkit-transform:translate(0);-ms-transform:translate(0);-moz-transform:translate(0)}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:nth-child(4) .cutgraph_list_type_child .arrow_right{top:auto;bottom:4.20833em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:first-child .shape_parent{border-top:none}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:first-child .shape_parent:active{border-top-left-radius:.41667em;border-top-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:last-child .shape_parent{border-bottom:none}.exam_skin_wood .cutgraph_list_type_parent .item_level_1:last-child .shape_parent:active{border-bottom-left-radius:.41667em;border-bottom-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent{border-top:1px solid #bcd1e1;border-bottom:1px solid #95b7d1;display:block;width:100%;height:100%;color:#1e1e1e;position:relative;overflow:hidden}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent:active{background:#95b7d1}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .item{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);width:100%}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .item i{margin:0 auto .41667em;font-size:.91667em}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .name{text-align:center;font-size:.91667em;line-height:1.25em;white-space:nowrap}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .pxsbx{width:4.20833em;height:2.83333em;display:block;background:url(resources/wood/images/shape_pxsbx.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .sjx{width:3.375em;height:3.16667em;display:block;background:url(resources/wood/images/shape_sjx.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .tx{width:3.75em;height:3.16667em;display:block;background:url(resources/wood/images/shape_tx.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .bgztx{width:2.83333em;height:3.04167em;display:block;background:url(resources/wood/images/shape_bgztx.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child{display:none;position:absolute;right:7.08333em;width:7.29167em;height:100%;overflow:hidden;top:0;padding-right:.625em}.exam_skin_wood .cutgraph_list_type_child .arrow_right{position:absolute;right:0;width:0;height:0;border-top:.83333em solid transparent;border-bottom:.83333em solid transparent;border-left:.83333em solid #b0c9dc}.exam_skin_wood .cutgraph_list_type_child ul{background:#b0c9dc;position:absolute;left:0;top:50%;-webkit-transform:translateY(-50%);-ms-transform:translateY(-50%);-moz-transform:translateY(-50%);padding-right:.83333em;width:6.66667em;max-height:100%;border-radius:.41667em}.exam_skin_wood .cutgraph_list_type_child ul li{width:6.66667em;height:5.125em}.exam_skin_wood .cutgraph_list_type_child ul li:first-child a:active{border-top-left-radius:.41667em;border-top-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_child ul li:last-child a:active{border-bottom-left-radius:.41667em;border-bottom-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_child ul li.active a{background:#95b7d1}.exam_skin_wood .cutgraph_list_type_child ul li.active:first-child a{border-top-left-radius:.41667em;border-top-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_child ul li.active:last-child a{border-bottom-left-radius:.41667em;border-bottom-right-radius:.41667em}.exam_skin_wood .cutgraph_list_type_child ul li a{display:block;position:relative;height:100%}.exam_skin_wood .cutgraph_list_type_child ul li a:active{background:#95b7d1}.exam_skin_wood .cutgraph_list_type_child ul li i{display:block;margin:0 auto .41667em}.exam_skin_wood .cutgraph_list_type_child ul li .name{font-size:.70833em;color:#333;text-align:center;white-space:nowrap}.exam_skin_wood .cutgraph_list_type_child ul li .item{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%)}.exam_skin_wood .cutgraph_list_type_child ul li .pxsbx_1{width:4.125em;height:2.54167em;background:url(resources/wood/images/pxsbx/1.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .pxsbx_2{width:4.125em;height:2.54167em;background:url(resources/wood/images/pxsbx/2.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .pxsbx_3{width:4.54167em;height:3.58333em;background:url(resources/wood/images/pxsbx/3.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .pxsbx_4{width:3.625em;height:2.54167em;background:url(resources/wood/images/pxsbx/4.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .pxsbx_5{width:2.91667em;height:2.875em;background:url(resources/wood/images/pxsbx/5.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_1{width:4.20833em;height:2.20833em;background:url(resources/wood/images/sjx/1.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_2{width:4.33333em;height:1.83333em;background:url(resources/wood/images/sjx/2.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_3{width:3.20833em;height:2.54167em;background:url(resources/wood/images/sjx/3.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_4{width:4.04167em;height:3.54167em;background:url(resources/wood/images/sjx/4.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_5{width:2.29167em;height:3.125em;background:url(resources/wood/images/sjx/5.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .sjx_6{width:2.29167em;height:3.125em;background:url(resources/wood/images/sjx/6.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .tx_1{width:3.70833em;height:2.54167em;background:url(resources/wood/images/tx/1.png) no-repeat 50%;background-size:100%}.exam_skin_wood .cutgraph_list_type_child ul li .tx_2{width:4em;height:2.58333em;background:url(resources/wood/images/tx/2.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .tx_3{width:3.25em;height:2.54167em;background:url(resources/wood/images/tx/3.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .bgztx_1{width:2.75em;height:3.08333em;background:url(resources/wood/images/bgztx/1.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_list_type_child ul li .bgztx_2{width:2.75em;height:3.08333em;background:url(resources/wood/images/bgztx/2.png) no-repeat 50%;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools{position:absolute;bottom:0;left:0;right:0;z-index:105;height:4.79167em;padding:0 4em;background:rgba(255,255,255,.25)}.exam_skin_wood .cutgraph_handle_tools ul{height:100%;text-align:center;padding-top:.5em}.exam_skin_wood .cutgraph_handle_tools ul li{display:inline-block;overflow:hidden;margin:0 2.08333em;max-width:8.75em;height:100%}.exam_skin_wood .cutgraph_handle_tools ul li a{display:block}.exam_skin_wood .cutgraph_handle_tools ul li a:active p{color:#10afb5}.exam_skin_wood .cutgraph_handle_tools ul li a p{color:#292525;font-size:1.16667em;margin-top:.20833em}.exam_skin_wood .cutgraph_handle_tools ul li a i{display:inline-block;width:2.375em;height:2.16667em}.exam_skin_wood .cutgraph_handle_tools ul li a.disabled{cursor:default}.exam_skin_wood .cutgraph_handle_tools ul li a.disabled p{color:#a9b6c0}.exam_skin_wood .cutgraph_handle_tools ul li .tool_cancel i{background:url(resources/wood/images/tool_cexiao_normal.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_cancel:active i{background:url(resources/wood/images/tool_cexiao_active.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_cancel.disabled i,.exam_skin_wood .cutgraph_handle_tools ul li .tool_cancel.disabled:active i{background:url(resources/wood/images/tool_cexiao_dis.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_recover i{background:url(resources/wood/images/tool_huifu_normal.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_recover:active i{background:url(resources/wood/images/tool_huifu_active.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_recover.disabled i,.exam_skin_wood .cutgraph_handle_tools ul li .tool_recover.disabled:active i{background:url(resources/wood/images/tool_huifu_dis.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_del i{background:url(resources/wood/images/tool_del_normal.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_del:active i{background:url(resources/wood/images/tool_del_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_del.disabled i,.exam_skin_wood .cutgraph_handle_tools ul li .tool_del.disabled:active i{background:url(resources/wood/images/tool_del_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_empty i{background:url(resources/wood/images/tool_empty_normal.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_empty:active i{background:url(resources/wood/images/tool_empty_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_empty.disabled i{background:url(resources/wood/images/tool_empty_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_empty.disabled:active i{background:url(resources/wood/images/tool_empty_dis.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_restore i{background:url(resources/wood/images/tool_restore_normal.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_restore:active i{background:url(resources/wood/images/tool_restore_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_restore.disabled i{background:url(resources/wood/images/tool_restore_dis.png) no-repeat;background-size:100% 100%}.exam_skin_wood .cutgraph_handle_tools ul li .tool_restore.disabled:active i{background:url(resources/wood/images/tool_restore_dis.png) no-repeat;background-size:100%}.exam_skin_wood .cutgraph_handle_tools ul li.handle_bg_btn{max-width:14.16667em;vertical-align:top;line-height:3.54167em;cursor:pointer;font-size:1.16667em}.exam_skin_wood .cutgraph_handle_tools ul li.handle_bg_btn b{width:1.41667em;height:1.41667em;display:inline-block;vertical-align:middle;border:1px solid #10afb5;border-radius:100%;margin-right:.41667em;background:#fff;box-shadow:inset 0 1px 3px rgba(0,0,0,.5);position:relative}.exam_skin_wood .cutgraph_handle_tools ul li.handle_bg_btn.checked b:after{position:absolute;left:50%;top:50%;margin-left:-.375em;margin-top:-.375em;content:"";width:.75em;height:.75em;overflow:hidden;border-radius:100%;background:#10afb5}.exam_skin_wood .cutgraph_box_pad .cutgraph_main{padding-right:0}.exam_skin_wood .cutgraph_dialog_wrapper{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);z-index:99999999}.exam_skin_wood .cutgraph_dialog_wrapper .com_dialog_inner{display:table-cell;vertical-align:middle;text-align:center}.exam_skin_wood .cutgraph_dialog_wrapper .com_dialog_box{display:inline-block;background-color:rgba(47,47,47,.8);border-radius:.41667em;padding:1.66667em;color:#fff}.exam_skin_wood .cutgraph_dialog_wrapper .com_dialog_box .com_dialog_foot{text-align:center}.exam_skin_wood .cutgraph_dialog_wrapper .com_dialog_box .com_dialog_foot .dia_btn{font-size:1em;display:inline-block;margin:.54167em 1.08333em 0;padding:0 1em;height:2em;line-height:2em;min-width:4.5em;background:#11b0b6;cursor:pointer;color:#fff}.exam_skin_wood .cutgraph_dialog_wrapper .com_dialog_box .com_dialog_foot .dia_btn:active{background:#62999b}.exam_skin_wood .cutgraph_dialog_confirm .tip_txt{line-height:2;margin-bottom:1em}.exam_skin_wood .notice_tip_box{position:absolute;z-index:9995;left:0;top:0;right:0;bottom:0;text-align:center}.exam_skin_wood .notice_tip_box .notice_tip_con{padding:1.04167em 1.875em;position:relative;display:inline-block;vertical-align:middle;max-width:36.25em;color:#fff;background:rgba(0,0,0,.7);border-radius:2.08333em}.exam_skin_wood .notice_tip_box .notice_tip_con .notice_tip_text{font-size:1.25em;line-height:1.5}.exam_skin_wood .notice_tip_box:after{display:inline-block;vertical-align:middle;content:"";width:0;height:100%}.exam_skin_wood .displaynone{display:none}.typefaces_long .exam_skin_wood .cutgraph_box{padding:5.83333em 6.66667em 8.33333em}.typefaces_long .exam_skin_wood .cutgraph_aside{width:7.5em}.typefaces_long .exam_skin_wood .cutgraph_main{padding-right:17.08333em}.typefaces_long .exam_skin_wood .cutgraph_box_pad .cutgraph_main{padding-right:0}.typefaces_long .exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .name{width:100%;line-height:1.26em;font-size:.83333em;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.typefaces_long .exam_skin_wood .cutgraph_list_type_child{right:7.91667em}.typefaces_long .exam_skin_wood .cutgraph_list_type_child ul li .item{width:100%}.typefaces_long .exam_skin_wood .cutgraph_list_type_child ul li .name{width:100%;line-height:1em;font-size:.66667em;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.typefaces_long .exam_skin_wood .cutgraph_handle_tools ul li{margin:0 .83333em}.typefaces_long .exam_skin_wood .cutgraph_handle_tools ul li a p{margin-top:.4em;font-size:1.08333em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.typefaces_ru_RU .exam_skin_wood .cutgraph_box{padding:5.83333em 6.66667em 8.33333em}.typefaces_ru_RU .exam_skin_wood .cutgraph_aside{width:7.5em}.typefaces_ru_RU .exam_skin_wood .cutgraph_main{padding-right:17.08333em}.typefaces_ru_RU .exam_skin_wood .cutgraph_box_pad .cutgraph_main{padding-right:0}.typefaces_ru_RU .exam_skin_wood .cutgraph_list_type_parent .item_level_1 .shape_parent .name{width:100%;line-height:1.26em;font-size:.83333em;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.typefaces_ru_RU .exam_skin_wood .cutgraph_list_type_child{right:7.91667em}.typefaces_ru_RU .exam_skin_wood .cutgraph_list_type_child ul li .item{width:100%}.typefaces_ru_RU .exam_skin_wood .cutgraph_list_type_child ul li .name{width:100%;line-height:1em;font-size:.66667em;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.typefaces_ru_RU .exam_skin_wood .cutgraph_handle_tools ul li{margin:0 .83333em}.typefaces_ru_RU .exam_skin_wood .cutgraph_handle_tools ul li a p{margin-top:.4em;font-size:1.08333em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}]]></css><view><![CDATA[<div class="exam_skin_wood" style="height: 100%"><div class="cutgraph_box"><div class="cutgraph_aside scrollbar_style_gray"><ul class="cutgraph_list_type_parent"><li data-item-index="0" class="item_level_1"><a href="javascript:void(0);" data-shape="parallelogram" class="shape_parent"><div class="item"><i class="pxsbx"></i><p class="name">平行四边形</p></div></a><div class="cutgraph_list_type_child"><b class="arrow_right"></b><ul><li data-mode="parallelogram_A"><a href="javascript:void(0);"><div class="item"><i class="pxsbx_1"></i><p class="name">平行四边形A</p></div></a></li><li data-mode="parallelogram_B"><a href="javascript:void(0);"><div class="item"><i class="pxsbx_2"></i><p class="name">平行四边形B</p></div></a></li><li data-mode="parallelogram_C"><a href="javascript:void(0);"><div class="item"><i class="pxsbx_3"></i><p class="name">平行四边形C</p></div></a></li><li data-mode="parallelogram_D"><a href="javascript:void(0);"><div class="item"><i class="pxsbx_4"></i><p class="name">矩形</p></div></a></li><li data-mode="parallelogram_E"><a href="javascript:void(0);"><div class="item"><i class="pxsbx_5"></i><p class="name">正方形</p></div></a></li></ul></div></li><li data-item-index="1" class="item_level_1"><a href="javascript:void(0);" data-shape="triangle" class="shape_parent"><div class="item"><i class="sjx"></i><p class="name">三角形</p></div></a><div class="cutgraph_list_type_child"><b class="arrow_right"></b><ul><li data-mode="triangle_A"><a href="javascript:void(0);"><div class="item"><i class="sjx_1"></i><p class="name">等腰直角三角形</p></div></a></li><li data-mode="triangle_B"><a href="javascript:void(0);"><div class="item"><i class="sjx_2"></i><p class="name">等腰三角形</p></div></a></li><li data-mode="triangle_C"><a href="javascript:void(0);"><div class="item"><i class="sjx_3"></i><p class="name">等边三角形</p></div></a></li><li data-mode="triangle_D"><a href="javascript:void(0);"><div class="item"><i class="sjx_4"></i><p class="name">钝角三角形</p></div></a></li><li data-mode="triangle_E"><a href="javascript:void(0);"><div class="item"><i class="sjx_5"></i><p class="name">直角三角形</p></div></a></li><li data-mode="triangle_F"><a href="javascript:void(0);"><div class="item"><i class="sjx_6"></i><p class="name">锐角三角形</p></div></a></li></ul></div></li><li data-item-index="2" class="item_level_1"><a href="javascript:void(0);" data-shape="echelon" class="shape_parent"><div class="item"><i class="tx"></i><p class="name">梯形</p></div></a><div class="cutgraph_list_type_child"><b class="arrow_right"></b><ul><li data-mode="echelon_A"><a href="javascript:void(0);"><div class="item"><i class="tx_1"></i><p class="name">等腰梯形</p></div></a></li><li data-mode="echelon_B"><a href="javascript:void(0);"><div class="item"><i class="tx_2"></i><p class="name">普通梯形</p></div></a></li><li data-mode="echelon_C"><a href="javascript:void(0);"><div class="item"><i class="tx_3"></i><p class="name">直角梯形</p></div></a></li></ul></div></li><li data-item-index="3" class="item_level_1"><a href="javascript:void(0);" data-shape="irregular" class="shape_parent"><div class="item"><i class="bgztx"></i><p class="name">不规则图形</p></div></a><div class="cutgraph_list_type_child"><b class="arrow_right"></b><ul><li data-mode="irregular_A"><a href="javascript:void(0);"><div class="item"><i class="bgztx_1"></i><p class="name">不规则图形A</p></div></a></li><li data-mode="irregular_B"><a href="javascript:void(0);"><div class="item"><i class="bgztx_2"></i><p class="name">不规则图形B</p></div></a></li></ul></div></li></ul></div><div class="cutgraph_main"><div class="cutgraph_main_content" data-select="svg_content"></div></div><div class="cutgraph_handle_tools"><ul data-select="button_tool"><li data-select="button_tool_revocation" data-operation="1"><a href="javascript:void(0);" class="tool_cancel disabled"><i></i><p>撤销</p></a></li><li data-select="button_tool_restore" data-operation="2"><a href="javascript:void(0);" class="tool_recover disabled"><i></i><p>恢复</p></a></li><li data-select="button_tool_delete" data-operation="3"><a href="javascript:void(0);" class="tool_del disabled"><i></i><p>删除</p></a></li><li class="teacher_need_hide" data-select="button_tool_reset" data-operation="4"><a href="javascript:;" class="tool_restore"><i></i><p>重置</p></a></li><li class="student_need_hide" data-select="button_tool_clean" data-operation="5"><a href="javascript:void(0);" class="tool_empty disabled"><i></i><p>清空</p></a></li><li class="handle_bg_btn checked" data-select="button_tool_check" data-operation="6"><b></b><span>方格纸</span></li></ul></div></div><div class="com_dialog_wrapper" id="graphics_dialog" style="display:none"><div class="com_dialog_content"><div class="txt">最多能同时打开5个图形进行切割!</div></div></div></div>]]></view><presenter><![CDATA['use strict';
+
+function AddonGraphicsCutting_create() {
+
+    var CONSTANT = {
+        INSERT_BUTTON: 'insert_button',
+        SAVE_BUTTON: 'save_button',
+        CHECKED_BUTTON: 'checked_button'
+    };
+    var helper = {
+        i18n: {}
+    };
+    /**
+     * icCreatePlayer.RUNTIME.TEACHER_MOBILE(教师端)STUDENT_MOBILE(学生端)PROJECTION_MOBILE(投影端)WEB(WEB端)TEACHER_PC(PC端)
+     */
+    var currentRuntime = player.getPlayerServices().getRuntime();
+    var isStudentMobile = currentRuntime === icCreatePlayer.RUNTIME.STUDENT_MOBILE;
+    var isTeacherPc = currentRuntime === icCreatePlayer.RUNTIME.TEACHER_PC;
+    var isWeb = currentRuntime === icCreatePlayer.RUNTIME.WEB;
+    var isApp = currentRuntime !== icCreatePlayer.RUNTIME.WEB;
+    var callbacks = {};
+    var viewModel = {
+        isImageDown: false,
+        centerPoint: {
+            "x": 0,
+            "y": 0
+        },
+        restoreCache: [], //恢复缓存
+        revocationCache: [], //撤销缓存
+        rotate: 0,
+        timerId: 0,
+        worker: null,
+        basePath: '',
+        currentPolygon: null,
+        saveCurrentPolygon: null,
+        ghostPolygon: null,
+        cuttingPolygons: [],
+        cachePolygons: {},
+        workerPolygons: [],
+        currentLine: {
+            line: null,
+            startPoint: {},
+            endPoint: {}
+        },
+        svg: null,
+        isMouseDown: false,
+        isMouseMoveing: false,
+        initData: {
+            shapeType: ''
+        },
+        checkedBackgroundButton: 'true',
+        imagePosition: 27,
+        imageWidth: 55,
+        imageX: 56,
+        circleRadius: 5,
+        polygonStrokeWidth: 2,
+        lineStrokeWidth: 3
+    };
+    var dispatch = window.addEventListener ? function (el, type) {
+        try {
+            var evt = document.createEvent('Event');
+            evt.initEvent(type, true, true);
+            el.dispatchEvent(evt);
+        } catch (e) {
+            alert(e);
+        }
+    } : function (el, type) {
+        try {
+            el.fireEvent('on' + type);
+        } catch (e) {
+            alert(e);
+        }
+    };
+
+    var graphicsVeiw;
+
+    var presenter = {
+        metaInfo: {
+            name: "GraphicsCutting",
+            type: PresenterType.PRESENTER_COMPONENT
+        },
+        run: function run(view, model) {
+            viewModel.view = view;
+            viewModel.model = model;
+            graphicsVeiw = new GraphicsVeiw(view);
+            graphicsVeiw.init();
+            //获取worker地址并启动线程
+            _getWorkerUrl(_initWorker);
+            this.__interface = {
+                resizeScreen: function resizeScreen(data) {
+                    //data {ratio:4/3||3/4}
+                    console.log('全屏', data);
+                    var ratio = eval(data.ratio);
+                    graphicsVeiw.resizeScreen(ratio);
+                }
+            };
+            function _initWorker(url) {
+                viewModel.worker = new Worker(url);
+                viewModel.worker.onmessage = _onmessage;
+            }
+
+            function _getWorkerUrl(fun) {
+                if (viewModel.isPPTshell || isApp) {
+                    fun && fun.call({}, viewModel.basePath + 'resources/worker.js');
+                    return;
+                }
+                $.ajax({
+                    type: "GET",
+                    url: viewModel.basePath + 'resources/worker.js',
+                    success: function success(resText) {
+                        fun && fun.call({}, window.URL.createObjectURL(new Blob([resText], {
+                            type: 'text/plain'
+                        })));
+                    },
+                    fail: function fail(err) {
+                        console.log('请求worker文件失败：', err);
+                    }
+                });
+            }
+        },
+
+        pageShow: function pageShow() {
+            initI18N();
+        },
+        pageLeave: function pageLeave() {},
+        destroy: function destroy() {
+            graphicsVeiw.unBindEvent();
+            viewModel.worker.terminate();
+            viewModel.worker = null;
+            viewModel = null;
+        },
+        getState: function getState() {},
+        setState: function setState() {},
+        setPlayerController: function setPlayerController(controller) {
+            viewModel.controller = controller;
+            viewModel.eventBus = controller.getEventBus();
+        },
+        onEventReceived: function onEventReceived(eventName, eventData) {
+            var id = viewModel.model.question_id;
+            switch (eventName) {
+                case id + 'NoticeReceived':
+                    noticeReceived(eventData);
+                    break;
+            }
+        },
+        setBasePath: function setBasePath(path) {
+            viewModel.basePath = path;
+        },
+        setUrlParams: function setUrlParams(urlParams) {
+            if (urlParams) {
+                viewModel.isPPTshell = urlParams.sys === 'pptshell';
+                viewModel.question_base = urlParams.question_base || '';
+            }
+        },
+        _service_: {
+            constructor: function constructor(parent) {
+                this.parent = parent;
+            },
+            setLocationProperties: function setLocationProperties(properties) {
+                helper.i18n = properties;
+            },
+            getQuestionInfo: function getQuestionInfo() {
+                return {
+                    id: viewModel.model.ID,
+                    type_code: "GraphicsCutting",
+                    type_name: helper.i18n['graphics_cutting'],
+                    url: "",
+                    item: "GraphicsCutting",
+                    statistics_type: 'no_need',
+                    dispatchOnly: true,
+                    notExistStatistics: true,
+                    noNeedQuizProgress: true
+                };
+            },
+            getExtendData: function getExtendData() {
+                var polygons = getAllPolygon(),
+                    sendPolygons = [];
+                for (var l = polygons.length - 1, i = l, count = 0; i > -1; i--) {
+                    var dataType = polygons[i].attr('data-type');
+                    if (count === 5) {
+                        break;
+                    }
+                    //other是被切割过的，被切割过的图形不推送给学生端
+                    if (dataType !== 'other') {
+                        var polygon = JSON.parse(JSON.stringify(polygons[i]));
+                        if (viewModel.currentPolygon && viewModel.currentPolygon.id === polygons[i].id) {
+                            polygon.selected = true;
+                        }
+                        sendPolygons.push(polygon);
+                        count++;
+                    }
+                }
+                sendPolygons.reverse();
+
+                //选择
+                var menus = [];
+                var $items = graphicsVeiw.$view.find('.cutgraph_list_type_parent>li');
+                for (var i = 0, iLen = $items.size(); i < iLen; i++) {
+                    var $item = $($items[i]);
+                    var $children = $item.find('ul li');
+                    var childActiveMode = null;
+                    for (var j = 0, jLen = $children.size(); j < jLen; j++) {
+                        if ($($children[j]).hasClass('active')) {
+                            childActiveMode = $($children[j]).data('mode');
+                            break;
+                        }
+                    }
+                    menus.push({
+                        index: i,
+                        active: $item.hasClass('current'),
+                        childActiveMode: childActiveMode
+                    });
+                }
+
+                return {
+                    eventData: {
+                        isApp: true,
+                        source: "GraphicsCutting",
+                        type: "STUDENT",
+                        value: {
+                            menus: menus,
+                            currentPolygon: viewModel.currentPolygon,
+                            moduleID: viewModel.model.question_id,
+                            polygons: sendPolygons,
+                            checkedBackgroundButton: graphicsVeiw.checkedBackgroundButton,
+                            svgClient: {
+                                width: graphicsVeiw.svgWidth,
+                                height: graphicsVeiw.svgHeight
+                            }
+                        }
+                    }
+                };
+            }
+        },
+        getService: function getService() {
+            this._service_.constructor(this);
+            return this._service_;
+        }
+    };
+
+    function GraphicsVeiw(view) {
+        this.offsetLeft = 0;
+        this.offsetTop = 0;
+        this.relativeWidth = 100;
+        this.svgWidth = 0;
+        this.svgHeight = 0;
+        this.$view = $(view);
+    }
+
+    GraphicsVeiw.prototype = {
+        /**
+         * 初始化
+         */
+        init: function init() {
+            var $view = this.$view;
+            var uid = 'a' + uuid();
+            $view.find('[data-select="svg_content"]').html('<svg id="' + uid + '" style="width: 100%;height: 100%;" ></svg>');
+            var $svg = $view.find('#' + uid);
+            this.$svg = $svg;
+            this.svg = Snap('#' + uid);
+            this.image = this.svg.paper.image(viewModel.basePath + 'resources/images/rotate-icon.png', -1000, -1000, viewModel.imageWidth, viewModel.imageWidth);
+            if (isStudentMobile) {
+                this.$view.find('.student_need_hide').hide();
+            } else {
+                this.$view.find('.teacher_need_hide').hide();
+            }
+            this.offsetLeft = $svg.offset().left;
+            this.offsetTop = $svg.offset().top;
+            this.svgWidth = $svg.width();
+            this.svgHeight = $svg.height();
+            this.relativeWidth = this.svgWidth / 12;
+            this.ratio = 1;
+            this.checkedBackgroundButton = 'true';
+            if (isStudentMobile) {
+                this.initStudentVeiw();
+            } else {}
+
+            this.bindEvent();
+        },
+        initStudentVeiw: function initStudentVeiw() {
+            var model = viewModel.model;
+            //如果存在__ExtendModel且不为空则是addTool启动起来的
+            if (viewModel.model.__ExtendModel && !$.isEmptyObject(model.__ExtendModel)) {
+                this.noticeReceived(model.__ExtendModel.eventData);
+            }
+        },
+        bindEvent: function bindEvent() {
+
+            var vm = viewModel;
+            var $view = this.$view;
+            var $svg = this.$svg;
+
+            //大图图形类型切换
+            $view.find('ul.cutgraph_list_type_parent > li.item_level_1').on('click', changePolygonsType);
+            //小图图形类型切换
+            $view.find('.cutgraph_list_type_child ul li').on('click', $.proxy(changePolygonsTypeDetail, this));
+            //底部按钮的事件
+            $view.find('ul[data-select="button_tool"]>li').on('click', buttonClick);
+
+            $svg.on('touchstart mousedown', _start);
+            $svg.on('touchend mouseup', _end);
+            $svg.on('mouseleave', _out);
+
+            _registImageEvents(this.image);
+
+            var tempId = vm.model.question_id || '';
+
+            /**
+             * 右侧形状点击事件
+             * @param evt
+             * @private
+             */
+            function changePolygonsType(evt) {
+                var target = $(evt.currentTarget);
+                target.siblings().removeClass('current');
+                target.addClass('current');
+            }
+
+            /**
+             * 具体形状点击事件
+             * @param evt
+             * @private
+             */
+            function changePolygonsTypeDetail(evt) {
+                //学生端最多只能添加五个完整的图形进行切割
+                if (isStudentMobile) {
+                    var ploygons = getAllPolygon();
+                    ploygons = Array.prototype.filter.call(ploygons, function (el, index) {
+                        var dataType = el.attr('data-type');
+                        return dataType !== 'other';
+                    });
+                    if (ploygons.length >= 5) {
+                        var that = this;
+                        that.$view.find('#graphics_dialog').show();
+                        setTimeout(function () {
+                            that.$view.find('#graphics_dialog').hide();
+                        }, 2000);
+                        return false;
+                    }
+                }
+                _cacheCurrentStage();
+                console.log(ploygons);
+                var target = $(evt.currentTarget);
+                target.siblings().removeClass('active');
+                target.addClass('active');
+                var shapeType = target.data('mode');
+                _drawExistPolygon(shapeType);
+                //graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').removeClass('disabled');
+                graphicsVeiw.$view.find('[data-select="button_tool_clean"]>a').removeClass('disabled');
+            }
+
+            /**
+             * 底部按钮点击事件
+             * @private
+             */
+            function buttonClick(evt) {
+
+                var target = $(evt.currentTarget),
+                    op = target.data('operation');
+
+                if (target.hasClass('disable')) return;
+
+                switch (op) {
+                    case 1:
+                        _revocation(); //撤销
+                        break;
+                    case 2:
+                        _restore(); //还原
+                        break;
+                    case 3:
+                        _delete(); //删除单个
+                        break;
+                    case 4:
+                        _reset(); //重置
+                        break;
+                    case 5:
+                        _empty(); //清空所有
+                        break;
+                    case 6:
+                        //方格设置
+                        graphicsVeiw.changeBackground();
+                        break;
+
+                }
+
+                var polygons = graphicsVeiw.svg.selectAll("polygon");
+                if (polygons.length > 0) {
+                    // graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').removeClass('disabled');
+                    graphicsVeiw.$view.find('[data-select="button_tool_clean"]>a').removeClass('disabled');
+                } else {
+                    // graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').addClass('disabled');
+                    graphicsVeiw.$view.find('[data-select="button_tool_clean"]>a').addClass('disabled');
+                }
+            }
+        },
+        unBindEvent: function unBindEvent() {
+            var $view = this.$view;
+            var $svg = this.$svg;
+
+            $view.find('ul.cutgraph_list_type_parent > li.item_level_1').off('click');
+            $view.find('.cutgraph_list_type_child ul li').off('click');
+            $view.find('ul[data-select="button_tool"]>li').off('click');
+
+            $svg.off();
+
+            unbindNativeListener();
+        },
+        //工具全屏
+        resizeScreen: function resizeScreen(ratio) {
+            var vm = viewModel;
+            vm.saveCurrentPolygon = vm.currentPolygon;
+            this.ratio = ratio;
+            this.svgWidth = this.svgWidth * ratio;
+            this.svgHeight = this.svgHeight * ratio;
+            this.relativeWidth = this.relativeWidth * ratio;
+            var polygons = getAllPolygon(),
+                savePolygons = [];
+            for (var l = polygons.length - 1, i = l, count = 0; i > -1; i--) {
+                var _polygon = JSON.parse(JSON.stringify(polygons[i]));
+                if (viewModel.currentPolygon && viewModel.currentPolygon.id === polygons[i].id) {
+                    _polygon.selected = true;
+                }
+                savePolygons.push(_polygon);
+                count++;
+            }
+            savePolygons.reverse();
+            polygons = savePolygons;
+            console.log('polygons', polygons);
+            for (var i = 0, l = polygons.length; i < l; i++) {
+                var polygon = polygons[i];
+                var points = polygon.attr.points.split(',');
+
+                for (var j = 0, jl = points.length; j < jl; j++) {
+                    points[j] = parseFloat(points[j]) * ratio;
+                }
+                polygon.attr.points = points.join(',');
+            }
+            viewModel.syncPolygons = polygons;
+            _reset(true);
+            //vm.currentPolygon = vm.saveCurrentPolygon;
+            viewModel.imagePosition = viewModel.imagePosition * ratio;
+            viewModel.imageWidth = viewModel.imageWidth * ratio;
+            viewModel.imageX = viewModel.imageX * ratio;
+            viewModel.circleRadius = viewModel.circleRadius * ratio;
+            viewModel.polygonStrokeWidth = viewModel.polygonStrokeWidth * ratio;
+            viewModel.lineStrokeWidth = viewModel.lineStrokeWidth * ratio;
+            graphicsVeiw.image.attr({
+                "width": viewModel.imageWidth,
+                "height": viewModel.imageWidth
+            });
+            //点
+            var circle = graphicsVeiw.svg.selectAll("circle");
+            for (var i = 0; i < circle.length; i++) {
+                circle[i].attr({
+                    r: viewModel.circleRadius
+                });
+            }
+            //折线
+            var polygon = graphicsVeiw.svg.selectAll("polygon");
+            for (var i = 0; i < polygon.length; i++) {
+                polygon[i].attr({
+                    strokeWidth: viewModel.polygonStrokeWidth
+                });
+            }
+            if (vm.currentPolygon) {
+                var points = getPointsByPolygon(vm.currentPolygon),
+                    p = {
+                    x: 0,
+                    y: 0
+                };
+                p.x = points[0].x;
+                p.y = points[0].y;
+                //debugger
+                for (var i = 1; i < points.length; i++) {
+                    if (p.x < points[i].x) p.x = points[i].x;
+                    if (p.y > points[i].y) p.y = points[i].y;
+                }
+                p.x = p.x > graphicsVeiw.svgWidth - viewModel.imageX ? graphicsVeiw.svgWidth - viewModel.imageX : p.x - viewModel.imageX;
+                p.y = p.y < viewModel.imageWidth ? 0 : p.y - viewModel.imageWidth;
+                graphicsVeiw.image.attr({
+                    "x": p.x,
+                    "y": p.y
+                });
+            }
+        },
+        /**
+         * 学生端收到教师端发送的工具的回调事件
+         * @param evt
+         */
+        noticeReceived: function noticeReceived(evt) {
+            //菜单栏恢复
+            var $items = graphicsVeiw.$view.find('.cutgraph_list_type_parent>li');
+            var menus = evt.value.menus;
+            for (var i = 0, iLen = menus.length; i < iLen; i++) {
+                var $item = $($items[i]);
+                menus[i].active && $item.addClass('current');
+                if (menus[i].childActiveMode) {
+                    $item.find('ul li[data-mode="' + menus[i].childActiveMode + '"]').addClass('active');
+                }
+            }
+
+            var svgClient = evt.value.svgClient;
+            var polygons = evt.value.polygons;
+
+            //收题端窗口与发送端窗口不一致，则需要做一层数据转化重新定位图形位置
+            if (svgClient.width !== graphicsVeiw.svgWidth || svgClient.height !== graphicsVeiw.svgHeight) {
+                var wRate = graphicsVeiw.svgWidth * 1.0 / svgClient.width;
+                var hRate = graphicsVeiw.svgHeight * 1.0 / svgClient.height;
+                //按宽高比率的最小值等比缩放
+                if (wRate > hRate) {
+                    wRate = hRate;
+                } else {
+                    hRate = wRate;
+                }
+                for (var i = 0, l = polygons.length; i < l; i++) {
+                    var polygon = polygons[i];
+                    var points = polygon.attr.points.split(',');
+
+                    for (var j = 0, jl = points.length; j < jl; j++) {
+                        if (j % 2 === 0) {
+                            points[j] = parseFloat(points[j]) * wRate;
+                        } else {
+                            points[j] = parseFloat(points[j]) * hRate;
+                        }
+                    }
+                    polygon.attr.points = points.join(',');
+                }
+            } else {}
+            viewModel.syncPolygons = polygons;
+            _reset(true);
+            graphicsVeiw.checkedBackgroundButton = evt.value.checkedBackgroundButton;
+            graphicsVeiw.setBackgroundByValue(graphicsVeiw.checkedBackgroundButton);
+            if (polygons.length > 0) {
+                graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').removeClass('disabled');
+                graphicsVeiw.$view.find('[data-select="button_tool_clean"]>a').removeClass('disabled');
+            } else {
+                graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').addClass('disabled');
+                graphicsVeiw.$view.find('[data-select="button_tool_clean"]>a').addClass('disabled');
+            }
+
+            //选中的图形
+            var currentPolygon = evt.value.currentPolygon;
+            if (currentPolygon) {
+                // _selectPolygon(currentPolygon);
+                // _calCenterPoint();
+                // _showImage();
+            }
+        },
+        changeBackground: function changeBackground() {
+            this.$view.find('[data-select="svg_content"]').toggleClass('no_bg');
+            var $buttonCheck = this.$view.find('[data-select="button_tool_check"]').toggleClass('checked');
+            if ($buttonCheck.hasClass('checked')) {
+                this.checkedBackgroundButton = 'true';
+            } else {
+                this.checkedBackgroundButton = 'false';
+            }
+        },
+        setBackgroundByValue: function setBackgroundByValue(value) {
+            var $buttonCheck = this.$view.find('[data-select="button_tool_check"]');
+            var $svgContent = this.$view.find('[data-select="svg_content"]');
+            if (value === 'true') {
+                $svgContent.removeClass('no_bg');
+                $buttonCheck.addClass('checked');
+            } else {
+                $svgContent.addClass('no_bg');
+                $buttonCheck.removeClass('checked');
+            }
+        },
+        resetSvgOffset: function resetSvgOffset() {
+            this.offsetLeft = this.$svg.offset().left;
+            this.offsetTop = this.$svg.offset().top;
+        },
+        getPoints: function getPoints(shape) {
+            switch (shape) {
+                case "parallelogram_A":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "parallelogram_B":
+                    return [this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "parallelogram_C":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "parallelogram_D":
+                    return [this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "parallelogram_E":
+                    return [this.svgWidth / 2 - 3 / 2 * this.relativeWidth, this.svgHeight / 2 - 3 / 2 * this.relativeWidth, this.svgWidth / 2 + 3 / 2 * this.relativeWidth, this.svgHeight / 2 - 3 / 2 * this.relativeWidth, this.svgWidth / 2 + 3 / 2 * this.relativeWidth, this.svgHeight / 2 + 3 / 2 * this.relativeWidth, this.svgWidth / 2 - 3 / 2 * this.relativeWidth, this.svgHeight / 2 + 3 / 2 * this.relativeWidth];
+                case "triangle_A":
+                    return [this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 - this.relativeWidth];
+                case "triangle_B":
+                    return [this.svgWidth / 2 - 2 * this.relativeWidth * 1.1, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth * 1.1, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 - this.relativeWidth];
+                case "triangle_C":
+                    return [this.svgWidth / 2 - this.relativeWidth + 0, this.svgHeight / 2 - this.relativeWidth + Math.pow(3 * this.relativeWidth * 3 * this.relativeWidth - 3 / 2 * this.relativeWidth * 3 / 2 * this.relativeWidth, 0.5), this.svgWidth / 2 - this.relativeWidth + this.relativeWidth * 3, this.svgHeight / 2 - this.relativeWidth + Math.pow(3 * this.relativeWidth * 3 * this.relativeWidth - 3 / 2 * this.relativeWidth * 3 / 2 * this.relativeWidth, 0.5), this.svgWidth / 2 - this.relativeWidth + this.relativeWidth * 3 / 2, this.svgHeight / 2 - this.relativeWidth + 0];
+                case "triangle_D":
+                    return [this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "triangle_E":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "triangle_F":
+                    return [this.svgWidth / 2, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "echelon_A":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "echelon_B":
+                    return [this.svgWidth / 2 - this.relativeWidth * 3 / 2, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "echelon_C":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 + 2 * this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth];
+                case "irregular_A":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 - 2 * this.relativeWidth];
+                case "irregular_B":
+                    return [this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2 - this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 + this.relativeWidth, this.svgWidth / 2 + this.relativeWidth, this.svgHeight / 2 - 2 * this.relativeWidth, this.svgWidth / 2, this.svgHeight / 2 - this.relativeWidth];
+            }
+        }
+    };
+
+    function _start(e) {
+        e.preventDefault();
+        var vm = viewModel;
+        //旋转是按下的状态时，不能进行切割操作 修复:80896
+        if (vm.isImageDown) {
+            return;
+        }
+        vm.isMouseDown = true;
+        vm.isPolygonDown = false;
+        vm.isMouseMoveing = false;
+        vm.uuid = "";
+        graphicsVeiw.resetSvgOffset();
+        _recordAllPolygon();
+        _drawCurrentLine(_getPoint(e, 'touchstart'));
+        graphicsVeiw.$view.find('svg').on('touchmove mousemove', _move);
+        vm = null;
+    }
+
+    function _move(e) {
+        e.preventDefault();
+        var point = _getPoint(e, 'touchmove'),
+            vm = viewModel;
+        console.log(point);
+        viewModel.isMouseMoveing = true;
+        if (vm.isMouseDown) {
+            if (_checkPointOut(point)) {
+                _drawCurrentLine(point);
+                _calPointInduction(point);
+            } else {
+                _out();
+            }
+        } else if (vm.isPolygonDown) {
+            if (_checkPoint(point)) {
+                _touchmovePolygon(point);
+            } else {
+                //如果移出外界，和mouseup处理一样
+                _redrawPolygon();
+                vm.currentPoint = null;
+                _showImage();
+
+                _removeGhostPolygon();
+                vm.isPolygonDown = false;
+            }
+        }
+
+        if (vm.isImageDown && vm.currentPolygon) {
+            _rotatePolygon(point);
+        } else {}
+        vm = null;
+    }
+
+    function _end(e) {
+        e && e.preventDefault();
+        var vm = viewModel;
+        _removeGhostPolygon();
+        _removeCurrentLine();
+        if (vm.isPolygonDown) {
+            _redrawPolygon();
+            vm.currentPoint = null;
+            _showImage();
+        } else {
+            _readyCutting();
+            //setTimeout(_drawCutting, 50);
+        }
+        if (vm.isImageDown) {
+            vm.rotate = 0;
+            _redrawPolygon();
+            _showImage();
+        }
+        graphicsVeiw.$view.find('svg').off('touchmove mousemove');
+        //_resetAllPolygon();
+        vm.isMoveOrRotateNeedCacheStage = null;
+        vm.imgPoint = null;
+        vm.isImageDown = false;
+        vm.isMouseDown = false;
+        vm.isPolygonDown = false;
+    }
+
+    //不传或者传true为需要记录撤销一步
+    function _reset(needCache) {
+        var vm = viewModel,
+            polygons = vm.syncPolygons;
+        if (polygons && polygons.length >= 0) {
+            if (!needCache) _cacheCurrentStage();
+            _empty();
+            for (var i = 0; i < polygons.length; i++) {
+                var p = graphicsVeiw.svg.polygon().attr(polygons[i].attr);
+                _registPolygonEvents(p);
+                if (polygons[i].selected) {
+                    viewModel.currentPolygon = p;
+                    _selectPolygon(p);
+                    _calCenterPoint();
+                    _showImage();
+                }
+            }
+        }
+        _resetStage(viewModel.currentPolygon);
+    }
+
+    function getAllPolygon() {
+        return graphicsVeiw.svg.selectAll('polygon');
+    }
+
+    /**
+     * 清空SVG上的元素
+     * @private
+     */
+    function _empty() {
+        var polygons = graphicsVeiw.svg.selectAll("polygon");
+        if (polygons.length > 0) {
+            _cacheCurrentStage();
+            _clearRevocationCache();
+            polygons.remove();
+            graphicsVeiw.svg.selectAll("circle").remove();
+            _hideImage();
+        }
+    }
+
+    /**
+     * 删除
+     * @private
+     */
+    function _delete() {
+        if (viewModel.currentPolygon) {
+            _cacheCurrentStage();
+            _clearRevocationCache();
+            _removeAllCircle();
+            _hideImage();
+            viewModel.currentPolygon.remove();
+            viewModel.currentPolygon = null;
+            //graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').addClass('disabled');
+        }
+    }
+
+    /**
+     * 点击恢复按钮，还原刚才撤销的操作(一次)
+     * @private
+     */
+    function _restore() {
+        var vm = viewModel;
+        if (vm.revocationCache.length > 0) {
+            _cacheCurrentStage();
+            _clearStage();
+            var shapes = vm.revocationCache.pop();
+            for (var i = 0; i < shapes.length; i++) {
+                var p = graphicsVeiw.svg.polygon().attr(shapes[i]);
+                _registPolygonEvents(p);
+            }
+            _changeRestoreUI();
+        }
+    }
+
+    function _changeRestoreUI() {
+        var vm = viewModel;
+        if (viewModel.revocationCache.length > 0) {
+            graphicsVeiw.$view.find('[data-select="button_tool_restore"] a').removeClass('disabled');
+        } else {
+            graphicsVeiw.$view.find('[data-select="button_tool_restore"] a').addClass('disabled');
+        }
+    }
+
+    /**
+     * 撤销当前操作(一次)
+     * @private
+     */
+    function _revocation() {
+        var vm = viewModel;
+        if (vm.restoreCache.length > 0) {
+            _restoreCurrentStage();
+            _clearStage();
+            var shapes = vm.restoreCache.pop();
+            for (var i = 0; i < shapes.length; i++) {
+                var p = graphicsVeiw.svg.polygon().attr(shapes[i]);
+                _registPolygonEvents(p);
+            }
+            _changeRevocationUI();
+        }
+    }
+
+    function _clearStage() {
+        viewModel.currentPolygon = null;
+        graphicsVeiw.svg.selectAll('*').remove();
+        _hideImage();
+    }
+
+    function _changeRevocationUI() {
+        var vm = viewModel;
+        if (viewModel.restoreCache.length > 0) graphicsVeiw.$view.find('[data-select="button_tool_revocation"] a').removeClass('disabled');else graphicsVeiw.$view.find('[data-select="button_tool_revocation"] a').addClass('disabled');
+    }
+
+    //缓存当前舞台
+    function _cacheCurrentStage() {
+        var vm = viewModel;
+        if (vm.restoreCache.length == 5) {
+            vm.restoreCache.shift();
+        }
+        var polygons = graphicsVeiw.svg.selectAll('polygon'),
+            result = [];
+        for (var i = 0; i < polygons.length; i++) {
+            var p = polygons[i];
+            result.push(p.attr());
+        }
+        vm.restoreCache.push(result);
+        _changeRevocationUI();
+    }
+
+    //缓存撤销前
+    function _restoreCurrentStage() {
+        var vm = viewModel;
+        if (vm.revocationCache.length == 5) {
+            vm.revocationCache.shift();
+        }
+        var polygons = graphicsVeiw.svg.selectAll('polygon'),
+            result = [];
+
+        for (var i = 0; i < polygons.length; i++) {
+            var p = polygons[i];
+            result.push(p.attr());
+        }
+        vm.revocationCache.push(result);
+        _changeRestoreUI();
+    }
+
+    function _resetStage(currentPolygon) {
+        var vm = viewModel;
+        vm.currentPolygon = currentPolygon ? currentPolygon : null;
+        vm.restoreCache = [];
+        vm.revocationCache = [];
+        graphicsVeiw.$view.find('[data-select="button_tool_restore"] a').addClass('disabled');
+        graphicsVeiw.$view.find('[data-select="button_tool_revocation"] a').addClass('disabled');
+    }
+
+    /**
+     * 接收worker消息
+     * @private
+     */
+    function _onmessage(evt) {
+        _removeAllPath();
+        var d = evt.data;
+
+        viewModel.returnUuid = d.id;
+
+        if (d.polygons.length <= 0) return;
+
+        var ps = d.polygons,
+            vm = viewModel,
+            cutting = [];
+
+        for (var i = 0; i < ps.length; i++) {
+            var line = {
+                "startPoint": ps[i].intersectionPoints[0].point,
+                "endPoint": ps[i].intersectionPoints[1].point
+            };
+            cutting.push({
+                "line": line,
+                "polygon": vm.cachePolygons[ps[i].key]
+            });
+            if (line && line.startPoint && line.endPoint && !isNaN(line.startPoint.x)) graphicsVeiw.svg.path(_getPathByPoint(line.startPoint, line.endPoint)).attr({
+                stroke: '#ff6248',
+                strokeWidth: viewModel.lineStrokeWidth,
+                "stroke-linecap": "round",
+                "stroke-dasharray": "5,5"
+            });
+        }
+        vm.cuttingPolygons = cutting;
+    }
+
+    //准备切割
+    function _readyCutting() {
+        if (viewModel.uuid == viewModel.returnUuid) {
+            _removeAllPath();
+            _drawCutting();
+            return;
+        }
+        setTimeout(_readyCutting, 50);
+    }
+
+    /**
+     * 点感应：垂直>平行>顶点>中心
+     * @private
+     */
+    function _calPointInduction(point) {
+        var vm = viewModel,
+            w = vm.worker;
+        if (!vm.calLastPoint) {
+            vm.calLastPoint = point;
+        }
+
+        var x = point.x - vm.calLastPoint.x,
+            y = point.y - vm.calLastPoint.y;
+        if (Math.abs(x) > 1 || Math.abs(y) > 1) {
+            vm.cuttingPolygons = [];
+            vm.uuid = uuid();
+            w.postMessage({
+                "polygons": vm.workerPolygons,
+                "startPoint": vm.currentLine.startPoint,
+                "endPoint": vm.currentLine.endPoint,
+                "id": vm.uuid
+            });
+        }
+    }
+
+    function _removeAllPath() {
+        graphicsVeiw.svg.selectAll("path").remove();
+    }
+
+    function _getPathByPoint(p1, p2) {
+        return 'M' + p1.x + ',' + p1.y + 'L' + p2.x + ',' + p2.y;
+    }
+
+    /**
+     * 图形切割
+     * @private
+     */
+    function _drawCutting() {
+        var vm = viewModel;
+        if (_checkLineLength()) {
+            var polygons = vm.cuttingPolygons,
+                needCacheCurrentSatge = true;
+            //只遍历有交点的多边形
+            for (var i = 0; i < polygons.length; i++) {
+                var polygon = polygons[i].polygon,
+                    line = polygons[i].line;
+                var result = cutting.cutGrap(getPointsByPolygon(polygon), [line.startPoint, line.endPoint]);
+                if (result.length > 1) {
+                    if (needCacheCurrentSatge) {
+                        _cacheCurrentStage();
+                        needCacheCurrentSatge = false;
+                    }
+                    _removeAllCircle();
+                    polygon.remove();
+                    _hideImage();
+                    vm.currentPolygon = null;
+                    for (var j = 0; j < result.length; j++) {
+                        var points = getPointArray(result[j].polygon);
+                        var p = _drawPolygon(points);
+                        var m = p.transform().localMatrix;
+                        p.animate({
+                            "transform": m.add(1, 0, 0, 1, result[j].animate.x, result[j].animate.y)
+                        }, 400, mina.linear, function () {
+                            _registPolygonEvents(this);
+                        });
+                    }
+                    _clearRevocationCache();
+                }
+            }
+            vm.currentLine.startPoint = {};
+            vm.currentLine.endPoint = {};
+        }
+    }
+
+    /**
+     * 撤销之后有发生舞台UI变化时（如移动图形，切割图形，旋转图形）时，要清理恢复舞台
+     * @private
+     */
+    function _clearRevocationCache() {
+        viewModel.revocationCache = [];
+        _changeRestoreUI();
+    }
+
+    /**
+     * 判断线条长度
+     * @returns {boolean}
+     * @private
+     */
+    function _checkLineLength() {
+        var vm = viewModel,
+            s = vm.currentLine.startPoint,
+            e = vm.currentLine.endPoint;
+        return Snap.path.getTotalLength('M' + s.x + ' ' + s.y + 'L' + e.x + ' ' + e.y) > 20;
+    }
+
+    /**
+     * 画圆
+     * @param point
+     * @param r
+     * @private
+     */
+    function _drawCircle(point, r) {
+        var svg = graphicsVeiw.svg,
+            radius = viewModel.circleRadius;
+
+        if (!isNaN(r)) radius = r;
+
+        svg.circle(point.x, point.y, radius).attr({
+            "fill": 'rgb(52,185,230)'
+        });
+    }
+
+    /**
+     * 删除多边形的点圆形
+     * @private
+     */
+    function _removeAllCircle() {
+        graphicsVeiw.svg.selectAll('circle').remove();
+    }
+
+    /**
+     * 选择某个多边形
+     * @param polygon
+     * @private
+     */
+    function _selectPolygon(polygon) {
+        _removeAllCircle();
+        var points = getPointsByPolygon(polygon);
+        for (var i = 0; i < points.length; i++) {
+            _drawCircle(points[i]);
+        }
+    }
+
+    /**
+     * 绘制多边形
+     * @param points
+     * @returns {*}
+     * @private
+     */
+    function _drawPolygon(points, shapeType) {
+        shapeType = shapeType || 'other';
+        if (points && points.length > 0) {
+
+            var svg = graphicsVeiw.svg;
+
+            var pl = svg.polygon(points).attr({
+                "stroke": "#464646",
+                "strokeWidth": viewModel.polygonStrokeWidth,
+                "fill": randomColor(),
+                "fill-opacity": 0.7,
+                "data-type": shapeType
+            });
+            _clearRevocationCache();
+            return pl;
+        }
+    }
+
+    function _registImageEvents(image) {
+        if (image) {
+            image.mousedown(_imagedown);
+            image.touchstart(_imagedown);
+        }
+    }
+
+    function _showImage() {
+        var vm = viewModel;
+        if (vm.currentPolygon) {
+            var points = getPointsByPolygon(vm.currentPolygon),
+                p = {
+                x: 0,
+                y: 0
+            };
+            p.x = points[0].x;
+            p.y = points[0].y;
+            for (var i = 1; i < points.length; i++) {
+                if (p.x < points[i].x) p.x = points[i].x;
+                if (p.y > points[i].y) p.y = points[i].y;
+            }
+            p.x = p.x > graphicsVeiw.svgWidth - viewModel.imageX ? graphicsVeiw.svgWidth - viewModel.imageX : p.x - viewModel.imageX;
+            p.y = p.y < viewModel.imageWidth ? 0 : p.y - viewModel.imageWidth;
+            graphicsVeiw.image.attr({
+                "x": p.x,
+                "y": p.y
+            });
+            vm.currentPolygon.after(graphicsVeiw.image);
+            //删除按钮可用
+            graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').removeClass('disabled');
+        }
+    }
+
+    function _hideImage() {
+        graphicsVeiw.$view.find('[data-select="button_tool_delete"]>a').addClass('disabled');
+        graphicsVeiw.image.attr({
+            "x": -1000,
+            "y": -1000
+        });
+    }
+
+    function _imagedown(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        graphicsVeiw.resetSvgOffset();
+        viewModel.rotate = 0;
+        viewModel.isImageDown = true;
+        $(viewModel.view).find('svg').on('touchmove mousemove', _move);
+    }
+
+    function _redrawPolygon() {
+        var polygon = viewModel.currentPolygon;
+        if (polygon) {
+            var points = getPointsByPolygon(polygon);
+            polygon.remove();
+            var shapeType = polygon.attr('data-type');
+            var p = _drawPolygon(getPointArray(points), shapeType);
+            _registPolygonEvents(p);
+            _selectPolygon(p);
+            viewModel.currentPolygon = p;
+            _calCenterPoint();
+        }
+    }
+
+    function _calCenterPoint() {
+        var vm = viewModel,
+            points = getPointsByPolygon(vm.currentPolygon);
+        vm.centerPoint = new Region(points).centroid();
+    }
+
+    /**
+     * 多边形事件注册
+     * @param p
+     * @private
+     */
+    function _registPolygonEvents(p) {
+        if (p) {
+            p.mousedown(_mouseDownPolygon);
+            p.mouseup(_mouseUpPolygon);
+            p.touchstart(_mouseDownPolygon);
+            p.touchend(_mouseUpPolygon);
+        } else {}
+    }
+
+    function _mouseDownPolygon(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        graphicsVeiw.resetSvgOffset();
+        var vm = viewModel;
+        if (vm.isMouseDown) return;
+        vm.isMouseMoveing = false;
+        vm.isPolygonDown = true;
+
+        var lastPolygon = graphicsVeiw.svg.selectAll('polygon').pop();
+        lastPolygon.after(this);
+        vm.currentPolygon = this;
+        vm.currentPoint = null;
+        graphicsVeiw.$svg.on('touchmove mousemove', _move);
+        _hideImage();
+    }
+
+    function _mouseUpPolygon(e) {
+        console.log('触发事件UP');
+        var vm = viewModel;
+        if (vm.isMouseMoveing) {
+            if (vm.isMouseDown === true) {} else {
+                _redrawPolygon();
+                vm.currentPoint = null;
+                _showImage();
+            }
+        } else {
+            e.stopPropagation();
+            _selectPolygon(vm.currentPolygon);
+            _calCenterPoint();
+            _showImage();
+        }
+        graphicsVeiw.$view.find('svg').off('touchmove mousemove');
+    }
+
+    function _drawExistPolygon(shapeType) {
+        var pl = _drawPolygon(graphicsVeiw.getPoints(shapeType), shapeType);
+        _registPolygonEvents(pl);
+    }
+
+    function _removeCurrentLine() {
+        var cl = viewModel.currentLine;
+        if (cl.line) {
+            cl.line.remove();
+            cl.line = null;
+        }
+    }
+
+    function _drawCurrentLine(point) {
+        var vm = viewModel,
+            cl = vm.currentLine;
+        if (cl.line) {
+            cl.line.attr({
+                "x2": point.x,
+                "y2": point.y,
+                "visibility": ""
+            });
+            cl.endPoint = point;
+        } else {
+            cl.startPoint = point;
+            cl.line = graphicsVeiw.svg.line(point.x, point.y, 0, 0).attr({
+                stroke: '#fff45c',
+                strokeWidth: viewModel.polygonStrokeWidth,
+                visibility: "hidden",
+                "stroke-linecap": "round"
+            });
+        }
+    }
+
+    //用于点校验多变形赋值
+    function _recordAllPolygon() {
+        var polygons = graphicsVeiw.svg.selectAll('polygon'),
+            cachePolygons = {},
+            workerPolygons = [];
+
+        for (var i = 0; i < polygons.length; i++) {
+            var p = polygons[i];
+            var key = 'polygon_' + i;
+            var points = getPointsByPolygon(p);
+
+            workerPolygons.push({
+                "key": key,
+                "points": points
+            });
+            cachePolygons[key] = p;
+        }
+        viewModel.workerPolygons = workerPolygons;
+        viewModel.cachePolygons = cachePolygons;
+        viewModel.cuttingPolygons = [];
+    }
+
+    //重置用于点校验缓存
+    function _resetAllPolygon() {
+        viewModel.workerPolygons = [];
+        viewModel.cachePolygons = {};
+    }
+
+    function _out() {
+        if (viewModel.isMouseDown) {
+            _end();
+        }
+    }
+
+    function _checkPointOut(point) {
+        var vm = viewModel;
+        if (point.x <= 0 || point.x >= graphicsVeiw.svgWidth || point.y <= 0 || point.y >= graphicsVeiw.svgHeight) return false;
+        return true;
+    }
+
+    function _touchmovePolygon(p) {
+        var vm = viewModel;
+
+        if (!vm.currentPoint) vm.currentPoint = p;
+        var x = p.x - vm.currentPoint.x,
+            y = p.y - vm.currentPoint.y;
+        if (Math.abs(x) > 0 || Math.abs(y) > 0) {
+            _moveOrRotateCache();
+            var pl = vm.currentPolygon;
+            pl.transform(pl.transform().localMatrix.translate(x, y));
+            vm.currentPoint = p;
+        }
+    }
+
+    function _rotatePolygon(point) {
+        var vm = viewModel;
+
+        if (vm.imgPoint) {
+            var centerX = vm.centerPoint.x,
+                centerY = vm.centerPoint.y;
+
+            if (Math.abs(point.x - vm.imgPoint.x) > 0 || Math.abs(point.y - vm.imgPoint.y) > 0) {
+                _moveOrRotateCache();
+                var angle = Snap.angle(point.x, point.y, vm.imgPoint.x, vm.imgPoint.y, centerX, centerY);
+                var m = new Snap.Matrix().rotate(angle, centerX, centerY);
+                vm.currentPolygon.transform(m);
+                graphicsVeiw.image.attr({
+                    "x": point.x - viewModel.imagePosition,
+                    "y": point.y - viewModel.imagePosition
+                });
+            }
+        }
+        if (!vm.imgPoint) vm.imgPoint = point;
+    }
+
+    //旋转和移动需要进行副本存储
+    function _moveOrRotateCache() {
+        //由于是引用对象所以必须在拖动之前产生一份副本，
+        var vm = viewModel;
+        if (!vm.isMoveOrRotateNeedCacheStage) {
+            vm.isMoveOrRotateNeedCacheStage = true;
+            _removeAllCircle();
+            _cacheCurrentStage();
+            _drawGhostPolygon();
+        }
+    }
+
+    function _drawGhostPolygon() {
+        var vm = viewModel;
+        if (!vm.ghostPolygon) {
+            vm.ghostPolygon = vm.currentPolygon.clone().attr({
+                "stroke": "#fff",
+                "fill-opacity": 0,
+                "stroke-dasharray": "5,5"
+            });
+            vm.currentPolygon.before(vm.ghostPolygon);
+        }
+    }
+
+    function _removeGhostPolygon() {
+        setTimeout(function () {
+            viewModel.ghostPolygon && viewModel.ghostPolygon.remove();
+            viewModel.ghostPolygon = null;
+        }, 10);
+    }
+
+    function _checkPoint(point) {
+        var offset = 10;
+        if (point.x < 0 + offset || point.x >= graphicsVeiw.svgWidth - offset || point.y < 0 + offset || point.y >= graphicsVeiw.svgHeight - offset) return false;
+        return true;
+    }
+
+    function _getPoint(e, ename) {
+        var x, y, touch;
+        if (e.type === ename) {
+            touch = e.originalEvent.touches[0];
+            x = touch.pageX - graphicsVeiw.offsetLeft;
+            y = touch.pageY - graphicsVeiw.offsetTop;
+        } else {
+
+            x = e.pageX - graphicsVeiw.offsetLeft;
+            y = e.pageY - graphicsVeiw.offsetTop;
+        }
+        return {
+            "x": x,
+            "y": y
+        };
+    }
+
+    function callNative(eventName, data) {
+        if (isApp && Bridge && Bridge.callNative) {
+            setTimeout(function () {
+                return Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", eventName, data);
+            }, 60);
+        }
+        return false;
+    }
+
+    function registerNativeListener(key, callback) {
+        if (isApp && Bridge && Bridge.registerListener) {
+            callbacks[key] = Bridge.registerListener(key, callback);
+        }
+    }
+
+    function unbindNativeListener(key) {
+        if (isApp && Bridge && Bridge.unRegisterListener) {
+            if (!key) {
+                $.each(callbacks, function (k, v) {
+                    Bridge.unRegisterListener(k, callbacks[k]);
+                });
+                callbacks = {};
+            } else {
+                Bridge.unRegisterListener(key, callbacks[key]);
+            }
+        }
+    }
+
+    /**
+     * initI18N
+     * @param view
+     */
+    function initI18N() {
+        graphicsVeiw.$view.find('a[data-shape="parallelogram"] p.name').text(helper.i18n['graphics_cutting_parallelogram']);
+        graphicsVeiw.$view.find('li[data-mode="parallelogram_A"] p.name').text(helper.i18n['graphics_cutting_parallelogram_a']);
+        graphicsVeiw.$view.find('li[data-mode="parallelogram_B"] p.name').text(helper.i18n['graphics_cutting_parallelogram_b']);
+        graphicsVeiw.$view.find('li[data-mode="parallelogram_C"] p.name').text(helper.i18n['graphics_cutting_parallelogram_c']);
+        graphicsVeiw.$view.find('li[data-mode="parallelogram_D"] p.name').text(helper.i18n['graphics_cutting_parallelogram_squareness']);
+        graphicsVeiw.$view.find('li[data-mode="parallelogram_E"] p.name').text(helper.i18n['graphics_cutting_square']);
+        graphicsVeiw.$view.find('a[data-shape="triangle"] p.name').text(helper.i18n['graphics_cutting_delta']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_A"] p.name').text(helper.i18n['graphics_cutting_isosceles_right_triangle']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_B"] p.name').text(helper.i18n['graphics_cutting_isosceles_triangle']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_C"] p.name').text(helper.i18n['graphics_cutting_equilateral_triangle']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_D"] p.name').text(helper.i18n['graphics_cutting_obtuse_angled_triangle']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_E"] p.name').text(helper.i18n['graphics_cutting_right_angled_triangle']);
+        graphicsVeiw.$view.find('li[data-mode="triangle_F"] p.name').text(helper.i18n['graphics_cutting_acute_triangle']);
+        graphicsVeiw.$view.find('a[data-shape="echelon"] p.name').text(helper.i18n['graphics_cutting_trapezoid']);
+        graphicsVeiw.$view.find('li[data-mode="echelon_A"] p.name').text(helper.i18n['graphics_cutting_isosceles_trapezoid']);
+        graphicsVeiw.$view.find('li[data-mode="echelon_B"] p.name').text(helper.i18n['graphics_cutting_common_trapezoid']);
+        graphicsVeiw.$view.find('li[data-mode="echelon_C"] p.name').text(helper.i18n['graphics_cutting_right_angled_trapezoid']);
+        graphicsVeiw.$view.find('a[data-shape="irregular"] p.name').text(helper.i18n['graphics_cutting_irregular_figure']);
+        graphicsVeiw.$view.find('li[data-mode="irregular_A"] p.name').text(helper.i18n['graphics_cutting_irregular_graphics_a']);
+        graphicsVeiw.$view.find('li[data-mode="irregular_B"] p.name').text(helper.i18n['graphics_cutting_irregular_graphics_b']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_revocation"] p').text(helper.i18n['graphics_cutting_cancel']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_restore"] p').text(helper.i18n['graphics_cutting_recover']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_delete"] p').text(helper.i18n['graphics_cutting_delete']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_reset"] p').text(helper.i18n['graphics_cutting_reset']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_clean"] p').text(helper.i18n['graphics_cutting_clear']);
+        graphicsVeiw.$view.find('li[data-select="button_tool_check"] span').text(helper.i18n['graphics_cutting_cage']);
+        graphicsVeiw.$view.find('#graphics_dialog .txt').text(helper.i18n['graphics_cutting_max_five_graphics_cutting']);
+    }
+
+    /**
+     *公共方法
+     */
+    //convert [{"x":,"y":}] to ["x","y","x","y"]
+    function getPointArray(pointArray) {
+        if (!pointArray) return [];
+        var result = [];
+        for (var i = 0; i < pointArray.length; i++) {
+            result.push(pointArray[i].x);
+            result.push(pointArray[i].y);
+        }
+        return result;
+    }
+
+    //convert ["x","y","x","y"] to [{"x":,"y":}]
+    function getPointsByPolygon(polygon) {
+        if (!polygon) return [];
+
+        var pointArray = polygon.attr('points'),
+            matrix = polygon.transform().totalMatrix,
+            points = [];
+
+        for (var i = 0; i < pointArray.length;) {
+            var point = {
+                "x": parseFloat(pointArray[i]),
+                "y": parseFloat(pointArray[i + 1])
+            };
+            var m = new Snap.Matrix(matrix.a, matrix.b, matrix.c, matrix.d, matrix.e, matrix.f);
+            points.push({
+                "x": m.x(point.x, point.y),
+                "y": m.y(point.x, point.y)
+            });
+            i += 2;
+        }
+        return points;
+    }
+
+    function uuid() {
+        var s = [],
+            hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 10; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        return s.join("");
+    }
+
+    function randomColor() {
+        return '#63caff';
+        //return 'rgb(' + (Math.random() * 255).toFixed() + ',' + (Math.random() * 255).toFixed() + ',' + (Math.random() * 255).toFixed() + ')';
+    }
+
+    function Region(points) {
+        this.points = points || [];
+        this.length = points.length;
+    }
+
+    Region.prototype.area = function () {
+        var area = 0,
+            i,
+            j,
+            point1,
+            point2;
+        for (i = 0, j = this.length - 1; i < this.length; j = i, i++) {
+            point1 = this.points[i];
+            point2 = this.points[j];
+            area += point1.x * point2.y;
+            area -= point1.y * point2.x;
+        }
+        area /= 2;
+        return area;
+    };
+
+    Region.prototype.centroid = function () {
+        var x = 0,
+            y = 0,
+            i,
+            j,
+            f,
+            point1,
+            point2;
+        for (i = 0, j = this.length - 1; i < this.length; j = i, i++) {
+            point1 = this.points[i];
+            point2 = this.points[j];
+            f = point1.x * point2.y - point2.x * point1.y;
+            x += (point1.x + point2.x) * f;
+            y += (point1.y + point2.y) * f;
+        }
+        f = this.area() * 6;
+        return {
+            "x": x / f,
+            "y": y / f
+        };
+    };
+
+    window.viewModel = viewModel;
+
+    return presenter;
+}]]></presenter><resources><file src="./resources/GraphicsCutting.json"/><file src="./resources/images/rotate-icon.png"/><file src="./resources/rotate-icon.png"/><file src="./resources/wood/images/bgztx/1.png"/><file src="./resources/wood/images/bgztx/2.png"/><file src="./resources/wood/images/cutgraph_main_bg.png"/><file src="./resources/wood/images/line_h_2.png"/><file src="./resources/wood/images/pxsbx/1.png"/><file src="./resources/wood/images/pxsbx/2.png"/><file src="./resources/wood/images/pxsbx/3.png"/><file src="./resources/wood/images/pxsbx/4.png"/><file src="./resources/wood/images/pxsbx/5.png"/><file src="./resources/wood/images/shape_bgztx.png"/><file src="./resources/wood/images/shape_pxsbx.png"/><file src="./resources/wood/images/shape_sjx.png"/><file src="./resources/wood/images/shape_tx.png"/><file src="./resources/wood/images/sjx/1.png"/><file src="./resources/wood/images/sjx/2.png"/><file src="./resources/wood/images/sjx/3.png"/><file src="./resources/wood/images/sjx/4.png"/><file src="./resources/wood/images/sjx/5.png"/><file src="./resources/wood/images/sjx/6.png"/><file src="./resources/wood/images/tool_cexiao_active.png"/><file src="./resources/wood/images/tool_cexiao_dis.png"/><file src="./resources/wood/images/tool_cexiao_normal.png"/><file src="./resources/wood/images/tool_del_active.png"/><file src="./resources/wood/images/tool_del_dis.png"/><file src="./resources/wood/images/tool_del_normal.png"/><file src="./resources/wood/images/tool_empty_active.png"/><file src="./resources/wood/images/tool_empty_dis.png"/><file src="./resources/wood/images/tool_empty_normal.png"/><file src="./resources/wood/images/tool_huifu_active.png"/><file src="./resources/wood/images/tool_huifu_dis.png"/><file src="./resources/wood/images/tool_huifu_normal.png"/><file src="./resources/wood/images/tool_restore_active.png"/><file src="./resources/wood/images/tool_restore_dis.png"/><file src="./resources/wood/images/tool_restore_normal.png"/><file src="./resources/wood/images/tx/1.png"/><file src="./resources/wood/images/tx/2.png"/><file src="./resources/wood/images/tx/3.png"/><file src="./resources/worker.js"/></resources></addon>

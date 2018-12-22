@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tool type="resizable" height="100%" width="100%">
+    <presenters> <!-- 描述对 module的引用，其中href为可选，若填写时为私有presenter -->
+        <presenter id="DynamicAnswer" />
+    </presenters>
+    <properties> 
+        <!-- independent:是否presenter自主处理,如：常用工具，生字卡 这两类为true -->
+        <property name="independent" type="boolean" value="true"/>
+        <!-- rotate:是否旋转。仅当independent=false 时生效 -->
+        <property name="rotate" type="boolean" value="false"/>
+          <!-- drag:是否拖动。仅当independent=false 时生效 -->
+        <property name="drag" type="boolean" value="false"/>
+          <!-- close:是否关闭。仅当independent=false 时生效 -->
+        <property name="close" type="boolean" value="false"/>
+          <!-- resize:是否改变大小。仅当independent=false 时生效 -->
+        <property name="resize" type="boolean" value="false"/>
+          <!-- singleton:是否单例。 -->
+        <property name="singleton" type="boolean" value="true"/>
+          <!-- execute:执行的接口，如果有配置value执行value里的方法，没有配置执行execute方法 -->
+        <property name="execute" type="method" value="execute"/>
+			 <property name="toolKey" type="string" value="DynamicAnswer"/>
+         
+    </properties>
+<!-- main:指定一个tool的主presenter -->
+    <modules main="main">
+         <!-- module下面的节点的schema与page下的module一样，用途也是一样 -->
+        <Module id="main" presenterId="DynamicAnswer" height="100%" width="100%" left="0" top="0">
+            <properties> <!-- 内容模块 key/value 属性 -->
+            </properties>
+            <events> <!-- 事件绑定 -->
+            </events>
+        </Module>
+    </modules>
+</tool>

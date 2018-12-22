@@ -1,0 +1,44 @@
+<div style="position: relative;height: 100%;width: 100%">
+    <!-- 左侧送花 -->
+    <!--送花-->
+    <div v-if="!isNoAnswer" class="com_send_flower whole-level__flower" @click="sendFlower" :class="ableSendFlower"></div>
+    <!--/送花-->
+
+    <!-- /左侧送花 -->
+    <!-- 等级与人数图标 -->
+    <div class="whole-level__group-other">
+        <div class="whole-level__level--icon" :class="gradeClass">
+            <div class="level-type">
+                <span class="level-t-t">{{gradeData.grade}}</span>
+            </div>
+            <div class="level-num">
+                <span class="level-n-t">{{gradeData.grade === 'NO_ANSWER' ? langNoAnswer: gradeUserNumber}}</span>
+                <i class="level-i"></i>
+            </div>
+        </div>
+    </div>
+    <!-- /等级与人数图标 -->
+    <!-- 下拉图标 -->
+    <a class="whole-level__dropdown" v-if="gradeUserNumber>11" @click="expandUsersGroup"></a>
+    <!-- /下拉图标 -->
+
+    <!--没有学生-->
+    <div class="whole-level__wrap-nostu" v-if="gradeUserNumber==0 && !isNoAnswer">
+        <div class="ndui__components--nostu">
+            <i class="nostu-i"></i>
+            <span class="nostu-t" ref="lang_chapters.list.empty"></span>
+        </div>
+    </div>
+
+    <!--没有学生-->
+
+    <!-- 学生列表组件 -->
+    <!--列表-->
+    <base-list :data="gradeData.users" class="uicom_user_list english-list" v-else>
+        <template scope="props">
+            <user :user-data="props.data" @user-detail="userDetail"></user>
+        </template>
+    </base-list>
+    <!--/列表-->
+    <!-- /学生列表组件 -->
+</div>

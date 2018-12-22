@@ -1,0 +1,1 @@
+define(["angularAMD"],function(n){n.directive("eventLoad",[function(){return{restrict:"A",scope:{onLoad:"&"},link:function(n,o,a,e){n.onLoad&&o.on("load",function(){var o=n.$root.$$phase;"$apply"==o||"$digest"==o?n.onLoad():n.$apply(n.onLoad)})}}}])});

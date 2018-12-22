@@ -1,0 +1,2389 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='CompoundQuestionLoader'>
+<properties>
+
+                <property name="questionStem" displayName="主题干" type="html" />
+                <property name="questionList" displayName="题目列表" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="knockout" version="3.3.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_CompoundQuestionLoader .question_stem{height:100px;width:100%;position:absolute;overflow-y:auto}.addon_CompoundQuestionLoader .collapse{height:50px!important}.addon_CompoundQuestionLoader .baseMod-com-layout-flex.maxHeight{height:100%}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="baseMod-com-layout-flex js_root"><div class="baseMod-com-layout-body baseMod-scrollbar-style-gray js-layout-body"><div class="mixedModule-topic js-main-stem-container"><div class="mixedModule-topic-article baseMod-scrollbar-style-gray"><div class="mixedModule-header-text js-question-stem"></div></div></div><div class="mixedModule-wrap js-question-wrap"><div class="mixedModule-content baseMod-scrollbar-style-gray"><div class="mixedModule-player-container js-question-container"></div><div class="mixedModule-result" data-bind="visible: showResult"><div class="mixedModule-answer" data-bind="css:{wrong:isCorrect()==false, right:isCorrect()==true}, visible: isChoice"><i class="mixedModule-answer-icon"></i> <span class="mixedModule-answer-text answer-choice"><span class="lang_user_answer">作答：</span> <em class="mixedModule-answer-left" data-bind="text:response"></em> <span class="lang_correct_answer">正确答案：</span> <em data-bind="text:correct"></em></span></div><div class="mixedModule-answer" data-bind="css:{wrong:isCorrect()==false, right:isCorrect()==true}, visible: isFillBlank"><i class="mixedModule-answer-icon"></i> <span class="mixedModule-answer-text answer-pic" data-bind="text:response"></span> <a href="#" class="mixedModule-pop-btn js_compound_open_popup lang_button_answer">正确答案</a></div><div class="mixedModule-divideLine"></div><div class="mixedModule-resolve"><table class="mixedModule-resolve-table"><tr class="mixedModule-resolve-content" name="compound_mao_hint" id="compound_mao_hint" data-bind="visible: hasHint"><td class="tips lang_answer_hint">提示：</td><td class="word js_hintText" data-bind="html: hintText"></td></tr><tr class="mixedModule-resolve-content" name="compound_mao_analysis" id="compound_mao_analysis" data-bind="visible: hasAnalysis"><td class="tips lang_answer_analysis">解析：</td><td class="word js_analysisText" data-bind="html: analysisText"></td></tr></table></div></div></div></div><div class="mixedModule-answerpop js_compound_popup" style="display: none"><div class="mixedModule-answerpop-main"><div class="mixedModule-answer-content nqti-player-skin-wood baseMod-scrollbar-style-gray" style="font-size: 0.9em"><div class="nqti-base-connectLine-container clearfix js-compound-qtiPlayer"></div></div><div class="mixedModule-answerpop-bottom"><a href="#" class="mixedModule-answer-closebtn js_compound_close_popup lang_close_popup">关闭</a></div></div></div><div class="mixedModule-toast js_compound_toast"><div class="js_compound_toast_text"></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[/*!   version: 2.7.0  -   updated: 2017-09-25 20:01:21   */
+window["AddonCompoundQuestionLoader_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var logger;
+if (window['Logger']) {
+    (logger = Logger.get("CompoundQuestionLoader")).appendHandler(function (message) { return window.console.log(message); }, { level: Logger.DEBUG });
+}
+else {
+    logger = window.console;
+}
+exports.default = logger;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseProcessor = (function () {
+    function BaseProcessor(context) {
+        this.context = context;
+        this.$service = context.internalService;
+        this.context.$view.find('.js_root').addClass(this.context.questionType);
+    }
+    BaseProcessor.prototype.destroy = function () {
+        delete this.context;
+    };
+    BaseProcessor.prototype.bindEvent = function () {
+    };
+    BaseProcessor.prototype.unbindEvent = function () {
+    };
+    BaseProcessor.prototype.afterPresenterRun = function (interfaceName, metaInfo, service) {
+        if (interfaceName === 'IQuestionSwitcher') {
+            this.context.questionSwitcherService.setCurrentPhase(this.context.currentPhase);
+        }
+    };
+    BaseProcessor.prototype.afterSetLayoutService = function () {
+    };
+    BaseProcessor.prototype.exerciseSubInfoDataParse = function (answerData) {
+        return answerData.answer.user_response[0];
+    };
+    BaseProcessor.prototype.showAnswer = function (type, specialAnswer) {
+        if (type === 'user') {
+            var presenter = this.context;
+            presenter.questionSwitcherService.setCurrentPhase('');
+            presenter._refreshSwitchBarStatus();
+            var user_response = (specialAnswer && specialAnswer.answer.user_response) || {};
+            var resetResponse, RESPONSE;
+            for (var subquestionId in presenter.userResponse) {
+                resetResponse = _.find(user_response, function (item) {
+                    return item.subquestionId === subquestionId;
+                });
+                RESPONSE = _.filter(Object.keys(resetResponse || {}), function (item) {
+                    return item.indexOf("RESPONSE_") > -1;
+                });
+                if (RESPONSE && RESPONSE instanceof Array) {
+                    for (var i = 0, len = RESPONSE.length; i < len; i++) {
+                        presenter.userResponse[subquestionId].answer.user_response[0][RESPONSE[i]] = resetResponse[RESPONSE[i]];
+                    }
+                }
+            }
+            var questionAnswer = presenter.userResponse[presenter.currentQuestionData.id];
+            if ($.isEmptyObject(questionAnswer)) {
+                presenter._loadSubQuestion(presenter.currentQuestionData);
+            }
+            else {
+                if (presenter.currentQuestionData.type != 'handwrite' &&
+                    presenter.currentQuestionData.type != 'newhandwrite') {
+                    presenter._loadSubQuestion(presenter.currentQuestionData, questionAnswer);
+                }
+            }
+        }
+    };
+    BaseProcessor.prototype.getResult = function (result) {
+    };
+    BaseProcessor.prototype.setEachResult = function (result, correctResponse, userResponse, itemResponse) {
+        result.answer.correct_response.push($.extend(correctResponse, itemResponse.answer.correct_response[0]));
+        result.answer.user_response.push($.extend(userResponse, itemResponse.answer.user_response[0]));
+    };
+    BaseProcessor.prototype.resetQuestion = function () {
+        this.context.questionSwitcherService.setCurrentPhase(this.context.currentPhase);
+    };
+    BaseProcessor.prototype.finishQuestion = function () {
+    };
+    BaseProcessor.prototype.convertDataForStatistics = function (data) {
+    };
+    BaseProcessor.prototype.startStatistics = function () {
+        this.context.questionSwitcherService.setCurrentPhase(this.context.currentPhase);
+    };
+    BaseProcessor.prototype.getClassroomStatus = function () {
+        return {};
+    };
+    BaseProcessor.prototype.setClassroomStatus = function (state) {
+    };
+    BaseProcessor.prototype.setHintVisible = function (visible) { };
+    BaseProcessor.prototype.setAnalysisVisible = function (visible) { };
+    BaseProcessor.prototype.constructComponentModel = function (componentName, initModel) {
+        return initModel;
+    };
+    BaseProcessor.prototype.constructQuestionLayoutArgs = function (container) {
+        var stemHigh = this.context.mainStemContainer.innerHeight();
+        var subStemContainer = container.find('.js_sub_stem');
+        var containerHigh = container.innerHeight();
+        var subStemOffset = undefined, subStemSize = {
+            width: 0,
+            height: 0
+        };
+        if (subStemContainer.length > 0) {
+            subStemOffset = subStemContainer.offset();
+            if (this.context.isApp) {
+                subStemOffset.top += subStemContainer.innerHeight();
+                stemHigh += subStemContainer.innerHeight();
+            }
+            subStemSize.width = subStemContainer.innerWidth() + parseInt(subStemContainer.css('margin-right'));
+            subStemSize.height = this.context.loaderContainer.innerHeight() - subStemContainer.innerHeight();
+            subStemSize.realHeight = subStemContainer.innerHeight();
+        }
+        else {
+            subStemOffset = this.context.stemContainer.offset();
+            subStemOffset.top += stemHigh;
+            subStemSize.width = this.context.stemContainer.innerWidth() + parseInt(subStemContainer.css('margin-right'));
+            subStemSize.height = this.context.loaderContainer.innerHeight();
+            subStemSize.realHeight = 0;
+        }
+        return {
+            stemHigh: stemHigh,
+            questionOffset: subStemOffset,
+            questionSize: subStemSize,
+            containerHigh: containerHigh
+        };
+    };
+    return BaseProcessor;
+}());
+exports.default = BaseProcessor;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var language;
+function render(elements) {
+    [].concat.call([], elements).forEach(function (element) {
+        NDMediaPlayer.render(element, {
+            img: {
+                render: true
+            },
+            lang: language
+        });
+    });
+    if (typeof MathJax != 'undefined') {
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+    }
+}
+exports.render = render;
+exports.setLanguage = function (lang) { return language = lang; };
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.QuestionMapping = {
+    "ObjectiveBasicQuestion": ["choice", "multiplechoice", "order", "textentry", "textentrymultiple", "vote", "match", "judge", "graphicgapmatch"],
+    "CompoundWriteController": ["newhandwrite", "handwrite"],
+    "ChineseDictationViewer": ["ChineseCharacterDictation"]
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! guidance */
+Object.defineProperty(exports, "__esModule", { value: true });
+var ndmedia_player_1 = __webpack_require__(2);
+var GuideController = (function () {
+    function GuideController(context) {
+        this.$anchor = document.createElement('a');
+        this.cachedAnalysisJudgment = {};
+        this.cachedHintJudgment = {};
+        this.cachedAnswerJudgment = {};
+        this.shownAnalysisQuestions = {};
+        this.shownHintQuestions = {};
+        this.shownAnswerQuestions = {};
+        this.isGlobalControl = false;
+        this.context = context;
+        this.$service = this.context.internalService;
+        this.isGlobalControl = GuideController.GlobalControlQuestions.includes(this.context.questionType);
+        this.viewModel = {
+            showResult: ko.observable(false),
+            isChoice: ko.observable(false),
+            isFillBlank: ko.observable(false),
+            isCorrect: ko.observable(false),
+            response: ko.observable("--"),
+            correct: ko.observable("--"),
+            hasHint: ko.observable(false),
+            hintText: ko.observable("--"),
+            hasAnalysis: ko.observable(false),
+            analysisText: ko.observable("--")
+        };
+        ko.applyBindings(this.viewModel, this.context.$view[0]);
+    }
+    GuideController.prototype.destroy = function () {
+        this.resetQuestion();
+        ko.cleanNode(this.context.$view[0]);
+        delete this.context;
+        delete this.$service;
+    };
+    GuideController.prototype.reset = function () {
+        this.resetQuestion();
+        this.shownHintQuestions = {};
+        this.shownAnalysisQuestions = {};
+        this.shownAnswerQuestions = {};
+    };
+    GuideController.prototype.bindEvent = function () {
+        var _this = this;
+        this.context.$view.find('.js_compound_close_popup').on('click', function () {
+            _this.context.$view.find('.js_compound_popup').hide();
+        });
+        this.context.$view.find('.js_compound_open_popup').on('click', function () {
+            var questionData = _this.$service.getCurrentQuestionData();
+            if (questionData) {
+                try {
+                    var questionUrl = questionData.data.question_data.QuestionUrl;
+                    if (questionUrl) {
+                        _this.loadQtiPlayer(questionUrl).then(function () {
+                            _this.context.$view.find('.js_compound_popup').show();
+                        });
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    };
+    GuideController.prototype.unbindEvent = function () {
+        this.context.$view.find('.js_compound_close_popup').off('click');
+        this.context.$view.find('.js_compound_open_popup').off('click');
+    };
+    GuideController.prototype.switchQuestion = function () {
+        var isTeacher = this.context.isPPTShell || this.context.isWeb || this.context.isPC;
+        var isNormalStatus = this.context.currentPhase === 'Normal';
+        if (isTeacher && isNormalStatus) {
+            if (!this.isGlobalControl) {
+                this.dispatchToolbarUpdate();
+            }
+            var id = this.$service.getCurrentQuestionId();
+            if (this.shownHintQuestions[id]) {
+                this.setHintVisible(true);
+            }
+            if (this.shownAnalysisQuestions[id]) {
+                this.setAnalysisVisible(true);
+            }
+            if (this.shownAnswerQuestions[id]) {
+                this.setCorrectAnswerVisible(true);
+            }
+        }
+    };
+    GuideController.prototype.resetQuestion = function () {
+        this.viewModel.showResult(false);
+        this.viewModel.isChoice(false);
+        this.viewModel.isFillBlank(false);
+        this.viewModel.isCorrect(false);
+        this.viewModel.response("--");
+        this.viewModel.correct("--");
+        this.viewModel.hasHint(false);
+        this.viewModel.hintText("--");
+        this.viewModel.hasAnalysis(false);
+        this.viewModel.analysisText("--");
+    };
+    GuideController.prototype.hasCorrectAnswer = function () {
+        var questionId = this.$service.getCurrentQuestionId();
+        if (typeof this.cachedAnswerJudgment[questionId] !== 'boolean') {
+            this.cachedAnswerJudgment[questionId] = !GuideController.InvalidAnswerQuestions.includes(this.$service.getCurrentQuestionType());
+        }
+        return !this.shownAnswerQuestions[questionId] && this.cachedAnswerJudgment[questionId];
+    };
+    GuideController.prototype.hasAnalysis = function () {
+        var questionId = this.$service.getCurrentQuestionId();
+        return !this.shownAnalysisQuestions[questionId] && this.cachedAnalysisJudgment[questionId] || false;
+    };
+    GuideController.prototype.hasHint = function () {
+        var questionId = this.$service.getCurrentQuestionId();
+        return !this.shownHintQuestions[questionId] && this.cachedHintJudgment[questionId] || false;
+    };
+    GuideController.prototype.setCorrectAnswerVisible = function (visible) {
+        if (visible === true) {
+            var context = this.context;
+            var questionId = this.$service.getCurrentQuestionId();
+            var questionType = this.$service.getCurrentQuestionType();
+            if (this.isGlobalControl && !Object.keys(this.shownAnswerQuestions).length) {
+                context.userResponse = {};
+                context._refreshSwitchBarStatus();
+                context.questionSwitcherService.setQuestionState(questionId, questionType, undefined, undefined, true);
+                context._loadSubQuestion(context.currentQuestionData);
+            }
+            else {
+                context.userResponse[questionId] = undefined;
+                var questionService = this.$service.getModuleServiceByQuestionType(questionType);
+                if (questionService && typeof questionService.showAnswer === 'function') {
+                    questionService.showAnswer('correct');
+                }
+            }
+            this.shownAnswerQuestions[questionId] = true;
+            this.dispatchToolbarUpdate();
+        }
+        else {
+            this.shownAnswerQuestions[this.$service.getCurrentQuestionId()] = false;
+        }
+    };
+    GuideController.prototype.setAnalysisVisible = function (visible) {
+        if (visible === true) {
+            var data = this.getQuestionModelInfo();
+            if (!!data.answerFeedback) {
+                this.viewModel.showResult(true);
+                this.viewModel.hasAnalysis(true);
+                this.viewModel.analysisText(data.answerFeedback);
+                ndmedia_player_1.render(this.context.$view.find('.js_analysisText'));
+                this.$anchor.href = '#compound_mao_analysis';
+                this.$anchor.click();
+            }
+            this.shownAnalysisQuestions[this.$service.getCurrentQuestionId()] = true;
+            this.dispatchToolbarUpdate();
+        }
+        else {
+            this.viewModel.hasAnalysis(false);
+            this.shownAnalysisQuestions[this.$service.getCurrentQuestionId()] = false;
+        }
+    };
+    GuideController.prototype.setHintVisible = function (visible) {
+        if (visible === true) {
+            var data = this.getQuestionModelInfo();
+            if (!!data.hintFeedback) {
+                this.viewModel.showResult(true);
+                this.viewModel.hasHint(true);
+                this.viewModel.hintText(data.hintFeedback);
+                ndmedia_player_1.render(this.context.$view.find('.js_hintText'));
+                this.$anchor.href = '#compound_mao_hint';
+                this.$anchor.click();
+            }
+            this.shownHintQuestions[this.$service.getCurrentQuestionId()] = true;
+            this.dispatchToolbarUpdate();
+        }
+        else {
+            this.viewModel.hasHint(false);
+            this.shownHintQuestions[this.$service.getCurrentQuestionId()] = false;
+        }
+    };
+    GuideController.prototype.setUserAnswerVisible = function (visible, result, answer) {
+        if (visible) {
+            this.viewModel.showResult(true);
+            var questionType = this.$service.getCurrentQuestionType();
+            var resultInfo = void 0;
+            if (questionType != "newhandwrite" && questionType != "handwrite") {
+                if (this.context.questionService["ObjectiveBasicQuestion"]) {
+                    resultInfo = this.context.questionService["ObjectiveBasicQuestion"].formatResultInfo(questionType, answer);
+                }
+            }
+            if (!resultInfo) {
+                return;
+            }
+            var renderElements = [];
+            var getLanguageText = this.$service.getLanguageText.bind(this.$service);
+            switch (questionType) {
+                case "choice":
+                case "multiplechoice":
+                case "judge":
+                    if (questionType === 'judge') {
+                        resultInfo.correct = resultInfo.correct === 'YES ' ?
+                            getLanguageText('answer_yes') :
+                            getLanguageText('answer_no');
+                        resultInfo.response = resultInfo.response === 'YES ' ?
+                            getLanguageText('answer_yes') :
+                            resultInfo.response === 'NO ' ? getLanguageText('answer_no') : '--';
+                    }
+                    this.viewModel.correct(resultInfo.correct);
+                    this.viewModel.response(resultInfo.response == '' ? '--' : resultInfo.response);
+                    this.viewModel.isChoice(true);
+                    this.viewModel.isCorrect(result);
+                    if (resultInfo.answerFeedback != "") {
+                        this.viewModel.hasAnalysis(true);
+                        this.viewModel.analysisText(resultInfo.answerFeedback);
+                        renderElements.push(this.context.$view.find('.js_analysisText'));
+                    }
+                    if (resultInfo.hintFeedback != "") {
+                        this.viewModel.hasHint(true);
+                        this.viewModel.hintText(resultInfo.hintFeedback);
+                        renderElements.push(this.context.$view.find('.js_hintText'));
+                    }
+                    ndmedia_player_1.render(renderElements);
+                    break;
+                case "textentry":
+                case "textentrymultiple":
+                case "match":
+                case "order":
+                case "graphicgapmatch":
+                case "vote":
+                    if (questionType != "vote") {
+                        this.viewModel.isFillBlank(true);
+                        this.viewModel.isCorrect(result);
+                        this.viewModel.response(result ?
+                            getLanguageText('answer_correct') :
+                            getLanguageText('answer_failure'));
+                    }
+                    else {
+                        this.viewModel.isCorrect(true);
+                    }
+                    if (resultInfo.answerFeedback != "") {
+                        this.viewModel.hasAnalysis(true);
+                        this.viewModel.analysisText(resultInfo.answerFeedback);
+                        renderElements.push(this.context.$view.find('.js_analysisText'));
+                    }
+                    if (resultInfo.hintFeedback != "") {
+                        this.viewModel.hasHint(true);
+                        this.viewModel.hintText(resultInfo.hintFeedback);
+                        renderElements.push(this.context.$view.find('.js_hintText'));
+                    }
+                    ndmedia_player_1.render(renderElements);
+                    break;
+                case "newhandwrite":
+                case "handwrite":
+                case "ChineseCharacterDictation":
+                    this.viewModel.showResult(false);
+                    break;
+            }
+        }
+        else {
+            this.viewModel.showResult(false);
+        }
+    };
+    GuideController.prototype.getQuestionModelInfo = function () {
+        var result = {
+            answerFeedback: '',
+            hintFeedback: ''
+        };
+        if (GuideController.InvalidModelQuestion.includes(this.$service.getCurrentQuestionType())) {
+            return result;
+        }
+        if (this.context.questionService['ObjectiveBasicQuestion']) {
+            var model = this.context.questionService['ObjectiveBasicQuestion'].getAssessmentModel();
+            result.answerFeedback = model.answerFeedback['RESPONSE_1-1'] ? model.answerFeedback['RESPONSE_1-1'].content : "";
+            result.hintFeedback = model.hintFeedback['RESPONSE_1-1'] ? model.hintFeedback['RESPONSE_1-1'].content : "";
+        }
+        return result;
+    };
+    GuideController.prototype.cacheHintAndAnalysisJudgment = function (questionId) {
+        if (typeof this.cachedAnalysisJudgment[questionId] !== 'boolean') {
+            this.cachedAnalysisJudgment[questionId] = this.getQuestionModelInfo().answerFeedback !== '';
+        }
+        if (typeof this.cachedHintJudgment[questionId] !== 'boolean') {
+            this.cachedHintJudgment[questionId] = this.getQuestionModelInfo().hintFeedback !== '';
+        }
+    };
+    GuideController.prototype.loadQtiPlayer = function (questionUrl) {
+        var _this = this;
+        if (!this.correctQtiplayer) {
+            this.correctQtiplayer = QtiPlayer.createPlayer({
+                refPath: icCreatePlayer.ref_path
+            });
+        }
+        var $container = this.context.$view.find('.js-compound-qtiPlayer');
+        return new Promise(function (resolve, reject) {
+            _this.correctQtiplayer.load(questionUrl, function () {
+                _this.correctQtiplayer.render($container, {
+                    showTitleArea: false,
+                    showHint: false,
+                    theme: 'wood',
+                    graphicGapMatchImageLoaderEnable: false,
+                    containerId: $container
+                }, function () {
+                    _this.correctQtiplayer.showCorrectAnswer();
+                    resolve();
+                });
+            });
+        });
+    };
+    GuideController.prototype.dispatchToolbarUpdate = function () {
+        var questionId = this.$service.getCurrentQuestionId();
+        this.cacheHintAndAnalysisJudgment(questionId);
+        this.context.playerController.startFlow('qf_update_toolbar_state', {
+            answerState: this.shownAnswerQuestions[questionId] ? 'correct' : ''
+        });
+    };
+    return GuideController;
+}());
+GuideController.InvalidModelQuestion = [
+    'vote',
+    'newhandwrite', 'handwrite',
+    'ChineseCharacterDictation'
+];
+GuideController.InvalidAnswerQuestions = [
+    'vote',
+    'newhandwrite', 'handwrite'
+];
+GuideController.GlobalControlQuestions = [
+    'ChineseCharacterDictation'
+];
+exports.default = GuideController;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_processor_1 = __webpack_require__(1);
+var chinese_dictation_1 = __webpack_require__(10);
+var reading_comprehension_1 = __webpack_require__(11);
+function factory(questionType) {
+    return function (context) {
+        switch (questionType) {
+            case 'ChineseCharacterDictation':
+                return new chinese_dictation_1.default(context);
+            case 'ReadingComprehension':
+                return new reading_comprehension_1.default(context);
+            default:
+                return new base_processor_1.default(context);
+        }
+    };
+}
+exports.factory = factory;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! classroomStateService */
+Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __webpack_require__(0);
+var EmptyFunction = function () { };
+var DependentModules = {
+    ObjectiveBasicQuestion: 0,
+    CompoundWriteController: 1,
+    ChineseDictationViewer: 2,
+    H5HandWriter: 3
+};
+var ClassroomStateService = (function () {
+    function ClassroomStateService(context) {
+        if (context.isPPTShell) {
+            this.context = context;
+            this.containerScrollTop = 0;
+        }
+        else {
+            var obj = {};
+            for (var key in ClassroomStateService.prototype) {
+                obj[key] = EmptyFunction;
+            }
+            return obj;
+        }
+    }
+    ClassroomStateService.prototype.destroy = function () {
+        delete this.context;
+        delete this.currentMedia;
+    };
+    ClassroomStateService.prototype.bindEvent = function () {
+        var _this = this;
+        NDMediaPlayer.mediaOnTimeupdate(function (o) {
+            _this.currentMedia = o;
+            _this.dispatchStatusChanged();
+        });
+        this.context.$addEventListener('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, function (args) {
+            if (!!_this.containerScrollTop) {
+                _this.context.loaderContainer.scrollTop(_this.containerScrollTop);
+                _this.containerScrollTop = 0;
+            }
+            if (args.presenterCode !== "CompoundQuestionLoader" && _this.questionProcessorState) {
+                _this.context.questionProcessor.setClassroomStatus(_this.questionProcessorState);
+                _this.questionProcessorState = null;
+            }
+        });
+        this.context.$view.find('.js-layout-body').on('scroll', function () {
+            clearTimeout(_this.scrollTimer);
+            _this.scrollTimer = setTimeout(function () {
+                _this.dispatchStatusChanged();
+            }, 200);
+        });
+    };
+    ClassroomStateService.prototype.unbindEvent = function () {
+    };
+    ClassroomStateService.prototype.setStatus = function (state, depends) {
+        var _this = this;
+        this.isInRecovering = true;
+        if (state) {
+            var context_1 = this.context;
+            context_1.userResponse = state.userResponse;
+            if (!state.showMainStem) {
+                context_1.questionSwitcherService.setBarItemState('question_stem', {
+                    status: 'hide'
+                });
+            }
+            if (state.currentMedia) {
+                this.currentMedia = state.currentMedia;
+                NDMediaPlayer.mediaSkip(state.currentMedia.mediaType, state.currentMedia.index, Math.max(0, state.currentMedia.currentTime - 1));
+            }
+            if (!!state.containerScrollTop) {
+                this.containerScrollTop = +state.containerScrollTop;
+            }
+            if (state.processorState) {
+                this.questionProcessorState = state.processorState;
+                this.context.questionProcessor.setClassroomStatus(state.processorState);
+            }
+            if (state.currentQuestionId) {
+                var questionData = this.context.internalService.getQuestionDataById(state.currentQuestionId);
+                if (questionData) {
+                    context_1.currentQuestionData = questionData;
+                    var questionServiceType_1 = this.context.internalService.getModuleNameByQuestionType(questionData.type);
+                    var answer = state.userResponse[state.currentQuestionId];
+                    var answerState = answer ? answer.answerState : 'NO_ANSWER';
+                    context_1.questionSwitcherService.jumpToQuestionPage(state.currentQuestionId);
+                    context_1._refreshSwitchBarStatus();
+                    context_1.questionSwitcherService.setQuestionState(questionData.id, questionData.type, answerState, undefined, true);
+                    var loader = context_1._loadSubQuestion(questionData, answer);
+                    if (loader && typeof loader.then === 'function') {
+                        loader.then(function () {
+                            var questionService = context_1.questionService[questionServiceType_1];
+                            if (questionService) {
+                                try {
+                                    if (state.processorState) {
+                                        _this.context.questionProcessor.setClassroomStatus(state.processorState);
+                                    }
+                                    if (depends && typeof questionService.setClassroomStatus === 'function') {
+                                        depends[DependentModules[questionServiceType_1]] && questionService.setClassroomStatus(depends[DependentModules[questionServiceType_1]]);
+                                        if (questionServiceType_1 === 'CompoundWriteController' && depends[DependentModules['H5HandWriter']]) {
+                                            questionService.setClassroomStatus(depends[DependentModules['H5HandWriter']]);
+                                        }
+                                    }
+                                }
+                                catch (e) {
+                                    logger_1.default.warn(e);
+                                }
+                            }
+                            _this.dispatchStatusRecovered();
+                            _this.dispatchStatusChanged();
+                        });
+                        return;
+                    }
+                }
+            }
+            else {
+                context_1._refreshSwitchBarStatus();
+            }
+        }
+        this.dispatchStatusRecovered();
+    };
+    ClassroomStateService.prototype.getStatus = function () {
+        var userResponse = this.context.userResponse;
+        return {
+            currentQuestionId: this.context.currentQuestionData.id,
+            currentMedia: this.currentMedia,
+            userResponse: userResponse,
+            showMainStem: this.context.mainStemContainer.css('display') !== 'none',
+            containerScrollTop: this.context.loaderContainer.scrollTop(),
+            processorState: this.context.questionProcessor.getClassroomStatus()
+        };
+    };
+    ClassroomStateService.prototype.getClassroomStatusDependence = function () {
+        return Object.keys(DependentModules).sort(function (a, b) { return DependentModules[a] - DependentModules[b]; });
+    };
+    ClassroomStateService.prototype.dispatchStatusChanged = function () {
+        var _this = this;
+        if (this.isInRecovering)
+            return;
+        var currentPendingList = this.context.internalService.getCurrentPendingList();
+        $.when.apply($, currentPendingList).then(function () {
+            _this.context.playerController.startFlow('css_classroom_status_changed', {
+                presenterCode: "CompoundQuestionLoader"
+            });
+        });
+    };
+    ClassroomStateService.prototype.dispatchStatusRecovered = function () {
+        this.context.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+            presenterCode: "CompoundQuestionLoader"
+        });
+        this.isInRecovering = false;
+    };
+    return ClassroomStateService;
+}());
+exports.default = ClassroomStateService;
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! internalService */
+Object.defineProperty(exports, "__esModule", { value: true });
+var constant_1 = __webpack_require__(3);
+var InternalService = (function () {
+    function InternalService(context) {
+        this.context = context;
+    }
+    InternalService.prototype.getCurrentQuestionId = function () {
+        return (this.context.currentQuestionData || this.context.questionList[0]).id;
+    };
+    InternalService.prototype.getCurrentQuestionType = function () {
+        return (this.context.currentQuestionData || this.context.questionList[0]).type;
+    };
+    InternalService.prototype.getCurrentQuestionData = function () {
+        return this.context.currentQuestionData;
+    };
+    InternalService.prototype.getCurrentPendingList = function () {
+        var currentPendingList = [];
+        for (var k in this.context.userResponse) {
+            var response = this.context.userResponse[k];
+            if (response && (response = response.answer.user_response[0]) && typeof response.then === 'function') {
+                currentPendingList.push(response);
+            }
+        }
+        return currentPendingList;
+    };
+    InternalService.prototype.getQuestionDataById = function (id) {
+        return this.context.questionList.find(function (item) { return item.id === id; });
+    };
+    InternalService.prototype.getModuleNameByQuestionType = function (type) {
+        for (var key in constant_1.QuestionMapping) {
+            var item = constant_1.QuestionMapping[key];
+            if (item.includes(type)) {
+                return key;
+            }
+        }
+        return '';
+    };
+    InternalService.prototype.getModuleServiceByQuestionType = function (type) {
+        return this.context.questionService[this.getModuleNameByQuestionType(type)];
+    };
+    InternalService.prototype.getLanguageText = function (key) {
+        return this.context.languageSet[key] || 'ERROR';
+    };
+    return InternalService;
+}());
+exports.default = InternalService;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! presenterService */
+Object.defineProperty(exports, "__esModule", { value: true });
+var logger_1 = __webpack_require__(0);
+var presenter = null;
+function CompoundQuestionLoaderService(parent) {
+    presenter = parent;
+}
+CompoundQuestionLoaderService.prototype = {
+    getQuestionInfo: function () {
+        var info = {
+            id: presenter.model.questionId,
+            type_code: presenter.questionType || "Compound",
+            type_name: "新复合题",
+            dispatchOnly: true
+        };
+        info.subjective = presenter.guideController ? !presenter.guideController.hasCorrectAnswer() : false;
+        return info;
+    },
+    showAnswer: function (type, specialAnswer) {
+        logger_1.default.info("调用复合题的show Result Hint");
+        if (presenter.isPPTShell || presenter.isWeb || presenter.isPC) {
+            if (presenter.currentPhase != 'Statistical' && presenter.currentPhase != 'ViewDetail') {
+                presenter.isPPTShowAnswer = true;
+            }
+        }
+        if (type == 'user') {
+            presenter.isShowAnswer = true;
+            presenter.questionProcessor.showAnswer(type, specialAnswer);
+        }
+        else if (type == 'correct') {
+            if (presenter.currentPhase === 'Normal') {
+                presenter.guideController.setCorrectAnswerVisible(true);
+            }
+            else {
+                presenter.isShowAnswer = true;
+            }
+        }
+    },
+    getResult: function (options) {
+        var result = {
+            questionId: presenter.model.questionId,
+            answerState: 'NO_ANSWER',
+            answer: {
+                answer_result: true,
+                correct_response: [],
+                user_response: []
+            }
+        };
+        if (!presenter.icrStatistics && (options === undefined || (options && options.fromStatistics == false))) {
+            var component = presenter.internalService.getModuleNameByQuestionType(presenter.currentQuestionData.type);
+            presenter.userResponse[presenter.currentQuestionData.id] = presenter.questionService[component].getResult({
+                extra: JSON.stringify({
+                    questionId: presenter.currentQuestionData.id
+                })
+            });
+            if (component === 'CompoundWriteController') {
+                if (presenter.isApp) {
+                    presenter._getResult(presenter.userResponse[presenter.currentQuestionData.id]);
+                }
+            }
+            var questionResult = presenter.questionProcessor.getResult(result, options);
+            if (questionResult) {
+                return questionResult;
+            }
+        }
+        for (var i = 0, len = presenter.questionList.length; i < len; i++) {
+            var question = presenter.questionList[i];
+            if (presenter.userResponse[question.id] === undefined) {
+                result.answer.answer_result = false;
+                result.answer.correct_response.push({
+                    subquestionId: question.id,
+                    subquestionType: question.type
+                });
+                result.answer.user_response.push({
+                    subquestionId: question.id,
+                    subquestionType: question.type,
+                    subquestionResult: false,
+                    subquestionState: 'NO_ANSWER'
+                });
+            }
+            else {
+                var response = presenter.userResponse[question.id];
+                if (response.answerState != "NO_ANSWER") {
+                    result.answerState = 'NO_COMPLETE';
+                }
+                if (response.answer.answer_result === false) {
+                    result.answer.answer_result = false;
+                }
+                var correctResponse = {
+                    subquestionId: response.questionId,
+                    subquestionType: question.type
+                }, userResponse = {
+                    subquestionId: response.questionId,
+                    subquestionType: question.type,
+                    subquestionState: response.answerState,
+                    subquestionResult: response.answer.answer_result
+                };
+                switch (question.type) {
+                    case 'newhandwrite':
+                    case 'handwrite':
+                        result.answer.correct_response.push(correctResponse);
+                        result.answer.user_response.push(userResponse);
+                        break;
+                    default:
+                        presenter.questionProcessor.setEachResult(result, correctResponse, userResponse, response);
+                        break;
+                }
+            }
+        }
+        if (result.answer.answer_result === true) {
+            result.answerState = 'COMPLETE';
+        }
+        return result;
+    },
+    lockQuestion: function (data) {
+        presenter.isLock = true;
+        presenter.questionSwitcherService.setToolbarLocked(true);
+        try {
+            presenter.insideQuestionService.forEach(function (service) {
+                service.lockQuestion(data);
+            });
+        }
+        catch (e) {
+            logger_1.default.error('CompoundQuestion.lockQuestion: subQuestion lockQuestion error ', e);
+        }
+        if (data && (data.type || '').toLowerCase() === 'onfinish') {
+            presenter.questionProcessor.finishQuestion();
+        }
+    },
+    unlockQuestion: function (data) {
+        presenter.isLock = false;
+        presenter.questionSwitcherService.setToolbarLocked(false);
+        try {
+            presenter.insideQuestionService.forEach(function (service) {
+                service.unlockQuestion(data);
+            });
+        }
+        catch (e) {
+            logger_1.default.error('CompoundQuestion.unlockQuestion: subQuestion unlockQuestion error ', e);
+        }
+    },
+    finishQuestion: function (data) {
+        presenter.isShowAnswer = presenter.isLock = false;
+        presenter.currentPhase = "Normal";
+        presenter.questionSwitcherService.setCurrentPhase(presenter.currentPhase);
+        try {
+            presenter.insideQuestionService.forEach(function (service) {
+                service.finishQuestion(data);
+            });
+        }
+        catch (e) {
+            logger_1.default.error('CompoundQuestion.finishQuestion: subQuestion finishQuestion error ', e);
+        }
+        presenter.questionProcessor.finishQuestion();
+    },
+    resetQuestion: function (param) {
+        if (presenter.isLock == true && presenter.isPPTShell == false) {
+            presenter.isLock = false;
+        }
+        if (presenter.isPPTShell || presenter.isWeb || presenter.isPC) {
+            presenter.isPPTShowAnswer = false;
+        }
+        presenter.isShowAnswer = false;
+        presenter.userResponse = {};
+        presenter.currentPhase = "Normal";
+        presenter.questionProcessor.resetQuestion();
+        presenter._refreshSwitchBarStatus();
+        presenter.questionSwitcherService.resetSwitchBar();
+        presenter.guideController.reset();
+        try {
+            presenter.insideQuestionService.forEach(function (service) {
+                service.resetQuestion(param);
+            });
+        }
+        catch (e) {
+            logger_1.default.error('CompoundQuestion.resetQuestion: subQuestion resetQuestion error ', e);
+        }
+        presenter._onPresenterLoaded();
+    },
+    showResultHint: function () {
+        logger_1.default.info("调用复合题的show Result Hint");
+    },
+    setLocationProperties: function (properties) {
+        presenter.languageSet = properties;
+        presenter.$translatorDeferred.resolve();
+    },
+    convertDataForStatistics: function (originalData) {
+        var value = originalData.value;
+        var questionType = value.questionType;
+        var elapsedTime = value.elapsedTime || 0;
+        var allrightStu = [];
+        var students = function (value) {
+            var students = {
+                length: 0
+            };
+            $.each(value.users, function (i, item) {
+                item["studentName"] = item.userId;
+                students[item.userId] = item;
+                students.length++;
+            });
+            return students;
+        }(value);
+        var questionTypeMap = {
+            choice: "objective",
+            order: "objective",
+            textentry: "objective",
+            textentrymultiple: "objective",
+            newhandwrite: "subjective",
+            handwrite: "subjective",
+            match: "objective",
+            judge: "objective",
+            multiplechoice: "objective",
+            vote: "subjective",
+            graphicgapmatch: "objective",
+            ChineseCharacterDictation: 'objective'
+        };
+        var answer = value["correctAnswerTeacher"].correct_response;
+        var answerNum = 0;
+        for (var i = 0, len = answer.length; i < len; i++) {
+            answer[i].type = questionTypeMap[answer[i]["subquestionType"]];
+            answer[i].correctNum = 0;
+            answer[i].accuracy = 0;
+            if (answer[i].type == "objective") {
+                answerNum++;
+            }
+        }
+        var answers = function (answers, answer) {
+            var result = {};
+            answers.forEach(function (item) {
+                var a = JSON.parse(item.answer);
+                a.answer_result = true;
+                var responses = a.user_response;
+                var correctNum = 0;
+                for (var i = 0, len = responses.length; i < len; i++) {
+                    if (answer[i].type === 'objective') {
+                        if (responses[i].subquestionResult != true) {
+                            a.answer_result = false;
+                        }
+                        else {
+                            answer[i].correctNum += item.userIds.length;
+                            correctNum++;
+                        }
+                    }
+                    if (answer[i].type === 'subjective') {
+                        if (responses[i].subquestionState != "NO_ANSWER") {
+                            answer[i].correctNum += item.userIds.length;
+                        }
+                        else {
+                            a.answer_result = false;
+                        }
+                    }
+                }
+                for (var j = 0, len = item.userIds.length; j < len; j++) {
+                    result[item.userIds[j]] = {
+                        userId: item.userIds[j],
+                        isCorrect: a.answer_result,
+                        accuracy: answerNum > 0 ? Math.round(correctNum / answerNum * 100) : 100,
+                        response: responses
+                    };
+                    if (a.answer_result == true) {
+                        allrightStu.push(item.userIds[j]);
+                    }
+                }
+            });
+            return result;
+        }(value.answers[0], answer);
+        var users = value.users;
+        var commitStudents = [];
+        var correctStudents = [];
+        var errorStudents = [];
+        var undoStudents = [];
+        if (window['ClassroomUtils'] && ClassroomUtils.getCurrentStudents) {
+            var options = {
+                order: [{
+                        orderProperty: 'seatNumberValue',
+                        orderType: 'asc'
+                    }, {
+                        orderProperty: 'studentNo',
+                        orderType: 'asc'
+                    }]
+            };
+            var currentStudent = ClassroomUtils.getCurrentStudents(options);
+            var tmpStu, stuId, tmpIndex;
+            var inArray = false;
+            var j, len;
+            for (j = 0, len = users.length; j < len; j++) {
+                for (var i = 0; i < currentStudent.length; i++) {
+                    tmpStu = currentStudent[i];
+                    stuId = tmpStu["studentId"];
+                    if (stuId == users[j]["userId"]) {
+                        inArray = true;
+                        users[j]['headIcon'] = tmpStu['headIcon'];
+                        users[j]["studentName"] = tmpStu["studentName"];
+                        users[j]["studentNo"] = tmpStu["studentNo"];
+                        currentStudent.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }
+        users.forEach(function (item, index) {
+            var id = item.userId;
+            var student = students[id];
+            if (student) {
+                student.submitTime = item.submitTime;
+                if (student.submitTime === 0) {
+                    undoStudents.push(student);
+                }
+                else {
+                    student.accuracy = answers[id].accuracy;
+                    if (answers[id].isCorrect) {
+                        correctStudents.push(student);
+                    }
+                    else {
+                        errorStudents.push(student);
+                    }
+                }
+                commitStudents.push(student);
+            }
+        });
+        var commitNum = commitStudents.length;
+        var totalAccuracy = 0;
+        for (var i = 0, len = answer.length; i < len; i++) {
+            answer[i].accuracy = Math.round(answer[i].correctNum / commitNum * 100);
+            if (answer[i].type == "objective") {
+                totalAccuracy += answer[i].accuracy;
+            }
+        }
+        var accuracy = answerNum > 0 ? Math.round(totalAccuracy / answerNum) : 100;
+        value.convertedData = {
+            questionType: questionType,
+            commitNum: commitStudents.length,
+            totalNum: students.length,
+            elapsedTime: elapsedTime,
+            students: commitStudents,
+            correctStudents: correctStudents,
+            errorStudents: errorStudents,
+            undoStudents: undoStudents,
+            answer: answer,
+            accuracy: accuracy,
+            allrightStu: allrightStu
+        };
+        presenter.questionProcessor.convertDataForStatistics(originalData);
+        return originalData;
+    },
+    getStatisticClass: function () {
+        return "F";
+    },
+    startStatistics: function () {
+        presenter.currentPhase = "Statistical";
+        presenter.questionProcessor.startStatistics();
+        presenter.isLock = presenter.isShowAnswer = true;
+        if (presenter.currentQuestionData) {
+            presenter._showSubQuestionResult(presenter.currentQuestionData.type, false, undefined);
+            presenter._loadSubQuestion(presenter.currentQuestionData, null);
+            presenter.questionSwitcherService.setQuestionState(presenter.currentQuestionData.id, presenter.currentQuestionData.type, undefined, undefined, true);
+        }
+    },
+    hasAnalysis: function () {
+        return presenter.guideController.hasAnalysis();
+    },
+    hasHint: function () {
+        return presenter.guideController.hasHint();
+    },
+    setAnalysisVisible: function (visible) {
+        presenter.guideController.setAnalysisVisible(visible);
+        presenter.questionProcessor.setAnalysisVisible(visible);
+    },
+    setHintVisible: function (visible) {
+        presenter.guideController.setHintVisible(visible);
+        presenter.questionProcessor.setHintVisible(visible);
+    },
+    getClassroomStatus: function () {
+        return presenter.classroomStatusService.getStatus();
+    },
+    setClassroomStatus: function (state, depends) {
+        presenter.classroomStatusService.setStatus(state, depends);
+    },
+    getClassroomStatusDependence: function () {
+        return presenter.classroomStatusService.getClassroomStatusDependence();
+    },
+    clearClassroomStatus: function () {
+    }
+};
+exports.default = CompoundQuestionLoaderService;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! presetner */
+Object.defineProperty(exports, "__esModule", { value: true });
+var QuestionProcessor = __webpack_require__(5);
+var guidance_1 = __webpack_require__(4);
+var classroom_state_service_1 = __webpack_require__(6);
+var presenter_service_1 = __webpack_require__(8);
+var internal_service_1 = __webpack_require__(7);
+var ndmedia_player_1 = __webpack_require__(2);
+var logger_1 = __webpack_require__(0);
+var Presenter = BaseController.extend({
+    metaInfo: {
+        name: "CompoundQuestionLoader",
+        type: PresenterType.PRESENTER_CONTROLLER
+    },
+    $init: function () {
+        this._super();
+        this.questionList = [];
+        this.questionService = {};
+        this.questionType = '';
+        this.componentContainer = undefined;
+        this.componentLoadPromise = {};
+        this.stemContainer = undefined;
+        this.mainStemContainer = undefined;
+        this.toastContainer = undefined;
+        this.currentQuestionData = undefined;
+        this.insideQuestionService = [];
+        this.currentStudentId = "";
+        this.userResponse = {};
+        this.classroomStatusService = null;
+        this.questionSwitcherService = null;
+        this.scrollTimer = null;
+        this.questionProcessor = null;
+        this.internalService = null;
+        this.isLock = false;
+        this.isShowAnswer = false;
+        this.isPPTShowAnswer = false;
+        this.currentPhase = "Normal";
+        this.languageSet = {};
+    },
+    getService: function () {
+        if (!this._service_) {
+            this._service_ = new presenter_service_1.default(this);
+            this.classroomStatusService = new classroom_state_service_1.default(this);
+        }
+        return this._service_;
+    },
+    $getInterfaceMethods: function () {
+        return [{
+                interface: "IQuestionLoader",
+                methods: ["loadQuestion", "getResult", "showAnswer", "getQuestionInfo"]
+            }, {
+                interface: "IQuestionSwitcher",
+                methods: ["setCurrentPhase", "setQuestionState", "setToolbarLocked", "resetSwitchBar", "jumpToQuestionPage"]
+            }, {
+                interface: "ITimerComponent",
+                methods: ['setVisible']
+            }, {
+                interface: 'ITimerController',
+                methods: ['getTimeValue']
+            }, {
+                interface: "IInteractionQuestion",
+                methods: ["getQuestionInfo", "showAnswer", "getResult", "lockQuestion",
+                    "unlockQuestion", "finishQuestion", "resetQuestion", "showResultHint"
+                ]
+            }];
+    },
+    $beforePresenterRun: function (interfaceName, metaInfo, service) { },
+    $afterPresenterRun: function (interfaceName, metaInfo, service) {
+        this._afterSetLayoutService();
+        if (interfaceName === 'IQuestionLoader') {
+            if (this.questionService[metaInfo.name] == undefined) {
+                this.questionService[metaInfo.name] = service;
+                if (this.currentQuestionData != null) {
+                    if (this.currentPhase == 'ViewDetail' &&
+                        (this.currentQuestionData.type == 'handwrite' ||
+                            this.currentQuestionData.type == 'newhandwrite')) {
+                        var queryData = {
+                            source: this._CLASS_ID_,
+                            type: "subExamAnswer",
+                            isShowAnswer: true,
+                            users: [this.currentStudentId],
+                            value: {
+                                subExamId: this.currentQuestionData.id,
+                                subExamType: this.currentQuestionData.type
+                            }
+                        };
+                        if (this.isPPTShell) {
+                            service.sendBackground(this.currentQuestionData);
+                            var answerState = this.userResponse[this.currentQuestionData.id]['answerState'];
+                            if (answerState != "NO_ANSWER") {
+                                this.$dispatchEvent('Exam', PresenterEventType.PPT_NATIVE_EVENT, queryData);
+                            }
+                            else {
+                                this._loadSubQuestion(this.currentQuestionData, this.userResponse[this.currentQuestionData.id]);
+                            }
+                        }
+                        if (this.icrStatistics) {
+                            this.$dispatchEvent("QueryAnswers", PresenterEventType.IC_PLAYER_EVENT, queryData);
+                        }
+                    }
+                    else {
+                        var answer = undefined;
+                        if (this.userResponse[this.currentQuestionData.id]) {
+                            answer = this.userResponse[this.currentQuestionData.id];
+                        }
+                        this._loadSubQuestion(this.currentQuestionData, answer).then(function () {
+                            if (this.componentLoadPromise[metaInfo.name]) {
+                                this.componentLoadPromise[metaInfo.name].resolve();
+                                delete this.componentLoadPromise[metaInfo.name];
+                            }
+                        }.bind(this));
+                    }
+                }
+            }
+        }
+        else if (interfaceName === 'IQuestionSwitcher') {
+            this.questionSwitcherService = service;
+        }
+        else if (interfaceName === 'IInteractionQuestion') {
+            if (service !== this._service_) {
+                this.insideQuestionService.push(service);
+            }
+        }
+        this.questionProcessor.afterPresenterRun(interfaceName, metaInfo, service);
+    },
+    $afterSetLayoutService: function () {
+    },
+    run: function (view, model) {
+        var self = this;
+        this.$view = $(view);
+        this.model = model;
+        ndmedia_player_1.setLanguage(this.currentLanguage);
+        this.icrStatistics = this.urlParams.sys == "icrStatisticsPlatform";
+        if (this.isApp) {
+            this.__interface.exerciseSubInfoDataParse = self._createDelegate(self._exerciseSubInfoDataParse, [], true, self);
+            this.__interface.exerciseSubInfoSuccess = self._createDelegate(self._exerciseSubInfoSuccess, [], true, self);
+            this.__interface.exerciseSubInfoFail = self._createDelegate(self._exerciseSubInfoFail, [], true, self);
+        }
+        if (this.model.questionList && this.model.questionList.questions.length > 0) {
+            this.questionList = this.model.questionList.questions;
+        }
+        this.questionType = this.model.questionType;
+        this.mainStemContainer = this.$view.find('.js-main-stem-container');
+        this.popupContainer = this.$view.find('.js_compound_popup');
+        this.componentContainer = this.$view.find('.js-question-container');
+        this.toastContainer = this.$view.find('.js_compound_toast');
+        this.loaderContainer = this.$view.find('.js-question-wrap');
+        this.stemContainer = this.$view.find('.js-question-stem');
+        if (this.model.questionStem) {
+            this.stemContainer.html(this.model.questionStem);
+            NDMediaPlayer.mediaOnFullScreenChange(function (isFull) {
+                if (self.currentQuestionData.type === 'newhandwrite' || self.currentQuestionData.type === 'handwrite') {
+                    self.$dispatchEvent('HandWriteDisplayChange', PresenterEventType.IC_PLAYER_EVENT, {
+                        'isFull': isFull
+                    });
+                }
+            });
+            ndmedia_player_1.render(this.stemContainer);
+        }
+        this.$translatorDeferred.done(function () {
+            self._replaceLanguage(self.$view);
+        });
+        this.internalService = new internal_service_1.default(this);
+        this.guideController = new guidance_1.default(this);
+        this.questionProcessor = QuestionProcessor.factory(this.questionType)(this);
+    },
+    pageShow: function () {
+        this._bindEvent();
+    },
+    pageLeave: function () {
+        this._unbindEvent();
+    },
+    destroy: function () {
+        this.questionProcessor.destroy();
+        this.guideController.destroy();
+        NDMediaPlayer.destroy();
+    },
+    _afterSetLayoutService: function () {
+        if (this.questionProcessor) {
+            this.questionProcessor.afterSetLayoutService();
+            this._afterSetLayoutService = function () { };
+        }
+    },
+    _replaceLanguage: function (view) {
+        $.each(this.languageSet, function (key, value) {
+            view.find('.lang_' + key).html(value);
+        });
+    },
+    _exerciseSubInfoDataParse: function (options) {
+        var subQuestionId = options.subExamId;
+        logger_1.default.info("开始获取小题的答案!", subQuestionId);
+        var question = _.find(this.questionList, {
+            id: subQuestionId
+        });
+        if (question == undefined) {
+            return;
+        }
+        if (['newhandwrite', 'handwrite', 'ChineseCharacterDictation'].indexOf(question.type) === -1) {
+            return;
+        }
+        if (this.userResponse[subQuestionId] == undefined) {
+            options.answer = JSON.stringify({
+                data: []
+            });
+            return;
+        }
+        var result = this.questionProcessor.exerciseSubInfoDataParse(this.userResponse[subQuestionId]);
+        try {
+            options.answer = JSON.stringify(result);
+        }
+        catch (e) {
+            logger_1.default.error('获取手写题作答结果失败!');
+        }
+    },
+    _exerciseSubInfoSuccess: function () {
+        logger_1.default.info("获取小题答案成功!");
+    },
+    _exerciseSubInfoFail: function () {
+        logger_1.default.error("获取小题答案失败!");
+    },
+    _bindEvent: function () {
+        var self = this;
+        this.$addEventListener('SwitchToolbarItemClick', PresenterEventType.IC_PLAYER_EVENT, this._onQuestionSwitch);
+        this.$addEventListener('PresenterLoaded', PresenterEventType.IC_PLAYER_EVENT, this._onPresenterLoaded);
+        if (this.isPPTShell || this.icrStatistics) {
+            this.$addEventListener('Event_SwitchToQuestion', PresenterEventType.IC_PLAYER_EVENT, this._onSwitchToQuestion);
+            this.$addEventListener('Event_SeeStudentAnswer', PresenterEventType.IC_PLAYER_EVENT, this._onSeeStudentAnswer);
+            this.$addEventListener('Event_backToOverView', PresenterEventType.IC_PLAYER_EVENT, function (data) {
+                if (data.back2OverView) {
+                    self.currentPhase = 'Statistical';
+                    self.questionSwitcherService.setCurrentPhase(self.currentPhase);
+                }
+            });
+            this.$addEventListener('showAnswerCompoundCallback', PresenterEventType.NATIVE_EVENT, $.proxy(this._onShowAnswerCallback, this));
+            this.$addEventListener('QueryAnswersCallback', PresenterEventType.IC_PLAYER_EVENT, $.proxy(this._onShowAnswerCallback, this));
+        }
+        this.guideController.bindEvent();
+        this.questionProcessor.bindEvent();
+        this.classroomStatusService.bindEvent();
+    },
+    _unbindEvent: function () {
+        this.$removeEventListener();
+        this.guideController.unbindEvent();
+        this.questionProcessor.unbindEvent();
+        this.classroomStatusService.unbindEvent();
+    },
+    _onPresenterLoaded: function () {
+        var _this = this;
+        if (this.questionList.length > 0) {
+            this.currentQuestionData = this.questionList[0];
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, undefined, undefined, true);
+            this._loadSubQuestion(this.currentQuestionData).then(function () {
+                _this.guideController.dispatchToolbarUpdate();
+                _this.classroomStatusService.dispatchStatusChanged();
+            });
+        }
+    },
+    _onQuestionSwitch: function (eventData) {
+        var _this = this;
+        if (eventData.value == undefined) {
+            logger_1.default.error('Switch Question Error, Question id is NULL!');
+            return;
+        }
+        if (eventData.id === 'question_stem' && eventData.value === 'hide') {
+            this.mainStemContainer.hide();
+            this.classroomStatusService.dispatchStatusChanged();
+            return;
+        }
+        else if (eventData.id === 'question_stem' && eventData.value === 'show') {
+            this.mainStemContainer.show();
+            this.classroomStatusService.dispatchStatusChanged();
+            return;
+        }
+        var answerStatus = undefined;
+        if (this.currentQuestionData != null) {
+            if (this.currentQuestionData.id === eventData.value) {
+                logger_1.default.debug('switch question id is equal current question id!');
+                return;
+            }
+            if (this.currentPhase != 'Statistical' && this.currentPhase != 'ViewDetail') {
+                if (this.isShowAnswer == false && !this.isLock) {
+                    var component = this.internalService.getModuleNameByQuestionType(this.currentQuestionData.type);
+                    if (this.questionService[component] != undefined) {
+                        var answerResult = this.questionService[component]
+                            .getResult({
+                            extra: JSON.stringify({
+                                questionId: this.currentQuestionData.id
+                            })
+                        });
+                        var answerResponse = answerResult.answer.user_response[0];
+                        answerStatus = answerResult.answerState;
+                        if (component == 'CompoundWriteController') {
+                            if (this.isApp) {
+                                this._getResult(answerResult);
+                            }
+                            else {
+                                this.userResponse[answerResult.questionId] = answerResult;
+                            }
+                        }
+                        else {
+                            if (typeof answerResponse.then === 'function' && typeof answerResponse.done === 'function') {
+                                this.userResponse[answerResult.questionId] = answerResult;
+                                answerResponse.done(function (res) {
+                                    this.userResponse[answerResult.questionId] && (this.userResponse[answerResult.questionId].answer.user_response[0] = res);
+                                }.bind(this));
+                            }
+                            else {
+                                this.userResponse[answerResult.questionId] = answerResult;
+                            }
+                        }
+                    }
+                }
+                else {
+                    if (this.userResponse[this.currentQuestionData.id] == undefined) {
+                        answerStatus = 'NO_ANSWER';
+                    }
+                    else {
+                        answerStatus = this.userResponse[this.currentQuestionData.id].answerState;
+                    }
+                }
+            }
+        }
+        if (this.currentPhase == 'Normal') {
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, answerStatus, undefined, false);
+        }
+        else if (this.currentPhase == "Statistical" || this.currentPhase == 'ViewDetail') {
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, undefined, undefined, this.currentQuestionData.id == eventData.value ? true : false);
+        }
+        this.currentQuestionData = _.find(this.questionList, {
+            id: eventData.value
+        });
+        var answer = null;
+        answerStatus = 'NO_ANSWER';
+        if (this.userResponse[eventData.value]) {
+            answer = this.userResponse[eventData.value];
+            answerStatus = answer.answerState;
+        }
+        logger_1.default.debug('questionid', eventData.value, 'answer', answer);
+        this._loadSubQuestion(this.currentQuestionData, answer).then(function () {
+            _this.guideController.switchQuestion();
+        });
+        ;
+        if (this.currentPhase == 'Normal') {
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, answerStatus, undefined, true);
+        }
+        else if (this.currentPhase == "Statistical" || this.currentPhase == 'ViewDetail') {
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, undefined, undefined, true);
+        }
+        this.classroomStatusService.dispatchStatusChanged();
+    },
+    _getResult: function (answerResult, questionInfo) {
+        var resultObject = answerResult.answer.user_response[0];
+        var resultDeferred = $.Deferred();
+        var self = this;
+        if (resultObject["then"] != undefined && $.isFunction(resultObject["then"])) {
+            try {
+                resultObject.done(function (result) {
+                    var extraData = result.data[0].extra;
+                    self.userResponse[extraData.questionId] = {
+                        questionId: extraData.questionId,
+                        answerState: answerResult.answerState,
+                        answer: {
+                            answer_result: true,
+                            user_response: [result]
+                        }
+                    };
+                    resultDeferred.resolve();
+                });
+            }
+            catch (e) {
+                logger_1.default.error("get question result error!");
+                resultDeferred.reject();
+            }
+        }
+        else {
+            resultDeferred.resolve();
+        }
+        return resultDeferred.promise();
+    },
+    _onSwitchToQuestion: function (eventData) {
+        if (this.currentPhase != 'Statistical' && this.currentPhase != 'ViewDetail') {
+            return;
+        }
+        var showQuesiton = _.find(this.questionList, {
+            id: eventData.questionId
+        });
+        if (showQuesiton == undefined) {
+            logger_1.default.error("can't get question with QuestionId is " + eventData.questionId);
+            return;
+        }
+        this.userResponse = {};
+        this._refreshSwitchBarStatus(true);
+        if (this.currentQuestionData == undefined) {
+            this.currentQuestionData = showQuesiton;
+        }
+        else if (this.currentQuestionData.id != showQuesiton.id) {
+            this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, undefined, undefined, false);
+            this.currentQuestionData = showQuesiton;
+        }
+        this.currentPhase = 'Statistical';
+        this.questionSwitcherService.setCurrentPhase(this.currentPhase);
+        this.questionSwitcherService.jumpToQuestionPage(this.currentQuestionData.id);
+        this.questionSwitcherService.setQuestionState(this.currentQuestionData.id, this.currentQuestionData.type, undefined, undefined, true);
+        this._loadSubQuestion(showQuesiton);
+    },
+    _onSeeStudentAnswer: function (eventData) {
+        if (this.currentPhase != 'Statistical' && this.currentPhase != 'ViewDetail') {
+            return;
+        }
+        this.userResponse = {};
+        var self = this, answers = {};
+        if (eventData.studentAnswer != undefined) {
+            $.extend(true, answers, eventData.studentAnswer);
+        }
+        $.each(answers, function (index, item) {
+            var id = item.subquestionId;
+            self.userResponse[id] = {
+                questionId: item.subquestionId,
+                answerState: item.subquestionState,
+                answer: {
+                    answer_result: item.subquestionResult,
+                    user_response: []
+                }
+            };
+            delete item.subquestionId;
+            delete item.subquestionType;
+            delete item.subquestionState;
+            delete item.subquestionResult;
+            self.userResponse[id].answer.user_response.push(item);
+        });
+        this.questionSwitcherService.resetSwitchBar();
+        this.questionSwitcherService.setCurrentPhase('');
+        this._refreshSwitchBarStatus(false);
+        this.currentPhase = "ViewDetail";
+        this.questionSwitcherService.setCurrentPhase(this.currentPhase);
+        this.currentStudentId = eventData.userId;
+        this.currentQuestionData = this.questionList[0];
+        var questionAnswer = this.userResponse[this.currentQuestionData.id];
+        if ($.isEmptyObject(questionAnswer)) {
+            this._loadSubQuestion(this.currentQuestionData);
+        }
+        else {
+            this._loadSubQuestion(this.currentQuestionData, questionAnswer);
+        }
+        this._refreshSwitchBarStatus(false);
+    },
+    _onShowAnswerCallback: function (data) {
+        if (this.currentPhase != 'ViewDetail') {
+            return;
+        }
+        if (data.subExamId !== this.currentQuestionData.id) {
+            return;
+        }
+        if (data.answerData && $.isArray(data.answerData.data) && data.answerData.data.length > 0) {
+            this.userResponse[this.currentQuestionData.id].answer.user_response = [];
+            this.userResponse[this.currentQuestionData.id]
+                .answer.user_response.push(data.answerData.data[0].value);
+            var answer = this.userResponse[this.currentQuestionData.id];
+            this._loadSubQuestionInstance("CompoundWriteController", this.currentQuestionData, answer);
+        }
+        else {
+            this._loadSubQuestionInstance("CompoundWriteController", this.currentQuestionData);
+        }
+    },
+    _refreshSwitchBarStatus: function (reset) {
+        for (var i = 0, len = this.questionList.length; i < len; i++) {
+            var question = this.questionList[i];
+            if (this.userResponse[question.id] === undefined) {
+                if (reset) {
+                    this.questionSwitcherService.setQuestionState(question.id, question.type, undefined, undefined, question.id === this.currentQuestionData.id ? true : false);
+                }
+                else {
+                    this.questionSwitcherService.setQuestionState(question.id, question.type, "NO_ANSWER", false, false);
+                }
+            }
+            else {
+                var response = this.userResponse[question.id];
+                this.questionSwitcherService.setQuestionState(question.id, question.type, response.answerState, response.answer.answer_result, question.id === this.currentQuestionData.id ? true : false);
+            }
+        }
+    },
+    _loadSubQuestion: function (question, answer) {
+        if (question == undefined) {
+            logger_1.default.error('will load question instance is NULL!');
+            return;
+        }
+        var component = this.internalService.getModuleNameByQuestionType(question.type);
+        if (component == '') {
+            logger_1.default.error("can't found component to load " + question.type);
+            return;
+        }
+        var container = null, renderContainer = null, self = this;
+        this.componentContainer.children().hide();
+        if (this.questionService[component] == undefined) {
+            return this._createSubQuestionInstance(component, question);
+        }
+        else {
+            return this._loadSubQuestionInstance(component, question, answer);
+        }
+    },
+    _createSubQuestionInstance: function (component, question) {
+        if (this.componentLoadPromise[component]) {
+            return this.componentLoadPromise[component];
+        }
+        var container = null, renderContainer = null;
+        if (question.type === 'newhandwrite' || question.type === 'handwrite') {
+            container = $('<div class="mixedModule-write-container exam_skin_wood js_' + component + '">' +
+                '<div class="handWrite">' +
+                '<div class="layout_handWrite js_' + component + '_render"></div>' +
+                '</div>' +
+                '</div>');
+            renderContainer = container.find('js_' + component + '_render');
+        }
+        else {
+            container = $('<div class="mixedModule-nqti-container js_' + component + '"></div>');
+        }
+        if (question.data.question_stem) {
+            this._renderSubquestionStem(question.data.question_stem, container);
+        }
+        this.componentContainer.append(container);
+        var renderModel = this.questionProcessor.constructComponentModel(component, [{
+                name: 'lazyLoad',
+                type: 'string',
+                value: 'true'
+            }, {
+                name: '__containerSelector',
+                type: 'string',
+                value: renderContainer == null ? '.js_' + component : '.js_' + component + '_render'
+            }]);
+        this.$requireComponent(component, renderModel, renderContainer == null ? container : renderContainer);
+        container.show();
+        return this.componentLoadPromise[component] = $.Deferred();
+    },
+    _loadSubQuestionInstance: function (component, question, answer) {
+        var container = null, self = this;
+        container = this.$view.find('.js_' + component);
+        container.show();
+        if (question.data.question_stem) {
+            this._renderSubquestionStem(question.data.question_stem, container);
+        }
+        this.guideController.resetQuestion();
+        var layoutArgs = this.questionProcessor.constructQuestionLayoutArgs(container);
+        var questionAnswer = undefined;
+        if (answer != undefined) {
+            if (answer.answerState == 'NO_ANSWER') {
+                questionAnswer = undefined;
+            }
+            else {
+                questionAnswer = answer.answer.user_response[0];
+            }
+        }
+        var deffer = $.Deferred();
+        if (this.currentPhase == 'ViewDetail' &&
+            (question.type == 'handwrite' || question.type == 'newhandwrite') &&
+            ($.isPlainObject(questionAnswer) && $.isEmptyObject(questionAnswer))) {
+            var queryData = {
+                source: self._CLASS_ID_,
+                type: "subExamAnswer",
+                isShowAnswer: true,
+                users: [self.currentStudentId],
+                value: {
+                    subExamId: question.id,
+                    subExamType: question.type
+                }
+            };
+            if (self.icrStatistics) {
+                self.$dispatchEvent("QueryAnswers", PresenterEventType.IC_PLAYER_EVENT, queryData);
+            }
+            else {
+                self.questionService[component].sendBackground(question);
+                self.$dispatchEvent('Exam', PresenterEventType.PPT_NATIVE_EVENT, queryData);
+            }
+            deffer.resolve();
+        }
+        else {
+            var noJudgeSubmitState = true;
+            if (this.questionType === 'ChineseCharacterDictation') {
+                noJudgeSubmitState = !this._isQuestionJudgeSubmitState(question.id);
+            }
+            this.questionService[component].loadQuestion(question, questionAnswer, {
+                index: question.index,
+                questionType: this.questionType,
+                noJudgeSubmitState: noJudgeSubmitState,
+                isLock: this.isLock,
+                isPPTShowAnswer: this.isPPTShowAnswer,
+                isShowAnswer: this.isShowAnswer,
+                layout: layoutArgs
+            })
+                .done(function (data) {
+                NDMediaPlayer && NDMediaPlayer.reset && NDMediaPlayer.reset();
+                var qId = data ? data.id : question.id, qType = data ? data.type : question.type;
+                if (self.currentPhase != 'ViewDetail') {
+                    self.$dispatchEvent('SwitchQuestionComplete', PresenterEventType.IC_PLAYER_EVENT, {
+                        question_id: qId,
+                        question_type: qType,
+                        question_data: data.data
+                    });
+                }
+                self._showSubQuestionResult(qType, answer ? answer.answer.answer_result : false, questionAnswer);
+                deffer.resolve();
+            });
+        }
+        return deffer.promise();
+    },
+    _showSubQuestionResult: function (type, result, answer) {
+        if (this.isShowAnswer) {
+            this.guideController.setUserAnswerVisible(true, result, answer);
+        }
+    },
+    _renderSubquestionStem: function (content, container) {
+        var stemContainer = container.find('.js_subquestion_stem');
+        if (this.currentQuestionData.type == 'handwrite' || this.currentQuestionData.type == 'newhandwrite') {
+            content = '<span>' + this.currentQuestionData.index + '、(<span class="lang_hand_write">' + this.internalService.getLanguageText("hand_write") + '</span>)</span>' + content;
+        }
+        if (stemContainer.length == 0) {
+            stemContainer = $('<div class="mixedModule-handwrite-title-box baseMod-scrollbar-style-gray js_sub_stem">' +
+                '<div class="mixedModule-handwrite-title-text js_subquestion_stem"></div></div>');
+            container.prepend(stemContainer);
+            stemContainer.find('.js_subquestion_stem').empty().html(content);
+        }
+        else {
+            stemContainer.empty().html(content);
+        }
+        ndmedia_player_1.render(stemContainer);
+    },
+    _isQuestionJudgeSubmitState: function (questionId) {
+        var len = this.questionList.length;
+        if (len === 1) {
+            return true;
+        }
+        for (var i = 0; i < len; i++) {
+            var id = this.questionList[i].id;
+            if (id === questionId) {
+                continue;
+            }
+            if (!this.userResponse[id] || this.userResponse[id].answerState === 'NO_ANSWER') {
+                return false;
+            }
+        }
+        return !!Object.keys(this.userResponse).length;
+    }
+});
+module.exports = function () {
+    return new Presenter();
+};
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! ChineseDictation */
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_processor_1 = __webpack_require__(1);
+var ChineseDictationProcessor = (function (_super) {
+    __extends(ChineseDictationProcessor, _super);
+    function ChineseDictationProcessor(context) {
+        var _this = _super.call(this, context) || this;
+        _this.context.$view.find('.baseMod-com-layout-flex').addClass('maxHeight');
+        return _this;
+    }
+    ChineseDictationProcessor.prototype.destroy = function () {
+        this.context.$view.find('.baseMod-com-layout-flex').removeClass('maxHeight');
+        delete this.context;
+        delete this.timerComponentService;
+        delete this.timerControllerService;
+        delete this.answerDetailService;
+    };
+    ChineseDictationProcessor.prototype.afterPresenterRun = function (interfaceName, metaInfo, service) {
+        switch (true) {
+            case interfaceName === 'ITimerComponent' && metaInfo.name === 'InteractionTimer':
+                this.timerComponentService = service;
+                break;
+            case interfaceName === 'ITimerController' && metaInfo.name === 'TimerController':
+                this.timerControllerService = service;
+                break;
+            case interfaceName === 'IQuestionSwitcher':
+                this.context.questionSwitcherService.setCurrentPhase(this.context.currentPhase, {
+                    limit: this.context.isHomework ? 4 : 8
+                });
+                break;
+            default:
+                break;
+        }
+    };
+    ChineseDictationProcessor.prototype.afterSetLayoutService = function () {
+        if (this.context.isHomework)
+            return;
+        this.context.$requireComponent('AnswerDetailViewer', [], this.context.layoutService.getContainer('CenterPanel'), {
+            width: 'auto',
+            height: 'auto',
+        }).done(function (res) {
+            this.answerDetailService = res.getService();
+        }.bind(this));
+    };
+    ChineseDictationProcessor.prototype.bindEvent = function () {
+        var presenter = this.context;
+        if (presenter.isHomework)
+            return;
+        presenter.$addEventListener('custom_event_submit_answer', PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            if (data.state === 'can_submit' || data.state === 'retry_submit') {
+                presenter.toastContainer.show().find('.js_compound_toast_text').html(presenter.languageSet['capion_submitting']);
+            }
+        });
+        presenter.$addEventListener($PresenterEvent['AnswerFlowController'].SEND_ANSWER_CALLBACK, PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            presenter.toastContainer.hide();
+        });
+        presenter.$addEventListener($PresenterEvent['AnswerFlowController'].SEND_ANSWER_STOP, PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            presenter.toastContainer.hide();
+        });
+    };
+    ChineseDictationProcessor.prototype.unbindEvent = function () {
+    };
+    ChineseDictationProcessor.prototype.exerciseSubInfoDataParse = function (answerData) {
+        return answerData.answer.user_response[0].data;
+    };
+    ChineseDictationProcessor.prototype.showAnswer = function (type, specialAnswer) {
+        var presenter = this.context;
+        if (type === 'correct') {
+            presenter.questionService["ChineseDictationViewer"].showAnswer('correct');
+        }
+        else {
+            var answerData = presenter.questionList.map(function (question, index) {
+                var response = presenter.userResponse[question.id];
+                if (specialAnswer && response) {
+                    response.answer.user_response[0].result = specialAnswer.answer.user_response[index].result;
+                    response.answer.user_response[0].data = specialAnswer.answer_cache[question.id];
+                }
+                return {
+                    id: question.id,
+                    index: index,
+                    result: response ? response.answer.user_response[0].result : null,
+                    data: response ? response.answer.user_response[0].data : null,
+                };
+            });
+            this.answerDetailService.showAnswerDetail({
+                from: 'self',
+                submitTime: this.timerControllerService.getTimeValue(),
+                studentId: presenter.currentStudentId,
+                answerData: answerData
+            });
+            this.timerComponentService.setVisible(false);
+            presenter.playerController.startFlow('qf_set_toolbar_state', {
+                showAnswerBtnVisible: false,
+            });
+        }
+    };
+    ChineseDictationProcessor.prototype.getResult = function (result) {
+        var presenter = this.context;
+        var canSubmitEmpty = presenter.questionService["ChineseDictationViewer"].getQuestionInfo().canSubmitEmpty === true;
+        var currentQuestionId = presenter.currentQuestionData.id;
+        var response = presenter.userResponse[currentQuestionId].answer.user_response[0];
+        if (typeof response.then === 'function' && typeof response.done === 'function') {
+            response.done(function (res) {
+                presenter.userResponse[currentQuestionId].answer.user_response[0] = res;
+            });
+        }
+        var currentPendingList = this.$service.getCurrentPendingList();
+        if (!!currentPendingList.length) {
+            var defer = $.Deferred();
+            result.answer.user_response = [defer];
+            $.when.apply($, currentPendingList).then(function () {
+                var latestResult = presenter._service_.getResult({
+                    fromStatistics: true
+                });
+                result.answerState = canSubmitEmpty && latestResult.answerState === 'NO_ANSWER' ? 'NO_COMPLETE' : latestResult.answerState;
+                result.answer.answer_result = latestResult.answer.answer_result;
+                result.answer.correct_response = latestResult.answer.correct_response;
+                result.answer.user_response = latestResult.answer.user_response;
+                result.answer_cache = latestResult.answer_cache;
+                setTimeout(function () {
+                    presenter.toastContainer.hide();
+                }, 10);
+                defer.resolve(latestResult.answer.user_response[0]);
+            }.bind(presenter));
+            return result;
+        }
+        else {
+            setTimeout(function () {
+                presenter.toastContainer.hide();
+            }, 10);
+            var finalResult = presenter._service_.getResult({
+                fromStatistics: true
+            });
+            if (canSubmitEmpty && finalResult.answerState === 'NO_ANSWER') {
+                finalResult.answerState = 'NO_COMPLETE';
+            }
+            return finalResult;
+        }
+    };
+    ChineseDictationProcessor.prototype.setEachResult = function (result, correctResponse, userResponse, itemResponse) {
+        if (!result.answer_cache) {
+            result.answer_cache = {};
+        }
+        result.answer.correct_response.push(correctResponse);
+        result.answer.user_response.push($.extend(userResponse, {
+            result: itemResponse ? itemResponse.answer.user_response[0].result : [],
+            subquestionResult: (function (answer) {
+                for (var i = 0, l = answer.length; i < l; i++) {
+                    if (answer[i].result !== 0) {
+                        return false;
+                    }
+                }
+                return !!answer.length;
+            })(itemResponse ? itemResponse.answer.user_response[0].result : [])
+        }));
+        result.answer_cache[itemResponse.questionId] = itemResponse ? itemResponse.answer.user_response[0].data : null;
+    };
+    ChineseDictationProcessor.prototype.resetQuestion = function () {
+        var presenter = this.context;
+        this.answerDetailService.hideAnswerDetail();
+        presenter.questionSwitcherService.setCurrentPhase(presenter.currentPhase, {
+            limit: this.context.isHomework ? 4 : 8
+        });
+        this.timerComponentService.setVisible(true);
+        presenter.playerController.startFlow('qf_set_toolbar_state', {
+            showAnswerBtnVisible: true,
+        });
+    };
+    ChineseDictationProcessor.prototype.convertDataForStatistics = function (data) {
+        var value = data.value;
+        value.convertedData.subquestionTitles = {};
+        this.context.questionList.forEach(function (question, index) {
+            value.convertedData.subquestionTitles[question.id] = question.data.question_data.word.join('');
+            value.convertedData.answer[index].data = {
+                word: question.data.question_data.word,
+                pinyin: question.data.question_data.pinyin
+            };
+        });
+    };
+    ChineseDictationProcessor.prototype.startStatistics = function () {
+        this.context.questionSwitcherService.setCurrentPhase(this.context.currentPhase, {
+            limit: 5
+        });
+    };
+    return ChineseDictationProcessor;
+}(base_processor_1.default));
+exports.default = ChineseDictationProcessor;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*! ReadingComprehension */
+Object.defineProperty(exports, "__esModule", { value: true });
+var base_processor_1 = __webpack_require__(1);
+var logger_1 = __webpack_require__(0);
+var constant_1 = __webpack_require__(3);
+var STYLE_TOPIC_HIDDEN = 'baseMod-hideTit';
+var STYLE_BACK_FADE = 'topic-bg-gray';
+var STYLE_CONTAINER_ACTIVE = 'active';
+var STYLE_UP_ACTIVE = 'resize-up';
+var STYLE_DOWN_ACTIVE = 'resize-down';
+var STYLE_ADJUST_CONTAINER = 'complete';
+var ReadingComprehensionProcessor = (function (_super) {
+    __extends(ReadingComprehensionProcessor, _super);
+    function ReadingComprehensionProcessor(context) {
+        var _this = _super.call(this, context) || this;
+        _this.currentContainerHeight = 0;
+        _this.currentPageY = 0;
+        _this.writerContainerHeight = 0;
+        _this.hasCreatedWriter = false;
+        _this.domEventList = {};
+        _this.$container = _this.context.loaderContainer;
+        _this.$questionScroller = _this.context.loaderContainer.children().eq(0);
+        _this.$stemScroller = _this.context.mainStemContainer.children().eq(0);
+        _this.maxContainerHeight = parseInt(_this.$container.css('max-height'));
+        _this.minContainerHeight = parseInt(_this.$container.css('min-height'));
+        _this.renderView();
+        return _this;
+    }
+    ReadingComprehensionProcessor.prototype.destroy = function () {
+        _super.prototype.destroy.call(this);
+        this.removeView();
+        this.domEventList = {};
+        delete this.$container;
+    };
+    ReadingComprehensionProcessor.prototype.bindEvent = function () {
+        var _this = this;
+        this.context.$addEventListener('SwitchToolbarItemClick', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            if (data.id === 'question_stem') {
+                if (data.value === 'show') {
+                    _this.context.$view.find('.js-layout-body').removeClass(STYLE_TOPIC_HIDDEN);
+                }
+                else {
+                    _this.context.$view.find('.js-layout-body').addClass(STYLE_TOPIC_HIDDEN);
+                }
+                _this.updateWriteTabletPosition();
+            }
+        });
+        this.context.$addEventListener('HandWriterCalcSize', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, function (data) {
+            logger_1.default.info('received writer size', data);
+            if (data && typeof data.height === 'number') {
+                _this.$writeContainer.find('.js_CompoundWriteController_render').height(data.height);
+                _this.writerContainerHeight = parseFloat(_this.$writeContainer.css('height'));
+                _this.updateWriteTabletPosition({
+                    maxTop: _this.writerContainerHeight
+                });
+            }
+        });
+        var $handle = this.context.$view.find('.js_resize_handle');
+        if ('onmousedown' in document) {
+            this.domEventList.dragging = function (event) { return _this.onDragging(event.originalEvent); };
+            this.domEventList.dragend = function (event) {
+                _this.onDragEnd(event.originalEvent);
+                $(document.body)
+                    .off('mousemove', _this.domEventList.dragging)
+                    .off('mouseup mouseleave', _this.domEventList.dragend);
+            };
+            $handle.on('mousedown', function (event) {
+                _this.onDragStart(event.originalEvent);
+                $(document.body)
+                    .on('mousemove', _this.domEventList.dragging)
+                    .on('mouseup mouseleave', _this.domEventList.dragend);
+            });
+            $(document.body).on('mouseleave', function (event) {
+                if (!!_this.currentContainerHeight) {
+                    _this.onDragEnd(event);
+                }
+            });
+        }
+        if ('ontouchstart' in document) {
+            $handle.on('touchstart', function (event) {
+                _this.onDragStart(event.originalEvent.targetTouches[0] || event.originalEvent.touches[0]);
+                event.preventDefault();
+                event.stopPropagation();
+            }).on('touchmove', function (event) {
+                _this.onDragging(event.originalEvent.targetTouches[0] || event.originalEvent.touches[0]);
+            }).on('touchend touchcancel', function (event) {
+                _this.onDragEnd(event.originalEvent.changedTouches[0] || event.originalEvent.touches[0]);
+            });
+        }
+        if (this.context.isApp) {
+            this.$container.on('touchstart', function (event) {
+                _this.closeWriteTabletPopup();
+            });
+            this.$questionScroller.on('scroll', function (event) {
+                _this.updateWriteTabletScroll();
+            });
+        }
+        else {
+            for (var _i = 0, _a = [this.$stemScroller, this.$questionScroller]; _i < _a.length; _i++) {
+                var $item = _a[_i];
+                $item.on('scroll', function () {
+                    clearTimeout(_this.scrollTimer);
+                    _this.scrollTimer = setTimeout(function () {
+                        _this.context.classroomStatusService.dispatchStatusChanged();
+                    }, 200);
+                });
+            }
+        }
+    };
+    ReadingComprehensionProcessor.prototype.unbindEvent = function () {
+        var $handle = this.context.$view.find('.js_resize_handle');
+        if ('onmousedown' in document) {
+            $handle.off('mousedown mousemove mouseup');
+        }
+        if ('ontouchstart') {
+            $handle.off('touchstart touchmove touchend touchcancel');
+        }
+    };
+    ReadingComprehensionProcessor.prototype.getClassroomStatus = function () {
+        return {
+            containerHeight: this.$container.css('height'),
+            containerScrollTop: this.$questionScroller.scrollTop(),
+            stemScrollTop: this.$stemScroller.scrollTop(),
+            isMaxScreen: this.context.$view.find('.js-layout-body').hasClass(STYLE_TOPIC_HIDDEN)
+        };
+    };
+    ReadingComprehensionProcessor.prototype.setClassroomStatus = function (state) {
+        if (state) {
+            if (state.containerHeight) {
+                this.$container.css('height', state.containerHeight);
+            }
+            if (state.containerScrollTop) {
+                this.$questionScroller.scrollTop(state.containerScrollTop);
+            }
+            if (state.stemScrollTop) {
+                this.$stemScroller.scrollTop(state.stemScrollTop);
+            }
+            if (state.isMaxScreen) {
+                this.context.$view.find('.js-layout-body').addClass(STYLE_TOPIC_HIDDEN);
+            }
+        }
+    };
+    ReadingComprehensionProcessor.prototype.finishQuestion = function () {
+        if (this.context.isApp || this.context.isStudent) {
+            this.$container.css('height', '').addClass(STYLE_ADJUST_CONTAINER);
+            this.updateWriteTabletPosition();
+        }
+    };
+    ReadingComprehensionProcessor.prototype.setHintVisible = function (visible) {
+        if (visible) {
+            this.adjustContainerHeightFlexibly();
+        }
+    };
+    ReadingComprehensionProcessor.prototype.setAnalysisVisible = function (visible) {
+        if (visible) {
+            this.adjustContainerHeightFlexibly();
+        }
+    };
+    ReadingComprehensionProcessor.prototype.constructComponentModel = function (componentName, initModel) {
+        if (componentName === 'CompoundWriteController') {
+            initModel.push({
+                name: 'questionType',
+                type: 'string',
+                value: this.context.questionType
+            }, {
+                name: 'isWhole',
+                type: 'boolean',
+                value: 'true'
+            }, {
+                name: 'nativeId',
+                type: 'string',
+                value: this.context.questionType.toLowerCase()
+            });
+        }
+        return initModel;
+    };
+    ReadingComprehensionProcessor.prototype.constructQuestionLayoutArgs = function (container) {
+        var _this = this;
+        var args = _super.prototype.constructQuestionLayoutArgs.call(this, container);
+        args.questionOffset.top = container.offset().top;
+        args.questionSize.height = this.$container.height();
+        args.containerHigh = this.writerContainerHeight || parseFloat(container.css('height'));
+        logger_1.default.info('sub question layout args: ', JSON.stringify(args));
+        if (constant_1.QuestionMapping.CompoundWriteController.includes(this.$service.getCurrentQuestionType().toLowerCase())) {
+            var timeout = 0;
+            if (!this.hasCreatedWriter) {
+                this.$writeContainer = container;
+                timeout = 200;
+            }
+            setTimeout(function () {
+                _this.updateWriteTabletPosition({
+                    maxTop: _this.writerContainerHeight || parseFloat(container.css('height')),
+                    initTop: args.questionSize.realHeight
+                });
+                if (!_this.hasCreatedWriter) {
+                    _this.updateWriteTabletScroll();
+                }
+                _this.hasCreatedWriter = true;
+            }, timeout);
+        }
+        return args;
+    };
+    ReadingComprehensionProcessor.prototype.renderView = function () {
+        this.$container.append('<a class="readingComprehension-resize js_resize_handle"></a>');
+    };
+    ReadingComprehensionProcessor.prototype.removeView = function () {
+        this.$container.find('.js_resize_handle').remove();
+    };
+    ReadingComprehensionProcessor.prototype.onDragStart = function (event) {
+        this.$container.addClass(STYLE_CONTAINER_ACTIVE);
+        this.context.mainStemContainer.addClass(STYLE_BACK_FADE);
+        this.currentContainerHeight = parseInt(this.$container.css('height'));
+        this.currentPageY = event.pageY;
+        this.isDragging = true;
+        this.closeWriteTabletPopup();
+    };
+    ReadingComprehensionProcessor.prototype.onDragging = function (event) {
+        if (!this.isDragging)
+            return;
+        var pageY = event.pageY;
+        var diffY = this.currentPageY - pageY;
+        this.currentContainerHeight += diffY;
+        this.currentPageY = pageY;
+        if (diffY >= 0) {
+            this.$container.removeClass(STYLE_DOWN_ACTIVE).addClass(STYLE_UP_ACTIVE);
+            if (this.currentContainerHeight > this.maxContainerHeight) {
+                this.currentContainerHeight = this.maxContainerHeight;
+            }
+        }
+        else {
+            this.$container.removeClass(STYLE_UP_ACTIVE).addClass(STYLE_DOWN_ACTIVE);
+            if (this.currentContainerHeight < this.minContainerHeight) {
+                this.currentContainerHeight = this.minContainerHeight;
+            }
+        }
+        this.$container.css('height', this.currentContainerHeight);
+        this.updateWriteTabletPosition();
+    };
+    ReadingComprehensionProcessor.prototype.onDragEnd = function (event) {
+        this.$container.removeClass([STYLE_CONTAINER_ACTIVE, STYLE_DOWN_ACTIVE, STYLE_UP_ACTIVE, STYLE_ADJUST_CONTAINER].join(' '));
+        this.context.mainStemContainer.removeClass(STYLE_BACK_FADE);
+        this.currentContainerHeight = 0;
+        this.currentPageY = 0;
+        this.isDragging = false;
+        this.context.classroomStatusService.dispatchStatusChanged();
+    };
+    ReadingComprehensionProcessor.prototype.updateWriteTabletPosition = function (position) {
+        if (this.context.isApp) {
+            var subStemContainer = this.context.$view.find('.js_sub_stem');
+            var top_1 = 0, height = this.$container.height();
+            if (subStemContainer.length > 0) {
+                top_1 = subStemContainer.offset().top;
+            }
+            else {
+                top_1 = this.context.componentContainer.offset().top;
+            }
+            if (height < 0)
+                height = 0;
+            var data = Object.assign(position || {}, {
+                top: top_1 + this.$questionScroller.scrollTop(),
+                height: height
+            });
+            logger_1.default.info("update handwrite position: " + JSON.stringify(data));
+            this.context.$dispatchEvent('HandWritePositionChange', PresenterEventType.IC_PLAYER_EVENT, data);
+        }
+    };
+    ReadingComprehensionProcessor.prototype.updateWriteTabletScroll = function () {
+        if (this.context.isApp) {
+            var scrollTop = this.$questionScroller.scrollTop();
+            logger_1.default.info("update handwrite scroll: y = " + scrollTop);
+            this.context.$dispatchEvent('HandWriteScrollChange', PresenterEventType.IC_PLAYER_EVENT, {
+                y: scrollTop
+            });
+        }
+    };
+    ReadingComprehensionProcessor.prototype.closeWriteTabletPopup = function () {
+        if (this.context.isApp) {
+            this.context.$dispatchEvent('HandWritePopupClose', PresenterEventType.IC_PLAYER_EVENT, {});
+        }
+    };
+    ReadingComprehensionProcessor.prototype.adjustContainerHeightFlexibly = function () {
+        var scrollTop = this.$questionScroller.scrollTop();
+        if (scrollTop) {
+            var calcHeight = this.$container.height() + scrollTop;
+            if (calcHeight > this.maxContainerHeight) {
+                calcHeight = this.maxContainerHeight;
+            }
+            this.$container.height(calcHeight);
+        }
+    };
+    return ReadingComprehensionProcessor;
+}(base_processor_1.default));
+exports.default = ReadingComprehensionProcessor;
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

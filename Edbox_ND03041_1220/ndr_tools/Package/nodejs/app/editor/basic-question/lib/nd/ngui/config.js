@@ -1,0 +1,1 @@
+define(function(e){return seajs.use("bootstrap-style"),seajs.use("nd-ngui-style"),seajs.use("nd-ngui-ex-style"),e("nd-ngui"),e("nd-ngui-ex"),e("bootstrap"),function(){}});

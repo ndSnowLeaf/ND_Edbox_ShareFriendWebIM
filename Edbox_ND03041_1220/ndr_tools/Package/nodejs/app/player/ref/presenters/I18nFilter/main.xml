@@ -1,0 +1,459 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='I18nFilter'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA['use strict';
+(function () {
+    //默认语言 - 中文
+    var DEFAULT_LANG = "zh_CN";
+    var PRESENTER_NAME = "I18nFilter";
+
+    var Utils = {
+        /**
+         * Ajax获取资源
+         * @param $url 资源地址
+         * @param async 是否异步
+         * @param callback 回调函数
+         */
+        $get: function ($url, async, callback) {
+            $.ajax({
+                url: $url,
+                async: async,
+                dataType: 'json',
+                success: function (data) {
+                    callback && callback({flag: true, data: data});
+                },
+                error: function () {
+                    callback && callback({flag: false});
+                }
+            });
+        },
+        /**
+         * 按流程执行命令
+         * @param processes 命令集
+         * @returns {JQueryDeferred<T>|JQueryDeferred}
+         */
+        $runSequence: function (processes) {
+            var $promise = $.Deferred().resolve();
+            if ($.isArray(processes) && processes.length > 0) {
+                $.each(processes, function (index, execute) {
+                    $promise = $promise.then(function () {
+
+                        return execute();
+                    });
+                });
+            }
+
+            return $promise;
+        },
+        /**
+         * 从语言代码中获取语种编码:
+         *   如：zh_cn -> zh, en_us -> en
+         * @param langCode 语言代码（语种编码-区域代码）
+         * @returns {*} 语种编码
+         */
+        getLanguage: function (langCode) {
+            var index = langCode.indexOf('_');
+
+            return index > -1 ? langCode.substr(0, index) : langCode;
+        }
+    };
+
+    //从基类进行继承
+    var Presenter = BaseController.extend({
+        /**
+         * 元数据信息
+         */
+        metaInfo: {
+            name: PRESENTER_NAME,
+            type: PresenterType.PRESENTER_FILTER
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+        },
+        /**
+         * 定义作答流程中需要实现的接口
+         * @returns {*[]}
+         */
+        $getInterfaceMethods: function () {
+            return [{
+                interface: "IInteractionI18n",
+                methods: ["setLocationProperties"]
+            }];
+        },
+        /**
+         * 实现基类的中对拦截的Presenter执行run方法前的处理
+         * @param metaInfo 被拦截Presenter的metaInfo
+         * @param service 被拦截Presenter的service
+         */
+        $beforePresenterRun: function (interfaceName, metaInfo, service) {
+			//从URL上获取当前语言编码，不从父类拿（父类转小写处理）
+            this.currentLanguage = this.urlParams['_lang_'];
+			
+			var I18nManager = (window.I18nManager && window.I18nManager.getInstance()) || (window.Midware && window.Midware.i18nManager);
+            if (I18nManager && $.isFunction(I18nManager.loadLanguage)) {
+                I18nManager.loadLanguage(metaInfo.name, this.currentLanguage, false).then(function (props) {
+                    if (props && props.lang) {
+                        this._setLocationProperties(service, props.lang || {});
+                    } else {
+                        this._setLocationPropertiesFromLocal(metaInfo, service);
+                    }
+                }.bind(this));
+            } else {
+                this._setLocationPropertiesFromLocal(metaInfo, service);
+            }
+        },
+        run: function (view) {
+            $(view).hide();
+        },
+        destroy: function () {
+        },
+        /************ Private Methods ************/
+        /**
+         * 从I18nFilter本地获取资源文件
+         * @param metaInfo
+         * @param service
+         * @private
+         */
+        _setLocationPropertiesFromLocal: function (metaInfo, service) {
+            var urls = [];
+
+            //Step1. 获取资源路径
+            if (this.currentLanguage !== DEFAULT_LANG) {
+                urls = this._getResourceNames(metaInfo, [this.currentLanguage, DEFAULT_LANG]); //非中文、中文
+            } else {
+                urls = this._getResourceNames(metaInfo, [DEFAULT_LANG]);
+            }
+
+            //Step2. 获取资源内容
+            this._getLocationProperties(urls).always(function (properties) {
+
+                //Step3. 设置资源内容
+                this._setLocationProperties(service, properties || {});
+            }.bind(this));
+        },
+        //获取资源名称集
+        _getResourceNames: function (metaInfo, langCodeList) {
+            var self = this, resources = [];
+            $.each(langCodeList, function () {
+                //获取本地资源库中对应资源名称
+                resources.push(self.basePath + 'resources/' + metaInfo.name + '_' + this + '.json');
+                resources.push(self.basePath + 'resources/' + metaInfo.name + '_' + Utils.getLanguage(this) + '.json');
+            });
+
+            return resources;
+        },
+        //创建句柄-获取资源
+        _createProcess: function (url) {
+            var process = function () {
+                var d = $.Deferred();
+                Utils.$get(url, false, function (res) {
+                    if (res.flag) {
+                        d.reject(res.data);
+                    } else {
+                        d.resolve();
+                    }
+                });
+
+                return d.promise();
+            };
+
+            return process;
+        },
+        //获取国际化资源
+        _getLocationProperties: function (urls) {
+            var self = this, processes = [], $promise = null;
+            $.each(urls, function () {
+                if (!!this) {
+                    processes.push(self._createProcess(this));
+                }
+            });
+            $promise = Utils.$runSequence(processes);
+
+            return $promise;
+        },
+        //调用Presenter服务对象接口，赋值国际化资源
+        _setLocationProperties: function (service, properties) {
+            //try...catch 防止第三方接口运行错误而导致流程阻塞
+            try {
+                service.setLocationProperties(properties);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+    }, PRESENTER_NAME);
+
+    window.AddonI18nFilter_create = function () {
+        return new Presenter();
+    };
+})();
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/Abacus_bo.json' />
+<file src='./resources/Abacus_en.json' />
+<file src='./resources/Abacus_ja.json' />
+<file src='./resources/Abacus_zh.json' />
+<file src='./resources/Acceleration_zh.json' />
+<file src='./resources/AnswerAssessment_en.json' />
+<file src='./resources/AnswerAssessment_ja.json' />
+<file src='./resources/AnswerAssessment_zh.json' />
+<file src='./resources/AnswerClassStatis_en.json' />
+<file src='./resources/AnswerClassStatis_ja.json' />
+<file src='./resources/AnswerClassStatis_zh.json' />
+<file src='./resources/AnswerContrast_en.json' />
+<file src='./resources/AnswerContrast_zh.json' />
+<file src='./resources/AnswerDetailViewer_en.json' />
+<file src='./resources/AnswerDetailViewer_zh.json' />
+<file src='./resources/AnswerFlowController_en.json' />
+<file src='./resources/AnswerFlowController_ja.json' />
+<file src='./resources/AnswerFlowController_zh.json' />
+<file src='./resources/ArithmeticRemake_en.json' />
+<file src='./resources/ArithmeticRemake_zh.json' />
+<file src='./resources/BackStatsComponent_en.json' />
+<file src='./resources/BackStatsComponent_ja.json' />
+<file src='./resources/BackStatsComponent_zh.json' />
+<file src='./resources/BalanceRuler_zh.json' />
+<file src='./resources/Balance_bo.json' />
+<file src='./resources/Balance_en.json' />
+<file src='./resources/Balance_zh.json' />
+<file src='./resources/BuoyanceTool_zh_cn.json' />
+<file src='./resources/CalculateFraction_zh.json' />
+<file src='./resources/CatchBall_en.json' />
+<file src='./resources/CatchBall_ja.json' />
+<file src='./resources/CatchBall_zh.json' />
+<file src='./resources/CentralAngle_en.json' />
+<file src='./resources/CentralAngle_zh.json' />
+<file src='./resources/ChineseDictationViewer_en.json' />
+<file src='./resources/ChineseDictationViewer_zh.json' />
+<file src='./resources/CircleAreaDerived_en.json' />
+<file src='./resources/CircleAreaDerived_zh.json' />
+<file src='./resources/CircuitDiagram_en.json' />
+<file src='./resources/CircuitDiagram_ja.json' />
+<file src='./resources/CircuitDiagram_zh.json' />
+<file src='./resources/CircumferentialAngle_zh.json' />
+<file src='./resources/ClassifiedRemake_en.json' />
+<file src='./resources/ClassifiedRemake_ja.json' />
+<file src='./resources/ClassifiedRemake_zh.json' />
+<file src='./resources/Collision_zh.json' />
+<file src='./resources/CommonToolbar_en.json' />
+<file src='./resources/CommonToolbar_zh.json' />
+<file src='./resources/CompareRemake_en.json' />
+<file src='./resources/CompareRemake_ja.json' />
+<file src='./resources/CompareRemake_zh.json' />
+<file src='./resources/CompoundQuestionLoader_en.json' />
+<file src='./resources/CompoundQuestionLoader_ja.json' />
+<file src='./resources/CompoundQuestionLoader_zh.json' />
+<file src='./resources/Counter_en.json' />
+<file src='./resources/Counter_ja.json' />
+<file src='./resources/Counter_zh.json' />
+<file src='./resources/CylinderVolumeDerived_en.json' />
+<file src='./resources/CylinderVolumeDerived_zh.json' />
+<file src='./resources/Dice_en.json' />
+<file src='./resources/Dice_ja.json' />
+<file src='./resources/Dice_zh.json' />
+<file src='./resources/DrainageForVolume_en.json' />
+<file src='./resources/DrainageForVolume_ja.json' />
+<file src='./resources/DrainageForVolume_zh.json' />
+<file src='./resources/EchoPrinciple_zh.json' />
+<file src='./resources/EnglishCardStudent_en.json' />
+<file src='./resources/EnglishCardStudent_zh.json' />
+<file src='./resources/EnglishCardStudent_zh_HK.json' />
+<file src='./resources/EnglishCardTeacher_zh.json' />
+<file src='./resources/EnglishCardTeacher_zh_HK.json' />
+<file src='./resources/FillBlankRemake_en.json' />
+<file src='./resources/FillBlankRemake_ja.json' />
+<file src='./resources/FillBlankRemake_zh.json' />
+<file src='./resources/FloatAndSink_zh.json' />
+<file src='./resources/FractionRemake_en.json' />
+<file src='./resources/FractionRemake_ja.json' />
+<file src='./resources/FractionRemake_zh.json' />
+<file src='./resources/FreeCombinationLoader_en.json' />
+<file src='./resources/FreeCombinationLoader_zh.json' />
+<file src='./resources/GalileoBevel_zh.json' />
+<file src='./resources/GraphicsCutting_bo.json' />
+<file src='./resources/GraphicsCutting_en.json' />
+<file src='./resources/GraphicsCutting_ja.json' />
+<file src='./resources/GraphicsCutting_zh.json' />
+<file src='./resources/GuessWordRemake_en.json' />
+<file src='./resources/GuessWordRemake_ja.json' />
+<file src='./resources/GuessWordRemake_zh.json' />
+<file src='./resources/H5HandWriter_en.json' />
+<file src='./resources/H5HandWriter_ja.json' />
+<file src='./resources/H5HandWriter_zh.json' />
+<file src='./resources/Homothetic2D_zh.json' />
+<file src='./resources/ImageMarkRemake_en.json' />
+<file src='./resources/ImageMarkRemake_zh.json' />
+<file src='./resources/InteractionSubmitButton_en.json' />
+<file src='./resources/InteractionSubmitButton_ja.json' />
+<file src='./resources/InteractionSubmitButton_zh.json' />
+<file src='./resources/InteractionTimer_en.json' />
+<file src='./resources/InteractionTimer_ja.json' />
+<file src='./resources/InteractionTimer_zh.json' />
+<file src='./resources/LeverageBalance_zh.json' />
+<file src='./resources/LineAndCircle_zh.json' />
+<file src='./resources/LinearProgramming_en.json' />
+<file src='./resources/LinearProgramming_ja.json' />
+<file src='./resources/LinearProgramming_zh.json' />
+<file src='./resources/LinearProgramming_zh_HK.json' />
+<file src='./resources/LinkUpRemake_en.json' />
+<file src='./resources/LinkUpRemake_ja.json' />
+<file src='./resources/LinkUpRemake_zh.json' />
+<file src='./resources/MagicBoxRemake_en.json' />
+<file src='./resources/MagicBoxRemake_ja.json' />
+<file src='./resources/MagicBoxRemake_zh.json' />
+<file src='./resources/MagneticInductionAndAmpereForce_zh.json' />
+<file src='./resources/MagneticInduction_zh.json' />
+<file src='./resources/MakeWord_ja.json' />
+<file src='./resources/MakeWord_zh.json' />
+<file src='./resources/MarkPoint_en.json' />
+<file src='./resources/MarkPoint_ja.json' />
+<file src='./resources/MarkPoint_zh.json' />
+<file src='./resources/MeasureGravity_en.json' />
+<file src='./resources/MeasureGravity_zh.json' />
+<file src='./resources/MechanicalWave_zh.json' />
+<file src='./resources/MemoryCardRemake_en.json' />
+<file src='./resources/MemoryCardRemake_ja.json' />
+<file src='./resources/MemoryCardRemake_zh.json' />
+<file src='./resources/MindJetComponent_en.json' />
+<file src='./resources/MindJetComponent_ja.json' />
+<file src='./resources/MindJetComponent_zh.json' />
+<file src='./resources/MindJetEditorController_en.json' />
+<file src='./resources/MindJetEditorController_ja.json' />
+<file src='./resources/MindJetEditorController_zh.json' />
+<file src='./resources/MindJetStatisPlugin_en.json' />
+<file src='./resources/MindJetStatisPlugin_zh.json' />
+<file src='./resources/MomentumConservationLaw_zh.json' />
+<file src='./resources/NativeHandWriter_en.json' />
+<file src='./resources/NativeHandWriter_ja.json' />
+<file src='./resources/NativeHandWriter_zh.json' />
+<file src='./resources/NumberPair_zh.json' />
+<file src='./resources/ObjectiveBasicQuestion_en.json' />
+<file src='./resources/ObjectiveBasicQuestion_ja.json' />
+<file src='./resources/ObjectiveBasicQuestion_zh.json' />
+<file src='./resources/ObjectiveInteractionLayout_en.json' />
+<file src='./resources/ObjectiveInteractionLayout_ja.json' />
+<file src='./resources/ObjectiveInteractionLayout_zh.json' />
+<file src='./resources/ObjectiveStatisticsRemake_en.json' />
+<file src='./resources/ObjectiveStatisticsRemake_ja.json' />
+<file src='./resources/ObjectiveStatisticsRemake_zh.json' />
+<file src='./resources/Parabola_zh.json' />
+<file src='./resources/PhysicsPower_en.json' />
+<file src='./resources/PhysicsPower_ja.json' />
+<file src='./resources/PhysicsPower_zh.json' />
+<file src='./resources/PhysicsPower_zh_CN.json' />
+<file src='./resources/Planting_bo.json' />
+<file src='./resources/Planting_en.json' />
+<file src='./resources/Planting_ja.json' />
+<file src='./resources/Planting_zh.json' />
+<file src='./resources/PointAndCircle_en.json' />
+<file src='./resources/PointAndCircle_ja.json' />
+<file src='./resources/PointAndCircle_zh.json' />
+<file src='./resources/PointSequencingRemake_en.json' />
+<file src='./resources/PointSequencingRemake_ja.json' />
+<file src='./resources/PointSequencingRemake_zh.json' />
+<file src='./resources/PolarCoordinateSystem_zh.json' />
+<file src='./resources/PopularVoteStudent_en.json' />
+<file src='./resources/PopularVoteStudent_ja.json' />
+<file src='./resources/PopularVoteStudent_zh.json' />
+<file src='./resources/PopularVoteTeacher_en.json' />
+<file src='./resources/PopularVoteTeacher_ja.json' />
+<file src='./resources/PopularVoteTeacher_zh.json' />
+<file src='./resources/PowerAndEnergy_zh.json' />
+<file src='./resources/PowerOverly_zh.json' />
+<file src='./resources/ProbabilityCard_en.json' />
+<file src='./resources/ProbabilityCard_ja.json' />
+<file src='./resources/ProbabilityCard_zh.json' />
+<file src='./resources/PropertiesOfParallelLines2D_zh.json' />
+<file src='./resources/ReadingEvaluatingBusiness_zh.json' />
+<file src='./resources/Reflection_en.json' />
+<file src='./resources/Reflection_ja.json' />
+<file src='./resources/Reflection_zh.json' />
+<file src='./resources/Refraction_en.json' />
+<file src='./resources/Refraction_zh.json' />
+<file src='./resources/RotateSymmetry_en.json' />
+<file src='./resources/RotateSymmetry_ja.json' />
+<file src='./resources/RotateSymmetry_zh.json' />
+<file src='./resources/SectionEvaluatingRemake_en.json' />
+<file src='./resources/SectionEvaluatingRemake_zh.json' />
+<file src='./resources/SentenceEvaluatingRemake_en.json' />
+<file src='./resources/SentenceEvaluatingRemake_zh.json' />
+<file src='./resources/SeqencingRemake_en.json' />
+<file src='./resources/SeqencingRemake_ja.json' />
+<file src='./resources/SeqencingRemake_zh.json' />
+<file src='./resources/ShiftingTool_zh.json' />
+<file src='./resources/ShortestPath_zh.json' />
+<file src='./resources/SpringOscillator_zh.json' />
+<file src='./resources/StatisticsDiagram_en.json' />
+<file src='./resources/StatisticsDiagram_zh.json' />
+<file src='./resources/StudentCommentController_en.json' />
+<file src='./resources/StudentCommentController_ja.json' />
+<file src='./resources/StudentCommentController_zh.json' />
+<file src='./resources/StudentCorrect_en.json' />
+<file src='./resources/StudentCorrect_zh.json' />
+<file src='./resources/SubjectivityLayout_en.json' />
+<file src='./resources/SubjectivityLayout_ja.json' />
+<file src='./resources/SubjectivityLayout_zh.json' />
+<file src='./resources/SubjectivityRemake_en.json' />
+<file src='./resources/SubjectivityRemake_ja.json' />
+<file src='./resources/SubjectivityRemake_zh.json' />
+<file src='./resources/SubjectToolEditorController_en.json' />
+<file src='./resources/SubjectToolEditorController_ja.json' />
+<file src='./resources/SubjectToolEditorController_zh.json' />
+<file src='./resources/SwitchToolbar_en.json' />
+<file src='./resources/SwitchToolbar_ja.json' />
+<file src='./resources/SwitchToolbar_zh.json' />
+<file src='./resources/TableRemake_en.json' />
+<file src='./resources/TableRemake_ja.json' />
+<file src='./resources/TableRemake_zh.json' />
+<file src='./resources/TextSelectRemake_en.json' />
+<file src='./resources/TextSelectRemake_zh.json' />
+<file src='./resources/ToolbarComponent_en.json' />
+<file src='./resources/ToolbarComponent_ja.json' />
+<file src='./resources/ToolbarComponent_zh.json' />
+<file src='./resources/TotalReflection_zh.json' />
+<file src='./resources/WordCardStudent_zh.json' />
+<file src='./resources/WordCardStudent_zh_hk.json' />
+<file src='./resources/WordCardTeacher_zh.json' />
+<file src='./resources/WordCardTeacher_zh_hk.json' />
+<file src='./resources/WordPuzzlesRemake_en.json' />
+<file src='./resources/WordPuzzlesRemake_zh.json' />
+<file src='./resources/WriteLayout_en.json' />
+<file src='./resources/WriteLayout_ja.json' />
+<file src='./resources/WriteLayout_zh.json' />
+
+
+</resources>
+
+</addon>

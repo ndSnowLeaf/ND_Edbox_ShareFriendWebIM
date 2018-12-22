@@ -1,0 +1,3042 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='AnswerFlowController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="ModuleComponent" version="1.1.0" />
+    <javaScript  name="typescript-polyfill" version="1.0.0" />
+    <javaScript  name="MessageBoxRemake" version="1.0.2" />
+    <javaScript  name="vue-libs" version="2.1.10" />
+    <javaScript  name="common_css" version="1.3.0" />
+    <javaScript  name="lodash" version="4.11.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 36);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.CLASSROOM_EVENT_NAME = {
+    SEND_ANSWER: 'sendAnswer',
+    SEND_ANSWER_CALLBACK: 'sendAnswerCallback',
+    SEND_ANSWER_STOP: 'sendAnswerStop',
+    EXERCISE_STATE_CHANGE: 'exerciseStateChange',
+    QUESTION_STATE_CHANGE: 'questionStateChange',
+    EMBEDDED_QUESTION_STATE_CHANGE: 'embeddedQuestionStateChange',
+    AUTO_SEND_ANSWER: 'autoSendAnswer',
+    PRESENTER_LOADED: 'PresenterLoaded',
+    PREVIEW_SHOW_CORRECT_ANSWER: 'PreviewShowCorrectAnswer',
+    SET_QUESTION_STATUS: 'SetQuestionStatus',
+    AS_SEND_QUESTION: 'asSendQuestion',
+    EXERCISE_SUBMIT_ANSWER: "custom_event_submit_answer",
+    GET_QUESTION_ANSWER: 'getQuestionAnswer',
+    SEND_QUESTION_ANSWER_TOCALLER: 'sendQuestionAnswerToCaller',
+    GET_QUESTION_ANSWER_CALLBACK: 'getQuestionAnswerCallback',
+    QF_SET_TOOLBAR_STATE: 'qf_set_toolbar_state',
+    QF_UPDATE_TOOLBAR_STATE: 'qf_update_toolbar_state',
+    CR_STATUS_STATICAL: 'css_classroom_status_statical',
+};
+exports.QUESTION_STATE_CODE = {
+    CAN_NOT_SUBMIT: 'can_not_submit',
+    CAN_SUBMIT: 'can_submit',
+    CAN_MODIFY: 'can_modify',
+    RESET: 'reset',
+    FINISH: 'finish',
+    SUBMITTING: 'submitting',
+    RETRY_SUBMIT: 'retry_submit',
+    MODIFY_SUBMIT: 'modify_submit'
+};
+exports.INTERNAL_EVENT_NAME = {
+    TIME_UP: 'time_up',
+    QUESTION_STATUS_CHANGE: 'question_status_change'
+};
+exports.EVENT_TYPE = {
+    IC_PLAYER_EVENT: ConstVariable.PresenterEventType.IC_PLAYER_EVENT,
+    NATIVE_EVENT: ConstVariable.PresenterEventType.NATIVE_EVENT,
+    PPT_NATIVE_EVENT: ConstVariable.PresenterEventType.PPT_NATIVE_EVENT,
+    INTERNAL: 'internal',
+    PLAYER_FLOW: 'player_flow'
+};
+exports.BAR_TYPE = {
+    SEND: 'send',
+    QB_RETURN: 'qbReturn',
+    QB_SHOW_CORRECT: 'qbShowCorrect',
+    SHOW_CORRECT_ANSWER: 'show_correct_answer',
+    SHOW_ANALYSIS: 'show_analysis',
+    SHOW_HINT: 'show_hint'
+};
+exports.SUBJECTIVE_QUESTION_TYPE = [
+    'newhandwrite',
+    'handwrite',
+    'write',
+    'vote',
+    'subjectivity',
+    'composition',
+    'mindjet',
+    'freecombination',
+    'sectionevaluating',
+    'sentenceevaluating',
+    'compound',
+    'compositionoutline',
+    'rolereading'
+];
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow = (function () {
+    function BaseFlow(mode, events) {
+        this.mMode = mode;
+        this.events = events;
+        this.mContext = mode.getContext();
+        this.logger = this.mContext.Logger;
+        this.flowState = mode.getFlowState();
+        this.attachEvents();
+    }
+    BaseFlow.prototype.attachEvents = function () {
+        var that = this;
+        var mContext = this.mContext;
+        var name;
+        var type;
+        this.events.forEach(function (item, index) {
+            name = item.name;
+            type = item.type || ConstVar_1.EVENT_TYPE.IC_PLAYER_EVENT;
+            if (type === ConstVar_1.EVENT_TYPE.IC_PLAYER_EVENT
+                || type === ConstVar_1.EVENT_TYPE.NATIVE_EVENT
+                || type === ConstVar_1.EVENT_TYPE.PPT_NATIVE_EVENT) {
+                mContext.addEventListener(name, type, function (eventData, eventName) {
+                    that.execute(eventData, eventName);
+                });
+            }
+            else if (type === ConstVar_1.EVENT_TYPE.INTERNAL) {
+                that.mMode.getBus().register(name, function (eventName, eventData) {
+                    that.execute(eventData, eventName);
+                });
+            }
+        });
+    };
+    BaseFlow.prototype.destroy = function () {
+    };
+    return BaseFlow;
+}());
+exports.default = BaseFlow;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem = (function () {
+    function BaseItem(mode) {
+        this.mode = mode;
+        this.mContext = this.mode.getContext();
+        this.logger = this.mContext.Logger;
+    }
+    BaseItem.prototype.changeState = function (key, val) {
+        if (this.data[key] !== undefined) {
+            this.data[key] = val;
+            return true;
+        }
+        return false;
+    };
+    BaseItem.prototype.getState = function (key) {
+        if (!key) {
+            return this.data;
+        }
+        else if (this.data[key] !== undefined) {
+            return this.data[key];
+        }
+    };
+    BaseItem.prototype.fire = function () {
+        if (typeof this.data.handler === 'function') {
+            this.data.handler();
+        }
+    };
+    return BaseItem;
+}());
+exports.default = BaseItem;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseFlow_1 = __webpack_require__(1);
+var BasePlayerFlow = (function (_super) {
+    __extends(BasePlayerFlow, _super);
+    function BasePlayerFlow(mode, events) {
+        return _super.call(this, mode, events) || this;
+    }
+    BasePlayerFlow.prototype.attachEvents = function () {
+        var that = this;
+        var mContext = this.mContext;
+        var name;
+        var data;
+        this.events.forEach(function (item, index) {
+            name = item.name;
+            data = item.data;
+            data.validate = that.validate.bind(that);
+            data.done = function (eventData, success, fail) {
+                that.execute(eventData, name, success, fail);
+            };
+            mContext.PlayerController.registerFlow(item.name, data);
+        });
+    };
+    return BasePlayerFlow;
+}(BaseFlow_1.default));
+exports.default = BasePlayerFlow;
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var MessageBoxRemakePop_1 = __webpack_require__(38);
+var SubmitterMask_1 = __webpack_require__(39);
+exports.PopFactory = {
+    get: function (type) {
+        if (type === 'msgRmk') {
+            return MessageBoxRemakePop_1.MessageBoxRemakePop;
+        }
+        else if (type === 'submitter') {
+            return SubmitterMask_1.SubmitterMask;
+        }
+        return null;
+    },
+    destroy: function () {
+        MessageBoxRemakePop_1.MessageBoxRemakePop.destroy();
+    }
+};
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var QuestionState = {
+    resetTeacher: function (mContext) {
+        mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+        mContext.TimerOperate.stop();
+        mContext.TimerOperate.start(false);
+        mContext.QuestionOperate.changeState({ 'unlockQuestion': {}, 'resetQuestion': {} });
+    }
+};
+exports.default = QuestionState;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Submit = {
+    onSubmit: function (hanlder) {
+        var mContext = this.mContext;
+        var deferreds = mContext.QuestionOperate.getAnswer();
+        deferreds.done(function () {
+            var spendTime = mContext.TimerOperate.getTimeValue();
+            var answer = arguments[0];
+            hanlder && hanlder(answer, spendTime);
+        });
+    }
+};
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var FlowState = (function () {
+    function FlowState(mode) {
+        this._submitTrigger = '';
+        this.mode = mode;
+    }
+    Object.defineProperty(FlowState.prototype, "submitTrigger", {
+        get: function () {
+            return this._submitTrigger;
+        },
+        set: function (val) {
+            this._submitTrigger = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return FlowState;
+}());
+FlowState.SUBMIT_TYPE_FINISH = 'finish';
+FlowState.SUBMIT_TYPE_SUBMIT = 'submit';
+exports.default = FlowState;
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Toolbar_1 = __webpack_require__(46);
+var ConstVar_1 = __webpack_require__(0);
+var ToolbarModule = (function () {
+    function ToolbarModule(context) {
+        this.mContext = context;
+        this.mContext.addEventListener(ConstVar_1.CLASSROOM_EVENT_NAME.PRESENTER_LOADED, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, this.onPresenterLoaded.bind(this));
+    }
+    ToolbarModule.prototype.onPresenterLoaded = function () {
+        var _this = this;
+        if (!this.mContext.LayoutService) {
+            return;
+        }
+        $.when(this.mContext.QuestionOperate.hasAnalysis(), this.mContext.QuestionOperate.hasHint()).done(function (hasAnalysis, hasHint) {
+            _this.initToolbar(hasAnalysis, hasHint);
+        });
+    };
+    ToolbarModule.prototype.reInitToolbar = function () {
+        this.onPresenterLoaded();
+    };
+    ToolbarModule.prototype.initToolbar = function (hasAnalysis, hasHint) {
+        var toolOption = {
+            containerEl: null,
+            items: {}
+        };
+        var env = this.mContext.Option;
+        var qInfo = this.mContext.QuestionOperate.getInfo();
+        if (!qInfo) {
+            return;
+        }
+        var typeCode = qInfo.type_code.toLocaleLowerCase();
+        var isSubjective = this.mContext.QuestionOperate.isSubjective();
+        toolOption.containerEl = this.mContext.LayoutService.getContainer('FootBarPanel');
+        if (!toolOption.containerEl || !toolOption.containerEl.get(0)) {
+            toolOption.containerEl = $('.layout_footbar');
+            if (!toolOption.containerEl.get(0)) {
+                return;
+            }
+        }
+        if (env.app.questionBag && env.platform.pptShell) {
+            toolOption.items[ConstVar_1.BAR_TYPE.QB_RETURN] = { order: 2 };
+            if (!isSubjective) {
+                toolOption.items[ConstVar_1.BAR_TYPE.QB_SHOW_CORRECT] = { order: 3 };
+            }
+        }
+        else if (env.platform.pptShell) {
+            if (env.loadSendQuestion) {
+                toolOption.items[ConstVar_1.BAR_TYPE.SEND] = { order: 1 };
+            }
+            toolOption.items[ConstVar_1.BAR_TYPE.SHOW_ANALYSIS] = { order: 2, hidden: !hasAnalysis };
+            toolOption.items[ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER] = { order: 3, hidden: isSubjective };
+            toolOption.items[ConstVar_1.BAR_TYPE.SHOW_HINT] = { order: 4, hidden: !hasHint };
+        }
+        if (!this.mode) {
+            throw new Error('toolbarModule: init method should be called before this');
+        }
+        if (typeCode === 'mindjet') {
+            toolOption.containerEl.css({ 'visibility': 'visible', 'z-index': '341' });
+        }
+        else {
+            toolOption.containerEl.css({ 'visibility': 'visible' });
+        }
+        this.toolbar = new Toolbar_1.default(this.mode, toolOption);
+        this.toolbar.init();
+    };
+    ToolbarModule.prototype.getToolbar = function () {
+        return this.toolbar;
+    };
+    ToolbarModule.prototype.init = function (mode) {
+        this.mode = mode;
+    };
+    ToolbarModule.prototype.destroy = function () {
+    };
+    return ToolbarModule;
+}());
+exports.default = ToolbarModule;
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var AnswerFlowControlObject = (function () {
+    function AnswerFlowControlObject(context) {
+        this.mContext = context;
+    }
+    AnswerFlowControlObject.prototype.isUnderControl = function () {
+        return false;
+    };
+    AnswerFlowControlObject.prototype.beforePresenterRun = function (interfaceName, metaInfo, service) {
+    };
+    AnswerFlowControlObject.prototype.afterPresenterRun = function (interfaceName, metaInfo, service) {
+        switch (interfaceName) {
+            case "IInteractionQuestion":
+                this.mContext.QuestionOperate.pushService(service);
+                switch (this.mContext.State.questionState) {
+                    case ConstVar_1.QUESTION_STATE_CODE.FINISH:
+                    case ConstVar_1.QUESTION_STATE_CODE.CAN_MODIFY:
+                        if (!this.locked) {
+                            this.locked = this.mContext.QuestionOperate.changeState({ 'lockQuestion': {}, 'finishQuestion': {} });
+                        }
+                }
+                break;
+            case "ISubmitButton":
+                this.mContext.SubmitButtonOperate.setService(service);
+                break;
+            case "ITimerService":
+                this.mContext.TimerOperate.setService(service);
+                break;
+            case "IAnswerIntercept":
+                this.mContext.AnswerInterceptOperate.pushService(service);
+                break;
+            case "IExerciseOperate":
+                this.mContext.ExerciseOperate.pushService(service);
+                break;
+        }
+    };
+    AnswerFlowControlObject.prototype.afterSetLayoutService = function (service) {
+        switch (this.mContext.State.questionState) {
+            case ConstVar_1.QUESTION_STATE_CODE.FINISH:
+            case ConstVar_1.QUESTION_STATE_CODE.CAN_MODIFY:
+                if (!this.locked) {
+                    this.locked = this.mContext.QuestionOperate.changeState({ 'lockQuestion': {}, 'finishQuestion': {} });
+                }
+                break;
+        }
+    };
+    AnswerFlowControlObject.prototype.getInterfaceMethods = function () {
+        var interfaces = [];
+        var SubmitButton = { name: undefined, methods: [] }, InteractionQuestion = { name: undefined, methods: [] }, AnswerIntercept = { name: undefined, methods: [] }, ExerciseOperate = { name: undefined, methods: [] }, TimerService = { name: undefined, methods: [] };
+        InteractionQuestion.name = "IInteractionQuestion";
+        InteractionQuestion.methods = ["getQuestionInfo", "showAnswer", "getResult", "lockQuestion", "unlockQuestion", "finishQuestion", "resetQuestion", "showResultHint"];
+        SubmitButton.name = "ISubmitButton";
+        SubmitButton.methods = ["setButtonState", "getButtonState", "setVisible"];
+        AnswerIntercept.name = "IAnswerIntercept";
+        AnswerIntercept.methods = ["getInterceptId", "beforeSendAnswer", "afterSendAnswer"];
+        TimerService.name = 'ITimerService';
+        TimerService.methods = ["start", "pause", "stop", "getTimeValue"];
+        ExerciseOperate.name = 'IExerciseOperate';
+        ExerciseOperate.methods = ["getExerciseData"];
+        interfaces.push(InteractionQuestion);
+        interfaces.push(SubmitButton);
+        interfaces.push(AnswerIntercept);
+        interfaces.push(TimerService);
+        interfaces.push(ExerciseOperate);
+        return interfaces;
+    };
+    return AnswerFlowControlObject;
+}());
+exports.default = AnswerFlowControlObject;
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var ControllerState = (function () {
+    function ControllerState(controller) {
+        this.mContext = controller;
+        this._questionState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+        this._submitSuccess = false;
+        this._submittedAnswer = {};
+        this._isTimeUp = false;
+    }
+    Object.defineProperty(ControllerState.prototype, "questionState", {
+        get: function () {
+            var state = this.mContext.SubmitButtonOperate.getButtonState();
+            if (state) {
+                this._questionState = state;
+            }
+            return this._questionState;
+        },
+        set: function (val) {
+            this._questionState = val;
+            this.mContext.SubmitButtonOperate.setButtonState(val);
+            this.mContext.QuestionMode.commit(ConstVar_1.INTERNAL_EVENT_NAME.QUESTION_STATUS_CHANGE, val);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControllerState.prototype, "submitSuccess", {
+        get: function () {
+            return this._submitSuccess;
+        },
+        set: function (val) {
+            this._submitSuccess = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControllerState.prototype, "isTimeUp", {
+        get: function () {
+            return this._isTimeUp;
+        },
+        set: function (val) {
+            this._isTimeUp = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControllerState.prototype, "submittedAnswer", {
+        get: function () {
+            return this._submittedAnswer;
+        },
+        set: function (val) {
+            this._submittedAnswer = val;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ControllerState.prototype.getState = function () {
+        return {
+            submittedAnswer: this._submittedAnswer,
+            submitSuccess: this._submitSuccess,
+            questionState: this._questionState,
+            isTimeUp: this._isTimeUp
+        };
+    };
+    ControllerState.prototype.setState = function (data) {
+        if (typeof data.submitSuccess !== typeof undefined) {
+            this._submitSuccess = data.submitSuccess;
+        }
+        if (typeof data.submittedAnswer !== typeof undefined) {
+            this._submittedAnswer = data.submittedAnswer;
+        }
+        if (typeof data.questionState !== typeof undefined) {
+            this._questionState = data.questionState;
+        }
+        if (typeof data.isTimeUp !== typeof undefined) {
+            this._isTimeUp = data.isTimeUp;
+        }
+    };
+    return ControllerState;
+}());
+exports.default = ControllerState;
+
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var ClassroomStatus_1 = __webpack_require__(37);
+var ServiceObject = (function () {
+    function ServiceObject(context) {
+        this.mContext = context;
+        this.classroomStatus = new ClassroomStatus_1.default(this.mContext);
+    }
+    ServiceObject.prototype.showAnswer = function () {
+        this.mContext.QuestionOperate.showAnswer('');
+    };
+    ServiceObject.prototype.onTimeOver = function (timeSpend) {
+        this.mContext.Logger.debug("时间结束,开始收集答案");
+        this.mContext.State.isTimeUp = true;
+        this.mContext.QuestionMode.commit(ConstVar_1.INTERNAL_EVENT_NAME.TIME_UP);
+    };
+    ServiceObject.prototype.getState = function () {
+        return this.mContext.State.getState();
+    };
+    ServiceObject.prototype.setState = function (val) {
+        this.mContext.State.setState(val);
+    };
+    ServiceObject.prototype.getClassroomStatus = function () {
+        return this.classroomStatus.getClassroomStatus();
+    };
+    ServiceObject.prototype.setClassroomStatus = function (status) {
+        this.classroomStatus.setClassroomStatus(status);
+    };
+    ServiceObject.prototype.clearClassroomStatus = function () {
+        this.classroomStatus.clearClassroomStatus();
+    };
+    return ServiceObject;
+}());
+exports.default = ServiceObject;
+
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var QuestionStateFlow_1 = __webpack_require__(23);
+var EmbeddedQuestionStateFlow_1 = __webpack_require__(21);
+var SubmitFlow_1 = __webpack_require__(28);
+var StuSubmitFlow_1 = __webpack_require__(27);
+var StuFinishFlow_1 = __webpack_require__(26);
+var ExerciseStateChangeFlow_1 = __webpack_require__(22);
+var TimeUpFlow_1 = __webpack_require__(29);
+var SendAnswerToNativeFlow_1 = __webpack_require__(24);
+var PreviewShowCorrectAnswerFlow_1 = __webpack_require__(30);
+var SetQuestionStateFlow_1 = __webpack_require__(32);
+var SetToolBarStateFlow_1 = __webpack_require__(33);
+var SendQuestionFlow_1 = __webpack_require__(31);
+var StatusRecoverFlow_1 = __webpack_require__(25);
+var UpdateToolBarStateFlow_1 = __webpack_require__(34);
+var FlowModule = (function () {
+    function FlowModule(context) {
+        this.flows = [];
+        this.mContext = context;
+        this.flows = [];
+    }
+    FlowModule.prototype.init = function (mode) {
+        var env = this.mContext.Option;
+        this.flows.push(new PreviewShowCorrectAnswerFlow_1.default(mode));
+        this.flows.push(new SetQuestionStateFlow_1.default(mode));
+        this.flows.push(new SendAnswerToNativeFlow_1.default(mode));
+        this.flows.push(new SetToolBarStateFlow_1.default(mode));
+        this.flows.push(new UpdateToolBarStateFlow_1.default(mode));
+        this.flows.push(new SendQuestionFlow_1.default(mode));
+        this.flows.push(new QuestionStateFlow_1.default(mode));
+        this.flows.push(new EmbeddedQuestionStateFlow_1.default(mode));
+        if (env.runtime.isStudentMobile) {
+            this.flows.push(new StuSubmitFlow_1.default(mode));
+        }
+        else {
+            this.flows.push(new SubmitFlow_1.default(mode));
+        }
+        if (env.runtime.isStudentMobile) {
+            this.flows.push(new StuFinishFlow_1.default(mode));
+        }
+        if (env.runtime.isTeacherPC) {
+            this.flows.push(new ExerciseStateChangeFlow_1.default(mode));
+            this.flows.push(new StatusRecoverFlow_1.default(mode));
+        }
+        if (env.platform.pptShell) {
+            this.flows.push(new TimeUpFlow_1.default(mode));
+        }
+    };
+    FlowModule.prototype.destroy = function () {
+    };
+    return FlowModule;
+}());
+exports.default = FlowModule;
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Mode_1 = __webpack_require__(35);
+var ModeBuilder = (function () {
+    function ModeBuilder(context) {
+        this.mContext = context;
+    }
+    ModeBuilder.prototype.setFlowModule = function (flowModule) {
+        this.flowModule = flowModule;
+        return this;
+    };
+    ModeBuilder.prototype.setToolbarModule = function (toolbarModule) {
+        this.toolbarModule = toolbarModule;
+        return this;
+    };
+    ModeBuilder.prototype.build = function () {
+        var mode = new Mode_1.default(this.mContext);
+        if (this.flowModule) {
+            mode.pushModule(this.flowModule);
+        }
+        if (this.toolbarModule) {
+            mode.pushModule(this.toolbarModule);
+        }
+        return mode;
+    };
+    return ModeBuilder;
+}());
+exports.default = ModeBuilder;
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ModeBus = (function () {
+    function ModeBus() {
+        this.mActions = Object.create(null);
+    }
+    ModeBus.prototype.register = function (action, handler, extendArgs) {
+        if (!this.mActions[action]) {
+            this.mActions[action] = [];
+        }
+        this.mActions[action].push({
+            fn: handler,
+            args: extendArgs || undefined
+        });
+    };
+    ModeBus.prototype.commit = function (action, param) {
+        var _this = this;
+        if (param === void 0) { param = {}; }
+        if (this.mActions[action] === undefined) {
+            return;
+        }
+        _.each(this.mActions[action], function (config) {
+            var args = config.args ? $.extend(param, config.args) : param;
+            return config.fn.call(_this.mActions, args);
+        });
+    };
+    ;
+    ModeBus.prototype.release = function () {
+        _.each(this.mActions, function (action) {
+            action.length = -1;
+            action = null;
+        });
+    };
+    return ModeBus;
+}());
+exports.default = ModeBus;
+
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var AnswerInterceptOperate = (function () {
+    function AnswerInterceptOperate(context) {
+        this.answerInterceptService = [];
+        this.mContext = context;
+        this.answerInterceptService = [];
+    }
+    AnswerInterceptOperate.prototype.pushService = function (service) {
+        this.answerInterceptService.push(service);
+    };
+    AnswerInterceptOperate.prototype.getInterceptId = function () {
+        if (this.answerInterceptService && this.answerInterceptService.length > 0) {
+            return this.answerInterceptService[0].getInterceptId();
+        }
+        return null;
+    };
+    AnswerInterceptOperate.prototype.beforeSendAnswer = function (sendData) {
+        this.answerInterceptService.forEach(function (item, i) {
+            if (item.getInterceptId() === sendData.questionId) {
+                item.beforeSendAnswer(sendData);
+            }
+        });
+    };
+    AnswerInterceptOperate.prototype.afterSendAnswer = function (data) {
+        this.answerInterceptService.forEach(function (item, i) {
+            if (item.getInterceptId() === data.questionId) {
+                item.afterSendAnswer(data);
+            }
+        });
+    };
+    return AnswerInterceptOperate;
+}());
+exports.default = AnswerInterceptOperate;
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ExerciseOperate = (function () {
+    function ExerciseOperate(context) {
+        this.service = [];
+        this.mContext = context;
+        this.service = [];
+    }
+    ExerciseOperate.prototype.pushService = function (service) {
+        this.service.push(service);
+    };
+    ExerciseOperate.prototype.getExerciseData = function (data) {
+        this.service.forEach(function (item, i) {
+            if (item.getExerciseData) {
+                item.getExerciseData(data);
+            }
+        });
+    };
+    return ExerciseOperate;
+}());
+exports.default = ExerciseOperate;
+
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var QuestionServieOperate = (function () {
+    function QuestionServieOperate(context) {
+        this.mContext = context;
+        this.questionServiceList = [];
+    }
+    QuestionServieOperate.prototype.isSubjective = function () {
+        var qInfo = this.getInfo();
+        if (qInfo) {
+            var isSubjective = qInfo.subjective;
+            if (typeof isSubjective == typeof undefined && ConstVar_1.SUBJECTIVE_QUESTION_TYPE.indexOf(qInfo.type_code.toLowerCase()) > -1) {
+                isSubjective = true;
+            }
+            return !!isSubjective;
+        }
+        return false;
+    };
+    QuestionServieOperate.prototype.pushService = function (service) {
+        this.questionServiceList.push(service);
+        if (!this.mainService) {
+            this.mainService = service;
+        }
+        var info = service.getQuestionInfo();
+        var qId = this.mContext.Option.questionId;
+        if (qId && info && qId === info.id) {
+            this.mainService = service;
+        }
+    };
+    QuestionServieOperate.prototype.getInfo = function () {
+        return this.mainService ? this.mainService.getQuestionInfo() : undefined;
+    };
+    QuestionServieOperate.prototype.isAnswerAsync = function () {
+        var temp = this.mainService.getResult();
+        if (temp && temp.answer && temp.answer.user_response.length == 1 && temp.answer.user_response[0]["then"]) {
+            return true;
+        }
+        return false;
+    };
+    QuestionServieOperate.prototype.getPreProcess = function () {
+        if (this.mainService && this.mainService.getPreProcess) {
+            return this.mainService.getPreProcess();
+        }
+        return null;
+    };
+    QuestionServieOperate.prototype.getAnswer = function () {
+        var _this = this;
+        var deferred = $.Deferred();
+        var temp = this.mainService.getResult();
+        if (temp.answer.user_response.length == 1 && temp.answer.user_response[0]["then"]) {
+            temp.answer.user_response[0].then(function (data) {
+                temp.answer.user_response[0] = data;
+                temp = $.extend(true, {}, temp);
+                deferred.resolve(temp);
+                _this.mContext.Logger.debug("处理延迟的答案结束", temp);
+            });
+        }
+        else {
+            temp = $.extend(true, {}, temp);
+            deferred.resolve(temp);
+            this.mContext.Logger.debug("处理非延迟的答案结束", temp);
+        }
+        return deferred;
+    };
+    QuestionServieOperate.prototype.changeState = function (sequence) {
+        if (!sequence || sequence.length <= 0) {
+            this.mContext.Logger.error('题目状态变更顺序函数错误');
+            return;
+        }
+        var item = this.mainService;
+        if (!item) {
+            return false;
+        }
+        $.each(sequence, function (method, params) {
+            if (item[method] && $.isFunction(item[method])) {
+                item[method].call(item, params);
+            }
+        });
+        return true;
+    };
+    QuestionServieOperate.prototype.showAnswer = function (type, answer, param) {
+        this.mainService.showAnswer(type, answer, param);
+    };
+    QuestionServieOperate.prototype.showCheckAnswer = function (type, answer) {
+        this.showAnswer(type, answer, { showResult: true });
+    };
+    QuestionServieOperate.prototype.lock = function (param) {
+        if (param === void 0) { param = {}; }
+        this.changeState({ lockQuestion: param });
+    };
+    QuestionServieOperate.prototype.unLock = function (param) {
+        if (param === void 0) { param = {}; }
+        this.changeState({ unlockQuestion: param });
+    };
+    QuestionServieOperate.prototype.showHint = function (trigger, spendTime, noSubmit) {
+        if (spendTime === void 0) { spendTime = 0; }
+        if (noSubmit === void 0) { noSubmit = true; }
+        this.mainService.showResultHint({ trigger: trigger, spendTime: spendTime, noSubmit: noSubmit });
+    };
+    QuestionServieOperate.prototype.reset = function (param) {
+        if (param === void 0) { param = {}; }
+        this.changeState({ resetQuestion: param });
+    };
+    QuestionServieOperate.prototype.finish = function (param) {
+        if (param === void 0) { param = {}; }
+        this.changeState({ finishQuestion: param });
+    };
+    QuestionServieOperate.prototype.hasAnalysis = function () {
+        var deferred = $.Deferred();
+        if ($.isFunction(this.mainService.hasAnalysis)) {
+            var re = this.mainService.hasAnalysis();
+            if (re['then']) {
+                re.then(function (r) {
+                    deferred.resolve(r);
+                });
+            }
+            else {
+                deferred.resolve(re);
+            }
+        }
+        else {
+            deferred.resolve(false);
+        }
+        return deferred;
+    };
+    QuestionServieOperate.prototype.setAnalysisVisible = function (visible) {
+        if ($.isFunction(this.mainService.setAnalysisVisible)) {
+            this.mainService.setAnalysisVisible(visible);
+        }
+    };
+    QuestionServieOperate.prototype.hasHint = function () {
+        var deferred = $.Deferred();
+        if ($.isFunction(this.mainService.hasHint)) {
+            var re = this.mainService.hasHint();
+            if (re['then']) {
+                re.then(function (r) {
+                    deferred.resolve(r);
+                });
+            }
+            else {
+                deferred.resolve(re);
+            }
+        }
+        else {
+            deferred.resolve(false);
+        }
+        return deferred;
+    };
+    QuestionServieOperate.prototype.setHintVisible = function (visible) {
+        if ($.isFunction(this.mainService.setHintVisible)) {
+            this.mainService.setHintVisible(visible);
+        }
+    };
+    return QuestionServieOperate;
+}());
+exports.default = QuestionServieOperate;
+
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SubmitButtonOperate = (function () {
+    function SubmitButtonOperate(context) {
+        this.mContext = context;
+    }
+    SubmitButtonOperate.prototype.setService = function (service) {
+        if (!this.submitButtonService) {
+            this.submitButtonService = service;
+        }
+    };
+    SubmitButtonOperate.prototype.setButtonState = function (state) {
+        if (this.submitButtonService) {
+            this.submitButtonService.setButtonState(state);
+        }
+    };
+    SubmitButtonOperate.prototype.getButtonState = function () {
+        if (this.submitButtonService) {
+            return this.submitButtonService.getButtonState();
+        }
+        return null;
+    };
+    SubmitButtonOperate.prototype.getState = function () {
+        if (this.submitButtonService) {
+            return this.submitButtonService.getState();
+        }
+        return null;
+    };
+    SubmitButtonOperate.prototype.setVisible = function (visible) {
+        if (this.submitButtonService) {
+            this.submitButtonService.setVisible(visible);
+        }
+    };
+    return SubmitButtonOperate;
+}());
+exports.default = SubmitButtonOperate;
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var TimerOperate = (function () {
+    function TimerOperate(context) {
+        this.mContext = context;
+    }
+    TimerOperate.prototype.setService = function (service) {
+        this.timerService = service;
+    };
+    TimerOperate.prototype.start = function (isUseModel, startTime) {
+        if (this.timerService) {
+            this.timerService.start(isUseModel, startTime);
+        }
+    };
+    TimerOperate.prototype.stop = function () {
+        if (this.timerService) {
+            this.timerService.stop();
+        }
+    };
+    TimerOperate.prototype.resetPauseUp = function () {
+        if (this.timerService) {
+            this.timerService.stop();
+            this.timerService.start(false);
+        }
+    };
+    TimerOperate.prototype.pause = function (isStopTime) {
+        if (this.timerService) {
+            this.timerService.pause(isStopTime);
+        }
+    };
+    TimerOperate.prototype.setTimeValue = function (timestamp) {
+        if (this.timerService) {
+            this.timerService.setTimeValue(timestamp);
+        }
+    };
+    TimerOperate.prototype.getTimeValue = function () {
+        if (this.timerService) {
+            return this.timerService.getTimeValue();
+        }
+    };
+    return TimerOperate;
+}());
+exports.default = TimerOperate;
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var LANG = {
+    "submit_answer": "确认提交答案吗？",
+    "submit_confirm": "确认",
+    "submit_cancel": "取消",
+    "answer_right": "太棒啦，您答对啦！",
+    "answer_wrong": "这道题没有答对，下次加油哦！",
+    "send_task": "发送任务",
+    "submit_successfully": "提交成功",
+    "submit_failed": "提交失败",
+    "bag_return": "返回抽题",
+    "bag_show_answer": "公布答案",
+    "show_correct_answer": "查看答案",
+    "show_analysis": "查看解析",
+    "back_original": "查看原题",
+    "show_hint": "查看提示"
+};
+exports.default = LANG;
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var EmbeddedQuestionStateFlow = (function (_super) {
+    __extends(EmbeddedQuestionStateFlow, _super);
+    function EmbeddedQuestionStateFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.EMBEDDED_QUESTION_STATE_CHANGE }]) || this;
+    }
+    EmbeddedQuestionStateFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.EMBEDDED_QUESTION_STATE_CHANGE) {
+            this.onEmbeddedQuestionStateChanged(eventData);
+        }
+    };
+    EmbeddedQuestionStateFlow.prototype.onEmbeddedQuestionStateChanged = function (eventData) {
+        if (!eventData) {
+            return;
+        }
+        var status = this.mContext.State.questionState;
+        if (status == ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT && eventData.canSubmit) {
+            status = ConstVar_1.QUESTION_STATE_CODE.CAN_SUBMIT;
+        }
+        else if (status == ConstVar_1.QUESTION_STATE_CODE.MODIFY_SUBMIT && eventData.canSubmit) {
+            status = ConstVar_1.QUESTION_STATE_CODE.RETRY_SUBMIT;
+        }
+        else if (status == ConstVar_1.QUESTION_STATE_CODE.MODIFY_SUBMIT && !eventData.canSubmit) {
+            this.mContext.QuestionOperate.unLock();
+        }
+        this.mContext.State.questionState = status;
+    };
+    return EmbeddedQuestionStateFlow;
+}(BaseFlow_1.default));
+exports.default = EmbeddedQuestionStateFlow;
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var ExerciseStateChangeFlow = (function (_super) {
+    __extends(ExerciseStateChangeFlow, _super);
+    function ExerciseStateChangeFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_STATE_CHANGE }]) || this;
+    }
+    ExerciseStateChangeFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_STATE_CHANGE) {
+            this.onExerciseStateChanged(eventData);
+        }
+    };
+    ExerciseStateChangeFlow.prototype.onExerciseStateChanged = function (eventData) {
+        switch (eventData.type) {
+            case 'start':
+                this.onExerciseStart(eventData.value);
+                break;
+            case 'stop':
+                this.onExerciseStop(eventData.value);
+                break;
+            case 'exit':
+                this.onExerciseExit(eventData.value);
+                break;
+            case 'mockStop':
+                if (eventData.value.result == true) {
+                    this.mContext.TimerOperate.pause(false);
+                }
+                break;
+            case 'mockStart':
+                if (eventData.value.result == true) {
+                    this.mContext.TimerOperate.pause(false);
+                }
+                break;
+            default:
+                this.logger.debug("未知的随堂练习状态变更数据：" + JSON.stringify(eventData));
+                break;
+        }
+    };
+    ExerciseStateChangeFlow.prototype.onExerciseStart = function (data) {
+        var timerOperate = this.mContext.TimerOperate;
+        if (data.result == false) {
+            this.logger.info('发送题目失败!');
+            timerOperate.start(false);
+        }
+        else {
+            this.mContext.SubmitButtonOperate.setVisible(false);
+            this.mContext.QuestionOperate.changeState({ 'lockQuestion': {}, 'resetQuestion': { type: 'OnSend' } });
+            timerOperate.stop();
+            timerOperate.start(true, data.startTimestamp);
+            this.mContext.LayoutService.adjustLayoutForStartAnswer();
+        }
+    };
+    ExerciseStateChangeFlow.prototype.onExerciseStop = function (data) {
+        if (data.result == false) {
+            this.logger.info('结束题目失败!');
+            this.mContext.TimerOperate.start(false);
+        }
+        else {
+            this.logger.debug("结束练习,锁定题目");
+            this.mContext.TimerOperate.stop();
+            this.mContext.QuestionOperate.unLock();
+        }
+    };
+    ExerciseStateChangeFlow.prototype.onExerciseExit = function (data) {
+        this.mContext.QuestionOperate.changeState({ 'unlockQuestion': {}, 'resetQuestion': {}, 'finishQuestion': {} });
+        this.mContext.SubmitButtonOperate.setVisible(true);
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+        this.mContext.TimerOperate.stop();
+        this.mContext.TimerOperate.start(false);
+        this.mContext.LayoutService.adjustLayoutForEndAnswer();
+    };
+    return ExerciseStateChangeFlow;
+}(BaseFlow_1.default));
+exports.default = ExerciseStateChangeFlow;
+
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var QuestionStateFlow = (function (_super) {
+    __extends(QuestionStateFlow, _super);
+    function QuestionStateFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.QUESTION_STATE_CHANGE }]) || this;
+    }
+    QuestionStateFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.QUESTION_STATE_CHANGE) {
+            this.onQuestionStateChange(eventData);
+        }
+    };
+    QuestionStateFlow.prototype.onQuestionStateChange = function (ev) {
+        if (!ev) {
+            return;
+        }
+        if (ev.linkQuestionId && this.mContext.Option.questionId) {
+            if (ev.linkQuestionId != this.mContext.Option.questionId) {
+                return;
+            }
+        }
+        var status = this.mContext.State.questionState;
+        if (status == ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT && ev.canSubmit) {
+            status = ConstVar_1.QUESTION_STATE_CODE.CAN_SUBMIT;
+        }
+        else if (status == ConstVar_1.QUESTION_STATE_CODE.MODIFY_SUBMIT && ev.canSubmit) {
+            status = ConstVar_1.QUESTION_STATE_CODE.RETRY_SUBMIT;
+        }
+        else if ((status == ConstVar_1.QUESTION_STATE_CODE.CAN_SUBMIT || status == ConstVar_1.QUESTION_STATE_CODE.RETRY_SUBMIT) && !ev.canSubmit) {
+            status = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+        }
+        else if (status == ConstVar_1.QUESTION_STATE_CODE.MODIFY_SUBMIT && !ev.canSubmit) {
+            this.mContext.QuestionOperate.unLock();
+        }
+        this.mContext.State.questionState = status;
+    };
+    return QuestionStateFlow;
+}(BaseFlow_1.default));
+exports.default = QuestionStateFlow;
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var SendAnswerToNativeFlow = (function (_super) {
+    __extends(SendAnswerToNativeFlow, _super);
+    function SendAnswerToNativeFlow(mode) {
+        return _super.call(this, mode, [
+            { name: ConstVar_1.CLASSROOM_EVENT_NAME.GET_QUESTION_ANSWER, type: ConstVar_1.EVENT_TYPE.NATIVE_EVENT },
+            { name: ConstVar_1.CLASSROOM_EVENT_NAME.SEND_QUESTION_ANSWER_TOCALLER, type: ConstVar_1.EVENT_TYPE.IC_PLAYER_EVENT }
+        ]) || this;
+    }
+    SendAnswerToNativeFlow.prototype.execute = function (eventData, eventName) {
+        var that = this;
+        if (typeof eventData === 'string') {
+            try {
+                eventData = JSON.parse(eventData.trim());
+            }
+            catch (e) {
+            }
+        }
+        if (eventData.questionId === this.mContext.Option.questionId) {
+            var answerPromise = this.mContext.QuestionOperate.getAnswer();
+            answerPromise.done(function (answer) {
+                that.mContext.dispatchEvent(ConstVar_1.CLASSROOM_EVENT_NAME.GET_QUESTION_ANSWER_CALLBACK, ConstVar_1.EVENT_TYPE.NATIVE_EVENT, answer);
+            });
+        }
+    };
+    return SendAnswerToNativeFlow;
+}(BaseFlow_1.default));
+exports.default = SendAnswerToNativeFlow;
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var StatusRecoverFlow = (function (_super) {
+    __extends(StatusRecoverFlow, _super);
+    function StatusRecoverFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.CR_STATUS_STATICAL }]) || this;
+    }
+    StatusRecoverFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.CR_STATUS_STATICAL) {
+            this.onStatical(eventData);
+        }
+    };
+    StatusRecoverFlow.prototype.onStatical = function (ev) {
+        this.mContext.QuestionMode.hideToolbar();
+    };
+    return StatusRecoverFlow;
+}(BaseFlow_1.default));
+exports.default = StatusRecoverFlow;
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var PopFactory_1 = __webpack_require__(4);
+var Submit_1 = __webpack_require__(6);
+var FlowState_1 = __webpack_require__(7);
+var StuFinishFlow = (function (_super) {
+    __extends(StuFinishFlow, _super);
+    function StuFinishFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_STOP }, { name: ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_CALLBACK }]) || this;
+    }
+    StuFinishFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_STOP) {
+            this.onFinish(eventData);
+        }
+        else if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_CALLBACK) {
+            this.onQuestionSubmitCallback(eventData);
+        }
+    };
+    StuFinishFlow.prototype.onQuestionSubmitCallback = function (data) {
+        PopFactory_1.PopFactory.get('msgRmk').hide();
+        if (data.item == 'nosubmit' || this.flowState.submitTrigger !== FlowState_1.default.SUBMIT_TYPE_FINISH) {
+            return;
+        }
+        if (data && data.value && data.value.result === true) {
+            this.mContext.State.submitSuccess = true;
+        }
+        if ($PresenterEvent['InteractionStateRecoverFilter']) {
+            this.mContext.dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, {});
+        }
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.FINISH;
+        this.mContext.AnswerInterceptOperate.afterSendAnswer(data.value);
+    };
+    StuFinishFlow.prototype.onFinish = function (data) {
+        this.logger.debug("结束练习");
+        PopFactory_1.PopFactory.get('msgRmk').hide();
+        this.flowState.submitTrigger = FlowState_1.default.SUBMIT_TYPE_FINISH;
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.FINISH;
+        if (data.value && data.value.stopTimestamp > 0) {
+            this.mContext.TimerOperate.setTimeValue(data.value.stopTimestamp);
+        }
+        this.mContext.TimerOperate.stop();
+        if (data.isForceStop) {
+            return;
+        }
+        this.finishAnswer();
+        PopFactory_1.PopFactory.get('submitter').show({ showMsg: true });
+    };
+    StuFinishFlow.prototype.finishAnswer = function () {
+        var that = this;
+        that.mContext.TimerOperate.stop();
+        Submit_1.Submit.onSubmit.call(this, function (questionAnswer, spendTime) {
+            that.logger.debug("结束作答，开始获取、提交答案");
+            if (questionAnswer === undefined) {
+                that.logger.debug("获取不到questionType和questionAnswer，无法提交答案");
+                return;
+            }
+            that.mContext.QuestionOperate.lock({ type: 'OnFinish' });
+            var hasOperate = (questionAnswer.answerState === true || questionAnswer.answerState !== 'NO_ANSWER');
+            var sendData = {
+                questionId: questionAnswer.questionId,
+                answer: '',
+                spendTime: 0,
+                notSubmit: false
+            };
+            var state = that.mContext.State;
+            if (!hasOperate || state.submitSuccess) {
+                sendData.notSubmit = true;
+            }
+            else {
+                sendData.spendTime = spendTime;
+                sendData.answer = questionAnswer.answer;
+            }
+            if (!state.submitSuccess) {
+                that.mContext.State.submittedAnswer = questionAnswer;
+            }
+            that.mContext.AnswerInterceptOperate.beforeSendAnswer(sendData);
+            that.mContext.dispatchEvent(ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, sendData);
+            that.logger.debug('互动题型控制器：收集答案结束', sendData);
+            if (!(that.mContext.Option.showResultOnSubmit == true && state.submitSuccess == false)) {
+                that.logger.debug('_onFinishAnswer执行showResultHint');
+                that.mContext.QuestionOperate.showAnswer('user', that.mContext.State.submittedAnswer);
+                that.mContext.QuestionOperate.showHint(that.mContext.State.isTimeUp ? "timer" : "user", spendTime, state.submitSuccess);
+            }
+            that.logger.debug('互动题型控制器：显示作答结果');
+        });
+    };
+    return StuFinishFlow;
+}(BaseFlow_1.default));
+exports.default = StuFinishFlow;
+
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var Submit_1 = __webpack_require__(6);
+var FlowState_1 = __webpack_require__(7);
+var PopFactory_1 = __webpack_require__(4);
+var StuSubmitFlow = (function (_super) {
+    __extends(StuSubmitFlow, _super);
+    function StuSubmitFlow(mode) {
+        var _this = _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_SUBMIT_ANSWER }, { name: ConstVar_1.CLASSROOM_EVENT_NAME.AUTO_SEND_ANSWER }, { name: ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_CALLBACK }]) || this;
+        _this.sendTriggered = false;
+        return _this;
+    }
+    StuSubmitFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_SUBMIT_ANSWER) {
+            this.onSubmit(eventData, false);
+        }
+        else if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.AUTO_SEND_ANSWER) {
+            this.onSubmit(eventData, true);
+        }
+        else if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER_CALLBACK) {
+            this.onQuestionSubmitCallback(eventData);
+        }
+    };
+    StuSubmitFlow.prototype.onQuestionSubmitCallback = function (data) {
+        if (data.item == 'nosubmit' || this.flowState.submitTrigger !== FlowState_1.default.SUBMIT_TYPE_SUBMIT) {
+            return;
+        }
+        var value = data.value;
+        var targetState;
+        var hintText = '';
+        if (value.result) {
+            targetState = ConstVar_1.QUESTION_STATE_CODE.CAN_MODIFY;
+            if ($PresenterEvent['InteractionStateRecoverFilter']) {
+                this.mContext.dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, {});
+            }
+            hintText = this.mContext.getLangText('submit_successfully');
+            this.mContext.State.submitSuccess = true;
+        }
+        else {
+            targetState = ConstVar_1.QUESTION_STATE_CODE.RETRY_SUBMIT;
+            hintText = this.mContext.getLangText('submit_failed');
+        }
+        this.mContext.dispatchEvent('showMessageBox', ConstVariable.PresenterEventType.NATIVE_EVENT, {
+            item: 'open',
+            value: {
+                text: hintText,
+                layout: ['center', 'center'],
+                type: 'gray',
+                timeout: 2000
+            }
+        });
+        this.mContext.State.questionState = targetState;
+        this.mContext.AnswerInterceptOperate.afterSendAnswer(value);
+    };
+    StuSubmitFlow.prototype.onSubmit = function (eventData, auto) {
+        var that = this;
+        var mContext = that.mContext;
+        var popDialog = mContext.LayoutService.getContainer('MessagePanel');
+        var preProcess = mContext.QuestionOperate.getPreProcess();
+        eventData.state = eventData.state || mContext.State.questionState;
+        if (preProcess && preProcess.type === 'tip' && preProcess.data.msg) {
+            var lastState = mContext.State.questionState;
+            var contentText = preProcess.data.msg || '';
+            PopFactory_1.PopFactory.get('msgRmk').show({
+                container: popDialog,
+                mode: 'wood',
+                type: 'confirm',
+                text: contentText,
+                buttons: [
+                    {
+                        text: mContext.getLangText('submit_confirm'),
+                        handle: function () {
+                            mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.SUBMITTING;
+                            that.flowState.submitTrigger = FlowState_1.default.SUBMIT_TYPE_SUBMIT;
+                            Submit_1.Submit.onSubmit.call(that, function (answer, spendTime) {
+                                that.mContext.State.submittedAnswer = answer;
+                                that.handleSubmit(answer, spendTime, eventData.state, auto);
+                            });
+                        }
+                    },
+                    {
+                        text: mContext.getLangText('submit_cancel'),
+                        handle: function () {
+                            mContext.State.questionState = lastState;
+                            PopFactory_1.PopFactory.get('msgRmk').hide();
+                        }
+                    },
+                ]
+            });
+        }
+        else {
+            this.flowState.submitTrigger = FlowState_1.default.SUBMIT_TYPE_SUBMIT;
+            mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.SUBMITTING;
+            Submit_1.Submit.onSubmit.call(that, function (answer, spendTime) {
+                that.mContext.State.submittedAnswer = answer;
+                that.handleSubmit(answer, spendTime, eventData.state, auto);
+            });
+        }
+    };
+    StuSubmitFlow.prototype.handleSubmit = function (questionAnswer, spendTime, state, auto) {
+        state = state || this.mContext.State.questionState;
+        this.logger.debug("开始主动提交答案了", questionAnswer, state);
+        switch (state) {
+            case ConstVar_1.QUESTION_STATE_CODE.CAN_MODIFY:
+                this.onModify();
+                break;
+            case ConstVar_1.QUESTION_STATE_CODE.CAN_SUBMIT:
+            case ConstVar_1.QUESTION_STATE_CODE.RETRY_SUBMIT:
+                this.onSendAnswer(questionAnswer, auto);
+                break;
+            case ConstVar_1.QUESTION_STATE_CODE.SUBMITTING:
+            case ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT:
+            case ConstVar_1.QUESTION_STATE_CODE.FINISH:
+            default:
+                break;
+        }
+    };
+    StuSubmitFlow.prototype.onModify = function () {
+        this.mContext.QuestionOperate.unLock();
+        this.logger.debug('互动题型控制器：点击修改按钮，按钮状态变更为灰态的「提交」');
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.MODIFY_SUBMIT;
+        this.mContext.TimerOperate.start(true);
+        if ($PresenterEvent['InteractionStateRecoverFilter']) {
+            this.mContext.dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, {});
+        }
+    };
+    StuSubmitFlow.prototype.onSendAnswer = function (questionAnswer, isAutoSend) {
+        if (questionAnswer === undefined || questionAnswer.answer === undefined) {
+            this.logger.debug("互动题型控制器：答案为空，无法提交");
+            return;
+        }
+        this.logger.debug('互动题型控制器：提交答案开始，autosend:' + isAutoSend + ",当前习题答案：" + JSON.stringify(questionAnswer));
+        this.mContext.QuestionOperate.lock({ type: 'OnSubmit' });
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.SUBMITTING;
+        var sendData = {
+            questionId: questionAnswer.questionId,
+            answer: questionAnswer.answer
+        };
+        if (questionAnswer.answerState === false || questionAnswer.answerState === 'NO_ANSWER') {
+            sendData.answer = '';
+        }
+        this.mContext.AnswerInterceptOperate.beforeSendAnswer(sendData);
+        this.mContext.dispatchEvent(ConstVar_1.CLASSROOM_EVENT_NAME.SEND_ANSWER, ConstVariable.PresenterEventType.IC_PLAYER_EVENT, sendData);
+        this.sendTriggered = true;
+        this.logger.debug('互动题型控制器：提交答案结束');
+        if (isAutoSend || this.mContext.Option.showResultOnSubmit) {
+            var spendTime = this.mContext.TimerOperate.getTimeValue() || 0;
+            this.logger.debug('_onSendAnswer执行showResultHint');
+            this.mContext.QuestionOperate.showAnswer('user');
+            this.mContext.QuestionOperate.showHint('user', spendTime, false);
+        }
+    };
+    return StuSubmitFlow;
+}(BaseFlow_1.default));
+exports.default = StuSubmitFlow;
+
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var PopFactory_1 = __webpack_require__(4);
+var Submit_1 = __webpack_require__(6);
+var QuestionState_1 = __webpack_require__(5);
+var SubmitFlow = (function (_super) {
+    __extends(SubmitFlow, _super);
+    function SubmitFlow(mode) {
+        var _this = _super.call(this, mode, [{ name: ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_SUBMIT_ANSWER }, { name: ConstVar_1.CLASSROOM_EVENT_NAME.AUTO_SEND_ANSWER }]) || this;
+        _this.initInject();
+        return _this;
+    }
+    SubmitFlow.prototype.execute = function (eventData, eventName) {
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.EXERCISE_SUBMIT_ANSWER) {
+            this.onSubmit(eventData, false);
+        }
+        else if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.AUTO_SEND_ANSWER) {
+            this.onSubmit(eventData, true);
+        }
+    };
+    SubmitFlow.prototype.onSubmit = function (eventData, auto) {
+        var that = this;
+        if (this.mContext.State.questionState === ConstVar_1.QUESTION_STATE_CODE.RESET) {
+            QuestionState_1.default.resetTeacher(this.mContext);
+        }
+        else {
+            Submit_1.Submit.onSubmit.call(that, function (answer, spendTime) {
+                that.handleSubmit(answer, spendTime, auto, eventData);
+            });
+        }
+    };
+    SubmitFlow.prototype.handleSubmit = function (questionAnswer, spendTime, auto, eventData) {
+        var that = this;
+        var mContext = this.mContext;
+        that.logger.debug("开始主动提交答案了", questionAnswer);
+        mContext.QuestionOperate.lock({ type: 'OnSubmit' });
+        if (eventData && eventData.block) {
+            try {
+                that.mContext.dispatchEvent(ConstVar_1.CLASSROOM_EVENT_NAME.GET_QUESTION_ANSWER_CALLBACK, ConstVar_1.EVENT_TYPE.NATIVE_EVENT, questionAnswer);
+            }
+            catch (e) {
+            }
+            this.handleInjectObject(questionAnswer, spendTime);
+            return;
+        }
+        else {
+            var block = this.handleInjectObject(questionAnswer, spendTime);
+            if (block) {
+                return;
+            }
+        }
+        var popDialog = mContext.LayoutService.getContainer('MessagePanel');
+        if (auto) {
+            this.handleAnswer(questionAnswer, popDialog);
+        }
+        else {
+            PopFactory_1.PopFactory.get('msgRmk').show({
+                container: popDialog,
+                mode: 'wood',
+                type: 'confirm',
+                text: mContext.getLangText('submit_answer'),
+                buttons: [{
+                        text: mContext.getLangText('submit_confirm'),
+                        handle: function () {
+                            that.handleAnswer(questionAnswer, popDialog);
+                        }
+                    }, {
+                        text: mContext.getLangText('submit_cancel'),
+                        handle: function () {
+                            PopFactory_1.PopFactory.get('msgRmk').hide();
+                            mContext.QuestionOperate.unLock();
+                            mContext.State.questionState = mContext.SubmitButtonOperate.getState().code;
+                        }
+                    }]
+            });
+        }
+    };
+    SubmitFlow.prototype.handleAnswer = function (questionAnswer, popDialog) {
+        var mContext = this.mContext;
+        mContext.TimerOperate.stop();
+        mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.RESET;
+        var popParam = {
+            container: popDialog,
+            mode: "wood",
+            type: "error",
+            text: mContext.getLangText('answer_wrong')
+        };
+        if (questionAnswer.answer.answer_result) {
+            popParam.type = "right";
+            popParam.text = mContext.getLangText('answer_right');
+        }
+        PopFactory_1.PopFactory.get('msgRmk').show(popParam);
+        var type = questionAnswer.answer.user_response ? 'user' : 'correct';
+        mContext.QuestionOperate.showAnswer(type, questionAnswer);
+    };
+    SubmitFlow.prototype.initInject = function () {
+        var injectParam = this.mContext.Option.inject;
+        if (injectParam != undefined && injectParam.indexOf('answerFlow') >= 0) {
+            this.mContext.__interface.setCallbackList = this.injectSetCallbackList.bind(this);
+        }
+    };
+    SubmitFlow.prototype.injectSetCallbackList = function (injectObject) {
+        var methodList = ['onAnswerQuestion'], checkAll = true;
+        if (this.injectObject == undefined) {
+            _.each(methodList, function (method) {
+                if (injectObject[method] == undefined || !$.isFunction(injectObject[method])) {
+                    checkAll = false;
+                }
+            });
+            this.injectObject = checkAll ? injectObject : undefined;
+        }
+    };
+    SubmitFlow.prototype.handleInjectObject = function (answer, spendTime) {
+        var blockProgress = false;
+        if (this.injectObject) {
+            var info = this.mContext.QuestionOperate.getInfo(), id = void 0;
+            if (info) {
+                id = info.id;
+            }
+            if (answer && answer.questionId) {
+                id = answer.questionId;
+            }
+            var result = {
+                answers: {},
+                spendTime: -1
+            };
+            result.spendTime = this.mContext.TimerOperate.getTimeValue() || -1;
+            result.answers[id] = answer;
+            blockProgress = this.injectObject.onAnswerQuestion.call(this.injectObject, id, result);
+        }
+        return blockProgress;
+    };
+    return SubmitFlow;
+}(BaseFlow_1.default));
+exports.default = SubmitFlow;
+
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BaseFlow_1 = __webpack_require__(1);
+var TimeUpFlow = (function (_super) {
+    __extends(TimeUpFlow, _super);
+    function TimeUpFlow(mode) {
+        return _super.call(this, mode, [{ name: ConstVar_1.INTERNAL_EVENT_NAME.TIME_UP, type: ConstVar_1.EVENT_TYPE.INTERNAL }]) || this;
+    }
+    TimeUpFlow.prototype.execute = function (eventData, eventName) {
+        this.onTimeUp();
+    };
+    TimeUpFlow.prototype.onTimeUp = function () {
+        var option = {
+            type: "stop"
+        };
+        this.mContext.dispatchEvent("QuizProcess", ConstVariable.PresenterEventType.IC_PLAYER_EVENT, option);
+    };
+    return TimeUpFlow;
+}(BaseFlow_1.default));
+exports.default = TimeUpFlow;
+
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BasePlayerFlow_1 = __webpack_require__(3);
+var PreviewShowCorrectAnswerFlow = (function (_super) {
+    __extends(PreviewShowCorrectAnswerFlow, _super);
+    function PreviewShowCorrectAnswerFlow(mode) {
+        return _super.call(this, mode, [{
+                name: ConstVar_1.CLASSROOM_EVENT_NAME.PREVIEW_SHOW_CORRECT_ANSWER,
+                type: ConstVar_1.EVENT_TYPE.PLAYER_FLOW,
+                data: {
+                    scope: 'page'
+                }
+            }]) || this;
+    }
+    PreviewShowCorrectAnswerFlow.prototype.validate = function (data) {
+        var defaultOption = {
+            finish: true,
+            whoAnswer: 'correct',
+            specialAnswer: undefined,
+            context: this,
+            stateCode: null
+        };
+        if (data == undefined) {
+            return defaultOption;
+        }
+        else {
+            return $.extend(defaultOption, data);
+        }
+    };
+    PreviewShowCorrectAnswerFlow.prototype.execute = function (option, eventName) {
+        var mContext = this.mContext;
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.PREVIEW_SHOW_CORRECT_ANSWER) {
+            if (option.finish == true) {
+                mContext.TimerOperate.stop();
+                mContext.State.questionState = !option.stateCode ? ConstVar_1.QUESTION_STATE_CODE.RESET : option.stateCode;
+            }
+            mContext.QuestionOperate.lock();
+            switch (option.whoAnswer) {
+                case 'correct':
+                case 'user':
+                    mContext.QuestionOperate.showAnswer(option.whoAnswer);
+                    break;
+                case 'special':
+                    mContext.QuestionOperate.showAnswer('user', option.specialAnswer);
+            }
+        }
+    };
+    return PreviewShowCorrectAnswerFlow;
+}(BasePlayerFlow_1.default));
+exports.default = PreviewShowCorrectAnswerFlow;
+
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BasePlayerFlow_1 = __webpack_require__(3);
+var SendQuestionFlow = (function (_super) {
+    __extends(SendQuestionFlow, _super);
+    function SendQuestionFlow(mode) {
+        var _this = _super.call(this, mode, [{
+                name: ConstVar_1.CLASSROOM_EVENT_NAME.AS_SEND_QUESTION,
+                type: ConstVar_1.EVENT_TYPE.PLAYER_FLOW,
+                data: {
+                    scope: 'page'
+                }
+            }]) || this;
+        _this.currentScope = ['page', 'common', 'tool'];
+        _this.referenceModule = _this.mContext.Model.$.unqiueId;
+        _this.initFlowHandler();
+        _this.sendCallBack = {
+            success: null,
+            fail: null
+        };
+        return _this;
+    }
+    SendQuestionFlow.prototype.initFlowHandler = function () {
+        if (this.mContext.__interface === undefined) {
+            return;
+        }
+        this.mContext.__interface.getExerciseData = this.getExerciseData.bind(this);
+        this.mContext.__interface.exerciseStartSuccess = this.exerciseStartSuccess.bind(this);
+        this.mContext.__interface.exerciseStartFail = this.exerciseStartFailure.bind(this);
+        this.mContext.__interface.exerciseResetSuccess = this.exerciseStartSuccess.bind(this);
+        this.mContext.__interface.exerciseResetFail = this.exerciseStartFailure.bind(this);
+    };
+    SendQuestionFlow.prototype.getExerciseData = function (data) {
+        data.questionInfo = this.mContext.QuestionOperate.getInfo();
+        return data;
+    };
+    SendQuestionFlow.prototype.getToolExerciseData = function (data) {
+        var tools = window.player.getToolList(), all = (tools && tools.all) || [], items;
+        all.forEach(function (sub, i) {
+            items = sub.items && sub.items.items;
+            if (items && items.length > 0) {
+                items.forEach(function (presenter) {
+                    if (presenter.presenterCode === 'DynamicAnswer'
+                        && presenter.presenter
+                        && presenter.presenter.getService
+                        && presenter.presenter.getService().getExerciseData) {
+                        presenter.presenter.getService().getExerciseData(data);
+                    }
+                });
+            }
+        });
+    };
+    SendQuestionFlow.prototype.exerciseStartSuccess = function () {
+        this.sendCallBack.success && this.sendCallBack.success();
+        this.mContext.dispatchEvent('SendQuestionToStudent', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, { status: 'success' });
+        this.logger.debug('发送题目的流程执行：成功!');
+    };
+    SendQuestionFlow.prototype.exerciseStartFailure = function () {
+        this.sendCallBack.fail && this.sendCallBack.fail();
+        this.mContext.dispatchEvent('SendQuestionToStudent', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, { status: 'failure' });
+        this.logger.debug('发送题目的流程执行：失败!');
+    };
+    SendQuestionFlow.prototype.validate = function (data) {
+        if (data.op !== 'send' && data.op !== 'resend') {
+            throw new Error('SendQuestionFlow事件参数不支持');
+        }
+        return data;
+    };
+    SendQuestionFlow.prototype.execute = function (option, eventName, success, fail) {
+        var flowName = '';
+        var isTool = false;
+        var questionInfo = this.mContext.QuestionOperate.getInfo();
+        if (questionInfo && questionInfo.isTool === true) {
+            isTool = true;
+        }
+        this.sendCallBack = {
+            success: success,
+            fail: fail
+        };
+        this.currentScope[0] = 'page';
+        if (option.op === 'send') {
+            if (isTool) {
+                this.currentScope[0] = 'tool';
+                flowName = 'exerciseToolStart';
+            }
+            else {
+                flowName = 'exerciseStart';
+            }
+        }
+        else if (option.op === 'resend') {
+            flowName = 'exerciseReset';
+        }
+        this.mContext.PlayerController.startFlow(flowName, { scope: this.currentScope, sourcePresenterUnqiueId: this.referenceModule });
+        this.mContext.dispatchEvent('SendQuestionToStudent', ConstVariable.PresenterEventType.IC_PLAYER_EVENT, { status: 'sending' });
+        this.logger.debug('发送题目的流程执行：开始!');
+    };
+    return SendQuestionFlow;
+}(BasePlayerFlow_1.default));
+exports.default = SendQuestionFlow;
+
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BasePlayerFlow_1 = __webpack_require__(3);
+var SetQuestionStateFlow = (function (_super) {
+    __extends(SetQuestionStateFlow, _super);
+    function SetQuestionStateFlow(mode) {
+        return _super.call(this, mode, [{
+                name: ConstVar_1.CLASSROOM_EVENT_NAME.SET_QUESTION_STATUS,
+                type: ConstVar_1.EVENT_TYPE.PLAYER_FLOW,
+                data: {
+                    scope: 'page'
+                }
+            }]) || this;
+    }
+    SetQuestionStateFlow.prototype.validate = function (data) {
+        var defaultOption = {
+            status: 'reset',
+            options: {
+                timer: 'continue'
+            },
+            redoTimestamp: 0
+        };
+        if (data == undefined) {
+            return defaultOption;
+        }
+        else {
+            return $.extend(defaultOption, data);
+        }
+    };
+    SetQuestionStateFlow.prototype.execute = function (option, eventName) {
+        var questionState;
+        var btnState;
+        var mContext = this.mContext;
+        switch (option.status) {
+            case 'reset':
+                questionState = { 'resetQuestion': {}, 'unlockQuestion': {} };
+                btnState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+                break;
+            case 'lock':
+                questionState = { 'lockQuestion': {} };
+                btnState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+                break;
+            case 'unlock':
+                questionState = { 'unlockQuestion': {} };
+                break;
+            case 'finish':
+                questionState = { 'finishQuestion': {} };
+                btnState = ConstVar_1.QUESTION_STATE_CODE.FINISH;
+                break;
+            case 'reflow':
+                if (mContext.Option.runtime.isStudentMobile) {
+                    mContext.State.submitSuccess = false;
+                    questionState = { 'unlockQuestion': {} };
+                }
+                else {
+                    questionState = { 'resetQuestion': {}, 'lockQuestion': {} };
+                }
+                btnState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+                if (option.options.timer === 'continue') {
+                    if (mContext.Option.runtime.isStudentMobile) {
+                        mContext.TimerOperate.start(true, option.redoTimestamp);
+                    }
+                    else {
+                        mContext.TimerOperate.start();
+                    }
+                }
+                break;
+        }
+        if (questionState) {
+            mContext.QuestionOperate.changeState(questionState);
+        }
+        if (btnState) {
+            mContext.State.questionState = btnState;
+        }
+    };
+    return SetQuestionStateFlow;
+}(BasePlayerFlow_1.default));
+exports.default = SetQuestionStateFlow;
+
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BasePlayerFlow_1 = __webpack_require__(3);
+var LANG_KEY_SEND = 'send_task';
+var LANG_KEY_BACK_ORIGINAL = 'back_original';
+var SetToolBarStateFlow = (function (_super) {
+    __extends(SetToolBarStateFlow, _super);
+    function SetToolBarStateFlow(mode) {
+        return _super.call(this, mode, [{
+                name: ConstVar_1.CLASSROOM_EVENT_NAME.QF_SET_TOOLBAR_STATE,
+                type: ConstVar_1.EVENT_TYPE.PLAYER_FLOW,
+                data: {
+                    scope: 'page'
+                }
+            }]) || this;
+    }
+    SetToolBarStateFlow.prototype.validate = function (data) {
+        var defaultOption = {
+            submitVisible: null,
+            sendBtnState: null,
+            showAnswerBtnVisible: null,
+            showHintBtnVisible: null,
+            showAnalysisBtnVisible: null
+        };
+        if (data == undefined) {
+            return defaultOption;
+        }
+        else {
+            return $.extend(defaultOption, data);
+        }
+    };
+    SetToolBarStateFlow.prototype.execute = function (option, eventName) {
+        var mContext = this.mContext;
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.QF_SET_TOOLBAR_STATE) {
+            if (option.sendBtnState === 'back') {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SEND, 'text', mContext.getLangText(LANG_KEY_BACK_ORIGINAL));
+            }
+            else if (option.sendBtnState === 'send') {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SEND, 'text', mContext.getLangText(LANG_KEY_SEND));
+            }
+            if (option.showAnswerBtnVisible === false || option.showAnswerBtnVisible === true) {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', !option.showAnswerBtnVisible);
+            }
+            if (option.submitVisible === true || option.submitVisible === false) {
+                mContext.SubmitButtonOperate.setVisible(option.submitVisible);
+            }
+            if (option.showHintBtnVisible === true || option.showHintBtnVisible === false) {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', !option.showHintBtnVisible);
+            }
+            if (option.showAnalysisBtnVisible === true || option.showAnalysisBtnVisible === false) {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', !option.showHintBtnVisible);
+            }
+        }
+    };
+    return SetToolBarStateFlow;
+}(BasePlayerFlow_1.default));
+exports.default = SetToolBarStateFlow;
+
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var BasePlayerFlow_1 = __webpack_require__(3);
+var UpdateToolBarStateFlow = (function (_super) {
+    __extends(UpdateToolBarStateFlow, _super);
+    function UpdateToolBarStateFlow(mode) {
+        return _super.call(this, mode, [{
+                name: ConstVar_1.CLASSROOM_EVENT_NAME.QF_UPDATE_TOOLBAR_STATE,
+                type: ConstVar_1.EVENT_TYPE.PLAYER_FLOW,
+                data: {
+                    scope: 'page'
+                }
+            }]) || this;
+    }
+    UpdateToolBarStateFlow.prototype.validate = function (data) {
+        var defaultOption = {
+            answerState: '',
+        };
+        if (data == undefined) {
+            return defaultOption;
+        }
+        else {
+            return $.extend(defaultOption, data);
+        }
+    };
+    UpdateToolBarStateFlow.prototype.execute = function (option, eventName) {
+        var mContext = this.mContext;
+        if (eventName === ConstVar_1.CLASSROOM_EVENT_NAME.QF_UPDATE_TOOLBAR_STATE) {
+            mContext.QuestionOperate.hasHint().done(function (has) {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_HINT, 'hidden', !has);
+            });
+            mContext.QuestionOperate.hasAnalysis().done(function (has) {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_ANALYSIS, 'hidden', !has);
+            });
+            if (option.answerState === 'correct') {
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', true);
+            }
+            else {
+                var isSubjective = mContext.QuestionOperate.isSubjective();
+                mContext.QuestionMode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', isSubjective);
+            }
+        }
+    };
+    return UpdateToolBarStateFlow;
+}(BasePlayerFlow_1.default));
+exports.default = UpdateToolBarStateFlow;
+
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var FlowState_1 = __webpack_require__(7);
+var ToolbarModule_1 = __webpack_require__(8);
+var Mode = (function () {
+    function Mode(context) {
+        this.mContext = context;
+        this.flowState = new FlowState_1.default(this);
+        this.bus = context.Bus;
+        this.modules = [];
+    }
+    Mode.prototype.init = function () {
+        var _this = this;
+        this.modules.forEach(function (module) {
+            module.init(_this);
+        });
+    };
+    Mode.prototype.pushModule = function (module) {
+        this.modules.push(module);
+        if (module instanceof ToolbarModule_1.default) {
+            this.toolbarModule = module;
+        }
+    };
+    Mode.prototype.commit = function (type, data) {
+        this.bus.commit(type, data);
+    };
+    Mode.prototype.getToolBarModule = function () {
+        return this.toolbarModule;
+    };
+    Mode.prototype.setBarState = function (btn, key, val) {
+        if (this.toolbarModule) {
+            this.toolbarModule.getToolbar().changeState(btn, key, val);
+        }
+    };
+    Mode.prototype.hideToolbar = function () {
+        if (this.toolbarModule) {
+            return this.toolbarModule.getToolbar().hide();
+        }
+    };
+    Mode.prototype.getContext = function () {
+        return this.mContext;
+    };
+    Mode.prototype.getBus = function () {
+        return this.bus;
+    };
+    Mode.prototype.getFlowState = function () {
+        return this.flowState;
+    };
+    Mode.prototype.destroy = function () {
+        this.modules.forEach(function (module, item) {
+            module.destroy();
+        });
+    };
+    return Mode;
+}());
+exports.default = Mode;
+
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ServiceObject_1 = __webpack_require__(11);
+var AnswerFlowControlObject_1 = __webpack_require__(9);
+var QuestionServieOperate_1 = __webpack_require__(17);
+var AnswerInterceptOperate_1 = __webpack_require__(15);
+var SubmitButtonOperate_1 = __webpack_require__(18);
+var ExerciseOperate_1 = __webpack_require__(16);
+var TimerOperate_1 = __webpack_require__(19);
+var PopFactory_1 = __webpack_require__(4);
+var ControllerState_1 = __webpack_require__(10);
+var ModeBuilder_1 = __webpack_require__(13);
+var FlowModule_1 = __webpack_require__(12);
+var ToolbarModule_1 = __webpack_require__(8);
+var Lang_1 = __webpack_require__(20);
+var ModeBus_1 = __webpack_require__(14);
+var AnswerFlowController = (function (_super) {
+    __extends(AnswerFlowController, _super);
+    function AnswerFlowController() {
+        var _this = _super.call(this, 'AnswerFlowController') || this;
+        _this.initGlobalEventKey();
+        _this.metaInfo.name = "AnswerFlowController";
+        _this.metaInfo.type = ConstVariable.PresenterType.CONTROLLER;
+        _this.option = {};
+        _this.lang = {};
+        _this.bus = new ModeBus_1.default();
+        _this.serviceObj = new ServiceObject_1.default(_this);
+        _this.ControlService = new AnswerFlowControlObject_1.default(_this);
+        _this.state = new ControllerState_1.default(_this);
+        _this.questionOperate = new QuestionServieOperate_1.default(_this);
+        _this.submitButtonOperate = new SubmitButtonOperate_1.default(_this);
+        _this.answerInterceptOperate = new AnswerInterceptOperate_1.default(_this);
+        _this.exerciseOperate = new ExerciseOperate_1.default(_this);
+        _this.timerOperate = new TimerOperate_1.default(_this);
+        return _this;
+    }
+    AnswerFlowController.prototype.getMetaInfoName = function () {
+        return this.metaInfo.name;
+    };
+    Object.defineProperty(AnswerFlowController.prototype, "AnswerInterceptOperate", {
+        get: function () {
+            return this.answerInterceptOperate;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "SubmitButtonOperate", {
+        get: function () {
+            return this.submitButtonOperate;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "QuestionOperate", {
+        get: function () {
+            return this.questionOperate;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "ExerciseOperate", {
+        get: function () {
+            return this.exerciseOperate;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "TimerOperate", {
+        get: function () {
+            return this.timerOperate;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "Bus", {
+        get: function () {
+            return this.bus;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnswerFlowController.prototype.getLangText = function (key) {
+        if (this.lang[key] == undefined)
+            return "ERROR";
+        return this.lang[key];
+    };
+    Object.defineProperty(AnswerFlowController.prototype, "Option", {
+        get: function () {
+            return this.option;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "State", {
+        get: function () {
+            return this.state;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AnswerFlowController.prototype, "QuestionMode", {
+        get: function () {
+            return this.questionModel;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    AnswerFlowController.prototype.$launch = function (option) {
+        this.Logger.setLevel(ConstVariable.PresenterLogLevel.DEBUG);
+        this.lang = $.extend(true, {}, Lang_1.default, option.lang || {});
+        this.initEnv();
+        var builder = new ModeBuilder_1.default(this);
+        builder.setFlowModule(new FlowModule_1.default(this));
+        if (!this.option.isPreview && !this.option.runtime.isApp) {
+            builder.setToolbarModule(new ToolbarModule_1.default(this));
+        }
+        this.questionModel = builder.build();
+        this.questionModel.init();
+        PopFactory_1.PopFactory.get('submitter').hide();
+    };
+    AnswerFlowController.prototype.initEnv = function () {
+        var option = this.option;
+        var loadSendQuestion = true;
+        if (this.Model.loadSendQuestion === false || this.Model.loadSendQuestion === 'false') {
+            loadSendQuestion = false;
+        }
+        if (this.QueryString["loadSendQuestion"] && this.QueryString["loadSendQuestion"] == 'false') {
+            loadSendQuestion = false;
+        }
+        var showResultOnSubmit = (this.Model.showResultOnSubmit === true || this.Model.showResultOnSubmit === 'true');
+        option.questionId = this.Model.linkQuestionId || undefined;
+        option.loadSendQuestion = loadSendQuestion;
+        option.showResultOnSubmit = showResultOnSubmit;
+        option.app = this.QueryString['app'];
+        option.sys = this.QueryString['sys'];
+        option.inject = this.QueryString['inject'];
+        option.isPreview = this.QueryString['isPreview'];
+        option.runtime = {
+            isApp: this.Environment.isApp,
+            isWeb: this.Environment.isWeb,
+            isTeacherPC: this.Environment.isPC,
+            isTeacherMobile: this.Environment.isTeacher,
+            isStudentMobile: this.Environment.isStudent
+        };
+        option.platform = {
+            pptShell: option.sys === 'pptshell'
+        };
+        option.app = {
+            questionBag: option.app === 'question_bag',
+            exercise: option.app === 'exercise'
+        };
+    };
+    AnswerFlowController.prototype.$release = function () {
+        if (this.questionModel) {
+            this.questionModel.destroy();
+        }
+        PopFactory_1.PopFactory.get('submitter').show();
+        PopFactory_1.PopFactory.destroy();
+    };
+    AnswerFlowController.prototype.getService = function () {
+        if (this.serviceObj === undefined) {
+            this.serviceObj = new ServiceObject_1.default(this);
+        }
+        return this.serviceObj;
+    };
+    AnswerFlowController.prototype.initGlobalEventKey = function () {
+        if (!window.$PresenterEvent) {
+            window.$PresenterEvent = {};
+        }
+        window.$PresenterEvent['AnswerFlowController'] = {
+            SEND_ANSWER: 'sendAnswer',
+            SEND_ANSWER_CALLBACK: 'sendAnswerCallback',
+            SEND_ANSWER_STOP: 'sendAnswerStop',
+            EXERCISE_STATE_CHANGE: 'exerciseStateChange',
+            QUESTION_STATE_CHANGE: 'questionStateChange',
+            EMBEDDED_QUESTION_STATE_CHANGE: 'embeddedQuestionStateChange',
+            AUTO_SEND_ANSWER: 'autoSendAnswer',
+            PREVIEW_SHOW_CORRECT_ANSWER: 'PreviewShowCorrectAnswer',
+            SET_QUESTION_STATUS: 'SetQuestionStatus',
+            EXERCISE_SUBMIT_ANSWER: "custom_event_submit_answer"
+        };
+    };
+    return AnswerFlowController;
+}(CommonController));
+exports.AnswerFlowController = AnswerFlowController;
+window['AddonAnswerFlowController_create'] = function () {
+    return new AnswerFlowController();
+};
+
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var ConstVar_1 = __webpack_require__(0);
+var QuestionState_1 = __webpack_require__(5);
+var ClassroomStatus = (function () {
+    function ClassroomStatus(context) {
+        this.mContext = context;
+        this.init();
+    }
+    ClassroomStatus.prototype.init = function () {
+        var that = this, mContext = that.mContext;
+        mContext.Bus.register(ConstVar_1.INTERNAL_EVENT_NAME.QUESTION_STATUS_CHANGE, function (eventName, eventData) {
+            mContext.PlayerController.startFlow('css_classroom_status_changed', {
+                presenterCode: mContext.getMetaInfoName()
+            });
+        });
+    };
+    ClassroomStatus.prototype.setQuestionStateReset = function () {
+        var that = this, mContext = that.mContext;
+        if (that.crStatus) {
+            if (that.crStatus.showCorrectAnswer) {
+                var info = this.mContext.QuestionOperate.getInfo();
+                if (info && info.type_code && info.type_code.toLocaleLowerCase() === 'compound') {
+                }
+                else {
+                    QuestionState_1.default.resetTeacher(this.mContext);
+                }
+            }
+            if (that.crStatus.questionState === ConstVar_1.QUESTION_STATE_CODE.RESET) {
+                mContext.TimerOperate.resetPauseUp();
+                mContext.QuestionOperate.lock();
+                mContext.QuestionOperate.showAnswer('user');
+                that.crStatus = '';
+            }
+        }
+    };
+    ClassroomStatus.prototype.getClassroomStatus = function () {
+        var toolBar = this.mContext.QuestionMode.getToolBarModule();
+        var showCorrectAnswer = false;
+        if (toolBar) {
+            if (toolBar.getToolbar()) {
+                if (toolBar.getToolbar().getState(ConstVar_1.BAR_TYPE.SEND, 'text') === this.mContext.getLangText('back_original')) {
+                    showCorrectAnswer = true;
+                }
+            }
+        }
+        return {
+            questionState: this.mContext.State.questionState,
+            showCorrectAnswer: showCorrectAnswer
+        };
+    };
+    ClassroomStatus.prototype.setClassroomStatus = function (status) {
+        this.crStatus = status;
+        this.mContext.State.questionState = this.crStatus.questionState;
+        this.setQuestionStateReset();
+    };
+    ClassroomStatus.prototype.clearClassroomStatus = function () {
+        this.crStatus = '';
+    };
+    return ClassroomStatus;
+}());
+exports.default = ClassroomStatus;
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MessageBoxRemakePop = {
+    container: null,
+    show: function (param) {
+        var container = param.container;
+        $(container).show();
+        this.container = container;
+        delete param.container;
+        MessageBoxRemake.showPop(container, param);
+    },
+    hide: function (param) {
+        $(this.container).hide();
+        this.container = null;
+    },
+    destroy: function () {
+        this.container = null;
+    }
+};
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.SubmitterMask = {
+    show: function (param) {
+        var submitter = window.player.getPlayerServices().getToolbarModule("AnswerSubmitter");
+        if (submitter) {
+            if (param && param.showMsg) {
+                submitter.maskDialog.show();
+            }
+            else {
+                submitter.canDo.removeAttr('style');
+                submitter.maskDialog.find('.mask').removeAttr('style');
+            }
+        }
+    },
+    hide: function () {
+        var submitter = window.player.getPlayerServices().getToolbarModule("AnswerSubmitter");
+        if (submitter) {
+            submitter.canDo.hide();
+            submitter.maskDialog.find('.mask').hide();
+        }
+    }
+};
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var ConstVar_1 = __webpack_require__(0);
+var LANG_KEY = 'bag_show_answer';
+var DATA = {
+    id: '_bar_showanser',
+    text: '公布答案',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square square_tool_result',
+    activedStyle: '',
+    handler: $.noop
+};
+var QBagCorrectAnswerBtn = (function (_super) {
+    __extends(QBagCorrectAnswerBtn, _super);
+    function QBagCorrectAnswerBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        var that = _this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = that.mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = function () {
+            if (!that.data.hidden) {
+                that.mContext.TimerOperate.stop();
+                that.mContext.QuestionOperate.showAnswer('correct');
+                that.mContext.QuestionOperate.changeState({ 'finishQuestion': {} });
+                that.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.FINISH;
+            }
+            that.data.hidden = true;
+        };
+        return _this;
+    }
+    return QBagCorrectAnswerBtn;
+}(BaseItem_1.default));
+exports.default = QBagCorrectAnswerBtn;
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var LANG_KEY = 'bag_return';
+var DATA = {
+    id: '_bar_bag_closewin',
+    text: '返回抽题',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square square_tool_treasure',
+    activedStyle: '',
+    handler: $.noop
+};
+var QBagReturnBtn = (function (_super) {
+    __extends(QBagReturnBtn, _super);
+    function QBagReturnBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = function () {
+            if (CoursePlayer && CoursePlayer.close) {
+                mode.getContext().Logger.debug("Call CoursePlayer Method close()");
+                CoursePlayer.close();
+            }
+            else {
+                mode.getContext().Logger.debug("CoursePlayer not exists or is NULL!");
+            }
+        };
+        return _this;
+    }
+    return QBagReturnBtn;
+}(BaseItem_1.default));
+exports.default = QBagReturnBtn;
+
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var ConstVar_1 = __webpack_require__(0);
+var QuestionState_1 = __webpack_require__(5);
+var LANG_KEY = 'send_task';
+var LANG_KEY_BACK_ORIGINAL = 'back_original';
+var SENDING_STYLE = 'ndui-btn-square send_to_student click_disabled';
+var NO_STUDENT_STYLE = 'ndui-btn-square send_to_student none_link';
+var DATA = {
+    id: '_bar_send_question',
+    text: '',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square send_to_student',
+    activedStyle: '',
+    handler: $.noop
+};
+var PUSH_STATUS = 'PLAYER.GLOBAL.PUSH_STATUS';
+var SendQuestionBtn = (function (_super) {
+    __extends(SendQuestionBtn, _super);
+    function SendQuestionBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        _this.sendingState = '';
+        _this.sendEnable = true;
+        var that = _this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = function () {
+            that.onSendQuestion();
+        };
+        _this.sendEnable = icCreatePlayer.detector.isOnline();
+        _this.updateStyle();
+        _this.onStudentOnlineStatusChange();
+        _this.init();
+        return _this;
+    }
+    SendQuestionBtn.prototype.init = function () {
+        if (this.mContext.__interface) {
+            this.mContext.__interface.asSendQuestionSuccess = this.exerciseStartSuccess.bind(this);
+            this.mContext.__interface.asSendQuestionFail = this.exerciseStartFailure.bind(this);
+        }
+    };
+    SendQuestionBtn.prototype.changeState = function (key, val) {
+        _super.prototype.changeState.call(this, key, val);
+        this.updateStyle();
+        this.mContext.QuestionMode.commit(ConstVar_1.INTERNAL_EVENT_NAME.QUESTION_STATUS_CHANGE, val);
+    };
+    SendQuestionBtn.prototype.updateStyle = function () {
+        if (this.data.text === this.mode.getContext().getLangText(LANG_KEY)) {
+            if (this.sendEnable === true) {
+                this.data.style = DATA.style;
+            }
+            else {
+                this.data.style = NO_STUDENT_STYLE;
+            }
+        }
+        else {
+            this.data.style = DATA.style;
+        }
+    };
+    SendQuestionBtn.prototype.onStudentOnlineStatusChange = function () {
+        var that = this;
+        if (window.player) {
+            window.player.getController().getPlayerEvent().addEventListener(PUSH_STATUS, function (eventName, eventData) {
+                if (eventData) {
+                    that.sendEnable = eventData.status;
+                    that.updateStyle();
+                }
+            });
+        }
+    };
+    SendQuestionBtn.prototype.onSendQuestion = function () {
+        var that = this;
+        if (this.sendingState === 'sending') {
+            return;
+        }
+        if (this.data.text === this.mode.getContext().getLangText(LANG_KEY_BACK_ORIGINAL)) {
+            this.backOriginal();
+            return;
+        }
+        if (this.data.style !== NO_STUDENT_STYLE) {
+            this.data.style = SENDING_STYLE;
+        }
+        this.mContext.PlayerController.startFlow(ConstVar_1.CLASSROOM_EVENT_NAME.AS_SEND_QUESTION, { op: 'send' });
+    };
+    SendQuestionBtn.prototype.backOriginal = function () {
+        this.data.text = this.mode.getContext().getLangText(LANG_KEY);
+        this.updateStyle();
+        this.mode.setBarState(ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER, 'hidden', this.mContext.QuestionOperate.isSubjective());
+        QuestionState_1.default.resetTeacher(this.mode.getContext());
+        this.mContext.SubmitButtonOperate.setVisible(true);
+        this.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+    };
+    SendQuestionBtn.prototype.exerciseStartSuccess = function () {
+        this.updateStyle();
+        this.data.hidden = true;
+        this.mode.hideToolbar();
+    };
+    SendQuestionBtn.prototype.exerciseStartFailure = function () {
+        this.updateStyle();
+        this.data.hidden = false;
+    };
+    return SendQuestionBtn;
+}(BaseItem_1.default));
+exports.default = SendQuestionBtn;
+
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var LANG_KEY = 'show_analysis';
+var DATA = {
+    id: '_bar_show_analysis',
+    text: '查看解析',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square square_tool_analysis',
+    activedStyle: '',
+    handler: $.noop
+};
+var ShowAnalysisBtn = (function (_super) {
+    __extends(ShowAnalysisBtn, _super);
+    function ShowAnalysisBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        var that = _this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = that.mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = function () {
+            that.mode.getContext().QuestionOperate.setAnalysisVisible(true);
+        };
+        return _this;
+    }
+    return ShowAnalysisBtn;
+}(BaseItem_1.default));
+exports.default = ShowAnalysisBtn;
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var ConstVar_1 = __webpack_require__(0);
+var LANG_KEY = 'show_correct_answer';
+var LANG_KEY_BACK_ORIGINAL = 'back_original';
+var DATA = {
+    id: '_bar_show_correct_anser',
+    text: '查看答案',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square square_tool_answer',
+    activedStyle: '',
+    handler: $.noop
+};
+var ShowCorrectAnswerBtn = (function (_super) {
+    __extends(ShowCorrectAnswerBtn, _super);
+    function ShowCorrectAnswerBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        var that = _this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = that.mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = _this.handler.bind(_this);
+        return _this;
+    }
+    ShowCorrectAnswerBtn.prototype.handler = function () {
+        var that = this;
+        if (!that.data.hidden) {
+            that.mContext.QuestionOperate.lock();
+            that.mContext.QuestionOperate.showAnswer('correct');
+            that.mContext.TimerOperate.stop();
+            that.mContext.State.questionState = ConstVar_1.QUESTION_STATE_CODE.CAN_NOT_SUBMIT;
+            that.mode.setBarState(ConstVar_1.BAR_TYPE.SEND, 'text', that.mode.getContext().getLangText(LANG_KEY_BACK_ORIGINAL));
+            that.mContext.SubmitButtonOperate.setVisible(false);
+        }
+        that.data.hidden = true;
+    };
+    ;
+    return ShowCorrectAnswerBtn;
+}(BaseItem_1.default));
+exports.default = ShowCorrectAnswerBtn;
+
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var BaseItem_1 = __webpack_require__(2);
+var LANG_KEY = 'show_hint';
+var DATA = {
+    id: '_bar_show_hint',
+    text: '查看提示',
+    order: 20,
+    hidden: false,
+    actived: false,
+    style: 'ndui-btn-square square_tool_tips',
+    activedStyle: '',
+    handler: $.noop
+};
+var ShowHintBtn = (function (_super) {
+    __extends(ShowHintBtn, _super);
+    function ShowHintBtn(mode, option) {
+        var _this = _super.call(this, mode) || this;
+        var that = _this;
+        _this.data = $.extend(true, {}, DATA, option);
+        _this.data.text = that.mode.getContext().getLangText(LANG_KEY);
+        _this.data.handler = function () {
+            that.mode.getContext().QuestionOperate.setHintVisible(true);
+        };
+        return _this;
+    }
+    return ShowHintBtn;
+}(BaseItem_1.default));
+exports.default = ShowHintBtn;
+
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var SendQuestionBtn_1 = __webpack_require__(42);
+var QBagReturnBtn_1 = __webpack_require__(41);
+var QBagCorrectAnswerBtn_1 = __webpack_require__(40);
+var ConstVar_1 = __webpack_require__(0);
+var ShowAnalysisBtn_1 = __webpack_require__(43);
+var ShowCorrectAnswerBtn_1 = __webpack_require__(44);
+var ShowHintBtn_1 = __webpack_require__(45);
+var Toolbar = (function () {
+    function Toolbar(mode, option) {
+        this.mode = mode;
+        this.mContext = mode.getContext();
+        this.option = $.extend(true, { side: 'both' }, option);
+        this.items = [];
+    }
+    Toolbar.prototype.init = function () {
+        this.initMembers();
+        this.mount();
+    };
+    Toolbar.prototype.initMembers = function () {
+        var items = this.option.items, btnType, btn;
+        for (btnType in items) {
+            btn = items[btnType];
+            if (items.hasOwnProperty(btnType)) {
+                this.items[btnType] = this.barFactory(btnType, btn);
+            }
+        }
+    };
+    Toolbar.prototype.barFactory = function (key, option) {
+        var btn;
+        switch (key) {
+            case ConstVar_1.BAR_TYPE.SEND:
+                btn = new SendQuestionBtn_1.default(this.mode, option);
+                break;
+            case ConstVar_1.BAR_TYPE.QB_RETURN:
+                btn = new QBagReturnBtn_1.default(this.mode, option);
+                break;
+            case ConstVar_1.BAR_TYPE.QB_SHOW_CORRECT:
+                btn = new QBagCorrectAnswerBtn_1.default(this.mode, option);
+                break;
+            case ConstVar_1.BAR_TYPE.SHOW_ANALYSIS:
+                btn = new ShowAnalysisBtn_1.default(this.mode, option);
+                break;
+            case ConstVar_1.BAR_TYPE.SHOW_CORRECT_ANSWER:
+                btn = new ShowCorrectAnswerBtn_1.default(this.mode, option);
+                break;
+            case ConstVar_1.BAR_TYPE.SHOW_HINT:
+                btn = new ShowHintBtn_1.default(this.mode, option);
+                break;
+        }
+        return btn;
+    };
+    Toolbar.prototype.mount = function () {
+        var members = [];
+        for (var key in this.items) {
+            if (this.items.hasOwnProperty(key)) {
+                members.push(this.items[key].data);
+            }
+        }
+        var cls = 'k12-footer-tool';
+        if (this.mContext.QuestionOperate.getInfo().type_code === 'mindjet') {
+            cls = 'mindmap-footer-tool ' + cls;
+        }
+        this.component = new Vue({
+            template: '<toolbar  :members="members"  :side="side"  class="' + cls + '">',
+            components: {
+                toolbar: __ModuleComponent.Toolbar
+            },
+            data: {
+                members: members,
+                side: this.option.side
+            }
+        });
+        var $replaceEl = $('<div></div>');
+        this.option.containerEl.append($replaceEl);
+        this.component.$mount($replaceEl[0]);
+    };
+    Toolbar.prototype.changeState = function (btn, key, val) {
+        this.mContext.Logger.debug('变更按钮状态', btn, key, val);
+        var item = this.items[btn];
+        if (item) {
+            item.changeState(key, val);
+        }
+    };
+    Toolbar.prototype.getState = function (btn, key) {
+        var item = this.items[btn];
+        if (item) {
+            return item.getState(key);
+        }
+    };
+    Toolbar.prototype.fire = function (btn) {
+        var item = this.items[btn];
+        if (item) {
+            item.fire();
+        }
+    };
+    Toolbar.prototype.hide = function () {
+        for (var key in this.items) {
+            if (this.items.hasOwnProperty(key)) {
+                if (this.items[key]) {
+                    this.items[key].changeState('hidden', true);
+                }
+            }
+        }
+    };
+    return Toolbar;
+}());
+exports.default = Toolbar;
+
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

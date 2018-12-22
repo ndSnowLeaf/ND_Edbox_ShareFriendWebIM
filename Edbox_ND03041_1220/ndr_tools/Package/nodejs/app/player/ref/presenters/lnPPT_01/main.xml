@@ -1,0 +1,301 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='lnPPT_01'>
+<properties>
+
+                <property name="PageUrl" displayName="ppt url地址" type="string" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_lnPPT_01 .ppt-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%; }
+.addon_lnPPT_01 #ppt-iframe {
+  width: 100%;
+  height: 100%;
+  border: none; }
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="ppt-wrapper">
+  <iframe id="ppt-iframe"></iframe>
+</div>
+
+]]>
+</view>
+
+
+<preview>
+
+<![CDATA[<div class="ppt-wrapper">
+  <iframe id="ppt-iframe"></iframe>
+</div>
+]]>
+
+</preview>
+
+
+<presenter>
+
+<![CDATA[/**
+ * @file    ppt插件
+ * @author  linning
+ * @version v1.2.0
+ * @since   2015-4-16
+ * @lastUpdateTime 2015-10-15 10:09
+ */
+function AddonlnPPT_01_create() {
+
+  var helper = {
+    pptNavHasLoaded: false,
+    pptNavHasGotPPTInfo: false
+  };
+
+  var isApp = false, isWeb = false, isPC = false, isHomeWork = false;
+  var isTeacher = false, isStudent = false, isProjector = false;
+  var currentRuntime = player.getPlayerServices().getRuntime();
+  switch (currentRuntime) {
+    case icCreatePlayer.RUNTIME.TEACHER_MOBILE:
+      isTeacher = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.STUDENT_MOBILE:
+      isStudent = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.PROJECTION_MOBILE:
+      isProjector = true;
+      isApp = true;
+      break;
+    case icCreatePlayer.RUNTIME.WEB:
+      isWeb = true;
+      break;
+    case icCreatePlayer.RUNTIME.TEACHER_PC:
+      isPC = true;
+      break;
+    default:
+      isApp = false;
+      isWeb = false;
+      isPC = false;
+  }
+
+
+
+  var bridgeListener = {};
+  var videoImg = [];
+
+  var callNative = function(eventName, data) {
+    if (isApp && Bridge && Bridge.callNative) {
+      return Bridge.callNative('com.nd.pad.icr.ui.IcrJsBridge', eventName, data);
+    }
+    return false;
+  };
+
+  var registerNativeListener = function(key, callback) {
+    if (isApp && Bridge && Bridge.registerListener) {
+      bridgeListener[key] = Bridge.registerListener(key, callback);
+    }
+  };
+
+  var unbindNativeListener = function(key) {
+    if (isApp && Bridge && Bridge.unRegisterListener) {
+      if (!key) {
+        $.each(bridgeListener, function(k, v) {
+          Bridge.unRegisterListener(k, bridgeListener[k]);
+        });
+        bridgeListener = {};
+      } else {
+        Bridge.unRegisterListener(key, bridgeListener[key]);
+      }
+    }
+  };
+
+  var userInput = function(item, value) {
+
+    if (isApp && Bridge && Bridge.callNative) {
+      Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", "sendEvent", {
+        "eventName": "UserInput",
+        "eventData": {
+          "source": presenter.moduleId,
+          "item": item,
+          "value": value
+        }
+      });
+    }
+  };
+
+  var presenter = function() {};
+
+  var handleProjectorMedia = function(value) {
+    switch (value.type) {
+      case 'play':
+        presenter.qtiMediaPlayer.mediaPlay(value.mediaType, value.index);
+        break;
+      case 'pause':
+        if (value.isEnded) {
+          return;
+        }
+        presenter.qtiMediaPlayer.mediaPause(value.mediaType, value.index);
+        break;
+      case 'seeked':
+        presenter.qtiMediaPlayer.mediaSkip(value.mediaType, value.index, value.seeked);
+        break;
+      case 'volumechange':
+        presenter.qtiMediaPlayer.mediaVolumeChange(value.mediaType, value.index, value.volume, value.display);
+        break;
+    }
+  };
+
+
+  var triggerUserInput = function(eventData) {
+    var data = eventData;
+    if (data.source === presenter.moduleId && isProjector) {
+      if (data.item === 'PPTMedia') {
+        handleProjectorMedia(data.value);
+      }
+    }
+  };
+
+  var sendMediaUserInput = function(type, obj) {
+    if (isProjector) {
+      return;
+    }
+    userInput('PPTMedia', {
+      type: type,
+      mediaType: obj.mediaType,
+      index: obj.index,
+      volume: obj.volume,
+      display: obj.display,
+      isEnded: obj.ended,
+      seeked: obj.seeked || 0
+    });
+  };
+
+  var bindMedia = function() {
+    if (!window.PPTMediaPlayer) {
+      window.PPTMediaPlayer = {};
+    }
+    PPTMediaPlayer.renderMediaComplete = function(qtiMediaPlayer) {
+      presenter.qtiMediaPlayer = qtiMediaPlayer;
+
+      qtiMediaPlayer.mediaOnStart(function(o) {
+        sendMediaUserInput('play', o);
+      });
+      qtiMediaPlayer.mediaOnPause(function(o) {
+        sendMediaUserInput('pause', o);
+      });
+      qtiMediaPlayer.mediaOnVolumeChange(function(o) {
+        sendMediaUserInput('volumechange', o);
+      });
+      qtiMediaPlayer.mediaOnSeeked(function(o) {
+        sendMediaUserInput('seeked', o);
+      });
+    };
+  };
+
+  presenter.setPlayerController = function(controller) {
+    presenter.controller = controller;
+    presenter.eventBus = controller.getEventBus();
+    presenter.eventBus.addEventListener('TriggerUserInput', this);
+  };
+
+  presenter.onEventReceived = function(eventName, eventData) {
+    //
+  };
+
+  presenter.isPPTPage = function() {
+    return true;
+  };
+
+  function resetSuffixDomain(level) {
+    var myregexp = /^\w+:\/\/([^\/]+)/m;
+    var domainobj = myregexp.exec(document.URL);
+    var domainstr = '';
+    if (domainobj != null) {
+      domainstr = domainobj[0];
+    } else {
+      domainstr = "";
+    }
+    var tmp = domainstr.split('.');
+    if (tmp.length > level) {
+      var str = null;
+      for (var i = 0; i < level; i++) {
+        if (str == null) {
+          str = tmp[tmp.length - i - 1];
+        } else {
+          str = tmp[tmp.length - i - 1] + "." + str;
+        }
+      }
+      try {
+        if (str !== document.domain) {
+          document.domain = str;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
+  presenter.run = function(view, model) {
+    if (!isApp) {
+      resetSuffixDomain(2);
+    }
+    bindMedia();
+    var url = model['PageUrl'];
+    presenter.moduleId = model.ID;
+    presenter.$view = $(view);
+    presenter.url = url;
+
+
+    if (!url) {
+      console.log('ppt地址不能为空');
+    } else {
+      var ppt = presenter.ppt = presenter.$view.find('#ppt-iframe');
+      ppt.attr('src', presenter.url);
+    }
+
+    //预加载需要将此处代码移入pageShow
+    !presenter.controller.getCurrentPageView && presenter.pageShow(view, model);
+  };
+
+  presenter.pageShow = function() {
+    bindNativeEvent();
+  };
+
+  presenter.pageLeave = function() {
+    unbindNativeListener();
+  };
+
+  function bindNativeEvent() {
+    registerNativeListener('TriggerUserInput', triggerUserInput);
+  }
+
+  presenter.destroy = function() {
+    presenter.qtiMediaPlayer = null;
+    presenter.ppt.attr('src', '');
+  };
+
+  return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+
+</resources>
+
+</addon>

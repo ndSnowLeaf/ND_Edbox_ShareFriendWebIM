@@ -1,0 +1,2483 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="threejs" version="73.1"/><javaScript name="TweenMax" version="1.18.0"/><javaScript name="tools_common" version="1.0.0"/><javaScript name="TimesNewRoman-font" version="1.0.0"/></jsDependency></dependencies><css><![CDATA[@charset "UTF-8";.addon_ElasticEnergy{-webkit-user-select:none;-webkit-touch-callout:none;user-select:none;-webkit-tap-highlight-color:transparent}.addon_ElasticEnergy .exam_skin_wood{width:100%;height:100%;position:relative}.addon_ElasticEnergy .exam_skin_wood .hide_dom{display:none}.addon_ElasticEnergy .exam_skin_wood .timesNewRoman{font-family:'Times New Roman';color:#333}.addon_ElasticEnergy .exam_skin_wood .timesNewRoman.times48{font-size:2em}.addon_ElasticEnergy .exam_skin_wood .timesNewRoman.times60{font-size:2.5em}.addon_ElasticEnergy .exam_skin_wood .book72{font-size:3em}.addon_ElasticEnergy .exam_skin_wood .bookAntiqua{font-family:'Book Antiqua';color:#333;font-style:italic}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_wrapper{width:100%;height:100%;position:relative;padding:2.66667em 4em 5em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_body{width:100%;height:100%;position:relative}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter{width:68.75em;height:36.04167em;position:absolute;left:50%;top:50%;margin-top:-18.02083em;margin-left:-34.375em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .referWood{position:absolute;background:url(resources/wood/images/refer-squarewood.png) no-repeat;background-size:100%;z-index:2}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .mySpring{position:absolute;background:url(resources/wood/images/hairSpring.png) no-repeat;background-size:100% 100%;z-index:10}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .scrollBall{width:5.20833em;height:5.20833em;background:url(resources/wood/images/ball.png) no-repeat;background-size:100% 100%;z-index:20;position:relative}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .scrollBall_shadow{width:5.20833em;height:5.20833em;position:absolute;left:0;top:0;z-index:1;background:url(resources/wood/images/ball_fixed.png) no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled{position:absolute;top:7.4em;padding:.33333em .54167em;border:1px solid #ff0101;background:#fff;border-radius:.33333em;box-shadow:0 3px 12px rgba(0,0,0,.5)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard .markTxt,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled .markTxt{font-size:2em;font-family:"Times New Roman Italic";color:#ff0101;display:inline-block;line-height:.35em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled::before,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard::before{position:absolute;bottom:90%;left:50%;margin-left:-.2em;content:'';display:inline-block;width:.4em;height:.4em;background:#fff;border:1px solid #ff0101;transform:rotate(45deg);border-bottom:#fff;border-right:#fff;-webkit-transform:rotate(45deg);transform:rotate(45deg);border-radius:.13em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard .leadWire,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled .leadWire{position:absolute;bottom:108%;left:80%;display:inline-block;height:3.6em;width:.08333em;background:#ff0101;-webkit-transform:rotate(20deg);transform:rotate(20deg)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.highlightCard,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.highlightCard{background:#cc0100}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.highlightCard::before,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.highlightCard::before{background:#cc0100}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.highlightCard .markTxt,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.highlightCard .markTxt{color:#fff}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.active,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.active{background:#e50100;border:1px solid #e50100}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.active::before,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.active::before{background:#e50100}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.active .markTxt,.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard.disabled.active .markTxt{color:#fff}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .referBall{position:absolute;z-index:20;background:url(resources/wood/images/refer-ball.png) no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .squareTable{width:6.08333em;height:5.875em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_inner{width:100%;height:16em;position:relative}.addon_ElasticEnergy .exam_skin_wood .statistical{position:absolute;z-index:1;top:0;text-align:center;left:50%;-webkit-transform:translate(-50%,0);transform:translate(-50%,0);display:table;-webkit-border-radius:15px;border-radius:15px;overflow:hidden;color:#333;width:100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table{width:100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table.table_2.disabled .myInput label{background:url(resources/wood/images/selectdis.png) left center no-repeat;background-size:100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table.table_2.disabled .myInput.checked label{background:url(resources/wood/images/selecton.png) left center no-repeat;background-size:100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .td1{width:3.95833em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .td1 .verdata{width:1.875em;display:inline-block;font-size:2em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .td2{width:63.33333em;border-bottom-width:.16667em;padding:0 .66667em;position:relative;padding-top:2em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table td{background:#afc7d8;vertical-align:middle;border:.16667em solid #bfd3e2}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .weiHei{display:inline-block;float:left}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .weiHei .ballData{display:inline-block;padding-right:1em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .weiHei .ballData i.book72{font-size:3em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .weiHei .ballData .times60{font-size:2.5em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom{display:inline-block}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom .longBoard{position:absolute;bottom:0;background:url(resources/wood/images/horwood-bg.png) no-repeat;background-size:100% 100%;z-index:1}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoardCover{position:absolute;right:.5em;bottom:.625em;width:44.58333em;height:2.91667em;pointer-events:none}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_2 .longBoardCover{position:absolute;left:13.3em;bottom:1.3em;width:33.33333em;height:2.70833em;pointer-events:none}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .squareTableCover{position:absolute;left:.5em;width:5.53333em;height:5.3333em;pointer-events:none}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard{width:63.95833em;height:7.75em;right:0}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .mySpring{left:1.8em;bottom:2.3em;width:7.83333em;height:3.33333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .referBall{left:8.7em;bottom:1.8em;width:4.8333333333em;height:4.9166666667em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .myBall{position:absolute;left:9.9em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table.table_1 td{height:8.08333em}.addon_ElasticEnergy .exam_skin_wood .squareWood{position:absolute;background:url(resources/wood/images/squarewood.png) no-repeat;background-size:100% 100%;z-index:19}.addon_ElasticEnergy .exam_skin_wood .selCom{position:absolute;left:50%;transform:translate(-50%,0);width:4.16667em;height:1.41667em;-webkit-border-radius:.41667em;border-radius:.41667em;display:inline-block}.addon_ElasticEnergy .exam_skin_wood .selectTop{z-index:0;background:#afc7d8;top:15.8em}.addon_ElasticEnergy .exam_skin_wood .selectTop:after{position:absolute;display:inline-block;left:50%;top:50%;margin-top:-2px;transform:translate(-50%,-50%);width:0;height:0;content:"";border-width:.5em .5em 0 .5em;border-style:solid;border-color:#afc7d8 transparent;-webkit-transition:all .25s;transition:all .25s}.addon_ElasticEnergy .exam_skin_wood .selectTop:before{position:absolute;display:inline-block;left:50%;top:50%;transform:translate(-50%,-50%);width:0;height:0;content:"";border-width:.58333em .58333em 0 .58333em;border-style:solid;border-color:#333 transparent;-webkit-transition:transform .25s;transition:transform .25s}.addon_ElasticEnergy .exam_skin_wood .selectBom{z-index:999;background:#c8d2da;bottom:-1em}.addon_ElasticEnergy .exam_skin_wood .selectBom:after{position:absolute;display:inline-block;left:50%;top:50%;margin-top:2px;transform:translate(-50%,-50%) rotate(180deg);width:0;height:0;content:"";border-width:.5em .5em 0 .5em;border-style:solid;border-color:#c8d2da transparent}.addon_ElasticEnergy .exam_skin_wood .selectBom:before{position:absolute;display:inline-block;left:50%;top:50%;transform:translate(-50%,-50%) rotate(180deg);width:0;height:0;content:"";border-width:.58333em .58333em 0 .58333em;border-style:solid;border-color:#333 transparent}.addon_ElasticEnergy .exam_skin_wood .historyData{position:absolute;right:.15em;margin-top:-2px;z-index:999;background:#c8d2da;-webkit-border-radius:.625em;border-radius:.625em}.addon_ElasticEnergy .exam_skin_wood .historyData .table_2 td{height:7.08333em}.addon_ElasticEnergy .exam_skin_wood .historyData .book60{font-size:2.5em}.addon_ElasticEnergy .exam_skin_wood .historyData tr{border-bottom:.125em dashed #a3b8c7}.addon_ElasticEnergy .exam_skin_wood .historyData tr:last-child{border-bottom:none}.addon_ElasticEnergy .exam_skin_wood .historyData td{background:0 0;border:none}.addon_ElasticEnergy .exam_skin_wood .historyData .myInput{display:inline-block;float:left}.addon_ElasticEnergy .exam_skin_wood .historyData .myInput input[type=checkbox]{display:none}.addon_ElasticEnergy .exam_skin_wood .historyData .myInput label{padding-left:1.66667em;cursor:pointer;background:url(resources/wood/images/select.png) no-repeat left center;background-size:100% 100%;display:inline-block;height:1.66667em;margin-right:3.75em;margin-top:.65em}.addon_ElasticEnergy .exam_skin_wood .historyData .myInput.checked label{background:url(resources/wood/images/selecton.png) no-repeat left center;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .historyData .sure_btns{min-width:8.083333em;margin:.5em .75em}.addon_ElasticEnergy .exam_skin_wood .historyData .woodImgCom.imgTwoData_2 .longBoard{width:50em;height:6.16667em;left:6.3em}.addon_ElasticEnergy .exam_skin_wood .historyData .woodImgCom.imgTwoData_2 .longBoard .mySpring{left:1.5em;bottom:1.8em;width:6.08333em;height:2.75em}.addon_ElasticEnergy .exam_skin_wood .historyData .woodImgCom.imgTwoData_2 .longBoard .referBall{left:6.8em;bottom:1.8em;width:3.45833em;height:3.45833em}.addon_ElasticEnergy .exam_skin_wood .historyData .woodImgCom.imgTwoData_2 .squareTable{width:4.91667em;height:4.75em}.addon_ElasticEnergy .exam_skin_wood .selBody{width:64.5em;background:#dbe7f0}.addon_ElasticEnergy .exam_skin_wood .selBody_scroll{width:64.08333em;height:15.20833em;overflow-y:scroll}.addon_ElasticEnergy .exam_skin_wood ::-webkit-scrollbar{width:.41667em}.addon_ElasticEnergy .exam_skin_wood ::-webkit-scrollbar-track{background-color:#c8d2da;border-radius:.20833em}.addon_ElasticEnergy .exam_skin_wood ::-webkit-scrollbar-thumb{background-color:#b4bdc5;border-radius:.20833em}.addon_ElasticEnergy .exam_skin_wood .selBody tr{background:#dbe7f0}.addon_ElasticEnergy .exam_skin_wood .selBody tr.checked{background:#cfe1ee}.addon_ElasticEnergy .exam_skin_wood .slopeBoardCover{position:absolute;width:40.6666666667em;height:1px;right:.6em;bottom:5em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene{position:absolute;bottom:0;width:100%;height:18.41667em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .slopeSquareTableCover{position:absolute;right:0;width:5.6em;height:5.33333em;pointer-events:none}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .Elastic_slope{position:absolute;width:69.58333em;height:19.29167em;background:url(resources/wood/images/slope.png) no-repeat;background-size:100% 100%;left:50%;top:50%;transform:translate(-50%,-50%)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .Elastic_slope .squareBar{width:6.0833333333em;height:5.875em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .Elastic_slope .mySpring{width:9.9em;height:4.25em;left:4.8em;bottom:6.3em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .ballWrap{position:absolute;left:16.1em;top:13.6em;width:1px;height:1px;z-index:20;transform:translateZ(1px)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .ballDiv{position:absolute;left:50%;bottom:-.5em;transform:translate(-50%,3%)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer{position:absolute;left:0;bottom:0;height:5em;width:100%;background:#cfdee9;padding:0 4em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .txt{display:inline-block;font-size:1.5em;vertical-align:middle;color:#333}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .txt .book36{font-size:1.33333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .item_left{width:39%;display:flex;justify-content:center}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left{background:#b8cdde;border-radius:.4166667em;position:relative}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li{float:left;height:3.3333333333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li.current a{background:#8cb1ce}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li .icon{width:100%;height:100%;display:block;background-size:6.9583333333em 2.83em;background-position:center center;background-repeat:no-repeat}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left a{display:inline-block;width:9.375em;height:3.33333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li:first-child a{border-radius:.4166667em 0 0 .4166667em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li:first-child a .icon{background-image:url(resources/wood/images/hairSpring.png)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li:nth-of-type(2) a{border-radius:0 .4166667em .4166667em 0}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li:nth-of-type(2) a .icon{background-image:url(resources/wood/images/coarseSpring.png)}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left.click_disabled .dis_gray{position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(199,208,214,.7);border-radius:.4166667em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_mid{height:100%;width:44%;display:flex;justify-content:center;align-items:center}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_mid li{overflow:hidden;float:left}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_mid .com_btns{margin:0 2.08333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .energy_reset{height:100%;width:17%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .btn_reset{display:inline-block;margin-top:.41667em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .btn_reset .pic{width:3em;height:2.41667em;margin:0 auto;display:block;overflow:hidden;background:url(resources/wood/images/btn_reset.png) no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .btn_reset .txt{display:block;color:#292525;font-size:1.16667em;margin-top:.2em;text-align:center;line-height:1.4em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .btn_reset:active .pic{background:url(resources/wood/images/btn_reset_active.png) center bottom no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .footerBody{width:100%;height:100%;display:flex;align-items:center}.addon_ElasticEnergy .exam_skin_wood .btn_reset.disabled .pic{background:url(resources/wood/images/btn_reset_dis.png) center bottom no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .btn_reset.disabled:active .pic{background:url(resources/wood/images/btn_reset_dis.png) center bottom no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .btn_reset.disabled .txt{color:#a9b6c0}.addon_ElasticEnergy .ElasticEnergy_layer{position:absolute;left:0;right:0;z-index:999;width:100%;height:100%;background:rgba(0,0,0,.4);display:flex;justify-content:center;align-items:center}.addon_ElasticEnergy .ElasticEnergy_tip{width:57.625em;height:32.08333em;background:url(resources/wood/images/index-tip.png) no-repeat;background-size:100% 100%;margin-top:2.66667em;position:relative}.addon_ElasticEnergy .ElasticEnergy_tip .tipOk{width:9.91667em;position:absolute;left:50%;bottom:1.875em;margin-left:-4.95833em}.addon_ElasticEnergy .exam_skin_wood .Elastic_slope .container{position:absolute;left:5.8em;bottom:5.5em;height:5.5em;width:65em;z-index:99}.addon_ElasticEnergy .exam_skin_wood .Elastic_slope .ballWrap{z-index:100;left:3em;top:13.2em;pointer-events:none}.addon_ElasticEnergy .exam_skin_wood .Elastic_slope .scrollBall_shadow{z-index:102}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_scene .ballDiv{display:none;width:5.2083333333em;height:5.2083333333em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard{display:none;left:4em;top:15em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .popupCard .leadWire{width:.15em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_bodycenter .scrollBall{width:100%;height:100%;z-index:101}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_mid li{height:3.2em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_footer .list_left li .icon{background-size:7em 1.68em}.addon_ElasticEnergy .exam_skin_wood .historyData{margin-top:.2em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_tip{width:58.625em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .referBall{left:12.7em;bottom:1.74em}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .coarseSpring{background:url(resources/wood/images/coarseSpring.png) no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_1 .longBoard .mySpring{left:2em;bottom:2.6em;width:11.4em;height:2.736em;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_2 .longBoard .coarseSpring{background:url(resources/wood/images/coarseSpring.png) no-repeat;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_2 .longBoard .mySpring{width:7.8em;height:1.872em;bottom:2em;background-size:100% 100%}.addon_ElasticEnergy .exam_skin_wood .ElasticEnergy_table .woodImgCom.imgTwoData_2 .longBoard .referBall{left:8.8em;bottom:1.5em}.addon_ElasticEnergy .exam_skin_wood .l-ElasticEnergy-guide{padding-top:4em}.addon_ElasticEnergy .exam_skin_wood .l-ElasticEnergy-guide span{font-size:2em}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="ElasticEnergy_layer" style="display: none"><div class="ElasticEnergy_tip"><div class="l-ElasticEnergy-guide"><span class="i18n_elastic_guide">选中小球进行拖动，压缩弹簧</span></div><a class="com_btns btns-primary tipOk" type="tipOk"><span class="btns-primary-txt yahei36 i18n_i_know">确定</span></a></div></div><div class="ElasticEnergy_wrapper"><div class="ElasticEnergy_body"><div class="ElasticEnergy_bodycenter"><div class="ElasticEnergy_inner"><div class="statistical"><table class="ElasticEnergy_table table_1" border="0" cellpadding="0" cellspacing="0s"><tr><td rowspan="2" class="td1"><div class="verdata" align="center">数据记录</div></td><td class="td2 new-lists"><div align="center"><div class="woodImgCom imgTwoData_1 record1"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:1em"><div class="squareTableCover"></div></div><div class="squareTable squareWood" style="left:15.83em;bottom:1em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr><tr><td class="td2 new-lists" style="border-bottom: none"><div align="center"><div class="woodImgCom imgTwoData_1 record2"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:1em"><div class="squareTableCover"><div class="dashedBorder"></div></div></div><div class="squareTable squareWood" style="left:18.83em;bottom:1em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr></table></div></div><div class="selectTop selCom"></div><div class="historyData" style="display: none"><div class="selectBom selCom"></div><div class="selBody"><div class="selBody_scroll"><table class="ElasticEnergy_table table_2" border="0" cellpadding="0" cellspacing="0s"><tr><td class="td2"><div align="center"><div class="myInput"><input type="checkbox" id="xz" name="record" value="xz"><label for="xz" name="xz"></label></div><div class="woodImgCom imgTwoData_2"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:0.1em"><div class="squareTableCover"><div class="dashedBorder"></div></div></div><div class="squareTable squareWood" style="left:15.83em;bottom:0.08em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr><tr><td class="td2"><div align="center"><div class="myInput"><input type="checkbox" id="xz" name="record" value="xz"><label for="xz" name="xz"></label></div><div class="woodImgCom imgTwoData_2"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:0.1em"><div class="squareTableCover"><div class="dashedBorder"></div></div></div><div class="squareTable squareWood" style="left:15.83em;bottom:0.08em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr><tr><td class="td2"><div align="center"><div class="myInput"><input type="checkbox" id="xz" name="record" value="xz"><label for="xz" name="xz"></label></div><div class="woodImgCom imgTwoData_2"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:0.1em"><div class="squareTableCover"><div class="dashedBorder"></div></div></div><div class="squareTable squareWood" style="left:15.83em;bottom:0.08em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr><tr><td class="td2"><div align="center"><div class="myInput"><input type="checkbox" id="xz" name="record" value="xz"><label for="xz" name="xz"></label></div><div class="woodImgCom imgTwoData_2"><div class="longBoard"><div class="mySpring"></div><div class="referBall"><span></span></div><div class="longBoardCover"><div class="squareTable referWood" style="left:0;bottom:0.1em"><div class="squareTableCover"><div class="dashedBorder"></div></div></div><div class="squareTable squareWood" style="left:15.83em;bottom:0.08em"><div class="squareTableCover"></div></div></div></div></div></div></td></tr></table></div></div><a class="com_btns btns-primary sure_btns click_disabled"><span class="btns-primary-txt">确定</span></a></div><div class="ElasticEnergy_select"></div><div class="ElasticEnergy_scene"><div class="Elastic_slope"><div class="slopeBoardCover"></div><div class="container"></div><div class="popupCard"><span class="markTxt">x</span> <span class="leadWire"></span></div><div class="ballWrap"><div class="ballDiv"><div class="scrollBall"><div class="markLine"></div></div><div class="scrollBall_shadow"></div></div></div><div class="squareTable referWood" style="left:24em;bottom:5.1em" style="display: none"><div class="squareTableCover"></div></div><div class="squareWood squareBar" style="left:24em;bottom:5.1em"><div class="slopeSquareTableCover"></div></div></div></div></div></div><div class="ElasticEnergy_footer"><div class="footerBody"><div class="item_left"><ul class="list_left"><li class="miniSpring current"><a><span class="icon"></span></a></li><li class="crudeSpring"><a><span class="icon"></span></a></li><div class="dis_gray"></div></ul></div><ul class="list_mid"><li><a class="com_btns btns-primary beginBtn click_disabled" type="cicle"><span class="btns-primary-txt">开始演示</span></a></li><li><a class="com_btns btns-primary click_disabled statusResetBtn" type="cicle"><span class="btns-primary-txt">状态重置</span></a></li></ul><div class="energy_reset"><a class="btn_reset"><span class="pic"></span> <span class="txt">重置</span></a></div></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	module.exports = __webpack_require__(2);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	window.AddonElasticEnergy_create = function () {
+	  return _presenter2.default;
+	};
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _run = __webpack_require__(3);
+
+	var _run2 = _interopRequireDefault(_run);
+
+	var _destroy = __webpack_require__(17);
+
+	var _destroy2 = _interopRequireDefault(_destroy);
+
+	var _getQuestionInfo = __webpack_require__(18);
+
+	var _getQuestionInfo2 = _interopRequireDefault(_getQuestionInfo);
+
+	var _getExtendData = __webpack_require__(19);
+
+	var _getExtendData2 = _interopRequireDefault(_getExtendData);
+
+	var _setPlayerController = __webpack_require__(20);
+
+	var _setPlayerController2 = _interopRequireDefault(_setPlayerController);
+
+	var _onEventReceived = __webpack_require__(21);
+
+	var _onEventReceived2 = _interopRequireDefault(_onEventReceived);
+
+	var _setUrlParams = __webpack_require__(22);
+
+	var _setUrlParams2 = _interopRequireDefault(_setUrlParams);
+
+	var _setBasePath = __webpack_require__(23);
+
+	var _setBasePath2 = _interopRequireDefault(_setBasePath);
+
+	var _interface = __webpack_require__(24);
+
+	var _interface2 = _interopRequireDefault(_interface);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	  run: _run2.default,
+	  destroy: _destroy2.default,
+	  getQuestionInfo: _getQuestionInfo2.default,
+	  getExtendData: _getExtendData2.default,
+	  setPlayerController: _setPlayerController2.default,
+	  onEventReceived: _onEventReceived2.default,
+	  setUrlParams: _setUrlParams2.default,
+	  setBasePath: _setBasePath2.default,
+	  __interface: _interface2.default
+	};
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (view, model) {
+	  return window.I18nManager.getInstance().loadLanguage('ElasticEnergy', _presenter2.default.langType).done(function (data) {
+	    if (!(0, _autoDetectRender.isWebGLSupported)()) return;
+	    _presenter2.default.i18n = $.extend(_defaultI18n2.default, data.lang);
+	    _presenter2.default.eventBus.addEventListener('PLAYER.TOOL.MINIMIZE', _presenter2.default);
+	    _presenter2.default.eventBus.addEventListener('PLAYER.TOOL.MAXIMIZE', _presenter2.default);
+	    (0, _presenterLogic2.default)(view, model, false);
+	  });
+	};
+
+	var _presenterLogic = __webpack_require__(4);
+
+	var _presenterLogic2 = _interopRequireDefault(_presenterLogic);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _defaultI18n = __webpack_require__(16);
+
+	var _defaultI18n2 = _interopRequireDefault(_defaultI18n);
+
+	var _autoDetectRender = __webpack_require__(7);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function (view, model, isPreview) {
+	    // 将 model 值赋给 this
+	    _presenter2.default.model = model;
+	    // 将 view 值存入 presenter
+	    _presenter2.default.view = view;
+
+	    _presenter2.default.dataManager = new _DataManager2.default();
+
+	    _presenter2.default.domManager = new _DomManager2.default();
+	    _presenter2.default.domManager.bindEvents();
+
+	    _presenter2.default.threeManager = new _threeManager2.default();
+	    _presenter2.default.threeManager.init();
+	    _presenter2.default.threeManager.bindEvents();
+
+	    (0, _i18nFilter2.default)();
+	};
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _i18nFilter = __webpack_require__(5);
+
+	var _i18nFilter2 = _interopRequireDefault(_i18nFilter);
+
+	var _threeManager = __webpack_require__(6);
+
+	var _threeManager2 = _interopRequireDefault(_threeManager);
+
+	var _DomManager = __webpack_require__(13);
+
+	var _DomManager2 = _interopRequireDefault(_DomManager);
+
+	var _DataManager = __webpack_require__(15);
+
+	var _DataManager2 = _interopRequireDefault(_DataManager);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	    var $view = $(_presenter2.default.view);
+	    $view.find('.i18n_i_know').html(_presenter2.default.i18n['elastic_i_known']);
+	    $view.find('.i18n_elastic_guide').html(_presenter2.default.i18n['elastic_guide']);
+	    $view.find('.verdata:first').html(_presenter2.default.i18n['elastic_data_record']);
+	    $view.find('.beginBtn span:first').html(_presenter2.default.i18n['elastic_start_present']);
+	    $view.find('.statusResetBtn span:first').html(_presenter2.default.i18n['elastic_reset_status']);
+	    $view.find('.btn_reset .txt:first').html(_presenter2.default.i18n['elastic_reset']);
+	    $view.find('.sure_btns span:first').html(_presenter2.default.i18n['elastic_sure']);
+	};
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by liuyuanpeng on 2016/12/22.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _autoDetectRender = __webpack_require__(7);
+
+	var _autoDetectRender2 = _interopRequireDefault(_autoDetectRender);
+
+	var _Spring = __webpack_require__(8);
+
+	var _Spring2 = _interopRequireDefault(_Spring);
+
+	var _constants = __webpack_require__(10);
+
+	var _Animate = __webpack_require__(11);
+
+	var _Animate2 = _interopRequireDefault(_Animate);
+
+	var _destroyThreeObject = __webpack_require__(12);
+
+	var _destroyThreeObject2 = _interopRequireDefault(_destroyThreeObject);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var threeManager = function () {
+	  /**
+	   * 初始化构造函数
+	   */
+	  function threeManager() {
+	    _classCallCheck(this, threeManager);
+
+	    // 场景
+	    this.scene = new THREE.Scene();
+
+	    // 渲染器
+	    this.renderer = (0, _autoDetectRender2.default)({
+	      antialias: true,
+	      alpha: true
+	    });
+	    this.rect = this.getContainerSize();
+	    this.renderer.setSize(this.rect.width, this.rect.height);
+	    this.renderer.setPixelRatio(window.devicePixelRatio);
+	    this.renderer.setClearColor(0x000000, 0);
+	    this.renderer.shadowMap.enabled = true;
+	    this.container = $(_presenter2.default.view).find('.container:first');
+	    this.container.append(this.renderer.domElement);
+
+	    // 摄像机
+	    this.rate = this.rect.width / _constants.CANVAS_SIZE;
+	    var height = this.rect.height / this.rate;
+	    this.camera = new THREE.OrthographicCamera(_constants.CANVAS_BEGIN, _constants.CANVAS_SIZE + _constants.CANVAS_BEGIN, height / 2, -height / 2, -200, 200);
+	    this.camera.position.set(0, 0, 1);
+	    this.camera.lookAt(this.scene.position);
+
+	    // 射线
+	    this.raycaster = new THREE.Raycaster();
+
+	    // 辅助面
+	    this.planeHelper = new THREE.Mesh(new THREE.PlaneGeometry(_constants.CANVAS_SIZE, 100), new THREE.MeshBasicMaterial({
+	      color: 'red',
+	      transparent: true,
+	      opacity: 0
+	    }));
+	    this.planeHelper.position.x = _constants.CANVAS_SIZE / 2 + _constants.CANVAS_BEGIN;
+	    this.add(this.planeHelper);
+
+	    // 是否为按下状态
+	    this.isPress = false;
+
+	    // 动画
+	    this.ballAnimate = null;
+	    this.springAnimate = null;
+
+	    this.playing = _constants.ANIMATE_STATUS.READY;
+
+	    // 弹簧
+	    this.springHair = null;
+	    this.springCoarse = null;
+
+	    // 记录上次压缩量
+	    this.preElastic = null;
+	  }
+
+	  /**
+	   * 释放资源
+	   */
+
+
+	  _createClass(threeManager, [{
+	    key: 'dispose',
+	    value: function dispose() {
+	      // 场景
+	      (0, _destroyThreeObject2.default)(this.scene);
+	      this.scene = null;
+
+	      // 渲染器
+	      this.renderer.dispose && this.renderer.dispose();
+	      this.renderer = null;
+	      this.rect = null;
+	      this.container = null;
+
+	      // 摄像机
+	      this.rate = null;
+	      this.camera = null;
+
+	      // 射线
+	      this.raycaster = null;
+
+	      // 辅助面
+	      this.planeHelper = null;
+
+	      // 是否为按下状态
+	      this.isPress = null;
+
+	      // 动画
+	      this.ballAnimate && this.ballAnimate.kill();
+	      this.ballAnimate = null;
+	      this.springAnimate && this.springAnimate.kill();
+	      this.springAnimate = null;
+
+	      this.playing = null;
+
+	      // 弹簧
+	      this.springHair = null;
+	      this.springCoarse = null;
+
+	      // 记录上次压缩量
+	      this.preElastic = null;
+
+	      this.spring = null;
+	      this._ballMesh = null;
+	    }
+	  }, {
+	    key: '_createLight',
+	    value: function _createLight() {
+	      var ambiLight = new THREE.AmbientLight(0x888888);
+	      this.add(ambiLight);
+
+	      var pointLight = new THREE.PointLight(0xffffff);
+	      pointLight.position.set(_constants.CANVAS_BEGIN + _constants.CANVAS_SIZE - 200, 20, 200);
+	      pointLight.intensity = 1;
+	      this.add(pointLight);
+	    }
+	  }, {
+	    key: '_createBall',
+	    value: function _createBall() {
+	      var ballGeometry = new THREE.SphereGeometry(_constants.BALL_SIZE, 50, 50);
+	      var ballMaterial = new THREE.MeshPhongMaterial({
+	        color: 0x550000,
+	        emissive: 0x550000,
+	        specular: 0x550000,
+	        shininess: 600,
+	        side: THREE.DoubleSide,
+	        transparent: true,
+	        opacity: 0
+	      });
+	      this._ballMesh = new THREE.Mesh(ballGeometry, ballMaterial);
+
+	      this.add(this._ballMesh);
+	    }
+	  }, {
+	    key: '_ballMotion',
+	    value: function _ballMotion(x) {
+	      var force = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
+	      var max = _constants.CANVAS_BEGIN + _constants.SPRING_DATA.length - _constants.SPRING_DATA.tube + _constants.BALL_SIZE;
+	      var min = _constants.CANVAS_BEGIN - _constants.SPRING_DATA.tube + _constants.BALL_SIZE + (_presenter2.default.dataManager.currentData.currentMode === _constants.ELASTIC_MODE.ELASTIC_HAIR ? _constants.ELASTIC_RANGE.ELASTIC_HAIR_MIN : _constants.ELASTIC_RANGE.ELASTIC_COARSE_MIN);
+	      if (x < min) {
+	        x = min;
+	      }
+
+	      if (this._ballMesh.position.x === x && !force) {
+	        return;
+	      }
+	      if (x > max) {
+	        if (this._ballMesh.position.x < max) {
+	          x = max;
+	        } else if (this._ballMesh.position.x < x) {
+	          return;
+	        }
+	      }
+	      var springLength = x - _constants.CANVAS_BEGIN - _constants.BALL_SIZE + _constants.SPRING_DATA.tube;
+	      var curElastic = Math.round(springLength);
+	      if (curElastic === _constants.SPRING_DATA.length) {
+	        curElastic -= 1;
+	      }
+	      _presenter2.default.domManager.highLightMark(curElastic === this.preElastic);
+	      this._ballMesh.position.x = x;
+	      x <= max && this.spring.redraw(springLength);
+	      _presenter2.default.domManager.translateBall(x * this.rate);
+	      this.render();
+	    }
+	  }, {
+	    key: 'init',
+	    value: function init() {
+	      var _this = this;
+
+	      // 创建弹簧
+	      var options = _.clone(_constants.SPRING_DATA);
+	      options.path = _presenter2.default.path;
+	      this.spring = new _Spring2.default(options);
+	      this.spring.type = _constants.ELASTIC_MODE.ELASTIC_HAIR;
+	      this.springHair = this.spring;
+	      this.add(this.spring);
+	      this.spring.preLoad(function () {
+	        // 创建小球
+	        _this._createBall();
+
+	        // 创建光源
+	        _this._createLight();
+
+	        _this.spring.setLeft(_constants.CANVAS_BEGIN);
+	        _this._ballMotion(_constants.CANVAS_BEGIN + _constants.SPRING_DATA.length - _constants.SPRING_DATA.tube + _constants.BALL_SIZE, true);
+	      });
+
+	      options.tube = 6;
+	      this.springCoarse = new _Spring2.default(options);
+	      this.springCoarse.type = _constants.ELASTIC_MODE.ELASTIC_COARSE;
+	      this.add(this.springCoarse);
+	      this.springCoarse.visible = false;
+	      this.springCoarse.preLoad(function () {
+	        _this.springCoarse.setLeft(_constants.CANVAS_BEGIN);
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      this.renderer.render(this.scene, this.camera);
+	    }
+
+	    /**
+	     * 获取大小
+	     */
+
+	  }, {
+	    key: 'getContainerSize',
+	    value: function getContainerSize() {
+	      return $(_presenter2.default.view).find('.container:first').get(0).getBoundingClientRect();
+	    }
+
+	    /**
+	     * 添加3D对象
+	     * @param objects
+	     */
+
+	  }, {
+	    key: 'add',
+	    value: function add() {
+	      for (var _len = arguments.length, objects = Array(_len), _key = 0; _key < _len; _key++) {
+	        objects[_key] = arguments[_key];
+	      }
+
+	      if (objects && objects.length > 0) {
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = objects[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var object = _step.value;
+
+	            this.scene.add(object);
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+	      }
+	    }
+
+	    /**
+	     * 获取射线交点
+	     * @param event
+	     * @param objects
+	     */
+
+	  }, {
+	    key: 'getAIntersect',
+	    value: function getAIntersect(pointer, objects) {
+	      var mouse = new THREE.Vector2();
+	      this.rect = this.getContainerSize();
+	      var x = (pointer.clientX - this.rect.left) / this.rect.width;
+	      var y = (pointer.clientY - this.rect.top) / this.rect.height;
+	      mouse.set(x * 2 - 1, -(y * 2) + 1);
+	      this.raycaster.setFromCamera(mouse, this.camera);
+	      var intersects = void 0;
+	      if (objects instanceof Array) {
+	        intersects = this.raycaster.intersectObjects(objects, true);
+	      } else if (objects instanceof THREE.Object3D) {
+	        intersects = this.raycaster.intersectObject(objects, true);
+	      } else {
+	        intersects = null;
+	      }
+	      if (intersects && intersects.length) {
+	        return intersects[0];
+	      }
+	      return null;
+	    }
+
+	    /**
+	     * 获取3D做白哦
+	     * @param pointer
+	     * @returns THREE.Vector3
+	     */
+
+	  }, {
+	    key: 'getCoordinate3D',
+	    value: function getCoordinate3D(pointer) {
+	      var intersect = this.getAIntersect(pointer, this.planeHelper);
+	      if (intersect) {
+	        return intersect.point;
+	      }
+	    }
+
+	    /**
+	     * 获取3D坐标
+	     * @param coordinate
+	     * @returns {{x: *, y: *}}
+	     */
+
+	  }, {
+	    key: 'getCoordinate2D',
+	    value: function getCoordinate2D(coordinate) {
+	      var vector = coordinate.clone();
+
+	      var widthHalf = 0.5 * this.rect.width;
+	      var heightHalf = 0.5 * this.rect.height;
+
+	      vector.project(this.camera);
+
+	      vector.x = vector.x * widthHalf + widthHalf;
+	      vector.y = -(vector.y * heightHalf) + heightHalf;
+
+	      return {
+	        x: vector.x + this.rect.left,
+	        y: vector.y + this.rect.top
+	      };
+	    }
+
+	    /**
+	     * 绑定事件
+	     */
+
+	  }, {
+	    key: 'bindEvents',
+	    value: function bindEvents() {
+	      var _this2 = this;
+
+	      $(this.renderer.domElement).on('mousedown touchstart', function (event) {
+	        _this2.onPointerDown(event);
+	      });
+
+	      $(this.renderer.domElement).on('mousemove touchmove', function (event) {
+	        _this2.onPointerMove(event);
+	      });
+
+	      $(this.renderer.domElement).on('mouseup mouseleave touchend touchcancel', function (event) {
+	        _this2.onPointerUp();
+	      });
+	    }
+
+	    /**
+	     * 释放事件
+	     */
+
+	  }, {
+	    key: 'unbindEvents',
+	    value: function unbindEvents() {
+	      $(this.renderer.domElement).off();
+	    }
+
+	    /**
+	     * 按下事件
+	     * @param event
+	     */
+
+	  }, {
+	    key: 'onPointerDown',
+	    value: function onPointerDown(event) {
+	      if (this.playing === _constants.ANIMATE_STATUS.PLAYING) {
+	        return;
+	      }
+	      this.isPress = true;
+	      var pointer = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+	      this.downPoint = pointer;
+	      this.checkMove = false;
+	      this.ballOffsetX = null;
+	      // 是否在小球区域内
+	      if (this.getAIntersect(pointer, this._ballMesh)) {
+	        var downPoint3D = this.getCoordinate3D(pointer);
+	        this.ballOffsetX = downPoint3D.x - this._ballMesh.position.x;
+	        this.onPointerMove(event);
+	      }
+	    }
+
+	    /**
+	     * 拖动事件
+	     * @param event
+	     */
+
+	  }, {
+	    key: 'onPointerMove',
+	    value: function onPointerMove(event) {
+	      if (!this.isPress || this.playing === _constants.ANIMATE_STATUS.PLAYING) {
+	        return;
+	      }
+
+	      if (this.ballOffsetX !== null) {
+	        var pointer = event.originalEvent.touches ? event.originalEvent.touches[0] : event;
+	        if (!this.checkMove) {
+	          if (Math.abs(pointer.clientX - this.downPoint.clientX) >= 1) {
+	            this.checkMove = true;
+	          }
+	        }
+	        var currentPoint = this.getCoordinate3D(pointer);
+	        this._ballMotion(currentPoint.x - this.ballOffsetX);
+	      }
+	    }
+
+	    /**
+	     * 停止事件
+	     */
+
+	  }, {
+	    key: 'onPointerUp',
+	    value: function onPointerUp(event) {
+	      this.isPress = false;
+
+	      if (this.ballOffsetX && this.playing !== _constants.ANIMATE_STATUS.PLAYING && this.checkMove) {
+	        var initP = _constants.CANVAS_BEGIN + _constants.SPRING_DATA.length - _constants.SPRING_DATA.tube + _constants.BALL_SIZE;
+	        if (this.playing === _constants.ANIMATE_STATUS.READY) {
+	          if (initP > this._ballMesh.position.x) {
+	            _presenter2.default.domManager.canAnimate();
+	          } else {
+	            _presenter2.default.domManager.canAnimate(false);
+	          }
+	        }
+	        if (this.playing === _constants.ANIMATE_STATUS.END) {
+	          _presenter2.default.dataManager.addRecord();
+	          this.playing = _constants.ANIMATE_STATUS.READY;
+	          _presenter2.default.domManager.onResetStatus();
+
+	          if (initP < this._ballMesh.position.x) {
+	            this._ballMotion(_constants.CANVAS_BEGIN + _presenter2.default.dataManager.currentData.begin - _constants.SPRING_DATA.tube + _constants.BALL_SIZE);
+	          } else if (initP === this._ballMesh.position.x) {
+	            this.domManager.canAnimate(false);
+	          }
+	        }
+	      }
+	      this.ballOffsetX = null;
+	    }
+	  }, {
+	    key: 'startAnimate',
+	    value: function startAnimate() {
+	      var _this3 = this;
+
+	      if (this.spring.length === _constants.SPRING_DATA.length) {
+	        return false;
+	      }
+	      var springStart = { length: this.spring.length };
+	      var data = _presenter2.default.dataManager.currentData;
+	      _presenter2.default.dataManager.setData(this.spring.type, this.spring.length);
+	      this.preElastic = data.begin;
+	      _presenter2.default.domManager.highLightMark(false);
+	      _presenter2.default.domManager.showMark(_presenter2.default.dataManager.currentData.begin * this.rate);
+	      var preLength = null;
+	      var ballAnimateStart = false;
+	      var ballStart = {};
+	      this.playing = _constants.ANIMATE_STATUS.PLAYING;
+	      this.springAnimate = new _Animate2.default(springStart, { length: _constants.SPRING_DATA.length, ease: Elastic.easeOut }, 1, false);
+	      this.springAnimate.setCompleteOperation(function () {
+	        _this3.springAnimate.kill();
+	        _this3.springAnimate = null;
+	      });
+	      this.springAnimate.setUpdateOperation(function () {
+	        _this3.spring.redraw(springStart.length);
+	        if (preLength && preLength > springStart.length && !ballAnimateStart) {
+	          ballAnimateStart = true;
+	          ballStart.x = _this3._ballMesh.position.x;
+	          var elastic = void 0,
+	              rate = void 0;
+
+	          var _getElastic = _this3.getElastic(ballStart.x);
+
+	          var _getElastic2 = _slicedToArray(_getElastic, 2);
+
+	          elastic = _getElastic2[0];
+	          rate = _getElastic2[1];
+
+	          var time = 3 * rate < 1 ? 1 : 3 * rate;
+	          _this3.ballAnimate = new _Animate2.default(ballStart, { x: elastic, ease: Power1.easeOut }, time, false);
+	          _this3.ballAnimate.setUpdateOperation(function () {
+	            _this3._ballMesh.position.x = ballStart.x;
+	            _presenter2.default.domManager.translateBox(_this3.rate * (ballStart.x - 260));
+	            _presenter2.default.domManager.translateBall(ballStart.x * _this3.rate);
+	            _this3.render();
+	          });
+	          _this3.ballAnimate.setCompleteOperation(function () {
+	            _presenter2.default.domManager.onAnimateComplete();
+	            data.endRate = ballStart.x - 260 <= 0 ? 0 : (ballStart.x - 260) / 575;
+	            _this3.ballAnimate.kill();
+	            _this3.ballAnimate = null;
+	            _this3.playing = _constants.ANIMATE_STATUS.END;
+	          });
+	        }
+
+	        if (!ballAnimateStart) {
+	          _this3._ballMesh.position.x = _constants.CANVAS_BEGIN + _this3.spring.length - _constants.SPRING_DATA.tube + _constants.BALL_SIZE;
+	          _presenter2.default.domManager.translateBall(_this3._ballMesh.position.x * _this3.rate);
+	          preLength = _this3.spring.length;
+	        }
+	        _this3.render();
+	      });
+	      return true;
+	    }
+	  }, {
+	    key: 'playAnimate',
+	    value: function playAnimate() {
+	      this.springAnimate && this.springAnimate.play();
+	      this.ballAnimate && this.ballAnimate.play();
+	    }
+	  }, {
+	    key: 'pauseAnimate',
+	    value: function pauseAnimate() {
+	      this.springAnimate && this.springAnimate.pause();
+	      this.ballAnimate && this.ballAnimate.pause();
+	    }
+	  }, {
+	    key: 'getElastic',
+	    value: function getElastic(x) {
+	      var data = _presenter2.default.dataManager.currentData;
+	      var begin = Math.round(data.begin);
+	      if (begin === _constants.SPRING_DATA.length) {
+	        begin -= 1;
+	      }
+	      var totalElastic = void 0;
+	      if (data.type === _constants.ELASTIC_MODE.ELASTIC_HAIR) {
+	        totalElastic = _constants.ELASTIC_RANGE.ELASTIC_HAIR_MIN;
+	      } else {
+	        totalElastic = _constants.ELASTIC_RANGE.ELASTIC_COARSE_MIN;
+	      }
+
+	      var rate = (_constants.SPRING_DATA.length - begin) / (_constants.SPRING_DATA.length - totalElastic);
+	      var max = data.type === _constants.ELASTIC_MODE.ELASTIC_HAIR ? _constants.ELASTIC_RANGE.ELASTIC_HAIR_MAX : _constants.ELASTIC_RANGE.ELASTIC_COARSE_MAX;
+	      return [(max - x) * rate + x, rate];
+	    }
+	  }, {
+	    key: 'switchSpring',
+	    value: function switchSpring(mode) {
+	      if (this.playing === _constants.ANIMATE_STATUS.PLAYING) {
+	        return false;
+	      }
+	      var length = this.spring.length;
+	      switch (mode) {
+	        case _constants.ELASTIC_MODE.ELASTIC_COARSE:
+	          this.spring = this.springCoarse;
+	          this.springCoarse.visible = true;
+	          this.springHair.visible = false;
+	          break;
+	        case _constants.ELASTIC_MODE.ELASTIC_HAIR:
+	          this.spring = this.springHair;
+	          this.springHair.visible = true;
+	          this.springCoarse.visible = false;
+	          break;
+	        default:
+	          break;
+	      }
+	      this.spring.length != length && this.spring.redraw(length);
+	      this.render();
+	      return true;
+	    }
+	  }, {
+	    key: 'resetStatus',
+	    value: function resetStatus() {
+	      this.onResetStatus();
+	      _presenter2.default.domManager.onResetStatus();
+	    }
+	  }, {
+	    key: 'onResetStatus',
+	    value: function onResetStatus() {
+	      this._ballMotion(_constants.CANVAS_BEGIN + _presenter2.default.dataManager.currentData.begin - _constants.SPRING_DATA.tube + _constants.BALL_SIZE, true);
+	      this.playing = _constants.ANIMATE_STATUS.READY;
+	    }
+	  }, {
+	    key: 'onReset',
+	    value: function onReset() {
+	      if (this.playing === _constants.ANIMATE_STATUS.PLAYING) {
+	        this.ballAnimate && this.ballAnimate.kill();
+	        this.springAnimate && this.springAnimate.kill();
+	        this.ballAnimate = null;
+	        this.springAnimate = null;
+	      }
+
+	      this.playing = _constants.ANIMATE_STATUS.READY;
+
+	      this.spring = this.springHair;
+	      this.springCoarse.visible = false;
+	      this.springHair.visible = true;
+	      this._ballMotion(_constants.CANVAS_BEGIN + _constants.SPRING_DATA.length - _constants.SPRING_DATA.tube + _constants.BALL_SIZE, true);
+	    }
+	  }]);
+
+	  return threeManager;
+	}();
+
+	exports.default = threeManager;
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = autoDetectRender;
+	exports.isWebGLSupported = isWebGLSupported;
+	/**
+	 * Created by lyp on 2016/2/17.
+	 */
+
+	var isWebGLRenderer = undefined;
+
+	exports.isWebGLRenderer = isWebGLRenderer;
+	function autoDetectRender(options, noWebGL) {
+	    if (!noWebGL && isWebGLSupported()) {
+	        exports.isWebGLRenderer = isWebGLRenderer = true;
+	        return new THREE.WebGLRenderer(options);
+	    }
+
+	    exports.isWebGLRenderer = isWebGLRenderer = false;
+	    return new THREE.CanvasRenderer(options);
+	}
+
+	function isWebGLSupported() {
+	    var contextOptions = { stencil: true };
+	    try {
+	        if (!window.WebGLRenderingContext) {
+	            return false;
+	        }
+
+	        var canvas = document.createElement('canvas'),
+	            gl = canvas.getContext('webgl', contextOptions) || canvas.getContext('experimental-webgl', contextOptions);
+
+	        return !!(gl && gl.getContextAttributes().stencil);
+	    } catch (e) {
+	        return false;
+	    }
+	}
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _SpringGeometry = __webpack_require__(9);
+
+	var _SpringGeometry2 = _interopRequireDefault(_SpringGeometry);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                * Created by liuyuanpeng on 2016/12/22.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
+
+	var Spring = function (_THREE$Object3D) {
+	  _inherits(Spring, _THREE$Object3D);
+
+	  function Spring(options) {
+	    _classCallCheck(this, Spring);
+
+	    var _this = _possibleConstructorReturn(this, (Spring.__proto__ || Object.getPrototypeOf(Spring)).call(this));
+
+	    _this._path = options.path;
+	    _this._geometry = new _SpringGeometry2.default(options);
+	    _this.length = options.length;
+	    _this.setLeft();
+	    return _this;
+	  }
+
+	  _createClass(Spring, [{
+	    key: 'preLoad',
+	    value: function preLoad(callback) {
+	      var _this2 = this;
+
+	      var path = this._path + 'resources/wood/images/cubemap/';
+	      var format = '.png';
+	      var urls = [path + 'posx' + format, path + 'negx' + format, path + 'posy' + format, path + 'negy' + format, path + 'posy' + format, path + 'negx2' + format];
+	      new THREE.CubeTextureLoader().load(urls, function (texture) {
+	        _this2._material = new THREE.MeshPhongMaterial({
+	          envMap: texture,
+	          specular: 0x000000,
+	          emissive: 0x000000,
+	          shininess: 100
+	        });
+	        _this2._material.reflectivity = 1.2;
+	        _this2._object = new THREE.Mesh(_this2._geometry, _this2._material);
+	        _this2._object.rotation.y = Math.PI / 2;
+	        _this2.add(_this2._object);
+	        callback && callback();
+	      });
+	    }
+	  }, {
+	    key: 'redraw',
+	    value: function redraw(length) {
+	      if (this._object) {
+	        this.length = length;
+	        this._object.geometry.updateSpringGeometry(null, null, length, null);
+	        this._object.position.x = this.length / 2 - this._left;
+	      }
+	    }
+	  }, {
+	    key: 'setWindingNumber',
+	    value: function setWindingNumber(num) {
+	      if (this._object) {
+	        this._object.geometry.updateSpringGeometry(null, null, null, num);
+	      }
+	    }
+	  }, {
+	    key: 'setLeft',
+	    value: function setLeft() {
+	      var left = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
+
+	      this._left = left;
+	      this._object && (this._object.position.x = this.length / 2 + left);
+	    }
+	  }]);
+
+	  return Spring;
+	}(THREE.Object3D);
+
+	exports.default = Spring;
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	/**
+	 * Created by liuyuanpeng on 2016/12/22.
+	 * 弹簧骨架
+	 */
+
+	var SpringGeometry = function (_THREE$Geometry) {
+	  _inherits(SpringGeometry, _THREE$Geometry);
+
+	  function SpringGeometry(options) {
+	    _classCallCheck(this, SpringGeometry);
+
+	    var _this = _possibleConstructorReturn(this, (SpringGeometry.__proto__ || Object.getPrototypeOf(SpringGeometry)).call(this));
+
+	    _this.radius = options.radius || 10; //弹簧半径
+	    _this.tube = options.tube || 2; //管道的半径
+	    _this.length = options.length || 50; //弹簧的长度
+	    _this.windingNumber = options.windingNumber || 10; //弹簧的圈数
+	    _this.radialSegments = options.radialSegments || 20; //外部周长的分割数-精度
+	    _this.tubularSegments = options.tubularSegments || 20; //管道周长的分割数-精度
+
+	    _this.setSpringVertices(_this.radius, _this.tube, _this.length, _this.windingNumber, _this.radialSegments, _this.tubularSegments);
+	    _this.setSpringFaces(_this.radius, _this.tube, _this.length, _this.windingNumber, _this.radialSegments, _this.tubularSegments);
+
+	    //面的法向量计算，这个函数用来计算每一个面归一化后的法向量，法向量垂直于面。计算之后的法向量被存放在了face.normal中。
+	    _this.computeFaceNormals();
+	    //计算每一个顶点的法向量
+	    _this.computeVertexNormals();
+	    return _this;
+	  }
+
+	  /**
+	   * 根据参数创建顶点
+	   * @param radius 弹簧半径
+	   * @param tube 管道半径
+	   * @param length 弹簧长度
+	   * @param windingNumber 弹簧圈数
+	   * @param radialSegments 外部分割
+	   * @param tubularSegments 管道分割
+	   */
+
+
+	  _createClass(SpringGeometry, [{
+	    key: "setSpringVertices",
+	    value: function setSpringVertices(radius, tube, length, windingNumber, radialSegments, tubularSegments) {
+	      var geometry = this;
+
+	      // 必要参数
+	      radius = radius || 1; //弹簧半径
+	      tube = tube || 0.2; //管道半径
+	      length = length || 5; //弹簧长度
+
+	      var Nw = windingNumber || 10; //弹簧的圈数
+	      var Nr = radialSegments || 10; //外部周长的分割数
+	      var Nt = tubularSegments || 10; //管道周长的分割数
+
+	      //计算每段管道截面的增量
+	      var deltaH = length / Nw / Nr;
+
+	      var n = 0;
+	      var v = new THREE.Vector3();
+
+	      // 取得顶点坐标
+	      for (var _w = 0; _w < Nw; _w++) {
+	        //圈数
+	        for (var _r = 0; _r < Nr; _r++) {
+	          //外部周长的分割数
+	          var phi = 2.0 * Math.PI * _r / Nr; //外部周长的分割数
+	          //管道横截面的中心z坐标
+	          var _h = deltaH * (Nr * _w + _r);
+	          for (var t = 0; t < Nt; t++) {
+	            var theta = 2.0 * Math.PI * t / Nt; //管道的分割角度
+	            v.set((radius + tube * Math.cos(theta)) * Math.cos(phi), //x坐标
+	            (radius + tube * Math.cos(theta)) * Math.sin(phi), //y坐标
+	            tube * Math.sin(theta) + _h - length / 2 //z坐标
+	            );
+
+	            if (geometry.vertices[n]) {
+	              geometry.vertices[n].copy(v);
+	            } else {
+	              geometry.vertices[n] = v.clone();
+	            }
+	            n++;
+	          }
+	        }
+	      }
+
+	      //两端封闭的横截面坐标
+	      var w = Nw;
+	      var r = 0;
+	      //管道横截面的中心z坐标
+	      var h = deltaH * (Nr * w + r);
+	      for (var _t = 0; _t < Nt; _t++) {
+	        var _phi = 0.0;
+	        var _theta = 2.0 * Math.PI * _t / Nt;
+	        v.set((radius + tube * Math.cos(_theta)) * Math.cos(_phi), (radius + tube * Math.cos(_theta)) * Math.sin(_phi), tube * Math.sin(_theta) + h - length / 2);
+	        if (geometry.vertices[n]) {
+	          geometry.vertices[n].copy(v);
+	        } else {
+	          geometry.vertices[n] = v.clone();
+	        }
+	        n++;
+	      }
+	      //开始端管道横截面的中心坐标
+	      v.set(radius, 0, -length / 2);
+	      if (geometry.vertices[n]) {
+	        geometry.vertices[n].copy(v);
+	      } else {
+	        geometry.vertices[n] = v.clone();
+	      }
+	      n++;
+
+	      //结尾端管道横截面的中心坐标
+	      v.set(radius, 0, length / 2);
+	      if (geometry.vertices[n]) {
+	        geometry.vertices[n].copy(v);
+	      } else {
+	        geometry.vertices[n] = v.clone();
+	      }
+	    }
+	  }, {
+	    key: "setSpringFaces",
+	    value: function setSpringFaces(radius, tube, length, windingNumber, radialSegments, tubularSegments) {
+	      var geometry = this;
+
+	      var Nw = windingNumber || 10;
+	      var Nr = radialSegments || 10;
+	      var Nt = tubularSegments || 10;
+
+	      //弹簧表面
+	      for (var _w2 = 0; _w2 < Nw; _w2++) {
+	        for (var _r2 = 0; _r2 < Nr; _r2++) {
+	          var w1 = _w2;
+	          var w2 = _r2 !== Nr - 1 ? _w2 : _w2 + 1;
+
+	          var r1 = _r2;
+	          var r2 = _r2 !== Nr - 1 ? _r2 + 1 : 0;
+
+	          for (var t = 0; t < Nt; t++) {
+	            var t1 = t;
+	            var t2 = t !== Nt - 1 ? t + 1 : 0;
+
+	            //顶点计算
+	            var v1 = Nr * Nt * w1 + Nt * r1 + t1;
+	            var v2 = Nr * Nt * w1 + Nt * r1 + t2;
+	            var v3 = Nr * Nt * w2 + Nt * r2 + t1;
+	            var v4 = Nr * Nt * w2 + Nt * r2 + t2;
+
+	            //v1,v3,v4形成一个三角形面
+	            geometry.faces.push(new THREE.Face3(v1, v3, v4));
+	            //v4,v2,v1形成一个三角形面
+	            geometry.faces.push(new THREE.Face3(v4, v2, v1));
+	          }
+	        }
+	      }
+
+	      //开始端管道横截面
+	      var w = 0;
+	      var r = 0;
+	      for (var _t2 = 0; _t2 < Nt; _t2++) {
+	        var _t3 = _t2;
+	        var _t4 = _t2 !== Nt - 1 ? _t2 + 1 : 0;
+
+	        //横截面的中心坐标和其他两点
+	        var _v = Nr * Nt * Nw + Nt;
+	        var _v2 = Nr * Nt * w + Nt * r + _t3;
+	        var _v3 = Nr * Nt * w + Nt * r + _t4;
+
+	        geometry.faces.push(new THREE.Face3(_v, _v2, _v3));
+	      }
+
+	      //结尾端管道横截面
+	      w = Nw;
+	      r = 0;
+	      for (var _t5 = 0; _t5 < Nt; _t5++) {
+
+	        var _t6 = _t5;
+	        var _t7 = _t5 !== Nt - 1 ? _t5 + 1 : 0;
+
+	        var _v4 = Nw * Nr * Nt + Nt + 1;
+	        var _v5 = Nr * Nt * w + Nt * r + _t6;
+	        var _v6 = Nr * Nt * w + Nt * r + _t7;
+
+	        geometry.faces.push(new THREE.Face3(_v4, _v6, _v5));
+	      }
+	    }
+	  }, {
+	    key: "updateSpringGeometry",
+	    value: function updateSpringGeometry(radius, tube, length) {
+	      this.radius = radius || this.radius;
+	      this.tube = tube || this.tube;
+	      this.length = length || this.length;
+
+	      this.setSpringVertices(this.radius, this.tube, this.length, this.windingNumber, this.radialSegments, this.tubularSegments);
+
+	      this.computeFaceNormals();
+	      this.computeVertexNormals();
+
+	      this.verticesNeedUpdate = true;
+	      this.normalsNeedUpdate = true;
+	    }
+	  }]);
+
+	  return SpringGeometry;
+	}(THREE.Geometry);
+
+	exports.default = SpringGeometry;
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * 全局变量定义
+	 */
+
+	var ELASTIC_MODE = exports.ELASTIC_MODE = {
+	  ELASTIC_HAIR: 'hair',
+	  ELASTIC_COARSE: 'coarse'
+	};
+
+	var CANVAS_SIZE = exports.CANVAS_SIZE = 1000;
+	var CANVAS_BEGIN = exports.CANVAS_BEGIN = 0;
+
+	var ELASTIC_RANGE = exports.ELASTIC_RANGE = {
+	  ELASTIC_HAIR_MIN: 50,
+	  ELASTIC_COARSE_MIN: 50,
+	  ELASTIC_HAIR_MAX: 700,
+	  ELASTIC_COARSE_MAX: 835
+	};
+
+	var ANIMATE_STATUS = exports.ANIMATE_STATUS = {
+	  READY: 'ready',
+	  PLAYING: 'playing',
+	  END: 'end'
+	};
+
+	var SPRING_DATA = exports.SPRING_DATA = {
+	  radius: 20,
+	  tube: 3,
+	  length: 200,
+	  windingNumber: 7,
+	  radialSegments: 20,
+	  tubularSegments: 10
+	};
+
+	var BALL_SIZE = exports.BALL_SIZE = 35;
+
+	var MAX_LISTS_LENGTH = exports.MAX_LISTS_LENGTH = 6;
+
+	var DOM_SELECTOR = exports.DOM_SELECTOR = {
+	  expand: '.selectTop:first',
+	  shrink: '.selectBom:first',
+	  history: '.historyData:first',
+	  sure: '.sure_btns:first',
+	  begin: '.beginBtn:first',
+	  statusReset: '.statusResetBtn:first',
+	  reset: '.btn_reset:first',
+	  elasticHair: '.miniSpring:first',
+	  elasticCoarse: '.crudeSpring:first',
+	  type: '.list_left:first',
+	  mark: '.popupCard:first',
+	  highlightMark: '.popupCard:first',
+	  dashWood: '.Elastic_slope .squareTable:first',
+	  wood: '.Elastic_slope .squareWood:first',
+	  tipOK: '.tipOk:first',
+	  tipBoard: '.ElasticEnergy_layer:first',
+	  ball: '.ballDiv:first',
+	  ballRotate: '.scrollBall:first'
+	};
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	/**
+	 * Created by liuyuanpeng on 2017/1/4.
+	 */
+
+	var Animate = function () {
+	  function Animate(start, end, elapse) {
+	    var _this = this;
+
+	    var paused = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+	    _classCallCheck(this, Animate);
+
+	    this.start = start;
+	    this.end = end;
+	    if (!this.end.ease) {
+	      this.end.ease = Power0.easeNone;
+	    }
+	    this.elapse = elapse;
+	    this.end.paused = paused;
+	    this.end.onUpdate = function () {
+	      _this.onUpdate();
+	    };
+	    this.end.onComplete = function () {
+	      _this.onComplete();
+	    };
+
+	    this._onUpdate = null;
+	    this._onComplete = null;
+
+	    this.tween = new TweenLite(this.start, this.elapse, this.end);
+	  }
+
+	  _createClass(Animate, [{
+	    key: "addEventCallback",
+	    value: function addEventCallback(eventName) {
+	      var callback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+	      var params = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+	      var scope = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+
+	      this.tween.eventCallback(eventName, callback, params, scope);
+	    }
+	  }, {
+	    key: "setUpdateOperation",
+	    value: function setUpdateOperation(onUpdate) {
+	      this._onUpdate = onUpdate;
+	    }
+	  }, {
+	    key: "setCompleteOperation",
+	    value: function setCompleteOperation(onComplete) {
+	      this._onComplete = onComplete;
+	    }
+	  }, {
+	    key: "onUpdate",
+	    value: function onUpdate() {
+	      this._onUpdate && this._onUpdate(this.start);
+	    }
+	  }, {
+	    key: "onComplete",
+	    value: function onComplete() {
+	      this._onComplete && this._onComplete();
+	    }
+	  }, {
+	    key: "kill",
+	    value: function kill() {
+	      this.tween && this.tween.kill();
+	      this.tween = null;
+	      this.start = null;
+	      this.end = null;
+	      this.elapse = null;
+	      this._onUpdate = null;
+	      this._onComplete = null;
+	    }
+	  }, {
+	    key: "play",
+	    value: function play() {
+	      this.tween.play();
+	    }
+	  }, {
+	    key: "pause",
+	    value: function pause() {
+	      this.tween.pause();
+	    }
+	  }, {
+	    key: "restart",
+	    value: function restart() {
+	      this.tween.restart();
+	    }
+	  }, {
+	    key: "isActive",
+	    value: function isActive() {
+	      return this.tween.isActive();
+	    }
+	  }, {
+	    key: "progress",
+	    value: function progress(_progress) {
+	      if (_progress != undefined && _progress >= 0 && _progress <= 1) {
+	        this.tween.progress(_progress);
+	      } else {
+	        return this.tween.progress();
+	      }
+	    }
+	  }]);
+
+	  return Animate;
+	}();
+
+	exports.default = Animate;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = destroyThreeObject;
+	function destroyThreeObject(object) {
+	  "use strict";
+
+	  if (!object) return;
+	  if (object.children && object.children.length > 0) {
+	    for (var i = 0; i < object.children.length; i++) {
+	      destroyThreeObject(object.children[i]);
+	    }
+	  }
+	  if (object.geometry) object.geometry.dispose();
+	  if (object.material) {
+	    object.material.dispose();
+	    if (object.material.map && object.material.map.dispose) object.material.map.dispose();
+	  }
+	  object = null;
+	}
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by liuyuanpeng on 2017/1/9.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _constants = __webpack_require__(10);
+
+	var _RecordControl = __webpack_require__(14);
+
+	var _RecordControl2 = _interopRequireDefault(_RecordControl);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var DomManager = function () {
+	  function DomManager() {
+	    var _this = this;
+
+	    _classCallCheck(this, DomManager);
+
+	    var $view = $(_presenter2.default.view);
+	    this.beginBtn = $view.find(_constants.DOM_SELECTOR.begin);
+	    this.statusResetBtn = $view.find(_constants.DOM_SELECTOR.statusReset);
+	    this.resetBtn = $view.find(_constants.DOM_SELECTOR.reset);
+	    this.elasticHair = $view.find(_constants.DOM_SELECTOR.elasticHair);
+	    this.elasticCoarse = $view.find(_constants.DOM_SELECTOR.elasticCoarse);
+	    this.mark = $view.find(_constants.DOM_SELECTOR.mark);
+	    this.ball = $view.find(_constants.DOM_SELECTOR.ball);
+	    this.ballRotate = $view.find(_constants.DOM_SELECTOR.ballRotate);
+	    setTimeout(function () {
+	      _this.ball.show();
+	    }, 200);
+
+	    this.elasticType = $view.find(_constants.DOM_SELECTOR.type);
+
+	    this.dashWood = $view.find(_constants.DOM_SELECTOR.dashWood);
+	    this.wood = $view.find(_constants.DOM_SELECTOR.wood);
+
+	    this.tipOK = $view.find(_constants.DOM_SELECTOR.tipOK);
+	    this.tipBoard = $view.find(_constants.DOM_SELECTOR.tipBoard);
+	    this.tipBoard.show();
+
+	    this.recordControl = new _RecordControl2.default();
+
+	    this.markX = 0;
+	    this.boxX = 0;
+	  }
+
+	  _createClass(DomManager, [{
+	    key: 'dispose',
+	    value: function dispose() {
+	      this.unbindEvents();
+	      this.beginBtn = null;
+	      this.statusResetBtn = null;
+	      this.resetBtn = null;
+	      this.elasticHair = null;
+	      this.elasticCoarse = null;
+	      this.mark = null;
+	      this.ball = null;
+	      this.ballRotate = null;
+
+	      this.elasticType = null;
+
+	      this.dashWood = null;
+	      this.wood = null;
+
+	      this.tipOK = null;
+	      this.tipBoard = null;
+
+	      this.recordControl.dispose();
+	      this.recordControl = null;
+	    }
+
+	    /**
+	     * 绑定事件
+	     */
+
+	  }, {
+	    key: 'bindEvents',
+	    value: function bindEvents() {
+	      var _this2 = this;
+
+	      this.recordControl.bindEvents();
+
+	      this.tipOK.on('click', function () {
+	        _this2.tipBoard.hide();
+	        _this2.tipOK.off();
+	        _this2.tipBoard = null;
+	        _this2.tipOK = null;
+	      });
+
+	      this.beginBtn.on('click', function () {
+	        _this2.startAnimate();
+	      });
+	      this.statusResetBtn.on('click', function () {
+	        _this2.resetStatus();
+	      });
+	      this.resetBtn.on('click', function () {
+	        _this2.reset();
+	      });
+	      this.elasticHair.on('click', function () {
+	        _this2.onElasticHairClicked();
+	      });
+	      this.elasticCoarse.on('click', function () {
+	        _this2.onElasticCoarseClicked();
+	      });
+	      this.mark.on('click', function () {
+	        _this2.onMarkClicked();
+	      });
+
+	      this.mark.on('mousedown touchstart', function () {
+	        _this2.mark.enabled && _this2.mark.addClass('active');
+	      });
+	      this.mark.on('mouseup mouseleave touchend touchcancel', function () {
+	        _this2.mark.removeClass('active');
+	      });
+	    }
+
+	    /**
+	     * 解绑事件
+	     */
+
+	  }, {
+	    key: 'unbindEvents',
+	    value: function unbindEvents() {
+	      this.beginBtn.off();
+	      this.statusResetBtn.off();
+	      this.resetBtn.off();
+	      this.elasticCoarse.off();
+	      this.elasticHair.off();
+	      this.mark.off();
+	    }
+	  }, {
+	    key: 'onMarkClicked',
+	    value: function onMarkClicked() {
+	      if (_presenter2.default.threeManager) {
+	        switch (_presenter2.default.threeManager.playing) {
+	          case _constants.ANIMATE_STATUS.READY:
+	            _presenter2.default.threeManager.onResetStatus();
+	            this.beginBtn.removeClass('click_disabled');
+	            break;
+	          case _constants.ANIMATE_STATUS.END:
+	            this.resetStatus();
+	            break;
+	          default:
+	            break;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'startAnimate',
+	    value: function startAnimate() {
+	      if (this.beginBtn.hasClass('ui_btn_active') || this.beginBtn.hasClass('click_disabled')) {
+	        return;
+	      }
+	      if (_presenter2.default.threeManager.startAnimate()) {
+	        this.beginBtn.addClass('ui_btn_active');
+	      }
+
+	      this.elasticType.addClass('click_disabled');
+
+	      this.mark.enabled = false;
+	    }
+	  }, {
+	    key: 'resetStatus',
+	    value: function resetStatus() {
+	      if (this.statusResetBtn.hasClass('click_disabled')) {
+	        return;
+	      }
+	      this.onResetStatus();
+	      _presenter2.default.threeManager.onResetStatus();
+	      _presenter2.default.dataManager.addRecord();
+	    }
+	  }, {
+	    key: 'onResetStatus',
+	    value: function onResetStatus() {
+	      this.statusResetBtn.addClass('click_disabled');
+	      this.beginBtn.removeClass('click_disabled');
+	      this.translateBox(0);
+	    }
+	  }, {
+	    key: 'reset',
+	    value: function reset() {
+	      this.translateBox(0);
+	      _presenter2.default.threeManager.onReset();
+	      this.statusResetBtn.addClass('click_disabled');
+	      this.beginBtn.addClass('click_disabled');
+	      this.beginBtn.removeClass('ui_btn_active');
+	      this.elasticHair.addClass('current');
+	      this.elasticCoarse.removeClass('current');
+	      this.elasticType.removeClass('click_disabled');
+	      this.mark.hide();
+	      this.recordControl.resetHistory();
+	    }
+	  }, {
+	    key: 'onElasticHairClicked',
+	    value: function onElasticHairClicked() {
+	      if (this.elasticHair.hasClass('current') || this.elasticType.hasClass('click_disabled')) {
+	        return;
+	      }
+	      if (!_presenter2.default.threeManager.switchSpring(_constants.ELASTIC_MODE.ELASTIC_HAIR)) {
+	        return;
+	      }
+	      this.elasticCoarse.removeClass('current');
+	      this.elasticHair.addClass('current');
+	    }
+	  }, {
+	    key: 'onElasticCoarseClicked',
+	    value: function onElasticCoarseClicked() {
+	      if (this.elasticCoarse.hasClass('current') || this.elasticType.hasClass('click_disabled')) {
+	        return;
+	      }
+	      if (!_presenter2.default.threeManager.switchSpring(_constants.ELASTIC_MODE.ELASTIC_COARSE)) {
+	        return;
+	      }
+	      this.elasticCoarse.addClass('current');
+	      this.elasticHair.removeClass('current');
+	    }
+	  }, {
+	    key: 'canAnimate',
+	    value: function canAnimate() {
+	      var bCan = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      if (bCan) {
+	        this.beginBtn.removeClass('click_disabled');
+	      } else {
+	        this.beginBtn.addClass('click_disabled');
+	      }
+	    }
+	  }, {
+	    key: 'onAnimateComplete',
+	    value: function onAnimateComplete() {
+	      this.beginBtn.removeClass('ui_btn_active');
+	      this.beginBtn.addClass('click_disabled');
+	      this.statusResetBtn.removeClass('click_disabled');
+
+	      this.elasticType.removeClass('click_disabled');
+
+	      this.mark.enabled = true;
+	    }
+	  }, {
+	    key: 'translateBox',
+	    value: function translateBox(x) {
+	      this.boxX = x;
+	      x >= 0 && this.wood.css('transform', 'translateX(' + x + 'px)');
+	    }
+	  }, {
+	    key: 'showMark',
+	    value: function showMark(x) {
+	      this.markX = x;
+	      if (x > 0) {
+	        this.mark.show();
+	        this.mark.css('transform', 'translateX(' + x + 'px)');
+	      }
+	    }
+	  }, {
+	    key: 'hideMark',
+	    value: function hideMark() {
+	      this.mark.hide();
+	    }
+	  }, {
+	    key: 'moveMark',
+	    value: function moveMark(x) {
+	      this.markX = x;
+	      if (x > 0) {
+	        this.mark.css('transform', 'translateX(' + x + 'px)');
+	      }
+	    }
+	  }, {
+	    key: 'highLightMark',
+	    value: function highLightMark() {
+	      var bAdd = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
+	      return;
+	      if (bAdd) {
+	        this.mark.addClass('highlightCard');
+	      } else {
+	        this.mark.removeClass('highlightCard');
+	      }
+	    }
+	  }, {
+	    key: 'translateBall',
+	    value: function translateBall(x) {
+	      this.ballX = x;
+	      this.ball.css('transform', 'translateX(' + x + 'px)');
+	      this.ballRotate.css('transform', 'rotateZ(' + x + 'deg)');
+	    }
+	  }]);
+
+	  return DomManager;
+	}();
+
+	exports.default = DomManager;
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by liuyuanpeng on 2017/1/12.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _constants = __webpack_require__(10);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var RecordControl = function () {
+	  function RecordControl() {
+	    _classCallCheck(this, RecordControl);
+
+	    var $view = $(_presenter2.default.view);
+	    this.record1 = $view.find('.record1:first');
+	    this.record2 = $view.find('.record2:first');
+	    this.$table = $view.find('.table_2:first');
+	    this.expandBtn = $view.find(_constants.DOM_SELECTOR.expand);
+	    this.shrinkBtn = $view.find(_constants.DOM_SELECTOR.shrink);
+	    this.historyBoard = $view.find(_constants.DOM_SELECTOR.history);
+	    this.completeButton = $view.find(_constants.DOM_SELECTOR.sure);
+
+	    this.record1.html('');
+	    this.record2.html('');
+	    this.$table.html('');
+	    this.expandBtn.hide();
+
+	    this.records = [];
+	    this.selectedRecords = [];
+	  }
+
+	  _createClass(RecordControl, [{
+	    key: 'bindEvents',
+	    value: function bindEvents() {
+	      var _this = this;
+
+	      this.expandBtn.on('click', function () {
+	        _this.showHistory();
+	      });
+	      this.shrinkBtn.on('click', function () {
+	        _this.hideHistory();
+	      });
+
+	      this.$table.on('click', '.myInput', function (event) {
+	        _this.selectList(event);
+	      });
+
+	      this.completeButton.on('click', function () {
+	        _this.onCompleteSelect();
+	      });
+
+	      $(_presenter2.default.view).on('mousedown touchstart', function (event) {
+	        if ($(event.target).closest('.historyData:visible').length === 0) {
+	          _this.hideHistory();
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'selectList',
+	    value: function selectList(event) {
+	      var e = event,
+	          target = $(e.target.closest('.myInput')),
+	          parent = $(e.target.closest('tr')),
+	          lists = this.records,
+	          i = 0,
+	          len = 0;
+	      if (target.hasClass('checked')) {
+	        for (i = 0, len = this.selectedRecords.length; i < len; i++) {
+	          if (target.attr('type') === this.selectedRecords[i].type && target.attr('begin') === String(this.selectedRecords[i].begin)) {
+	            this.selectedRecords.splice(i, 1);
+	            break;
+	          }
+	        }
+	        target.removeClass('checked');
+	        parent.removeClass('checked');
+	      } else {
+	        if (this.selectedRecords.length >= 2) {
+	          return;
+	        }
+	        var _iteratorNormalCompletion = true;
+	        var _didIteratorError = false;
+	        var _iteratorError = undefined;
+
+	        try {
+	          for (var _iterator = lists[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	            var list = _step.value;
+
+	            if (target.attr('type') === list.type && target.attr('begin') === String(list.begin)) {
+	              this.selectedRecords.unshift(list);
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError = true;
+	          _iteratorError = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion && _iterator.return) {
+	              _iterator.return();
+	            }
+	          } finally {
+	            if (_didIteratorError) {
+	              throw _iteratorError;
+	            }
+	          }
+	        }
+
+	        target.addClass('checked');
+	        parent.addClass('checked');
+	      }
+	      this._isCheckDisable();
+	    }
+	  }, {
+	    key: '_isCheckDisable',
+	    value: function _isCheckDisable() {
+	      if (this.selectedRecords.length > 0) {
+	        if (this.completeButton.hasClass('click_disabled')) {
+	          this.completeButton.removeClass('click_disabled');
+	        }
+	      } else {
+	        if (!this.completeButton.hasClass('click_disabled')) {
+	          this.completeButton.addClass('click_disabled');
+	        }
+	      }
+	      if (this.selectedRecords.length < 2) {
+	        // 列表还可选，取消不可选样式
+	        if (this.$table.hasClass('disabled')) {
+	          this.$table.removeClass('disabled');
+	        }
+	      } else {
+	        // 列表不可选，增加不可选样式
+	        if (!this.$table.hasClass('disabled')) {
+	          this.$table.addClass('disabled');
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'onCompleteSelect',
+	    value: function onCompleteSelect() {
+	      if (this.completeButton.hasClass('click_disabled')) {
+	        return;
+	      }
+	      var indexArray = [];
+	      for (var i = 0; i < this.selectedRecords.length; i++) {
+	        indexArray.push(this.records.indexOf(this.selectedRecords[i]));
+	      }
+	      _presenter2.default.dataManager.orderHistory(indexArray);
+	      this.records = _presenter2.default.dataManager.history.concat();
+	      this.updateTops();
+	      this.hideHistory();
+	    }
+	  }, {
+	    key: 'showHistory',
+	    value: function showHistory() {
+	      if (this.historyBoard.css('display') !== 'none') {
+	        return;
+	      }
+	      this.historyBoard.show();
+	      this.updateList();
+	    }
+	  }, {
+	    key: 'hideHistory',
+	    value: function hideHistory() {
+	      if (this.historyBoard.css('display') === 'none') {
+	        return;
+	      }
+	      this.historyBoard.hide();
+
+	      this.selectedRecords = [];
+	      this.$table.html('');
+	      if (this.$table.hasClass('disabled')) {
+	        this.$table.removeClass('disabled');
+	      }
+	      if (!this.completeButton.hasClass('click_disabled')) {
+	        this.completeButton.addClass('click_disabled');
+	      }
+	    }
+	  }, {
+	    key: 'resetHistory',
+	    value: function resetHistory() {
+	      this.expandBtn.hide();
+	      this.record1.html('');
+	      this.record2.html('');
+	      this.records.length = 0;
+	      this.$table.html('');
+	      this.selectedRecords = [];
+	      _presenter2.default.dataManager.onReset();
+	    }
+	  }, {
+	    key: 'dispose',
+	    value: function dispose() {
+	      this.expandBtn.off();
+	      this.shrinkBtn.off();
+	      $(_presenter2.default.view).off();
+	      this.$table.off();
+	      this.completeButton.off();
+	      this.expandBtn = null;
+	      this.shrinkBtn = null;
+	      this.historyBoard = null;
+	      this.completeButton = null;
+	      this.record1.html('');
+	      this.record2.html('');
+	      this.record1 = null;
+	      this.record2 = null;
+	      this.records.length = 0;
+	      this.records = null;
+	      this.$table.html('');
+	      this.selectedRecords = null;
+	      this.$table = null;
+	    }
+	  }, {
+	    key: 'update',
+	    value: function update() {
+	      this.records = _presenter2.default.dataManager.history.concat();
+	      this.updateTops();
+	      this.updateList();
+	    }
+
+	    /**
+	     * 渲染最新两条列表
+	     */
+
+	  }, {
+	    key: 'updateTops',
+	    value: function updateTops() {
+	      this.record1.html('');
+	      this.record2.html('');
+
+	      if (this.selectedRecords.length) {
+	        if (this.selectedRecords.length > 1) {
+	          this.record1.append(this.getRecordItem(this.selectedRecords[1]));
+	          this.record2.append(this.getRecordItem(this.selectedRecords[0]));
+	        } else {
+	          this.record1.append(this.getRecordItem(this.selectedRecords[0]));
+	        }
+	        this.selectedRecords = [];
+	      } else {
+	        var recordNumber = this.records.length;
+	        if (recordNumber >= 2) {
+	          this.record1.append(this.getRecordItem(this.records[recordNumber - 2]));
+	          this.record2.append(this.getRecordItem(this.records[recordNumber - 1]));
+	          if (recordNumber === 2) {
+	            this.expandBtn.hide();
+	          } else {
+	            this.expandBtn.show();
+	          }
+	        } else if (recordNumber === 1) {
+	          this.record1.append(this.getRecordItem(this.records[0]));
+	          this.expandBtn.hide();
+	        } else {
+	          return;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'updateList',
+	    value: function updateList() {
+	      this.$table.html('');
+	      if (this.records.length <= 2) {
+	        return;
+	      }
+	      for (var i = 0; i < this.records.length; i++) {
+	        this.$table.append(this.getListItem(this.records[i]));
+	      }
+	    }
+	  }, {
+	    key: 'getBackImage',
+	    value: function getBackImage(data) {
+	      var backgroundImage = void 0;
+	      if (data.begin === 50) {
+	        backgroundImage = 50;
+	      } else if (data.begin <= 75) {
+	        backgroundImage = 75;
+	      } else if (data.begin <= 100) {
+	        backgroundImage = 100;
+	      } else if (data.begin <= 125) {
+	        backgroundImage = 125;
+	      } else if (data.begin <= 150) {
+	        backgroundImage = 150;
+	      } else if (data.begin <= 175) {
+	        backgroundImage = 175;
+	      } else {
+	        backgroundImage = 200;
+	      }
+
+	      backgroundImage = _presenter2.default.path + 'resources/wood/images/spring/' + backgroundImage + (data.type === _constants.ELASTIC_MODE.ELASTIC_HAIR ? '' : '_1') + '.png';
+	      return backgroundImage;
+	    }
+	  }, {
+	    key: 'getRecordItem',
+	    value: function getRecordItem(data) {
+	      //console.log(this.getBackImage(data));
+	      var springWidth = data.begin / _constants.SPRING_DATA.length * 10.944;
+
+	      var ballLeft = springWidth + 1;
+	      springWidth += 0.2;
+	      var springClass = void 0,
+	          boxLeft = void 0;
+	      switch (data.type) {
+	        case _constants.ELASTIC_MODE.ELASTIC_HAIR:
+	          springClass = '';
+	          boxLeft = data.endRate * 37.4;
+	          break;
+	        case _constants.ELASTIC_MODE.ELASTIC_COARSE:
+	          springClass = ' coarseSpring';
+	          boxLeft = data.endRate * 37.4;
+	          break;
+	        default:
+	          break;
+	      }
+
+	      return ' <div class="longBoard">\n                                                <div class="mySpring' + springClass + '" style="width:' + springWidth + 'em;background:url(' + this.getBackImage(data) + ') no-repeat;background-size: 100% 100%;"></div>\n                                                <div class="referBall" style="left:' + ballLeft + 'em;">\n                                                    <span></span>\n                                                </div>\n                                                <div class="longBoardCover">\n                                                    <div class="squareTable referWood" style="left:0;bottom:1em;">\n                                                        <div class="squareTableCover">\n                                                        </div>\n                                                    </div>\n                                                    <div class="squareTable squareWood" style="left:' + boxLeft + 'em;bottom:1em;">\n                                                        <div class="squareTableCover"></div>\n                                                    </div>\n                                                </div>\n                                            </div>';
+	    }
+	  }, {
+	    key: 'getListItem',
+	    value: function getListItem(data) {
+	      var springWidth = data.begin / _constants.SPRING_DATA.length * 7.488;
+	      var ballLeft = springWidth + 0.812;
+	      springWidth += 0.15;
+	      var springClass = void 0,
+	          boxLeft = void 0;
+	      switch (data.type) {
+	        case _constants.ELASTIC_MODE.ELASTIC_HAIR:
+	          springClass = '';
+	          boxLeft = data.endRate * 30.5;
+	          break;
+	        case _constants.ELASTIC_MODE.ELASTIC_COARSE:
+	          springClass = ' coarseSpring';
+	          boxLeft = data.endRate * 30.5;
+	          break;
+	        default:
+	          break;
+	      }
+
+	      return '<tr>\n                                    <td class="td2">\n                                        <div align="center">\n                                            <!--\u9009\u4E2D\u67D0\u6761\u8BB0\u5F55myInput\u52A0\u4E0A\u7C7Bchecked-->\n                                            <div class="myInput" type=' + data.type + ' begin=' + data.begin + '>\n                                                <label for="xz" name="xz"></label>\n                                            </div>\n\n                                            <div class="woodImgCom imgTwoData_2">\n                                                <div class="longBoard">\n                                                    <div class="mySpring' + springClass + '" style="width:' + springWidth + 'em;background:url(' + this.getBackImage(data) + ') no-repeat;background-size: 100% 100%;"></div>\n                                                    <div class="referBall" style="left:' + ballLeft + 'em;">\n                                                        <span></span>\n                                                    </div>\n                                                    <div class="longBoardCover">\n                                                        <div class="squareTable referWood" style="left:0;bottom:0.1em;">\n                                                            <div class="squareTableCover">\n                                                                <div class="dashedBorder"></div>\n                                                            </div>\n                                                        </div>\n                                                        <div class="squareTable squareWood" style="left:' + boxLeft + 'em;bottom:0.08em;">\n                                                            <div class="squareTableCover"></div>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                            </div>\n\n                                        </div>\n                                    </td>\n                                </tr>';
+	    }
+	  }]);
+
+	  return RecordControl;
+	}();
+
+	exports.default = RecordControl;
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by liuyuanpeng on 2017/1/9.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+	var _constants = __webpack_require__(10);
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var DataManager = function () {
+	  function DataManager() {
+	    _classCallCheck(this, DataManager);
+
+	    this.history = [];
+	    this.originalData = {
+	      type: '',
+	      begin: 0,
+	      endRate: 0
+	    };
+	    this.currentData = {};
+	    Object.assign(this.currentData, this.originalData);
+	  }
+
+	  _createClass(DataManager, [{
+	    key: 'setData',
+	    value: function setData(type, begin, endRate) {
+	      type && (this.currentData.type = type);
+	      if (begin) {
+	        var rBegin = Math.round(begin);
+	        if (rBegin === _constants.SPRING_DATA.length) {
+	          rBegin -= 1;
+	        }
+	        this.currentData.begin = rBegin;
+	      }
+	      endRate && (this.currentData.endRate = endRate);
+	    }
+	  }, {
+	    key: 'onReset',
+	    value: function onReset() {
+	      Object.assign(this.currentData, this.originalData);
+	      this.history.length = 0;
+	    }
+	  }, {
+	    key: 'orderHistory',
+	    value: function orderHistory(indexArray) {
+	      var delItems = void 0,
+	          delItems1 = void 0;
+	      if (indexArray.length === 1) {
+	        delItems = this.history.splice(indexArray[0], 1);
+	        this.history.push(delItems[0]);
+	      } else if (indexArray.length === 2) {
+	        var index1 = indexArray[0];
+	        var index2 = indexArray[1];
+	        if (index1 < index2) {
+	          delItems = this.history.splice(index2, 1);
+	          this.history.push(delItems[0]);
+	          delItems = this.history.splice(index1, 1);
+	          this.history.push(delItems[0]);
+	        } else {
+	          delItems = this.history.splice(index1, 1);
+	          delItems1 = this.history.splice(index2, 1);
+	          this.history.push(delItems1[0]);
+	          this.history.push(delItems[0]);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'addRecord',
+	    value: function addRecord() {
+	      var noRepeat = true;
+	      for (var i = 0; i < this.history.length; i++) {
+	        if (this.history[i].begin === this.currentData.begin && this.history[i].type === this.currentData.type) {
+	          noRepeat = false;
+	          var key = this.history[i];
+	          this.history.splice(i, 1);
+	          this.history.push(key);
+	          break;
+	        }
+	      }
+	      noRepeat && this.history.push(this.currentData);
+	      if (this.history.length > _constants.MAX_LISTS_LENGTH) {
+	        this.history.splice(0, 1);
+	      }
+	      this.originalData.begin = this.currentData.begin;
+	      this.currentData = {};
+	      Object.assign(this.currentData, this.originalData);
+	      if (_presenter2.default.domManager) {
+	        _presenter2.default.domManager.recordControl.update();
+	      }
+	    }
+	  }, {
+	    key: 'getData',
+	    value: function getData() {
+	      return this.history;
+	    }
+	  }, {
+	    key: 'dispose',
+	    value: function dispose() {
+	      this.history.length = 0;
+	      this.history = 0;
+	    }
+	  }]);
+
+	  return DataManager;
+	}();
+
+	exports.default = DataManager;
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  'elastic_guide': '选中小球进行拖动，压缩弹簧',
+	  'elastic_data_record': '数据记录',
+	  'elastic_i_known': '我知道了',
+	  'elastic_start_present': '开始演示',
+	  'elastic_reset_status': '状态重置',
+	  'elastic_reset': '重置',
+	  'elastic_sure': '确定'
+	};
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function () {
+	  _presenter2.default.threeManager.dispose();
+	  _presenter2.default.threeManger = null;
+
+	  _presenter2.default.domManager.dispose();
+	  _presenter2.default.domManger = null;
+
+	  _presenter2.default.dataManager.dispose();
+	  _presenter2.default.dataManager = null;
+	};
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function () {
+	    var question_id = '',
+	        question_url = '';
+	    if (_presenter2.default.model !== undefined) {
+	        try {
+	            question_id = _presenter2.default.model.question_id;
+	            question_url = JSON.stringify(_presenter2.default.model.question_url);
+	        } catch (e) {
+	            console.log('json stringify failed');
+	        }
+	    }
+	    return {
+	        id: question_id,
+	        dispatchOnly: true,
+	        type_code: 'ElasticEnergy',
+	        type_name: '弹性势能的影响因素',
+	        url: question_url,
+	        notExistStatistics: true,
+	        noNeedQuizProgress: true
+	    };
+	}; /**
+	    * Created by liuyuanpeng on 2016/7/1.
+	    */
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	/**
+	 * Created by liuyuanpeng on 2016/7/1.
+	 */
+
+	exports.default = function () {
+	    var status = {};
+	    return status;
+	};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (controller) {
+	  _presenter2.default.eventBus = controller.getEventBus();
+	};
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	exports.default = function (eventName, event) {
+	    if (eventName == 'PLAYER.TOOL.MINIMIZE') {
+	        _presenter2.default.threeManager && _presenter2.default.threeManager.pauseAnimate();
+	    } else if (eventName == 'PLAYER.TOOL.MAXIMIZE') {
+	        _presenter2.default.threeManager && _presenter2.default.threeManager.playAnimate();
+	    }
+	};
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (properties) {
+		// presenter.i18n = properties;
+		_presenter2.default.langType = properties._lang_;
+	};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = function (path) {
+	  _presenter2.default.path = path;
+	}; /**
+	    * Created by liuyuanpeng on 2016/6/28.
+	    */
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _presenter = __webpack_require__(2);
+
+	var _presenter2 = _interopRequireDefault(_presenter);
+
+	var _constants = __webpack_require__(10);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.default = {
+	    resizeScreen: function resizeScreen(data) {
+	        var ratio = data.ratio;
+
+	        var helper = _presenter2.default.threeManager;
+	        helper.rect = helper.getContainerSize();
+
+	        helper.renderer.setSize(helper.rect.width, helper.rect.height);
+
+	        helper.rate = helper.rect.width / _constants.CANVAS_SIZE;
+	        var height = helper.rect.height / helper.rate;
+
+	        var camera = helper.camera;
+	        camera.top = height / 2;
+	        camera.bottom = height / -2;
+
+	        camera.updateProjectionMatrix();
+
+	        // helper._ballMotion(helper._ballMesh.position.x, true)
+	        // const oldBallPos =
+	        var manager = _presenter2.default.domManager;
+	        manager.translateBall(manager.ballX * ratio);
+	        manager.translateBox(manager.boxX * ratio);
+	        manager.moveMark(manager.markX * ratio);
+	        // console.log(presenter.domManager.ballX)
+	    }
+	};
+
+/***/ })
+/******/ ]);]]></presenter><resources><file src="./resources/wood/images/ball_fixed.png"/><file src="./resources/wood/images/ball.png"/><file src="./resources/wood/images/btn_reset_active.png"/><file src="./resources/wood/images/btn_reset_dis.png"/><file src="./resources/wood/images/btn_reset.png"/><file src="./resources/wood/images/coarseSpring.png"/><file src="./resources/wood/images/cubemap/negx.png"/><file src="./resources/wood/images/cubemap/negx2.png"/><file src="./resources/wood/images/cubemap/negy.png"/><file src="./resources/wood/images/cubemap/negz.png"/><file src="./resources/wood/images/cubemap/posx.png"/><file src="./resources/wood/images/cubemap/posy.png"/><file src="./resources/wood/images/cubemap/posz.png"/><file src="./resources/wood/images/hairSpring.png"/><file src="./resources/wood/images/horwood-bg.png"/><file src="./resources/wood/images/index-tip.png"/><file src="./resources/wood/images/refer-ball.png"/><file src="./resources/wood/images/refer-squarewood.png"/><file src="./resources/wood/images/select.png"/><file src="./resources/wood/images/selectdis.png"/><file src="./resources/wood/images/selecton.png"/><file src="./resources/wood/images/slope.png"/><file src="./resources/wood/images/spring/100_1.png"/><file src="./resources/wood/images/spring/100.png"/><file src="./resources/wood/images/spring/125_1.png"/><file src="./resources/wood/images/spring/125.png"/><file src="./resources/wood/images/spring/150_1.png"/><file src="./resources/wood/images/spring/150.png"/><file src="./resources/wood/images/spring/175_1.png"/><file src="./resources/wood/images/spring/175.png"/><file src="./resources/wood/images/spring/200_1.png"/><file src="./resources/wood/images/spring/200.png"/><file src="./resources/wood/images/spring/50_1.png"/><file src="./resources/wood/images/spring/50.png"/><file src="./resources/wood/images/spring/75_1.png"/><file src="./resources/wood/images/spring/75.png"/><file src="./resources/wood/images/squarewood.png"/></resources></addon>

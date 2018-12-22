@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SpellPoem'>
+<properties>
+
+                <property name="question_id" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="question_url" displayName="题目内容" type="jsonFile" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="egret-particle" version="3.1.5" />
+    <javaScript  name="egret-eui" version="3.1.5" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[(function() {
+    var Presenter = BasicPresenter.extend({
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function() {
+            this._super();
+            this.model = [];
+            this.componentSetting = {};
+            //定义日志
+            this.logger.appendHandler(function(message, context) {
+                console.log(message);
+            }, {
+                level: Logger.DEBUG
+            });
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function(view, model) {
+            //将View的width和height设置为0
+            view.style['width'] = 0;
+            view.style['height'] = 0;
+            this.presenterModel = model;
+            var self = this;
+            self._getCompareContent(model)
+                .then(function() {
+                    //适配颗粒中定义的数据
+                    self._adaptedOriginData(model);
+                    self.logger.debug("SpellPoem model " + JSON.stringify(model));
+                    //构建组件配置
+                    self._configComponents();
+                    //加载启动器
+                    self.model.push({
+                        name: "Components",
+                        type: "json",
+                        text: JSON.stringify(self.componentSetting)
+                    });
+                })
+                .then(function() {
+                    return self.$requireComponent('ComponentLoader', self.model, $(view), {
+                        left: 0,
+                        top: 0,
+                        width: 0,
+                        height: 0
+                    });
+                });
+        },
+        destroy: function() {
+
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _adaptedOriginData: function(model) {
+            var self = this;
+            //添加题型所需要的数据
+            //this.model.push({
+            ///	"name": "questionType",
+            //	"type": "string",
+            //	"value": "SpellPoemRemake"
+            //});
+            this.model.push({
+                name: "SpellPoemRemake",
+                type: "string",
+                value: JSON.stringify([{
+                    "name": "questionId",
+                    "type": "string",
+                    "value": model.question_id
+                }, {
+                    name: "questionData",
+                    type: "json",
+                    text: JSON.stringify(self.spellPoemData)
+                }])
+            });
+            this.model.push({
+                name: "ObjectiveInteractionLayout",
+                type: "string",
+                value: JSON.stringify([{
+                    name: "questionType",
+                    type: "string",
+                    value: "SpellPoem"
+                }, {
+                    name: "specialTemplate",
+                    type: "string",
+                    value: "false"
+                }])
+            });
+            this.model.push({
+                name: "AnswerFlowController",
+                type: "string",
+                value: JSON.stringify([{
+                    name: "showResultOnSubmit",
+                    type: "string",
+                    value: "true"
+                }])
+            });
+            this.model.push({
+                name: "ObjectiveStatisticsRemake",
+                type: "string",
+                value: JSON.stringify([])
+            });
+            this.model.push({
+                name: 'ClassroomStatusController',
+                type: 'string',
+                value: JSON.stringify([{
+                    name: 'questionId',
+                    type: 'string',
+                    value: model.question_id
+                }])
+            });
+        },
+        _configComponents: function() {
+            //根据不同的运行场景定义需要加载的组件
+            if (this.isPPTShell || this.currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+                //如果是PPTShell或Web的场景
+                this.componentSetting = {
+                    controllers: [{
+                            presenter: "InteractionStateRecoverFilter"
+                        },
+                        {
+                            presenter: 'I18nFilter'
+                        },
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: []
+                        },
+                        {
+                            presenter: "ObjectiveStatController"
+                        }, {
+                            presenter: 'ClassroomStatusController'
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [{
+                            presenter: "SpellPoemRemake",
+                            renderTo: "CenterPanel"
+                        },
+                        {
+                            presenter: "ObjectiveStatisticsRemake",
+                            renderTo: "StatisticsPanel"
+                        }
+                    ]
+                };
+            } else if (this.currentRuntime == icCreatePlayer.RUNTIME.STUDENT_MOBILE) {
+                //如果是学生端Pad
+                this.componentSetting = {
+                    controllers: [{
+                            presenter: "InteractionStateRecoverFilter"
+                        },
+                        {
+                            presenter: 'I18nFilter'
+                        },
+                        {
+                            presenter: "AnswerFlowController",
+                            depends: []
+                        },
+                        {
+                            presenter: "AnswerProgressController"
+                        }
+                    ],
+                    layout: "ObjectiveInteractionLayout",
+                    components: [{
+                        presenter: "SpellPoemRemake",
+                        renderTo: "CenterPanel"
+                    }]
+                };
+            }
+        },
+        _getCompareContent: function(model) { //数据模型转换
+            var self = this;
+            var deffer = $.Deferred();
+
+            self.spellPoemData = {
+                title: model.question_title,
+                items: model.question_url
+            };
+            deffer.resolve();
+
+            return deffer;
+        }
+    }, "SpellPoem");
+
+    window.AddonSpellPoem_create = function() {
+        console.log('run AddonSpellPoem_create')
+        return new Presenter();
+    }
+})();
+
+]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

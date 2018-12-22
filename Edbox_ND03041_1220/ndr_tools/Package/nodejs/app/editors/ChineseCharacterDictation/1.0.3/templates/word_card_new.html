@@ -1,0 +1,106 @@
+<div class="ChineseCharacterDictation_pop_add">
+    <div class="ChineseCharacterDictation_pop_add_bg ">
+        <div class="ChineseCharacterDictation_pop_add_bg_papper ">
+            <!-- 弹窗内容区 -->
+            <div class="ChineseCharacterDictation_pop_add_main">
+
+                <div class="ChineseCharacterDictation_pop_add_main_bd">
+
+                    <!-- 添加字词 -->
+                    <div class="ChineseCharacterDictation_add_txt_area" ng-show="interactiveMode === INTERACTIVE_MODE.UNMATCHED">
+                        <div class="ChineseCharacterDictation_add_txt_tips">
+                            <span ng-bind="UnmatchedModeHandle.message"></span>
+                        </div>
+                        <div class="ChineseCharacterDictation_add_txt_input">
+                            <input type="text" maxlength="4" ng-model="wordAdding.text" ng-trim="false" ng-change="UnmatchedModeHandle.onTextChange();" ng-keyup="UnmatchedModeHandle.onKeyup($event);"/>
+                        </div>
+                    </div>
+                    <!-- /添加字词 -->
+
+                    <!-- 多音字选择 -->
+                    <div class="ChineseCharacterDictation_has_word_dyz" ng-show="interactiveMode === INTERACTIVE_MODE.SELECT">
+                        <div class="ChineseCharacterDictation_word_dyz_tips">
+                            <span ng-bind="SelectModeHandle.message"></span>
+                        </div>
+                        <div class="ChineseCd_tabs_area">
+                            <ul class="tabs_area_box" ng-click="SelectModeHandle.select($event)">
+                                <li class="tabs_area_list" ng-repeat="item in SelectModeHandle.words track by $index" ng-index="{{$index}}" ng-class="{'on': item.selected}">
+                                    <span class="ChineseCd_txt" ng-bind="item.pinyin[0]"></span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- 多音字选择 -->
+
+
+                    <!-- 匹配到字词没有释义 .ChineseCharacterDictation_has_word_txt_area 添加类名 no_explanation -->
+                    <div class="ChineseCharacterDictation_has_word_txt_area no_explanation" ng-show="interactiveMode === INTERACTIVE_MODE.MATCHED">
+                        <div class="ChineseCharacterDictation_add_txt_tips">
+                            <span ng-bind="MatchedModeHandle.message"></span>
+                        </div>
+                        <div class="ChineseCharacterDictation_add_txt_list">
+                            <ul class="ChineseCd_add_single_listBox">
+                                <li class="ChineseCd_add_single_w" ng-repeat="item in wordAdding.word track by $index">
+                                    <div class="ChineseCd_word_py">{{wordAdding.pinyin[$index]}}</div>
+                                    <div class="ChineseCd_word_pyw">{{item}}</div>
+                                </li>
+                                <!-- 发音按钮 不可点击添加类名 .click_disabled 发音中添加类名 .animation_go -->
+                                <a href="###" class="ChineseCharacterDictation_sound" ng-class="{'animation_go': MatchedModeHandle.isPlaying, 'click_disabled':!MatchedModeHandle.isCanPlay}" ng-click="MatchedModeHandle.play();">
+                                <span class="icons_horn">
+                                    <span class="icons_horn_w1"></span>
+                                    <span class="icons_horn_w2"></span>
+                                    <span class="icons_horn_w3"></span>
+                                </span>
+                                </a>
+                                <!-- 发音按钮 -->
+                            </ul>
+                        </div>
+                        <!-- 文字编辑的容器 显示编辑的时候 .ChineseCharacterDictation_add_txt_show 是 hide_dom -->
+                        <div class="ChineseCharacterDictation_add_txt_textarea" ng-show="MatchedModeHandle.isEditing">
+                            <textarea name="" id="" cols="30" rows="5" ng-model="wordAdding.definition"></textarea>
+                        </div>
+                        <!-- /文字编辑的容器 -->
+                        <!-- 文字显示的容器 显示文字的时候 .ChineseCharacterDictation_add_txt_textarea 是 hide_dom -->
+                        <div class="ChineseCharacterDictation_add_txt_show " ng-show="!MatchedModeHandle.isEditing">
+                            <span class="ChineseCd_txt js_definition_label" translate="dictation.label.word.definition"></span>
+                            <span class="ChineseCd_txt" ng-bind="wordAdding.definition"></span>
+                            <a href="###" class="ChineseCd_txt_edit" ng-click="MatchedModeHandle.doEdit();"></a>
+                        </div>
+                        <!-- /文字显示的容器 -->
+
+                    </div>
+                    <!-- /匹配到字词没有释义 -->
+
+                </div>
+                <div class="ChineseCharacterDictation_pop_main_ft">
+                    <!-- 按钮不可点击添加类名 .click_disabled -->
+                    <a class="ChineseCd_light_btn" href="javascript:;" ng-show="interactiveMode === INTERACTIVE_MODE.UNMATCHED && !UnmatchedModeHandle.isMatching"
+                       ng-class="{'click_disabled': !(wordAdding.text.length > 0)}" ng-click="UnmatchedModeHandle.match();">
+                        <span class="ChineseCd_light_btn_txt" translate="dictation.btn.match"></span>
+                    </a>
+                    <a class="ChineseCd_light_btn click_disabled" href="javascript:;" ng-show="interactiveMode === INTERACTIVE_MODE.UNMATCHED && UnmatchedModeHandle.isMatching">
+                        <span class="ChineseCd_light_btn_txt" translate="dictation.btn.matching"></span>
+                    </a>
+                    <a class="ChineseCd_light_btn" href="javascript:;" ng-show="interactiveMode === INTERACTIVE_MODE.MATCHED"
+                       ng-click="MatchedModeHandle.save();">
+                        <span class="ChineseCd_light_btn_txt" translate="dictation.btn.save"></span>
+                    </a>
+                    <a class="ChineseCd_light_btn" href="javascript:;"  ng-show="interactiveMode === INTERACTIVE_MODE.SELECT"
+                       ng-class="{'click_disabled': !SelectModeHandle.wordSelected}" ng-click="SelectModeHandle.confirm();">
+                        <span class="ChineseCd_light_btn_txt" translate="dictation.btn.confirm"></span>
+                    </a>
+                </div>
+            </div>
+            <!-- /弹窗内容区 -->
+        </div>
+        <!-- 右上关闭按钮 -->
+        <a href="###" class="stati_com_btn_close" ng-click="exit();"></a>
+        <!-- /右上关闭按钮 -->
+    </div>
+
+    <!-- 关闭提示弹窗 -->
+    <!-- /关闭提示弹窗 -->
+    <audio class="hide_dom" style="display: none;width:0;height:0" preload="auto"></audio>
+</div>
+<confirm-popup ng-show="QuitConfirmPopup.isVisible" message="QuitConfirmPopup.message"
+               btn-ok-name="QuitConfirmPopup.okName" btn-cancel-name="QuitConfirmPopup.cancelName"
+               btn-ok-handle="QuitConfirmPopup.ok" btn-cancel-handle="QuitConfirmPopup.cancel"></confirm-popup>

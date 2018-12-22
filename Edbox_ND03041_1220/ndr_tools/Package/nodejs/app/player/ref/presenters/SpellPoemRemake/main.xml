@@ -1,0 +1,2684 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='SpellPoemRemake'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="egret-particle" version="3.1.5" />
+    <javaScript  name="egret-eui" version="3.1.5" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[@charset "UTF-8";.addon_SpellPoem img,.spellpoem_css img{border:none;text-decoration:none;display:block}.addon_SpellPoem .spellpoem_main,.spellpoem_css .spellpoem_main{width:100%;min-height:600px;min-width:800px;background:url(resources/assets/bg/result_bg.jpg) no-repeat;background-size:100% 100%;border:0 solid #0A8DBD;position:relative}.addon_SpellPoem .spellpoem_main .spellpoem_title_main,.spellpoem_css .spellpoem_main .spellpoem_title_main{width:500px;height:90px;position:relative;border:0 solid #f0e;margin:0 auto;left:0;top:0}.addon_SpellPoem .spellpoem_main .spellpoem_title_main .spellpoem_title,.spellpoem_css .spellpoem_main .spellpoem_title_main .spellpoem_title{width:500px;height:60px;margin-top:30px;padding:0;position:absolute;border:0 solid #dfd}.addon_SpellPoem .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_left img,.spellpoem_css .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_left img{width:80px;height:30px;float:left;margin-top:10px;border:0 solid #d14}.addon_SpellPoem .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_context,.spellpoem_css .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_context{width:300px;height:50px;float:left;background:url(resources/assets/bg/title_bg.png);background-size:100% 100%;border:0 solid #d14;margin-left:20px;text-align:center;font-family:"微软雅黑","宋体",Tahoma,Arial,Helvetica,STHeiti;color:#f1cfb3;vertical-align:middle}.addon_SpellPoem .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_right img,.spellpoem_css .spellpoem_main .spellpoem_title_main .spellpoem_title .spellpoem_right img{width:80px;height:30px;float:right;margin-top:10px;border:0 solid #d14}.addon_SpellPoem .spellpoem_main .spellpoem_info_main,.spellpoem_css .spellpoem_main .spellpoem_info_main{width:800px;position:relative;border:0 solid #f00f00;margin:0 auto}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_info,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_info{float:left;position:relative;border:0 solid #f00f00;padding-top:20px;padding-bottom:20px;background:url(resources/assets/ui/result_poesy_border.png);background-size:100% 100%;box-sizing:content-box}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_info ul,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_info ul{margin:0;padding:0}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_info ul li,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_info ul li{float:left;text-align:left;font-family:"宋体",Tahoma,Arial,Helvetica,STHeiti;color:#424349;list-style-type:none;margin-bottom:10px;margin-top:10px;font-weight:700;height:35px;line-height:35px;letter-spacing:20px;font-size:40px;-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box;border:0 solid #f0e}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_info .spellpoem_text,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_info .spellpoem_text{padding-left:60px;padding-right:50px}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_info .spellpoem_line,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_info .spellpoem_line{float:left;height:2px}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_author,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_author{width:30px;float:left;position:relative;bottom:0;top:0;font-family:"华文行楷","宋体",Tahoma,Arial,Helvetica,STHeiti;color:#f1cfb3;font-size:24px;border:0 solid #00aba9}.addon_SpellPoem .spellpoem_main .spellpoem_info_main .spellpoem_author .spellpoem_author_text,.spellpoem_css .spellpoem_main .spellpoem_info_main .spellpoem_author .spellpoem_author_text{width:24px;background:url(resources/assets/bg/author_bg.png);background-size:100% 100%;font-family:"华文行楷","宋体",Tahoma,Arial,Helvetica,STHeiti;position:absolute;bottom:10px;left:10px}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div style="margin: auto;width: 100%;height: 100%" class="egret-player" data-entry-class="GameSpellPoem.Main" data-orientation="auto" data-scale-mode="showAll" data-resolution-mode="retina" data-frame-rate="30" data-content-width="1920" data-content-height="1200" data-show-paint-rect="false" data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-log-filter=""></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[(function () {
+
+
+    var hasIncludeCNChar = function (str) {
+        return /[\u4E00-\u9FA5\uF900-\uFA2D]/.test(str);
+    };
+
+
+    var Presenter = BasicPresenter.extend({
+        metaInfo: {
+            name: "SpellPoemRemake",
+            type: PresenterType.PRESENTER_COMPONENT,
+            subtype: SubPresenterType.INTERACTION_QUESTION
+        },
+        /**
+         * Presenter的初始化方法
+         * @private
+         */
+        $init: function () {
+            this._super();
+            this.viewModel = {};
+            this.correctAnswer = [];
+            this.$view = this.model = null;
+            //统计用
+            this.statisticClass = "E";
+            this.isStatics = false;
+            this.btnState = SUBMIT_BUTTON_STATE_CODE.CAN_SUBMIT;
+            this.isRecovering = false;
+
+            //定义日志
+            this.logger.appendHandler(function (message, context) {
+                console.log(message);
+            }, {
+                level: Logger.DEBUG
+            });
+
+            //定义多国语言
+            this.languageSet = {};
+
+            this.runtimeModel = {};
+            this.provideData = {}; // 需要提交的数据
+            this.examStartTime = getCurrentTime();
+            this.gameStateData = {
+                time_stamp: "", // 开始时间戳
+                model: [], //  string,模板
+                path: [], // 已完成的路径
+                isComplete: false, // 是否完成作答
+                game_use_time: "" // 游戏用时间
+            };
+        },
+        getService: function () {
+            var self = this;
+            return self._service_ = new SpellPoemRemakeService(self);
+        },
+        /****以下开始为icPlayer的生命周期方法*****/
+        run: function (view, model) {
+            var self = this;
+            self.$view = $(view);
+            self.model = model;
+            console.log(model)
+            this.runtimeModel = this.runtimeModel || {};
+            this.runtimeModel.model = model;
+            //初始化Presenter
+            self._initPresenter();
+            self._bindEvent();
+        },
+        destroy: function () {
+            this.$removeEventListener();
+            this._unbindEvent();
+            this.notifyAnswerOver();
+            this.viewModel = null;
+        },
+        /****以下开始为Presenter的私有方法*****/
+        _bindEvent: function () {},
+        _unbindEvent: function () {},
+        //Presenter的初始化
+        _initPresenter: function () {
+            //初始化ViewModel
+            var self = this;
+            self.screenShotDef = $.Deferred();
+            GameSpellPoem.Main.setRuntime(self);
+            GameSpellPoem.Main.setLockState(false);
+            // this.runtimeModel.state = this.playerController && this.playerController.getState() || {};
+        },
+        afterRender: function () {
+            egret.reUpdate({
+                renderMode: "webgl"
+            });
+            egret.runEgret({
+                renderMode: "webgl"
+            });
+            return this.screenShotDef.promise();
+        },
+        getTeacherCurrentTime: function () {
+            return getCurrentTime();
+        },
+        getPoemData: function () {
+            return this.runtimeModel.model.questionData.items;
+        },
+        setBasePath: function (path) {
+            this.basePath = path;
+        },
+        setRecoverData: function (data) {
+            var self = this;
+            if (!this.gameStateData)
+                this.gameStateData = {};
+            if (data) {
+                if (!this.gameStateData.time_stamp && this.examStartTime) {
+                    this.gameStateData.time_stamp = this.examStartTime;
+                }
+                if (data.model) {
+                    this.gameStateData.model = data.model;
+                }
+                if (data.hasOwnProperty('path')) {
+                    this.gameStateData.path = data.path;
+                }
+                if (data.hasOwnProperty('isComplete')) {
+                    this.gameStateData.isComplete = data.isComplete;
+                }
+                if (data.hasOwnProperty('game_use_time')) {
+                    this.gameStateData.game_use_time = data.game_use_time;
+                }
+                self.$dispatchEvent($PresenterEvent['InteractionStateRecoverFilter'].PRESENTER_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT);
+            }
+        },
+        getRecoverData: function () {
+            return this.gameStateData;
+        },
+        setLocationProperties: function (properties) {
+            this.languageSet = properties;
+        },
+        getLanguageSet: function () {
+            return this.languageSet;
+        },
+        setExamTime: function () {
+            if (this.gameStateData.time_stamp) {
+                this.gameStateData.time_stamp = getCurrentTime();
+            } else {
+                this.examStartTime = getCurrentTime();
+            }
+
+        },
+        setStartAnswer: function (isStart) {
+            var self = this;
+            if (false) {
+                console.log("学生已经开始答题");
+                // var data = {
+                //  'source': this.runtimeModel.model.ID,
+                //  'action': 'submit'
+                //};
+                // this.runtimeModel.eventBus.sendEvent('AnswerSubmitter', data);
+                that.presenter.$dispatchEvent($PresenterEvent['AnswerFlowController'].QUESTION_STATE_CHANGE,
+                    PresenterEventType.IC_PLAYER_EVENT, {
+                        canSubmit: true
+                    });
+                console.log("send event name:AnswerSubmitter  action:submit");
+            }
+        },
+        provideAnswer: function (isComplete, useTime) {
+            this.provideData.isComplete = isComplete;
+            this.provideData.useTime = useTime;
+
+            // 发送提交答案事件
+            // var data = {
+            //  'source': this.runtimeModel.model.ID,
+            //  'action': 'finish'
+            // };
+            //this.runtimeModel.eventBus.sendEvent('AnswerSubmitter', data);
+            var self = this;
+            self.$dispatchEvent($PresenterEvent['AnswerFlowController'].AUTO_SEND_ANSWER,
+                PresenterEventType.IC_PLAYER_EVENT, {
+                    question_id: self.model.questionId,
+                    question_type: 'SpellPoem'
+                });
+        },
+        onSubmitAnswer: function (useTime, isComplete) {
+            if (this.isStudent) {
+                // 学生提交事件
+                this.provideAnswer(isComplete, useTime);
+            }
+        },
+        getPoetryData: function () {
+            console.log("start get poetry data!");
+            var temp = this.getPoemData(),
+                poetryInfo;
+            if ($.isArray(temp)) {
+                poetryInfo = $.extend(true, [], temp);
+            } else {
+                poetryInfo = $.extend(true, {}, temp);
+            }
+            if (!poetryInfo) {
+                console.log("runtimeModel.model.question_url data is null!!!");
+                return null;
+            }
+            console.log("start create poetry data!");
+            var poetryData = {};
+            var sentences = this._getDisplaySentenceArray(poetryInfo.content.sentences);
+            poetryData.poetry = poetryInfo.content;
+            poetryData.poetry.title = poetryInfo.content.title;
+            poetryData.poetry.author = poetryInfo.content.author;
+            poetryData.poetry.sentences = sentences;
+            return poetryData;
+        },
+        _getDisplaySentenceArray: function (sentencesData) {
+            if (sentencesData) {
+                var sentences = new Array();
+                var length = sentencesData.length;
+                for (var i = 0; i < length; i++) {
+                    if (sentencesData[i].words.length == 0) {
+                        continue;
+                    }
+                    sentences.push(sentencesData[i].words);
+                }
+                return sentences;
+            } else {
+                return null;
+            }
+        },
+        notifyAnswerOver: function () {
+            if (window.egret_stages && window.egret_stages.length > 0 && window.egret_stages[0]) {
+                var stage = window.egret_stages[0];
+                stage.dispatchEventWith("stop_game", false, {});
+            }
+        },
+        notifyProvideAnswer: function () {
+            if (window.egret_stages && window.egret_stages.length > 0 && window.egret_stages[0]) {
+                var stage = window.egret_stages[0];
+                stage.dispatchEventWith("notify_provide_answer", false, {});
+            }
+        }
+    }, "SpellPoemRemake");
+
+
+    /**
+     * 获取当前时间
+     * @returns {Number}
+     */
+    function getCurrentTime() {
+        var locTime = 0;
+        if (window.ClassroomUtils && (typeof ClassroomUtils != 'undefined') && ClassroomUtils.getMasterSystemTime) {
+            locTime = ClassroomUtils.getMasterSystemTime();
+            locTime = locTime == 0 ? new Date() * 1 : (locTime * 1000);
+        } else {
+            locTime = new Date() * 1;
+        }
+        return locTime;
+    };
+
+
+    window.AddonSpellPoemRemake_create = function () {
+        console.log('AddonSpellPoemRemake_create run');
+        return new Presenter();
+    }
+})();
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var GameSpellPoem;
+(function (GameSpellPoem) {
+    var Main = (function (_super) {
+        __extends(Main, _super);
+        function Main() {
+            var _this = _super.call(this) || this;
+            SpellPoem.DataCenter.initGameData(Main.presenter);
+            _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+            _this.addEventListener(SpellPoem.EventKey.SHOW_RESULT_EVENT, _this.switchResultScene, _this);
+            return _this;
+        }
+        Main.prototype.onAddToStage = function () {
+            var _this = this;
+            this.stage.addEventListener(SpellPoem.EventKey.STOP_GAME_EVENT, this.stopGame, this);
+            this.stage.addEventListener(SpellPoem.EventKey.RESTART_EVENT, this.replay, this);
+            this.stage.once(SpellPoem.EventKey.NOTIFY_PROVIDE_ANSWER, this.notifyProvideAnswer, this, false);
+            this.stage.once(SpellPoem.EventKey.START_SET_STATE, this.startRecover, this);
+            if (SpellPoem.DataCenter.isRecovering) {
+                var data = SpellPoem.DataCenter.recoverData;
+                var now_time = SpellPoem.DataCenter.presenter.getTeacherCurrentTime();
+                var tempTime = SpellPoem.DataCenter.timerContenr;
+                var tempTotal = parseInt(tempTime.time_minute) * 60 + parseInt(tempTime.time_second);
+                if (data && data.isComplete) {
+                    console.log("isComplete");
+                    this.changeScene(data.isComplete, data.game_use_time);
+                }
+                else if (data && (now_time - data.time_stamp) / 1000 >= tempTotal) {
+                    console.log("out of time");
+                    this.changeScene(false, tempTotal);
+                }
+                else {
+                    console.log("recover time and path");
+                    this.loader = new Loader();
+                    this.loader.loadGroup('preloaded', function () {
+                        _this.playGame(Math.floor(tempTotal - (now_time - data.time_stamp) / 1000));
+                    }, true);
+                }
+            }
+            else {
+                this.mainScene = new SpellPoem.MainScene();
+                this.loader = new Loader();
+                this.loader.loadGroup('preloaded', function () {
+                    _this.playGame();
+                }, true);
+            }
+        };
+        Main.prototype.playGame = function (useTime) {
+            if (this.stage.contains(this.mainScene)) {
+                console.log("have this.mainScene");
+                this.mainScene.destroy();
+                this.removeChild(this.mainScene);
+                this.mainScene = null;
+            }
+            this.mainScene = new SpellPoem.MainScene();
+            if (useTime) {
+                this.mainScene.init(useTime);
+            }
+            else {
+                this.mainScene.init();
+            }
+            this.addChild(this.mainScene);
+        };
+        Main.prototype.changeScene = function (isSuccess, useTime) {
+            var _this = this;
+            this.resultScene = new SpellPoem.ResultScene(isSuccess, useTime);
+            this.loader = new Loader();
+            this.loader.loadGroup('preloaded', function () {
+                _this.resultScene.init();
+                _this.addChild(_this.resultScene);
+            }, true);
+        };
+        Main.prototype.switchResultScene = function (event) {
+            if (this.stage && this.stage.contains(this.mainScene)) {
+                console.log("start delete mainscene switchReultScene");
+                this.mainScene.destroy();
+                this.removeChild(this.mainScene);
+                this.mainScene = null;
+            }
+            console.log(event.type);
+            var isSuccess = event.data.success;
+            var useTime = event.data.use_time;
+            this.resultScene = new SpellPoem.ResultScene(isSuccess, useTime);
+            this.resultScene.init();
+            this.addChild(this.resultScene);
+        };
+        Main.prototype.replay = function () {
+            if (this.stage && this.stage.contains(this.resultScene)) {
+                this.resultScene.destroy();
+                this.removeChild(this.resultScene);
+                this.resultScene = null;
+            }
+            SpellPoem.DataCenter.isForceAnswer = false;
+            SpellPoem.DataCenter.isRecovering = false;
+            if (SpellPoem.DataCenter.presenter.isPPTShell) {
+                SpellPoem.DataCenter.presenter.setExamTime();
+                SpellPoem.DataCenter.setRecoverData({ "isComplete": false, "path": [] });
+            }
+            this.playGame();
+        };
+        Main.prototype.stopGame = function () {
+            egret.stopEgret();
+            console.log("start delete object");
+            this.removeEventListener(SpellPoem.EventKey.SHOW_RESULT_EVENT, this.switchResultScene, this);
+            this.stage.removeEventListener(SpellPoem.EventKey.STOP_GAME_EVENT, this.stopGame, this);
+            this.stage.removeEventListener(SpellPoem.EventKey.RESTART_EVENT, this.replay, this);
+            egret.Tween.removeAllTweens();
+            if (this.stage && this.stage.contains(this.mainScene)) {
+                console.log("start delete mainscene");
+                this.mainScene.destroy();
+                this.removeChild(this.mainScene);
+                this.mainScene = null;
+            }
+            if (this.stage && this.stage.contains(this.resultScene)) {
+                console.log("start delete resultscene");
+                this.resultScene.destroy();
+                this.removeChild(this.resultScene);
+                this.resultScene = null;
+            }
+            SpellPoem.DataCenter.destroy();
+            var isDestroy = RES.destroyRes('preloaded');
+            if (isDestroy)
+                console.log('destroy resource success');
+            this.parent.removeChildren();
+            if (this.loader) {
+                this.loader.destroy();
+                this.loader = null;
+            }
+        };
+        Main.prototype.notifyProvideAnswer = function () {
+            SpellPoem.DataCenter.isForceAnswer = true;
+        };
+        Main.setRuntime = function (presenter) {
+            this.presenter = presenter;
+        };
+        Main.setForceAnswer = function () {
+            SpellPoem.DataCenter.isForceAnswer = false;
+        };
+        Main.setLockState = function (state) {
+            SpellPoem.DataCenter.isLock = state;
+            if (state) {
+                var stage = window.egret_stages[0];
+                stage && stage.dispatchEventWith("stop_time", false, {});
+                SpellPoem.DataCenter.isRecovering = false;
+            }
+        };
+        Main.prototype.startRecover = function () {
+            var _this = this;
+            SpellPoem.DataCenter.initGameData(Main.presenter);
+            egret.Tween.removeAllTweens();
+            if (this.stage && this.stage.contains(this.mainScene)) {
+                console.log("start delete mainscene");
+                this.mainScene.destroy();
+                this.removeChild(this.mainScene);
+                this.mainScene = null;
+            }
+            if (this.stage && this.stage.contains(this.resultScene)) {
+                console.log("start delete resultscene");
+                this.resultScene.destroy();
+                this.removeChild(this.resultScene);
+                this.resultScene = null;
+            }
+            var isDestroy = RES.destroyRes('preloaded');
+            if (isDestroy)
+                console.log('destroy resource success');
+            if (this.loader) {
+                this.loader.destroy();
+                this.loader = null;
+            }
+            if (SpellPoem.DataCenter.isRecovering) {
+                var data = SpellPoem.DataCenter.recoverData;
+                var now_time = SpellPoem.DataCenter.presenter.getTeacherCurrentTime();
+                var tempTime = SpellPoem.DataCenter.timerContenr;
+                var tempTotal = parseInt(tempTime.time_minute) * 60 + parseInt(tempTime.time_second);
+                if (data && data.isComplete) {
+                    console.log("isComplete");
+                    this.changeScene(data.isComplete, data.game_use_time);
+                }
+                else if (tempTime.timer_type == 'countdown') {
+                    if (data && (now_time - data.time_stamp) / 1000 >= tempTotal) {
+                        console.log("out of time");
+                        this.changeScene(false, tempTotal);
+                    }
+                    else {
+                        console.log("recover time and path");
+                        this.loader = new Loader();
+                        this.loader.loadGroup('preloaded', function () {
+                            var use_time = tempTotal;
+                            if (data && data.path && data.path.length > 0) {
+                                use_time = Math.floor(tempTotal - (now_time - data.time_stamp) / 1000);
+                            }
+                            else {
+                                use_time = tempTotal;
+                            }
+                            _this.playGame(use_time);
+                        }, true);
+                    }
+                }
+                else {
+                    this.loader = new Loader();
+                    this.loader.loadGroup('preloaded', function () {
+                        var use_time = Math.floor((now_time - data.time_stamp) / 1000);
+                        if (data && data.path && data.path.length > 0) {
+                            use_time = Math.floor((now_time - data.time_stamp) / 1000);
+                        }
+                        else {
+                            use_time = 0;
+                        }
+                        _this.playGame(use_time);
+                    }, true);
+                }
+            }
+            else {
+                this.mainScene = new SpellPoem.MainScene();
+                this.loader = new Loader();
+                this.loader.loadGroup('preloaded', function () {
+                    _this.playGame();
+                }, true);
+            }
+        };
+        return Main;
+    }(egret.DisplayObjectContainer));
+    GameSpellPoem.Main = Main;
+    var Loader = (function () {
+        function Loader() {
+            this.lastLoadGroupName = '';
+            this.isConfigComplete = false;
+            this.groupNames = [];
+            this.priority = 0;
+            RES.addEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
+            RES.addEventListener(RES.ResourceEvent.CONFIG_LOAD_ERROR, this.onConfigError, this);
+            var basePath = SpellPoem.DataCenter.presenter.basePath;
+            RES.loadConfig(basePath + 'resources/resource.json', basePath + 'resources/');
+        }
+        Loader.prototype.loadGroup = function (groupName, cbResourceLoadComplete, lastLoadGroupName, cbResourceProgress) {
+            if (lastLoadGroupName)
+                this.lastLoadGroupName = groupName;
+            this.cbResourceProgress = cbResourceProgress;
+            this.cbResourceLoadComplete = cbResourceLoadComplete;
+            if (this.isConfigComplete) {
+                RES.loadGroup(groupName, this.priority++);
+            }
+            else {
+                this.groupNames.push(groupName);
+            }
+        };
+        Loader.prototype.onConfigComplete = function (event) {
+            this.isConfigComplete = true;
+            RES.removeEventListener(RES.ResourceEvent.CONFIG_COMPLETE, this.onConfigComplete, this);
+            RES.removeEventListener(RES.ResourceEvent.CONFIG_LOAD_ERROR, this.onConfigError, this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
+            RES.addEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+            while (this.groupNames && this.groupNames.length) {
+                this.loadGroup(this.groupNames[0], this.cbResourceLoadComplete, false, this.cbResourceProgress);
+                this.groupNames.shift();
+            }
+        };
+        Loader.prototype.onConfigError = function (event) {
+            RES.removeEventListener(RES.ResourceEvent.CONFIG_LOAD_ERROR, this.onConfigError, this);
+            console.log("load config error");
+            console.log("event", event);
+        };
+        Loader.prototype.onResourceLoadComplete = function (event) {
+            var cbResourceLoadComplete = this.cbResourceLoadComplete;
+            if (event.groupName === this.lastLoadGroupName) {
+                RES.removeEventListener(RES.ResourceEvent.GROUP_COMPLETE, this.onResourceLoadComplete, this);
+                RES.removeEventListener(RES.ResourceEvent.GROUP_LOAD_ERROR, this.onResourceLoadError, this);
+                RES.removeEventListener(RES.ResourceEvent.GROUP_PROGRESS, this.onResourceProgress, this);
+                if (cbResourceLoadComplete) {
+                    this.cbResourceLoadComplete = undefined;
+                    cbResourceLoadComplete();
+                }
+            }
+        };
+        Loader.prototype.onResourceLoadError = function (event) {
+            console.warn('Group:' + event.groupName + 'has failed to load');
+            this.onResourceLoadComplete(event);
+        };
+        Loader.prototype.onResourceProgress = function (event) {
+        };
+        Loader.prototype.destroy = function () {
+            this.lastLoadGroupName.length = 0;
+            this.lastLoadGroupName = null;
+            this.cbResourceProgress = null;
+            this.groupNames.length = 0;
+            this.groupNames = null;
+        };
+        return Loader;
+    }());
+    var SpellPoem;
+    (function (SpellPoem) {
+        var EventKey = (function () {
+            function EventKey() {
+            }
+            return EventKey;
+        }());
+        EventKey.SHOW_RESULT_EVENT = "show_result_event";
+        EventKey.CHARACTER_TOUCH_EVENT = "character_touch_event";
+        EventKey.RESTART_EVENT = "restart_event";
+        EventKey.TIME_END_EVENT = "time_panel_end";
+        EventKey.TITLE_ANIM_END_EVENT = "title_anim_end_event";
+        EventKey.CLOSE_SHOW_ANSWER_TIME_EVENT = "close_window_event";
+        EventKey.STOP_GAME_EVENT = "stop_game";
+        EventKey.NOTIFY_PROVIDE_ANSWER = "notify_provide_answer";
+        EventKey.START_SET_STATE = "start_set_state";
+        SpellPoem.EventKey = EventKey;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var MainScene = (function (_super) {
+            __extends(MainScene, _super);
+            function MainScene() {
+                var _this = _super.call(this) || this;
+                _this.characters = [];
+                _this.currentCharIndex = -1;
+                _this.isSuccess = false;
+                _this.usedTime = 0;
+                _this.path = [];
+                _this.endAnimation = false;
+                _this.thumbnail = false;
+                if (window.icCreatePlayer.request("thumbnail") + "" == "true") {
+                    _this.thumbnail = true;
+                }
+                else {
+                    _this.thumbnail = false;
+                }
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                _this.addEventListener(SpellPoem.EventKey.CHARACTER_TOUCH_EVENT, _this.onCharacterTouch, _this);
+                if (!_this.thumbnail)
+                    _this.once(SpellPoem.EventKey.TITLE_ANIM_END_EVENT, _this.onTitleAnimEnd, _this);
+                return _this;
+            }
+            MainScene.prototype.onAddToStage = function () {
+                this.isSuccess = false;
+                this.templet = SpellPoem.DataCenter.getGameTemplet();
+                this.stage.once(SpellPoem.EventKey.TIME_END_EVENT, this.onTimeEnd, this, false);
+                this.stage.once(SpellPoem.EventKey.NOTIFY_PROVIDE_ANSWER, this.notifyProvideAnswer, this, false);
+                this.stage.once('stop_time', this.stopTime, this, false);
+                this.addChild(this.background);
+                this.addChild(this.timePanel);
+                this.timePanel.x = 100;
+                this.timePanel.y = 50;
+                this.poetryBg.x = (this.stage.width - this.poetryBg.width) / 2;
+                this.poetryBg.y = (this.stage.height - this.poetryBg.height) / 1.22;
+                this.addChild(this.poetryBg);
+                this.addChild(this.title);
+                this.addChild(this.snowFlake);
+                this.snowFlake.startDot();
+                if (this.thumbnail)
+                    this.onTitleAnimEnd();
+                var rePath = SpellPoem.DataCenter.recoverData && SpellPoem.DataCenter.recoverData.path || [];
+                if (SpellPoem.DataCenter.isRecovering && rePath.length > 0) {
+                    this.timePanel.start();
+                }
+            };
+            MainScene.prototype.init = function (use_time) {
+                AnchorUtil.init();
+                var tempTime = SpellPoem.DataCenter.timerContenr;
+                var total = parseInt(tempTime.time_minute) * 60 + parseInt(tempTime.time_second);
+                console.log("recover use_time" + use_time);
+                var tempTotal;
+                if (use_time)
+                    tempTotal = use_time;
+                else
+                    tempTotal = total;
+                this.left = total - tempTotal;
+                this.left = this.left > 0 ? this.left : 0;
+                console.log("tempTotal" + tempTime.time_minute);
+                this.timePanel = new SpellPoem.TimePanel(tempTotal, tempTime.timer_type);
+                this.background = GameUtil.createBitmapByName("bg_jpg");
+                this.title = new SpellPoem.Title(SpellPoem.DataCenter.poetryData.poetry.title, !this.thumbnail);
+                this.poetryBg = GameUtil.createBitmapByName("poem_bg_png");
+                this.poetryBg.height = 950;
+                this.poetryBg.width = 1800;
+                this.linkLine = new egret.Shape();
+                this.linkLine.graphics.lineStyle(10, 0xE1BE55, 0.5);
+                this.snowFlake = new SpellPoem.SnowFlake();
+            };
+            MainScene.prototype.onTitleAnimEnd = function () {
+                var paddingWidth = (3200 - 200 * this.templet.col_count) / 3;
+                console.log(paddingWidth);
+                var paddingHeight = (3200 - 200 * this.templet.row_count) / 6;
+                console.log(paddingHeight);
+                var charWidth = Math.ceil((this.poetryBg.width - paddingWidth) / this.templet.col_count);
+                var charHeight = Math.ceil((this.poetryBg.height - paddingHeight) / this.templet.row_count);
+                var startX = this.poetryBg.x + paddingWidth / 2 + charWidth / 2;
+                var startY = this.poetryBg.y + paddingHeight / 2 + charHeight / 2 - 10;
+                var fontSize = (20 * charHeight + 2800) / 78;
+                var locaton = 0;
+                var poetry = SpellPoem.DataCenter.poetryData.poetry.sentences.join('').replace(new RegExp(" ", "g"), "");
+                for (var i = 0; i < this.templet.row_count; i++) {
+                    var char;
+                    for (var j = 0; j < this.templet.col_count; j++) {
+                        var index = this.templet.sequence[i * this.templet.col_count + j] - 1;
+                        if (index < poetry.length) {
+                            char = new SpellPoem.Character(poetry[index], charWidth, charHeight, fontSize, index % this.templet.col_count == 0);
+                        }
+                        else {
+                            char = new SpellPoem.Character(" ", charWidth, charHeight, fontSize, index % this.templet.col_count == 0);
+                        }
+                        char.width = charWidth;
+                        char.height = charHeight;
+                        char.x = startX + charWidth * j;
+                        char.y = startY + charHeight * i;
+                        if (index == 0) {
+                            this.startPointX = { x: i, value: char.x, width: charWidth };
+                            this.startPointY = { y: j, value: char.y, width: charHeight };
+                        }
+                        char.setCharacterIndex(index);
+                        char.setCharacterLocation(locaton++);
+                        this.characters && this.characters.push(char);
+                    }
+                }
+                for (var i = 0, len = this.characters.length; i < len; i++) {
+                    this.addChild(this.characters[i]);
+                }
+                if (this.thumbnail) {
+                    for (var i = 0, len = this.characters.length; i < len; i++) {
+                        this.characters[i].alpha = 1;
+                    }
+                    SpellPoem.DataCenter.presenter.screenShotDef.resolve();
+                    return;
+                }
+                SpellPoem.DataCenter.presenter.screenShotDef.resolve();
+                this.timer = new egret.Timer(100, this.characters.length + 1);
+                var count = 0, xCount = 0, yCount = 0;
+                function timeRun() {
+                    if (!this.characters) {
+                        return;
+                    }
+                    this.characters[count].enter();
+                    count = xCount + this.templet.col_count * yCount;
+                    yCount++;
+                    if (yCount == this.templet.row_count) {
+                        yCount = 0;
+                        xCount++;
+                    }
+                }
+                this.timer.addEventListener(egret.TimerEvent.TIMER, timeRun, this);
+                function timeComplete() {
+                    var _this = this;
+                    this.timer.removeEventListener(egret.TimerEvent.TIMER_COMPLETE, timeComplete, this);
+                    console.log("Timer Complete");
+                    if (SpellPoem.DataCenter.presenter.isStudent) {
+                        this.timePanel.start();
+                    }
+                    this.characters = this.characters || [];
+                    for (var index = 0; index < this.characters.length; index++) {
+                        if (this.characters[index].getText() != " ") {
+                            this.characters[index].setLabelTouchEnable(true);
+                        }
+                    }
+                    if (SpellPoem.DataCenter.isRecovering && !SpellPoem.DataCenter.isForceAnswer) {
+                        var rePath = SpellPoem.DataCenter.recoverData.path;
+                        var len = 0;
+                        if (rePath) {
+                            len = rePath.length;
+                            for (var i = 0; i < len; i++) {
+                                this.path.push(rePath[i]);
+                            }
+                        }
+                        console.log("rePathlen:" + len);
+                        for (var i = 0; i < len; i++) {
+                            if (SpellPoem.DataCenter.isShowLine)
+                                this.drawLinkLine(rePath[i].point);
+                            var index = rePath[i].index;
+                            this.characters[index].setLabelTouchEnable(false);
+                            this.characters[index].recoverRight();
+                            this.currentCharIndex++;
+                        }
+                        if (len == 0) {
+                            this.setStartPoint();
+                        }
+                    }
+                    else {
+                        this.setStartPoint();
+                    }
+                    this.linkLine && this.addChildAt(this.linkLine, 2);
+                    this.endAnimation = true;
+                    if (SpellPoem.DataCenter.isForceAnswer) {
+                        var eventData = {
+                            success: this.isSuccess,
+                            use_time: this.usedTime + this.left,
+                        };
+                        var id = egret.setTimeout(function () {
+                            _this.dispatchEventWith(SpellPoem.EventKey.SHOW_RESULT_EVENT, true, eventData);
+                            egret.clearTimeout(id);
+                        }, this, 500, "change scene");
+                    }
+                }
+                this.timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, timeComplete, this);
+                this.timer.start();
+            };
+            MainScene.prototype.setStartPoint = function () {
+                if (!this.startPointX && !this.startPointY) {
+                    console.log("startPointX or startPointY  is null");
+                    return;
+                }
+                var direction = "";
+                if (this.startPointY.y == 0) {
+                    direction = "left";
+                    this.remindStart = new SpellPoem.StartPointPanel(direction);
+                    this.addChild(this.remindStart);
+                    this.remindStart.x = this.startPointX.value - this.remindStart.width - 41;
+                    this.remindStart.y = this.startPointY.value - 26;
+                }
+                else if (this.startPointX.x == 0) {
+                    direction = "top";
+                    this.remindStart = new SpellPoem.StartPointPanel(direction);
+                    this.addChild(this.remindStart);
+                    this.remindStart.x = this.startPointX.value - 26;
+                    this.remindStart.y = this.startPointY.value - this.remindStart.height - 41;
+                }
+                else if (this.startPointY.y == (this.templet.col_count - 1)) {
+                    direction = "right";
+                    this.remindStart = new SpellPoem.StartPointPanel(direction);
+                    this.addChild(this.remindStart);
+                    this.remindStart.x = this.startPointX.value + 41;
+                    this.remindStart.y = this.startPointY.value - 26;
+                }
+                else if (this.startPointX.x == (this.templet.row_count - 1)) {
+                    direction = "bottom";
+                    this.remindStart = new SpellPoem.StartPointPanel(direction);
+                    this.addChild(this.remindStart);
+                    this.remindStart.x = this.startPointX.value - 26;
+                    this.remindStart.y = this.startPointY.value + 41;
+                }
+                else {
+                    console.log("start point error");
+                }
+            };
+            MainScene.prototype.drawLinkLine = function (point) {
+                if (this.lastClickCenter == null) {
+                    this.lastClickCenter = point;
+                    this.linkLine.graphics.moveTo(this.lastClickCenter.x, this.lastClickCenter.y);
+                }
+                else {
+                    var x, y;
+                    x = point.x;
+                    y = point.y;
+                    this.linkLine.graphics.lineTo(x, y);
+                    this.linkLine.graphics.moveTo(point.x, point.y);
+                    this.linkLine.graphics.endFill();
+                    this.linkLine.cacheAsBitmap = true;
+                    this.lastClickCenter = null;
+                    this.lastClickCenter = point;
+                }
+            };
+            MainScene.prototype.playRightEffect = function () {
+                var _this = this;
+                var star = RES.getRes("end_answer_start_png");
+                var config = RES.getRes("end_answer_start_json");
+                var effectBound = new egret.Rectangle(0, 0, this.stage.width, this.stage.height);
+                this.rightEffect = new particle.GravityParticleSystem(star, config);
+                this.rightEffect.x = 0;
+                this.rightEffect.y = 0;
+                this.rightEffect.emitterBounds = effectBound;
+                this.addChild(this.rightEffect);
+                this.rightEffect.start(-1);
+                var timeHandler = setTimeout(function () {
+                    _this.rightEffect.stop(true);
+                    _this.removeChild(_this.rightEffect);
+                    _this.rightEffect = null;
+                    clearTimeout(timeHandler);
+                    var eventData = {
+                        success: _this.isSuccess,
+                        use_time: _this.usedTime + _this.left,
+                    };
+                    SpellPoem.DataCenter.setRecoverData({ "isComplete": _this.isSuccess, "game_use_time": _this.usedTime + _this.left });
+                    SpellPoem.DataCenter.presenter.onSubmitAnswer((_this.usedTime + _this.left).toString(), _this.isSuccess);
+                    _this.dispatchEventWith(SpellPoem.EventKey.SHOW_RESULT_EVENT, true, eventData);
+                }, 1000);
+            };
+            MainScene.prototype.onTimeEnd = function () {
+                console.log("time end");
+                this.removeSnowFlake();
+                console.log("snowFlake is null on time out");
+                this.usedTime = this.timePanel.getUseTime();
+                var eventData = {
+                    success: this.isSuccess,
+                    use_time: this.usedTime + this.left,
+                };
+                this.timePanel.stop();
+                this.timePanel.destroy();
+                SpellPoem.DataCenter.setRecoverData({ "isComplete": this.isSuccess, "game_use_time": this.usedTime + this.left });
+                SpellPoem.DataCenter.presenter.onSubmitAnswer((this.usedTime + this.left).toString(), this.isSuccess);
+                this.dispatchEventWith(SpellPoem.EventKey.SHOW_RESULT_EVENT, true, eventData);
+            };
+            MainScene.prototype.onCharacterTouch = function (event) {
+                var _this = this;
+                console.log("event start");
+                if (SpellPoem.DataCenter.isLock) {
+                    return;
+                }
+                if (event.type == SpellPoem.EventKey.CHARACTER_TOUCH_EVENT) {
+                    if (event.data.character_index != (this.currentCharIndex + 1)) {
+                        event.target.clickWrong();
+                    }
+                    else {
+                        SpellPoem.DataCenter.presenter.setStartAnswer(true);
+                        if (event.data.character_index == 0) {
+                            console.log(event.data.character_index);
+                            if (this.contains(this.remindStart)) {
+                                this.removeChild(this.remindStart);
+                            }
+                            this.remindStart = null;
+                            if (SpellPoem.DataCenter.presenter.isPPTShell) {
+                                this.timePanel.start();
+                            }
+                            SpellPoem.DataCenter.presenter.setExamTime();
+                        }
+                        event.target.clickRight();
+                        var center = new egret.Point(event.data.center_point.x, event.data.center_point.y);
+                        var d_temp = {
+                            point: center.clone(),
+                            index: event.data.character_location
+                        };
+                        this.path.push(d_temp);
+                        SpellPoem.DataCenter.setRecoverData({ "path": this.path });
+                        if (SpellPoem.DataCenter.isShowLine) {
+                            egret.setTimeout(function () {
+                                _this.drawLinkLine(center.clone());
+                            }, this, 150, "draw Line");
+                        }
+                        event.target.setLabelTouchEnable(false);
+                        this.currentCharIndex = event.data.character_index;
+                        if (event.data.start_of_sentence || event.data.character_index ==
+                            this.templet.poem_len - 1) {
+                            if (event.data.character_index ==
+                                this.templet.poem_len - 1) {
+                                this.timePanel.stop();
+                                this.usedTime = this.timePanel.getUseTime();
+                                this.isSuccess = true;
+                                this.removeSnowFlake();
+                                this.playRightEffect();
+                            }
+                            else {
+                                if (SpellPoem.DataCenter.presenter.isPPTShell) {
+                                    var time_tamp = new Date().getTime().toString();
+                                    console.log(time_tamp);
+                                    var data = {
+                                        time_stamp: time_tamp
+                                    };
+                                    SpellPoem.DataCenter.setRecoverData(data);
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            MainScene.prototype.removeSnowFlake = function () {
+                if (this.snowFlake) {
+                    this.snowFlake.stopDot();
+                    this.removeChild(this.snowFlake);
+                    this.snowFlake = null;
+                }
+            };
+            MainScene.prototype.notifyProvideAnswer = function () {
+                console.log("teacher finish exam!!!");
+                this.timePanel.stop();
+                this.usedTime = this.timePanel.getUseTime();
+                var eventData = {
+                    success: this.isSuccess,
+                    use_time: this.usedTime + this.left,
+                };
+                SpellPoem.DataCenter.setRecoverData({ "isComplete": this.isSuccess, "game_use_time": this.usedTime });
+                SpellPoem.DataCenter.presenter.onSubmitAnswer(this.usedTime.toString(), this.isSuccess);
+                if (this.endAnimation)
+                    this.dispatchEventWith(SpellPoem.EventKey.SHOW_RESULT_EVENT, true, eventData);
+                SpellPoem.DataCenter.isForceAnswer = true;
+            };
+            MainScene.prototype.stopTime = function () {
+                this.timePanel && this.timePanel.stop();
+            };
+            MainScene.prototype.destroy = function () {
+                if (SpellPoem.DataCenter.presenter.screenShotDef.state() == 'pending') {
+                    SpellPoem.DataCenter.presenter.screenShotDef.resolve();
+                }
+                this.removeEventListener(SpellPoem.EventKey.CHARACTER_TOUCH_EVENT, this.onCharacterTouch, this);
+                this.stage.removeEventListener(SpellPoem.EventKey.TIME_END_EVENT, this.onTimeEnd, this);
+                this.stage.removeEventListener(SpellPoem.EventKey.NOTIFY_PROVIDE_ANSWER, this.notifyProvideAnswer, this);
+                this.stage.removeEventListener('stop_time', this.stopTime, this);
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                this.background = null;
+                this.poetryBg = null;
+                this.title && this.title.destroy();
+                this.title = null;
+                this.startPointX = null;
+                this.startPointY = null;
+                var len = this.characters && this.characters.length || 0;
+                for (var i = 0; i < len; i++) {
+                    this.characters[i].destroy();
+                }
+                this.characters.length = 0;
+                this.characters = null;
+                this.lastClickCenter = null;
+                this.currentCharIndex = null;
+                this.linkLine = null;
+                this.rightEffect && this.rightEffect.stop(true);
+                this.rightEffect = null;
+                this.templet = null;
+                this.timePanel && this.timePanel.stop();
+                this.timePanel && this.timePanel.destroy();
+                this.timePanel = null;
+                this.remindStart = null;
+                this.isSuccess = null;
+                this.usedTime = null;
+                this.snowFlake && this.snowFlake.destroy();
+                this.snowFlake = null;
+                this.path = null;
+                if (this.timer) {
+                    this.timer.stop();
+                    this.timer.removeEventListener(egret.TimerEvent.TIMER_COMPLETE, function () { }, this);
+                    this.timer.removeEventListener(egret.TimerEvent.TIMER, function () { }, this);
+                    this.timer = null;
+                }
+            };
+            return MainScene;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.MainScene = MainScene;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var ResultScene = (function (_super) {
+            __extends(ResultScene, _super);
+            function ResultScene(result, use_time) {
+                var _this = _super.call(this) || this;
+                _this.isSuccess = result;
+                _this.useTime = use_time;
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                _this.addEventListener(SpellPoem.EventKey.CLOSE_SHOW_ANSWER_TIME_EVENT, _this.onConfirmListener, _this);
+                return _this;
+            }
+            ResultScene.prototype.onAddToStage = function () {
+                console.log("resultscene first");
+                this.addChild(this.resultBg);
+                this.addChild(this.borderGroup);
+                this.borderGroup.x = this.stage.width / 2;
+                this.borderGroup.y = this.stage.height / 2;
+                this.borderGroup.addChild(this.poesyBorder);
+                for (var i = 0; i < this.max_sentence_row - 1; i++) {
+                    var poesyLine = GameUtil.createBitmapByName("result_line_png");
+                    poesyLine.width = this.borderGroup.width;
+                    poesyLine.y = (i + 1) * (this.borderGroup.height / this.max_sentence_row);
+                    this.borderGroup.addChild(poesyLine);
+                }
+                this.borderGroup.addChild(this.poesyContextGroup);
+                this.poesyContextGroup.x = this.borderGroup.width / 2;
+                this.poesyContextGroup.y = this.borderGroup.height / 2;
+                console.log("this.borderGroup.x:" + this.borderGroup.x + ";this.borderGroup.y:" + this.borderGroup.y);
+                console.log("this.poesyContextGroup.x:" + this.poesyContextGroup.x + ";this.poesyContextGroup.y:" + this.borderGroup.y);
+                this.addChild(this.poetryAuthorGroup);
+                this.poetryAuthorGroup.x = this.stage.width - 250;
+                this.poetryAuthorGroup.y = this.stage.height - this.poetryAuthorGroup.height - 200;
+                if (this.reStartImage) {
+                    this.addChild(this.reStartImage);
+                    this.reStartImage.x = this.stage.width / 2 - 100;
+                    this.reStartImage.y = this.stage.height - 150;
+                }
+                this.addChild(this.title);
+                this.poetryAuthorGroup.addChild(this.poetryAuthorBg);
+                this.poetryAuthorGroup.addChild(this.poetryAuthor);
+                this.addChild(this.snowFlake);
+                this.snowFlake.width = this.stage.width;
+                this.snowFlake.height = this.stage.height;
+                this.showResult();
+            };
+            ResultScene.prototype.init = function () {
+                this.snowFlake = new SpellPoem.SnowFlake();
+                this.resultBg = GameUtil.createBitmapByName("result_bg_jpg");
+                this.borderGroup = new eui.Group();
+                this.borderGroup.width = 1400;
+                this.borderGroup.height = 800;
+                this.borderGroup.anchorOffsetX = this.borderGroup.width / 2;
+                this.borderGroup.anchorOffsetY = this.borderGroup.height / 2;
+                this.borderGroup.layout = new eui.BasicLayout();
+                this.poesyBorder = GameUtil.createBitmapByName("result_poesy_border_png");
+                this.poesyBorder.width = 1400;
+                this.poesyBorder.height = 800;
+                this.poesyContextGroup = new eui.Group();
+                this.poesyContextGroup.width = 1200;
+                this.poesyContextGroup.height = 800;
+                this.poesyContextGroup.anchorOffsetX = this.poesyContextGroup.width / 2;
+                this.poesyContextGroup.anchorOffsetY = this.poesyContextGroup.height / 2;
+                this.poesyContextGroup.layout = new eui.BasicLayout();
+                console.log("当前学生状态:" + SpellPoem.DataCenter.presenter.isStudent);
+                if (!SpellPoem.DataCenter.presenter.isStudent) {
+                    var name = "re_answer_png" + +SpellPoem.DataCenter.presenter.getLanguageSet().suffix;
+                    this.reStartImage = GameUtil.createBitmapByName("re_answer_png");
+                    this.reStartImage.touchEnabled = false;
+                    this.reStartImage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onClickReStart, this);
+                    this.reStartImage.alpha = 0;
+                }
+                this.title = new SpellPoem.Title(SpellPoem.DataCenter.poetryData.poetry.title);
+                this.poetryAuthorGroup = new eui.Group();
+                this.poetryAuthorGroup.layout = new eui.BasicLayout();
+                var author = SpellPoem.DataCenter.poetryData.poetry.author;
+                this.poetryAuthorBg = GameUtil.createBitmapByName("author_bg_png");
+                this.poetryAuthorBg.height = 42 * author.length;
+                this.poetryAuthor = new egret.TextField();
+                this.poetryAuthor.width = 40;
+                this.poetryAuthor.x = 3;
+                this.poetryAuthor.y = 3;
+                this.poetryAuthor.fontFamily = "华文行楷";
+                this.poetryAuthor.size = 40;
+                this.poetryAuthor.textColor = 0xd3bc9d;
+                this.poetryAuthor.text = author;
+                this.poetryAuthorGroup.width = 47;
+                this.poetryAuthorGroup.height = 42 * author.length;
+                this.initPoesy();
+            };
+            ResultScene.prototype.initPoesy = function () {
+                var poesySentences = SpellPoem.DataCenter.poetryData.poetry.sentences;
+                this.max_sentence_row = poesySentences.length;
+                console.log("当前诗歌行数:" + this.max_sentence_row);
+                var count = 0;
+                var proportion = 0;
+                for (var i = 0; i < this.max_sentence_row; i++) {
+                    var rowCount = poesySentences[i].length;
+                    if (rowCount > count) {
+                        count = rowCount;
+                    }
+                }
+                this.max_sentence_list = count;
+                proportion = count;
+                console.log("当前诗歌最大列数为:" + this.max_sentence_list);
+                if (this.max_sentence_row > proportion) {
+                    proportion = this.max_sentence_row;
+                }
+                var poesyCount = 0;
+                console.log("this.poesyContextGroup.width:" + this.poesyContextGroup.width + ";this.poesyContextGroup.height:" + this.poesyContextGroup.height);
+                for (var i = 0; i < this.max_sentence_row; i++) {
+                    var poesy = poesySentences[i];
+                    var poesyList = poesy.length;
+                    for (var j = 0; j < poesyList; j++) {
+                        var tx1 = new egret.TextField;
+                        tx1.size = 560 / proportion;
+                        tx1.textColor = 0x424349;
+                        tx1.bold = true;
+                        tx1.fontFamily = "宋体";
+                        tx1.text = poesy[j];
+                        tx1.x = j * Math.ceil(this.poesyContextGroup.width / this.max_sentence_list) + (Math.ceil(this.poesyContextGroup.width / this.max_sentence_list) / 2 - Math.ceil(tx1.width / 2));
+                        tx1.y = i * Math.ceil(this.poesyContextGroup.height / this.max_sentence_row) + (Math.ceil(this.poesyContextGroup.height / this.max_sentence_row) / 2 - Math.ceil(tx1.height / 2));
+                        console.log("a:" + Math.ceil(this.poesyContextGroup.width / this.max_sentence_list) + ";b:" + Math.ceil(this.poesyContextGroup.width / this.max_sentence_list) / 2 + ";tx.width:" + Math.ceil(tx1.width / 2));
+                        console.log("tx1.x:" + tx1.x + ";tx1.y:" + tx1.y);
+                        tx1.alpha = 0;
+                        this.poesyContextGroup.addChild(tx1);
+                        var tw1 = egret.Tween.get(tx1);
+                        tw1.to({ alpha: 0.1 }, i * 200 + j * 200).wait(500).to({ alpha: 1 }, i * 200 + j * 200);
+                        console.log("poesyCount:" + poesyCount);
+                        poesyCount++;
+                    }
+                }
+            };
+            ResultScene.prototype.startAnswerTime = function () {
+                var value_json = SpellPoem.DataCenter.presenter.getLanguageSet();
+                var answerSuccessHint = value_json["answer_success_hint"];
+                var answerFailHint = value_json["answer_fail_hint"];
+                if (this.isSuccess) {
+                    this.answerTimeWindow = new SpellPoem.PopupWindowPanel(GameUtil.getStringTimeBySecond(this.useTime), answerSuccessHint);
+                }
+                else {
+                    this.answerTimeWindow = new SpellPoem.PopupWindowPanel(GameUtil.getStringTimeBySecond(this.useTime), answerFailHint);
+                }
+                this.addChild(this.answerTimeWindow);
+                this.answerTimeWindow.x = this.stage.width / 2 - this.answerTimeWindow.width / 4;
+                this.answerTimeWindow.y = this.stage.height;
+                var answerTimeWindowTw = egret.Tween.get(this.answerTimeWindow);
+                answerTimeWindowTw.wait(3000).to({ y: this.stage.height / 2 - this.answerTimeWindow.height / 2 }, 1000, egret.Ease.backOut);
+                this.closeAnswerTimeOut = egret.setTimeout(this.closeAnswerTime, this, 6000, "close answer time");
+            };
+            ResultScene.prototype.closeAnswerTime = function () {
+                console.log("time......");
+                this.onConfirmListener();
+            };
+            ResultScene.prototype.onConfirmListener = function () {
+                console.log("close answer");
+                if (this.reStartImage) {
+                    this.reStartImage.touchEnabled = true;
+                }
+                if (this.closeAnswerTimeOut) {
+                    egret.clearTimeout(this.closeAnswerTimeOut);
+                }
+                if (this.answerTimeWindow) {
+                    this.removeChild(this.answerTimeWindow);
+                    this.answerTimeWindow = null;
+                }
+            };
+            ResultScene.prototype.showResult = function () {
+                this.snowFlake.stopDot();
+                this.snowFlake.startDot();
+                this.showRestart();
+                this.startAnswerTime();
+            };
+            ResultScene.prototype.onClickReStart = function () {
+                console.log("onclick restart");
+                if (SpellPoem.DataCenter.isLock) {
+                    return;
+                }
+                this.snowFlake.stopDot();
+                this.removeChild(this.snowFlake);
+                this.snowFlake = null;
+                this.dispatchEventWith(SpellPoem.EventKey.RESTART_EVENT, true, {});
+            };
+            ResultScene.prototype.showRestart = function () {
+                if (this.reStartImage) {
+                    var restartTween = egret.Tween.get(this.reStartImage);
+                    restartTween.wait(2000).to({ alpha: 1 }, 1000);
+                }
+            };
+            ResultScene.prototype.destroy = function () {
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                this.removeEventListener(SpellPoem.EventKey.CLOSE_SHOW_ANSWER_TIME_EVENT, this.onConfirmListener, this);
+                this.resultBg = null;
+                this.borderGroup = null;
+                this.poesyBorder = null;
+                this.poesyContextGroup = null;
+                this.title && this.title.destroy();
+                this.title = null;
+                this.poetryAuthorGroup = null;
+                this.poetryAuthor = null;
+                this.poetryAuthorBg = null;
+                this.snowFlake && this.snowFlake.destroy();
+                this.snowFlake = null;
+                this.reStartImage = null;
+                this.closeAnswerTimeOut = null;
+                this.answerTimeWindow = null;
+            };
+            return ResultScene;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.ResultScene = ResultScene;
+    })(SpellPoem || (SpellPoem = {}));
+    var AnchorUtil = (function () {
+        function AnchorUtil() {
+        }
+        AnchorUtil.init = function () {
+            if (this._isInited)
+                return;
+            this._propertyChange = Object.create(null);
+            this._anchorChange = Object.create(null);
+            this.injectAnchor();
+            this._isInited = true;
+        };
+        AnchorUtil.setAnchorX = function (target, value) {
+            target["anchorX"] = value;
+        };
+        AnchorUtil.setAnchorY = function (target, value) {
+            target["anchorY"] = value;
+        };
+        AnchorUtil.setAnchor = function (target, value) {
+            target["anchorX"] = target["anchorY"] = value;
+        };
+        AnchorUtil.getAnchorX = function (target) {
+            return target["anchorX"] || 0;
+        };
+        AnchorUtil.getAnchorY = function (target) {
+            return target["anchorY"] || 0;
+        };
+        AnchorUtil.injectAnchor = function () {
+            Object.defineProperty(egret.DisplayObject.prototype, "width", {
+                get: function () {
+                    return this.$getWidth();
+                },
+                set: function (value) {
+                    var _this = this;
+                    this.$setWidth(value);
+                    AnchorUtil._propertyChange[this.hashCode] = true;
+                    egret.callLater(function () {
+                        AnchorUtil.changeAnchor(_this);
+                    }, this);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(egret.DisplayObject.prototype, "height", {
+                get: function () {
+                    return this.$getHeight();
+                },
+                set: function (value) {
+                    var _this = this;
+                    this.$setHeight(value);
+                    AnchorUtil._propertyChange[this.hashCode] = true;
+                    egret.callLater(function () {
+                        AnchorUtil.changeAnchor(_this);
+                    }, this);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(egret.DisplayObject.prototype, "anchorX", {
+                get: function () {
+                    return this["_anchorX"];
+                },
+                set: function (value) {
+                    var _this = this;
+                    this._anchorX = value;
+                    AnchorUtil._propertyChange[this.hashCode] = true;
+                    AnchorUtil._anchorChange[this.hashCode] = true;
+                    egret.callLater(function () {
+                        AnchorUtil.changeAnchor(_this);
+                    }, this);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(egret.DisplayObject.prototype, "anchorY", {
+                get: function () {
+                    return this["_anchorY"];
+                },
+                set: function (value) {
+                    var _this = this;
+                    this._anchorY = value;
+                    AnchorUtil._propertyChange[this.hashCode] = true;
+                    AnchorUtil._anchorChange[this.hashCode] = true;
+                    egret.callLater(function () {
+                        AnchorUtil.changeAnchor(_this);
+                    }, this);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            Object.defineProperty(egret.DisplayObject.prototype, "anchor", {
+                get: function () {
+                    return this["_anchorX"];
+                },
+                set: function (value) {
+                    var _this = this;
+                    this._anchorX = value;
+                    this._anchorY = value;
+                    AnchorUtil._propertyChange[this.hashCode] = true;
+                    AnchorUtil._anchorChange[this.hashCode] = true;
+                    egret.callLater(function () {
+                        AnchorUtil.changeAnchor(_this);
+                    }, this);
+                },
+                enumerable: true,
+                configurable: true
+            });
+            if (egret.gui && egret.gui.UIComponent) {
+                Object.defineProperty(egret.gui.UIComponent.prototype, "width", {
+                    get: function () {
+                        return this._UIC_Props_._uiWidth;
+                    },
+                    set: function (value) {
+                        var _this = this;
+                        this.$setWidth(value);
+                        AnchorUtil._propertyChange[this.hashCode] = true;
+                        egret.callLater(function () {
+                            AnchorUtil.changeAnchor(_this);
+                        }, this);
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                Object.defineProperty(egret.gui.UIComponent.prototype, "height", {
+                    get: function () {
+                        return this._UIC_Props_._uiHeight;
+                    },
+                    set: function (value) {
+                        var _this = this;
+                        this.$setHeight(value);
+                        AnchorUtil._propertyChange[this.hashCode] = true;
+                        egret.callLater(function () {
+                            AnchorUtil.changeAnchor(_this);
+                        }, this);
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                egret.gui.UIComponent.prototype.setActualSize = function (w, h) {
+                    var _this = this;
+                    var change = false;
+                    if (this._UIC_Props_._uiWidth != w) {
+                        this._UIC_Props_._uiWidth = w;
+                        change = true;
+                    }
+                    if (this._UIC_Props_._uiHeight != h) {
+                        this._UIC_Props_._uiHeight = h;
+                        change = true;
+                    }
+                    if (change) {
+                        this.invalidateDisplayList();
+                        this.dispatchResizeEvent();
+                        AnchorUtil._propertyChange[this.hashCode] = true;
+                        egret.callLater(function () {
+                            AnchorUtil.changeAnchor(_this);
+                        }, this);
+                    }
+                };
+            }
+        };
+        AnchorUtil.changeAnchor = function (tar) {
+            if (AnchorUtil._propertyChange[tar.hashCode] && AnchorUtil._anchorChange[tar.hashCode]) {
+                tar.anchorOffsetX = tar._anchorX * tar.width;
+                tar.anchorOffsetY = tar._anchorY * tar.height;
+                delete AnchorUtil._propertyChange[tar.hashCode];
+            }
+        };
+        return AnchorUtil;
+    }());
+    var GameUtil = (function () {
+        function GameUtil() {
+        }
+        GameUtil.hitTest = function (obj1, obj2) {
+            var rect1 = obj1.getBounds();
+            var rect2 = obj2.getBounds();
+            rect1.x = obj1.x;
+            rect1.y = obj1.y;
+            rect2.x = obj2.x;
+            rect2.y = obj2.y;
+            return rect1.intersects(rect2);
+        };
+        GameUtil.createBitmapByName = function (name) {
+            var result = new egret.Bitmap();
+            var texture = RES.getRes(name);
+            result.texture = texture;
+            return result;
+        };
+        GameUtil.getStringTimeBySecond = function (second) {
+            var m = Math.floor(second / 60);
+            m = m == undefined ? 0 : m;
+            var s = second % 60;
+            s = s == undefined ? 0 : s;
+            var mFormat = m < 10 ? "0" + m : "" + m;
+            var sFormat = s < 10 ? "0" + s : "" + s;
+            return mFormat + ":" + sFormat;
+        };
+        return GameUtil;
+    }());
+    (function (SpellPoem) {
+        var DataCenter = (function () {
+            function DataCenter() {
+                this.boolean = false;
+            }
+            DataCenter.initGameData = function (presenter) {
+                DataCenter.isForceAnswer = false;
+                DataCenter.presenter = presenter;
+                var data = DataCenter.presenter.getPoemData();
+                this.poetryData = this.getGameData(data);
+                this.isRecovering = DataCenter.presenter.isRecovering;
+                this.timerContenr = data.timer;
+                if (this.isRecovering) {
+                    this.recoverData = SpellPoem.DataCenter.getRecoverData();
+                }
+                data = null;
+                if (this.poetryData) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            };
+            DataCenter.getGameData = function (model) {
+                var sentences = this.getDisplaySentenceArray(model.content.sentences);
+                var poetryData = {
+                    poetry: {
+                        title: model.content.title,
+                        author: model.content.author,
+                        dynasty: model.content.dynasty,
+                        sentences: sentences
+                    }
+                };
+                var len = sentences.length;
+                var num = 0;
+                for (var i = 0; i < len; i++)
+                    num += sentences[i].length;
+                if (num <= 56) {
+                    this.isShowLine = true;
+                }
+                sentences = null;
+                return poetryData;
+            };
+            DataCenter.getDisplaySentenceArray = function (sens) {
+                if (sens) {
+                    var sentences = new Array();
+                    var length = sens.length;
+                    for (var i = 0; i < length; i++) {
+                        if (sens[i].words.length === 0) {
+                            continue;
+                        }
+                        sentences.push(sens[i].words);
+                    }
+                    return sentences;
+                }
+                return null;
+            };
+            DataCenter.getGameTemplet = function () {
+                var lenOneLine;
+                var lines;
+                if (DataCenter.poetryData) {
+                    var poetry = DataCenter.poetryData.poetry.sentences.join('').replace(new RegExp(" ", "g"), "");
+                    var len = poetry.length;
+                    if (len <= 25) {
+                        lenOneLine = 5;
+                        lines = Math.ceil(len / 5);
+                        if (lines < 4)
+                            lines = 4;
+                    }
+                    else if (len <= 36) {
+                        lenOneLine = 7;
+                        lines = Math.ceil(len / 7);
+                    }
+                    else if (len <= 100) {
+                        lenOneLine = 9;
+                        lines = Math.ceil(len / 9);
+                    }
+                    else {
+                        console.log("out of number");
+                    }
+                }
+                var json_data = null;
+                if (DataCenter.isRecovering) {
+                    json_data = DataCenter.getRecoverData().model;
+                }
+                else {
+                    var model = "random" + lines + "*" + lenOneLine;
+                    json_data = RES.getRes("random_data_json");
+                    json_data = json_data[model];
+                    var random_type = Math.floor(Math.random() * 9);
+                    json_data = json_data[random_type];
+                }
+                var data = {
+                    model: json_data
+                };
+                DataCenter.setRecoverData(data);
+                var templet = {
+                    row_count: lines,
+                    col_count: lenOneLine,
+                    sequence: json_data,
+                    poem_len: len
+                };
+                json_data = null;
+                console.log("templet" + templet);
+                return templet;
+            };
+            DataCenter.setRecoverData = function (data) {
+                if (DataCenter.presenter) {
+                    DataCenter.presenter.setRecoverData(data);
+                }
+                else {
+                    console.log("egret中没有presenter环境无调用:setRecoverData方法");
+                }
+            };
+            DataCenter.onSubmitAnswer = function (useTime, isComplete) {
+                if (DataCenter.presenter) {
+                    DataCenter.presenter.onSubmitAnswer(useTime, isComplete);
+                }
+                else {
+                    console.log("egret中没有presenter环境无调用:onSubmitAnswer");
+                }
+            };
+            DataCenter.getRecoverData = function () {
+                var data;
+                if (DataCenter.presenter) {
+                    data = DataCenter.presenter.getRecoverData();
+                }
+                else {
+                    console.log("egret中没有presenter环境无调用:getRecoverData");
+                }
+                return data;
+            };
+            DataCenter.destroy = function () {
+                DataCenter.poetryData = null;
+                DataCenter.timerContenr = null;
+                DataCenter.isRecovering = null;
+                DataCenter.presenter = null;
+                DataCenter.recoverData = null;
+                DataCenter.isForceAnswer = null;
+                this.isShowLine = null;
+            };
+            return DataCenter;
+        }());
+        DataCenter.isRecovering = false;
+        DataCenter.isShowLine = false;
+        DataCenter.isLock = false;
+        SpellPoem.DataCenter = DataCenter;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var Character = (function (_super) {
+            __extends(Character, _super);
+            function Character(textContent, labelWidth, labelHeight, fontSize, isStartPoint) {
+                var _this = _super.call(this) || this;
+                _this.isStartPoint = false;
+                _this.isEndPoint = false;
+                if (isStartPoint != undefined) {
+                    _this.isStartPoint = isStartPoint;
+                }
+                _this.text = textContent;
+                _this.labelWidth = labelWidth;
+                _this.labelHeight = labelHeight;
+                _this.fontSize = fontSize;
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.addOnToStage, _this);
+                return _this;
+            }
+            Character.prototype.addOnToStage = function () {
+                this.labelText = new egret.TextField();
+                this.labelText.text = this.text;
+                this.labelText.size = this.fontSize;
+                this.labelText.textAlign = egret.HorizontalAlign.CENTER;
+                this.labelText.verticalAlign = egret.VerticalAlign.MIDDLE;
+                this.labelText.textColor = 0x424345;
+                this.labelText.fontFamily = "幼体";
+                this.labelText.bold = true;
+                AnchorUtil.setAnchor(this.labelText, 0.5);
+                this.labelText.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.onLableTouch, this);
+                this.labelText.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onLableTouch, this);
+                this.addChild(this.labelText);
+                this.initStageObject();
+                this.rightBg = GameUtil.createBitmapByName("right_answer_bg_png");
+                this.rightBg.alpha = 0.2;
+                this.rightBg.anchorOffsetX = this.rightBg.width / 2;
+                this.rightBg.anchorOffsetY = this.rightBg.height / 2;
+                this.wrongBg = GameUtil.createBitmapByName("wrong_answer_bg_png");
+                this.wrongBg.alpha = 0.2;
+                this.wrongBg.anchorOffsetX = this.wrongBg.width / 2;
+                this.wrongBg.anchorOffsetY = this.wrongBg.height / 2;
+                this.alpha = 0;
+            };
+            Character.prototype.initStageObject = function () {
+                var star = RES.getRes("start_png");
+                var config = RES.getRes("start_json");
+                this.rightEffect = new particle.GravityParticleSystem(star, config);
+                this.rightEffectBounds = new egret.Rectangle(-this.fontSize, -this.fontSize, this.labelText.width * 2, this.labelText.height * 2);
+            };
+            Character.prototype.setCharacterIndex = function (index) {
+                this.index = index;
+            };
+            Character.prototype.setCharacterLocation = function (location) {
+                this.location = location;
+            };
+            Character.prototype.setLabelTouchEnable = function (canTouch) {
+                this.labelText.touchEnabled = canTouch;
+            };
+            Character.prototype.enter = function () {
+                this.alpha = 1;
+                this.labelText.scaleX = 0.0;
+                this.labelText.scaleY = 0.0;
+                this.labelText.rotation = -180;
+                var tw = egret.Tween.get(this.labelText);
+                tw.to({ scaleX: 1, scaleY: 1, rotation: 0 }, 300);
+            };
+            Character.prototype.recoverRight = function () {
+                this.labelText.textColor = 0xc25737;
+            };
+            Character.prototype.clickRight = function () {
+                var _this = this;
+                this.labelText.textColor = 0xc25737;
+                this.rightBg.anchorOffsetX = this.rightBg.width / 2;
+                this.rightBg.anchorOffsetY = this.rightBg.height / 2;
+                this.addChildAt(this.rightBg, 0);
+                this.clickRightEffect();
+                egret.Tween.get(this.rightBg)
+                    .to({ alpha: 0 }, 3000)
+                    .wait(500)
+                    .call(function () {
+                    egret.Tween.removeTweens(_this.rightBg);
+                    _this.removeChild(_this.rightBg);
+                });
+            };
+            Character.prototype.clickWrong = function () {
+                var _this = this;
+                this.wrongBg.alpha = 1;
+                this.addChildAt(this.wrongBg, 0);
+                this.wrongBg.anchorOffsetX = this.wrongBg.width / 2;
+                this.wrongBg.anchorOffsetY = this.wrongBg.height / 2;
+                egret.Tween.get(this.wrongBg)
+                    .to({ alpha: 0 }, 600)
+                    .wait(500)
+                    .call(function () {
+                    egret.Tween.removeTweens(_this.wrongBg);
+                    _this.removeChild(_this.wrongBg);
+                });
+            };
+            Character.prototype.clickRightEffect = function () {
+                this.rightEffect.anchorOffsetX = this.rightEffect.width / 2;
+                this.rightEffect.anchorOffsetY = this.rightEffect.height / 2;
+                this.rightEffect.x = 0;
+                this.rightEffect.y = 0;
+                this.addChild(this.rightEffect);
+                this.rightEffect.emitterBounds = this.rightEffectBounds;
+                this.rightEffect.start(500);
+            };
+            Character.prototype.onLableTouch = function (event) {
+                this.dispatchEventWith(SpellPoem.EventKey.CHARACTER_TOUCH_EVENT, true, {
+                    character_location: this.location,
+                    character_index: this.index,
+                    start_of_sentence: this.isStartPoint,
+                    center_point: {
+                        x: this.x + this.labelText.x,
+                        y: this.y + this.labelText.y
+                    }
+                });
+            };
+            Character.prototype.getText = function () {
+                return this.text;
+            };
+            Character.prototype.destroy = function () {
+                this.labelText && this.labelText.removeEventListener(egret.TouchEvent.TOUCH_MOVE, this.onLableTouch, this);
+                this.labelText && this.labelText.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onLableTouch, this);
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                if (this.rightEffect)
+                    this.rightEffect.stop();
+                this.rightEffect = null;
+                this.labelText = null;
+                this.rightBg = null;
+                this.wrongBg = null;
+                this.rightEffectBounds = null;
+            };
+            return Character;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.Character = Character;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var PopupWindowPanel = (function (_super) {
+            __extends(PopupWindowPanel, _super);
+            function PopupWindowPanel(usedTime, resultTmp) {
+                var _this = _super.call(this) || this;
+                _this.timeTmp = usedTime;
+                _this.resultTmp = resultTmp;
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                return _this;
+            }
+            PopupWindowPanel.prototype.onAddToStage = function () {
+                console.log("stage");
+                this.init();
+                this.confirmBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.confirmHandler, this);
+                this.addChild(this.bg);
+                this.addChild(this.resultContent);
+                this.addChild(this.usedTime);
+                this.addChild(this.confirmBtn);
+            };
+            PopupWindowPanel.prototype.init = function () {
+                var value_json = SpellPoem.DataCenter.presenter.getLanguageSet();
+                ;
+                var useTimeString = value_json["answer_use_time"];
+                this.bg = GameUtil.createBitmapByName("showResult_png");
+                var name = "confirm_png" + SpellPoem.DataCenter.presenter.getLanguageSet().suffix;
+                this.confirmBtn = GameUtil.createBitmapByName(name);
+                this.confirmBtn.touchEnabled = true;
+                this.resultContent = new egret.TextField();
+                this.resultContent.text = this.resultTmp;
+                this.resultContent.fontFamily = "楷体";
+                this.resultContent.textColor = 0xb8624b;
+                this.resultContent.bold = true;
+                this.resultContent.size = 72;
+                this.usedTime = new egret.TextField();
+                this.usedTime.text = useTimeString + this.timeTmp;
+                this.usedTime.size = 48;
+                this.usedTime.fontFamily = "楷体";
+                this.usedTime.textColor = 0xb8624b;
+                this.anchorOffsetX = this.bg.width / 2;
+                this.anchorOffsetY = this.bg.height / 2;
+                this.confirmBtn.anchorOffsetX = this.confirmBtn.width / 2;
+                this.confirmBtn.anchorOffsetY = this.confirmBtn.height / 2;
+                this.confirmBtn.x = this.bg.width / 2;
+                this.confirmBtn.y = this.bg.height / 2 + 100;
+                this.resultContent.anchorOffsetX = this.resultContent.width / 2;
+                this.resultContent.anchorOffsetY = this.resultContent.height / 2;
+                this.resultContent.x = this.bg.width / 2;
+                this.resultContent.y = this.bg.height / 2 - 100;
+                this.usedTime.anchorOffsetX = this.usedTime.width / 2;
+                this.usedTime.anchorOffsetY = this.usedTime.height / 2;
+                this.usedTime.x = this.bg.width / 2;
+                this.usedTime.y = this.bg.height / 2;
+            };
+            PopupWindowPanel.prototype.confirmHandler = function () {
+                console.log("click config");
+                this.dispatchEventWith(SpellPoem.EventKey.CLOSE_SHOW_ANSWER_TIME_EVENT, true, {});
+            };
+            return PopupWindowPanel;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.PopupWindowPanel = PopupWindowPanel;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var SnowFlake = (function (_super) {
+            __extends(SnowFlake, _super);
+            function SnowFlake() {
+                var _this = _super.call(this) || this;
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                return _this;
+            }
+            SnowFlake.prototype.onAddToStage = function () {
+                console.log("snowflake first");
+                var texture = RES.getRes("dot_png");
+                var config = RES.getRes("result_dot_json");
+                this.dot = new particle.GravityParticleSystem(texture, config);
+                this.addChild(this.dot);
+            };
+            SnowFlake.prototype.startDot = function () {
+                this.stopDot();
+                if (this.stage && this.stage.contains(this.dot)) {
+                    this.dot.start();
+                }
+            };
+            SnowFlake.prototype.stopDot = function () {
+                if (this.dot) {
+                    this.dot.stop();
+                }
+            };
+            SnowFlake.prototype.destroy = function () {
+                this.stopDot();
+                this.removeChildren();
+                this.dot = null;
+            };
+            return SnowFlake;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.SnowFlake = SnowFlake;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var StartPointPanel = (function (_super) {
+            __extends(StartPointPanel, _super);
+            function StartPointPanel(direction) {
+                var _this = _super.call(this) || this;
+                _this.direction = "left";
+                _this.direction = direction;
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                return _this;
+            }
+            StartPointPanel.prototype.onAddToStage = function () {
+                this.init();
+                this.addChild(this.startBtn);
+            };
+            StartPointPanel.prototype.init = function () {
+                var startBtn = "start_point_" + this.direction + "_png" + SpellPoem.DataCenter.presenter.getLanguageSet().suffix;
+                ;
+                this.startBtn = GameUtil.createBitmapByName(startBtn);
+            };
+            return StartPointPanel;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.StartPointPanel = StartPointPanel;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var TimePanel = (function (_super) {
+            __extends(TimePanel, _super);
+            function TimePanel(totalTime, count_type) {
+                var _this = _super.call(this) || this;
+                _this.usedTime = 0;
+                _this.s1 = [];
+                _this.s = [];
+                _this.m1 = [];
+                _this.m = [];
+                _this.totalTime = totalTime || 0;
+                _this.count_type = count_type || "countdown";
+                if (_this.count_type == 'sequence') {
+                    _this.usedTime = _this.totalTime;
+                }
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                return _this;
+            }
+            TimePanel.prototype.onAddToStage = function () {
+                this.init();
+            };
+            TimePanel.prototype.init = function () {
+                for (var i = 0; i < 10; i++) {
+                    var tmp = i + "_png";
+                    this.s1[i] = GameUtil.createBitmapByName(tmp);
+                    this.s[i] = GameUtil.createBitmapByName(tmp);
+                    this.m1[i] = GameUtil.createBitmapByName(tmp);
+                    this.m[i] = GameUtil.createBitmapByName(tmp);
+                }
+                this.timer = new egret.Timer(1000, 0);
+                this.timer.addEventListener(egret.TimerEvent.TIMER, this.timerFunc, this, false);
+                this.sign = new egret.TextField();
+                this.sign.text = ":";
+                this.sign.size = 64;
+                console.log(this.count_type);
+                if (this.count_type === "countdown") {
+                    this.setTimeView(this.totalTime);
+                }
+                else {
+                    this.setTimeView(this.usedTime);
+                }
+            };
+            TimePanel.prototype.timerFunc = function () {
+                if (this.count_type === "countdown") {
+                    if (this.totalTime > 0) {
+                        this.totalTime--;
+                        this.usedTime++;
+                        this.setTimeView(this.totalTime);
+                    }
+                    else {
+                        this.timer.stop();
+                        this.stage.dispatchEventWith(SpellPoem.EventKey.TIME_END_EVENT, false, {});
+                    }
+                }
+                else {
+                    this.usedTime++;
+                    this.setTimeView(this.usedTime);
+                }
+            };
+            TimePanel.prototype.setTimeView = function (totalTime) {
+                var m;
+                var s;
+                var from = 0;
+                this.removeChildren();
+                m = Math.floor(totalTime / 60);
+                if (m < 10) {
+                    this.addChild(this.m1[0]);
+                    this.addChild(this.m[m]);
+                    this.m[m].x = this.m[0].width;
+                    from = this.m[m].x + this.m[m].width;
+                }
+                else {
+                    this.addChild(this.m1[Math.floor(m / 10)]);
+                    this.addChild(this.m[m % 10]);
+                    this.m[m % 10].x = this.m[0].width;
+                    from = this.m[m % 10].x + this.m[m % 10].width;
+                }
+                this.sign.x = from;
+                this.sign.textColor = 0x000000;
+                from = from + this.sign.width;
+                this.addChild(this.sign);
+                s = totalTime % 60;
+                if (s < 10) {
+                    this.addChild(this.s1[0]);
+                    this.s1[0].x = from;
+                    this.addChild(this.s[s]);
+                    this.s[s].x = from + this.s[0].width;
+                }
+                else {
+                    this.addChild(this.s1[Math.floor(s / 10)]);
+                    this.s1[Math.floor(s / 10)].x = from;
+                    this.addChild(this.s[s % 10]);
+                    this.s[s % 10].x = from + this.s[0].width;
+                }
+            };
+            TimePanel.prototype.start = function () {
+                this.timer && this.timer.start();
+            };
+            TimePanel.prototype.stop = function () {
+                this.timer && this.timer.stop();
+                this.timer && this.timer.removeEventListener(egret.TimerEvent.TIMER, this.timerFunc, this, false);
+            };
+            TimePanel.prototype.getUseTime = function () {
+                return this.usedTime;
+            };
+            TimePanel.prototype.destroy = function () {
+                this.removeChildren();
+                this.timer && this.timer.stop();
+                this.timer && this.timer.removeEventListener(egret.TimerEvent.TIMER, this.timerFunc, this, false);
+                this.timer = null;
+                if (this.s1) {
+                    this.s1.length = 0;
+                }
+                this.s1 = null;
+                if (this.s) {
+                    this.s.length = 0;
+                }
+                this.s = null;
+                if (this.m1) {
+                    this.m1.length = 0;
+                }
+                this.m1 = null;
+                if (this.m) {
+                    this.m.length = 0;
+                }
+                this.m = null;
+                this.sign = null;
+            };
+            return TimePanel;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.TimePanel = TimePanel;
+    })(SpellPoem || (SpellPoem = {}));
+    (function (SpellPoem) {
+        var Title = (function (_super) {
+            __extends(Title, _super);
+            function Title(text, hasEnterAnim, poetryAuthor) {
+                if (hasEnterAnim === void 0) { hasEnterAnim = false; }
+                var _this = _super.call(this) || this;
+                _this.hasEnterAnim = hasEnterAnim;
+                _this.poetryAuthor = poetryAuthor;
+                _this.init(text);
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.onAddToStage, _this);
+                return _this;
+            }
+            Title.prototype.init = function (text) {
+                this.poetryTitleBg = GameUtil.createBitmapByName("title_bg_png");
+                this.titleAnimation = new TitleAnimationPanel(this.poetryTitleBg.width, this.hasEnterAnim);
+                this.titleTextPanel = new TitleTextPanel(text, this.hasEnterAnim);
+            };
+            Title.prototype.onAddToStage = function () {
+                var startPoint;
+                this.poetryTitleBg.anchorOffsetX = this.poetryTitleBg.width / 2;
+                this.poetryTitleBg.anchorOffsetY = this.poetryTitleBg.height / 2;
+                this.poetryTitleBg.x = this.stage.width / 2;
+                this.poetryTitleBg.y = 50 + this.poetryTitleBg.height / 2;
+                this.addChild(this.poetryTitleBg);
+                this.titleAnimation.anchorOffsetX = this.titleAnimation.width / 2;
+                this.titleAnimation.anchorOffsetY = this.titleAnimation.height / 2;
+                console.log(this.titleAnimation.width);
+                this.titleAnimation.x = this.stage.width / 2;
+                this.titleAnimation.y = this.poetryTitleBg.y - 10;
+                startPoint = this.titleAnimation.y;
+                this.addChild(this.titleAnimation);
+                this.titleTextPanel.anchorOffsetX = this.titleTextPanel.width / 2;
+                this.titleTextPanel.anchorOffsetY = this.titleTextPanel.height / 2;
+                this.titleTextPanel.x = this.stage.width / 2;
+                this.titleTextPanel.y = this.poetryTitleBg.y;
+                this.addChild(this.titleTextPanel);
+                if (this.hasEnterAnim) {
+                    this.enter();
+                    this.startAnimation(startPoint);
+                }
+            };
+            Title.prototype.enter = function () {
+                this.poetryTitleBg.scaleX = 0.0;
+                var tw = egret.Tween.get(this.poetryTitleBg);
+                tw.to({ scaleX: 1 }, 800, egret.Ease.bounceOut);
+            };
+            Title.prototype.startAnimation = function (startPoint) {
+                var tw = egret.Tween.get(this.titleAnimation, { loop: true });
+                tw.to({ y: startPoint + 20 }, 1000).wait(100).to({ y: startPoint }, 1000);
+                egret.Tween.removeTweens(tw);
+            };
+            Title.prototype.destroy = function () {
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                this.titleAnimation.destroy();
+                this.titleTextPanel.destroy();
+                this.titleTextPanel = null;
+                this.poetryAuthor = null;
+                this.poetryTitleBg = null;
+                this.titleAnimation = null;
+            };
+            return Title;
+        }(egret.DisplayObjectContainer));
+        SpellPoem.Title = Title;
+        var TitleTextPanel = (function (_super) {
+            __extends(TitleTextPanel, _super);
+            function TitleTextPanel(text, hasEnterAnim) {
+                if (hasEnterAnim === void 0) { hasEnterAnim = false; }
+                var _this = _super.call(this) || this;
+                _this.hasEnterAnim = false;
+                _this.hasEnterAnim = hasEnterAnim;
+                _this.init(text);
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.addOnToStage, _this);
+                return _this;
+            }
+            TitleTextPanel.prototype.init = function (text) {
+                this.poetryTitles = [];
+                var len = text.length;
+                var textSize = 40;
+                if (len >= 10) {
+                    textSize = (320 - 12 * len) / 5;
+                }
+                console.log(textSize);
+                for (var i = 0; i < len; i++) {
+                    var titleText = new egret.TextField();
+                    titleText.text = text[i];
+                    titleText.size = textSize;
+                    titleText.textColor = 0xf1cfb3;
+                    titleText.fontFamily = "微软雅黑";
+                    this.poetryTitles.push(titleText);
+                }
+                if (this.poetryTitles.length > 0) {
+                    this.width = this.poetryTitles[0].width * this.poetryTitles.length;
+                    this.height = this.poetryTitles[0].height;
+                }
+            };
+            TitleTextPanel.prototype.addOnToStage = function () {
+                for (var len = this.poetryTitles.length, i = 0; i < len; i++) {
+                    this.poetryTitles[i].x = this.poetryTitles[i].width * i;
+                    this.addChild(this.poetryTitles[i]);
+                    if (this.hasEnterAnim) {
+                        this.enter(this.poetryTitles[i], 100, i * (400 / len), i);
+                    }
+                }
+            };
+            TitleTextPanel.prototype.enter = function (textField, waitTime, time, index) {
+                var _this = this;
+                var tw = egret.Tween.get(textField);
+                textField.anchorOffsetX = 1000;
+                textField.anchorOffsetY = 200;
+                tw.wait(waitTime).to({
+                    anchorOffsetX: 0,
+                    anchorOffsetY: 0
+                }, time);
+                tw.wait(waitTime);
+                for (var i = 5; i > -1; i--) {
+                    tw.to({ scaleX: i * 0.02 + 1, scaleY: i * 0.02 + 1 }, 50).to({
+                        scaleX: 1 - i * 0.02,
+                        scaleY: 1 - i * 0.02
+                    }, 50);
+                    if (index == this.poetryTitles.length - 1 && i == 0) {
+                        tw.call(function () {
+                            _this.dispatchEventWith(SpellPoem.EventKey.TITLE_ANIM_END_EVENT, true);
+                        });
+                    }
+                }
+                egret.Tween.removeTweens(tw);
+            };
+            TitleTextPanel.prototype.destroy = function () {
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                this.poetryTitles.length = 0;
+                this.poetryTitles = null;
+            };
+            return TitleTextPanel;
+        }(egret.Sprite));
+        var TitleAnimationPanel = (function (_super) {
+            __extends(TitleAnimationPanel, _super);
+            function TitleAnimationPanel(w, hasEnterAnim) {
+                if (hasEnterAnim === void 0) { hasEnterAnim = false; }
+                var _this = _super.call(this) || this;
+                _this.hasEnterAnim = hasEnterAnim;
+                _this.bgWidth = w;
+                _this.init();
+                _this.once(egret.Event.ADDED_TO_STAGE, _this.addOnToStage, _this);
+                return _this;
+            }
+            TitleAnimationPanel.prototype.init = function () {
+                this.poetryTitleLeftBg = GameUtil.createBitmapByName("title_left_png");
+                this.poetryTitleRightBg = GameUtil.createBitmapByName("title_right_png");
+                this.width = this.bgWidth + this.poetryTitleLeftBg.width + this.poetryTitleRightBg.width;
+                this.height = this.poetryTitleLeftBg.height;
+            };
+            TitleAnimationPanel.prototype.addOnToStage = function () {
+                this.poetryTitleRightBg.x = this.bgWidth + this.poetryTitleLeftBg.width;
+                this.addChild(this.poetryTitleLeftBg);
+                this.addChild(this.poetryTitleRightBg);
+                if (this.hasEnterAnim) {
+                    this.enter();
+                }
+            };
+            TitleAnimationPanel.prototype.enter = function () {
+                this.poetryTitleLeftBg.scaleX = 0.0;
+                var tw = egret.Tween.get(this.poetryTitleLeftBg);
+                tw.wait(100).to({ scaleX: 1 }, 500, egret.Ease.bounceOut);
+                this.poetryTitleRightBg.scaleX = 0.0;
+                tw = egret.Tween.get(this.poetryTitleRightBg);
+                tw.wait(100).to({ scaleX: 1 }, 500, egret.Ease.bounceOut);
+            };
+            TitleAnimationPanel.prototype.destroy = function () {
+                this.removeChildren();
+                egret.Tween.removeAllTweens();
+                this.poetryTitleLeftBg = null;
+                this.poetryTitleRightBg = null;
+            };
+            return TitleAnimationPanel;
+        }(egret.Sprite));
+    })(SpellPoem || (SpellPoem = {}));
+})(GameSpellPoem || (GameSpellPoem = {}));
+
+var SUBMIT_BUTTON_STATE_CODE = SUBMIT_BUTTON_STATE_CODE || {
+    CAN_NOT_SUBMIT: 'can_not_submit', //不可提交状态
+    CAN_SUBMIT: 'can_submit', //正常可提交状态
+    CAN_MODIFY: 'can_modify', //可修改状态
+    RESET: 'reset', //重新作答
+    FINISH: 'finish', //结束状态
+    SUBMITTING: 'submitting', // 提交中状态，不可修改
+    RETRY_SUBMIT: 'retry_submit', // 提交失败，重新提交
+    MODIFY_SUBMIT: 'modify_submit' //修改后，重新提交
+};
+
+function SpellPoemRemakeService(parent) {
+    this.parent = parent;
+    this.status = {};
+}
+
+SpellPoemRemakeService.prototype = {
+    getQuestionInfo: function() {
+        return {
+            id: this.parent.model.questionId,
+            type_code: 'SpellPoem',
+            type_name: '连字拼诗',
+            url: this.parent.model
+                .questionId,
+            dispatchOnly: true
+        }
+    },
+    setLocationProperties: function(data) {
+        if (!$.isEmptyObject(data)) {
+            this.parent.languageSet = data
+        }
+    },
+    getResult: function() {
+        answerState = true;
+        var answer = {
+            correct_response: [],
+            user_response: [],
+            state: JSON.stringify(this._getState())
+        };
+        var oldAnswer = {
+            answerStatus: 4,
+            state: 'FAILED',
+            value: []
+        };
+
+        answer['RESPONSE_1-1'] = oldAnswer;
+
+        var result = {
+            answer: answer,
+            answerState: answerState,
+            questionId: this.parent.model.questionId
+        };
+        return result;
+    },
+    getStatisticClass: function() {
+        this.parent.logger.debug("SpellPoemRemake getStatisticClass " + this.parent.statisticClass);
+        return this.parent.statisticClass;
+    },
+    //获取全部学生人数
+    _getAllStudents: function() {
+        var options = {
+            order: [{
+                orderProperty: 'seatNumberValue',
+                orderType: 'asc'
+            }, {
+                orderProperty: 'studentNo',
+                orderType: 'asc'
+            }]
+        };
+        var studentList = ClassroomUtils.getCurrentStudents(options);
+        return studentList;
+    },
+    //为每个学生增加提交时间
+    _addStudentSubmitTime: function(submitList, studentList, answers) {
+        var result = [];
+        if (submitList && submitList.length > 0) {
+            var length = submitList.length;
+            for (var i = 0; i < length; i++) {
+                var item = submitList[i];
+                var userId = item.userId;
+                var student = this._getStudentByUserId(userId, studentList);
+                if (student) {
+                    if (answers && answers.length > 0) {
+                        var len = answers.length;
+                        for (var j = 0; j < len; j++) {
+                            if (answers[j].userIds[0] == userId) {
+                                var answer = answers[j] && answers[j].answer && JSON.parse(answers[j].answer);
+                                var state = answer && answer.state && JSON.parse(JSON.parse(answer.state)) || {};
+                                var gameStateData = state && state.gameStateData;
+                                if (gameStateData.isComplete) {
+                                    student.answerStatus = 'finished';
+                                    student.submitTime = gameStateData.game_use_time;
+                                } else {
+                                    student.answerStatus = 'unfinished';
+                                }
+                            }
+                        }
+                    } else {
+                        student.answerStatus = 'unfinished';
+                    }
+                    result.push(student);
+                }
+            }
+        }
+        return result;
+    },
+    //获取学生的信息
+    _getStudentByUserId: function(userId, studentList) {
+        var options = {
+            order: [{
+                orderProperty: 'seatNumberValue',
+                orderType: 'asc'
+            }, {
+                orderProperty: 'studentNo',
+                orderType: 'asc'
+            }]
+        };
+        if (!studentList) {
+            studentList = ClassroomUtils.getCurrentStudents(options);
+        }
+
+        if (userId) {
+            for (var i = 0; i < studentList.length; i++) {
+                var student = studentList[i];
+                if (userId === student.studentId) {
+                    return student;
+                }
+            }
+        }
+    },
+    //获取已完成的学生列表
+    _getFinishStudents: function(submitList) {
+        var result = [];
+        if (submitList && submitList.length > 0) {
+            var length = submitList.length;
+            for (var i = 0; i < length; i++) {
+                var item = submitList[i];
+                if (item.answerStatus == 'finished') {
+                    result.push(item);
+                }
+            }
+        }
+        result.sort(function(a, b) {
+            if (a.submitTime > b.submitTime) {
+                return 1;
+            } else if (a.submitTime < b.submitTime) {
+                return -1;
+            } else {
+                //判断学号是否为数字
+                var numA = parseInt(a.studentNo);
+                var numB = parseInt(b.studentNo);
+                if (isNaN(numA) || isNaN(numB)) {
+                    if (a.studentNo > b.studentNo) {
+                        return 1;
+                    } else if (a.studentNo < b.studentNo) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    if (numA > numB) {
+                        return 1;
+                    } else if (numA < numB) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }
+            }
+        });
+        return result;
+    },
+    //获取已完成的学生的学号信息
+    _getFinishedStudents: function(finishList) {
+        var userIds = [];
+        for (var i = 0; i < finishList.length; i++) {
+            var stu = finishList[i];
+            if (stu && stu.studentId) {
+                userIds.push(stu.studentId);
+            }
+        }
+        return { allrightStu: userIds };
+    },
+    //获取未完成的学生列表
+    _getUnfinishStudents: function(submitList) {
+        var result = [];
+        if (submitList && submitList.length > 0) {
+            var length = submitList.length;
+            for (var i = 0; i < length; i++) {
+                var item = submitList[i];
+                if (item.answerStatus == 'unfinished') {
+                    result.push(item);
+                }
+            }
+        }
+
+        result.sort(function(a, b) {
+            var numA = parseInt(a.studentNo);
+            var numB = parseInt(b.studentNo);
+            if (isNaN(numA) || isNaN(numB)) {
+                if (a.studentNo > b.studentNo) {
+                    return 1;
+                } else if (a.studentNo < b.studentNo) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            } else {
+                if (numA > numB) {
+                    return 1;
+                } else if (numA < numB) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+        return result;
+    },
+    convertDataForStatistics: function(originalData) {
+        var studentList = this._getAllStudents();
+        var value = originalData.value;
+        var users = value.users;
+        var correctAnswerObj = {
+            correctAnswer: this._showStaticAnswer()
+        };
+        var answers = value && value.answers && value.answers[0];
+        var submitList = this._addStudentSubmitTime(users, studentList, answers);
+        var questionType = value.questionType;
+        var finishList = this._getFinishStudents(submitList);
+        var correctUsers = this._getFinishedStudents(finishList);
+        var unFinishList = this._getUnfinishStudents(submitList);
+        submitList = finishList.concat(unFinishList);
+
+        var content = $.extend(true,{},this.parent.model.questionData.items.content);
+        content.sentences = this.parent._getDisplaySentenceArray(content.sentences);
+        var convertedData = {
+            questionType: questionType, //题目类型
+            finished: finishList.length || 0, //已作答人数
+            unfinished: (unFinishList.length) || 0, //未完成人数
+            committed: (submitList.length) || 0, //提交总人数
+            total: studentList.length, //班级总人数
+            elapsedTime: value.elapsedTime || 0, //作业用时
+            submitList: submitList, //学生列表
+            correctAnswer: correctAnswerObj, //正确答案
+            finishList: finishList, //已完成学生列表
+            unFinishList: unFinishList, //未完成学生列表
+            correctUserIds: correctUsers, //正确的学生ID
+            itemMap: content
+        };
+        value.convertedData = convertedData;
+        return originalData;
+    },
+    _showStaticAnswer: function() {
+        var that = this.parent;
+        console.log("start getAnswerContent!");
+        var poetryData = that.getPoetryData();
+
+        if (!poetryData) {
+            console.log("poetryData is null!!!");
+            return [];
+
+        }
+        console.log("start create answer data!");
+        var domArr = [];
+        //  获取古诗的题目
+        var poetryTitle = poetryData.poetry.title;
+        if (!poetryTitle) {
+            console.log("poetryTitle is null!!!");
+            return [];
+        }
+        console.log("create poetryTitle:" + poetryTitle);
+
+        // 获取诗歌的内容计算宽高
+        var ensemble_height = 0; // 全局高度
+        var poetry_height = 0; // 诗歌内容高度
+        var author_height = 0; // 作者内容高度
+        var poetry_border_height = 0; // 诗歌内容边框高度
+        var poetry_border_width = 0; // 诗歌内容边框宽度
+        var poetry_left_margin = 0; // 诗歌左边距宽度
+        var line_width = 0; // 分割线宽度
+        var poetry_width = 0; // 诗歌内容行宽度
+        var poetryAuthorLength = 0;
+        var poetrySentences = poetryData.poetry.sentences;
+        var poetryAuthor = poetryData.poetry.author;
+        if (poetryAuthor) {
+            poetryAuthorLength = poetryAuthor.length * 25;
+        }
+        if (poetrySentences) {
+            var max_sentence_row = poetrySentences.length;
+            console.log("poetrySentences 最大行数:" + max_sentence_row);
+            var count = 0;
+            for (var i = 0; i < max_sentence_row; i++) {
+                var rowCount = poetrySentences[i].length;
+                if (rowCount > count) {
+                    count = rowCount;
+                }
+            }
+            var max_sentence_list = count;
+            console.log("poetrySentences 最大列数:" + max_sentence_list);
+
+            poetry_border_height = 77 * max_sentence_row + 20;
+            if (poetryAuthorLength > poetry_border_height) {
+                poetry_border_height = poetryAuthorLength;
+            }
+            ensemble_height = poetry_border_height + 140;
+            poetry_height = poetry_border_height - 40;
+
+            author_height = poetry_border_height;
+            poetry_border_width = max_sentence_list * 60 + 110;
+            poetry_left_margin = (800 - poetry_border_width) / 2;
+            if ((poetry_border_width + 30 + poetry_left_margin) > 800) {
+                poetry_left_margin = 45;
+            }
+            line_width = poetry_border_width;
+            poetry_width = poetry_border_width - 100;
+
+        } else {
+            console.log("poetrySentences is null!!!");
+        }
+
+        var html = '<div class="spellpoem_css">'
+        html += '<div class="spellpoem_main" style="height:' + ensemble_height + 'px;">';
+        // 计算标题字体大小 var titleFontSize = -(6/5 * poetryTitle.length) + 30;
+        var titleFontSize = 25;
+
+        // 计算标题字体背景宽度
+        var titleWidthSize = (185 * poetryTitle.length + 2560) / 11;
+        var titleBorderWidthSize = titleWidthSize + 200;
+        // 开始添加古诗的标题
+        html += '<div class="spellpoem_title_main" style=" max-width:685px; min-width:500px; width:' +
+            titleBorderWidthSize +
+            'px;"><div class="spellpoem_title" style="max-width:685px; min-width:500px; width:' +
+            titleBorderWidthSize + 'px;"><div class="spellpoem_left"><img src="' + that.basePath +
+            'resources/assets/ui/title_left.png"></div><div class="spellpoem_context" style="max-width:485px; min-width:300px; width:' +
+            titleWidthSize + 'px;"><span style="font-size:' + titleFontSize +
+            'px; border: 0px solid #FF0000; line-height: 50px;">';
+        html += poetryTitle;
+        html += '</span></div><div class="spellpoem_right"><img src="' + that.basePath +
+            'resources/assets/ui/title_right.png"></div></div></div>';
+        // 开始添加古诗的内容
+        html += '<div class="spellpoem_info_main" style="height:' + poetry_border_height +
+            'px; margin-top: 25px">';
+        html += '<div class="spellpoem_info" style="width:' + poetry_border_width + 'px; height:' +
+            poetry_height + 'px; margin-left:' + poetry_left_margin + 'px; box-sizing: content-box"><ul>';
+        if (poetrySentences) {
+            console.log("create poetrySentences!");
+            // 遍历古诗的内容
+            $.each(poetrySentences, function(j, item) {
+                var poetrySentencesValue = item;
+                console.log("poetrySentencesValue:" + poetrySentencesValue);
+                html += '<li class="spellpoem_text" style="width:' + poetry_width + 'px;">';
+                html += poetrySentencesValue;
+                html += '</li>';
+                if (j != max_sentence_row - 1) {
+                    // 古诗不是最后一行
+                    html += '<li class="spellpoem_line" style="width:' + line_width + 'px;"><img src="' +
+                        that.basePath +
+                        'resources/assets/ui/result_line.png" style="display: block;" width="' +
+                        line_width + 'px"></li>';
+                }
+            });
+        }
+        html += '</ul></div>';
+
+        // 添加作者
+        html += '<div class="spellpoem_author" style="height:' + author_height + 'px;">';
+        if (poetryAuthor) {
+            console.log("poetryAuthor:" + poetryAuthor);
+            html += '<div class="spellpoem_author_text" style="height:' + poetryAuthorLength + 'px;">';
+            html += poetryAuthor;
+            html += '</div>'
+        } else {
+            console.log("poetryAuthor is null!!!");
+        }
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        html += '</div>';
+        domArr.push(html);
+        return domArr;
+    },
+    /**
+     * 显示答案
+     * @param answer 需要显示的答案,如果对象为空则显示正确答案
+     */
+    showAnswer: function(showAnswerType, commitedAnswer) {
+        //this.parent.logger.debug();
+        if (this.parent.isStatics) {
+            return this._showStaticAnswer(); //老师端的时候显示答案
+        } else {
+            this.parent.notifyProvideAnswer(); //学生端的时候通知收题
+        }
+    },
+    //将题目重置为未作答状态
+    resetQuestion: function() {
+        // this.parent.logger.debug("CompareRemake resetQuesion "); 清空所有的作答结果 $.each(this.parent.viewModel.items(), function (k,
+        // v) { v.userAnswer('');  }); this.parent._resetAnswerCheck(); this.parent._toggleInteraction(true);
+        this.parent.isStatic = false;
+        GameSpellPoem.Main.setForceAnswer();
+        var stage = window.egret_stages[0];
+        stage.dispatchEventWith("restart_event", false, {});
+    },
+    _getState: function() {
+        var state = JSON.stringify({
+            gameStateData: this.parent.gameStateData,
+            module_id: this.parent.runtimeModel
+                .model.ID
+        });
+        this.parent.logger.debug("SpellPoemRemake getState " + JSON.stringify(state));
+        return state;
+    },
+    getState: function() {
+        this.parent.playerController.startFlow('css_classroom_status_changed', {
+            presenterCode: this.parent.metaInfo
+                .name
+        });
+        return this._getState();
+    },
+    setState: function(state, option) {
+        var currentState;
+        if (state) {
+            currentState = JSON.parse(state);
+            this.parent.gameStateData = currentState.gameStateData;
+            this.parent.isRecovering = true;
+            if (window.egret_stages && window.egret_stages.length > 0 && window.egret_stages[0]) {
+                var stage = window.egret_stages[0];
+                stage.dispatchEventWith("start_set_state", false, {});
+            }
+        } else {
+            this.parent.gameStateData = null;
+            this.parent.isRecovering = false;
+        }
+
+        console.log("setState:" + state);
+    },
+    getClassroomStatus: function() {
+        return this._getState();
+    },
+    setClassroomStatus: function(status) {
+        this.status = status;
+        !!this.status && this.setState(status);
+        this.parent.$dispatchEvent('css_recover_complete', PresenterEventType.IC_PLAYER_EVENT, {
+            presenterCode: this
+                .parent.metaInfo.name
+        });
+    },
+    clearClassroomStatus: function() {
+        this.setClassroomStatus(null);
+    },
+    startStatistics: function() {
+        // 结束答题的时候不清空，退出本题的时候再清空。 修复bug：47603 this.resetQuestion(); this.parent._setStatisticsViewAttr();
+        // this.parent._bindStatisticsView();
+        this.parent.isStatics = true;
+    },
+    //将题目设置为不可作答状态
+    lockQuestion: function() {
+        this.parent.logger.debug("CompareRemake lockQuestion ");
+        GameSpellPoem.Main.setLockState(true);
+    },
+    //将题目设置为可作答状态
+    unlockQuestion: function() {
+        //this.parent.logger.debug("CompareRemake unlockQuestion "); this.parent._toggleInteraction(true);
+        GameSpellPoem.Main.setLockState(false);
+    },
+    //将题目设置为结束作答状态
+    finishQuestion: function() {
+        //this.parent.logger.debug("CompareRemake finishQuestion "); this.parent._toggleInteraction(true);
+    },
+    showResultHint: function() {},
+    setButtonState: function(state) {
+        this.parent.btnState = state;
+    },
+    getButtonState: function() {
+        return this.parent.btnState;
+    },
+    setVisible: function() {}
+};
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/assets/bg/author_bg.png' />
+<file src='./resources/assets/bg/bg.jpg' />
+<file src='./resources/assets/bg/poem_bg.png' />
+<file src='./resources/assets/bg/result_bg.jpg' />
+<file src='./resources/assets/bg/right_answer_bg.png' />
+<file src='./resources/assets/bg/showResult.png' />
+<file src='./resources/assets/bg/title_bg.png' />
+<file src='./resources/assets/bg/wrong_answer_bg.png' />
+<file src='./resources/assets/button/arrow_bottom.png' />
+<file src='./resources/assets/button/arrow_left.png' />
+<file src='./resources/assets/button/arrow_right.png' />
+<file src='./resources/assets/button/arrow_top.png' />
+<file src='./resources/assets/button/confirm.png' />
+<file src='./resources/assets/button/confirm_HK.png' />
+<file src='./resources/assets/button/re_answer.png' />
+<file src='./resources/assets/button/re_answer_HK.png' />
+<file src='./resources/assets/button/start_point_bottom.png' />
+<file src='./resources/assets/button/start_point_bottom_HK.png' />
+<file src='./resources/assets/button/start_point_left.png' />
+<file src='./resources/assets/button/start_point_left_HK.png' />
+<file src='./resources/assets/button/start_point_right.png' />
+<file src='./resources/assets/button/start_point_right_HK.png' />
+<file src='./resources/assets/button/start_point_top.png' />
+<file src='./resources/assets/button/start_point_top_HK.png' />
+<file src='./resources/assets/random_data.json' />
+<file src='./resources/assets/ui/dot.png' />
+<file src='./resources/assets/ui/end_answer_start.json' />
+<file src='./resources/assets/ui/end_answer_start.png' />
+<file src='./resources/assets/ui/restart.png' />
+<file src='./resources/assets/ui/result_border.png' />
+<file src='./resources/assets/ui/result_dot.json' />
+<file src='./resources/assets/ui/result_line.png' />
+<file src='./resources/assets/ui/result_poesy_border.png' />
+<file src='./resources/assets/ui/split.png' />
+<file src='./resources/assets/ui/start.json' />
+<file src='./resources/assets/ui/start.png' />
+<file src='./resources/assets/ui/time/0.png' />
+<file src='./resources/assets/ui/time/1.png' />
+<file src='./resources/assets/ui/time/2.png' />
+<file src='./resources/assets/ui/time/3.png' />
+<file src='./resources/assets/ui/time/4.png' />
+<file src='./resources/assets/ui/time/5.png' />
+<file src='./resources/assets/ui/time/6.png' />
+<file src='./resources/assets/ui/time/7.png' />
+<file src='./resources/assets/ui/time/8.png' />
+<file src='./resources/assets/ui/time/9.png' />
+<file src='./resources/assets/ui/title_left.png' />
+<file src='./resources/assets/ui/title_right.png' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_HK/lang.json' />
+<file src='./resources/resource.json' />
+
+
+</resources>
+
+</addon>

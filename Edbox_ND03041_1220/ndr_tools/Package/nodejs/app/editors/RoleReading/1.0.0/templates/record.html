@@ -1,0 +1,72 @@
+<div class="comui_big_pop pop_w_mid">
+    <div class="comui_pop_bg ">
+
+        <!-- 弹窗内容区 -->
+        <div class="comui_pop_main" >
+            
+            <div class="comui_pop_reading_main">
+                <div class="comui_pop_reading_hd">
+                    <span class="comui_txt"><b translate="recordAdd"></b>{{curSection.section.content}}</span>
+                </div>
+
+                <div class="comui_pop_reading_bd">
+                    <!-- 开始录音的时候 comui_pop_reading__effect 添加 类名 reading_on 来展示动画 播放中 点击暂停或者是停止按钮之后 添加类名 reading_stop -->
+                    <div class="comui_pop_reading__effect" ng-class="recordState === 'recording'?'reading_on': 'reading_stop'" ng-show="recordState !== 'end'">
+                        <div class="reading_effect_bg"></div>
+                        <div class="reading_effect_txt">
+                          <!--   <span ng-bind="voiceTime.splite(':')[0]"></span>
+                            <span>:</span>
+                            <span ng-bind="voiceTime.splite(':')[1]"></span> -->
+                            <span ng-bind="voiceTime"></span>
+                        </div>
+                    </div>
+                    <div class="comui_pop_reading__effect" ng-class="recordAudio.paused === false?'reading_on': 'reading_stop'" ng-show="recordState === 'end'">
+                        <div class="reading_effect_bg"></div>
+                        <div class="reading_effect_txt">
+                          <!--   <span ng-bind="voiceTime.splite(':')[0]"></span>
+                            <span>:</span>
+                            <span ng-bind="voiceTime.splite(':')[1]"></span> -->
+                            <span ng-bind="playTime"></span>
+                        </div>
+                    </div>
+                    <div class="comui_pop_reading__btnbox">                        
+                        <!-- 按钮播放状态加类名play 暂停状态加类名 pause  按钮不能点击态添加类名 click_disabled -->
+                      <!--   <a href="javascript:;" class="comui_round_btn play" ng-click="playRecord()"><span></span></a> -->
+                        <a href="javascript:;" class="comui_round_btn" ng-class="recordAudio.paused || recordAudio.ended?'play':'pause'" ng-show="recordState === 'end'" ng-click="playPauseRecord()"><span></span></a>
+                        <!-- 按钮录音状态加类名 recording  停止状态加类名 stop -->
+                        <a href="javascript:;" class="comui_round_btn recording" ng-show="recordState !== 'recording'" ng-click="startEvent($event)"><span></span></a>
+                        <a href="javascript:;" class="comui_round_btn stop" ng-show="recordState === 'recording'" ng-click="endEvent($event)"><span></span><div class="comui_volume_detection" ng-class="randomVolumn">
+                                <span class="volume_icon_1"></span>
+                                <span class="volume_icon_2"></span>
+                                <span class="volume_icon_3"></span>
+                                <span class="volume_icon_4"></span>
+                                <span class="volume_icon_5"></span>
+                                <span class="volume_icon_6"></span>
+                                <span class="volume_icon_7"></span>
+                                <span class="volume_icon_8"></span>
+                                <span class="volume_icon_9"></span>
+                                <span class="volume_icon_10"></span>
+                                <span class="volume_icon_11"></span>
+                                <span class="volume_icon_12"></span>
+                                <span class="volume_icon_13"></span>
+                            </div></a>
+                        <!-- 不需要显示的按钮加类名 hide_dom 或者是直接移除或设置css display none -->
+                        <a href="javascript:;" class="comui_round_btn addTo" ng-show="recordState === 'end'"  ng-click="changeRecord('end')"><span></span></a>
+
+                    </div>
+                    <audio controls="controls" ng-src="{{sce(recordFile.href)}}" style="display: none">don't support</audio>
+
+                </div> 
+            </div>              
+        </div>
+        <!-- /弹窗内容区 -->
+
+        <!-- 右边关闭按钮 -->
+        <a href="javascript:;" class="comui_btn_close comui_btn_rb" ng-click="changeRecord(recordState)" ng-class="{'click_disabled': recordState === 'recording'}"><span></span></a>
+        <!-- /右边关闭按钮 -->
+
+        <!-- 左边关闭按钮 -->
+        <a href="javascript:;" class="comui_btn_close comui_btn_lb comui_btn_hide"><span></span></a>
+        <!-- /左边关闭按钮 -->
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='RoleReading'>
+<properties>
+
+                <property name="QuestionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="TimerType" displayName="计时类型" type="string" isLocalized="false" />
+                <property name="TimeLimit" displayName="作答时长" type="integer" isLocalized="false" />
+                <property name="QuestionType" displayName="题目类型" type="string" isLocalized="false" />
+                <property name="QuesitonTitle" displayName="标题" type="string" isLocalized="false" />
+                <property name="QuestionContent" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading{height:45em!important;margin:-22.5em 0 0 -40em!important;padding:2em 4em!important}.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading .layout_presenter .layout_presenter_main{height:45em!important;right:0!important}.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading .layout_presenter .layout_presenter_main .com_layout .com_wrapper_board{padding:2em 4em 0 0!important}.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading.class_sta_F_overview .layout_presenter_main{top:0!important;right:0!important}.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading .com_layout{padding:0!important}.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading .com_header_time,.addon_ObjectiveInteractionLayout .layout_containter.statistic-view.question_rolereading .com_layout_header{display:block!important}]]>
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/*!   version: 1.1.0  updated: 2017-07-25 15:41:13   */
+window["AddonRoleReading_create"]=function(modules){var installedModules={};function __webpack_require__(moduleId){if(installedModules[moduleId]){return installedModules[moduleId].exports}var module=installedModules[moduleId]={i:moduleId,l:false,exports:{}};modules[moduleId].call(module.exports,module,module.exports,__webpack_require__);module.l=true;return module.exports}__webpack_require__.m=modules;__webpack_require__.c=installedModules;__webpack_require__.i=function(value){return value};__webpack_require__.d=function(exports,name,getter){if(!__webpack_require__.o(exports,name)){Object.defineProperty(exports,name,{configurable:false,enumerable:true,get:getter})}};__webpack_require__.n=function(module){var getter=module&&module.__esModule?function getDefault(){return module["default"]}:function getModuleExports(){return module};__webpack_require__.d(getter,"a",getter);return getter};__webpack_require__.o=function(object,property){return Object.prototype.hasOwnProperty.call(object,property)};__webpack_require__.p="";return __webpack_require__(__webpack_require__.s=0)}([function(module,exports,__webpack_require__){var Presenter=BasicPresenter.extend({metaInfo:{name:"RoleReading"},run:function(view,model){view.style.display="none";var components=__webpack_require__(2)("./"+model.QuestionType.toLowerCase())(this,model);this.$requireComponent("ComponentLoader",components,$(view),{left:0,top:0,width:0,height:0})}},"RoleReading");module.exports=function(){return new Presenter}},function(module,exports){/*! rolereading */
+module.exports=function(context,model){var modules={layout:"ObjectiveInteractionLayout",controllers:[{presenter:"I18nFilter"},{presenter:"InteractionStateRecoverFilter"},{presenter:"AnswerFlowController",depends:[{property:"TimerService",presenter:"TimerController"}]}],components:[{presenter:"InteractionTimer",renderTo:"TopLeftPanel"},{presenter:"RoleReadingBusiness",renderTo:"CenterPanel"}]};var settings=[{name:"ObjectiveInteractionLayout",type:"string",value:JSON.stringify([{name:"questionType",type:"string",value:model.QuestionType},{name:"specialTemplate",type:"string",value:"true"}])},{name:"InteractionTimer",type:"string",value:JSON.stringify([{name:"view_type",type:"string",value:"new_timer"}])},{name:"TimerController",type:"string",value:JSON.stringify([{name:"timer_type",type:"string",value:model.TimerType},{name:"time_limit",type:"integer",value:model.TimeLimit}])},{name:"AnswerFlowController",type:"string",value:JSON.stringify([{name:"linkQuestionId",type:"string",value:model.QuestionId}])},{name:"RoleReadingBusiness",type:"string",value:JSON.stringify([{name:"QuestionId",type:"string",value:model.QuestionId},{name:"QuestionType",type:"string",value:model.QuestionType},{name:"QuestionContent",type:"string",value:model.QuestionContent}])}];switch(true){case context.isPPTShell:case context.isWeb:case context.isPC:modules.controllers.push({presenter:"ObjectiveStatController"});[].push.apply(modules.controllers,[{presenter:"ClassroomStatusController"},{presenter:"ObjectiveStatisticsRemake",renderTo:"StatisticsPanel"}]);settings.push({name:"ClassroomStatusController",type:"string",value:JSON.stringify([{name:"questionId",type:"string",value:model.QuestionId}])});break;case context.isApp:modules.components.push({presenter:"InteractionSubmitButton",renderTo:"TopRightPanel"});settings.push({name:"InteractionSubmitButton",type:"string",value:JSON.stringify([{name:"can_modify",type:"string",value:true},{name:"linkQuestionType",type:"string",value:model.QuestionType},{name:"linkQuestionId",type:"string",value:model.QuestionId},{name:"view_type",type:"string",value:"new_em_button"}])});break;default:break}settings.push({name:"Components",type:"json",text:JSON.stringify(modules)});return settings}},function(module,exports,__webpack_require__){var map={"./main":0,"./main.js":0,"./rolereading":1,"./rolereading.js":1};function webpackContext(req){return __webpack_require__(webpackContextResolve(req))}function webpackContextResolve(req){var id=map[req];if(!(id+1))throw new Error("Cannot find module '"+req+"'.");return id}webpackContext.keys=function webpackContextKeys(){return Object.keys(map)};webpackContext.resolve=webpackContextResolve;module.exports=webpackContext;webpackContext.id=2}]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

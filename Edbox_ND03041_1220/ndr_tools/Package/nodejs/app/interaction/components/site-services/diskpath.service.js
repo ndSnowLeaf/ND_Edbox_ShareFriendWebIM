@@ -1,0 +1,1 @@
+define(["angularAMD"],function(e){"use strict";e.service("diskpathService",[function(){var e="";return{getFilepath:function(){return e},setFilepath:function(t){return e=t}}}])});

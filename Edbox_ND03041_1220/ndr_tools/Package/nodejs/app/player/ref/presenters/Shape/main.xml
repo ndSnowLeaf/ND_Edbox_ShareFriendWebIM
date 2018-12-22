@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='Shape'>
+  <properties>
+    <property name="text" displayName="text" type="html" isLocalized="false" />
+    <property name="shape" displayName="shape" type="html" isLocalized="false" />
+    <property name="type" displayName="type" type="string" isLocalized="false" />
+    <property name="modulestyle" displayName="modulestyle" type="html" isLocalized="false" />
+    <property name="textstyle" displayName="textstyle" type="html" isLocalized="false" />
+  </properties>
+
+  <css>
+.shape_container{
+	position:absolute;
+    line-height: normal;
+    width: 100%;
+    height: 100%;
+}
+
+.shape_container svg{
+	position:absolute;
+	left: 0;
+	top: 0;
+}
+.shape_container .shape_editor{
+	position:absolute;
+	left: 0;
+	top: 0;
+	border:none;
+}
+.shape_container p{
+    padding: 0px;
+    margin: 0px;
+}
+
+
+  </css>
+
+  <view>
+    <![CDATA[
+        <div class="shape_container"></div>
+    ]]>
+  </view>
+
+  <preview>
+    &lt;div style=&quot;width:100%; &quot;&gt;&lt;/div&gt;
+  </preview>
+
+  <presenter>
+  <![CDATA[
+    function AddonShape_create() {
+
+    var text;
+
+    var presenterLogic = function (view, model, isPreview) {
+    };
+
+    var presenter = function () { };
+
+    presenter.createPreview = function (view, model) {
+        presenter.run(view, model);
+    };
+
+    presenter.run = function (view, model) {
+        presenter.initialize(view, model, false);
+        presenterLogic(view, model, false);
+
+    };
+
+    presenter.initialize = function (view, model, isPreview) {
+        var upgradedModel = presenter.upgradeModel(model);
+        presenter.$view = $(view);
+        createView(view, upgradedModel, isPreview);
+    };
+
+    presenter.upgradeModel = function (model) {
+        return presenter.upgradeEnableLoop(model);
+    };
+
+    presenter.upgradeEnableLoop = function (model) {
+        var upgradedModel = {};
+        $.extend(true, upgradedModel, model); // Deep copy of model object
+
+        if (!upgradedModel["enableLoop"]) {
+            upgradedModel["enableLoop"] = "";
+        }
+        return upgradedModel;
+    };
+
+    function createView(view, model, isPreview) {
+        var container = $(view).find(".shape_container");
+        text = model.text;
+        if(model.shape){
+            $(model.shape).appendTo($(container));
+        }
+        var div = $("<div></div>");
+        div.appendTo($(container));
+        $(div).html(text);
+        $(div).addClass('shape_editor');
+        $(div).attr("style",model.textstyle||'');
+    }
+
+    return presenter;
+    }
+]]>
+  </presenter>
+  <resources>
+  </resources></addon>

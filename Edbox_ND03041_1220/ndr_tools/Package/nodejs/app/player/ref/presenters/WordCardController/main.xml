@@ -1,0 +1,1932 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='WordCardController'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="AlamedaRequire" version="0.3.2" />
+    <javaScript  name="ClassroomUtils" version="2.0.1.1" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_WordCardController .hide_visibility,.exam_skin_wood .chinesegrid .chinesegrid_write_gridnum_single.hide_line .pinyinwrap{visibility:hidden}@font-face{font-family:ndchinesepy;src:url(resources/font/wordcard.ttf) format("truetype");font-weight:400;font-style:normal}.addon_WordCardController .wordcard_jiexi_container .pinyinwrap .word,.addon_WordCardController .wordcard_practice .pinyinwrap .word{font-family:ndchinesepy;letter-spacing:0}*,address,caption,cite,code,dfn,em,i,input,select,textarea,th{font-family:Microsoft YaHei,Helvetica,Arial,sans-serif}.addon_WordCardController .topLayer{z-index:500!important}.addon_WordCardController ._showContainer{position:relative;display:none}.addon_WordCardController ._showContainer.show{display:block!important;z-index:50}.addon_WordCardController ._showContainer.active{z-index:400!important}.addon_WordCardController ._previewContainer{position:relative;display:none}.addon_WordCardController ._previewContainer.show{display:block!important}.addon_WordCardController ._previewContainer.active{z-index:500!important}.addon_WordCardController ._practiseContainer.show{display:inline-block!important;z-index:600!important}.addon_WordCardController ._practiseMask{width:100%;height:100%;z-index:300}.addon_WordCardController .mask-dialog .mask{position:fixed;z-index:1999;top:0;left:0;width:100%;height:100%}.addon_WordCardController .mask-dialog .dialog{position:fixed;left:50%;top:40%;width:500px;height:80px;line-height:80px;margin-left:-250px;color:#fff;font-size:24px;z-index:1999;text-align:center;border-radius:10px;background-color:rgba(0,0,0,.75)}dd,dl,form,h1,h2,h3,h4,h5,h6,ol,p,ul{margin:0}*{box-sizing:border-box;vertical-align:baseline}abbr,fieldset,iframe,img{border:0}a,a:hover,ins{text-decoration:none}del{text-decoration:line-through}input,select{vertical-align:middle}a,input:focus{outline:0}img{border:none;vertical-align:top}address,caption,cite,code,dfn,em,i,th{font-style:normal}ol,ul{padding:0;list-style:none}h1,h2,h3,h4,h5,h6{font-weight:400}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:"";content:none}legend{display:none}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}button,input,select,textarea{outline:0;border:none}textarea{resize:none}table{border-collapse:collapse;border-spacing:0}a,button,img,input,li,textarea{-webkit-tap-highlight-color:rgba(255,255,255,0)}.exam_skin_wood{height:100%}.exam_skin_wood .uedc_preload_img_wordcard_03{display:none;background-image:url(resources/wood/images/card_tab_bg_active.png)}.exam_skin_wood .scrollbar_style_wborder::-webkit-scrollbar{width:.83333em;height:.41667em;background:hsla(0,0%,89%,.5)}.exam_skin_wood .scrollbar_style_wborder::-webkit-scrollbar-thumb{background:url(resources/wood/images/scrollbar_analyse.png) 50% no-repeat;background-size:100% 100%;border-radius:.83333em}.exam_skin_wood .notice_tip_box{position:fixed;z-index:9995;left:0;top:0;right:0;bottom:0;text-align:center}.exam_skin_wood .notice_tip_box .notice_tip_con{padding:1.04167em 1.875em;position:relative;display:inline-block;vertical-align:middle;max-width:36.25em;color:#fff;background:rgba(0,0,0,.7);border-radius:2.08333em}.exam_skin_wood .notice_tip_box .notice_tip_con .notice_tip_text{font-size:1.25em;line-height:1.5}.exam_skin_wood .notice_tip_box:after{display:inline-block;vertical-align:middle;content:"";width:0;height:100%}.exam_skin_wood .displaynone{display:none}.exam_skin_wood .btn_card_close{display:inline-block;position:absolute;z-index:10;right:.25em;top:0;width:2em;height:2.08333em;text-indent:-9999px;background:#d4d4d4;border-bottom-left-radius:.75em;border-top-right-radius:.33333em}.exam_skin_wood .btn_card_close:active{background:#e4e4e4}.exam_skin_wood .btn_card_close:before{content:"";z-index:9;position:absolute;left:.5em;top:.54167em;width:1em;height:1em;background:url(resources/wood/images/card_closebtn.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .word_card_full_screen{z-index:999;position:fixed;left:0;right:0;top:0;bottom:0;text-align:center;pointer-events:none}.exam_skin_wood .word_card_full_screen:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .pratice_pptpop{z-index:1000;position:relative;display:inline-block;background:#fff;vertical-align:middle;pointer-events:auto}.exam_skin_wood .pratice_pptpop .btn_card_close{right:0;border-top-right-radius:0}.exam_skin_wood .pratice_pptpop.wordcard_pad{display:block;z-index:0}.exam_skin_wood .pratice_pptpop_header{position:relative;height:2em;background:#1b1b1b}.exam_skin_wood .pratice_pptpop_header .logo_pptpop{display:inline-block;position:absolute;left:.45833em;top:0;width:2em;height:2em;background:#11b0b6}.exam_skin_wood .pratice_pptpop_header .logo_pptpop:before{content:"";display:inline-block;left:0;top:0;width:2em;height:2em;background:url(resources/wood/images/logo_ppt.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .pratice_pptpop_header .close_pptpop{display:inline-block;position:absolute;right:0;top:0;width:2.29167em;height:2em;background:url(resources/wood/images/pptpop_closebtn.png) 50% no-repeat;background-size:.5em .5em}.exam_skin_wood .pratice_pptpop_footer{padding:.58333em 1em;background:#f1f1f1}.exam_skin_wood .woc_com_layout .com_btn_round,.exam_skin_wood .woc_com_layout .send_to_student,.exam_skin_wood .woc_com_layout .teach_footer_btn{display:inline-block;min-width:7.25em;width:auto;height:auto;padding:0 1.16667em;line-height:2.5em;text-align:center;color:#fff;background:#10b0b6}.exam_skin_wood .woc_com_layout .com_btn_round.click_disabled .com_sdt_word,.exam_skin_wood .woc_com_layout .com_btn_round.click_disabled .text_box,.exam_skin_wood .woc_com_layout .com_btn_round.com_btn_disabled .text_box,.exam_skin_wood .woc_com_layout .send_to_student.click_disabled .com_sdt_word,.exam_skin_wood .woc_com_layout .send_to_student.click_disabled .text_box,.exam_skin_wood .woc_com_layout .send_to_student.com_btn_disabled .text_box,.exam_skin_wood .woc_com_layout .teach_footer_btn.click_disabled .com_sdt_word,.exam_skin_wood .woc_com_layout .teach_footer_btn.click_disabled .text_box,.exam_skin_wood .woc_com_layout .teach_footer_btn.com_btn_disabled .text_box{color:#8d8d8d}.exam_skin_wood .woc_com_layout .com_btn_round .com_sdt_word,.exam_skin_wood .woc_com_layout .send_to_student .com_sdt_word,.exam_skin_wood .woc_com_layout .teach_footer_btn .com_sdt_word{font-size:1.16667em}.exam_skin_wood .woc_com_layout .com_btn_round:active,.exam_skin_wood .woc_com_layout .send_to_student:active,.exam_skin_wood .woc_com_layout .teach_footer_btn:active{background:#09989d}.exam_skin_wood .woc_com_layout .com_btn_round.hover,.exam_skin_wood .woc_com_layout .send_to_student.hover,.exam_skin_wood .woc_com_layout .teach_footer_btn.hover{background:#09ccd3}.exam_skin_wood .woc_com_layout .com_btn_round.click_disabled,.exam_skin_wood .woc_com_layout .com_btn_round.com_btn_disabled,.exam_skin_wood .woc_com_layout .send_to_student.click_disabled,.exam_skin_wood .woc_com_layout .send_to_student.com_btn_disabled,.exam_skin_wood .woc_com_layout .teach_footer_btn.click_disabled,.exam_skin_wood .woc_com_layout .teach_footer_btn.com_btn_disabled{background:#bbb}.exam_skin_wood .woc_com_layout .send_to_student,.exam_skin_wood .woc_com_layout .teach_footer_btn{float:left}.exam_skin_wood .woc_com_layout .com_btn_round .icons_box,.exam_skin_wood .woc_com_layout .send_to_student .com_sdt_pic,.exam_skin_wood .woc_com_layout .teach_footer_btn .com_sdt_pic{display:none}.exam_skin_wood .woc_com_layout .com_btn_round .text_box{color:#fff;font-size:1.16667em}.exam_skin_wood .btn_right_container{float:right}.exam_skin_wood .btn_right_container .teach_footer_btn{float:left;margin-left:.91667em;padding:0 1.33333em}.exam_skin_wood .btn_right_container .teach_footer_btn:first-child{margin-left:0}.exam_skin_wood .wordcard_mask{z-index:999;position:absolute;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,.6);pointer-events:auto}.exam_skin_wood .wordcard{text-align:center;width:100%;height:100%}.exam_skin_wood .wordcard .wordcard_stu_header{position:relative;padding:1.25em 1em 1.33333em;border-bottom:1px solid #dedede;background:#fff;text-align:left}.exam_skin_wood .wordcard .wordcard_stu_header:after{content:"";display:block;position:absolute;width:100%;left:0;bottom:.16667em;height:1px;background:#dedede}.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time>div{display:inline-block;width:auto!important;height:auto!important}.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default{display:inline-block;height:100%;color:#ff9000}.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default .time_m,.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default .time_s,.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default i{display:inline-block;vertical-align:middle;font-size:1.66667em}.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default:before{content:"";display:inline-block;margin-right:.5em;width:2.16667em;height:2.58333em;background:url(resources/wood/images/icon_time.png) 50% no-repeat;background-size:100% auto;vertical-align:middle}.exam_skin_wood .wordcard .wordcard_stu_header .wordcard_time .time_default:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .wordcard .wordcard_practice{display:inline-block;padding:1.875em 3.33333em .41667em}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise{position:relative}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .simutate{display:inline-block;width:21.66667em;margin-right:2.83333em}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .pinyinwrap{position:relative;height:3.875em;margin-bottom:1.58333em}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .pinyinwrap .pinyin{height:100%;text-align:center;color:#333;letter-spacing:.33333em;background:url(resources/wood/images/bg_py_writting.png) repeat-x;background-size:auto 100%}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .pinyinwrap .pinyin .word{font-style:normal;line-height:1.5;font-size:2.25em}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .pinyinwrap .pinyin .color_red{color:#c84747}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .wordwrap_large{position:relative;width:21.625em;height:21.625em;background:url(resources/wood/images/card_wordbg_big.png) no-repeat;background-size:100% 100%}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .wordwrap_mid{position:relative;width:13.20833em;height:13.20833em;background:url(resources/wood/images/card_wordbg_big.png) no-repeat;background-size:100% 100%}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .write{display:inline-block;width:28.08333em;vertical-align:top}.exam_skin_wood .wordcard .wordcard_practice .bh_exercise .write .wordwrap_mid{float:left;margin-left:.75em;margin-bottom:.75em}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .simutate_tool_list{float:left}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .btn_common{float:left;margin-right:1.58333em;margin-top:.54167em;padding:0 1.41667em;height:2.75em;line-height:2.66667em;border:1px solid rgba(0,0,0,.2);background:linear-gradient(180deg,#fff,#e6e6e6);color:#333;text-align:center;border-radius:1.5em}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .btn_common .word{font-size:1.25em}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .btn_common:active{border-color:#ff8400;background-image:linear-gradient(180deg,#fbdcbf,#fffff8)}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .btn_common:active .word{color:#ff8400}.exam_skin_wood .wordcard .wordcard_practice .wordcard_btmtool .write_tool_list{float:right}.exam_skin_wood .write_tool{float:left;margin-left:1.16667em}.exam_skin_wood .write_tool .write_tool_icon{position:relative;display:block;width:4.41667em;height:4.41667em;background:url(resources/wood/images/card_tab_bg.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .write_tool .icon_hb:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_hb.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .write_tool .icon_xpc:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_xpc.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .write_tool .word{display:block;font-style:normal;line-height:1.33333em;font-size:1.16667em;color:#333;text-align:center}.exam_skin_wood .write_tool.on .write_tool_icon,.exam_skin_wood .write_tool:active .write_tool_icon{background:url(resources/wood/images/card_tab_bg_active.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach{position:absolute;left:8.33333em;top:8.33333em;padding-right:9.66667em;border-radius:.83333em;background:#fff;overflow:hidden;border:1px solid #d6d1d1;pointer-events:auto}.exam_skin_wood .wordcard_teach.small_box{-webkit-transform:scale(.82);transform:scale(.82)}.exam_skin_wood .wordcard_teach.off_left{transition:all .5s}.exam_skin_wood .wordcard_teach .cardmain{position:relative;width:17.41667em;height:100%;overflow:hidden;text-align:left;transition:all .5s}.exam_skin_wood .wordcard_teach .cardmain .mainbox{height:100%}.exam_skin_wood .wordcard_teach .cardmain.on{width:43.5em}.exam_skin_wood .wordcard_teach .media{width:0}.exam_skin_wood .wordcard_teach .cardmenu{position:absolute;top:0;right:0;bottom:0;width:9.66667em;border-left:1px solid #d9d9d9;background-image:linear-gradient(90deg,#fefefe,#f2f2f2);border-right:.25em solid #f0a598}.exam_skin_wood .wordcard_teach .cardmenu .menulist{padding-top:2.70833em;margin-right:-.25em;border-bottom:1px solid #bababa}.exam_skin_wood .wordcard_teach .cardmenu .item_menu{height:3.83333em;padding:1px 0;border-top:1px solid #bababa}.exam_skin_wood .wordcard_teach .cardmenu .item_menu.on .menu{color:#fff}.exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu{display:block;height:100%;line-height:3.66667em;color:#333;text-align:center}.exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu .word{font-style:normal;font-size:1.66667em}.exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu .send_word{font-size:1.25em}.exam_skin_wood .wordcard_teach .cardmenu .item_newword{height:3.83333em;padding:1px 0;border-right:.25em solid #be9a3f}.exam_skin_wood .wordcard_teach .cardmenu .item_newword .menu{display:block;height:100%;line-height:3.66667em;font-size:1.5em;color:#333;text-align:center}.exam_skin_wood .wordcard_teach .cardmenu .item_newword.on .menu{color:#fff;background-image:linear-gradient(90deg,#f0e1c0,#e6c065)}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:first-child{border-right:.25em solid #f875a5}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:first-child.on .menu{background-image:linear-gradient(90deg,#f9dbe5,#f097b6)}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(2){border-right:.25em solid #ffbb42}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(2).on .menu{background-image:linear-gradient(90deg,#f8e5cc,#edb559)}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(3){border-right:.25em solid #cdd940}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(3).on .menu{background-image:linear-gradient(90deg,#d8ebb6,#a5d34b)}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(4){border-right:.25em solid #be9a3f}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(5),.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(6){border-right:.25em solid #74baa9}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(4).on .menu{background-image:linear-gradient(90deg,#f0e1c0,#e6c065)}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(5).on .menu,.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(6).on .menu{background-image:linear-gradient(90deg,#c9ece3,#6dcdb6)}.exam_skin_wood .wordcard_teach .cardmenu .btn_send{display:block;position:absolute;right:1em;bottom:1.08333em;width:7.25em;height:2.41667em;line-height:2.41667em;font-size:1em;color:#ff8400;text-align:center;border:1px solid rgba(0,0,0,.2);background-image:linear-gradient(180deg,#fcfcfc,#e6e6e6);border-radius:1.33333em}.exam_skin_wood .wordcard_teach .cardmenu .btn_send:active{background-image:linear-gradient(180deg,#fbdcbf,#fffff8);border:1px solid #ff8400}.exam_skin_wood .wordcard_teach .cardmenu .btn_send .send_word{font-size:1.25em}.exam_skin_wood .wordcard_teach .cardmenu .btn_endpar{padding-left:2.16667em;padding-right:.16667em}.exam_skin_wood .wordcard_teach .cardmenu .btn_endpar .icon_time{display:inline-block;position:absolute;left:.375em;top:.25em;width:1.625em;height:1.75em;background:url(resources/wood/images/icon_time.png) no-repeat;background-size:1.625em auto}.exam_skin_wood .wordcard_teach .cardmenu .btn_endpar .txt{line-height:.91667em;margin-top:.04167em;color:#ff8400;text-align:center}.exam_skin_wood .wordcard_teach .cardmenu .btn_endpar .txt .text{font-size:.83333em}.exam_skin_wood .wordcard_teach .mainbox .main{vertical-align:top;width:17.41667em;height:100%;padding:2.75em 1.25em 0 1.70833em}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap{position:relative;height:2.54167em;padding:0 2.08333em;margin-bottom:1.04167em}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .btn_voice{position:absolute;top:50%;right:0;width:1.58333em;height:1.66667em;margin-top:-.79167em;background:url(resources/wood/images/card_voicebg.png) bottom no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .btn_voice.no_voice{background-position:top;opacity:1!important}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .btn_voice:active{opacity:.6}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .pinyin{height:100%;text-align:center;color:#333;letter-spacing:.33333em;background:url(resources/wood/images/card_pinbg.png) repeat-x;background-size:auto 100%}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .pinyin .word{font-style:normal;line-height:1.5;font-size:1.5em}.exam_skin_wood .wordcard_teach .mainbox .pinyinwrap .pinyin .color_red{color:#c84747}.exam_skin_wood .wordcard_teach .mainbox .wordwrap_mid{position:relative;width:14.45833em;height:14.45833em;margin:0 auto;background:url(resources/wood/images/card_wordbg.png) no-repeat;background-size:auto 100%}.exam_skin_wood .wordcard_teach .footwrap{margin-top:.875em;text-align:center}.exam_skin_wood .wordcard_teach .footwrap .introtxt{margin-bottom:0;line-height:1.375em;text-align:center;color:#333}.exam_skin_wood .wordcard_teach .footwrap .introtxt .word{font-style:normal;font-size:1.25em}.exam_skin_wood .wordcard_teach .footwrap .introtxt .only_word{font-style:normal;font-size:1.5em}.exam_skin_wood .wordcard_teach .footwrap .introtxt .color_red{margin:0 .25em;color:#ff6969}.exam_skin_wood .wordcard_teach .footwrap .switch{position:relative;display:inline-block;background:#999;border:1px solid #999;border-radius:2em;overflow:hidden}.exam_skin_wood .wordcard_teach .footwrap .switch .btn_slider,.exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch.on{background-image:linear-gradient(180deg,#fff,#ededed);border-radius:1.91667em}.exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch{display:inline-block;position:relative;float:left;height:1.91667em;line-height:1.91667em;padding:0 1em;color:#fff}.exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch.on .word,.exam_skin_wood .wordcard_teach .footwrap .switch.type_normal .normal,.exam_skin_wood .wordcard_teach .footwrap .switch.type_slow .slow{color:#333}.exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch .word{font-size:1.25em}.exam_skin_wood .wordcard_teach .footwrap .switch .btn_slider{position:absolute;z-index:9;width:50%;height:100%;transition:left .1s}.exam_skin_wood .wordcard_teach .footwrap .switch.type_normal .btn_slider{left:0}.exam_skin_wood .wordcard_teach .footwrap .switch.type_slow .btn_slider{left:50%}.exam_skin_wood .wordcard_teach .card_middle{position:absolute;top:0;left:17.41667em;display:inline-block;height:100%;padding-top:2.66667em;width:26.04167em;overflow:hidden}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_media_pic,.exam_skin_wood .wordcard_teach .card_middle img{width:100%;height:100%}.exam_skin_wood .wordcard_teach .card_middle .card_media{position:relative;height:100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediastage{width:25em;height:18.125em;border:1px solid #bdbdbd;overflow:hidden}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediastage .mediabox{position:relative;height:100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_pic_content{width:1000em}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_pic_content .media_pic{width:25em;height:18.125em;float:left}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap{position:absolute;width:100%;padding:.375em .33333em 1.125em;background:rgba(0,0,0,.5);transition:bottom .3s ease-out}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap .box_word{display:inline-block;max-height:4.16667em;font-size:.91667em;line-height:1.41667em;letter-spacing:.04167em;color:#fff;word-wrap:break-word;word-break:normal;overflow:hidden;transition:height .3s ease-out}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap .box_btn{display:inline-block;position:absolute;left:50%;margin-left:-.83333em;top:0;margin-top:-.83333em;height:.83333em;width:1.66667em;background:rgba(0,0,0,.5);border-top-left-radius:.83333em;border-top-right-radius:.83333em;cursor:pointer}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap .box_btn:before{content:"";display:inline-block;position:absolute;width:100%;height:200%;background:url(resources/wood/images/icon-down.png) no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap.close{transition:bottom .3s ease-out}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap.close .box_btn{margin-top:-1.375em;height:1.375em}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_word_wrap.close .box_btn:before{width:100%;height:100%;background:url(resources/wood/images/icon-up.png) no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_flicking{position:absolute;right:.41667em;bottom:.16667em;text-align:right}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_flicking a{text-indent:416.625em;display:inline-block;width:.58333em;height:.58333em;margin-right:.58333em;background:#c7c7c7;border-radius:50%;opacity:1;filter:alpha(opacity=20);overflow:hidden}.exam_skin_wood .wordcard_teach .card_middle .card_media .box_flicking a.on{background:#ff8400;opacity:1;filter:alpha(opacity=100)}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .ctrl,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .ctrl{position:absolute;left:0;right:0;bottom:0;padding:0 3.25em;height:2.75em;background:rgba(0,0,0,.5)}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_play,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_play{position:absolute;left:.5em;top:.25em;width:2.25em;height:2.25em;text-indent:-416.625em;text-align:left;background:url(resources/wood/images/card_play.png) no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_play:active,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_play:active{background-position:0 -2.25em}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_play.btn_pause,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_play.btn_pause{background-position:0 -4.5em}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_play.btn_pause:active,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_play.btn_pause:active{background-position:0 -6.75em}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_fullscreen,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_fullscreen{position:absolute;right:.5em;top:.5em;width:1.75em;height:1.75em;text-indent:-416.625em;text-align:left;background:url(resources/wood/images/card_fullscreen.png) no-repeat;background-size:100% auto}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .btn_fullscreen:active,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .btn_fullscreen:active{background-position:0 -1.75em}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .probar,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .probar{position:relative;height:.5em;margin-top:1.125em;border-radius:.25em;background-color:hsla(0,0%,100%,.2)}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio .probar .bar,.exam_skin_wood .wordcard_teach .card_middle .card_media .media_video .probar .bar{position:absolute;left:0;top:0;bottom:0;border-radius:.375em;background-image:linear-gradient(180deg,#5aa9fe,#237bda)}.exam_skin_wood .wordcard_teach .card_middle .card_media .media_radio{background:url(resources/wood/images/pics_audio.png) 0 repeat-x #eaf1fc;background-size:auto 5.20833em}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab{margin-top:.33333em;width:24.875em;text-align:right}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .tab_media_cell{display:inline-block;margin:0 .125em;background:url(resources/wood/images/card_tab_bg.png) 50% no-repeat;background-size:100% 100%;border-radius:50%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .tab_media_cell .tab_media{display:block;width:4.41667em;height:4.41667em}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .tab_media_cell.on,.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .tab_media_cell:active{background:url(resources/wood/images/card_tab_bg_active.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .icon_xing{background:url(resources/wood/images/card_tab_xing.png) 50% no-repeat;background-size:auto 100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .icon_radio{background:url(resources/wood/images/card_tab_radio.png) 50% no-repeat;background-size:auto 100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .icon_pic{background:url(resources/wood/images/card_tab_pic.png) 50% no-repeat;background-size:auto 100%}.exam_skin_wood .wordcard_teach .card_middle .card_media .mediatab .icon_video{background:url(resources/wood/images/card_tab_video.png) 50% no-repeat;background-size:auto 100%}.exam_skin_wood .wordcard_teach .card_middle .card_analyse{position:relative;height:100%}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage{position:relative;width:25em;height:18.08333em;border:1px solid #bdbdbd;overflow:hidden}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .footwrap{padding:.5em 0;margin:0}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list{overflow-y:auto;border-top:2px solid #dfdfdf;height:82%}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .explain_content{padding:0 .41667em}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .explain_tit{padding-top:.75em;padding-left:.41667em;line-height:1.33333em;color:#ff8400}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .explain_tit .word{font-size:1.33333em}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word{padding:.5em 0 .75em .41667em;line-height:1.4;border-bottom:1px dashed #999;color:#333}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word .group_word{position:relative;display:block}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word .title{display:inline-block;position:absolute;left:0;top:0}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word .sentence{display:block}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word .word{font-size:1.5em}.exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list .exlpain_word:last-child{border-bottom:0 none}.exam_skin_wood .wordcard_teach.off_left{left:12.5em}.exam_skin_wood .word_card_full_screen .woc_com_layout,.exam_skin_wood .word_card_full_screen .woc_com_layout_container,.exam_skin_wood .word_card_full_screen .woc_com_layout_main,.exam_skin_wood .word_card_full_screen .woc_com_wrapper{width:100%;height:100%}.exam_skin_wood .word_card_full_screen .woc_com_layout_main{text-align:center}.exam_skin_wood .word_card_full_screen .woc_com_layout_main:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood.stat_wood .btn_card_close,.exam_skin_wood.stat_wood .pratice_pptpop_footer,.exam_skin_wood.stat_wood .wordcard_mask{display:none!important}.exam_skin_wood.stat_wood .pratice_pptpop{background:0 0!important}.exam_skin_wood.stat_wood .woc_com_layout{position:relative;height:100%;overflow:hidden;background:url(resources/wood/images/full_bg.jpg)}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_wrapper{width:80em;height:40.25em;position:absolute;top:50%;left:50%;margin:-22.5em 0 0 -40em;padding:2.25em 3.5em 0;box-sizing:border-box}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_header{display:block!important;position:absolute;left:3.5em;right:3.5em;z-index:2;text-align:center;top:0;background:#f3e3c8;border:1px solid #d3b388;border-bottom-color:#ead6b4;height:2.25em;line-height:2.25em}.exam_skin_wood.stat_wood .woc_com_layout .wordcard_time{position:absolute;color:#796647;left:3.5em;top:0}.exam_skin_wood.stat_wood .woc_com_layout .wordcard_time .time_text{font-size:1.08333em;font-weight:500}.exam_skin_wood.stat_wood .woc_com_layout .wordcard_time>div{display:inline-block;width:auto!important;height:auto!important}.exam_skin_wood.stat_wood .woc_com_layout .time_default{display:inline-block;height:100%}.exam_skin_wood.stat_wood .woc_com_layout .time_default i{display:none}.exam_skin_wood.stat_wood .woc_com_layout .time_m,.exam_skin_wood.stat_wood .woc_com_layout .time_s{font-size:1.08333em}.exam_skin_wood.stat_wood .woc_com_layout .upload{display:inline-block;font-size:.91667em;height:2.25em;line-height:2.25em;color:#796647}.exam_skin_wood.stat_wood .woc_com_layout .upload .num{font-size:1.08333em;color:#ff2704}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_container{position:relative;height:100%;margin:0 auto;padding:0;background:#f8efde;border:1px solid #d3b388;border-top:none;box-sizing:border-box;border-radius:0 0 .83333em .83333em}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom.layout_footbar{z-index:301;position:fixed;display:inline-block;right:3.4em;visibility:hidden}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul{margin:0;padding:0}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul.left{position:absolute;right:64.8em;float:none;display:inline-block;white-space:nowrap;top:0}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-showAnalysis .com_btn_pic{background:url(resources/wood/images/icon_analysis.png);background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-showResult .com_btn_pic{background:url(resources/wood/images/icon_showresult.png);background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-examThisExam .com_btn_pic,.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-exitThisExam .com_btn_pic{background:url(resources/wood/images/icon_exitexam.png);background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-progress .com_btn_pic{background:url(resources/wood/images/icon_progress.png);background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul .footbar-endexam .com_btn_pic{background:url(resources/wood/images/icon_endexam.png);background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom .invisible{display:none!important}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul li{display:inline-block;width:4.08333em;height:4.08333em;text-align:center;color:#0c0701;background:url(resources/wood/images/btn_br_board.png) top no-repeat;background-size:100% auto;text-decoration:none;position:relative;cursor:pointer}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul li .com_btn_pic{display:inline-block;width:2.28333em;height:2.28333em;margin:0 auto;background-size:100% auto}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul li .com_btn_text{display:block;color:#0c0701;font-size:.66667em;line-height:1.25em;font-family:Microsoft YaHei,Helvetica,Arial,sans-serif}.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul li:active,.exam_skin_wood.stat_wood .woc_com_layout .woc_com_layout_bottom ul.statistics_footbar_ul li:hover{background-position:center -4.10417em}.exam_skin_wood .woc_com_wrapper_pad,.exam_skin_wood .woc_com_wrapper_pad .wordcard_pad{height:100%}.exam_skin_wood .woc_com_wrapper_pad .wordcard_practice{padding-top:5em}.exam_skin_wood .word_card_write_tab_box{margin:-.41667em 0 0}.exam_skin_wood .word_card_write_hd{border-bottom:.125em solid #969696;margin:0 .75em;height:2.66667em}.exam_skin_wood .word_card_write_hd .btn_write_hd{display:inline-block;float:left;height:2.66667em;line-height:3.5em;color:#333;width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.exam_skin_wood .word_card_write_hd .btn_write_hd .word{font-size:1em;color:#333}.exam_skin_wood .word_card_write_hd .btn_write_hd.on{border-bottom:.125em solid #ff8400;color:#ff8400}.exam_skin_wood .word_card_write_hd .btn_write_hd.on .word{color:#ff8400}.exam_skin_wood .word_card_write_bd{margin:.83333em 0 0}.exam_skin_wood .word_card_write_bd .btn_write_bd .send_word{font-size:1.25em}.exam_skin_wood .word_card_write_bd .btn_radius_wh{display:inline-block;min-width:5.91667em;height:2.33333em;line-height:2.25em;text-align:center;border:1px solid #d3d3d3;background-image:linear-gradient(180deg,#fefefe,#e9e9e9);border-radius:1.5em;margin:0 .25em;max-width:6.08333em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.exam_skin_wood .word_card_write_bd .btn_radius_wh .word{font-size:1em;color:#333}.exam_skin_wood .word_card_write_bd .btn_radius_wh.on,.exam_skin_wood .word_card_write_bd .btn_radius_wh:active{border-color:#ff8400;background-image:linear-gradient(180deg,#fbdcbf,#fffff8)}.exam_skin_wood .word_card_write_bd .btn_radius_wh.on .word,.exam_skin_wood .word_card_write_bd .btn_radius_wh:active .word{color:#ff8400}.exam_skin_wood .word_card_write_bd .btn_radius_wh.click_disabled{background:#ebebeb;border:1px solid #d3d3d3}.exam_skin_wood .word_card_write_bd .btn_radius_wh.click_disabled .word{color:#b1b1b1}.exam_skin_wood .wordcard_teach{height:29.79167em}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(7){border-right:.25em solid #36b2c9}.exam_skin_wood .chinesegrid .wordwrap:after,.exam_skin_wood .chinesegrid .wordwrap_s:after{right:0;border:.20833em solid #f0a598;left:0;top:0;bottom:0;content:""}.exam_skin_wood .wordcard_teach .cardmenu .item_menu:nth-child(7).on .menu{background-image:linear-gradient(90deg,#d7ecee,#72c1cf)}.exam_skin_wood .chinesegrid,.exam_skin_wood .wordcard_jiexi_container{position:relative;height:100%}.exam_skin_wood .chinesegrid{display:none;width:43.5em;overflow:hidden;text-align:left;opacity:1}.exam_skin_wood .chinesegrid .chinesegrid_main{position:relative;width:43.5em;height:25.125em;text-align:center}.exam_skin_wood .chinesegrid .tzg_main_canvas{z-index:9;position:absolute;left:0;top:0}.exam_skin_wood .chinesegrid .tzg_show_canvas{width:100%;height:100%}.exam_skin_wood .chinesegrid .chinesegrid_write_gridnum_single{display:inline-block;width:10em;margin-top:5.33333em;margin-left:3.16667em}.exam_skin_wood .chinesegrid .chinesegrid_write_gridnum_eight{display:inline-block;margin-top:13.91667em}.exam_skin_wood .chinesegrid .chinesegrid_write_gridnum_eight .wordwrap_s{margin-left:-.20833em}.exam_skin_wood .chinesegrid .pinyinwrap{position:relative;height:3.58333em;margin-bottom:.45833em}.exam_skin_wood .chinesegrid .pinyinwrap .pinyin{height:100%;text-align:center;color:#333;letter-spacing:.33333em;background:url(resources/wood/images/bg_py_writting.png) repeat-x;background-size:auto 100%}.exam_skin_wood .chinesegrid .pinyinwrap .pinyin .word{font-style:normal;line-height:1.5;font-size:1.5em}.exam_skin_wood .chinesegrid .pinyinwrap .pinyin .color_red{color:#c84747}.exam_skin_wood .chinesegrid .wordwrap{position:relative;width:10em;height:10em;background:url(resources/wood/images/write_grid_one.png) 50% no-repeat;background-size:auto 100%}.exam_skin_wood .chinesegrid .wordwrap:after{display:-block;position:absolute}.exam_skin_wood .chinesegrid .wordwrap_s{float:left;position:relative;width:5.20833em;height:5.20833em;background:url(resources/wood/images/write_grid_s.png) 50% no-repeat #fff;background-size:100% 100%}.exam_skin_wood .chinesegrid .wordwrap_s:after{display:block;position:absolute}.exam_skin_wood .chinesegrid .wordwrap_inner{position:absolute;left:0;top:0;width:100%;height:100%;background:url(resources/wood/images/wordwrap_inner.png) 50% no-repeat;background-size:5.04167em 5.04167em}.exam_skin_wood .chinesegrid .chinesegrid_container{position:relative}.exam_skin_wood .chinesegrid .tzg_switch{position:relative;z-index:10}.exam_skin_wood .chinesegrid .tzg_switch.on .tzg_switch_on{display:inline-block}.exam_skin_wood .chinesegrid .tzg_switch.on .tzg_switch_off{display:none}.exam_skin_wood .chinesegrid .tzg_switch.gridhelp_line .tzg_switch_on .tzg_switch_icon{background:url(resources/wood/images/switch_help_on.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .chinesegrid .tzg_switch.gridhelp_line .tzg_switch_off .tzg_switch_icon{background:url(resources/wood/images/switch_help_off.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .chinesegrid .tzg_switch.gridword_show .tzg_switch_on .tzg_switch_icon{background:url(resources/wood/images/switch_show_on.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .chinesegrid .tzg_switch.gridword_show .tzg_switch_off .tzg_switch_icon{background:url(resources/wood/images/switch_show_off.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .chinesegrid .tzg_switch_on{display:none;padding:0 1.45833em 0 .41667em;background:#ffb400}.exam_skin_wood .chinesegrid .tzg_switch_off,.exam_skin_wood .chinesegrid .tzg_switch_on{position:relative;min-width:3.41667em;height:1.45833em;margin-top:.5em;border:.08333em solid #f5f5f5;border-radius:.75em;line-height:1.125em;cursor:pointer}.exam_skin_wood .chinesegrid .tzg_switch_off{display:inline-block;padding:0 .41667em 0 1.45833em;background:#bababa}.exam_skin_wood .chinesegrid .tzg_switch_on .tzg_switch_icon{right:-.33333em;top:-.25em}.exam_skin_wood .chinesegrid .tzg_switch_off .tzg_switch_icon{left:-.33333em;top:-.25em}.exam_skin_wood .chinesegrid .tzg_switch_icon{display:inline-block;position:absolute;width:1.83333em;height:1.83333em}.exam_skin_wood .chinesegrid .tzg_switch_text{font-size:.58333em;color:#fff}.exam_skin_wood .chinesegrid .chinesegrid_show{z-index:10;position:absolute;left:1.66667em;top:.83333em;display:inline-block;width:7.29167em}.exam_skin_wood .chinesegrid .chinesegrid_show .wordwrap{width:7.29167em;height:7.29167em}.exam_skin_wood .chinesegrid .chinesegrid_show .wordwrap_inner{background-size:3.625em 3.625em}.exam_skin_wood .chinesegrid .chinesegrid_show .pinyinwrap{height:2.58333em}.exam_skin_wood .chinesegrid .chinesegrid_btm{position:absolute;left:0;bottom:0;width:100%;height:4.625em;border-top:1px solid #d5d5d5}.exam_skin_wood .chinesegrid .gridmode_option{float:left;position:relative;height:100%;padding:1.16667em 1em 0;border-right:.08333em dashed hsla(0,0%,67%,.3)}.exam_skin_wood .chinesegrid .gridmode_option.on .gridmode_line,.exam_skin_wood .chinesegrid .gridmode_option:active .gridmode_line{opacity:.7}.exam_skin_wood .chinesegrid .gridmode_option.on:before,.exam_skin_wood .chinesegrid .gridmode_option:active:before{z-index:-1;content:"";display:inline-block;position:absolute;left:0;right:0;top:.08333em;bottom:.04167em;background:#c0e8f2;background:radial-gradient(#c0e8f2 0,#b9e0e9 61%,#afd4dd 100%)}.exam_skin_wood .chinesegrid .chinesegrid_writetool_list{float:left;position:relative;height:100%}.exam_skin_wood .chinesegrid .chinesegrid_writetool_list .write_tool{position:relative;margin-left:1em;margin-top:.54167em}.exam_skin_wood .chinesegrid .chinesegrid_writetool_list .write_tool .write_tool_icon{width:3.66667em;height:3.66667em}.exam_skin_wood .chinesegrid .gridmode_container{height:100%;padding-left:.75em}.exam_skin_wood .chinesegrid .gridmode_line{position:absolute;left:0;right:0;top:.375em;margin:0 auto;display:inline-block;width:2.70833em;height:.58333em;background:url(resources/wood/images/icon_pinbg.png) repeat-x;background-size:auto 100%;opacity:.3}.exam_skin_wood .chinesegrid .gridmode_grid{position:relative;float:left;width:2.70833em;height:2.70833em;background:url(resources/wood/images/icon_grid_one.png) 50% no-repeat #fff;background-size:100% 100%}.exam_skin_wood .chinesegrid .gridmode_grid:after{content:"";position:absolute;display:block;left:0;right:0;top:0;bottom:0;border:.125em solid #f0a598}.exam_skin_wood .chinesegrid .gridmode_eight{padding-left:1.125em}.exam_skin_wood .chinesegrid .gridmode_eight .gridmode_grid{margin-left:-.16667em}.exam_skin_wood .chinesegrid .xpc_type_container{z-index:10;position:absolute;padding:.20833em .25em 0;bottom:3.58333em;right:-.58333em;height:5.70833em;border-radius:.83333em;white-space:nowrap;background:url(resources/wood/images/xpc_pop_bg.png) repeat-x;background-size:auto 100%}.exam_skin_wood .chinesegrid .xpc_type_container:before{content:"";z-index:1;position:absolute;left:0;top:0;width:1.04167em;height:5.70833em;background:url(resources/wood/images/xpc_pop_left.png) no-repeat;background-size:auto 100%}.exam_skin_wood .chinesegrid .xpc_type_container:after{content:"";z-index:1;position:absolute;right:0;top:0;width:2.91667em;height:5.70833em;background:url(resources/wood/images/xpc_pop_right.png) no-repeat;background-size:auto 100%}.exam_skin_wood .chinesegrid .xpc_type_btn{position:relative;z-index:10;display:inline-block;margin:0 .25em;text-align:center}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_clearall .xpc_type_icon{background:url(resources/wood/images/xpc_type_clearall_normal.png) 50% no-repeat;background-size:3.58333em 2.75em}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_clearall:active .xpc_type_icon{background:url(resources/wood/images/xpc_type_clearall_active.png) 50% no-repeat;background-size:3.58333em 2.75em}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_clearall:active .xpc_type_word{border-radius:1.25em;color:#333;background:linear-gradient(180deg,#b1d2da 0,#c0e8f2 13.3%,#c0e8f2)}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_ordi .xpc_type_icon{background:url(resources/wood/images/xpc_type_ordi_normal.png) 50% no-repeat;background-size:3.58333em 2.75em}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_ordi:active .xpc_type_icon{background:url(resources/wood/images/xpc_type_ordi_active.png) 50% no-repeat;background-size:3.58333em 2.75em}.exam_skin_wood .chinesegrid .xpc_type_btn.xpc_ordi:active .xpc_type_word{border-radius:1.25em;color:#333;background:linear-gradient(180deg,#b1d2da 0,#c0e8f2 13.3%,#c0e8f2)}.exam_skin_wood .chinesegrid .xpc_type_icon{display:block;width:100%;height:2.75em}.exam_skin_wood .chinesegrid .xpc_type_word{display:inline-block;padding:0 .41667em;line-height:1.08333em;height:1.25em;color:#b9b9b9}.exam_skin_wood .chinesegrid .xpc_type_word .text{font-size:.75em;font-style:normal}.exam_skin_wood .chinesegrid .chinesegrid_pop{z-index:500;position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(0,0,0,.45);text-align:center}.exam_skin_wood .chinesegrid .chinesegrid_pop:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.exam_skin_wood .chinesegrid .chinesegrid_prom{display:inline-block;width:23.66667em;padding:1.83333em 0 1.41667em;border-radius:.83333em;background:#fff;text-align:center;color:#333}.exam_skin_wood .chinesegrid .gridprom_text{padding:0 2em;margin-bottom:1.41667em}.exam_skin_wood .chinesegrid .gridprom_text .text{font-size:1.5em;line-height:1.6}.exam_skin_wood .chinesegrid .btn_gridprom_tip{display:inline-block;padding:0 1.83333em;margin:0 1.08333em;min-width:7.5em;height:2.33333em;line-height:2.25em;background:linear-gradient(180deg,#fefefe 0,#f2f2f2);border:1px solid #eaeaea;border-radius:1.25em;cursor:pointer}.exam_skin_wood .chinesegrid .btn_gridprom_tip.color_light{color:#ffa200}.exam_skin_wood .chinesegrid .btn_gridprom_tip:active{background:linear-gradient(180deg,#f2f2f2 0,#fefefe)}.typefaces_ru_RU .exam_skin_wood .wordcard_teach{word-wrap:break-word;word-break:break-word}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu{line-height:normal}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .item_menu .menu .word{display:inline-block;vertical-align:middle;max-width:94%;font-size:1.25em;line-height:1}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .btn_send{height:2.61667em;bottom:.5833em;width:8.8em;left:50%;margin-left:-4.4em;line-height:0}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .btn_send:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .cardmenu .btn_send .send_word{display:inline-block;vertical-align:middle;font-size:1em;line-height:1;max-width:94%}.typefaces_ru_RU .exam_skin_wood .word_card_write_bd,.typefaces_ru_RU .exam_skin_wood .wordcard_teach .footwrap{margin-top:.4em}.typefaces_ru_RU .exam_skin_wood .chinesegrid .chinesegrid_prom{width:26em}.typefaces_ru_RU .exam_skin_wood .word_card_write_bd .btn_radius_wh{white-space:normal;line-height:0}.typefaces_ru_RU .exam_skin_wood .word_card_write_bd .btn_radius_wh:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .word_card_write_bd .btn_radius_wh .word{display:inline-block;vertical-align:middle;max-width:94%;line-height:1;font-size:.916667em}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .footwrap{padding:.35em 0 0;line-height:0;height:3.1em}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .footwrap .switch{max-width:20em}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch{max-width:50%;height:2.31667em}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .footwrap .switch .btn_switch .word{display:inline-block;vertical-align:middle;line-height:1;font-size:1em}.typefaces_ru_RU .exam_skin_wood .wordcard_teach .card_middle .card_analyse .analyse_stage .explain_list{height:14.98333em}.exam_skin_wood .ec_com_media{width:24.16667em}.exam_skin_wood .ec_com_media .ec_carousel{display:inline-block;position:relative;width:100%;height:15.25em;overflow:hidden}.exam_skin_wood .ec_com_media .ec_carousel .carousel_content{position:relative;width:400%;height:100%;font-size:0}.exam_skin_wood .ec_com_media .ec_carousel .carousel_content ul{width:100%;height:100%}.exam_skin_wood .ec_com_media .ec_carousel .carousel_content li{display:inline-block;width:25%;height:100%}.exam_skin_wood .ec_com_media .ec_carousel .carousel_content img{width:100%;height:100%}.exam_skin_wood .ec_com_media .ec_carousel .carousel_points_group{position:absolute;z-index:10;right:1.45833em;bottom:.29167em}.exam_skin_wood .ec_com_media .ec_carousel .carousel_points_group a{display:inline-block;width:.33333em;height:.33333em;margin:0 .16667em;border-radius:50%;background-color:rgba(255,132,0,.4);cursor:pointer}.exam_skin_wood .ec_com_media .ec_carousel .carousel_points_group a.on{background-color:#ff8400}.exam_skin_wood .ec_com_media .ec_video{display:inline-block;width:100%;height:15.25em}.exam_skin_wood .ec_com_media .media_pic_remark{position:absolute;width:100%;bottom:0;left:0;padding:.33333em .5em .91667em;font-size:1.04167em;line-height:1.45833em;color:#fff;background-color:rgba(51,51,51,.5)}.exam_skin_wood .ec_com_media .media_pic_remark .turn_up_down{position:absolute;display:block;left:50%;bottom:100%;width:1.66667em;height:.83333em;-webkit-transform:translate(-50%);transform:translate(-50%);border-radius:1.66667em 1.66667em 0 0;background-color:rgba(51,51,51,.5)}.exam_skin_wood .ec_com_media .media_pic_remark .turn_up_down span{position:absolute;left:50%;-webkit-transform:translate(-50%) rotate(180deg);transform:translate(-50%) rotate(180deg);top:.625em;width:1.5em;height:.83333em;background:url(resources/wood/images/tri.png) bottom no-repeat;background-size:33% auto}.exam_skin_wood .ec_com_media .media_pic_remark.hide{width:1.66667em;left:50%;margin-left:-.83333em;padding-bottom:.20833em}.exam_skin_wood .ec_com_media .media_pic_remark.hide p{display:none}.exam_skin_wood .ec_com_media .media_pic_remark.hide span{-webkit-transform:translate(-50%);transform:translate(-50%);top:.58333em;background-position:top}.exam_skin_wood .ec_com_media .media_switch{position:relative;left:-.25em;margin-top:.58333em}.exam_skin_wood .ec_com_media .switch_carousel,.exam_skin_wood .ec_com_media .switch_video{position:relative;display:inline-block;width:4.41667em;height:4.41667em;margin-right:.5em;background:url(resources/wood/images/card_tab_bg.png) no-repeat;background-size:100% 100%;cursor:pointer}.exam_skin_wood .ec_com_media .switch_carousel.on,.exam_skin_wood .ec_com_media .switch_carousel:active,.exam_skin_wood .ec_com_media .switch_video.on,.exam_skin_wood .ec_com_media .switch_video:active{background:url(resources/wood/images/card_tab_bg_active.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ec_com_media .media_switch span{position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%);width:3.625em;height:3.625em}.exam_skin_wood .ec_com_media .switch_carousel span{background:url(resources/wood/images/card_tab_pic.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ec_com_media .switch_video span{background:url(resources/wood/images/card_tab_video.png) no-repeat;background-size:100% 100%}.exam_skin_wood .ec_com_media.only_carousel .en_card_video,.exam_skin_wood .ec_com_media.only_carousel .media_switch{display:none}.exam_skin_wood .ec_com_word_show{position:relative;display:inline-block;padding-top:.66667em;width:100%;min-height:5.5em;background-size:auto 100%}.exam_skin_wood .ec_com_word_show em{font:3.41667em Microsoft YaHei}.exam_skin_wood .ec_com_word_show .word_audio{display:none;position:absolute;right:-.83333em;top:1.66667em;width:2em;height:2.16667em;background:url(resources/wood/images/card_voicebg.png) 0 -2.58333em no-repeat;background-size:100% auto;cursor:pointer}.exam_skin_wood .ec_com_word_show .word_audio:active{opacity:.6}.exam_skin_wood .ec_com_word_show .word_audio.disabled:active{opacity:1}.exam_skin_wood .ec_com_word_show .word_audio.disabled{background-position:0 0;background-size:100% auto;cursor:default}.exam_skin_wood .ec_com_phonetic{display:inline-block;width:24.16667em;color:rgba(0,0,0,.8)}.exam_skin_wood .ec_com_phonetic .com_phonetic_en,.exam_skin_wood .ec_com_phonetic .com_phonetic_us{display:block;padding-right:.83333em}.exam_skin_wood .ec_com_phonetic .ec_phonetic_txt{display:inline-block;vertical-align:middle;margin-right:.41667em;font:2.16667em Microsoft YaHei}.exam_skin_wood .ec_com_phonetic .word_audio{display:inline-block;vertical-align:bottom;width:2em;height:2.16667em;margin-bottom:.16667em;background:url(resources/wood/images/card_voicebg.png) 0 -2.58333em no-repeat;background-size:100% auto;cursor:pointer}.exam_skin_wood .ec_com_phrase,.exam_skin_wood .ec_com_sentences,.exam_skin_wood .ec_com_transform{width:20.83333em}.exam_skin_wood .ec_com_phonetic .word_audio:active{opacity:.6}.exam_skin_wood .ec_com_phonetic .word_audio.disabled:active{opacity:1}.exam_skin_wood .ec_com_phonetic .word_audio.disabled{background-position:0 0;background-size:100% auto;cursor:default}.exam_skin_wood .ec_com_definition{display:inline-block;min-width:24.16667em;max-width:25.83333em;color:rgba(0,0,0,.8)}.exam_skin_wood .ec_com_phrase p em,.exam_skin_wood .ec_com_sentences p em,.exam_skin_wood .show_sentences .ec_com_word_show em span{color:#ff8400}.exam_skin_wood .ec_com_definition span{font:2.08333em Microsoft YaHei}.exam_skin_wood .ec_com_transform p{font:1.79167em Microsoft YaHei;line-height:3.04167em}.exam_skin_wood .ec_com_phrase p{font:1.79167em Microsoft YaHei}.exam_skin_wood .ec_com_phrase p span:first-child{margin-right:.91667em}.exam_skin_wood .ec_com_sentences li{padding-left:0}.exam_skin_wood .ec_com_sentences p{font:1.79167em Microsoft YaHei;word-wrap:break-word}.exam_skin_wood .ec_com_sentences .en_sentence a{display:inline-block;width:.83333em;height:.91667em;margin-left:.41667em;vertical-align:middle;background:url(resources/wood/images/card_voicebg.png) 0 -1.16667em no-repeat;background-size:100% auto;cursor:pointer}.exam_skin_wood .ec_com_sentences .en_sentence a:active{opacity:.6}.exam_skin_wood .ec_com_sentences .en_sentence a.disabled:active{opacity:1}.exam_skin_wood .ec_com_sentences .en_sentence a.disabled{background-size:100% auto;background-position:0 0;cursor:default}.exam_skin_wood .hide_dom{display:none}.exam_skin_wood .english_card_wrapper{position:absolute;left:4.16667em;top:2.08333em;height:41.66667em;padding-right:9.66667em;border-radius:.83333em;background:#fff;overflow:hidden;border:1px solid #d6d1d1;box-shadow:.04167em .20833em .625em .08333em #bbb;text-align:left}.exam_skin_wood .english_card_wrapper .btn_card_close{display:inline-block;position:absolute;z-index:10;right:.25em;top:0;width:2em;height:2.08333em;text-indent:-9999px;background:#d4d4d4;border-bottom-left-radius:.75em;border-top-right-radius:.33333em}.exam_skin_wood .english_card_main.hide_right .detail_info_right,.exam_skin_wood .show_sentences .com_phonetic_wrap{display:none}.exam_skin_wood .english_card_wrapper .btn_card_close:active{background:#e4e4e4}.exam_skin_wood .english_card_wrapper .btn_card_close:before{content:"";z-index:9;position:absolute;left:.5em;top:.54167em;width:1em;height:1em;background:url(resources/wood/images/card_closebtn.png) 50% no-repeat;background-size:100% 100%}.exam_skin_wood .english_card_main{padding:0 1.08333em 0 2.70833em;height:100%;min-width:52.5em;overflow:auto}.exam_skin_wood .english_card_main.hide_right{min-width:26em}.exam_skin_wood .english_card_main.hide_right .english_card_main_wrap{padding:0}.exam_skin_wood .english_card_main .english_card_main_wrap{position:relative;height:100%;width:100%;padding-right:23em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_scroll{overflow-y:auto;overflow-x:hidden}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_scroll::-webkit-scrollbar{width:.58333em;height:.58333em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_left .com_phonetic_wrap .ec_com_phonetic,.exam_skin_wood .show_sentences .english_card_main_wrap .detail_info_left{width:100%}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_scroll::-webkit-scrollbar-track{height:100%;background-color:hsla(0,0%,89%,.5)}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_scroll::-webkit-scrollbar-thumb{border:.58333em solid transparent;border-image:url(resources/wood/images/bg_detail_info_scroll.png) 9 9}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_media{float:left;margin-top:.83333em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_left{min-width:20.83333em;max-width:46.25em;position:relative;word-break:break-word}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_left .com_definition_wrap{margin-top:.33333em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_left .com_phonetic_wrap{margin-top:.16667em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_right{position:absolute;top:1.25em;right:0;height:38.33333em;border:1px solid #bdbdbd;border-radius:1px;margin-left:1.25em}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_right ul li{padding-left:.91667em;padding-top:.91667em;padding-bottom:.91667em;border-bottom:1px dashed #bdbdbd}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_right ul li:first-child{padding-top:0;padding-bottom:0}.exam_skin_wood .english_card_main .english_card_main_wrap .detail_info_right ul li:last-child{border-bottom:none}.exam_skin_wood .show_sentences.english_card_wrapper{height:36.95833em}.exam_skin_wood .show_sentences .english_card_main{padding:2.5em 1.41667em 0 3.16667em}.exam_skin_wood .english_card_junior .english_card_main_wrap,.exam_skin_wood .english_card_middle .english_card_main_wrap,.exam_skin_wood .show_sentences .english_card_main_wrap{padding:0}.exam_skin_wood .show_sentences .english_card_main_wrap .detail_info_right{margin-top:.91667em;height:15.41667em}.exam_skin_wood .show_sentences .ec_com_word_show{padding-top:0}.exam_skin_wood .show_sentences .com_definition_wrap{margin-top:.41667em!important;margin-bottom:2.5em}.exam_skin_wood .show_sentences .ec_com_definition span{font-size:2.08333em}.exam_skin_wood .show_sentences .media_pic_remark{display:none!important}.exam_skin_wood .english_card_junior .detail_info_right,.exam_skin_wood .english_card_junior .english_card_menu .btn_start_practice,.exam_skin_wood .english_card_junior .english_card_menu .menu_list .phrase,.exam_skin_wood .english_card_junior .english_card_menu .menu_list .sentences,.exam_skin_wood .english_card_junior .english_card_menu .menu_list .transform,.exam_skin_wood .english_card_middle .detail_info_right,.exam_skin_wood .english_card_middle .english_card_menu .menu_list .phrase,.exam_skin_wood .english_card_middle .english_card_menu .menu_list .sentences,.exam_skin_wood .english_card_middle .english_card_menu .menu_list .transform,.exam_skin_wood .show_sentences .english_card_menu .phonetic,.exam_skin_wood .show_sentences .english_card_menu .phrase,.exam_skin_wood .show_sentences .english_card_menu .transform{display:none}.exam_skin_wood .show_sentences .detail_info_right{float:left;position:relative!important;top:0!important}.exam_skin_wood .show_sentences .english_card_menu .definition{border-top:1px solid #bababa}.exam_skin_wood .english_card_junior .english_card_main,.exam_skin_wood .english_card_middle .english_card_main{min-width:26em}.exam_skin_wood .english_card_menu{position:absolute;top:0;right:0;bottom:0;width:9.66667em;border-left:1px solid #d9d9d9;background-image:linear-gradient(90deg,#fefefe,#f2f2f2);border-right:.25em solid #f0a598}.exam_skin_wood .english_card_menu .menu_list{padding-top:5em;margin-right:-.25em}.exam_skin_wood .english_card_menu .item_menu{height:3.70833em;border-bottom:1px solid #bababa;border-top:1px solid #fff}.exam_skin_wood .english_card_menu .item_menu.on .menu{color:#fff}.exam_skin_wood .english_card_menu .item_menu .menu{display:block;height:100%;line-height:3.66667em;color:#333;text-align:center}.exam_skin_wood .english_card_menu .item_menu .menu .word{font-style:normal;font-size:1.5em}.exam_skin_wood .english_card_menu .phonetic{border-top:1px solid #bababa;border-right:.25em solid #f875a5}.exam_skin_wood .english_card_menu .phonetic.on .menu{background-image:linear-gradient(90deg,#f9dbe5,#f875a5)}.exam_skin_wood .english_card_menu .definition{border-right:.25em solid #ffbb42}.exam_skin_wood .english_card_menu .definition.on .menu{background-image:linear-gradient(90deg,#f8e5cc,#ffbd48)}.exam_skin_wood .english_card_menu .media{border-right:.25em solid #cdd940}.exam_skin_wood .english_card_menu .media.on .menu{background-image:linear-gradient(90deg,#d8ebb6,#c3ff50)}.exam_skin_wood .english_card_menu .transform{border-right:.25em solid #be9a3f}.exam_skin_wood .english_card_menu .transform.on .menu{background-image:linear-gradient(90deg,#f0e1c0,#be9a3f)}.exam_skin_wood .english_card_menu .phrase{border-right:.25em solid #74baa9}.exam_skin_wood .english_card_menu .phrase.on .menu{background-image:linear-gradient(90deg,#c9ece3,#6dcdb6)}.exam_skin_wood .english_card_menu .sentences{border-right:.25em solid #98ba74}.exam_skin_wood .english_card_menu .sentences.on .menu{background-image:linear-gradient(90deg,#e3ece0,#98ba74)}.exam_skin_wood .english_card_menu .btn_all_hide,.exam_skin_wood .english_card_menu .btn_all_show,.exam_skin_wood .english_card_menu .btn_start_practice{display:block;position:absolute;right:1em;width:7.25em;height:2.41667em;line-height:2.41667em;font-size:1em;text-align:center;box-shadow:0 0 .125em .125em #e1e1e1;background-image:linear-gradient(180deg,#fcfcfc,#e6e6e6);border-radius:1.33333em}.exam_skin_wood .english_card_menu .btn_all_hide:active,.exam_skin_wood .english_card_menu .btn_all_show:active,.exam_skin_wood .english_card_menu .btn_start_practice:active{background-image:linear-gradient(0deg,#fcfcfc,#e6e6e6)}.exam_skin_wood .english_card_menu .btn_all_hide,.exam_skin_wood .english_card_menu .btn_all_show{color:#323232;bottom:7.08333em}.exam_skin_wood .english_card_menu .btn_start_practice{color:#ff8400;bottom:2.58333em}.exam_skin_wood .english_card_menu .btn_start_practice.click_disabled{cursor:default;background:#b3b3b3;color:#fefefe}.exam_skin_wood .english_card_menu .btn_start_practice.com_btn_disabled{cursor:default;color:#c3c3c3;background:linear-gradient(90deg,#f3f3f3,#f0f0f0)}.exam_skin_wood .en_card_bottom_tool{position:absolute;bottom:.20833em;left:4em;right:4em;text-align:center;height:4.375em;z-index:100;pointer-events:none}.exam_skin_wood .en_card_left_btns{float:left}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list,.exam_skin_wood .en_card_right_btns{float:right}.exam_skin_wood .en_card_left_btns,.exam_skin_wood .en_card_right_btns{display:inline-block}.exam_skin_wood .en_card_left_btns .send_to_student .ndui-btn-pic:before,.exam_skin_wood .en_card_right_btns .send_to_student .ndui-btn-pic:before{top:.41667em;background:url(resources/wood/images/send_student.png) top no-repeat;background-size:100% auto}.exam_skin_wood .en_card_left_btns .ndui-btn-text,.exam_skin_wood .en_card_right_btns .ndui-btn-text{font-size:.66667em}.exam_skin_wood .en_card_left_btns .ndui-btn-pic,.exam_skin_wood .en_card_right_btns .ndui-btn-pic{width:3.5em;height:3.5em}.exam_skin_wood .en_card_left_btns .ndui-btn-pic:before,.exam_skin_wood .en_card_right_btns .ndui-btn-pic:before{width:2.33333em;height:2.5em;margin-left:-1.16667em;top:.33333em}.exam_skin_wood .en_card_left_btns .ndui-btn-square,.exam_skin_wood .en_card_right_btns .ndui-btn-square{pointer-events:auto}.exam_skin_wood .ec_com_media_carousel{position:relative;display:inline-block;width:24.16667em}.exam_skin_wood .ec_com_media_carousel .ec_carousel{display:inline-block;position:relative;width:100%;height:15.25em;overflow:hidden}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_content{position:relative;width:400%;height:100%;font-size:0}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_content ul{width:100%;height:100%}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_content li{display:inline-block;width:25%;height:100%}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_content img{width:100%;height:100%}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_points_group{position:absolute;z-index:10;right:1.45833em;bottom:.29167em}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_points_group a{display:inline-block;width:.33333em;height:.33333em;margin:0 .08333em;border-radius:50%;background-color:rgba(255,132,0,.4);cursor:pointer}.exam_skin_wood .ec_com_media_carousel .ec_carousel .carousel_points_group a.on{background-color:#ff8400}.exam_skin_wood .ec_com_media_carousel .media_pic_remark{position:absolute;width:100%;bottom:0;left:0;padding:.33333em .5em .91667em;font-size:1.04167em;line-height:1.45833em;color:#fff;background-color:rgba(51,51,51,.5)}.exam_skin_wood .ec_com_media_carousel .media_pic_remark p{white-space:normal}.exam_skin_wood .ec_com_media_carousel .media_pic_remark .turn_up_down{position:absolute;display:block;left:50%;bottom:100%;width:1.66667em;height:.83333em;-webkit-transform:translate(-50%);transform:translate(-50%);border-radius:1.66667em 1.66667em 0 0;background-color:rgba(51,51,51,.5)}.exam_skin_wood .ec_com_media_carousel .media_pic_remark .turn_up_down span{position:absolute;left:50%;-webkit-transform:translate(-50%) rotate(180deg);transform:translate(-50%) rotate(180deg);top:.625em;width:1.5em;height:.83333em;background:url(resources/wood/images/tri.png) bottom no-repeat;background-size:33% auto}.exam_skin_wood .ec_com_media_carousel .media_pic_remark.hide{width:1.66667em;left:50%;margin-left:-.83333em;padding-bottom:.20833em}.exam_skin_wood .ec_com_media_carousel .media_pic_remark.hide p{display:none}.exam_skin_wood .ec_com_media_carousel .media_pic_remark.hide span{-webkit-transform:translate(-50%);transform:translate(-50%);top:.58333em;background-position:top}.exam_skin_wood .ec_stu_wrapper .ec_see_answer{position:absolute;top:-4.20833em;right:9.375em;z-index:500}.exam_skin_wood .ec_stu_wrapper .en_card_main{position:relative;width:76.83333em;height:39.16667em;padding-left:6.25em;padding-right:3.75em;background-color:#faf5ec;border-radius:.58333em;margin:0 auto}.exam_skin_wood .ec_stu_wrapper .carousel_points_group{bottom:.91667em!important}.exam_skin_wood .ec_stu_wrapper .ec_explain_area{height:16.58333em;overflow:hidden;white-space:nowrap;margin-bottom:1.66667em;padding-top:1.20833em}.exam_skin_wood .ec_stu_wrapper .ec_explain_area_left,.exam_skin_wood .ec_stu_wrapper .ec_explain_area_right{display:inline-block;vertical-align:top}.exam_skin_wood .ec_stu_wrapper .ec_explain_area_right{margin-left:1.66667em}.exam_skin_wood .ec_stu_wrapper .ec_spell_info{width:40.58333em;height:4.91667em;overflow:hidden;margin:.58333em 0 .91667em;color:#565451;text-align:left}.exam_skin_wood .ec_stu_wrapper .ec_spell_info span{font:1.75em Microsoft YaHei;line-height:1.45833em;white-space:pre-wrap;word-break:normal}.exam_skin_wood .ec_stu_wrapper .ec_spell_answer_writting{width:40.58333em;height:7.95833em;text-align:left}.exam_skin_wood .ec_stu_wrapper .ec_spell_answer_writting em{color:#333;font:italic 3.54167em Times New Roman;white-space:pre-wrap;word-break:normal}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting{position:relative;height:14.375em}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .canvas_container{position:relative;z-index:10;width:100%;height:100%}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .canvas_container canvas{width:100%;height:100%}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .rowOne{top:0}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .rowOne,.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .rowTwo{position:absolute;left:0;width:100%;height:6.125em;background:url(resources/wood/images/two_row_line.png) repeat-x;background-size:auto 100%}.exam_skin_wood .ec_stu_wrapper .ec_spell_writting .rowTwo{bottom:0}.exam_skin_wood .ec_stu_wrapper .ec_btmtool{position:absolute;bottom:0;left:50%;-webkit-transform:translate(-50%);transform:translate(-50%);width:100%;height:5.75em;padding:.33333em 3.75em 0 6.25em}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool{float:left;margin-left:1.16667em}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool .write_tool_icon{position:relative;display:block;margin:0 auto;width:3.58333em;height:3.58333em;background:url(resources/wood/images/card_tab_bg.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool .icon_hb:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_hb.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool .icon_xpc:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_xpc.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool .word{display:block;font-style:normal;line-height:1.33333em;font-size:1em;color:#666;text-align:center}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .ec_answer_btn,.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_writting .rowTwo{display:none}.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool.on .write_tool_icon,.exam_skin_wood .ec_stu_wrapper .ec_btmtool .write_tool_list .write_tool:active .write_tool_icon{background:url(resources/wood/images/card_tab_bg_active.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_explain_area{height:17.45833em;padding-top:2.08333em;margin-bottom:3.33333em}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_info{overflow:hidden;height:5.08333em}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_answer_writting{text-align:center;background:url(resources/wood/images/fourline_blue.png) repeat-x;background-size:auto 100%}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_answer_writting em{font-size:5em;line-height:1.4}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_answer_writting.two_line{background:0 0}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_answer_writting.two_line em{word-wrap:break-word;position:relative;top:-.33333em;line-height:1}.exam_skin_wood .ec_sended_wrapper .ec_sentence_spell .ec_spell_info span,.exam_skin_wood .ec_sended_wrapper .ec_word_spell .ec_spell_info span{font:2.5em Microsoft YaHei}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_writting{height:10.41667em}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_spell_writting .rowOne{height:10.41667em;background:url(resources/wood/images/one_row_line.png);background-size:auto 100%}.exam_skin_wood .ec_stu_wrapper .ec_word_spell .ec_btmtool{height:6.45833em}.exam_skin_wood .ec_sended_wrapper .en_card_main{position:relative;width:71.33333em;height:37.70833em;background-color:#faf5ec;border-radius:.58333em;margin:0 auto;box-shadow:0 0 1px hsla(39,58%,95%,.2)}.exam_skin_wood .ec_sended_wrapper .en_card_view{position:relative;width:70.83333em;height:100%;overflow-x:hidden;text-align:center}.exam_skin_wood .ec_sended_wrapper .ec_word_spell .ec_spell_content{display:inline-block;height:100%;margin:0 auto;padding-top:2.91667em}.exam_skin_wood .ec_sended_wrapper .ec_word_spell .ec_spell_info{color:#565451;margin:.5em 0 .83333em;text-align:left}.exam_skin_wood .ec_sended_wrapper .ec_word_spell .ec_spell_writting_area{position:absolute;left:2.29167em;width:66.66667em;height:10.41667em;background:url(resources/wood/images/bg_word_writting.png) repeat-x;background-size:auto 100%;margin-bottom:2em}.exam_skin_wood .ec_sended_wrapper .ec_sentence_spell .ec_spell_content{height:100%;padding:3.33333em 0 0 2.29167em}.exam_skin_wood .ec_sended_wrapper .ec_sentence_spell .ec_com_media_carousel{display:block}.exam_skin_wood .ec_practice_wrapper .ec_see_answer,.exam_skin_wood .ec_practice_wrapper .media_pic_remark,.exam_skin_wood .ec_sended_wrapper .ec_see_answer,.exam_skin_wood .ec_sended_wrapper .ec_spell_answer_area,.exam_skin_wood .ec_sended_wrapper .ec_spell_dash_line{display:none}.exam_skin_wood .ec_sended_wrapper .ec_sentence_spell .ec_spell_info{color:#565451;margin:.5em 0 .83333em;text-align:left}.exam_skin_wood .ec_sended_wrapper .ec_sentence_spell .ec_spell_writting_area{width:66.66667em;height:10.41667em;background:url(resources/wood/images/bg_word_writting.png) repeat-x;background-size:auto 100%;margin-bottom:2em}.exam_skin_wood .ec_sended_wrapper .scrollbar_style_wborder::-webkit-scrollbar{width:.58333em;background-color:#f5f5f5}.exam_skin_wood .ec_sended_wrapper .scrollbar_style_wborder::-webkit-scrollbar-track{border-radius:.66667em;margin:1.08333em 0 1.875em;background-color:#e2dfdb}.exam_skin_wood .ec_sended_wrapper .scrollbar_style_wborder::-webkit-scrollbar-thumb{border-radius:.66667em;background-color:#c9c4bd}.exam_skin_wood .ec_practice_wrapper{width:100%;height:100%}.exam_skin_wood .ec_practice_wrapper .en_card_main{width:60.29167em;height:37.16667em;z-index:1001}.exam_skin_wood .ec_practice_wrapper .en_card_main_header{width:100%;height:2em;background-color:#333}.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_logo{float:left;width:2em;height:2em;margin-left:.45833em;background:url(resources/wood/images/ec_logo.png) no-repeat #11b0b6;background-size:100% 100%}.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_close{float:right;width:1em;height:1em;margin-top:.5em;margin-right:.58333em;border-radius:50%;background:url(resources/wood/images/ec_close.png) 0 -1em no-repeat;background-size:100% auto}.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_close.hover,.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_close:hover{background-color:#ff3033;background-position:0 0}.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_close.active,.exam_skin_wood .ec_practice_wrapper .en_card_main_header .ec_close:active{background-color:#a01613;background-position:0 0}.exam_skin_wood .ec_practice_wrapper .ec_explain_area{white-space:nowrap;margin:0 1em 1.5em;padding-top:.91667em}.exam_skin_wood .ec_practice_wrapper .ec_explain_area_left,.exam_skin_wood .ec_practice_wrapper .ec_explain_area_right{display:inline-block;vertical-align:top}.exam_skin_wood .ec_practice_wrapper .ec_com_media_carousel{width:18.5em;height:11.66667em}.exam_skin_wood .ec_practice_wrapper .ec_com_media_carousel .ec_carousel{height:100%}.exam_skin_wood .ec_practice_wrapper .ec_explain_area_right{text-align:left;margin-left:1.54167em}.exam_skin_wood .ec_practice_wrapper .ec_spell_info{width:37.91667em;height:4.16667em;color:#565451;margin-top:.08333em;text-align:left}.exam_skin_wood .ec_practice_wrapper .ec_spell_info span{font:1.45833em Microsoft YaHei;line-height:1.45833em;white-space:pre-wrap;word-break:normal}.exam_skin_wood .ec_practice_wrapper .ec_spell_answer_writting{position:relative;width:37.91667em;height:7.33333em;text-align:left}.exam_skin_wood .ec_practice_wrapper .ec_spell_answer_writting em{color:#333;font:italic 3.54167em Times New Roman;word-break:normal;white-space:pre-wrap;vertical-align:middle;line-height:1}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting{position:relative;height:14.375em;margin:0 1em}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .canvas_container{position:relative;z-index:10;width:100%;height:100%}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .canvas_container canvas{width:100%;height:100%}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .rowOne{top:0}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .rowOne,.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .rowTwo{position:absolute;left:0;width:100%;height:6.125em;background:url(resources/wood/images/two_row_line.png) repeat-x;background-size:auto 100%}.exam_skin_wood .ec_practice_wrapper .ec_spell_writting .rowTwo{bottom:0}.exam_skin_wood .ec_practice_wrapper .ec_btmtool{position:relative;width:100%;height:5.58333em;padding:1.08333em 1em 0}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list{float:right}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool{float:left;margin-left:1.16667em}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool .write_tool_icon{position:relative;display:block;width:3.58333em;height:3.58333em;background:url(resources/wood/images/card_tab_bg.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool .icon_hb:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_hb.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool .icon_xpc:before{content:"";position:absolute;left:0;top:0;right:0;bottom:0;background:url(resources/wood/images/card_tab_xpc.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool .word{display:block;font-style:normal;line-height:1.33333em;font-size:1em;color:#666;text-align:center}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool.on .write_tool_icon,.exam_skin_wood .ec_practice_wrapper .ec_btmtool .write_tool_list .write_tool:active .write_tool_icon{background:url(resources/wood/images/card_tab_bg_active.png) 50% no-repeat;background-size:100% auto}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .ec_answer_btn{float:left;margin-top:.5em;padding:0 1.41667em;height:2.91667em;min-width:9.16667em;line-height:2.91667em;border:1px solid rgba(0,0,0,.2);background:linear-gradient(180deg,#fff,#e6e6e6);text-align:center;border-radius:1.5em;box-shadow:0 .08333em .08333em rgba(4,0,0,.2)}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .ec_answer_btn .word{color:#5d390d;font-size:1.25em}.exam_skin_wood .ec_practice_wrapper .ec_btmtool .ec_answer_btn:active{background:linear-gradient(0deg,#fff,#e6e6e6)}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_explain_area{padding-top:1.33333em;margin-bottom:2.75em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .media_pic_remark{display:block}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_info{width:32.25em;height:4.83333em;margin:.16667em 0 1.33333em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_info span{font-size:1.75em;line-height:1.45833em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_answer_writting{width:32.25em;height:7.95833em;text-align:center;background:url(resources/wood/images/fourline_blue.png) repeat-x;background-size:auto 100%}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_answer_writting em{font-size:5em;line-height:1.4}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_answer_writting.two_line{background:0 0}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_answer_writting.two_line em{word-wrap:break-word;position:relative;top:-.33333em;line-height:1}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_writting{height:9.33333em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_writting .rowOne{height:9.33333em;background:url(resources/wood/images/one_row_line.png);background-size:auto 100%}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_spell_writting .rowTwo{display:none}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_btmtool{padding-top:.83333em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_btmtool .ec_answer_btn{margin-top:.58333em}.exam_skin_wood .ec_practice_wrapper .ec_word_spell .ec_com_media_carousel{width:24.16667em;height:15.25em}.typefaces_ru_RU .exam_skin_wood .english_card_menu .item_menu .menu:after{content:"";display:inline-block;width:0;height:100%;vertical-align:middle}.typefaces_ru_RU .exam_skin_wood .english_card_menu .item_menu .menu .word{display:inline-block;vertical-align:middle;max-width:94%;font-size:1.05em;line-height:1;word-wrap:break-word;word-break:break-word}.typefaces_ru_RU .exam_skin_wood .english_card_menu .btn_all_hide,.typefaces_ru_RU .exam_skin_wood .english_card_menu .btn_all_show,.typefaces_ru_RU .exam_skin_wood .english_card_menu .btn_start_practice{font-size:1em;width:7.85em;right:.7em}.typefaces_ru_RU .exam_skin_wood .english_card_menu .btn_start_practice{line-height:1;padding-top:.1em}]]>
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+/******/
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+
+/**
+ * 练习态的业务逻辑
+ * @param presenter Presenter对象
+ * @constructor
+ */
+function StudentModeLogic(presenter) {
+  this.presenter = presenter;
+  //任务ID
+  this.examId = '';
+  //当前练习的拼音
+  this.pinyin = '';
+  //词汇卡标题
+  this.title = '';
+  //流逝的秒数
+  this.passOfTime = 0;
+  //计时器句柄
+  this.timerHandler = -1;
+  //作答过程已经结束
+  this.questionFinished = false;
+
+  //获取学生端逻辑中所需DOM元素
+  this.viewModel = {
+    practiseType: ko.observable(null), //练习类型：生字卡（chinese）|词汇卡(english)
+    timer: {
+      minutes: ko.observable('00'),
+      second: ko.observable('00')
+    },
+    submitter: {
+      text: ko.observable('提交'),
+      enabled: ko.observable(false)
+    },
+    showCard: ko.observable(false),
+    showPractise: ko.observable(false),
+    showingAnswer: ko.observable(false),
+    hasBeenSubmit: ko.observable(false) //记录是否已经提交过
+  };
+}
+
+StudentModeLogic.prototype = {
+  setPattern: function(eventData) {
+    this.viewModel.showCard(eventData.showCard);
+  },
+  //初始化学生端模式的逻辑数据; 会安排在presenter的run方法执行
+  initStudentMode: function() {
+    var self = this;
+    //绑定数据
+    ko.applyBindings(this.viewModel, this.presenter.$view[0]);
+    //绑定按钮事件
+    this.presenter.$view.find('.submitButton')
+      .on('click', {
+        self: this
+      }, this._onSubmitButtonClick);
+    this.presenter.$view.find('._js_ShowAnswer')
+      .on('click', {
+        self: this
+      }, this._onShowAnswer);
+  },
+  //释放学生端模式
+  releaseStudentMode: function() {
+    //清除计时器
+    if (this.timerHandler != -1) {
+      window.clearInterval(this.timerHandler);
+    }
+    ko.cleanNode(this.presenter.$view[0]);
+  },
+  //切页时的处理
+  onPageChange: function() {
+    //隐藏所有界面
+    this._resetPractise();
+  },
+  //设置ExamID
+  setExamId: function(examId) {
+    this.examId = examId;
+  },
+  /**
+   * 学生端开始生字卡练习
+   * @param eventData
+   */
+  startWordCardPractise: function(eventData) {
+    var self = this;
+    //重置练习
+    this._resetPractise();
+
+    if (eventData.typeCode == "wordCard") { //如果是生字卡
+      if (eventData.files === undefined || eventData.files.length !== 1 || eventData.pinyin === undefined) { //生字卡数据合法性判断
+        //写错误日志
+        this.presenter.logger.error('关系属性缺失,无法继续!');
+        return;
+      } else {
+        //开始读取数据
+        $.getJSON(eventData.files[0])
+          .done(function(strokeData) {
+            if (strokeData === undefined) {
+              //写错误日志
+              self.presenter.logger.error('关系属性缺失,无法继续!');
+              return;
+            }
+            self.viewModel.practiseType("chinese");
+            //在书写数据中加上拼音字段
+            $.extend(strokeData, {
+              pinyin: eventData.pinyin
+            });
+            self.pinyin = eventData.pinyin;
+            if (!self.viewModel.practiseType()) {
+              return;
+            }
+            if (self.presenter.practiseWordCardService[self.viewModel.practiseType()].service == null) {
+              //如果没有加载练习态
+              self.presenter._generateWordCardInstance('PractiseCard', {
+                identify: eventData.identify,
+                cardData: strokeData
+              }, "", self.presenter.cardType["chinese"]);
+            } else {
+              //如果已经加载过练习态
+              //显示待作答数据
+              self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.changeCard({
+                identify: eventData.identify,
+                cardData: strokeData
+              }).done(function() {
+                self.afterGenerateCard();
+              });
+            }
+          });
+      }
+    } else if (eventData.typeCode == "englishCard") {
+      if (eventData.files === undefined) { //词汇卡数据合法性判断
+        //写错误日志
+        this.presenter.logger.error('关系属性缺失,无法继续!');
+        return;
+      } else {
+        this.title = (eventData.wordprop == "phrase" || eventData.wordprop == "" ? "" : eventData.wordprop + ".") + eventData.paraphrase; //短语特殊处理
+        this.viewModel.practiseType("english");
+        if (self.presenter.practiseWordCardService[self.viewModel.practiseType()].service == null) {
+          //如果没有加载练习态
+          self.presenter._generateWordCardInstance('PractiseCard', {
+            identify: eventData.identify,
+            cardData: {
+              answer: eventData.answer,
+              files: eventData.files,
+              paraphrase: eventData.paraphrase,
+              wordprop: eventData.wordprop
+            }
+          }, "", self.presenter.cardType["english"]);
+        } else {
+          //如果已经加载过练习态
+          //显示待作答数据
+          self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.changeCard({
+            identify: eventData.identify,
+            cardData: {
+              answer: eventData.answer,
+              files: eventData.files,
+              paraphrase: eventData.paraphrase,
+              wordprop: eventData.wordprop
+            }
+          }).done(function() {
+            self.afterGenerateCard();
+            self.presenter.practiseWordCardService["english"].service.setWriterStyle();
+          });
+        }
+      }
+    }
+  },
+  afterGenerateCard: function() {
+    var self = this;
+    //加载完成后
+    if (!self.viewModel.practiseType()) {
+      return;
+    }
+    this.presenter.practiseWordCardService[self.viewModel.practiseType()].identify = this.presenter.practiseWordCardService[self.viewModel.practiseType()].service.getIdentify();
+    //设置题目可见
+    this.viewModel.showPractise(true);
+    if (this.timerHandler == -1) {
+      //开始学生端的计时
+      this.timerHandler = window.setInterval(function() {
+        self.passOfTime++;
+        //计算数据
+        var second = self.passOfTime % 60;
+        var minutes = parseInt(self.passOfTime / 60);
+        self.viewModel.timer.minutes(_.padStart(minutes.toString(), 2, '0'));
+        self.viewModel.timer.second(_.padStart(second.toString(), 2, '0'));
+      }, 1000);
+    }
+  },
+  /**
+   * 提交生字词卡结果的回调
+   * @param eventData
+   */
+  sendAnswerCallback: function(eventData) {
+    if (eventData.item == 'nosubmit') {
+      this.presenter.logger.debug('没有提交,无需反馈');
+      return;
+    }
+
+    var submitResult = eventData.value.result;
+    //优先判断随堂练习状态是否结束
+    if (this.questionFinished == true) {
+      this.viewModel.submitter.enabled(false);
+      this.viewModel.submitter.text('已结束');
+      this.viewModel.hasBeenSubmit(true);
+    } else {
+      if (submitResult == true) {
+        //如果提交成功
+        //设置已经条件状态位
+        this.viewModel.hasBeenSubmit(true);
+        this.viewModel.submitter.text('已提交');
+      } else {
+        //如果提交失败
+        this.viewModel.submitter.enabled(true);
+        this.viewModel.submitter.text('重新提交');
+      }
+    }
+  },
+  /**
+   * 提交详细数据及被通知需要提交详细数据
+   * @param eventData
+   */
+  submitDetail: function(eventData) {
+    var type = eventData.type;
+    var self = this;
+    if (type === 'get') {
+      //获取答案的详细数据
+      if (!self.viewModel.practiseType()) {
+        return;
+      }
+      var resultDetail = this.presenter.practiseWordCardService[self.viewModel.practiseType()].service.getResultDetail();
+      if (resultDetail == undefined || resultDetail.lenght == 0) {
+        this.presenter.logger.debug('没有详细作答数据');
+        return;
+      }
+      var savedData = [];
+      $.each(resultDetail, function(index, item) {
+        savedData.push(item.value);
+      });
+      //发送的数据
+      var sendData = {
+        source: 'WordCardController',
+        type: 'submit',
+        value: {
+          examId: this.examId,
+          answerFiles: []
+        }
+      };
+      ClassroomUtils.saveFile(savedData)
+        .done(function(files) {
+          for (var i = 0; i < files.length; i++) {
+            //构建提交数据信息
+            sendData.value.answerFiles.push({
+              type: 'image',
+              url: files[i] != undefined ? files[i] : '',
+              extra: JSON.stringify({
+                fileKey: resultDetail[i].key,
+                pinyin: self.pinyin,
+                title: self.title
+              })
+            });
+          }
+          //开始发送数据
+          self.presenter.$dispatchEvent('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT, sendData);
+        })
+        .fail(function(errorMsg) {
+          self.presenter.logger.debug('获取生字卡作答详细结果失败' + errorMsg);
+        });
+    } else if (type === 'result') {
+      //提交答案结果
+      if (eventData.value.result) {
+        self.presenter.logger.info('提交答案成功' + eventData.value.message);
+      } else {
+        self.presenter.logger.error('提交答案失败' + eventData.value.message);
+      }
+    }
+  },
+  //随堂练习的状态发生变化
+  sendAnswerStop: function(eventData) {
+    this.presenter.logger.debug('教师端结束练习啦');
+    //设置随堂练习状态为结束
+    this.questionFinished = true;
+    //设置生字卡为不可用状态
+    this.presenter.practiseWordCardService[this.viewModel.practiseType()].service.lockQuestion();
+    //设置按钮的状态
+    this.viewModel.submitter.enabled(false);
+    this.viewModel.submitter.text('已结束');
+    //停止计时
+    if (this.timerHandler != -1) {
+      window.clearTimeout(this.timerHandler);
+    }
+    var self = this;
+    //如果没有提交过答案
+    var sendData = {
+      questionId: '',
+      answer: '',
+      notSubmit: false
+    };
+    //如果是强制收卷或者已经提交过答案
+    if (eventData.isForceStop || this.viewModel.hasBeenSubmit()) {
+      sendData.notSubmit = true;
+      delete sendData.questionId;
+      delete sendData.answer;
+      self.presenter.$dispatchEvent('sendAnswer', PresenterEventType.IC_PLAYER_EVENT, sendData);
+    } else {
+      //从生字卡练习态获取作答结果
+      this.presenter.practiseWordCardService[self.viewModel.practiseType()].service.getResult()
+        .done(function(data) {
+          //如果是作答结束的场景,是一定会提交答案的
+          self._sendAnswerToTeacher(data.answer.user_response[0], sendData);
+        })
+        .fail(function(errorMsg) {
+          self.presenter.logger.error('获取生字卡作答结果失败' + errorMsg);
+        });
+    }
+  },
+  /**
+   * 查看答案
+   * @private
+   */
+  _onShowAnswer: function(event) {
+    var self = event.data.self;
+    if (self.viewModel.showingAnswer()) {
+      return;
+    }
+
+    //调用学生端显示答案接口showAnswer
+    self.presenter.practiseWordCardService.english.service.showAnswer();
+    //禁用查看答案按钮showingAnswer
+    self.viewModel.showingAnswer(true);
+  },
+  /**
+   * 提交生字词卡的数据
+   */
+  _onSubmitButtonClick: function(event) {
+    var self = event.data.self;
+    //如果按钮是不可用的状态,直接Return
+    if (self.viewModel.submitter.enabled() === false) {
+      return;
+    }
+    var sendData = {
+      questionId: '',
+      answer: '',
+      notSubmit: false
+    };
+    //设置提交按钮事件
+    self.viewModel.submitter.enabled(false);
+    self.viewModel.submitter.text('提交中...');
+    //设置生字卡为不可用状态
+    self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.lockQuestion();
+    //从生字卡练习态获取作答结果
+    self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.getResult()
+      .done(function(data) {
+        //没有答案
+        if (data.answer.user_response == undefined || data.answer.user_response.length == 0) {
+          self.viewModel.submitter.enabled(true);
+          self.viewModel.submitter.text('提交');
+          //设置生字卡为可用状态
+          self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.unlockQuestion();
+        } else {
+          //如果学生没有作答
+          if (data.answerState === 'NO_ANSWER') {
+            //设置按钮状态
+            self.viewModel.submitter.enabled(true);
+            self.viewModel.submitter.text('提交');
+            //设置生字卡为可用状态
+            self.presenter.practiseWordCardService[self.viewModel.practiseType()].service.unlockQuestion();
+          } else {
+            self._sendAnswerToTeacher(data.answer.user_response[0], sendData);
+          }
+        }
+      })
+      .fail(function(errorMsg) {
+        self.presenter.logger.error('获取生字卡作答结果失败' + errorMsg);
+      });
+  },
+  /**
+   * 重置练习状态
+   * @private
+   */
+  _resetPractise: function() {
+    //重置按钮
+    this.viewModel.submitter.text('提交');
+    this.viewModel.submitter.enabled(false);
+    //重置时间
+    this.viewModel.timer.minutes('00');
+    this.viewModel.timer.second('00');
+    this.viewModel.showingAnswer(false);
+    //重置提交状态位
+    this.viewModel.hasBeenSubmit(false);
+    this.passOfTime = 0;
+    this.questionFinished = false;
+    //设置练习的状态
+    this.viewModel.showPractise(false);
+    //重置局部变量
+    this.examId = this.pinyin = '';
+    //重置练习
+    if (this.viewModel.practiseType() && this.presenter.practiseWordCardService[this.viewModel.practiseType()].service != null) {
+      this.presenter.practiseWordCardService[this.viewModel.practiseType()].service.resetQuestion({
+        trigger: "ExitQuestion"
+      });
+    }
+    //释放计时器
+    if (this.timerHandler != -1) {
+      window.clearInterval(this.timerHandler);
+      this.timerHandler = -1;
+    }
+  },
+  questionStateChange: function(eventData) {
+    if (eventData.canSubmit !== undefined) {
+      if (eventData.canSubmit == true) {
+        this.viewModel.submitter.enabled(true);
+      } else {
+        this.viewModel.submitter.enabled(false);
+      }
+    }
+  },
+  //向教师端发送答案
+  _sendAnswerToTeacher: function(thumbUrl, sendData) {
+    var self = this;
+    if (thumbUrl == undefined || thumbUrl == '') {
+      this.presenter.logger.error('缩略图地址为空!');
+      return;
+    }
+    this._toDataUrl(thumbUrl, function(base64) {
+      base64 = base64.replace(/data:(application|image)\/(octet-stream|webp|png);base64,/, ''); //匹配webp或png格式的base64,匹配ios
+      sendData.answer = JSON.stringify({
+        data: [{
+          type: 'thumb',
+          value: base64,
+          extra: {}
+        }]
+      });
+      self.presenter.logger.debug('发送生字词卡作答结果');
+      self.presenter.$dispatchEvent('sendAnswer', PresenterEventType.IC_PLAYER_EVENT, sendData);
+    });
+  },
+  _toDataUrl: function(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = 'blob';
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.send();
+  }
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (StudentModeLogic);
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__libs_studentModeLogic_js__ = __webpack_require__(0);
+
+
+(function() {
+  //卡片使用场景
+  var CardScene = {
+    SHOW_CARD: 'ShowCard', //展示的卡片
+    PREVIEW_CARD: 'PreviewCard', //预览的卡片
+    PRACTISE_CARD: 'PractiseCard', //练习的卡片
+    FullPREVIEW_CARD: 'FullPreviewCard',
+  };
+  //卡片类型
+  var CardType = {
+    chinese: {
+      teacher: "WordCardTeacher",
+      student: "WordCardStudent",
+      type_code: 'wordCard',
+      type_name: '生字词卡',
+      key: "chinese"
+    }, //生字卡
+    english: {
+      teacher: "EnglishCardTeacher",
+      student: "EnglishCardStudent",
+      type_code: 'englishCard',
+      type_name: '词汇卡',
+      key: "english"
+    } //词汇卡
+  };
+  var PractiseType = {
+    chinese: "chinese",
+    english: "english"
+  };
+
+  var Presenter = BasicPresenter.extend({
+    metaInfo: {
+      name: "WordCardController",
+      type: PresenterType.PRESENTER_CONTROLLER
+    },
+    /**
+     * 版本：3.0.0
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function() {
+      this._super();
+      this.cardType = CardType;
+      //最大生字卡显示数量
+      this.maxCard = 4;
+      //要发送的生字数据
+      this.cardData = undefined;
+      //展示生字卡服务对象
+      this.showWordCardService = {
+        chinese: [],
+        english: []
+      };
+      this.showWrodCardContainer = null;
+      //全屏预览生字卡服务对象和容器
+      this.previewWordCardService = {
+        identify: '',
+        phonetic: '',
+        service: null,
+        container: null
+      };
+      this.previewWordCardContainer = null;
+      //练习生字卡服务对象
+      this.practiseWordCardService = {
+        chinese: {
+          identify: '',
+          phonetic: '',
+          service: null,
+          container: null
+        },
+        english: {
+          identify: '',
+          phonetic: '',
+          service: null,
+          container: null
+        }
+      };
+      //this.practiseType = null;//练习类型：chinese|english
+      this.practiseWordCardContainer = null;
+      //发送到学生端按钮的Service对象
+      this.sendToStudentService = null;
+      //定义日志
+      this.logger.appendHandler(function(message, context) {
+        console.log(message);
+      }, {
+        level: Logger.DEBUG
+      });
+    },
+    /*********实现ICPlayer定义接口方法********/
+    _execute: function(options) {
+      //如果事件名称没有定义,或定义错误
+      if (options.eventName == undefined || (options.eventName != 'ShowWordCard' && options.eventName != 'ShowEnglishCard')) {
+        return false;
+      }
+      var self = this;
+      //替换Identify
+      if (options.eventData.identify !== '') {
+        options.eventData.identify = randomWord(false, 12);
+      }
+
+      // 添加学生在线情况
+      options.eventData.isOnline = self._isOnline();
+
+      //判断是生字卡还是词汇卡
+      var cardType = options.eventName == 'ShowEnglishCard' ? CardType.english : CardType.chinese;
+
+
+      if (typeof options.eventData.maxCard === 'number') {
+        this.maxCard = options.eventData.maxCard;
+      }
+
+      //预览及全屏预览场景
+      if (options.eventData.scene == 'Preview' || options.eventData.scene == 'FullScreenPreview' || options.eventData.scene == 'FullPreview') {
+        //加载全屏预览场景下的遮罩层
+        if (options.eventData.scene == 'FullScreenPreview' || options.eventData.scene == 'FullPreview') {
+          this.viewModel.maskShow(true);
+          this.viewModel.maskZIndex(400);
+        }
+        //没有加载过
+        if (this.previewWordCardService.service == null) {
+          if (options.eventData.scene == 'FullPreview') {
+            this._generateWordCardInstance(CardScene.FullPREVIEW_CARD, options.eventData, options.eventData.scene, cardType);
+
+          } else {
+            this._generateWordCardInstance(CardScene.PREVIEW_CARD, options.eventData, options.eventData.scene, cardType);
+          }
+
+        } else {
+          this.previewWordCardService.service.changeCard(options.eventData)
+            .done(function() {
+              //改变完成后,设置卡片标识
+              self.previewWordCardService.identify = self.previewWordCardService.service.getIdentify();
+              self.previewWordCardService.container.addClass('active');
+              self.previewWordCardService.container.addClass('show');
+
+              //修复bug#57652 by wth
+              // self.previewWordCardService.service.setPosition({ left: -1000, top: -1000 });
+              self._adjustCardPosition(CardScene.PREVIEW_CARD);
+            });
+        }
+      } else if (options.eventData.scene == 'InClass') {
+        //如果当前场景为课中
+        //获取所有有效的生字卡
+        var activeCard = 0;
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(i, n) {
+            if (n.identify !== '') {
+              activeCard++;
+            }
+          });
+        });
+        //已经到达最大可用卡片数量
+        if (activeCard >= this.maxCard) {
+          //超过卡片数量的提示信息
+          this.viewModel.popHint.hintText(this._lang['content_tip_max'].replace(/\{0\}/, this.maxCard));
+          this.viewModel.popHint.isShow(true);
+          window.setTimeout(function() {
+            self.viewModel.popHint.isShow(false);
+          }, 3000);
+          var event = new Event('WordCardOutOfRange');
+          document.dispatchEvent(event);
+          return;
+        }
+        //如果已经生成最大的生字卡实例
+        if (this.showWordCardService[cardType.key].length >= this.maxCard) {
+          //如果展示态卡片已经开启最大数量,查找第一个标识为空的服务
+          var showCard = _.find(this.showWordCardService[cardType.key], {
+            identify: ''
+          });
+          //如果找不到标识为空的服务; 获取第一个词卡服务
+          if (showCard == undefined) {
+            showCard = _.head(this.showWordCardService[cardType.key]);
+          }
+          //直接调用changeCard改变该卡片的显示内容
+          showCard.service.changeCard(options.eventData)
+            .done(function() {
+              //改变完成后,设置卡片标识
+              showCard.identify = showCard.service.getIdentify();
+              //将卡片显示出来
+              showCard.container.addClass('show');
+              //调整卡片位置
+              self._adjustCardPosition(CardScene.SHOW_CARD);
+              //将当前卡片设置为激活状态
+              showCard.container.addClass('active');
+              //去掉其他卡片的激活状态
+              $.each(self.showWordCardService[cardType.key], function(index, item) {
+                if (item.identify != showCard.identify) {
+                  item.container.removeClass('active');
+                }
+              });
+            });
+        } else {
+          //如果未打开到最大数量
+          this._generateWordCardInstance(CardScene.SHOW_CARD, options.eventData, options.eventData.scene, cardType);
+        }
+        this.studentModeLogic && this.studentModeLogic.setPattern && this.studentModeLogic.setPattern(options.eventData);
+      }
+      return true;
+    },
+    //判断当前用户的点击是否落在字卡的范围内
+    _inPointInPath: function(event) {
+      var showCard = $(event.target).closest('.js_show_container');
+      if (showCard.length == 0) {
+        //在展示态容器找不到
+        //到练习态容器中找
+        var practiseCard = $(event.target).closest('.js_practise_root');
+        if (practiseCard.length == 0) {
+          //练习态容器中还是找不到
+          this.logger.debug('没有点击到生字卡!');
+          return false;
+        }
+        this.logger.debug('点击到练习生字卡!');
+        return true;
+      }
+      this.logger.debug('点击到展示生字卡!');
+      return true;
+    },
+    _receiveNotifyForWordCard: function(data) {
+      if (data == undefined || data.type == undefined) {
+        return;
+      }
+      //收到来自PPTShell的翻页指令
+      if (data.type === 'ChangePage' && this.isPPTShell) {
+        //将所有的展示态卡片都关闭掉
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(index, item) {
+            item.identify = '';
+            item.container.removeClass('show');
+            item.container.removeClass('active');
+            if (item.service != null) {
+              item.service.setPosition({
+                left: -1000,
+                top: -1000
+              });
+            }
+          });
+        });
+        //将预览容器隐藏掉
+        if (this.previewWordCardService.service != null) {
+          this.previewWordCardService.identify = '';
+          this.previewWordCardService.container.removeClass('show');
+          this.previewWordCardService.container.removeClass('active');
+        }
+        //将练习态容器隐藏掉
+        if (this.practiseWordCardService[this.viewModel.practiseType()].service != null) {
+          this.practiseWordCardService[this.viewModel.practiseType()].identify = '';
+          this.practiseWordCardService[this.viewModel.practiseType()].container.removeClass('show');
+          this.practiseWordCardService[this.viewModel.practiseType()].container.removeClass('active');
+        }
+        //ModuleView恢复原始状态
+        this.viewModel.practiseModel(false);
+        this.viewModel.maskShow(false);
+        this.viewModel.sending(false);
+        this.viewModel.popHint.isShow(false);
+        this.viewModel.inExam(false);
+        this.viewModel.timer.minutes('00');
+        this.viewModel.timer.seconds('00');
+        this.viewModel.progress.now('00');
+        this.viewModel.progress.total('00');
+        if (this.timerHandler != -1) {
+          window.clearInterval(this.timerHandler);
+        }
+      }
+    },
+    // 判断是否有学生端在线
+    _isOnline: function() {
+      return icCreatePlayer.detector.isOnline();
+    },
+    // 改变发送按钮状态
+    _sendButtonReset: function(disabled) {
+      var self = this;
+      var $button = self.$view.find('.send_to_student');
+      var disabledStyle = 'com_btn_disabled';
+      if ($button.length <= 0) return false;
+      if (disabled) {
+        !$button.hasClass(disabledStyle) && $button.addClass(disabledStyle);
+      } else {
+        $button.hasClass(disabledStyle) && $button.removeClass(disabledStyle);
+      }
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+
+    getService: function() {
+      //加载对外的Service模块
+      return {
+        execute: this._execute.bind(this)
+      };
+    },
+    run: function(view, model) {
+      this.$view = $(view);
+      this.model = model;
+      var self = this;
+      var deferred = $.Deferred();
+      //实现ICPlayer定义的_interface方法
+      this.__interface = {
+        execute: self._createDelegate(self._execute, [], true, self),
+        isPointInPath: self._createDelegate(self._inPointInPath, [], true, self)
+      };
+      if (this.isPPTShell || !!this.urlParams.live_terminal) {
+        //计时器的场景
+        this.timerHandler = -1;
+        this.totalSecond = 0;
+        $.ajax({
+          url: this.basePath + 'resources/html/teacher_mode.html',
+          type: 'GET',
+          cache: false,
+          success: function(data) {
+            self.$view.append(data);
+            //获取PPTShell上生字卡所需的DOM元素
+            self.viewModel = {
+              practiseType: ko.observable(null), //练习类型：生字卡（chinese）|词汇卡(english)
+              practiseModel: ko.observable(false), //练习模式
+              inPractise: ko.observable(true), //处于练习中
+              maskShow: ko.observable(false), //遮罩显示
+              sending: ko.observable(false), //發送狀態
+              popHint: {
+                isShow: ko.observable(false), //展示题目
+                hintText: ko.observable('') //提示数据
+              },
+              maskZIndex: ko.observable(300), //遮罩层级
+              inExam: ko.observable(false), //标识发送给学生练习状态,
+              //作答时的计时器
+              timer: {
+                minutes: ko.observable('00'),
+                seconds: ko.observable('00')
+              },
+              //作答进度的显示
+              progress: {
+                now: ko.observable(0),
+                total: ko.observable(0)
+              }
+            };
+            //設置各種Container
+            self.showWrodCardContainer = self.$view.find('.js_show_container');
+            self.previewWordCardContainer = self.$view.find('.js_preview_container');
+            self.practiseWordCardContainer = self.$view.find('.js_practise_container');
+            // self.answerStatisContainer = self.$view.find('.js_answer_statis');       //统计容器，暂不需要
+            //练习态的按钮
+            self.practiseComplete = self.$view.find('.js_complete');
+            self.practiseReset = self.$view.find('.js_reset');
+            self.practiseFinish = self.$view.find('.js_finish');
+            self.practiseSendTo = self.$view.find('.js_send_to');
+            //绑定数据
+            ko.applyBindings(self.viewModel, self.$view[0]);
+            self._layoutReset();
+            //加載發送組件 生字卡发送按钮
+            var reg = new RegExp("(^|&)" + "hidepush" + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            var hidepush = (r != null) ? unescape(r[2]) : null;
+            var sendModel = [{
+              name: 'buttonText',
+              type: 'string',
+              value: self._lang['btn_send2student']
+            }];
+            var footbar = self.$view.find('.js_pratice_footer');
+            self.$requireComponent('SendQuestionComponent', sendModel, footbar, null)
+              .done(function(presenter) {
+                var service = self.sendToStudentService = presenter.getService();
+                if (hidepush == "true") {
+                  service.presenter.$view.hide();
+                }
+                service.setSendQuestionInfo({
+                  isTool: false
+                });
+                service.registerSendQuestionEvent('getExerciseData', self._getExerciseData, self);
+                service.registerSendQuestionEvent('exerciseStartSuccess', self._exerciseToolStartSuccess, self);
+                service.registerSendQuestionEvent('exerciseStartFailure', self._exerciseToolStartFailure, self);
+                service.registerSendQuestionEvent('beforeSendQuestion', self._beforeSendQuestion, self);
+                deferred.resolve();
+              });
+            //加载D类统计组件 //D类统计修改
+            self.$requireComponent('AnswerClassStatis', [{
+              name: "questionType",
+              type: 'array',
+              value: ['WordCard', 'EnglishCard']
+            }], null, null);
+            self._replaceLang.call(self);
+          }
+        })
+
+      } else if (this.isApp && this.isStudent) {
+        $.ajax({
+          url: this.basePath + 'resources/html/student_mode.html',
+          type: 'GET',
+          cache: false,
+          success: function(data) {
+            self.$view.append(data);
+            //获取练习卡片的容器
+            self.practiseWordCardContainer = self.$view.find('.js_practise_container');
+
+            //这个容器是为PAD端展示词卡用
+            self.showWrodCardContainer = self.$view.find('.js_show_container');
+
+            self.studentModeLogic = new __WEBPACK_IMPORTED_MODULE_0__libs_studentModeLogic_js__["a" /* default */](self);
+            //初始化
+            self.studentModeLogic.initStudentMode();
+            deferred.resolve();
+            self._layoutReset();
+            self._replaceLang.call(self);
+          }
+        });
+      } else {
+        deferred.resolve();
+      }
+      //加载i18n组件
+      self.$requireComponent('I18nFilter', null, null, null);
+      return deferred;
+    },
+    setLocationProperties: function(properties) {
+      this._lang = properties;
+    },
+    _replaceLang: function() {
+      var properties = this._lang;
+      for (var k in properties) {
+        this.$view.find('[_lang="lang_' + k + '"]').html(properties[k]);
+      }
+    },
+    pageShow: function() {
+      this._bindEvent();
+      //FOR TEST
+      var self = this;
+      this.$attachDelegateEvent('click', ['#openCard'], function() {
+        var identify = randomWord(false, 20);
+        var options = {
+          eventName: 'ShowWordCard',
+          eventData: {
+            identify: identify,
+            resourceRoot: 'http://127.0.0.1:3000/presenter-demo/WordCardTeacher/2.0.0/pages/resources/b4e584d2-910e-4d0b-b762-7f8a02e1c263_default',
+            phonetic: 'yòu',
+            scene: 'InClass',
+            content: 'JuniorGrade'
+          }
+        };
+        self._execute(options);
+      });
+    },
+    pageChange: function() {
+      //页面变化的时候触发
+      if (this.isApp && this.isStudent) {
+        this.studentModeLogic.onPageChange();
+      }
+    },
+    destroy: function() {
+      this._unbindEvent();
+      if (this.isApp && this.isStudent) {
+        this.studentModeLogic.releaseStudentMode();
+      } else if (this.isPPTShell && this.isPC) {
+        ko.cleanNode(this.$view[0]);
+      }
+    },
+    /****以下开始为Presenter的私有方法*****/
+    _bindEvent: function() {
+      var self = this;
+      this.$addEventListener('ShowCardClose', PresenterEventType.IC_PLAYER_EVENT, this._onShowCardClose);
+      if (this.isPPTShell || this.isPC) {
+        // 监听学生在线情况
+        // this.$addEventListener('PLAYER.GLOBAL.PUSH_STATUS', PresenterEventType.IC_PLAYER_EVENT,
+        //     this._onStudentStatusChange);
+        if (window.player) {
+          window.player.getController().getPlayerEvent().addEventListener('PLAYER.GLOBAL.PUSH_STATUS', function(eventName, eventData) {
+            if (eventData) {
+              self._onStudentStatusChange(eventData)
+            }
+          });
+        }
+        //监听来自展示态和练习态字卡的事件
+        //切换字卡状态的事件
+        this.$addEventListener('SwitchWordCardStatus', PresenterEventType.IC_PLAYER_EVENT,
+          this._onSwitchWordCardStatus);
+        this.$addEventListener('ActiveWordCard', PresenterEventType.IC_PLAYER_EVENT,
+          this._onActiveWordCard);
+        this.$addEventListener('pauseMediaPlay', PresenterEventType.IC_PLAYER_EVENT,
+          this._onPauseMediaPlay);
+        this.$addEventListener('QuizProgressEvent', PresenterEventType.IC_PLAYER_EVENT,
+          this._onQuizProgressEvent);
+        this.$addEventListener('QuizProcess', PresenterEventType.IC_PLAYER_EVENT,
+          this._onQuizProgress);
+        //取消发送题目
+        this.$addEventListener('exerciseStartCancel', PresenterEventType.NATIVE_EVENT,
+          this._exerciseStartCancel
+        );
+        //添加练习态工具栏的按钮事件
+        //通用的悬浮事件
+        this.$view.find('.js_tool_button').on('mouseover', function(e) {
+          $(e.target).addClass('hover');
+        }).on('mouseleave', function(e) {
+          $(e.target).removeClass('hover');
+        });
+        //功能按钮点击事件
+        //完成练习
+        this.practiseComplete.on('click', function() {
+          //发题中不响应
+          if (self.viewModel.sending() === true) {
+            return;
+          }
+          //如果当前练习状态是有效的
+          if (self.viewModel.practiseType() && self.practiseWordCardService[self.viewModel.practiseType()].identify != '' &&
+            self.practiseWordCardService[self.viewModel.practiseType()].service != undefined) {
+            //锁定题目
+            self.practiseWordCardService[self.viewModel.practiseType()].service.lockQuestion();
+            self.viewModel.inPractise(false);
+          }
+        });
+        //重置作答
+        this.practiseReset.on('click', function() {
+          //发题中不响应
+          if (self.viewModel.sending() === true) {
+            return;
+          }
+          //如果当前练习状态是有效的
+          if (self.viewModel.practiseType() && self.practiseWordCardService[self.viewModel.practiseType()].identify != '' &&
+            self.practiseWordCardService[self.viewModel.practiseType()].service != undefined) {
+            //解鎖題目
+            self.practiseWordCardService[self.viewModel.practiseType()].service.unlockQuestion();
+            //重置题目
+            self.practiseWordCardService[self.viewModel.practiseType()].service.resetQuestion({
+              trigger: "ReAnswer"
+            });
+            self.viewModel.inPractise(true);
+          }
+        });
+        //结束练习
+        this.practiseFinish.on('click', function() {
+          //发题中不响应
+          if (self.viewModel.sending() === true) {
+            return;
+          }
+          if (self.viewModel.practiseType() && self.practiseWordCardService[self.viewModel.practiseType()].identify != '' &&
+            self.practiseWordCardService[self.viewModel.practiseType()].service != undefined) {
+            //记录当前练习态的标识
+            var currentIdentify = self.practiseWordCardService[self.viewModel.practiseType()].identify;
+            //结束练习
+            self.practiseWordCardService[self.viewModel.practiseType()].service.finishQuestion();
+            //隐藏练习态
+            self.viewModel.maskShow(false);
+            self.viewModel.practiseModel(false);
+            //设置练习服务的标识为空
+            self.practiseWordCardService[self.viewModel.practiseType()].identify = '';
+            self.practiseWordCardService[self.viewModel.practiseType()].phonetic = '';
+            self.viewModel.practiseType(null); //结束练习时，将self.viewModel.practiseType() 置为 null
+          }
+        });
+        //注册于101PPT交互的流程
+        this.playerController.registerFlow('NotifyForWordCard', {
+          scope: 'tool',
+          validate: function(data) {
+            return true;
+          },
+          done: function(data) {
+            self._receiveNotifyForWordCard(data);
+          }
+        });
+      }
+      /**在学生端场景下;监听来自互动课堂转发的事件**/
+      if (this.isApp && this.isStudent) {
+        //练习状态改变 修复bug#100583
+        this.$addEventListener('exerciseStateChange', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            if (eventData.type == 'exit') {
+              self.studentModeLogic.onPageChange();
+            }
+          }
+        );
+        //开始字卡练习
+        this.$addEventListener('StartWordCardPractise', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            self.doPratices = true; //添加变量doPratices，标记当前为字卡，修复bug#95360
+            self.studentModeLogic.startWordCardPractise(eventData);
+          }
+        );
+        //提交结果的回调
+        this.$addEventListener('sendAnswerCallback', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            self.studentModeLogic.sendAnswerCallback(eventData);
+          }
+        );
+        //教师端结束作答
+        this.$addEventListener('sendAnswerStop', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            //如果练习状态的服务不为空
+            if (self.studentModeLogic != null && self.doPratices) {
+              if (self.practiseWordCardService[PractiseType.chinese].service != null || self.practiseWordCardService[PractiseType.english].service != null) {
+                self.studentModeLogic.sendAnswerStop(eventData);
+                self.doPratices = false;
+              }
+            }
+          }
+        );
+        //提交详细信息
+        this.$addEventListener('SubmitDetail', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            //如果练习状态的服务不为空
+            if (self.studentModeLogic != null) {
+              if (self.practiseWordCardService[PractiseType.chinese].service != null || self.practiseWordCardService[PractiseType.english].service != null) {
+                self.studentModeLogic.submitDetail(eventData);
+              }
+            }
+          }
+        );
+        this.$addEventListener('DefGameQuestion', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            //如果练习状态的服务不为空
+            if (self.studentModeLogic != null) {
+              self.studentModeLogic.setExamId(eventData.value.examId);
+            }
+          });
+        //练习态发出可提交
+        this.$addEventListener('questionStateChange', PresenterEventType.IC_PLAYER_EVENT,
+          function(eventData) {
+            //如果练习状态的服务不为空
+            if (self.studentModeLogic != null) {
+              if (self.practiseWordCardService[PractiseType.chinese].service != null || self.practiseWordCardService[PractiseType.english].service != null) {
+                self.studentModeLogic.questionStateChange(eventData);
+              }
+            }
+          }
+        );
+      }
+    },
+    _unbindEvent: function() {
+      this.$removeEventListener();
+      //解除事件的绑定
+      if (this.isPPTShell || this.isPC) {
+        this.$view.find('.js_tool_button').off();
+      }
+    },
+    //获取练习的额外数据
+    _getExerciseData: function(data) {
+      var practiseType = this.viewModel.practiseType();
+      if (!practiseType) {
+        return;
+      }
+      var identify = this.practiseWordCardService[practiseType].identify;
+      if (identify == '' || (practiseType == PractiseType.chinese && !this.cardData)) {
+        throw Error('null of word card identify or data');
+      }
+      var ct = this._getCardTypeByIdentify(this.showWordCardService, identify);
+      data.questionInfo = {
+        id: identify,
+        type_code: ct.type_code,
+        type_name: ct.type_name,
+        dispatchOnly: true
+      };
+      var eventData = {};
+      //生字卡和词汇卡数据不一样
+      if (ct.type_code == CardType.chinese.type_code) {
+        eventData = {
+          identify: identify,
+          pinyin: this.practiseWordCardService[practiseType].phonetic,
+          files: [],
+
+          typeCode: CardType.chinese.type_code,
+          filesType: "json" //文件类型
+        };
+        eventData.files.push(this.cardData);
+      } else if (ct.type_code == CardType.english.type_code) {
+        eventData = { //词汇卡对应数据
+          identify: identify,
+          answer: this.cardData.answer,
+          pinyin: "",
+          paraphrase: this.cardData.paraphrase,
+          wordprop: this.cardData.wordprop,
+          files: this.cardData.files,
+          typeCode: CardType.english.type_code,
+          filesType: "image" //文件类型
+        };
+      }
+      data.extraData = {
+        eventName: "StartWordCardPractise",
+        eventData: eventData
+      };
+    },
+    //发送题目成功
+    _exerciseToolStartSuccess: function() {
+      //发出显示统计界面的数据
+      var self = this;
+      //提示信息不显示
+      this.viewModel.popHint.isShow(false);
+      //切换到展示界面
+      this.viewModel.inExam(true);
+      this.viewModel.practiseModel(true);
+      //词汇卡发送成功后，要重置canvas宽高
+      // if (this.viewModel.practiseType() == PractiseType.english && this.practiseWordCardService[PractiseType.english].service.setWriterStyle) {
+      //     this.practiseWordCardService[PractiseType.english].service.setWriterStyle();
+      // }
+      //启动计时器
+      window.clearInterval(this.timerHandler);
+      this.timerHandler = window.setInterval(function() {
+        self.totalSecond++;
+        //计算数据
+        var second = self.totalSecond % 60;
+        var minutes = parseInt(self.totalSecond / 60);
+        self.viewModel.timer.minutes(_.padStart(minutes.toString(), 2, '0'));
+        self.viewModel.timer.seconds(_.padStart(second.toString(), 2, '0'));
+      }, 1000);
+      //設置發送中
+      this.viewModel.sending(false);
+      //设置按钮为可见
+      if (this.sendToStudentService) {
+        this.sendToStudentService.setVisible(true);
+      }
+    },
+    //发送题目失败
+    _exerciseToolStartFailure: function() {
+      //进行发送题目错误的提示
+
+      // var self = this;
+      // var type = this.viewModel.practiseType();
+      // this.viewModel.popHint.isShow(true);
+      // this.viewModel.popHint.hintText(self._lang['content_send_exercise_fail']);
+      // window.setTimeout(function () {
+      //     self.viewModel.popHint.isShow(false);
+      //     self.viewModel.popHint.hintText("");
+      // }, 3000);
+      //設置發送中
+      this.viewModel.sending(false);
+    //修复bug#110440
+    /*if(type){
+    		this.practiseWordCardService[type].identify = '';
+    }*/
+    },
+
+    // _exerciseToolStartFailureProxy: function () {
+    //     var self = this;
+    //     return function () {
+    //         if (self._isOnline()) {
+    //             return self._exerciseToolStartFailure();
+    //         }
+    //         self.viewModel.sending(false);
+    //     }
+    // },
+    _exerciseStartCancel: function(eventData) {
+      if (eventData && eventData.type == 'cancel') {
+        this._exerciseToolStartSuccess(); //取消，则进入答题页面
+      }
+    },
+    //發題前執行的函數
+    _beforeSendQuestion: function() {
+      //判断当前需要发送卡片的标识是否与练习态服务相同
+      if (this.practiseWordCardService[this.viewModel.practiseType()].service == null) {
+        throw Error('can not find any word card in practise mode!');
+      }
+      //解鎖練習態
+      this.practiseWordCardService[this.viewModel.practiseType()].service.unlockQuestion();
+      //設置練習中狀態
+      this.viewModel.inPractise(true);
+      //設置發送中
+      this.viewModel.sending(true);
+    },
+    //生成词卡实例
+    _generateWordCardInstance: function(type, data, scene, cardtype) {
+      var self = this;
+      var containerId = randomWord(false, 8);
+      var presenterId = type + '_' + containerId;
+      var cardContainer = $('<div id="' + containerId + '"></div>');
+
+
+      // 添加学生在线情况
+      data.isOnline = self._isOnline();
+
+      if (type == CardScene.SHOW_CARD || type == CardScene.PREVIEW_CARD || type == CardScene.FullPREVIEW_CARD) {
+        if (type == CardScene.SHOW_CARD) {
+          //显示展示态词卡
+          cardContainer.addClass('_showContainer');
+          this.showWrodCardContainer.append(cardContainer);
+        } else if (type == CardScene.PREVIEW_CARD || type == CardScene.FullPREVIEW_CARD) {
+          //显示预览态词卡
+          cardContainer.addClass('_previewContainer');
+          this.previewWordCardContainer.append(cardContainer);
+        }
+
+        //创建实例
+        this.$requireComponent(cardtype.teacher, [{
+          name: '__Id',
+          type: 'string',
+          value: presenterId
+        }, {
+          name: 'env',
+          type: 'string',
+          value: type
+        }], cardContainer)
+          .done(function(presenter) {
+            var service = presenter.getService();
+            //调用数据渲染接口
+            service.changeCard(data)
+              .done(function() {
+                var identify = service.getIdentify();
+                if (scene == 'InClass') {
+                  //课中的场景
+                  //加载完成后推入服务对象中
+                  self.showWordCardService[cardtype.key].push({
+                    identify: identify,
+                    typeCode: cardtype.type_code,
+                    phonetic: data.phonetic,
+                    service: service,
+                    container: cardContainer
+                  });
+                  //去掉其他卡片的激活状态
+                  $.each(self.showWordCardService[cardtype.key], function(index, item) {
+                    if (item.identify != identify) {
+                      item.container.removeClass('active');
+                    }
+                  });
+                } else if (scene == 'Preview' || scene == 'FullScreenPreview' || scene == 'FullPreview') {
+                  //预览场景
+                  self.previewWordCardService.identify = identify;
+                  self.previewWordCardService.service = service;
+                  self.previewWordCardService.container = cardContainer;
+                }
+                service.setPosition({
+                  left: -1000,
+                  top: -1000
+                });
+
+                //将卡片设置为可见
+                cardContainer.addClass('show');
+                //激活卡片置于前端
+                cardContainer.addClass('active');
+                //调整生字卡的位置
+                var oriSize = service.getOriSize();
+                self._adjustCardPosition(type, oriSize); //为了可以获得宽高
+              });
+          });
+      } else if (type == CardScene.PRACTISE_CARD) {
+        var practiseType;
+        if (cardtype.type_code == CardType.chinese.type_code) {
+          practiseType = PractiseType.chinese;
+        } else if (cardtype.type_code == CardType.english.type_code) {
+          practiseType = PractiseType.english;
+        }
+
+        //显示练习态词卡
+        cardContainer = this.practiseWordCardContainer.find("." + practiseType + ""); //获取词汇卡或生字卡学生端容器
+        cardContainer.attr("id", containerId);
+        //创建实例
+        this.$requireComponent(cardtype.student, [{
+          name: '__Id',
+          type: 'string',
+          value: presenterId
+        }], cardContainer)
+          .done(function(presenter) {
+            var service = presenter.getService();
+            self.practiseWordCardService[practiseType].service = service;
+            self.practiseWordCardService[practiseType].phonetic = data.cardData.pinyin;
+            self.practiseWordCardService[practiseType].cardData = data.cardData;
+            self.practiseWordCardService[practiseType].container = cardContainer;
+            //如果传入的数据不为undefined;立即改变练习卡片的数据
+            if (data != undefined) {
+              //调用数据渲染接口
+              service.changeCard(data)
+                .done(function() {
+                  //PPTShell或PC环境
+                  if (self.isPPTShell || self.isPC) {
+                    //跳转到练习界面
+                    self._goPractiseFrame(practiseType, service.getIdentify(), data);
+                  }
+                  //应用或学生端
+                  else if (self.isApp || self.isStudent) {
+                    self.studentModeLogic.afterGenerateCard();
+                  }
+                  if (service.setWriterStyle) { //调用学生端接口，设置canvas宽高
+                    service.setWriterStyle();
+                  }
+                });
+            }
+          })
+      }
+    },
+    //调整生字卡展示态的位置
+    _adjustCardPosition: function(type, oriSize) {
+      //获取实际有展示出来的卡片
+      var cardCount = 0;
+      if (type == CardScene.SHOW_CARD) {
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(index, item) {
+            if (item.identify != '') {
+              cardCount++;
+            }
+          });
+        });
+      } else if (type == CardScene.PRACTISE_CARD || type == CardScene.PREVIEW_CARD || type == CardScene.FullPREVIEW_CARD) {
+        cardCount = 1;
+      }
+
+      //根据卡片数量进行位置排列
+      /*var cardPosition = [];
+      var baseLineLeft = document.body.clientWidth / 2 - 200;
+      var baseLineTop = document.body.clientHeight / 2 - 200;
+      for (var count = 0; count < cardCount; count++) {
+      		var left = baseLineLeft + (count * 50);
+      		var top = baseLineTop + (count * 50);
+      		cardPosition.push({
+      				left: left,
+      				top: top
+      		});
+      }*/
+
+      var fontSize = parseFloat(this.$view.css("font-size"));
+      var simpleSize = {
+        width: (oriSize && oriSize.width) ? oriSize.width : fontSize * (17.41667 + 9.66667),
+        height: (oriSize && oriSize.height) ? oriSize.height : fontSize * 29.79167
+      };
+      var simplePosition = {
+        left: (document.body.clientWidth - simpleSize.width) / 2,
+        top: (document.body.clientHeight - simpleSize.height) / 2
+      };
+      var posCount = 0;
+      if (type == CardScene.SHOW_CARD) {
+        var oriSize,
+          position,
+          l,
+          t;
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(index, item) {
+            if (item.identify != '') {
+              //调整卡片的位置
+              oriSize = item.service.getOriSize();
+              l = (document.body.clientWidth - oriSize.width) / 2 + (index * 50);
+              t = (document.body.clientHeight - oriSize.height) / 2 + (index * 50);
+              position = {
+                left: l,
+                top: t
+              };
+              item.service.setPosition(position);
+              //调整卡片的尺寸
+              //item.service.setScale(cardCount);
+              posCount++;
+            }
+          });
+        });
+      } else if (type == CardScene.PRACTISE_CARD) {
+        if (this.practiseWordCardService.chinese.service) {
+          this.practiseWordCardService.chinese.service.setPosition(simplePosition);
+        }
+        if (this.practiseWordCardService.english.service) {
+          this.practiseWordCardService.english.service.setPosition(simplePosition);
+        }
+      } else if (type == CardScene.PREVIEW_CARD || type == CardScene.FullPREVIEW_CARD) {
+        this.previewWordCardService.service.setPosition(simplePosition);
+      }
+    },
+    _getCardTypeByIdentify: function(showWordCardService, identify) {
+      var key,
+        hasFind;
+      $.each(showWordCardService, function(k, v) {
+        if (hasFind) {
+          return false;
+        }
+        $.each(v, function(index, item) {
+          if (item.identify == identify) {
+            key = k;
+            hasFind = true;
+            return false;
+          }
+        });
+      });
+      return CardType[key];
+    },
+    _goPractiseFrame: function(practiseType, identify, eventData) { //跳转到练习界面
+      var self = this;
+      // if(practiseType == PractiseType.chinese){//生字卡练习界面
+      //加载完成后,设置练习态服务; 这个服务只有一个实例
+      self.practiseWordCardService[practiseType].identify = identify;
+      if (eventData && practiseType == PractiseType.chinese) {
+        self.practiseWordCardService[practiseType].phonetic = eventData.cardData.pinyin;
+      }
+      //显示练习态的遮罩层
+      self.viewModel.maskShow(true);
+      self.viewModel.practiseModel(true);
+      self.viewModel.inPractise(true);
+    // }else if(practiseType == PractiseType.english){//词汇卡练习界面
+    //     self.practiseWordCardService[practiseType].identify = identify;
+    //     //这里不设置练习态模式，等到习题发送成功后再设置
+    //     var eventData = {
+    //         "data":{
+    //             "self":self.sendToStudentService.presenter
+    //         }
+    //     };
+    //     self.sendToStudentService.presenter._onSendToStudent.call(self.sendToStudentService.presenter,eventData);
+    // }
+    },
+    /*** 以下是事件处理函数*/
+    // 切换发送按钮状态
+    _onStudentStatusChange: function(eventData) {
+      var self = this;
+      // 切换 SendQuestionComponent 中发送按钮样式
+      self._sendButtonReset(!eventData.status);
+      // 切换词汇卡中发送按钮样式
+      $.each(self.showWordCardService.english, function(index, item) {
+        if (item.service != null && item.service.setSendButton) {
+          item.service.setSendButton(!eventData.status);
+        }
+      })
+    },
+    //切换卡片的显示状态
+    _onSwitchWordCardStatus: function(eventData) {
+      var self = this;
+      var practiseType;
+
+      // 初始化发送按钮样式
+      self._sendButtonReset(!self._isOnline());
+
+      // 添加学生在线情况
+      eventData.cardData.isOnline = self._isOnline();
+
+      if (eventData.status == 'Practise') {
+        //判断事件来源是生字卡还是词汇卡
+        if (eventData.strokeFileUrl) {
+          practiseType = PractiseType.chinese;
+          //给全局的CardData赋值
+          this.cardData = eventData.strokeFileUrl;
+        } else if (eventData.type == PractiseType.english) {
+          practiseType = PractiseType.english;
+          //TODO 给全局的CardData赋值
+          this.cardData = eventData.cardData;
+        }
+        self.viewModel.practiseType(practiseType);
+
+        //已经处理的练习态卡片,不处理
+        //注释掉，修复第一次发题失败后，第二次就不能再发送的问题
+        /*if (practiseType && eventData.identify == this.practiseWordCardService[practiseType].identify) {
+        		return;
+        }
+        //已经存在处于练习态的卡片
+        if (this.practiseWordCardService[practiseType].identify != '') {
+        		throw Error('card ' + this.practiseWordCardService[practiseType].identify +
+        				' has been in practise! can not open another card');
+        }*/
+        if (this.practiseWordCardService[practiseType].identify == '' &&
+          this.practiseWordCardService[practiseType].service == null) {
+          //可以被切换,且从来没有被加载过
+          var ct = this._getCardTypeByIdentify(this.showWordCardService, eventData.identify);
+          if (ct) {
+            this._generateWordCardInstance(CardScene.PRACTISE_CARD, {
+              identify: eventData.identify,
+              cardData: eventData.cardData
+            }, "", ct);
+          }
+        } else {
+          var service = this.practiseWordCardService[practiseType].service;
+          //可以被切换,且已经加载过了
+          this.practiseWordCardService[practiseType].service.changeCard({
+            identify: eventData.identify,
+            cardData: eventData.cardData
+          }).done(function() {
+            self._goPractiseFrame(practiseType, service.getIdentify(), eventData);
+          });
+        }
+        this.viewModel.maskZIndex(500);
+        //调用所有展示态卡片的停止媒体方法
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(index, item) {
+            if (item.identify !== '' && item.service.stopMedia) {
+              item.service.stopMedia();
+            }
+          });
+        });
+      } else if (eventData.status == CardScene.SHOW_CARD) {
+        if (eventData.identify != this.practiseWordCardService[self.viewModel.practiseType()].identify) {
+          //如果需要切换为展示态的字卡与当前处于作答态的字卡ID不一致
+          return;
+        }
+        //隐藏题卡
+        this.practiseWordCardService[self.viewModel.practiseType()].container.removeClass('show');
+        //隐藏遮罩层
+        this.viewModel.maskShow(false);
+        //将练习态服务的标识设置为空
+        this.practiseWordCardService[self.viewModel.practiseType()].identify = '';
+      }
+    },
+    //激活卡片
+    _onActiveWordCard: function(eventData) {
+      $.each(this.showWordCardService, function(k, v) {
+        $.each(v, function(index, item) {
+          if (item.identify === eventData.identify) {
+            item.container.addClass('active');
+          } else {
+            item.container.removeClass('active');
+          }
+        });
+      });
+    },
+    //展示态卡片关闭
+    _onShowCardClose: function(eventData) {
+      //当前展示态的场景
+      var scene = eventData.scene;
+      if (scene == 'FullScreenPreview') {
+        //如果关闭的是预览时的场景
+        if (this.previewWordCardService != undefined) {
+          this.previewWordCardService.identify = '';
+          this.previewWordCardService.phonetic = '';
+          this.previewWordCardService.container.removeClass('show');
+          this.previewWordCardService.container.removeClass('active');
+          this.viewModel.maskZIndex(0);
+        }
+      } else {
+        //课堂场景下的卡片
+        //获取要关闭的卡片对象
+        $.each(this.showWordCardService, function(k, v) {
+          var removedCard = _.remove(v, {
+            identify: eventData.identify
+          });
+          //进行相应的设置
+          if (removedCard.length != 0) {
+            removedCard[0].identify = '';
+            removedCard[0].phonetic = '';
+            removedCard[0].container.removeClass('show');
+            removedCard[0].container.removeClass('active');
+            //重新设置卡片的位置
+            removedCard[0].service.setPosition({
+              left: -1000,
+              top: -1000
+            });
+            //重新加入队尾
+            v.push(removedCard[0]);
+            return false;
+          }
+        });
+        this.viewModel && this.viewModel.maskShow && this.viewModel.maskShow(false);
+        //判断是否为最后一张被关闭的卡片
+        var existCardIndex = false;
+        $.each(this.showWordCardService, function(k, v) {
+          $.each(v, function(index, item) {
+            //只要存在一张未关闭的卡，跳出循环
+            item.identify !== '';
+            existCardIndex = true;
+            return false;
+          });
+        });
+        //如果所有卡片已经关闭
+        if (!existCardIndex) {
+          this.playerController.getCommands().closeTool && this.playerController.getCommands().closeTool();
+        }
+      }
+      //关闭遮罩
+      this.viewModel && this.viewModel.maskShow && this.viewModel.maskShow(false);
+    },
+    //当一张卡启动媒体播放时候的事件
+    _onPauseMediaPlay: function(eventData) {
+      //如果只有一张或没有卡片,都不需要处理
+      if (eventData.identify === '') {
+        return;
+      }
+      $.each(this.showWordCardService, function(k, v) {
+        $.each(v, function(index, item) {
+          //如果表示为空或与正在播放器的卡片标识相同,不处理
+          if (item.identify === '' || item.identify === eventData.identify) {
+            return true;
+          }
+          if (item.service.stopMedia) {
+            item.service.stopMedia();
+          }
+        });
+      });
+    },
+    //接收作答过程中的进度信息
+    _onQuizProgressEvent: function(eventData) {
+      if (eventData.type == 'changeStudentNum' && this.viewModel.inExam() == true) {
+        //处理正确的事件类型, 且正在练习中
+        this.viewModel.progress.now(eventData.value.finishedNum);
+        this.viewModel.progress.total(eventData.value.count);
+      }
+    },
+    _onQuizProgress: function(eventData) {
+      var practiseType = this.viewModel.practiseType();
+      if ((practiseType == PractiseType.chinese || practiseType == PractiseType.english) &&
+        (eventData.type == 'stop' || eventData.type == 'hide') && this.viewModel.inExam() == true) { //修复bug#129673
+        //处理结束作答过程
+        //停止计时器
+        if (this.timerHandler != -1) {
+          window.clearInterval(this.timerHandler);
+          this.totalSecond = 0;
+          this.timerHandler = -1;
+          //清除数据
+          this.viewModel.timer.minutes('00');
+          this.viewModel.timer.seconds('00');
+          //清除提交
+          this.viewModel.progress.now(0);
+          this.viewModel.progress.total(0);
+
+          //发题中不响应
+          if (this.viewModel.sending() === true) {
+            return;
+          }
+          //如果当前练习状态是有效的
+          if (this.viewModel.practiseType() && this.practiseWordCardService[this.viewModel.practiseType()].identify != '' &&
+            this.practiseWordCardService[this.viewModel.practiseType()].service != undefined) {
+
+            //锁定题目
+            this.practiseWordCardService[this.viewModel.practiseType()].service.lockQuestion();
+
+            //结束练习
+            this.practiseWordCardService[this.viewModel.practiseType()].service.finishQuestion();
+            //隐藏练习态
+            this.viewModel.maskShow(false);
+            //改变状态
+            this.viewModel.practiseModel(false);
+            this.viewModel.inPractise(false);
+            this.viewModel.inExam(false);
+            //设置练习服务的标识为空
+            this.practiseWordCardService[this.viewModel.practiseType()].identify = '';
+            this.practiseWordCardService[this.viewModel.practiseType()].phonetic = '';
+            this.viewModel.practiseType(null); //结束练习时，将self.viewModel.practiseType() 置为 null
+          }
+        }
+      }
+    },
+    //布局调整函数
+    _layoutReset: function() {
+      var wrapperEle = this.$view.find('.woc_com_layout')[0];
+      var layoutEle = this.isPPTShell ?
+        this.$view.find('.woc_com_wrapper')[0] :
+        this.$view.find('.woc_com_wrapper_pad')[0];
+      var defaultWidth = 1920;
+      var defaultHeight = 1080;
+      var defaultFontSize = 24;
+      var idx;
+      var handles = window.layoutResetHandles;
+
+      var winSizeValue = winSize();
+      var fontSize = 0;
+      var wrapperWidth = winSizeValue.width;
+      var wrapperHeight = winSizeValue.height;
+      if (winSizeValue.width / winSizeValue.height <= defaultWidth / defaultHeight) {
+        fontSize = winSizeValue.width / defaultWidth * defaultFontSize;
+        wrapperWidth = winSizeValue.width < defaultWidth ? winSizeValue.width : defaultWidth;
+        wrapperHeight = defaultHeight * wrapperWidth / defaultWidth;
+        if (winSizeValue.height > wrapperHeight) {
+        }
+      } else {
+        fontSize = winSizeValue.height / defaultHeight * defaultFontSize;
+        wrapperHeight = winSizeValue.height < defaultHeight ? winSizeValue.height : defaultHeight;
+        wrapperWidth = defaultWidth * wrapperHeight / defaultHeight;
+      }
+      layoutEle.style.fontSize = fontSize + 'px';
+
+      if (handles) {
+        for (idx in handles) {
+          handles[idx]();
+        }
+      }
+    }
+  }, 'WordCardController');
+
+  //生成随机字符串
+  function randomWord(randomFlag, min, max) {
+    var str = "",
+      range = min,
+      arr = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E',
+        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+      ];
+
+    // 随机产生
+    if (randomFlag) {
+      range = Math.round(Math.random() * (max - min)) + min;
+    }
+    for (var i = 0; i < range; i++) {
+      var pos = Math.round(Math.random() * (arr.length - 1));
+      str += arr[pos];
+    }
+    return str;
+  }
+
+  function winSize() {
+    var winWidth = 0;
+    var winHeight = 0;
+    if (document.documentElement && document.documentElement.clientHeight && document.documentElement.clientWidth) {
+      winWidth = document.documentElement.clientWidth;
+      winHeight = document.documentElement.clientHeight;
+    }
+    return {
+      'width': winWidth,
+      'height': winHeight
+    };
+  }
+
+  function getRatio() {
+    var size = winSize();
+    if (size.width / size.height > 1920 / 1080) {
+      return size.height / 1080;
+    } else {
+      return size.width / 1920;
+    }
+  }
+
+  window.AddonWordCardController_create = function() {
+    return new Presenter();
+  }
+})();
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/font/wordcard.ttf' />
+<file src='./resources/html/student_mode.html' />
+<file src='./resources/html/teacher_mode.html' />
+<file src='./resources/locations/zh/lang.json' />
+<file src='./resources/locations/zh_HK/lang.json' />
+<file src='./resources/wood/images/bg_dash.png' />
+<file src='./resources/wood/images/bg_detail_info_scroll.png' />
+<file src='./resources/wood/images/bg_py_writting.png' />
+<file src='./resources/wood/images/bg_word_showing.png' />
+<file src='./resources/wood/images/bg_word_writting.png' />
+<file src='./resources/wood/images/btn_br_board.png' />
+<file src='./resources/wood/images/card_closebtn.png' />
+<file src='./resources/wood/images/card_fullscreen.png' />
+<file src='./resources/wood/images/card_pinbg.png' />
+<file src='./resources/wood/images/card_play.png' />
+<file src='./resources/wood/images/card_tab_bg.png' />
+<file src='./resources/wood/images/card_tab_bg_active.png' />
+<file src='./resources/wood/images/card_tab_hb.png' />
+<file src='./resources/wood/images/card_tab_pic.png' />
+<file src='./resources/wood/images/card_tab_radio.png' />
+<file src='./resources/wood/images/card_tab_video.png' />
+<file src='./resources/wood/images/card_tab_xing.png' />
+<file src='./resources/wood/images/card_tab_xpc.png' />
+<file src='./resources/wood/images/card_voicebg.png' />
+<file src='./resources/wood/images/card_wordbg.png' />
+<file src='./resources/wood/images/card_wordbg_big.png' />
+<file src='./resources/wood/images/card_wordbg_middle.png' />
+<file src='./resources/wood/images/ec_close.png' />
+<file src='./resources/wood/images/ec_logo.png' />
+<file src='./resources/wood/images/fourline_blue.png' />
+<file src='./resources/wood/images/full_bg.jpg' />
+<file src='./resources/wood/images/icon_analysis.png' />
+<file src='./resources/wood/images/icon_endexam.png' />
+<file src='./resources/wood/images/icon_exitexam.png' />
+<file src='./resources/wood/images/icon_grid_one.png' />
+<file src='./resources/wood/images/icon_hb.png' />
+<file src='./resources/wood/images/icon_hb_press.png' />
+<file src='./resources/wood/images/icon_pinbg.png' />
+<file src='./resources/wood/images/icon_progress.png' />
+<file src='./resources/wood/images/icon_showresult.png' />
+<file src='./resources/wood/images/icon_time.png' />
+<file src='./resources/wood/images/icon_xpc.png' />
+<file src='./resources/wood/images/icon_xpc_press.png' />
+<file src='./resources/wood/images/logo_ppt.png' />
+<file src='./resources/wood/images/one_row_line.png' />
+<file src='./resources/wood/images/pics_audio.png' />
+<file src='./resources/wood/images/pptpop_closebtn.png' />
+<file src='./resources/wood/images/scrollbar_analyse.png' />
+<file src='./resources/wood/images/switch_help_off.png' />
+<file src='./resources/wood/images/switch_help_on.png' />
+<file src='./resources/wood/images/switch_show_off.png' />
+<file src='./resources/wood/images/switch_show_on.png' />
+<file src='./resources/wood/images/tri.png' />
+<file src='./resources/wood/images/two_row_line.png' />
+<file src='./resources/wood/images/wordwrap_inner.png' />
+<file src='./resources/wood/images/write_grid_one.png' />
+<file src='./resources/wood/images/write_grid_s.png' />
+<file src='./resources/wood/images/xpc_pop_bg.png' />
+<file src='./resources/wood/images/xpc_pop_left.png' />
+<file src='./resources/wood/images/xpc_pop_right.png' />
+<file src='./resources/wood/images/xpc_type_clearall_active.png' />
+<file src='./resources/wood/images/xpc_type_clearall_normal.png' />
+<file src='./resources/wood/images/xpc_type_ordi_active.png' />
+<file src='./resources/wood/images/xpc_type_ordi_normal.png' />
+
+
+</resources>
+
+</addon>

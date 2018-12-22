@@ -1,0 +1,4132 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="threejs" version="73.1"/><javaScript name="webglControl" version="5.1.0"/><javaScript name="lodash" version="4.11.1"/></jsDependency></dependencies><css><![CDATA[.addon_Protractor{background-color:rgba(0,0,0,.3)}.addon_Protractor .ptr_canvas{position:absolute;left:300px;top:300px;-moz-user-select:none;pointer-events:none;transform:translateZ(0);backface-visibility:hidden;-webkit-transform:translateZ(0);-webkit-backface-visibility:hidden}.addon_Protractor .ptr_wrap{width:0;height:0;position:absolute;left:300px;top:300px;transform:translateZ(0);backface-visibility:hidden;-webkit-transform:translateZ(0);-webkit-backface-visibility:hidden}.addon_Protractor .ptr_wrap .ptr_line{position:absolute;height:2px;width:50%;background-color:#439f22;transform-origin:-4px 0;margin-left:4px}.addon_Protractor .ptr_wrap .ptr_line .ptr_btn{position:absolute;width:30px;height:30px;border:3px solid #439f22;border-radius:50%;right:-15px;top:-14px;background-image:linear-gradient(to top,#e9e9e9,#fff)}.addon_Protractor .ptr_wrap .ptr_line .ptr_btn .ptr_btn_text{font-size:28px;width:100px;text-align:center;color:#439f22;position:absolute;top:-36px;left:-28px;cursor:default;transform-origin:40px 48px;text-shadow:2px 0 0 #fff,0 2px 0 #fff,-2px 0 0 #fff,0 -2px 0 #fff,0 2px 5px #040000}.addon_Protractor .ptr_wrap .ptr_line .ptr_btn .ptr_btn_text .prt_btn_unit{margin-left:-9px}.addon_Protractor .ptr_wrap .ptr_line .ptr_btn .ptr_btn_center{height:1px;width:1px;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)}.addon_Protractor .ptr_wrap .ptr_line .ptr_btn .ptr_btn_reversed{top:30px}.addon_Protractor .ptr_wrap .make_line_center{margin-left:0}]]></css><view><![CDATA[<canvas class="ptr_canvas" width="643" height="371" onselectstart="return false;"></canvas><div class="ptr_wrap"><div class="ptr_line _js_help_line"><div class="ptr_btn _js_help_btn"><div class="ptr_btn_text _js_angle_text"><span class="_js_deg_num">0</span> <span class="prt_btn_unit _js_deg_unit">°</span></div><div class="ptr_btn_center _js_help_btn_center"></div></div></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	__webpack_require__(3);
+	__webpack_require__(2);
+	__webpack_require__(4);
+	module.exports = __webpack_require__(8);
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _protractor = __webpack_require__(2);
+
+	var _protractor2 = _interopRequireDefault(_protractor);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var Service = function Service() {
+	    this.questionId = null;
+	    this.i18n = {};
+	  };
+	  Service.prototype = {
+	    init: function init(model) {
+	      this.questionId = model.question.id;
+	    },
+	    getQuestionInfo: function getQuestionInfo() {
+	      return {
+	        'id': this.questionId,
+	        'type_code': 'protractor',
+	        'type_name': 'protractor_tool',
+	        // 'url': '"' + url + '"',
+	        'notExistStatistics': true,
+	        'noNeedQuizProgress': true
+	      };
+	    },
+	    // setLocationProperties: function (properties) {
+	    //     this.i18n = properties;
+	    // },
+	    getExtendData: function getExtendData() {
+	      var options = {
+	        width: '100%' // 全屏展示
+	      };
+	      return options;
+	    }
+	  };
+
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'Protractor',
+	      type: PresenterType.PRESENTER_COMPONENT
+	    },
+	    $init: function $init() {
+	      this._super();
+	    },
+	    run: function run(view, model) {
+	      this.$view = $(view);
+	      this.webglControl = icCreatePlayer.plugin.webglControl;
+	      this.protractor = new _protractor2.default(this.$view, this);
+	      var that = this;
+	      this.__interface = {
+	        isPointInPath: function isPointInPath(e) {
+	          return that.protractor.isPointInPath(e);
+	        }
+	      };
+	    },
+	    setPaint: function setPaint(paint) {
+	      this.paintProtractor = paint;
+	    },
+	    onEventReceived: function onEventReceived(eventName, eventData) {
+	      if (eventName === 'mousedown') {
+	        this.protractor.mouseDownEvent(eventData);
+	      }
+	      if (eventName === 'mousemove') {
+	        this.protractor.mouseMoveEvent(eventData);
+	      }
+	      if (eventName === 'mouseup') {
+	        this.protractor.mouseUpEvent(eventData);
+	      }
+	      if (eventName === 'focus') {
+	        this.protractor.focusEvent(eventData);
+	      }
+	      if (eventName === 'blur') {
+	        this.protractor.blurEvent();
+	      }
+	    },
+	    setPlayerController: function setPlayerController(controller) {
+	      var that = this;
+	      that.playerController = controller;
+	      that.eventBus = that.playerController.getEventBus();
+	      that.eventBus.addEventListener('mousedown', that);
+	      that.eventBus.addEventListener('mousemove', that);
+	      that.eventBus.addEventListener('mouseup', that);
+	      that.eventBus.addEventListener('focus', that);
+	      that.eventBus.addEventListener('blur', that);
+	    },
+
+	    /*        bindEvent: function () {
+	     let that = this;
+	     this.eventBus.addEventListener('mousedown', that);
+	     this.eventBus.addEventListener('mousemove', that);
+	     this.eventBus.addEventListener('mouseup', that);
+	     },*/
+	    destroy: function destroy() {
+	      console.log('destroy');
+	      this.protractor.unBindEvent();
+	    },
+	    getService: function getService() {
+	      this._service_ = new Service();
+	      this._service_.constructor(this);
+	      return this._service_;
+	    }
+	  });
+	  window.AddonProtractor_create = function () {
+	    return new Presenter();
+	  };
+	})(); /**
+	       * Created by hellohy on 2016/12/28.
+	       */
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * Created by hellohy on 2016/12/29.
+	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _threeManager = __webpack_require__(4);
+
+	var _threeManager2 = _interopRequireDefault(_threeManager);
+
+	var _utils = __webpack_require__(8);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var circleX = _config2.default.circleX;
+	var circleY = _config2.default.circleY;
+	var reactionRadius = _config2.default.reactionRadius;
+	var radius0ne = _config2.default.radiusOne;
+	var protractorWidth = _config2.default.protractorWidth;
+	var protractorHeight = _config2.default.protractorHeight;
+
+	var globalAngle = 0; // 量角器旋转角度
+	var isCloseBtn = false; // 是否关闭
+	var isRotate = false; // 是否旋转
+	var isMove = false; // 是否移动
+	var isConfirm = false; // 是否确认绘线
+	var isDrawArc = false; // 是否绘点
+	var isDrawBottomLine = false;
+	var isStretch = false;
+	var isLineMove = false; // 是否是辅助线移动
+	var isLeftZore = false;
+	var isRightZore = false;
+	var isCenterPoint = false;
+	var isVerticalLine = false;
+	var isOuterMeaRange = false;
+	var isInnerMeaRange = false;
+	var isRadialLineMove = false;
+	var isRadialVertexMove = false;
+	var isAngleMove = false;
+	var isAngleSector = false;
+	var isAngleRotate = false;
+	var isAngleStretch = false;
+	var mouseStartPoint = {}; // 鼠标点击初始点坐标
+	var moveAngle = 0;
+	var ptrRotateAngle = 0;
+
+	var pptLineWidth = 5;
+	var pptLineColor = 'red';
+
+	var bottomLineLength = 0;
+	var newLineStart = 0;
+	var deltaMouseToLine = 0;
+
+	var deltaToBottomLine = 27.5;
+	var canvasBottomLineBound = [23, 622];
+
+	// ppt上画点，点的半径
+	var dotRadius = 5;
+
+	var MAX_WIDTH = $(window).width();
+	var MAX_HEIGHT = $(window).height();
+
+	var Protractor = function () {
+	  function Protractor($view, presenter) {
+	    _classCallCheck(this, Protractor);
+
+	    this.$view = $view;
+	    // 缓存dom
+	    this.lineDom = this.$view.find('._js_help_line');
+	    this.degDom = this.$view.find('._js_angle_text');
+	    this.numDom = this.$view.find('._js_deg_num');
+	    this.unitDom = this.$view.find('._js_deg_unit');
+	    this.helpBtnDom = this.$view.find('._js_help_btn');
+	    this.btnCenterDom = this.$view.find('._js_help_btn_center');
+	    this.ptrDom = this.$view.find('.ptr_wrap');
+	    this.ptrDom.data('rotate', 0);
+	    this.canvasDom = this.$view.find('.ptr_canvas');
+	    this.presenter = presenter;
+	    this.paintProtractor = presenter.paintProtractor;
+	    this.ctx = this.canvasDom[0].getContext('2d');
+	    this.dataInit();
+	    this.threeManager = new _threeManager2.default(this.presenter.webglControl);
+	    this.threeManager.threeStart();
+
+	    // 初始化数据
+	    this.canvasDom.css('transform-origin', circleX + 'px' + ' ' + circleX + 'px');
+	    this.ptrDom.css('transform-origin', circleX + 'px' + ' ' + circleX + 'px');
+	    this.startAngle = 0;
+	    var startOrigin = this.ptrDom.offset();
+	    this.startOrigin = {
+	      x: startOrigin.left + circleX - 0.5,
+	      y: startOrigin.top + circleY - 0.5
+	    };
+	    this.origin = this.startOrigin;
+	    this.totalOriginOffsetX = 0;
+	    this.totalOriginOffsetY = 0;
+	    this.originOffsetX = 0;
+	    this.originOffsetY = 0;
+
+	    this.arcPreAngle = 0;
+	    // 辅助线数值旋转的角度
+	    this.helpTextAngle = 0;
+
+	    this.confirmDrawPoint = false;
+	    this.mouseMoveX = 0;
+	    this.scale = 1;
+	    this.deg = 0;
+	  }
+
+	  _createClass(Protractor, [{
+	    key: 'dataInit',
+	    value: function dataInit() {
+	      var that = this;
+	      this.globeCenterX = ($(document.body).width() - protractorWidth) / 2;
+	      this.globeCenterY = ($(document.body).height() - protractorHeight) / 2;
+	      this.canvasDom.css('top', this.globeCenterY + 'px').css('left', this.globeCenterX + 'px');
+	      this.ptrDom.css({
+	        top: that.globeCenterY + 'px',
+	        left: that.globeCenterX + 'px'
+	      });
+	      this.lineDom.css('top', circleY - 1 + 'px').css('left', circleX + 'px').css('width', radius0ne + 20 + 'px');
+	      _utils2.default.clearSelect();
+	      this.removeDrawObj = this.keyDown.bind(this);
+	      $(document).on('keydown', this.removeDrawObj);
+	    }
+	  }, {
+	    key: 'keyDown',
+
+
+	    // 删除量角器画的角
+	    value: function keyDown(e) {
+	      if (e.keyCode === 46) {
+	        this.threeManager.removeDrawObj();
+	      }
+	    }
+
+	    /**
+	     * 解除事件绑定的方法
+	     */
+
+	  }, {
+	    key: 'unBindEvent',
+	    value: function unBindEvent() {
+	      this.canvasDom.off('click');
+	      this.helpBtnDom.off('mousedown touchstart');
+	      $(document).off('mouseup');
+	      $(window).off('mouseup').off('keyup').off('mousemove');
+	      this.canvasDom.off('mousedown').off('mousemove').off('mouseup');
+	      $(document.body).off('mousemove touchmove');
+	      $(document.body).off('mouseup touchend');
+	      $(document).off('keydown', this.removeDrawObj);
+	      moveAngle = 0;
+	      ptrRotateAngle = 0;
+	    }
+
+	    /**
+	     * 鼠标点击事件
+	     * @param e
+	     */
+
+	  }, {
+	    key: 'mouseDownEvent',
+	    value: function mouseDownEvent(e) {
+	      e.preventDefault();
+	      e.stopPropagation();
+	      !this.threeManager.isRemove && this.ptrDom.show();
+	      var setting = this.paintProtractor.getPaintSetting();
+	      // const setting = {
+	      //   width: 10,
+	      //   color: '#2211aa'
+	      // }
+	      pptLineWidth = setting.width;
+	      pptLineColor = setting.color;
+
+	      var p = this.getEventPosition(e);
+	      mouseStartPoint = _utils2.default.getPoint(e);
+	      this.mouseDownPoint = _utils2.default.getPoint(e);
+	      this.preMouseMoveX = _utils2.default.getPoint(e).x;
+
+	      if ($(e.target).hasClass('_js_help_btn') || $(e.target).hasClass('_js_help_btn_center')) {
+	        isLineMove = true;
+	        return;
+	      }
+	      var actions = this.threeManager.getAction(mouseStartPoint);
+	      isCloseBtn = actions.isClose;
+	      isRotate = actions.isRotate;
+	      isConfirm = actions.isConfirm;
+	      isStretch = actions.isStretch;
+	      isDrawBottomLine = actions.isDrawBottomLine;
+	      isDrawArc = actions.isDrawArc;
+	      isLeftZore = actions.isLeftZore;
+	      isRightZore = actions.isRightZore;
+	      isCenterPoint = actions.isCenterPoint;
+	      isVerticalLine = actions.isVerticalLine;
+	      isOuterMeaRange = actions.isOuterMeaRange;
+	      isInnerMeaRange = actions.isInnerMeaRange;
+	      isRadialLineMove = actions.isRadialLineMove;
+	      isRadialVertexMove = actions.isRadialVertexMove;
+	      isAngleMove = actions.isAngleMove;
+	      isAngleSector = actions.isAngleSector;
+	      isAngleRotate = actions.isAngleRotate;
+	      isAngleStretch = actions.isAngleStretch;
+	      isMove = actions.isMove && !isLineMove;
+
+	      deltaMouseToLine = p.y - circleY;
+	      // console.log('画底边直线区域', p.y - circleY);
+	      if (isDrawBottomLine && !isLineMove) {
+	        this.pptLineStartPoint = {
+	          x: p.x,
+	          y: p.y
+	        };
+	      }
+	      // 关闭按钮处理
+	      if (isCloseBtn && !isLineMove) {
+	        this.threeManager.removeScene();
+	        this.presenter.playerController.getCommands().closeTool();
+	      }
+	      // 绘点处理
+	      if (isDrawArc && !isLineMove) {
+	        this.arcStartAngle = this.getPointInfo(e).angle;
+	        this.arcEndAngle = this.getPointInfo(e).angle;
+	      }
+	      // 确认按钮处理
+	      if (isConfirm && !isLineMove) {
+	        this.drawHelpLine(e);
+	      }
+	      if (isStretch && !isLineMove) {
+	        var rotation = -this.threeManager.getRotation() - Math.PI / 4;
+	        this.newStartPoint = _utils2.default.axisTransform(this.mouseDownPoint.x, this.mouseDownPoint.y, rotation);
+	        this.initScale = this.scale;
+	      }
+	      if (isRadialVertexMove && !isLineMove) {
+	        this.threeManager.radialVertexDown();
+	        this.threeManager.adjustRadialZ();
+	      }
+	      if (isRadialLineMove && !isLineMove) {
+	        this.threeManager.adjustRadialZ();
+	      }
+	      if (isAngleStretch && !isLineMove) {
+	        this.threeManager.angleStretchDown();
+	      }
+	      if (isAngleRotate && !isLineMove) {
+	        this.anglePointB = this.threeManager.getAngleRotation();
+	        this.threeManager.angleRotateDown();
+	      }
+	    }
+
+	    /**
+	     * 鼠标移动事件
+	     * @param e
+	     */
+
+	  }, {
+	    key: 'mouseMoveEvent',
+	    value: function mouseMoveEvent(e) {
+	      if (isMove) {
+	        this.protractorMove(e);
+	      }
+	      if (isLineMove) {
+	        this.helpLineMove(e);
+	      }
+	      if (isAngleRotate && !isLineMove) {
+	        this.angleRotate(e);
+	      }
+	      if (isAngleStretch && !isLineMove) {
+	        this.angleStretch(e);
+	      }
+	      if (isAngleMove && !isLineMove && this.threeManager.isAngleEdit()) {
+	        this.angleMove(e);
+	      }
+	      if (isRadialLineMove && !isLineMove && this.threeManager.isRadialLineEdit()) {
+	        this.radialLineMove(e);
+	      }
+	      if (isRadialVertexMove && !isLineMove) {
+	        this.radialVertexMove(e);
+	      }
+	      if (isRotate && !isLineMove) {
+	        this.protractorRotate(e);
+	      }
+	      if (isDrawArc && !isLineMove) {
+	        this.drawCanvasArc(e);
+	      }
+	      if (isDrawBottomLine && !isLineMove) {
+	        this.drawCanvasLine(e);
+	      }
+	      if (isStretch && !isLineMove) {
+	        this.protractorStretch(e);
+	      }
+	    }
+
+	    /**
+	     * 鼠标松开事件
+	     * @param e
+	     */
+
+	  }, {
+	    key: 'mouseUpEvent',
+	    value: function mouseUpEvent(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      if (isMove) {
+	        isMove = false;
+	        this.totalOriginOffsetX += this.originOffsetX;
+	        this.totalOriginOffsetY += this.originOffsetY;
+	        this.updateOrigin();
+	      }
+	      if (isLineMove) {
+	        isLineMove = false;
+	        this.startAngle = this.endAngle;
+	        return;
+	      }
+
+	      if (isAngleStretch && !isLineMove) {
+	        isAngleStretch = false;
+	        this.threeManager.angleStretchUp();
+	      }
+
+	      if (isRadialLineMove && !isLineMove) {
+	        isRadialLineMove = false;
+	        var distance = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (distance < 2) {
+	          if (this.threeManager.isRadialLineEdit()) {
+	            this.threeManager.radialLineHideEdit();
+	          } else {
+	            this.threeManager.radialLineEdit();
+	          }
+	          this.threeManager.adjustRadialZ();
+	          this.threeManager.render();
+	        }
+	      }
+
+	      if (isAngleSector && !isLineMove) {
+	        isAngleSector = false;
+	        var _distance = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance < 2) {
+	          this.threeManager.toggleSector();
+	        }
+	      }
+
+	      if (isAngleRotate && !isLineMove) {
+	        this.threeManager.angleRotateUp();
+	      }
+
+	      if (isRadialVertexMove && !isLineMove) {
+	        isRadialVertexMove = false;
+	        this.threeManager.radialVertexUp();
+	      }
+
+	      if (isAngleMove && !isLineMove) {
+	        isAngleMove = false;
+	        var _distance2 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance2 < 2) {
+	          if (this.threeManager.isAngleEdit()) {
+	            this.threeManager.angleEditHide();
+	          } else {
+	            this.threeManager.angleEditShow();
+	          }
+	        }
+	      }
+
+	      if (isDrawArc && !isLineMove) {
+	        isDrawArc = false;
+	        this.drawPPTArc();
+	      }
+
+	      if (isRotate && !isLineMove) {
+	        isRotate = false;
+	        ptrRotateAngle += moveAngle;
+	        if (ptrRotateAngle > 180) {
+	          ptrRotateAngle -= 360;
+	        }
+	        if (ptrRotateAngle < -180) {
+	          ptrRotateAngle += 360;
+	        }
+	      }
+	      if (isDrawBottomLine && !isLineMove) {
+	        isDrawBottomLine = false;
+	        this.drawPPTBottomLine();
+	      }
+	      if (isInnerMeaRange && !isLineMove) {
+	        isInnerMeaRange = false;
+	        var _distance3 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance3 < 2) {
+	          this.threeManager.visibilityToggle('innerMeaRange');
+	        }
+	      }
+	      if (isOuterMeaRange && !isLineMove) {
+	        isOuterMeaRange = false;
+	        var _distance4 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance4 < 2) {
+	          this.threeManager.visibilityToggle('outerMeaRange');
+	        }
+	      }
+	      if (isRightZore) {
+	        isRightZore = false;
+	        var _distance5 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance5 < 2) {
+	          this.threeManager.hide('rightZore');
+	          this.threeManager.leftZoreHide(true);
+	          return;
+	        }
+	        var rotationRad = -this.threeManager.getRotation();
+	        var rotationPoint = this.threeManager.getRotationCenter();
+	        var newStartPoint = _utils2.default.axisTransform(this.mouseDownPoint.x, this.mouseDownPoint.y, rotationRad);
+	        var newEndPoint = _utils2.default.axisTransform(endPoint.x, endPoint.y, rotationRad);
+	        if (Math.abs(newStartPoint.x - newEndPoint.x) >= 10 && Math.abs(newStartPoint.y - newEndPoint.y) < 15) {
+	          if (rotationPoint.x + MAX_WIDTH / 2 < endPoint.x) {
+	            this.threeManager.show('rightZore');
+	            this.threeManager.leftZoreHide(true);
+	          } else {
+	            this.threeManager.leftZoreShow(true);
+	          }
+	        }
+	      }
+	      if (isLeftZore) {
+	        isLeftZore = false;
+	        var _distance6 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance6 < 2) {
+	          this.threeManager.leftZoreHide();
+	          return;
+	        }
+	        var _rotationRad = -this.threeManager.getRotation();
+	        var _rotationPoint = this.threeManager.getRotationCenter();
+	        var _newStartPoint = _utils2.default.axisTransform(this.mouseDownPoint.x, this.mouseDownPoint.y, _rotationRad);
+	        var _newEndPoint = _utils2.default.axisTransform(endPoint.x, endPoint.y, _rotationRad);
+	        if (Math.abs(_newStartPoint.x - _newEndPoint.x) >= 10 && Math.abs(_newStartPoint.y - _newEndPoint.y) < 15) {
+	          if (_rotationPoint.x + MAX_WIDTH / 2 > endPoint.x) {
+	            this.threeManager.leftZoreShow();
+	          } else {
+	            this.threeManager.leftZoreShow(true);
+	          }
+	        }
+	      }
+	      if (isVerticalLine) {
+	        isVerticalLine = false;
+	        var _distance7 = _utils2.default.getDistance(this.mouseDownPoint.x, this.mouseDownPoint.y, endPoint.x, endPoint.y);
+	        if (_distance7 < 2) {
+	          this.threeManager.hide('verticalLine');
+	          return;
+	        }
+	        var _rotationRad2 = -this.threeManager.getRotation();
+	        var _newStartPoint2 = _utils2.default.axisTransform(this.mouseDownPoint.x, this.mouseDownPoint.y, _rotationRad2);
+	        var _newEndPoint2 = _utils2.default.axisTransform(endPoint.x, endPoint.y, _rotationRad2);
+	        if (Math.abs(_newStartPoint2.y - _newEndPoint2.y) >= 10 && Math.abs(_newStartPoint2.x - _newEndPoint2.x) < 15) {
+	          this.threeManager.show('verticalLine');
+	        }
+	      }
+	      if (isCenterPoint) {
+	        isCenterPoint = false;
+	        this.threeManager.visibilityToggle('centerPoint');
+	      }
+	      isCloseBtn = false;
+	      mouseStartPoint = {};
+	      this.pptLineStartPoint = null;
+	      newLineStart = 0;
+	    }
+	  }, {
+	    key: 'focusEvent',
+	    value: function focusEvent() {
+	      this.threeManager.focus();
+	    }
+	  }, {
+	    key: 'blurEvent',
+	    value: function blurEvent() {
+	      this.ptrDom.hide();
+	      this.threeManager.isFocus = false;
+	    }
+	  }, {
+	    key: 'isPointInPath',
+	    value: function isPointInPath(e) {
+	      if ($(e.target).hasClass('_js_help_btn') || $(e.target).hasClass('_js_help_btn_center') || $(e.target).hasClass('_js_angle_text') || $(e.target).parent().hasClass('_js_angle_text') || $(e.target).hasClass('_js_help_line')) {
+	        this.threeManager.isPointInPath(e);
+	        return true;
+	      } else {
+	        return this.threeManager.isPointInPath(e);
+	      }
+	    }
+
+	    /**
+	     * 移动或者旋转后更新圆心点的坐标信息
+	     */
+
+	  }, {
+	    key: 'updateOrigin',
+	    value: function updateOrigin() {
+	      var newX = this.startOrigin.x + this.totalOriginOffsetX;
+	      var newY = this.startOrigin.y + this.totalOriginOffsetY;
+	      this.origin = {
+	        x: newX,
+	        y: newY
+	      };
+	      this.originOffsetX = 0;
+	      this.originOffsetY = 0;
+	    }
+	  }, {
+	    key: 'angleRotate',
+	    value: function angleRotate(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      var deg = _utils2.default.calculateAngle(mouseStartPoint.x, mouseStartPoint.y, endPoint.x, endPoint.y, this.anglePointB.x, this.anglePointB.y);
+	      this.threeManager.angleRotate(deg * Math.PI / 180);
+	      mouseStartPoint = endPoint;
+	    }
+	  }, {
+	    key: 'angleMove',
+	    value: function angleMove(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      this.threeManager.angleMove(endPoint.x - mouseStartPoint.x, mouseStartPoint.y - endPoint.y);
+	      mouseStartPoint = endPoint;
+	    }
+	  }, {
+	    key: 'angleStretch',
+	    value: function angleStretch(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      this.threeManager.angleStretch(endPoint.x - mouseStartPoint.x, mouseStartPoint.y - endPoint.y);
+	      mouseStartPoint = endPoint;
+	    }
+	  }, {
+	    key: 'radialLineMove',
+	    value: function radialLineMove(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      this.threeManager.radialLineMove(endPoint.x - mouseStartPoint.x, mouseStartPoint.y - endPoint.y);
+	      mouseStartPoint = endPoint;
+	    }
+	  }, {
+	    key: 'radialVertexMove',
+	    value: function radialVertexMove(e) {
+	      var endPoint = _utils2.default.getPoint(e);
+	      this.threeManager.radialVertexMove(endPoint.x - mouseStartPoint.x, mouseStartPoint.y - endPoint.y);
+	      mouseStartPoint = endPoint;
+	    }
+	  }, {
+	    key: 'protractorStretch',
+	    value: function protractorStretch(e) {
+	      var movePoint = _utils2.default.getPoint(e);
+	      var rotation = -this.threeManager.getRotation() - Math.PI / 4;
+	      var newMovePoint = _utils2.default.axisTransform(movePoint.x, movePoint.y, rotation);
+	      var tempScale = this.initScale + (newMovePoint.x - this.newStartPoint.x) / 200;
+	      // 避免默认位置放大超出屏幕
+	      if (tempScale * protractorWidth > screen.availWidth - 80) {
+	        return;
+	      }
+	      this.scale = tempScale;
+	      this.scale = this.scale > 2 ? 2 : this.scale;
+	      this.scale = this.scale < 1 ? 1 : this.scale;
+	      this.threeManager.setTransform('scale', this.scale);
+	      this.ptrDom.css('transform', 'rotate(' + this.ptrDom.data('rotate') + 'deg) scale(' + this.scale + ')');
+	      this.canvasDom.css('transform', 'rotate(' + this.ptrDom.data('rotate') + 'deg) scale(' + this.scale + ')');
+	      this.ptrDom.data('rotate');
+	    }
+	  }, {
+	    key: 'protractorMove',
+	    value: function protractorMove(e) {
+	      var canvasLeft = this.canvasDom.css('left').replace('px', '');
+	      var canvasTop = this.canvasDom.css('top').replace('px', '');
+	      var x = _utils2.default.getPoint(e).x - mouseStartPoint.x + parseInt(canvasLeft);
+	      var y = _utils2.default.getPoint(e).y - mouseStartPoint.y + parseInt(canvasTop);
+	      var shapeX = x - this.globeCenterX;
+	      var shapeY = y - this.globeCenterY;
+	      this.threeManager.setTransform('translate', { x: shapeX, y: shapeY });
+	      this.canvasDom.css({
+	        top: y,
+	        left: x
+	      });
+	      this.ptrDom.css({
+	        top: y,
+	        left: x
+	      });
+	      mouseStartPoint.x = _utils2.default.getPoint(e).x;
+	      mouseStartPoint.y = _utils2.default.getPoint(e).y;
+	      this.originOffsetX = _utils2.default.getPoint(e).x - this.mouseDownPoint.x;
+	      this.originOffsetY = _utils2.default.getPoint(e).y - this.mouseDownPoint.y;
+	      // console.log('originOffsetX, originOffsetY', this.originOffsetX, this.originOffsetY)
+	    }
+	  }, {
+	    key: 'protractorRotate',
+	    value: function protractorRotate(e) {
+	      var canvasLeft = this.canvasDom.css('left').replace('px', '');
+	      var canvasTop = this.canvasDom.css('top').replace('px', '');
+	      var pointFirst = {
+	        x: mouseStartPoint.x - canvasLeft - circleX,
+	        y: mouseStartPoint.y - canvasTop - circleY
+	      };
+	      var pointSecond = {
+	        x: _utils2.default.getPoint(e).x - canvasLeft - circleX,
+	        y: _utils2.default.getPoint(e).y - canvasTop - circleY
+	      };
+	      var edgeA = Math.sqrt(Math.pow(pointFirst.x - pointSecond.x, 2) + Math.pow(pointFirst.y - pointSecond.y, 2));
+	      var edgeB = Math.sqrt(Math.pow(pointFirst.x, 2) + Math.pow(pointFirst.y, 2));
+	      var edgeC = Math.sqrt(Math.pow(pointSecond.x, 2) + Math.pow(pointSecond.y, 2));
+	      var disAngle = 360 * Math.acos((Math.pow(edgeB, 2) + Math.pow(edgeC, 2) - Math.pow(edgeA, 2)) / (2 * edgeB * edgeC)) / (2 * Math.PI);
+	      var direction = pointFirst.x * pointSecond.y - pointFirst.y * pointSecond.x;
+	      if (direction < 0) {
+	        moveAngle = -disAngle;
+	      } else {
+	        moveAngle = disAngle;
+	      }
+
+	      var deg = ptrRotateAngle + moveAngle;
+	      this.threeManager.setTransform('rotate', deg / 180 * Math.PI);
+	      this.canvasDom.css('transform', 'rotate(' + deg + 'deg) scale(' + this.scale + ')');
+	      this.ptrDom.css('transform', 'rotate(' + deg + 'deg) scale(' + this.scale + ')');
+	      this.ptrDom.data('rotate', deg);
+
+	      var btnRotate = this.helpTextAngle - deg;
+	      this.helpBtnDom.css({
+	        transform: 'rotate(' + btnRotate + 'deg)'
+	      });
+	      if (btnRotate > 180) {
+	        btnRotate -= 360;
+	      } else if (btnRotate < -180) {
+	        btnRotate += 360;
+	      }
+	      if (btnRotate > 0 && btnRotate < 180) {
+	        this.degDom.removeClass('ptr_btn_reversed');
+	      } else {
+	        this.degDom.addClass('ptr_btn_reversed');
+	      }
+	      globalAngle = deg;
+	    }
+
+	    /**
+	     * 辅助线的旋转角度,长度变化
+	     * @param e
+	     */
+
+	  }, {
+	    key: 'helpLineMove',
+	    value: function helpLineMove(e) {
+	      if (!isLineMove) return;
+	      var pointInfo = this.getPointInfo(e);
+	      this.deg = Math.abs(pointInfo.angle);
+	      var angle = pointInfo.angle;
+
+	      // 辅助线的旋转
+	      this.lineDom.css({
+	        transform: 'rotate(' + angle + 'deg)'
+	      });
+
+	      // 按钮的旋转
+	      var helpBtnRotate = -angle - ptrRotateAngle;
+	      if (helpBtnRotate > 180) {
+	        helpBtnRotate -= 360;
+	      } else if (helpBtnRotate < -180) {
+	        helpBtnRotate += 360;
+	      }
+	      this.helpBtnDom.css({
+	        transform: 'rotate(' + helpBtnRotate + 'deg)'
+	      });
+	      if (helpBtnRotate < 0 && helpBtnRotate > -180) {
+	        this.degDom.addClass('ptr_btn_reversed');
+	      } else {
+	        this.degDom.removeClass('ptr_btn_reversed');
+	      }
+
+	      this.helpTextAngle = -angle;
+	      // 辅助线的长度
+	      var width = pointInfo.width;
+
+	      // 角度数值的展示，以0.5为最小单位增减, 靠近中心点吸附且不显示数字
+	      if (width < 7) {
+	        this.numDom.html('');
+	        this.unitDom.html('');
+	        this.lineDom.width(0).css({
+	          transform: 'rotate(0deg)'
+	        }).addClass('make_line_center');
+	        this.confirmDrawPoint = true;
+	      } else {
+	        this.numDom.html(-angle);
+	        this.unitDom.html('°');
+	        this.lineDom.width(width / this.scale).removeClass('make_line_center');
+	        this.confirmDrawPoint = false;
+	      }
+	    }
+
+	    /**
+	     * 生成射线
+	     */
+
+	  }, {
+	    key: 'drawHelpLine',
+	    value: function drawHelpLine() {
+	      var x1 = Math.round(this.origin.x);
+	      var y1 = Math.round(this.origin.y);
+	      var start = {
+	        'x': x1,
+	        'y': y1
+	      };
+	      if (this.confirmDrawPoint) {
+	        start = {
+	          'x': x1 - 1,
+	          'y': y1 - 1
+	        };
+	        var color = pptLineColor || '#000';
+	        var lineWidth = pptLineWidth + dotRadius;
+	        this.paintProtractor.drawLine(start, start, color, lineWidth + 2);
+	        return;
+	      }
+	      var btnPos = this.btnCenterDom.offset();
+	      var x2 = Math.round(btnPos.left);
+	      var y2 = Math.round(btnPos.top);
+	      var end = {
+	        'x': x2,
+	        'y': y2
+	      };
+	      var len = _utils2.default.getDistance(start.x, start.y, end.x, end.y);
+	      if (this.threeManager.canDrawAngle()) {
+	        this.threeManager.drawAngle(this.deg, len);
+	      } else {
+	        this.threeManager.drawRadial(this.deg, len);
+	      }
+	    }
+	  }, {
+	    key: 'drawCanvasLine',
+	    value: function drawCanvasLine(e) {
+	      var curMoveX = _utils2.default.getPoint(e).x;
+
+	      this.mouseMoveX = curMoveX - this.preMouseMoveX;
+
+	      var offsetStart = curMoveX - this.mouseDownPoint.x;
+	      offsetStart = offsetStart / Math.cos(ptrRotateAngle * Math.PI / 180);
+
+	      this.clearCanvas();
+	      this.ctx.globalCompositeOperation = 'destination-over';
+	      newLineStart = this.pptLineStartPoint.x + offsetStart;
+	      newLineStart = Math.round((newLineStart - circleX) / this.scale + circleX);
+	      // 限制画底边线的边界
+	      if (newLineStart > canvasBottomLineBound[1]) {
+	        newLineStart = canvasBottomLineBound[1];
+	      }
+	      if (newLineStart < canvasBottomLineBound[0]) {
+	        newLineStart = canvasBottomLineBound[0];
+	      }
+	      this.ctx.save();
+	      this.ctx.beginPath();
+	      var fixY = circleY + deltaToBottomLine + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4;
+	      this.ctx.moveTo(Math.round((this.pptLineStartPoint.x - circleX) / this.scale + circleX), fixY);
+	      this.ctx.lineTo(newLineStart, fixY);
+	      this.ctx.lineWidth = Math.round(pptLineWidth / this.scale);
+	      this.ctx.strokeStyle = pptLineColor;
+	      this.ctx.stroke();
+	      this.ctx.restore();
+
+	      // 限制调用ppt接口画底边线的边界
+	      var maxBottomLineLength = Math.round((canvasBottomLineBound[1] - circleX) * this.scale + circleX) - this.pptLineStartPoint.x;
+	      var minBottomLineLength = -this.pptLineStartPoint.x + Math.round((canvasBottomLineBound[0] - circleX) * this.scale + circleX);
+	      bottomLineLength = offsetStart;
+	      if (bottomLineLength > maxBottomLineLength) {
+	        bottomLineLength = maxBottomLineLength;
+	      } else if (bottomLineLength < minBottomLineLength) {
+	        bottomLineLength = minBottomLineLength;
+	      }
+	    }
+	  }, {
+	    key: 'drawPPTBottomLine',
+	    value: function drawPPTBottomLine() {
+	      this.clearCanvas();
+
+	      // 调用ppt的画线接口
+	      var x1 = Math.round(this.mouseDownPoint.x - (27.5 * this.scale - deltaMouseToLine + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4) * Math.sin(ptrRotateAngle * Math.PI / 180));
+	      var y1 = Math.round(this.mouseDownPoint.y + (27.5 * this.scale - deltaMouseToLine + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4) * Math.cos(ptrRotateAngle * Math.PI / 180));
+	      var start = {
+	        'x': x1,
+	        'y': y1
+	      };
+	      // 移动距离小于2视作画点
+	      // console.log('bottomLineLength mouseMoveX', bottomLineLength, this.mouseMoveX);
+	      if (Math.abs(bottomLineLength) <= 4 || Math.abs(this.mouseMoveX) < 4) {
+	        this.paintProtractor.drawLine(start, start, pptLineColor, pptLineWidth + dotRadius);
+	        return;
+	      }
+
+	      var x2 = bottomLineLength * Math.cos(ptrRotateAngle * Math.PI / 180) + x1;
+	      var y2 = bottomLineLength * Math.sin(ptrRotateAngle * Math.PI / 180) + y1;
+	      x2 = Math.round(x2);
+	      y2 = Math.round(y2);
+	      var end = {
+	        'x': x2,
+	        'y': y2
+	      };
+
+	      this.paintProtractor.drawLine(start, end, pptLineColor, pptLineWidth);
+	      bottomLineLength = 0;
+	    }
+
+	    /**
+	     * 生成圆弧
+	     * @param e
+	     */
+
+	  }, {
+	    key: 'drawCanvasArc',
+	    value: function drawCanvasArc(e) {
+	      // deltaDeg：和鼠标按下点的角度差值， arcDeltaAngle：移动过程中最后2点的角度差值
+	      var arcCurAngle = this.getPointInfo(e).angle;
+	      var arcDeltaAngle = arcCurAngle - this.arcPreAngle;
+	      this.arcPreAngle = arcCurAngle;
+
+	      var startDeg = this.arcStartAngle / 180 * Math.PI;
+	      var endDeg = arcCurAngle / 180 * Math.PI;
+	      var deltaDeg = endDeg - startDeg;
+
+	      this.arcEndAngle = arcCurAngle;
+
+	      if (deltaDeg === 0 || arcDeltaAngle === 0) {
+	        return;
+	      }
+
+	      var signMove = arcDeltaAngle < 0;
+	      var signStart = deltaDeg < 0;
+	      this.ctx.save();
+	      this.ctx.lineCap = 'square';
+
+	      // 判断鼠标移动方向是否改变，true: 改变; false: 没改变;
+	      var changeDirection = signMove ^ signStart;
+
+	      // 鼠标移动方向不改变，则画弧
+	      if (!changeDirection) {
+	        this.ctx.save();
+	        this.ctx.beginPath();
+	        this.ctx.arc(circleX, circleY, reactionRadius - 18 + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4, startDeg, endDeg, signStart);
+	        this.ctx.lineWidth = Math.round(pptLineWidth / this.scale) - 1;
+	        this.ctx.strokeStyle = pptLineColor || 'red';
+	        this.ctx.stroke();
+	        this.ctx.restore();
+	      } else {
+	        // 不相等，擦除
+	        this.ctx.save();
+	        this.ctx.globalCompositeOperation = 'destination-out';
+	        this.ctx.beginPath();
+	        this.ctx.arc(circleX, circleY, reactionRadius - 18 + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4, startDeg, endDeg, signMove);
+	        this.ctx.lineWidth = Math.round(pptLineWidth / this.scale) || 2;
+	        this.ctx.stroke();
+	        this.ctx.restore();
+	        this.ctx.globalCompositeOperation = 'destination-over';
+	      }
+
+	      this.ctx.restore();
+	    }
+
+	    /**
+	     * 调用ppt接口画弧线
+	     */
+
+	  }, {
+	    key: 'drawPPTArc',
+	    value: function drawPPTArc() {
+	      this.clearCanvas();
+	      var radius = Math.round(Math.round(reactionRadius - 17) * this.scale + pptLineWidth / 2 - pptLineWidth * (this.scale - 1) / 4);
+	      var startAngle = this.arcStartAngle;
+	      var endAngle = this.arcEndAngle;
+	      var origin = {
+	        'x': Math.round(this.origin.x),
+	        'y': Math.round(this.origin.y)
+	      };
+
+	      var ang1 = -startAngle - ptrRotateAngle;
+	      var ang2 = -endAngle - ptrRotateAngle;
+	      var amassAngle = -endAngle + startAngle;
+	      if (Math.abs(amassAngle) >= 280 && (ang2 - ang1 < 180 && ang1 < ang2 || ang2 > 0 && ang2 < 50 && ang2 < ang1 && ang1 > 300 && ang1 < 360)) {
+	        ang2 = ang1 - 0.0001;
+	      }
+
+	      if (Math.abs(amassAngle) < 100 && (ang1 - ang2 < 100 && ang2 < ang1 || ang1 < ang2 && ang2 > 300 && ang2 < 360 && ang1 > 0 && ang1 < 50)) {
+	        var temp = ang2;
+	        ang2 = ang1;
+	        ang1 = temp;
+	      }
+
+	      if (Math.abs(amassAngle) > 360) {
+	        ang2 = ang1 - 0.0001;
+	      }
+
+	      if (amassAngle < -100) {
+	        ang2 -= amassAngle;
+	      }
+
+	      var eAngle = -ang2;
+	      var sweepAngle = Math.abs(amassAngle);
+	      if (Math.abs(amassAngle) > 360) {
+	        sweepAngle = 360.00;
+	      }
+
+	      if (Math.abs(startAngle - endAngle) < 2) {
+	        // console.log('画点！！！');
+	        var dotX = Math.round(this.origin.x + radius * Math.cos((-startAngle - ptrRotateAngle) * Math.PI / 180));
+	        var dotY = Math.round(this.origin.y - radius * Math.sin((-startAngle - ptrRotateAngle) * Math.PI / 180));
+	        var start = {
+	          x: dotX,
+	          y: dotY
+	        };
+
+	        this.paintProtractor.drawLine(start, start, pptLineColor, pptLineWidth + dotRadius);
+	        return;
+	      }
+
+	      var param = {};
+	      param.request_shape = 'arc';
+	      param.shape = {
+	        'color': pptLineColor,
+	        'width': pptLineWidth,
+	        'start': {
+	          x: origin.x - radius,
+	          y: origin.y - radius
+
+	        },
+	        'end': {
+	          x: origin.x + radius,
+	          y: origin.y + radius
+	        },
+	        'isFill': false,
+	        'start_angle': eAngle,
+	        'sweep_angle': sweepAngle - 1
+	      };
+	      window.CoursePlayer.drawMethod('drawCircle', JSON.stringify(param));
+	    }
+	  }, {
+	    key: 'clearCanvas',
+	    value: function clearCanvas() {
+	      var canvasDom = this.canvasDom[0];
+	      var width = canvasDom.width;
+	      var height = canvasDom.height;
+	      this.ctx.clearRect(0, 0, width, height);
+	    }
+
+	    /**
+	     * 获取事件ev在canvas内部的坐标
+	     * @param ev
+	     * @returns {{x: (number|*), y: (number|*)}}
+	     */
+
+	  }, {
+	    key: 'getEventPosition',
+	    value: function getEventPosition(ev) {
+	      var x = parseInt(ev.pageX || (ev.touches ? ev.touches[0].pageX : ev.originalEvent.pageX || ev.originalEvent.touches[0].pageX));
+	      var y = parseInt(ev.pageY || (ev.touches ? ev.touches[0].pageY : ev.originalEvent.pageY || ev.originalEvent.touches[0].pageY));
+	      var lastX = void 0;
+	      var lastY = void 0;
+	      var p = _utils2.default.findOffset(this.ptrDom[0]);
+
+	      var offsetCircleX = x - parseInt(p.x) - circleX;
+	      var offsetCircleY = y - parseInt(p.y) - circleY;
+
+	      // 实验
+	      var angle = globalAngle;
+	      if (angle < 0) {
+	        angle = 360 + angle % 360;
+	      } else {
+	        angle = angle % 360;
+	      }
+	      var goalX = offsetCircleX * Math.cos(angle * Math.PI / 180) + offsetCircleY * Math.sin(angle * Math.PI / 180);
+	      var goalY = offsetCircleY * Math.cos(angle * Math.PI / 180) - offsetCircleX * Math.sin(angle * Math.PI / 180);
+	      lastX = goalX + circleX;
+	      lastY = goalY + circleY;
+
+	      return { x: lastX, y: lastY };
+	    }
+
+	    /**
+	     * 获取e对应的点与圆心的角度以及长度
+	     * @param e
+	     * @returns {{angle: number, width: number}}
+	     */
+
+	  }, {
+	    key: 'getPointInfo',
+	    value: function getPointInfo(e) {
+	      var point = _utils2.default.getPoint(e);
+	      var pointX = Math.min(point.x, MAX_WIDTH - 50);
+	      pointX = Math.max(pointX, 50);
+	      var pointY = Math.min(point.y, MAX_HEIGHT - 50);
+	      pointY = Math.max(pointY, 80);
+
+	      var newE = _utils2.default.transformCoordinate({
+	        x: pointX,
+	        y: pointY
+	      }, -ptrRotateAngle);
+	      var newOrigin = _utils2.default.transformCoordinate(this.origin, -ptrRotateAngle);
+
+	      var curBtnX = newE.x;
+	      var curBtnY = newE.y;
+
+	      var xLength = curBtnX - newOrigin.x;
+	      var yLength = curBtnY - newOrigin.y;
+
+	      var deltaRad = Math.atan(yLength / xLength);
+	      if (deltaRad > 0) {
+	        deltaRad -= Math.PI;
+	      }
+	      if (yLength > 0) {
+	        deltaRad -= Math.PI;
+	      }
+	      var rad = 180 * deltaRad / Math.PI;
+	      var deg = rad;
+
+	      if (-rad >= 180 && -rad <= 270) {
+	        deg = -180;
+	      }
+	      if (-rad > 270 && -rad <= 360) {
+	        deg = 0;
+	      }
+	      var angle = Math.round(deg * 2) / 2;
+
+	      var width = void 0;
+	      if (angle === 0 || angle === -180) {
+	        width = Math.abs(xLength);
+	      } else {
+	        width = Math.pow(xLength, 2) + Math.pow(yLength, 2);
+	        width = Math.sqrt(width);
+	      }
+
+	      return {
+	        originAngle: deg,
+	        angle: angle,
+	        width: width
+	      };
+	    }
+	  }]);
+
+	  return Protractor;
+	}();
+
+	exports.default = Protractor;
+	;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	/**
+	 * Created by hellohy on 2016/12/30.
+	 */
+	var PI = Math.PI;
+	/**
+	 * 定义初始化数据对象
+	 * @type {{edgeWidth: number, circleX: number, circleY: number, reactionRadius: number, radiusOne: number, radiusTwo: number, radiusThree: number, radiusFour: number, centerbigRadius: number, centersmallRadius: number, buttonRadius: number, deviation: number, scale: number}}
+	 */
+	var config = {
+	  edgeWidth: 2, // 圆，线边的宽度
+	  circleX: 323, // 中心圆的x，旋转中心x
+	  circleY: 323, // 中心圆的y，旋转中心y
+	  reactionRadius: 320, // 绘点感应半圆的半径
+	  radiusOne: 300, // 第一个半圆的半径
+	  radiusTwo: 290, // 第二个半圆的半径
+	  radiusThree: 250, // 第三个半圆的半径
+	  radiusFour: 210, // 第四个半圆的半径
+	  centerbigRadius: 35, // 中心半圆的半径
+	  centersmallRadius: 12, // 中心小圆的半径
+	  centerDotRadius: 4, // 中心圆点半径
+	  buttonRadius: 26, // 按钮的半径
+	  borderStroke: 3,
+	  deviation: 5 * PI / 180, // 第一个圆相对于半圆水平线的偏差角度
+	  scale: 1,
+	  protractorWidth: 643, // 量角器的宽度
+	  protractorHeight: 371, // 量角器的高度
+	  closeBtnX: -130, // 关闭按钮位置X
+	  closeBtnY: -87, // 关闭按钮位置Y
+	  rotateBtnX: 66, // 旋转按钮位置X
+	  rotateBtnY: -3, // 旋转按钮位置Y
+	  comfirmBtnX: -60, // 确定按钮位置X
+	  comfirmBtnY: -3, // 确定按钮位置Y
+	  stretchBtnX: 136, // 拉伸按钮位置X
+	  stretchBtnY: -87, // 拉伸按钮位置Y
+	  drawArcLineWidth: 32, // 画弧线的范围宽
+	  drawBottomLineHeight: 40, // 画底边线的范围
+	  rotateOffsetX: 2, // 旋转中心偏移X
+	  rotateOffsetY: 0.2 // 旋转中心偏移Y
+	};
+	exports.default = config;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _shapeFactory = __webpack_require__(5);
+
+	var _utils = __webpack_require__(8);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _radial = __webpack_require__(9);
+
+	var _radial2 = _interopRequireDefault(_radial);
+
+	var _angle = __webpack_require__(10);
+
+	var _angle2 = _interopRequireDefault(_angle);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	// const protractorWidth = config.protractorWidth
+	var protractorHeight = _config2.default.protractorHeight;
+	var closeBtnX = _config2.default.closeBtnX;
+	var closeBtnY = _config2.default.closeBtnY;
+	var rotateBtnX = _config2.default.rotateBtnX;
+	var rotateBtnY = _config2.default.rotateBtnY;
+	var comfirmBtnX = _config2.default.comfirmBtnX;
+	var comfirmBtnY = _config2.default.comfirmBtnY;
+	var stretchBtnX = _config2.default.stretchBtnX;
+	var stretchBtnY = _config2.default.stretchBtnY;
+	var circleY = _config2.default.circleY;
+	var centerY = protractorHeight / 2 - circleY;
+	var rotateOffsetX = _config2.default.rotateOffsetX;
+	var rotateOffsetY = _config2.default.rotateOffsetY;
+	var radiusOne = _config2.default.radiusOne;
+
+	var isClose = false;
+	var isRotate = false;
+	var isConfirm = false;
+	var isDrawArc = false;
+	var isDrawBottomLine = false;
+	var isMove = false;
+	var isLeftZore = false;
+	var isRightZore = false;
+	var isOuterMeaRange = false;
+	var isInnerMeaRange = false;
+	var isCenterPoint = false;
+	var isVerticalLine = false;
+	var isStretch = false;
+	var isRadialLineMove = false;
+	var isRadialVertexMove = false;
+	var isAngleMove = false;
+	var isAngleSector = false;
+	var isAngleRotate = false;
+	var isAngleStretch = false;
+
+	var ThreeManager = function () {
+	  function ThreeManager(webglControl) {
+	    _classCallCheck(this, ThreeManager);
+
+	    this.webglControl = webglControl;
+	  }
+
+	  _createClass(ThreeManager, [{
+	    key: 'render',
+	    value: function render() {
+	      this.webglControl.render();
+	    }
+	  }, {
+	    key: 'threeStart',
+	    value: function threeStart() {
+	      initCamera.call(this);
+	      initScene.call(this);
+	      initRaycaster.call(this);
+	      document.getElementsByClassName('com_tooldiolag')[0] && document.getElementsByClassName('com_tooldiolag')[0].appendChild(this.webglControl.getRendererDom());
+	      document.getElementsByClassName('com_tooldialog')[0] && document.getElementsByClassName('com_tooldialog')[0].appendChild(this.webglControl.getRendererDom());
+	      this.webglControl.addView(this.scene, this.camera, false);
+	      this.render();
+	    }
+	  }, {
+	    key: 'focus',
+	    value: function focus() {
+	      !this.isRemove && !this.isFocus && this.webglControl.reIndexScene(this.scene);
+	      this.isFocus = !this.isRemove;
+	    }
+	  }, {
+	    key: 'setTransform',
+	    value: function setTransform(name, value) {
+	      if (name === 'rotate') {
+	        this.transformGroup.rotation.z = -value;
+	        this.rotateTexts(value);
+	      } else if (name === 'translate') {
+	        this.oneSide = null;
+	        this.transformGroup.position.x = value.x + rotateOffsetX;
+	        this.transformGroup.position.y = -value.y + centerY + rotateOffsetY;
+	      } else if (name === 'scale') {
+	        this.transformGroup.scale.x = value;
+	        this.transformGroup.scale.y = value;
+	      }
+	      this.render();
+	    }
+	  }, {
+	    key: 'rotateTexts',
+	    value: function rotateTexts(rad) {
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = this.textObjs[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var txt = _step.value;
+
+	          txt.rotation.z = rad;
+	          if (txt.data.change === 'x') {
+	            txt.position.x = txt.data.x + Math.abs(Math.cos(rad - txt.data.rad) * txt.data.len);
+	          } else if (txt.data.change === 'negx') {
+	            txt.position.x = txt.data.x - Math.abs(Math.cos(rad - txt.data.rad) * txt.data.len);
+	          } else if (txt.data.change === 'y') {
+	            txt.position.y = txt.data.y + Math.abs(Math.sin(rad - txt.data.rad) * txt.data.len);
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'visibilityToggle',
+	    value: function visibilityToggle(name) {
+	      this[name].visible = !this[name].visible;
+	      this.render();
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide(name) {
+	      this[name].visible = false;
+	      this.render();
+	    }
+	  }, {
+	    key: 'show',
+	    value: function show(name) {
+	      this[name].visible = true;
+	      this.render();
+	    }
+	  }, {
+	    key: 'leftZoreShow',
+	    value: function leftZoreShow(isFull) {
+	      this.leftZore.visible = true;
+	      var halfLine = _utils2.default.getTEleByName(this.leftZore, 'halfLine');
+	      var line = _utils2.default.getTEleByName(this.leftZore, 'line');
+	      if (isFull) {
+	        line.visible = true;
+	        halfLine.visible = false;
+	        this.isFullZoreLine = true;
+	        this.hide('rightZore');
+	      } else {
+	        line.visible = false;
+	        halfLine.visible = true;
+	        this.isFullZoreLine = false;
+	      }
+	      this.render();
+	    }
+
+	    // flag判断中心点左边还是右边点击
+
+	  }, {
+	    key: 'leftZoreHide',
+	    value: function leftZoreHide(flag) {
+	      if (this.isFullZoreLine && flag) {
+	        this.leftZore.visible = false;
+	      } else if (!flag) {
+	        this.leftZore.visible = false;
+	      }
+	      this.isFullZoreLine = false;
+	      this.render();
+	    }
+	  }, {
+	    key: 'removeDrawObj',
+	    value: function removeDrawObj() {
+	      this.removeAngle();
+	      this.removeRadial();
+	      console.log(this.drawObjs);
+	    }
+	  }, {
+	    key: 'drawAngle',
+	    value: function drawAngle(deg, len) {
+	      var pointA = {
+	        x: this.oneSide.x2,
+	        y: this.oneSide.y2
+	      };
+	      var pointB = {
+	        x: this.transformGroup.position.x,
+	        y: this.transformGroup.position.y
+	      };
+	      var pointC = {
+	        x: pointB.x + len * Math.cos(deg * Math.PI / 180 + this.transformGroup.rotation.z),
+	        y: pointB.y + len * Math.sin(deg * Math.PI / 180 + this.transformGroup.rotation.z)
+	      };
+	      var rad = this.transformGroup.rotation.z;
+	      var axis = _utils2.default.axisTransform(pointA.x - this.transformGroup.position.x, pointA.y - this.transformGroup.position.y, rad);
+	      var axis2 = _utils2.default.axisTransform(pointC.x - this.transformGroup.position.x, pointC.y - this.transformGroup.position.y, rad);
+	      axis.x += this.transformGroup.position.x;
+	      axis.y += this.transformGroup.position.y;
+	      axis2.x += this.transformGroup.position.x;
+	      axis2.y += this.transformGroup.position.y;
+	      var angle = new _angle2.default(axis, pointB, axis2, radiusOne * this.transformGroup.scale.x);
+	      if (angle.isRemove || !angle.isInRange()) {
+	        this.drawRadial(deg, len);
+	        angle = null;
+	        return false;
+	      }
+	      angle.rotate(rad);
+	      var line1 = _utils2.default.getTEleByName(angle.lineAB, 'angleClickLine');
+	      var line2 = _utils2.default.getTEleByName(angle.lineCB, 'angleClickLine');
+	      var btn1 = _utils2.default.getTEleByName(angle.leftBottomBtn, 'borderVertex');
+	      var btn2 = _utils2.default.getTEleByName(angle.rotateBtn, 'rotateVertex');
+	      var btn3 = _utils2.default.getTEleByName(angle.rightBottomBtn, 'borderVertex');
+	      var btn4 = _utils2.default.getTEleByName(angle.leftTopBtn, 'borderVertex');
+	      this.addExistObj(btn1);
+	      this.addExistObj(btn2);
+	      this.addExistObj(btn3);
+	      this.addExistObj(btn4);
+	      this.addExistObj(angle.clickSector);
+	      this.addExistObj(angle.wholeAngle);
+	      this.addExistObj(line1);
+	      this.addExistObj(line2);
+	      this.scene.add(angle.transformGroup);
+	      this.scene.remove(this.oneSide.g);
+	      var vertexaArea = _utils2.default.getTEleByName(this.oneSide.vertexA, 'radialVertex');
+	      var vertexbAreb = _utils2.default.getTEleByName(this.oneSide.vertexB, 'radialVertex');
+	      this.removeExistObj(vertexaArea);
+	      this.removeExistObj(vertexbAreb);
+	      this.removeExistObj(this.oneSide.clickLine);
+	      for (var i = 0; i < this.drawObjs.length; i++) {
+	        if (this.drawObjs[i] === this.oneSide) {
+	          this.drawObjs.splice(i, 1);
+	          break;
+	        }
+	      }
+	      this.oneSide = null;
+	      this.render();
+	      this.drawObjs.push(angle);
+	      return true;
+	    }
+	  }, {
+	    key: 'removeAngle',
+	    value: function removeAngle() {
+	      if (this.angle && this.angle.isEdit) {
+	        this.scene.remove(this.angle.transformGroup);
+	        var line1 = _utils2.default.getTEleByName(this.angle.lineAB, 'angleClickLine');
+	        var line2 = _utils2.default.getTEleByName(this.angle.lineCB, 'angleClickLine');
+	        var btn1 = _utils2.default.getTEleByName(this.angle.leftBottomBtn, 'borderVertex');
+	        var btn2 = _utils2.default.getTEleByName(this.angle.rotateBtn, 'rotateVertex');
+	        var btn3 = _utils2.default.getTEleByName(this.angle.rightBottomBtn, 'borderVertex');
+	        var btn4 = _utils2.default.getTEleByName(this.angle.leftTopBtn, 'borderVertex');
+	        this.removeExistObj(btn1);
+	        this.removeExistObj(btn2);
+	        this.removeExistObj(btn3);
+	        this.removeExistObj(btn4);
+	        this.removeExistObj(this.angle.clickSector);
+	        this.removeExistObj(this.angle.wholeAngle);
+	        this.removeExistObj(line1);
+	        this.removeExistObj(line2);
+	        for (var i = 0; i < this.drawObjs.length; i++) {
+	          if (this.drawObjs[i] === this.angle) {
+	            this.drawObjs.splice(i, 1);
+	            break;
+	          }
+	        }
+	        this.angle = null;
+	        this.render();
+	      }
+	    }
+	  }, {
+	    key: 'canDrawAngle',
+	    value: function canDrawAngle() {
+	      return this.isDrawAngle && this.oneSide;
+	    }
+	  }, {
+	    key: 'isAngleEdit',
+	    value: function isAngleEdit() {
+	      return this.angle.isEdit;
+	    }
+	  }, {
+	    key: 'angleEditShow',
+	    value: function angleEditShow() {
+	      if (this.angleLine.name !== 'angleClickLine') return;
+	      var _iteratorNormalCompletion2 = true;
+	      var _didIteratorError2 = false;
+	      var _iteratorError2 = undefined;
+
+	      try {
+	        for (var _iterator2 = this.drawObjs[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	          var i = _step2.value;
+
+	          i.hideEdit();
+	        }
+	      } catch (err) {
+	        _didIteratorError2 = true;
+	        _iteratorError2 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	            _iterator2.return();
+	          }
+	        } finally {
+	          if (_didIteratorError2) {
+	            throw _iteratorError2;
+	          }
+	        }
+	      }
+
+	      this.angle.showEdit();
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleEditHide',
+	    value: function angleEditHide() {
+	      this.angle.hideEdit();
+	      this.render();
+	    }
+	  }, {
+	    key: 'toggleSector',
+	    value: function toggleSector() {
+	      this.angle.toggleSector();
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleMove',
+	    value: function angleMove(x, y) {
+	      this.angle.move(x, y);
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleRotateDown',
+	    value: function angleRotateDown() {
+	      this.angle.rotateDown();
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleRotateUp',
+	    value: function angleRotateUp() {
+	      this.angle.rotateUp();
+	      this.render();
+	    }
+	  }, {
+	    key: 'getAngleRotation',
+	    value: function getAngleRotation() {
+	      return this.angle.getRotationScreenPos();
+	    }
+	  }, {
+	    key: 'angleRotate',
+	    value: function angleRotate(delta) {
+	      this.angle.rotate(delta);
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleStretchDown',
+	    value: function angleStretchDown() {
+	      this.angle.stretchDown(this.borderVertexBtn);
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleStretchUp',
+	    value: function angleStretchUp() {
+	      this.angle.stretchUp(this.borderVertexBtn);
+	      this.render();
+	    }
+	  }, {
+	    key: 'angleStretch',
+	    value: function angleStretch(x, y) {
+	      var axis = _utils2.default.axisTransform(x, y, this.angle.transformGroup.rotation.z);
+	      var newX = axis.x;
+	      if (this.borderVertexBtn.parent.name === 'leftBottomBtn') {
+	        this.angle.leftBottomMove(-newX);
+	      } else if (this.borderVertexBtn.parent.name === 'rightBottomBtn') {
+	        this.angle.rightBottomMove(newX);
+	      } else if (this.borderVertexBtn.parent.name === 'leftTopBtn') {
+	        this.angle.leftTopMove(-newX);
+	      }
+	      this.render();
+	    }
+	  }, {
+	    key: 'drawRadial',
+	    value: function drawRadial(deg, len) {
+	      var start = {
+	        x: this.transformGroup.position.x,
+	        y: this.transformGroup.position.y
+	      };
+	      var end = {
+	        x: start.x + len * Math.cos(deg * Math.PI / 180 + this.transformGroup.rotation.z),
+	        y: start.y + len * Math.sin(deg * Math.PI / 180 + this.transformGroup.rotation.z)
+	      };
+	      var radial = new _radial2.default(start.x, start.y, end.x, end.y);
+	      var vertexaArea = _utils2.default.getTEleByName(radial.vertexA, 'radialVertex');
+	      var vertexbAreb = _utils2.default.getTEleByName(radial.vertexB, 'radialVertex');
+	      this.addExistObj(vertexaArea);
+	      this.addExistObj(vertexbAreb);
+	      this.addExistObj(radial.clickLine);
+	      this.scene.add(radial.g);
+	      this.oneSide = radial;
+	      this.render();
+	      this.drawObjs.push(radial);
+	    }
+	  }, {
+	    key: 'removeRadial',
+	    value: function removeRadial() {
+	      if (this.radial && this.radial.isEdit) {
+	        this.scene.remove(this.radial.g);
+	        var vertexaArea = _utils2.default.getTEleByName(this.radial.vertexA, 'radialVertex');
+	        var vertexbAreb = _utils2.default.getTEleByName(this.radial.vertexB, 'radialVertex');
+	        this.removeExistObj(vertexaArea);
+	        this.removeExistObj(vertexbAreb);
+	        this.removeExistObj(this.radial.clickLine);
+	        for (var i = 0; i < this.drawObjs.length; i++) {
+	          if (this.drawObjs[i] === this.radial) {
+	            this.drawObjs.splice(i, 1);
+	            break;
+	          }
+	        }
+	        this.radial = null;
+	        this.render();
+	      }
+	    }
+	  }, {
+	    key: 'adjustRadialZ',
+	    value: function adjustRadialZ() {
+	      if (isRadialVertexMove && this.radialVertex.radialObj.isEdit) {
+	        this.radialVertex.parent.parent.position.z = ++this.radialZ;
+	        this.radialVertex.radialObj.addVertexZ(this.radialZ);
+	        this.radialVertex.parent.position.z++;
+	      }
+	      if (isRadialLineMove && this.radialLine.radialObj.isEdit) {
+	        this.radialLine.parent.parent.position.z = ++this.radialZ;
+	        this.radialLine.radialObj.addVertexZ(this.radialZ);
+	      }
+	    }
+	  }, {
+	    key: 'radialLineEdit',
+	    value: function radialLineEdit() {
+	      var _iteratorNormalCompletion3 = true;
+	      var _didIteratorError3 = false;
+	      var _iteratorError3 = undefined;
+
+	      try {
+	        for (var _iterator3 = this.drawObjs[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+	          var i = _step3.value;
+
+	          i.hideEdit();
+	        }
+	      } catch (err) {
+	        _didIteratorError3 = true;
+	        _iteratorError3 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion3 && _iterator3.return) {
+	            _iterator3.return();
+	          }
+	        } finally {
+	          if (_didIteratorError3) {
+	            throw _iteratorError3;
+	          }
+	        }
+	      }
+
+	      this.radialLine.radialObj.showEdit();
+	      this.render();
+	    }
+	  }, {
+	    key: 'radialLineHideEdit',
+	    value: function radialLineHideEdit() {
+	      this.radialLine.radialObj.hideEdit();
+	      this.render();
+	    }
+	  }, {
+	    key: 'radialLineMove',
+	    value: function radialLineMove(x, y) {
+	      if (this.oneSide == this.radialLine.radialObj) {
+	        this.oneSide = null;
+	      }
+	      this.radialLine.radialObj.move(x, y);
+	      this.render();
+	    }
+	  }, {
+	    key: 'isRadialLineEdit',
+	    value: function isRadialLineEdit() {
+	      return this.radialLine.radialObj.isEdit;
+	    }
+	  }, {
+	    key: 'radialVertexDown',
+	    value: function radialVertexDown() {
+	      this.radialVertex.radialObj.vertexDown(this.radialVertex.parent.name);
+	      this.render();
+	    }
+	  }, {
+	    key: 'radialVertexUp',
+	    value: function radialVertexUp() {
+	      this.radialVertex.radialObj.vertexUp(this.radialVertex.parent.name);
+	      this.render();
+	    }
+	  }, {
+	    key: 'radialVertexMove',
+	    value: function radialVertexMove(x, y) {
+	      if (this.radialVertex.parent.name === 'A') {
+	        this.radialVertex.radialObj.vertexAMove(x, y);
+	      } else {
+	        this.radialVertex.radialObj.vertexBMove(x, y);
+	      }
+	      this.render();
+	    }
+	  }, {
+	    key: 'getRotationCenter',
+	    value: function getRotationCenter() {
+	      return {
+	        x: this.transformGroup.position.x,
+	        y: this.transformGroup.position.y
+	      };
+	    }
+	  }, {
+	    key: 'getRotation',
+	    value: function getRotation() {
+	      return this.transformGroup.rotation.z;
+	    }
+	  }, {
+	    key: 'getAction',
+	    value: function getAction() {
+	      resetBaseAction();
+	      isRadialLineMove = false;
+	      isRadialVertexMove = false;
+	      isAngleMove = false;
+	      isAngleSector = false;
+	      isAngleRotate = false;
+	      isAngleStretch = false;
+	      var isFound = void 0;
+	      var _iteratorNormalCompletion4 = true;
+	      var _didIteratorError4 = false;
+	      var _iteratorError4 = undefined;
+
+	      try {
+	        for (var _iterator4 = this.intersects[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+	          var _intersect2 = _step4.value;
+
+	          if (_intersect2.object.name === 'angleClickLine') {
+	            this.angleLine = _intersect2.object;
+	            this.angle = this.angleLine.angleObj;
+	            isAngleMove = true;
+	          }
+	          // 增加移动区域为整个编辑框
+	          if (_intersect2.object.name === 'wholeAngle') {
+	            if (isAngleMove) continue;
+	            this.angleLine = _intersect2.object;
+	            this.angle = this.angleLine.angleObj;
+	            if (!this.angle.isEdit) continue;
+	            isAngleMove = true;
+	          }
+	          if (_intersect2.object.name === 'sector') {
+	            this.sector = _intersect2.object;
+	            this.angle = this.sector.angleObj;
+	            isAngleSector = true;
+	            isAngleMove = false;
+	            break;
+	          }
+	          if (_intersect2.object.name === 'rotateVertex') {
+	            this.angleRotateBtn = _intersect2.object;
+	            this.angle = this.angleRotateBtn.angleObj;
+	            if (!this.angle.isEdit) continue;
+	            isAngleRotate = true;
+	            isAngleMove = false;
+	            break;
+	          }
+	          if (_intersect2.object.name === 'borderVertex') {
+	            this.borderVertexBtn = _intersect2.object;
+	            this.angle = this.borderVertexBtn.angleObj;
+	            if (!this.angle.isEdit) continue;
+	            isAngleStretch = true;
+	            isAngleMove = false;
+	            break;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError4 = true;
+	        _iteratorError4 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+	            _iterator4.return();
+	          }
+	        } finally {
+	          if (_didIteratorError4) {
+	            throw _iteratorError4;
+	          }
+	        }
+	      }
+
+	      isFound = isAngleMove || isAngleSector || isAngleRotate || isAngleStretch;
+	      if (!isFound) {
+	        var _iteratorNormalCompletion5 = true;
+	        var _didIteratorError5 = false;
+	        var _iteratorError5 = undefined;
+
+	        try {
+	          for (var _iterator5 = this.intersects[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+	            var intersect = _step5.value;
+
+	            if (intersect.object.name === 'radialLine') {
+	              this.radialLine = intersect.object;
+	              this.radial = this.radialLine.radialObj;
+	              isRadialLineMove = true;
+	              if (this.radialLine.radialObj.isEdit) break;
+	            }
+	            if (intersect.object.name === 'radialVertex') {
+	              this.radialVertex = intersect.object;
+	              if (!this.radialVertex.radialObj.isEdit) continue;
+	              this.radial = this.radialVertex.radialObj;
+	              isRadialVertexMove = true;
+	              isRadialLineMove = false;
+	              break;
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError5 = true;
+	          _iteratorError5 = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion5 && _iterator5.return) {
+	              _iterator5.return();
+	            }
+	          } finally {
+	            if (_didIteratorError5) {
+	              throw _iteratorError5;
+	            }
+	          }
+	        }
+
+	        isFound = isRadialLineMove || isRadialVertexMove;
+	      }
+	      if (!isFound) {
+	        var _iteratorNormalCompletion6 = true;
+	        var _didIteratorError6 = false;
+	        var _iteratorError6 = undefined;
+
+	        try {
+	          for (var _iterator6 = this.intersects[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+	            var _intersect = _step6.value;
+
+	            if (_intersect.object === this.closeBtn) {
+	              isClose = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.rotateBtn) {
+	              isRotate = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.comfirmBtn) {
+	              isConfirm = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.stretchBtn) {
+	              isStretch = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.arcLineArea) {
+	              isDrawArc = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.bottomLineArea) {
+	              isDrawBottomLine = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.innerProtractor) {
+	              isMove = true;
+	            }
+	            if (_intersect.object === this.leftZoreArea) {
+	              isLeftZore = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.rightZoreArea) {
+	              isRightZore = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.centerPointArea) {
+	              isCenterPoint = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.verticalLineArea) {
+	              isVerticalLine = true;
+	              isMove = false;
+	              break;
+	            }
+	            if (_intersect.object === this.outerMeaRangeArea) {
+	              isOuterMeaRange = true;
+	            }
+	            if (_intersect.object === this.innerMeaRangeArea) {
+	              isInnerMeaRange = true;
+	            }
+	          }
+	        } catch (err) {
+	          _didIteratorError6 = true;
+	          _iteratorError6 = err;
+	        } finally {
+	          try {
+	            if (!_iteratorNormalCompletion6 && _iterator6.return) {
+	              _iterator6.return();
+	            }
+	          } finally {
+	            if (_didIteratorError6) {
+	              throw _iteratorError6;
+	            }
+	          }
+	        }
+	      }
+
+	      return {
+	        isAngleStretch: isAngleStretch,
+	        isAngleRotate: isAngleRotate,
+	        isAngleSector: isAngleSector,
+	        isAngleMove: isAngleMove,
+	        isRadialVertexMove: isRadialVertexMove,
+	        isRadialLineMove: isRadialLineMove,
+	        isMove: isMove,
+	        isClose: isClose,
+	        isRotate: isRotate,
+	        isConfirm: isConfirm,
+	        isDrawArc: isDrawArc,
+	        isDrawBottomLine: isDrawBottomLine,
+	        isLeftZore: isLeftZore,
+	        isRightZore: isRightZore,
+	        isCenterPoint: isCenterPoint,
+	        isVerticalLine: isVerticalLine,
+	        isOuterMeaRange: isOuterMeaRange,
+	        isInnerMeaRange: isInnerMeaRange,
+	        isStretch: isStretch
+	      };
+	    }
+	  }, {
+	    key: 'isPointInPath',
+	    value: function isPointInPath(event) {
+	      var pointer = void 0;
+	      if (event.touches) {
+	        if (event.touches.length === 1) {
+	          pointer = event.changedTouches[0];
+	        } else {
+	          return false;
+	        }
+	      } else {
+	        pointer = event;
+	      }
+	      this.mouse.x = pointer.clientX / window.innerWidth * 2 - 1;
+	      this.mouse.y = -(pointer.clientY / window.innerHeight) * 2 + 1;
+	      this.raycaster.setFromCamera(this.mouse, this.camera);
+	      this.intersects = this.raycaster.intersectObjects(this.existObjs);
+	      // 判断箭头和文字是显示还是隐藏来决定是否加入instersects
+	      for (var i = 0; i < this.intersects.length; i++) {
+	        if ((this.intersects[i].object.name == 'text' || this.intersects[i].object.name == 'arrow') && !this.intersects[i].object.parent.visible) {
+	          this.intersects.splice(this.intersects.indexOf(this.intersects[i]), 1);
+	          i--;
+	        }
+	      }
+	      return this.intersects.length !== 0;
+	    }
+	  }, {
+	    key: 'getBaseIntersectObjects',
+	    value: function getBaseIntersectObjects() {
+	      var tipObjs = [this.outerMeaRange, this.innerMeaRange, this.leftZore, this.rightZore, this.verticalLine, this.centerPoint];
+	      this.outerMeaRangeArea = _utils2.default.getTEleByName(this.outerMeaRange, 'clickArea');
+	      this.innerMeaRangeArea = _utils2.default.getTEleByName(this.innerMeaRange, 'clickArea');
+	      this.leftZoreArea = _utils2.default.getTEleByName(this.leftZore, 'clickArea');
+	      this.rightZoreArea = _utils2.default.getTEleByName(this.rightZore, 'clickArea');
+	      this.verticalLineArea = _utils2.default.getTEleByName(this.verticalLine, 'clickArea');
+	      this.centerPointArea = _utils2.default.getTEleByName(this.centerPoint, 'clickArea');
+	      var objs = [this.outerProtractor, this.innerProtractor, this.arcLineArea, this.bottomLineArea, this.closeBtn, this.rotateBtn, this.comfirmBtn, this.stretchBtn];
+	      objs.push(this.outerMeaRangeArea);
+	      objs.push(this.innerMeaRangeArea);
+	      objs.push(this.leftZoreArea);
+	      objs.push(this.rightZoreArea);
+	      objs.push(this.verticalLineArea);
+	      objs.push(this.centerPointArea);
+	      // 把箭头和文字加入射线选择组 避免点击箭头和文字时失去焦点
+	      var _iteratorNormalCompletion7 = true;
+	      var _didIteratorError7 = false;
+	      var _iteratorError7 = undefined;
+
+	      try {
+	        for (var _iterator7 = tipObjs[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+	          var tip = _step7.value;
+
+	          objs.push(_utils2.default.getTEleByName(tip, 'text'));
+	          objs.push(_utils2.default.getTEleByName(tip, 'arrow'));
+	        }
+	      } catch (err) {
+	        _didIteratorError7 = true;
+	        _iteratorError7 = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+	            _iterator7.return();
+	          }
+	        } finally {
+	          if (_didIteratorError7) {
+	            throw _iteratorError7;
+	          }
+	        }
+	      }
+
+	      return objs;
+	    }
+	  }, {
+	    key: 'addExistObj',
+	    value: function addExistObj(obj) {
+	      this.existObjs.push(obj);
+	    }
+	  }, {
+	    key: 'removeExistObj',
+	    value: function removeExistObj(obj) {
+	      for (var i = 0; i < this.existObjs.length; i++) {
+	        if (this.existObjs[i] === obj) {
+	          this.existObjs.splice(i, 1);
+	          return;
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'getTexts',
+	    value: function getTexts() {
+	      this.outerMeaRangeTxt = _utils2.default.getTEleByName(this.outerMeaRange, 'text');
+	      this.innerMeaRangeTxt = _utils2.default.getTEleByName(this.innerMeaRange, 'text');
+	      this.leftZoreTxt = _utils2.default.getTEleByName(this.leftZore, 'text');
+	      this.rightZoreTxt = _utils2.default.getTEleByName(this.rightZore, 'text');
+	      this.verticalLineTxt = _utils2.default.getTEleByName(this.verticalLine, 'text');
+	      this.centerPointTxt = _utils2.default.getTEleByName(this.centerPoint, 'text');
+	      return [this.outerMeaRangeTxt, this.innerMeaRangeTxt, this.leftZoreTxt, this.rightZoreTxt, this.verticalLineTxt, this.centerPointTxt];
+	    }
+	  }, {
+	    key: 'removeScene',
+	    value: function removeScene() {
+	      this.isRemove = this.webglControl.removeScene(this.scene);
+	    }
+	  }]);
+
+	  return ThreeManager;
+	}();
+
+	exports.default = ThreeManager;
+
+
+	function initScene() {
+	  this.scene = new THREE.Scene();
+	  this.transformGroup = new THREE.Object3D();
+	  this.shapeGroup = new THREE.Object3D();
+	  this.transformGroup.position.set(rotateOffsetX, centerY - rotateOffsetY, 0);
+	  this.shapeGroup.position.set(-rotateOffsetX, -centerY + rotateOffsetY, 0);
+	  this.protractorWrap = _shapeFactory.ShapeFactory.create('ProtractorWrap');
+	  this.innerMeaRange = _shapeFactory.ShapeFactory.create('InnerMeaRange');
+	  this.innerMeaRange.visible = false;
+	  this.outerMeaRange = _shapeFactory.ShapeFactory.create('OuterMeaRange');
+	  this.outerMeaRange.visible = false;
+	  this.protractor = _shapeFactory.ShapeFactory.create('Protractor');
+	  this.innerProtractor = _shapeFactory.ShapeFactory.create('InnerProtractor');
+	  this.outerProtractor = _shapeFactory.ShapeFactory.create('OuterProtractor');
+	  this.closeBtn = _shapeFactory.ShapeFactory.create('CloseBtn');
+	  this.closeBtn.position.set(closeBtnX, closeBtnY, 0);
+	  this.rotateBtn = _shapeFactory.ShapeFactory.create('RotateBtn');
+	  this.rotateBtn.position.set(rotateBtnX, rotateBtnY, 0);
+	  this.comfirmBtn = _shapeFactory.ShapeFactory.create('ComfirmBtn');
+	  this.comfirmBtn.position.set(comfirmBtnX, comfirmBtnY, 0);
+	  this.stretchBtn = _shapeFactory.ShapeFactory.create('StretchBtn');
+	  this.stretchBtn.position.set(stretchBtnX, stretchBtnY, 0);
+	  this.arcLineArea = _shapeFactory.ShapeFactory.create('ArcLineArea');
+	  this.bottomLineArea = _shapeFactory.ShapeFactory.create('BottomLineArea');
+	  this.leftZore = _shapeFactory.ShapeFactory.create('LeftZore');
+	  this.leftZore.visible = false;
+	  this.rightZore = _shapeFactory.ShapeFactory.create('RightZore');
+	  this.rightZore.visible = false;
+	  this.verticalLine = _shapeFactory.ShapeFactory.create('VerticalLine');
+	  this.verticalLine.visible = false;
+	  this.centerPoint = _shapeFactory.ShapeFactory.create('CenterPoint');
+	  this.centerPoint.visible = false;
+	  this.shapeGroup.add(this.protractorWrap, this.outerMeaRange, this.protractor, this.innerProtractor, this.outerProtractor, this.innerMeaRange);
+	  this.shapeGroup.add(this.arcLineArea, this.bottomLineArea, this.closeBtn, this.rotateBtn, this.comfirmBtn, this.stretchBtn);
+	  this.shapeGroup.add(this.leftZore, this.rightZore, this.verticalLine, this.centerPoint);
+	  this.transformGroup.add(this.shapeGroup);
+	  this.scene.add(this.transformGroup);
+	  this.existObjs = this.getBaseIntersectObjects();
+	  this.textObjs = this.getTexts();
+	  this.radialZ = 5;
+	  this.rotateTexts(0);
+	  this.drawObjs = [];
+	  this.isDrawAngle = true;
+	  this.oneSide = null;
+	}
+
+	function initCamera() {
+	  // 创建Camera
+	  var RATIO = 2;
+	  var width = document.body.clientWidth;
+	  var height = document.body.clientHeight;
+	  this.camera = new THREE.OrthographicCamera(width / -RATIO, width / RATIO, height / RATIO, height / -RATIO, -20000, 20000);
+	  this.camera.position.x = 0;
+	  this.camera.position.y = 0;
+	  this.camera.position.z = 500;
+	  this.camera.lookAt({ x: 0, y: 0, z: 0 });
+	}
+
+	function initRaycaster() {
+	  // 添加点击检测
+	  this.raycaster = new THREE.Raycaster();
+	  this.raycaster.linePrecision = 1;
+	  this.mouse = new THREE.Vector2();
+	  this.intersects = [];
+	}
+
+	function resetBaseAction() {
+	  isClose = false;
+	  isRotate = false;
+	  isConfirm = false;
+	  isDrawArc = false;
+	  isDrawBottomLine = false;
+	  isMove = false;
+	  isLeftZore = false;
+	  isRightZore = false;
+	  isOuterMeaRange = false;
+	  isInnerMeaRange = false;
+	  isCenterPoint = false;
+	  isVerticalLine = false;
+	  isStretch = false;
+	}
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.ShapeFactory = undefined;
+
+	var _drawTexture = __webpack_require__(6);
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	var _drawContext = __webpack_require__(7);
+
+	var _drawContext2 = _interopRequireDefault(_drawContext);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var protractorWidth = _config2.default.protractorWidth;
+	var protractorHeight = _config2.default.protractorHeight;
+	var buttonRadius = _config2.default.buttonRadius;
+	var borderStroke = _config2.default.borderStroke;
+	var scale = _config2.default.scale;
+	var circleY = _config2.default.circleY;
+	var centerY = protractorHeight / 2 - circleY;
+	var reactionRadius = _config2.default.reactionRadius;
+	var drawArcLineWidth = _config2.default.drawArcLineWidth;
+	var drawBottomLineHeight = _config2.default.drawBottomLineHeight;
+	var radius0ne = _config2.default.radiusOne;
+	var radiusTwo = _config2.default.radiusTwo;
+	var radiusThree = _config2.default.radiusThree;
+	var radiusFour = _config2.default.radiusFour;
+
+	var ShapeFactory = {
+	  create: function create(type) {
+	    var mesh = null;
+	    switch (type) {
+	      // 透明背景
+	      case 'ProtractorWrap':
+	        var protractorWrapGeometry = new THREE.PlaneGeometry(protractorWidth, protractorHeight);
+	        mesh = createMesh(protractorWrapGeometry, _drawTexture.drawMethod.drawProtractorBg());
+	        break;
+	      // 量角器样式
+	      case 'Protractor':
+	        var protractorGeometry = new THREE.PlaneGeometry(protractorWidth, protractorHeight);
+	        mesh = createMesh(protractorGeometry, _drawTexture.drawMethod.drawProtractor());
+	        break;
+	      // 量角器图形
+	      case 'InnerProtractor':
+	        mesh = createInnerProtractor();
+	        break;
+	      // 量角器图形包括画线的区域
+	      case 'OuterProtractor':
+	        mesh = createOuterProtractor();
+	        break;
+	      case 'InnerMeaRange':
+	        mesh = createInnerMeaRange();
+	        break;
+	      case 'OuterMeaRange':
+	        mesh = createOuterMeaRange();
+	        break;
+	      case 'CloseBtn':
+	        mesh = createMesh(createBtnGeometry(), _drawTexture.drawMethod.drawClose());
+	        break;
+	      case 'RotateBtn':
+	        mesh = createMesh(createBtnGeometry(), _drawTexture.drawMethod.drawRotate());
+	        break;
+	      case 'ComfirmBtn':
+	        mesh = createMesh(createBtnGeometry(), _drawTexture.drawMethod.drawConfirm());
+	        break;
+	      case 'StretchBtn':
+	        mesh = createMesh(createBtnGeometry(), _drawTexture.drawMethod.drawStretch());
+	        break;
+	      case 'ArcLineArea':
+	        mesh = createArcLineArea();
+	        break;
+	      case 'BottomLineArea':
+	        mesh = createBottomLineArea();
+	        break;
+	      case 'LeftZore':
+	        mesh = createLeftZore();
+	        break;
+	      case 'RightZore':
+	        mesh = createRightZore();
+	        break;
+	      case 'VerticalLine':
+	        mesh = createVertical();
+	        break;
+	      case 'CenterPoint':
+	        mesh = createCenterPoint();
+	        break;
+	    }
+	    return mesh;
+	  }
+	};
+
+	function createLeftZore() {
+	  var g = new THREE.Group();
+	  var text = (0, _drawContext2.default)('0°刻度线', { fillStyle: '#1c85e7', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(-radius0ne - 100, 4, 2);
+	  text.name = 'text';
+	  text.data = { x: -radius0ne - 100, y: 4, rad: Math.PI, len: 22, change: 'negx' };
+	  var arrawGeometry = new THREE.PlaneGeometry(72, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(52, { fillStyle: '#1c85e7' }));
+	  arrowMesh.position.set(-radius0ne - 36, -1, 0);
+	  arrowMesh.name = 'arrow';
+	  var lineGeometry = new THREE.PlaneGeometry(radius0ne, 4);
+	  var lineMesh = createMesh(lineGeometry);
+	  lineMesh.material.color = new THREE.Color('#1c85e7');
+	  lineMesh.position.set(-radius0ne / 2, 0, 0);
+	  lineMesh.name = 'halfLine';
+	  var lineGeometry2 = new THREE.PlaneGeometry(radius0ne * 2, 4);
+	  var lineMesh2 = createMesh(lineGeometry2);
+	  lineMesh2.material.color = new THREE.Color('#1c85e7');
+	  lineMesh2.name = 'line';
+	  var clickMesh = createMesh(new THREE.PlaneGeometry(radiusTwo - 12, 20));
+	  clickMesh.position.set(-(radiusTwo - 12) / 2 - 12, 1, 0);
+	  clickMesh.material.opacity = 0;
+	  clickMesh.name = 'clickArea';
+	  g.add(text, arrowMesh, lineMesh, lineMesh2, clickMesh);
+	  g.position.set(0, centerY, 0);
+	  return g;
+	}
+	function createRightZore() {
+	  var g = new THREE.Group();
+	  var text = (0, _drawContext2.default)('0°刻度线', { fillStyle: '#e71c1c', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(radius0ne + 100, 4, 2);
+	  text.name = 'text';
+	  text.data = { x: radius0ne + 100, y: 4, rad: 0, len: 22, change: 'x' };
+	  var arrawGeometry = new THREE.PlaneGeometry(72, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(52, { fillStyle: '#e71c1c', reverseShadow: true }));
+	  arrowMesh.position.set(radius0ne + 37, 1, 0);
+	  arrowMesh.rotation.z = Math.PI;
+	  arrowMesh.name = 'arrow';
+	  var lineGeometry = new THREE.PlaneGeometry(radius0ne, 4);
+	  var lineMesh = createMesh(lineGeometry);
+	  lineMesh.material.color = new THREE.Color('#e71c1c');
+	  lineMesh.position.set(radius0ne / 2, 0, 0);
+	  var clickMesh = createMesh(new THREE.PlaneGeometry(radiusTwo - 12, 20));
+	  clickMesh.position.set((radiusTwo - 12) / 2 + 12, 1, 2);
+	  clickMesh.material.opacity = 0;
+	  clickMesh.name = 'clickArea';
+	  g.add(text, arrowMesh, lineMesh, clickMesh);
+	  g.position.set(0, centerY, 0);
+	  return g;
+	}
+
+	function createVertical() {
+	  var g = new THREE.Group();
+	  var text = (0, _drawContext2.default)('90°刻度线', { fillStyle: '#fd7904', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(radius0ne - 62, radius0ne + 10, 2);
+	  text.name = 'text';
+	  text.data = { x: radius0ne - 62, y: radius0ne + 10, rad: Math.PI / 2, len: 22, change: 'negx' };
+	  var arrawGeometry = new THREE.PlaneGeometry(220, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(200, { fillStyle: '#fd7904', reverseShadow: true }));
+	  arrowMesh.rotation.z = -145 * Math.PI / 180;
+	  arrowMesh.position.set(90, radiusFour + 30, 0);
+	  arrowMesh.name = 'arrow';
+	  var lineGeometry = new THREE.PlaneGeometry(4, radiusFour + 18);
+	  var lineMesh = createMesh(lineGeometry);
+	  lineMesh.material.color = new THREE.Color('#fd7904');
+	  lineMesh.position.set(2, (radiusFour + 18) / 2, 0);
+	  var clickMesh = createMesh(new THREE.PlaneGeometry(20, radiusFour));
+	  clickMesh.position.set(2, radiusFour / 2 + 12, 2);
+	  clickMesh.material.opacity = 0;
+	  clickMesh.name = 'clickArea';
+
+	  g.add(text, arrowMesh, lineMesh, clickMesh);
+	  g.position.set(0, centerY, 0);
+	  return g;
+	}
+
+	function createCenterPoint() {
+	  var g = new THREE.Group();
+	  var text = (0, _drawContext2.default)('中心点', { fillStyle: '#e71c1c', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(0, -120, 2);
+	  text.name = 'text';
+	  text.data = { x: 0, y: -120, rad: 3 * Math.PI / 2, len: 25, change: 'y' };
+	  var arrawGeometry = new THREE.PlaneGeometry(70, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(50, { fillStyle: '#e71c1c' }));
+	  arrowMesh.rotation.z = Math.PI / 2;
+	  arrowMesh.position.set(2, -45, 0);
+	  arrowMesh.name = 'arrow';
+	  var circleBorderMesh = new THREE.Mesh(new THREE.CircleGeometry(8, 32), new THREE.MeshBasicMaterial({ color: '#ffffff' }));
+	  var circleMesh = new THREE.Mesh(new THREE.CircleGeometry(6, 32), new THREE.MeshBasicMaterial({ color: '#e71c1c' }));
+	  var clickMesh = new THREE.Mesh(new THREE.CircleGeometry(12, 32), new THREE.MeshBasicMaterial({
+	    transparent: true,
+	    opacity: 0
+	  }));
+	  clickMesh.name = 'clickArea';
+	  g.add(text, arrowMesh, circleBorderMesh, circleMesh, clickMesh);
+	  g.position.set(2, centerY, 1);
+	  return g;
+	}
+
+	function createInnerProtractor() {
+	  var bigDeviation = 8 * Math.PI / 180;
+	  var shape = new THREE.Shape();
+	  shape.moveTo(radius0ne * Math.cos(Math.PI + bigDeviation), centerY + reactionRadius * Math.sin(Math.PI + bigDeviation));
+	  shape.absarc(0, centerY, radius0ne, -bigDeviation, Math.PI + 2 * bigDeviation);
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var mesh = createMesh(geometry);
+	  mesh.material.opacity = 0;
+	  return mesh;
+	}
+
+	function createOuterProtractor() {
+	  var bigDeviation = 8 * Math.PI / 180;
+	  var shape = new THREE.Shape();
+	  shape.moveTo(reactionRadius * Math.cos(Math.PI + bigDeviation), centerY + reactionRadius * Math.sin(Math.PI + bigDeviation));
+	  shape.absarc(0, centerY, reactionRadius + 5, -bigDeviation, Math.PI + 2 * bigDeviation);
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var mesh = createMesh(geometry);
+	  mesh.material.opacity = 0;
+	  return mesh;
+	}
+
+	function createInnerMeaRange() {
+	  var g = new THREE.Group();
+	  var protractorGeometry = new THREE.PlaneGeometry(protractorWidth, protractorHeight);
+	  var mesh = createMesh(protractorGeometry, _drawTexture.drawMethod.drawInnerMeaRange());
+	  var text = (0, _drawContext2.default)('内圈刻度', { fillStyle: '#e71c1c', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(-radiusFour - 3, -130 + centerY, 2);
+	  text.name = 'text';
+	  text.data = { x: -radiusFour - 3, y: -130 + centerY, rad: 3 * Math.PI / 2, len: 40, change: 'y' };
+	  var arrawGeometry = new THREE.PlaneGeometry(115, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(95, { fillStyle: '#e71c1c' }));
+	  arrowMesh.rotation.z = Math.PI / 2;
+	  arrowMesh.position.set(-radiusFour - 2, centerY - 15, 1);
+	  arrowMesh.name = 'arrow';
+	  var shape = new THREE.Shape();
+	  shape.moveTo(radiusThree * Math.cos(Math.PI), centerY + radiusThree * Math.sin(Math.PI));
+	  shape.absarc(0, centerY, radiusThree, 0, Math.PI);
+	  shape.lineTo(radiusFour, centerY);
+	  shape.absarc(0, centerY, radiusFour, Math.PI, 0);
+	  var areaGeometry = new THREE.ShapeGeometry(shape);
+	  var areaMesh = createMesh(areaGeometry);
+	  areaMesh.material.opacity = 0;
+	  areaMesh.name = 'clickArea';
+	  g.add(mesh, areaMesh, text, arrowMesh);
+	  return g;
+	}
+
+	function createOuterMeaRange() {
+	  var g = new THREE.Group();
+	  var protractorGeometry = new THREE.PlaneGeometry(protractorWidth, protractorHeight);
+	  var mesh = createMesh(protractorGeometry, _drawTexture.drawMethod.drawOuterMeaRange());
+	  var text = (0, _drawContext2.default)('外圈刻度', { fillStyle: '#228d24', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 20 });
+	  text.position.set(-radiusFour + 35, 218, 2);
+	  text.name = 'text';
+	  text.data = { x: -radiusFour + 25, y: 218, rad: 135 * Math.PI / 180, len: 22, change: 'negx' };
+	  var arrawGeometry = new THREE.PlaneGeometry(115, 30);
+	  var arrowMesh = createMesh(arrawGeometry, _drawTexture.drawMethod.drawArrow(95, { fillStyle: '#228d24' }));
+	  arrowMesh.rotation.z = -55 * Math.PI / 180;
+	  arrowMesh.position.set(-radiusFour / 2 - 35, 145, 1);
+	  arrowMesh.name = 'arrow';
+	  var shape = new THREE.Shape();
+	  shape.moveTo((reactionRadius - drawArcLineWidth) * Math.cos(Math.PI), centerY + (reactionRadius - drawArcLineWidth) * Math.sin(Math.PI));
+	  shape.absarc(0, centerY, reactionRadius - drawArcLineWidth, 0, Math.PI);
+	  shape.lineTo(radiusThree, centerY);
+	  shape.absarc(0, centerY, radiusThree, Math.PI, 0);
+	  var areaGeometry = new THREE.ShapeGeometry(shape);
+	  var areaMesh = createMesh(areaGeometry);
+	  areaMesh.material.opacity = 0;
+	  areaMesh.name = 'clickArea';
+	  g.add(mesh, areaMesh, text, arrowMesh);
+	  return g;
+	}
+
+	function createArcLineArea() {
+	  var shape = new THREE.Shape();
+	  shape.moveTo(reactionRadius * Math.cos(Math.PI), centerY + reactionRadius * Math.sin(Math.PI));
+	  shape.absarc(0, centerY, reactionRadius, 0, Math.PI);
+	  shape.lineTo(reactionRadius - drawArcLineWidth, centerY);
+	  shape.absarc(0, centerY, reactionRadius - drawArcLineWidth, Math.PI, 0);
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var mesh = createMesh(geometry);
+	  mesh.material.opacity = 0;
+	  return mesh;
+	}
+	function createBottomLineArea() {
+	  var shape = new THREE.Shape();
+	  shape.moveTo(-radius0ne, centerY - 10);
+	  shape.lineTo(radius0ne, centerY - 10);
+	  shape.lineTo(radius0ne, centerY - drawBottomLineHeight);
+	  shape.lineTo(-radius0ne, centerY - drawBottomLineHeight);
+	  shape.closePath();
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var mesh = createMesh(geometry);
+	  mesh.material.opacity = 0;
+	  return mesh;
+	}
+
+	function createMesh(geometry) {
+	  var texture = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+	  var material = new THREE.MeshBasicMaterial({
+	    map: texture,
+	    transparent: true,
+	    opacity: 1
+	  });
+	  return new THREE.Mesh(geometry, material);
+	}
+
+	function createBtnGeometry() {
+	  return new THREE.CircleGeometry(buttonRadius + borderStroke * scale, 32);
+	}
+
+	exports.ShapeFactory = ShapeFactory;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.drawMethod = undefined;
+
+	var _config = __webpack_require__(3);
+
+	var _config2 = _interopRequireDefault(_config);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * *****量角器数据初始化*****
+	 */
+	var PI = Math.PI; /**
+	                   * Created by hellohy on 2016/12/29.
+	                   */
+
+	var edgeWidth = _config2.default.edgeWidth;
+	var circleX = _config2.default.circleX;
+	var circleY = _config2.default.circleY;
+	var reactionRadius = _config2.default.reactionRadius;
+	var radius0ne = _config2.default.radiusOne;
+	var radiusTwo = _config2.default.radiusTwo;
+	var radiusThree = _config2.default.radiusThree;
+	var radiusFour = _config2.default.radiusFour;
+	var centerbigRadius = _config2.default.centerbigRadius;
+	var centersmallRadius = _config2.default.centersmallRadius;
+	var buttonRadius = _config2.default.buttonRadius;
+	var deviation = _config2.default.deviation;
+	var scale = _config2.default.scale;
+	var centerDotRadius = _config2.default.centerDotRadius;
+	var borderStroke = _config2.default.borderStroke;
+	/**
+	 * 计算第二，三，四个半圆起始角度偏差;
+	 * @param radius0ne 第一个半圆的半径
+	 * @param radiusX    需要计算的第X个半圆的半径
+	 * @param deviation 第一个半圆相对于半圆水平线的偏差角度
+	 */
+	function computDeviation(radius0ne, radiusX, deviation) {
+	  var sinX = radius0ne / radiusX * Math.sin(deviation);
+	  return Math.asin(sinX);
+	}
+
+	/**
+	 * 绘制按钮的Border
+	 * @param ctx
+	 * @param x 圆心x
+	 * @param y 圆心y
+	 */
+	function drawButtonBorder(ctx, x, y) {
+	  ctx.beginPath();
+	  ctx.lineWidth = borderStroke * scale;
+	  ctx.arc(x, y, buttonRadius, 0, 2 * PI, false);
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+	  ctx.closePath();
+	}
+
+	/**
+	 * 绘制关闭按钮
+	 */
+	function drawClose() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  // 绘制关闭按钮
+	  var closeBtX = buttonRadius + borderStroke * scale; // 关闭按钮圆心x
+	  var closeBtY = buttonRadius + borderStroke * scale; // 关闭按钮圆心y
+	  canvas.width = 128; // default 58
+	  canvas.height = 128;
+	  ctx.scale(2.21, 2.21);
+	  // 绘制关闭按钮外圆
+	  drawButtonBorder(ctx, closeBtX, closeBtY);
+	  // 绘制关闭按钮内部两条叉线
+	  var closeAngle = [45, -45];
+	  for (var i = 0; i < 2; i++) {
+	    ctx.save();
+	    ctx.lineWidth = 5 * scale;
+	    ctx.strokeStyle = 'black';
+	    ctx.translate(closeBtX, closeBtY);
+	    ctx.rotate(closeAngle[i] * PI / 180);
+	    ctx.beginPath();
+	    ctx.moveTo(buttonRadius * 0.7, 0);
+	    ctx.lineTo(-buttonRadius * 0.7, 0);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.restore();
+	  }
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	}
+
+	/**
+	 * 绘制旋转按钮
+	 */
+	function drawRotate() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  // 绘制关闭按钮
+	  // 绘制旋转按钮
+	  var rotateBtX = buttonRadius + borderStroke * scale; // 旋转按钮圆心x
+	  var rotateBtY = buttonRadius + borderStroke * scale; // 旋转按钮圆心y
+	  canvas.width = 128; // default 58
+	  canvas.height = 128;
+	  ctx.scale(2.21, 2.21);
+	  // 绘制旋转按钮外圆
+	  drawButtonBorder(ctx, rotateBtX, rotateBtY);
+	  // 绘制旋转按钮内部
+	  ctx.beginPath();
+	  ctx.arc(rotateBtX, rotateBtY, buttonRadius * 0.5, 140 * PI / 180, 270 * PI / 180, false);
+	  ctx.lineWidth = 4 * scale;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  ctx.beginPath();
+	  ctx.arc(rotateBtX, rotateBtY, buttonRadius * 0.5, 320 * PI / 180, 90 * PI / 180, false);
+	  ctx.lineWidth = 4 * scale;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  ctx.save();
+	  ctx.lineWidth = 2 * scale;
+	  ctx.fillStyle = 'black';
+	  ctx.translate(rotateBtX, rotateBtY);
+	  ctx.beginPath();
+	  ctx.moveTo(0, buttonRadius * 0.5 * 0.6);
+	  ctx.lineTo(0, buttonRadius * 0.5 * 1.4);
+	  ctx.lineTo(-buttonRadius * 0.5 * 0.6 * Math.sin(60 * PI / 180), buttonRadius * 0.5);
+	  ctx.closePath();
+	  ctx.fill();
+	  ctx.restore();
+
+	  ctx.save();
+	  ctx.lineWidth = 2 * scale;
+	  ctx.fillStyle = 'black';
+	  ctx.translate(rotateBtX, rotateBtY);
+	  ctx.beginPath();
+	  ctx.moveTo(0, -buttonRadius * 0.5 * 0.6);
+	  ctx.lineTo(0, -buttonRadius * 0.5 * 1.4);
+	  ctx.lineTo(buttonRadius * 0.5 * 0.6 * Math.sin(60 * PI / 180), -buttonRadius * 0.5);
+	  ctx.closePath();
+	  ctx.fill();
+	  ctx.restore();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	}
+
+	/**
+	 * 绘制确认按钮
+	 */
+	function drawConfirm() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  // 绘制关闭按钮
+	  var x = buttonRadius + borderStroke * scale;
+	  var y = buttonRadius + borderStroke * scale;
+	  canvas.width = 128; // default 58
+	  canvas.height = 128;
+	  ctx.scale(2.21, 2.21);
+	  // 绘制确认按钮外圆
+	  drawButtonBorder(ctx, x, y);
+	  // 绘制确认按钮内部
+	  ctx.save();
+	  ctx.lineWidth = 5 * scale;
+	  ctx.strokeStyle = 'black';
+	  ctx.translate(x, y);
+	  ctx.beginPath();
+	  ctx.moveTo(buttonRadius * 0.6, -buttonRadius * 0.4);
+	  ctx.lineTo(-buttonRadius * 0.1, buttonRadius * 0.45);
+	  ctx.lineTo(-buttonRadius * 0.6, 0);
+	  ctx.stroke();
+	  ctx.restore();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	}
+
+	/**
+	 * 绘制拉伸按钮
+	 */
+	function drawStretch() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  // 绘制关闭按钮
+	  var x = buttonRadius + borderStroke * scale;
+	  var y = buttonRadius + borderStroke * scale;
+	  canvas.width = 128; // default 58
+	  canvas.height = 128;
+	  ctx.scale(2.21, 2.21);
+	  // 绘制确认按钮外圆
+	  drawButtonBorder(ctx, x, y);
+	  // 绘制确认按钮内部
+	  ctx.save();
+	  ctx.lineWidth = 5 * scale;
+	  ctx.strokeStyle = 'black';
+	  ctx.translate(x, y);
+	  ctx.beginPath();
+	  ctx.moveTo(-buttonRadius * 0.22, buttonRadius * 0.22);
+	  ctx.lineTo(buttonRadius * 0.22, -buttonRadius * 0.22);
+	  ctx.stroke();
+	  ctx.restore();
+
+	  ctx.save();
+	  ctx.fillStyle = 'black';
+	  ctx.translate(x, y);
+	  ctx.beginPath();
+	  ctx.moveTo(-buttonRadius * 0.21, buttonRadius * 0.21);
+	  ctx.lineTo(-buttonRadius * 0.4, buttonRadius * 0.02);
+	  ctx.lineTo(-buttonRadius * 0.45, buttonRadius * 0.45);
+	  ctx.lineTo(-buttonRadius * 0.02, buttonRadius * 0.4);
+	  ctx.closePath();
+	  ctx.fill();
+	  ctx.restore();
+
+	  ctx.save();
+	  ctx.fillStyle = 'black';
+	  ctx.translate(x, y);
+	  ctx.beginPath();
+	  ctx.moveTo(buttonRadius * 0.21, -buttonRadius * 0.21);
+	  ctx.lineTo(buttonRadius * 0.4, -buttonRadius * 0.02);
+	  ctx.lineTo(buttonRadius * 0.45, -buttonRadius * 0.45);
+	  ctx.lineTo(buttonRadius * 0.02, -buttonRadius * 0.4);
+	  ctx.closePath();
+	  ctx.fill();
+	  ctx.restore();
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	}
+
+	var drawOuterMeaRange = function drawOuterMeaRange() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  canvas.width = _config2.default.protractorWidth;
+	  canvas.height = _config2.default.protractorHeight;
+	  ctx.moveTo(circleX - radius0ne, circleY);
+	  ctx.arc(circleX, circleY, radius0ne, PI, PI * 2, false);
+	  ctx.lineTo(circleX + radiusThree, circleY);
+	  ctx.arc(circleX, circleY, radiusThree, PI * 2, PI, true);
+	  ctx.closePath();
+	  var lGrd = ctx.createLinearGradient(circleX - radius0ne, 0, circleX + radius0ne, 0);
+	  lGrd.addColorStop(0, '#d5feab');
+	  lGrd.addColorStop(1, '#61b46a');
+	  ctx.fillStyle = lGrd;
+	  ctx.fill();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	};
+
+	var drawInnerMeaRange = function drawInnerMeaRange() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  canvas.width = _config2.default.protractorWidth;
+	  canvas.height = _config2.default.protractorHeight;
+	  ctx.moveTo(circleX - radiusThree, circleY);
+	  ctx.arc(circleX, circleY, radiusThree, PI, PI * 2, false);
+	  ctx.lineTo(circleX + radiusFour, circleY);
+	  ctx.arc(circleX, circleY, radiusFour, PI * 2, PI, true);
+	  ctx.closePath();
+	  var lGrd = ctx.createLinearGradient(circleX - radiusThree, 0, circleX + radiusThree, 0);
+	  lGrd.addColorStop(0, '#e55f4d');
+	  lGrd.addColorStop(1, '#f3b5a8');
+	  ctx.fillStyle = lGrd;
+	  ctx.fill();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	};
+
+	/**
+	 * *****量角器透明背景canvas绘制*****
+	 */
+	var drawProtractorBg = function drawProtractorBg() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  canvas.width = _config2.default.protractorWidth * 2.6;
+	  canvas.height = _config2.default.protractorHeight * 2.6;
+	  ctx.scale(2.6, 2.6);
+	  ctx.globalCompositeOperation = 'source-over';
+	  // 感应区最大外圆（隐藏）
+	  var bigDeviation = 8 * PI / 180;
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, reactionRadius, 180 * PI / 180 - bigDeviation, bigDeviation, false);
+	  ctx.fillStyle = 'rgba(255, 255, 255, 0.01)';
+	  ctx.fill();
+	  ctx.closePath();
+
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, radius0ne, 180 * PI / 180 - deviation, deviation, false);
+	  ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+	  ctx.fill();
+	  ctx.closePath();
+	  ctx.lineWidth = edgeWidth;
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	};
+	/**
+	 * *****量角器canvas绘制*****
+	 */
+	var drawProtractor = function drawProtractor() {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  canvas.width = _config2.default.protractorWidth * 2.6;
+	  canvas.height = _config2.default.protractorHeight * 2.6;
+	  ctx.scale(2.6, 2.6);
+	  ctx.globalCompositeOperation = 'source-over';
+
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, radius0ne, 180 * PI / 180 - deviation, deviation, false);
+	  ctx.closePath();
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  // 第一层与第二层半圆之间的刻度
+	  for (var i = 0; i < 19; i++) {
+	    ctx.save();
+	    ctx.lineWidth = edgeWidth;
+	    ctx.strokeStyle = 'black';
+	    ctx.translate(circleX, circleY);
+	    ctx.rotate(i * 10 * PI / 180);
+	    ctx.beginPath();
+	    ctx.moveTo(-(radiusTwo - 7 * scale), 0);
+	    ctx.lineTo(-radius0ne, 0);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.restore();
+	  }
+	  for (var _i = 0; _i < 37; _i++) {
+	    ctx.save();
+	    ctx.lineWidth = edgeWidth;
+	    ctx.strokeStyle = 'black';
+	    ctx.translate(circleX, circleY);
+	    ctx.rotate(_i * 5 * PI / 180);
+	    ctx.beginPath();
+	    ctx.moveTo(-(radiusTwo - 4 * scale), 0);
+	    ctx.lineTo(-radius0ne, 0);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.restore();
+	  }
+	  for (var _i2 = 0; _i2 < 180; _i2++) {
+	    ctx.save();
+	    ctx.lineWidth = edgeWidth;
+	    ctx.strokeStyle = 'black';
+	    ctx.translate(circleX, circleY);
+	    ctx.rotate(_i2 * PI / 180);
+	    ctx.beginPath();
+	    ctx.moveTo(-radiusTwo, 0);
+	    ctx.lineTo(-radius0ne, 0);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.restore();
+	  }
+
+	  // 绘制第二层与第三半圆之间的数字刻度值
+	  var figureDistan = radiusThree + (radiusTwo - radiusThree) / 2;
+	  for (var _i3 = 0; _i3 < 19; _i3++) {
+	    if (_i3 === 9) {
+	      continue;
+	    }
+	    var text = _i3 * 10;
+	    ctx.save();
+	    var _font = 16 * scale + 'px';
+	    ctx.font = 'bold ' + _font + '  Microsoft YaHei';
+	    ctx.fillStyle = 'black';
+	    ctx.textAlign = 'center';
+	    ctx.textBaseline = 'middle';
+	    ctx.translate(circleX - Math.cos(_i3 * 10 * PI / 180) * figureDistan, circleY - Math.sin(_i3 * 10 * PI / 180) * figureDistan);
+	    ctx.rotate(-PI / 2);
+	    ctx.rotate(_i3 * 10 * PI / 180);
+	    ctx.fillText(String(text), 0, 0);
+	    ctx.restore();
+	  }
+
+	  // 第三层半圆左边部分
+	  // let disThree = computDeviation(radius0ne, radiusThree, deviation);
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, radiusThree, PI, 264 * PI / 180, false);
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+	  // 第三层半圆右边部分
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, radiusThree, 276 * PI / 180, PI * 2, false);
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  // 第三层半圆上的刻度
+	  for (var _i4 = 0; _i4 < 19; _i4++) {
+	    if (_i4 === 9) {
+	      continue;
+	    }
+	    ctx.save();
+	    ctx.lineWidth = edgeWidth;
+	    ctx.strokeStyle = 'black';
+	    ctx.translate(circleX, circleY);
+	    ctx.rotate(_i4 * 10 * PI / 180);
+	    ctx.beginPath();
+	    ctx.moveTo(-(radiusThree - 4 * scale), 0);
+	    ctx.lineTo(-(radiusThree + 4 * scale), 0);
+	    ctx.closePath();
+	    ctx.stroke();
+	    ctx.restore();
+	  }
+
+	  // 第四层半圆
+	  // const disFour = computDeviation(radius0ne, radiusFour, deviation)
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, radiusFour, PI, PI * 2, false);
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  // 绘制第三层与第四半圆之间的数字刻度值
+	  figureDistan = radiusFour + (radiusThree - radiusFour) / 2; // 数字刻度所在的实际半径距离
+	  for (var _i5 = 18; _i5 >= 0; _i5--) {
+	    if (_i5 === 9) {
+	      continue;
+	    }
+	    var _text = _i5 * 10;
+	    ctx.save();
+	    var _font2 = 16 * scale + 'px';
+	    ctx.font = 'bold ' + _font2 + ' Microsoft YaHei';
+	    ctx.fillStyle = 'black';
+	    ctx.textAlign = 'center';
+	    ctx.textBaseline = 'middle';
+	    ctx.translate(circleX - Math.cos((18 - _i5) * 10 * PI / 180) * figureDistan, circleY - Math.sin((18 - _i5) * 10 * PI / 180) * figureDistan);
+	    ctx.rotate(-PI / 2);
+	    ctx.rotate((18 - _i5) * 10 * PI / 180);
+	    ctx.fillText(String(_text), 0, 0);
+	    ctx.restore();
+	  }
+
+	  // 绘制90度文字
+	  ctx.save();
+	  var font = 35 * scale + 'px';
+	  ctx.font = 'bold ' + font + ' Microsoft YaHei';
+	  ctx.fillStyle = 'black';
+	  ctx.textAlign = 'center';
+	  ctx.textBaseline = 'middle';
+	  ctx.fillText(String(90), circleX, circleY - radiusThree);
+	  ctx.restore();
+
+	  // 中心半圆
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, centerbigRadius, 180 * PI / 180, 0, false);
+	  ctx.closePath();
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  // 中心小圆
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, centersmallRadius, 0, 2 * PI, false);
+	  ctx.closePath();
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.stroke();
+
+	  // 中心黑点
+	  ctx.beginPath();
+	  ctx.arc(circleX, circleY, centerDotRadius, 0, 2 * PI, false);
+	  ctx.closePath();
+	  ctx.fillStyle = 'black';
+	  ctx.fill();
+
+	  // 第四层半圆与中心半圆的射线
+	  ctx.save();
+	  ctx.lineWidth = edgeWidth;
+	  ctx.strokeStyle = 'black';
+	  ctx.translate(circleX, circleY);
+	  ctx.beginPath();
+	  ctx.moveTo(0, 0);
+	  ctx.lineTo(-radiusFour - 5 * scale, 0);
+	  ctx.moveTo(0, 0);
+	  ctx.lineTo(0, -radiusFour - 18 * scale);
+	  ctx.moveTo(0, 0);
+	  ctx.lineTo(radiusFour + 5 * scale, 0);
+	  // ctx.closePath();
+	  ctx.stroke();
+	  ctx.restore();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	};
+
+	function drawArrow(len, params) {
+	  var canvas = document.createElement('canvas');
+	  var ctx = canvas.getContext('2d');
+	  canvas.width = len + 20;
+	  canvas.height = 32;
+	  ctx.translate(0, 15);
+	  ctx.moveTo(2, -2);
+	  ctx.lineTo(len, -2);
+	  ctx.quadraticCurveTo(len - 4, -2, len - 5, -10);
+	  ctx.quadraticCurveTo(len + 3, -3, len + 14, 0);
+	  ctx.quadraticCurveTo(len + 3, 3, len - 5, 10);
+	  ctx.quadraticCurveTo(len - 4, 2, len, 2);
+	  ctx.lineTo(2, 2);
+	  ctx.closePath();
+	  ctx.fillStyle = params.fillStyle || '#1c85e7';
+	  ctx.strokeStyle = '#ffffff';
+	  ctx.shadowColor = 'rgba(0,0,0,0.3)';
+	  var shadowOffsetX = 1;
+	  var shadowOffsetY = 1;
+	  if (params.reverseShadow) {
+	    shadowOffsetX = -1;
+	    shadowOffsetY = -1;
+	  }
+	  ctx.shadowOffsetX = shadowOffsetX;
+	  ctx.shadowOffsetY = shadowOffsetY;
+	  ctx.shadowBlur = 2;
+	  ctx.lineJoin = 'round';
+	  ctx.lineWidth = 4;
+	  ctx.stroke();
+	  ctx.fill();
+
+	  var texture = new THREE.CanvasTexture(canvas, THREE.UVMapping);
+	  texture.needsUpdate = true;
+	  return texture;
+	}
+
+	var drawMethod = {
+	  drawProtractor: drawProtractor,
+	  drawClose: drawClose,
+	  drawConfirm: drawConfirm,
+	  drawRotate: drawRotate,
+	  drawInnerMeaRange: drawInnerMeaRange,
+	  drawOuterMeaRange: drawOuterMeaRange,
+	  drawStretch: drawStretch,
+	  drawProtractorBg: drawProtractorBg,
+	  drawArrow: drawArrow
+	};
+
+	exports.drawMethod = drawMethod;
+
+/***/ },
+/* 7 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	exports.default = function (message, parameters, scale) {
+	  var canvas = document.createElement('canvas');
+	  var size = 256; // CHANGED
+	  canvas.width = size;
+	  canvas.height = size;
+	  var context = canvas.getContext('2d');
+	  context.fillStyle = parameters.fillStyle ? parameters.fillStyle : '#000000'; // CHANGED
+	  context.strokeStyle = parameters.strokeStyle ? parameters.strokeStyle : '#000000';
+	  context.textAlign = 'center';
+	  var fontSize = parameters.fontSize ? parameters.fontSize : 24;
+	  var font = parameters.fontFamily ? parameters.fontFamily : 'microsoft yahei';
+	  var bold = parameters.bold ? 'bold ' : '';
+	  context.font = bold + fontSize + 'px ' + font;
+	  context.lineWidth = parameters.lineWidth ? parameters.lineWidth : 1;
+	  context.shadowColor = 'rgba(0,0,0,0.3)';
+	  context.shadowOffsetX = 1;
+	  context.shadowOffsetY = 1;
+	  context.shadowBlur = 2;
+
+	  if (parameters.strokeStyle) {
+	    context.strokeText(message, size / 2, size / 2 + fontSize / 2);
+	  }
+	  context.fillText(message, size / 2, size / 2 + fontSize / 2);
+
+	  var amap = new THREE.Texture(canvas);
+	  amap.needsUpdate = true;
+	  var plane = new THREE.Mesh(new THREE.PlaneGeometry(size / 2, size / 2), new THREE.MeshBasicMaterial({
+	    map: amap,
+	    transparent: true,
+	    opacity: 1
+	  }));
+
+	  plane.scale.set(2, 2, 1); // CHANGED
+	  plane.textLength = context.measureText(message).width;
+	  return plane;
+	};
+
+/***/ },
+/* 8 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Utils = function () {
+	  function Utils() {
+	    _classCallCheck(this, Utils);
+	  }
+
+	  _createClass(Utils, null, [{
+	    key: 'getTEleByName',
+	    value: function getTEleByName(parent, name) {
+	      var children = parent.children;
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var elem = _step.value;
+
+	          if (elem.name === name) {
+	            return elem;
+	          }
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      return null;
+	    }
+	  }, {
+	    key: 'findOffset',
+	    value: function findOffset(obj) {
+	      var curX = 0;
+	      var curY = 0;
+	      if (obj.offsetParent) {
+	        do {
+	          curX += obj.offsetLeft;
+	          curY += obj.offsetTop;
+	        } while (obj = obj.offsetParent);
+	        return { x: curX, y: curY };
+	      }
+	    }
+
+	    /**
+	     * 量角器整体旋转后点的坐标变换
+	     * @param e
+	     * @param rotateAngle
+	     * @returns {{x: number, y: number}}
+	     */
+
+	  }, {
+	    key: 'transformCoordinate',
+	    value: function transformCoordinate(e, rotateAngle) {
+	      var oldX = e.x;
+	      var oldY = e.y;
+	      var rotateRad = rotateAngle * Math.PI / 180;
+	      var newX = oldX * Math.cos(rotateRad) - oldY * Math.sin(rotateRad);
+	      var newY = oldX * Math.sin(rotateRad) + oldY * Math.cos(rotateRad);
+	      return {
+	        x: newX,
+	        y: newY
+	      };
+	    }
+	  }, {
+	    key: 'axisTransform',
+	    value: function axisTransform(x, y, rad) {
+	      if (!rad) return { x: x, y: y };
+	      var newX = x * Math.cos(rad) + y * Math.sin(rad);
+	      var newY = y * Math.cos(rad) - x * Math.sin(rad);
+	      return {
+	        x: newX,
+	        y: newY
+	      };
+	    }
+
+	    /**
+	     * 获取事件e的位置
+	     * @param ev
+	     * @returns {{}}
+	     */
+
+	  }, {
+	    key: 'getPoint',
+	    value: function getPoint(ev) {
+	      var i = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+
+	      var p = {};
+	      if (ev.pageX) {
+	        p.x = ev.pageX;
+	        p.y = ev.pageY;
+	      } else if (ev.touches && ev.touches[i]) {
+	        if (ev.type == 'touchend') {
+	          p.x = ev.changedTouches[i].pageX;
+	          p.y = ev.changedTouches[i].pageY;
+	        } else {
+	          p.x = ev.touches[i].pageX;
+	          p.y = ev.touches[i].pageY;
+	        }
+	      } else {
+	        if (ev.originalEvent.pageX) {
+	          p.x = ev.originalEvent.pageX;
+	          p.y = ev.originalEvent.pageY;
+	        } else if (ev.type == 'touchend') {
+	          p.x = ev.originalEvent.changedTouches[i].pageX;
+	          p.y = ev.originalEvent.changedTouches[i].pageY;
+	        } else {
+	          p.x = ev.originalEvent.touches[i].pageX;
+	          p.y = ev.originalEvent.touches[i].pageY;
+	        }
+	      }
+	      return p;
+	    }
+	  }, {
+	    key: 'clearSelect',
+	    value: function clearSelect() {
+	      // 清除鼠标移动拖拽产生选中的高亮
+	      window.onmouseup = function () {
+	        if ('getSelection' in window) {
+	          window.getSelection().removeAllRanges();
+	        } else {
+	          document.selection.empty();
+	        }
+	      };
+	      window.onkeyup = function () {
+	        if ('getSelection' in window) {
+	          window.getSelection().removeAllRanges();
+	        } else {
+	          document.selection.empty();
+	        }
+	      };
+	      $(window).on('mouseup keyup mousemove', function () {
+	        if ('getSelection' in window) {
+	          window.getSelection().removeAllRanges();
+	        } else {
+	          document.selection.empty();
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'getDistance',
+	    value: function getDistance(x1, y1, x2, y2) {
+	      return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+	    }
+	  }, {
+	    key: 'calculateAngle',
+	    value: function calculateAngle(x1, y1, x2, y2, x3, y3) {
+	      if (x3 == null) {
+	        var x = x1 - x2;
+	        var y = y1 - y2;
+	        if (!x && !y) {
+	          return 0;
+	        }
+	        return (180 + Math.atan2(-y, -x) * 180 / Math.PI + 360) % 360;
+	      } else {
+	        return Utils.calculateAngle(x1, y1, x3, y3) - Utils.calculateAngle(x2, y2, x3, y3);
+	      }
+	    }
+	  }]);
+
+	  return Utils;
+	}();
+
+	exports.default = Utils;
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _utils = __webpack_require__(8);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var LowWidthLimit = -window.innerWidth / 2 + 12;
+	var HighWidthLimit = window.innerWidth / 2 - 12;
+	var LowHeightLimit = -window.innerHeight / 2 + 12;
+	var HighHeightLimit = window.innerHeight / 2 - 12;
+
+	var Radial = function () {
+	  function Radial(x1, y1, x2, y2) {
+	    _classCallCheck(this, Radial);
+
+	    this.g = new THREE.Object3D();
+	    this.lineGroup = createLine.call(this, x1, y1, x2, y2);
+	    this.vertexA = createVertex.call(this);
+	    this.vertexA.name = 'A';
+	    this.vertexB = createVertex.call(this);
+	    this.vertexB.name = 'B';
+	    this.vertexA.position.set(x1, y1, 5);
+	    this.vertexB.position.set(x2, y2, 5);
+	    this.g.add(this.vertexA, this.vertexB, this.lineGroup);
+	    this.g.position.z = 5;
+	    this.x1 = x1;
+	    this.x2 = x2;
+	    this.y1 = y1;
+	    this.y2 = y2;
+	    this.hideEdit();
+	  }
+
+	  _createClass(Radial, [{
+	    key: 'showEdit',
+	    value: function showEdit() {
+	      this.isEdit = true;
+	      this.vertexA.visible = true;
+	      this.vertexB.visible = true;
+	    }
+	  }, {
+	    key: 'hideEdit',
+	    value: function hideEdit() {
+	      this.isEdit = false;
+	      this.vertexA.visible = false;
+	      this.vertexB.visible = false;
+	    }
+	  }, {
+	    key: 'move',
+	    value: function move(deltaX, deltaY) {
+	      var newX = this.g.position.x + deltaX;
+	      var newY = this.g.position.y + deltaY;
+	      var isOverLeft = (newX + this.x1 < LowWidthLimit || newX + this.x2 < LowWidthLimit) && deltaX < 0;
+	      var isOverRight = (newX + this.x1 > HighWidthLimit || newX + this.x2 > HighWidthLimit) && deltaX > 0;
+	      var isOverTop = (newY + this.y1 > HighHeightLimit || newY + this.y2 > HighHeightLimit) && deltaY > 0;
+	      var isOverBottom = (newY + this.y1 < LowHeightLimit || newY + this.y2 < LowHeightLimit) && deltaY < 0;
+	      if (isOverLeft || isOverRight) {
+	        newX = this.g.position.x;
+	      }
+	      if (isOverTop || isOverBottom) {
+	        newY = this.g.position.y;
+	      }
+	      this.g.position.x = newX;
+	      this.g.position.y = newY;
+	    }
+	  }, {
+	    key: 'vertexAMove',
+	    value: function vertexAMove(deltaX, deltaY) {
+	      var limit = limitRange.call(this, this.x1, this.y1, deltaX, deltaY);
+	      this.x1 = limit.x;
+	      this.y1 = limit.y;
+	      updateVertex.call(this, 'A');
+	    }
+	  }, {
+	    key: 'vertexBMove',
+	    value: function vertexBMove(deltaX, deltaY) {
+	      var limit = limitRange.call(this, this.x2, this.y2, deltaX, deltaY);
+	      this.x2 = limit.x;
+	      this.y2 = limit.y;
+	      updateVertex.call(this, 'B');
+	    }
+	  }, {
+	    key: 'vertexDown',
+	    value: function vertexDown(point) {
+	      if (point === 'A') {
+	        _utils2.default.getTEleByName(this.vertexA, 'inner').material.color.setHex(0xe27102);
+	      } else {
+	        _utils2.default.getTEleByName(this.vertexB, 'inner').material.color.setHex(0xe27102);
+	      }
+	    }
+	  }, {
+	    key: 'vertexUp',
+	    value: function vertexUp(point) {
+	      if (point === 'A') {
+	        _utils2.default.getTEleByName(this.vertexA, 'inner').material.color.setHex(0x5e5e5e);
+	      } else {
+	        _utils2.default.getTEleByName(this.vertexB, 'inner').material.color.setHex(0x5e5e5e);
+	      }
+	    }
+	  }, {
+	    key: 'addVertexZ',
+	    value: function addVertexZ(z) {
+	      this.vertexA.position.z = z;
+	      this.vertexB.position.z = z;
+	    }
+	  }]);
+
+	  return Radial;
+	}();
+
+	/**
+	 * 顶点移动限制
+	 * @param x
+	 * @param y
+	 * @param deltaX
+	 * @param deltaY
+	 * @returns {{x: *, y: *}}
+	 */
+
+
+	exports.default = Radial;
+	function limitRange(x, y, deltaX, deltaY) {
+	  var newX = x + deltaX;
+	  var newY = y + deltaY;
+	  var isOverLeft = newX + this.g.position.x < LowWidthLimit && deltaX < 0;
+	  var isOverRight = newX + this.g.position.x > HighWidthLimit && deltaX > 0;
+	  var isOverTop = newY + this.g.position.y > HighHeightLimit && deltaY > 0;
+	  var isOverBottom = newY + this.g.position.y < LowHeightLimit && deltaY < 0;
+	  if (isOverLeft || isOverRight) {
+	    newX = x;
+	  }
+	  if (isOverTop || isOverBottom) {
+	    newY = y;
+	  }
+	  return {
+	    x: newX,
+	    y: newY
+	  };
+	}
+
+	/**
+	 * 顶点数据变化后更新
+	 * @param name
+	 */
+	function updateVertex(name) {
+	  var distance = _utils2.default.getDistance(this.x1, this.y1, this.x2, this.y2);
+	  var deg = _utils2.default.calculateAngle(this.x2, this.y2, this.x1, this.y1);
+	  this.line.position.set(distance / 2, 0, 0);
+	  this.line.scale.x = distance;
+	  this.clickLine.position.set(distance / 2, 0, 0);
+	  this.clickLine.scale.x = distance;
+	  this.lineGroup.position.set(this.x1, this.y1, 0);
+	  this.lineGroup.rotation.z = deg * Math.PI / 180;
+	  if (name === 'A') {
+	    this.vertexA.position.x = this.x1;
+	    this.vertexA.position.y = this.y1;
+	  } else {
+	    this.vertexB.position.x = this.x2;
+	    this.vertexB.position.y = this.y2;
+	  }
+	}
+
+	function createLine(x1, y1, x2, y2) {
+	  var g = new THREE.Object3D();
+	  var distance = _utils2.default.getDistance(x1, y1, x2, y2);
+	  var deg = _utils2.default.calculateAngle(x2, y2, x1, y1);
+	  var lineGeo = new THREE.PlaneGeometry(1, 1);
+	  var lineMaterial = new THREE.MeshBasicMaterial({
+	    color: '#e71c1c'
+	  });
+	  this.line = new THREE.Mesh(lineGeo, lineMaterial);
+	  this.line.position.set(distance / 2, 0, 0);
+	  this.line.scale.y = 4;
+	  this.line.scale.x = distance;
+	  this.clickLine = this.line.clone(true);
+	  this.clickLine.scale.y = 16;
+	  this.clickLine.material = new THREE.MeshBasicMaterial({
+	    color: 0xffffff,
+	    transparent: true,
+	    opacity: 0.01
+	  });
+	  this.clickLine.name = 'radialLine';
+	  this.clickLine.radialObj = this;
+	  g.add(this.line, this.clickLine);
+	  g.position.set(x1, y1, 0);
+	  g.rotation.z = deg * Math.PI / 180;
+	  return g;
+	}
+
+	function createVertex() {
+	  var g = new THREE.Object3D();
+	  var borderGeo = new THREE.CircleGeometry(10, 32);
+	  var borderMaterial = new THREE.MeshBasicMaterial({
+	    color: '#cacaca'
+	  });
+	  var border = new THREE.Mesh(borderGeo, borderMaterial);
+	  border.name = 'radialVertex';
+	  border.radialObj = this;
+	  var outerCircleGeo = new THREE.CircleGeometry(9, 32);
+	  var outerCircleMaterial = new THREE.MeshBasicMaterial({
+	    color: '#efefef'
+	  });
+	  var outerCircle = new THREE.Mesh(outerCircleGeo, outerCircleMaterial);
+	  var innerCircleGeo = new THREE.CircleGeometry(6, 32);
+	  var innerCircleMaterial = new THREE.MeshBasicMaterial({
+	    color: '#5e5e5e'
+	  });
+	  var innerCircle = new THREE.Mesh(innerCircleGeo, innerCircleMaterial);
+	  innerCircle.name = 'inner';
+	  g.add(outerCircle, innerCircle, border);
+	  return g;
+	}
+
+/***/ },
+/* 10 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _utils = __webpack_require__(8);
+
+	var _utils2 = _interopRequireDefault(_utils);
+
+	var _drawContext = __webpack_require__(7);
+
+	var _drawContext2 = _interopRequireDefault(_drawContext);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var MAX_WIDTH = window.innerWidth;
+	var MAX_HEIGHT = window.innerHeight;
+	var LowWidthLimit = -window.innerWidth / 2 + 14;
+	var HighWidthLimit = window.innerWidth / 2 - 14;
+	var LowHeightLimit = -window.innerHeight / 2 + 14;
+	var HighHeightLimit = window.innerHeight / 2 - 14;
+
+	var Angle = function () {
+	  function Angle(pointA, pointB, pointC, len) {
+	    _classCallCheck(this, Angle);
+
+	    this.pointA = pointA;
+	    this.pointB = pointB;
+	    this.pointC = pointC;
+	    this.lenAB = _utils2.default.getDistance(pointA.x, pointA.y, pointB.x, pointB.y);
+	    this.lenBC = _utils2.default.getDistance(pointC.x, pointC.y, pointB.x, pointB.y);
+	    this.initLenAB = this.lenAB;
+	    this.initLenBC = this.lenBC;
+	    this.originPoint = {
+	      x: pointB.x,
+	      y: pointB.y
+	    };
+	    this.transformGroup = new THREE.Object3D();
+	    this.transformGroup.position.x = pointB.x;
+	    this.transformGroup.position.y = pointB.y;
+	    this.degAB = _utils2.default.calculateAngle(pointA.x, pointA.y, pointB.x, pointB.y);
+	    this.degCB = _utils2.default.calculateAngle(pointC.x, pointC.y, pointB.x, pointB.y);
+	    var deg = Math.abs(this.degAB - this.degCB);
+	    this.outerNum = 10;
+	    this.addTop = 0;
+	    if (deg > 170) {
+	      this.addTop = 6 * (deg - 165) + 50;
+	    } else if (deg > 165 && len < 350) {
+	      this.addTop = 6 * (deg - 165) + 60;
+	    }
+	    if (deg > 180 || deg < 1 || this.lenAB < 150 || this.lenBC < 150) {
+	      this.isRemove = true;
+	      return false;
+	    }
+
+	    try {
+	      this.shapeGroup = createAngleShape.call(this, pointA, pointB, pointC);
+	      this.shapeGroup.position.set(-pointB.x, -pointB.y, 100);
+	      this.transformGroup.add(this.shapeGroup);
+	    } catch (e) {
+	      console.info('can not create angle');
+	      this.isRemove = true;
+	      return;
+	    }
+	    this.rotateDeltaX = this.pointB.x;
+	    this.rotateDeltaY = this.pointB.y;
+	    this.hideEdit();
+	  }
+
+	  _createClass(Angle, [{
+	    key: 'showEdit',
+	    value: function showEdit() {
+	      this.isEdit = true;
+	      this.boundingBox.visible = true;
+	      this.wholeAngle.visible = true;
+	    }
+	  }, {
+	    key: 'hideEdit',
+	    value: function hideEdit() {
+	      this.isEdit = false;
+	      this.boundingBox.visible = false;
+	      this.wholeAngle.visible = false;
+	    }
+	  }, {
+	    key: 'toggleSector',
+	    value: function toggleSector() {
+	      this.sectorGroup.visible = !this.sectorGroup.visible;
+	    }
+	  }, {
+	    key: 'isInRange',
+	    value: function isInRange() {
+	      return !(this.degAB < -0.1 || this.degAB > 180.1 || this.degCB < -0.1 || this.degCB > 180.1);
+	    }
+	  }, {
+	    key: 'getRotationScreenPos',
+	    value: function getRotationScreenPos() {
+	      var x = this.transformGroup.position.x;
+	      var y = this.transformGroup.position.y;
+	      x += MAX_WIDTH / 2;
+	      y = MAX_HEIGHT / 2 - y;
+	      return { x: x, y: y };
+	    }
+	  }, {
+	    key: 'move',
+	    value: function move(deltaX, deltaY) {
+	      var newX = this.transformGroup.position.x + deltaX;
+	      var newY = this.transformGroup.position.y + deltaY;
+	      var shapeX = this.shapeGroup.position.x;
+	      var shapeY = this.shapeGroup.position.y;
+	      var axis1 = _utils2.default.axisTransform(this.leftBottomBtn.position.x + shapeX, this.leftBottomBtn.position.y + shapeY, -this.transformGroup.rotation.z);
+	      var axis2 = _utils2.default.axisTransform(this.leftTopBtn.position.x + shapeX, this.leftTopBtn.position.y + shapeY, -this.transformGroup.rotation.z);
+	      var axis3 = _utils2.default.axisTransform(this.rightBottomBtn.position.x + shapeX, this.rightBottomBtn.position.y + shapeY, -this.transformGroup.rotation.z);
+	      var axis4 = _utils2.default.axisTransform(this.rotateBtn.position.x + shapeX, this.rotateBtn.position.y + shapeY, -this.transformGroup.rotation.z);
+	      var isOverLeft = (axis1.x + newX < LowWidthLimit || axis2.x + newX < LowWidthLimit || axis3.x + newX < LowWidthLimit || axis4.x + newX < LowWidthLimit) && deltaX < 0;
+	      var isOverRight = (axis1.x + newX > HighWidthLimit || axis2.x + newX > HighWidthLimit || axis3.x + newX > HighWidthLimit || axis4.x + newX > HighWidthLimit) && deltaX > 0;
+	      var isOverTop = (axis1.y + newY > HighHeightLimit || axis2.y + newY > HighHeightLimit || axis3.y + newY > HighHeightLimit || axis4.y + newY > HighHeightLimit) && deltaY > 0;
+	      var isOverBottom = (axis1.y + newY < LowHeightLimit || axis2.y + newY < LowHeightLimit || axis3.y + newY < LowHeightLimit || axis4.y + newY < LowHeightLimit) && deltaY < 0;
+	      if (isOverLeft || isOverRight) {
+	        newX = this.transformGroup.position.x;
+	      }
+	      if (isOverTop || isOverBottom) {
+	        newY = this.transformGroup.position.y;
+	      }
+	      this.transformGroup.position.x = newX;
+	      this.transformGroup.position.y = newY;
+	    }
+	  }, {
+	    key: 'rotate',
+	    value: function rotate(delta) {
+	      this.transformGroup.rotation.z += delta;
+	      this.text.rotation.z -= delta;
+	    }
+	  }, {
+	    key: 'rotateDown',
+	    value: function rotateDown() {
+	      this.rotateInner.material.color.setHex(0xdd6f02);
+	    }
+	  }, {
+	    key: 'rotateUp',
+	    value: function rotateUp() {
+	      this.rotateInner.material.color.setHex(0x5e5e5e);
+	    }
+	  }, {
+	    key: 'stretchDown',
+	    value: function stretchDown(btn) {
+	      _utils2.default.getTEleByName(btn.parent, 'inner').material.color.setHex(0xdd6f02);
+	    }
+	  }, {
+	    key: 'stretchUp',
+	    value: function stretchUp(btn) {
+	      _utils2.default.getTEleByName(btn.parent, 'inner').material.color.setHex(0x5e5e5e);
+	      this.shapeGroup.position.set(-this.originPoint.x, -this.originPoint.y, 100);
+	      var axis = _utils2.default.axisTransform(this.originPoint.x - this.rotateDeltaX, this.originPoint.y - this.rotateDeltaY, -this.transformGroup.rotation.z);
+	      this.transformGroup.position.x += axis.x;
+	      this.transformGroup.position.y += axis.y;
+	      this.rotateDeltaX = this.originPoint.x;
+	      this.rotateDeltaY = this.originPoint.y;
+	    }
+	  }, {
+	    key: 'rightBottomMove',
+	    value: function rightBottomMove(x) {
+	      if ((this.lenAB < 200 || this.lenBC < 200) && x < 0) {
+	        return;
+	      }
+	      var y = x / this.rate;
+	      this.rightBottomBtn.position.x += x;
+	      this.rightBottomBtn.position.y -= y;
+	      this.leftBottomBtn.position.y = this.rightBottomBtn.position.y;
+	      this.rotateBtn.position.x = this.rightBottomBtn.position.x;
+	      this.lenAB = this.initLenAB * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      this.lenBC = this.initLenBC * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      if (Math.abs(this.degAB - this.degCB) === 180) {
+	        var tempDis = this.degAB > this.degCB ? this.lenAB : this.lenBC;
+	        this.originPoint.x = this.leftBottomBtn.position.x + tempDis + this.outerNum;
+	      } else if (this.degAB <= 90 && this.degCB <= 90) {
+	        this.originPoint.y -= y;
+	      } else if (this.degAB > 90 && this.degCB > 90) {
+	        this.originPoint.x += x;
+	        this.originPoint.y -= y;
+	      } else {
+	        this.originPoint.y = this.leftBottomBtn.position.y + this.outerNum;
+	        if (this.degAB < this.degCB) {
+	          if (this.pointA.y > this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        } else {
+	          if (this.pointA.y < this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        }
+	      }
+	      updateShape.call(this);
+	    }
+	  }, {
+	    key: 'leftBottomMove',
+	    value: function leftBottomMove(x) {
+	      if ((this.lenAB < 200 || this.lenBC < 200) && x < 0) {
+	        return;
+	      }
+	      var y = x / this.rate;
+	      this.leftBottomBtn.position.x -= x;
+	      this.leftBottomBtn.position.y -= y;
+	      this.rightBottomBtn.position.y = this.leftBottomBtn.position.y;
+	      this.leftTopBtn.position.x = this.leftBottomBtn.position.x;
+	      this.lenAB = this.initLenAB * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      this.lenBC = this.initLenBC * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      if (Math.abs(this.degAB - this.degCB) === 180) {
+	        var tempDis = this.degAB > this.degCB ? this.lenAB : this.lenBC;
+	        this.originPoint.x = this.leftBottomBtn.position.x + tempDis + this.outerNum;
+	      } else if (this.degAB <= 90 && this.degCB <= 90) {
+	        this.originPoint.x -= x;
+	        this.originPoint.y -= y;
+	      } else if (this.degAB > 90 && this.degCB > 90) {
+	        this.originPoint.y -= y;
+	      } else {
+	        this.originPoint.y = this.leftBottomBtn.position.y + this.outerNum;
+	        if (this.degAB < this.degCB) {
+	          if (this.pointA.y > this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        } else {
+	          if (this.pointA.y < this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        }
+	      }
+	      updateShape.call(this);
+	    }
+	  }, {
+	    key: 'leftTopMove',
+	    value: function leftTopMove(x) {
+	      if ((this.lenAB < 200 || this.lenBC < 200) && x < 0) {
+	        return;
+	      }
+	      var y = x / this.rate;
+	      this.leftTopBtn.position.x -= x;
+	      this.leftTopBtn.position.y += y;
+	      this.rotateBtn.position.y = this.leftTopBtn.position.y;
+	      this.leftBottomBtn.position.x = this.leftTopBtn.position.x;
+	      this.lenAB = this.initLenAB * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      this.lenBC = this.initLenBC * (this.rotateBtn.position.x - this.leftTopBtn.position.x - 2 * this.outerNum) / this.initWidth;
+	      if (Math.abs(this.degAB - this.degCB) === 180) {
+	        var tempDis = this.degAB > this.degCB ? this.lenAB : this.lenBC;
+	        this.originPoint.x = this.leftBottomBtn.position.x + tempDis + this.outerNum;
+	      } else if (this.degAB < 90 && this.degCB < 90) {
+	        this.originPoint.x -= x;
+	      } else if (this.degAB > 90 && this.degCB > 90) {} else {
+	        if (this.degAB < this.degCB) {
+	          if (this.pointA.y > this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        } else {
+	          if (this.pointA.y < this.pointC.y) {
+	            this.originPoint.x = (this.originPoint.y - (this.rotateBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degCB * Math.PI / 180) + this.rotateBtn.position.x - this.outerNum;
+	          } else {
+	            this.originPoint.x = (this.originPoint.y - (this.leftTopBtn.position.y - this.addTop - this.outerNum)) / Math.tan(this.degAB * Math.PI / 180) + this.leftTopBtn.position.x + this.outerNum;
+	          }
+	        }
+	      }
+	      updateShape.call(this);
+	    }
+	  }]);
+
+	  return Angle;
+	}();
+
+	exports.default = Angle;
+
+
+	function createAngleShape(pointA, pointB, pointC) {
+	  var g = new THREE.Object3D();
+	  this.sectorGroup = createSector.call(this, pointB, this.degAB, this.degCB);
+	  this.clickSector = createClickSector.call(this, pointB, this.degAB, this.degCB);
+	  g.add(this.sectorGroup, this.clickSector);
+	  this.lineAB = createLine.call(this, this.degAB, this.lenAB, pointB);
+	  this.lineCB = createLine.call(this, this.degCB, this.lenBC, pointB);
+	  g.add(this.lineAB, this.lineCB);
+	  var shape = new THREE.Shape();
+	  shape.moveTo(pointA.x, pointA.y);
+	  shape.lineTo(pointB.x, pointB.y);
+	  shape.lineTo(pointC.x, pointC.y);
+	  var geometry = new THREE.ShapeGeometry(shape);
+	  var material = new THREE.MeshBasicMaterial({
+	    color: '#ff0000'
+	  });
+	  var shapeMesh = new THREE.Mesh(geometry, material);
+	  this.boundingBox = createBoundingBox.call(this, shapeMesh);
+	  this.rotateInner = _utils2.default.getTEleByName(this.rotateBtn, 'inner');
+	  g.add(this.boundingBox);
+	  this.wholeAngle = createWholeAngle.call(this);
+	  this.wholeAngle.name = 'wholeAngle';
+	  this.wholeAngle.angleObj = this;
+	  g.add(this.wholeAngle);
+	  return g;
+	}
+
+	function updateShape() {
+	  adjustBorderLine(this.bottomLine, this.leftBottomBtn.position.x, this.leftBottomBtn.position.y, this.rightBottomBtn.position.x, this.rightBottomBtn.position.y);
+	  adjustBorderLine(this.leftLine, this.leftBottomBtn.position.x, this.leftBottomBtn.position.y, this.leftTopBtn.position.x, this.leftTopBtn.position.y);
+	  adjustBorderLine(this.topLine, this.leftTopBtn.position.x, this.leftTopBtn.position.y, this.rotateBtn.position.x, this.rotateBtn.position.y);
+	  adjustBorderLine(this.rightLine, this.rightBottomBtn.position.x, this.rightBottomBtn.position.y, this.rotateBtn.position.x, this.rotateBtn.position.y);
+	  adjustLine(this.lineAB, this.lenAB, this.originPoint);
+	  adjustLine(this.lineCB, this.lenBC, this.originPoint);
+	  updateWholeAngle.call(this);
+	  this.sectorGroup.position.x = this.originPoint.x;
+	  this.clickSector.position.x = this.originPoint.x;
+	  this.sectorGroup.position.y = this.originPoint.y;
+	  this.clickSector.position.y = this.originPoint.y;
+	}
+
+	function createLine(deg, len, originPoint) {
+	  var g = new THREE.Object3D();
+	  var lineGeo = new THREE.PlaneGeometry(1, 4);
+	  var lineMaterial = new THREE.MeshBasicMaterial({
+	    color: '#e71c1c'
+	  });
+	  var line = new THREE.Mesh(lineGeo, lineMaterial);
+	  var rad = deg * Math.PI / 180;
+	  line.rotation.z = rad;
+	  line.scale.x = len + 3;
+	  line.position.x = len / 2 * Math.cos(rad) + originPoint.x;
+	  line.position.y = len / 2 * Math.sin(rad) + originPoint.y;
+	  var clickLineGeo = new THREE.PlaneGeometry(1, 20);
+	  var clickLineMaterial = new THREE.MeshBasicMaterial({
+	    color: '#ffffff',
+	    transparent: true,
+	    opacity: 0.01
+	  });
+	  var clickLine = new THREE.Mesh(clickLineGeo, clickLineMaterial);
+	  clickLine.rotation.z = line.rotation.z;
+	  clickLine.scale.x = len + 3;
+	  clickLine.position.x = line.position.x;
+	  clickLine.position.y = line.position.y;
+	  clickLine.name = 'angleClickLine';
+	  clickLine.angleObj = this;
+	  g.add(line, clickLine);
+	  return g;
+	}
+
+	function adjustLine(lineGroup, len, originPoint) {
+	  var children = lineGroup.children;
+	  var _iteratorNormalCompletion = true;
+	  var _didIteratorError = false;
+	  var _iteratorError = undefined;
+
+	  try {
+	    for (var _iterator = children[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	      var child = _step.value;
+
+	      child.scale.x = len + 3;
+	      child.position.x = len / 2 * Math.cos(child.rotation.z) + originPoint.x;
+	      child.position.y = len / 2 * Math.sin(child.rotation.z) + originPoint.y;
+	    }
+	  } catch (err) {
+	    _didIteratorError = true;
+	    _iteratorError = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion && _iterator.return) {
+	        _iterator.return();
+	      }
+	    } finally {
+	      if (_didIteratorError) {
+	        throw _iteratorError;
+	      }
+	    }
+	  }
+	}
+
+	function createSector(originPoint, degA, degC) {
+	  var g = new THREE.Object3D();
+	  var minRad = Math.min(degA, degC) * Math.PI / 180;
+	  var radLen = Math.abs(degA - degC) * Math.PI / 180;
+	  var midDeg = (degA + degC) / 2;
+	  var sectorGeo = new THREE.CircleGeometry(66, 32, minRad, radLen);
+	  var sectorMaterial = new THREE.MeshBasicMaterial({ color: "#ff7200", transparent: true, opacity: 0.6 });
+	  var sector = new THREE.Mesh(sectorGeo, sectorMaterial);
+	  var sectorBorderGeo = new THREE.RingGeometry(66, 69, 32, 8, minRad, radLen);
+	  var sectorBorderMaterial = new THREE.MeshBasicMaterial({ color: "#fc6a08" });
+	  var sectorBorder = new THREE.Mesh(sectorBorderGeo, sectorBorderMaterial);
+	  g.add(sector, sectorBorder);
+	  this.deg = Math.round(Math.abs(degA - degC) * 2) / 2;
+	  this.text = (0, _drawContext2.default)(this.deg + '°', { fillStyle: '#e71c1c', strokeStyle: '#ffffff', lineWidth: 3, fontSize: 28 });
+	  this.text.position.set(Math.cos(midDeg * Math.PI / 180) * 108, Math.sin(midDeg * Math.PI / 180) * 108, 10);
+	  g.add(this.text);
+	  g.position.set(originPoint.x, originPoint.y, -1);
+	  return g;
+	}
+
+	function createClickSector(originPoint, degA, degC) {
+	  var minRad = Math.min(degA, degC) * Math.PI / 180;
+	  var radLen = Math.abs(degA - degC) * Math.PI / 180;
+	  var sectorGeo = new THREE.CircleGeometry(66, 32, minRad, radLen);
+	  var sectorMaterial = new THREE.MeshBasicMaterial({ color: '#ffffff', transparent: true, opacity: 0.01 });
+	  var sector = new THREE.Mesh(sectorGeo, sectorMaterial);
+	  sector.position.x = originPoint.x;
+	  sector.position.y = originPoint.y;
+	  sector.name = 'sector';
+	  sector.angleObj = this;
+	  return sector;
+	}
+
+	function createBoundingBox(obj) {
+	  var g = new THREE.Object3D();
+	  obj.geometry.computeBoundingBox();
+	  var boundingBox = obj.geometry.boundingBox;
+	  var x1 = boundingBox.max.x;
+	  var y1 = boundingBox.max.y;
+	  var x2 = boundingBox.min.x;
+	  var y2 = boundingBox.min.y;
+	  this.initWidth = x1 - x2;
+	  this.topLine = createBorderLine(x2 - this.outerNum, y1 + this.addTop + this.outerNum, x1 + this.outerNum, y1 + this.addTop + this.outerNum);
+	  this.rightLine = createBorderLine(x1 + this.outerNum, y2 - this.outerNum, x1 + this.outerNum, y1 + this.addTop + this.outerNum);
+	  this.bottomLine = createBorderLine(x2 - this.outerNum, y2 - this.outerNum, x1 + this.outerNum, y2 - this.outerNum);
+	  this.leftLine = createBorderLine(x2 - this.outerNum, y2 - this.outerNum, x2 - this.outerNum, y1 + this.addTop + this.outerNum);
+	  this.rate = (x1 - x2) / (y1 - y2);
+	  this.leftBottomBtn = createBorderVertex.call(this);
+	  this.leftBottomBtn.position.set(x2 - this.outerNum, y2 - this.outerNum, 0);
+	  this.leftBottomBtn.name = 'leftBottomBtn';
+	  this.rotateBtn = createRotateBtn.call(this);
+	  this.rotateBtn.position.set(x1 + this.outerNum, y1 + this.addTop + this.outerNum, 0);
+	  this.rightBottomBtn = createBorderVertex.call(this);
+	  this.rightBottomBtn.position.set(x1 + this.outerNum, y2 - this.outerNum, 0);
+	  this.rightBottomBtn.name = 'rightBottomBtn';
+	  this.leftTopBtn = createBorderVertex.call(this);
+	  this.leftTopBtn.position.set(x2 - this.outerNum, y1 + this.addTop + this.outerNum, 0);
+	  this.leftTopBtn.name = 'leftTopBtn';
+	  g.add(this.leftBottomBtn, this.rotateBtn, this.rightBottomBtn, this.leftTopBtn, this.topLine, this.rightLine, this.bottomLine, this.leftLine);
+	  return g;
+	}
+
+	function createRotateBtn() {
+	  var g = new THREE.Object3D();
+	  var borderGeo = new THREE.CircleGeometry(16, 32);
+	  var borderMaterial = new THREE.MeshBasicMaterial({
+	    color: '#cacaca'
+	  });
+	  var border = new THREE.Mesh(borderGeo, borderMaterial);
+	  border.name = 'rotateVertex';
+	  border.angleObj = this;
+	  var bgGeo = new THREE.CircleGeometry(15, 32);
+	  var bgMaterial = new THREE.MeshBasicMaterial({
+	    color: '#efefef'
+	  });
+	  var bg = new THREE.Mesh(bgGeo, bgMaterial);
+	  var rotateShape = new THREE.Shape();
+	  rotateShape.moveTo(6 * Math.cos(295 * Math.PI / 180), 6 * Math.sin(295 * Math.PI / 180));
+	  rotateShape.moveTo(9 * Math.cos(295 * Math.PI / 180), 9 * Math.sin(295 * Math.PI / 180));
+	  rotateShape.absarc(0, 0, 9, 295 * Math.PI / 180, 0, true);
+	  rotateShape.lineTo(12, 0);
+	  rotateShape.lineTo(8, -6);
+	  rotateShape.lineTo(3, 0);
+	  rotateShape.lineTo(6, 0);
+	  rotateShape.absarc(0, 0, 6, 0, 295 * Math.PI / 180, true);
+	  var rotateGeo = new THREE.ShapeGeometry(rotateShape);
+	  var rotateMaterial = new THREE.MeshBasicMaterial({ color: '#5e5e5e' });
+	  var rotate = new THREE.Mesh(rotateGeo, rotateMaterial);
+	  rotate.name = 'inner';
+	  g.add(border, bg, rotate);
+	  return g;
+	}
+
+	function createBorderVertex() {
+	  var g = new THREE.Object3D();
+	  var borderGeo = new THREE.CircleGeometry(10, 32);
+	  var borderMaterial = new THREE.MeshBasicMaterial({
+	    color: '#cacaca'
+	  });
+	  var border = new THREE.Mesh(borderGeo, borderMaterial);
+	  border.name = 'borderVertex';
+	  border.angleObj = this;
+	  var outerCircleGeo = new THREE.CircleGeometry(9, 32);
+	  var outerCircleMaterial = new THREE.MeshBasicMaterial({
+	    color: '#efefef'
+	  });
+	  var outerCircle = new THREE.Mesh(outerCircleGeo, outerCircleMaterial);
+	  var innerCircleGeo = new THREE.CircleGeometry(6, 32);
+	  var innerCircleMaterial = new THREE.MeshBasicMaterial({
+	    color: '#5e5e5e'
+	  });
+	  var innerCircle = new THREE.Mesh(innerCircleGeo, innerCircleMaterial);
+	  innerCircle.name = 'inner';
+	  g.add(outerCircle, innerCircle, border);
+	  return g;
+	}
+
+	function createBorderLine(x1, y1, x2, y2) {
+	  var g = new THREE.Object3D();
+	  var distance = _utils2.default.getDistance(x1, y1, x2, y2);
+	  var deg = _utils2.default.calculateAngle(x2, y2, x1, y1);
+	  var lineGeo = new THREE.PlaneGeometry(1, 1);
+	  var lineMaterial = new THREE.MeshBasicMaterial({
+	    color: '#5e5e5e',
+	    wireframe: true
+	  });
+	  var line = new THREE.Mesh(lineGeo, lineMaterial);
+	  line.position.set(distance / 2, 0, 0);
+	  line.scale.y = 3;
+	  line.scale.x = distance;
+	  var line2 = line.clone(true);
+	  line2.scale.y = 1;
+	  line2.material = new THREE.MeshBasicMaterial({
+	    color: '#ffffff'
+	  });
+	  g.add(line, line2);
+	  g.position.set(x1, y1, 0);
+	  g.rotation.z = deg * Math.PI / 180;
+	  return g;
+	}
+
+	function adjustBorderLine(line, x1, y1, x2, y2) {
+	  var distance = _utils2.default.getDistance(x1, y1, x2, y2);
+	  var children = line.children;
+	  var _iteratorNormalCompletion2 = true;
+	  var _didIteratorError2 = false;
+	  var _iteratorError2 = undefined;
+
+	  try {
+	    for (var _iterator2 = children[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+	      var child = _step2.value;
+
+	      child.scale.x = distance;
+	      child.position.x = distance / 2;
+	    }
+	  } catch (err) {
+	    _didIteratorError2 = true;
+	    _iteratorError2 = err;
+	  } finally {
+	    try {
+	      if (!_iteratorNormalCompletion2 && _iterator2.return) {
+	        _iterator2.return();
+	      }
+	    } finally {
+	      if (_didIteratorError2) {
+	        throw _iteratorError2;
+	      }
+	    }
+	  }
+
+	  line.position.set(x1, y1, 0);
+	}
+
+	function createWholeAngle() {
+	  var geometry = new THREE.Geometry();
+	  geometry.vertices.push(new THREE.Vector3(Math.round(this.leftTopBtn.position.x), Math.round(this.leftTopBtn.position.y), 0), new THREE.Vector3(Math.round(this.leftBottomBtn.position.x), Math.round(this.leftBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rightBottomBtn.position.x), Math.round(this.rightBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rightBottomBtn.position.x), Math.round(this.rightBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rotateBtn.position.x), Math.round(this.rotateBtn.position.y), 0), new THREE.Vector3(Math.round(this.leftTopBtn.position.x), Math.round(this.leftTopBtn.position.y), 0));
+	  geometry.faces.push(new THREE.Face3(0, 1, 2));
+	  geometry.faces.push(new THREE.Face3(3, 4, 5));
+
+	  var material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.01 });
+
+	  var mesh = new THREE.Mesh(geometry, material);
+	  return mesh;
+	}
+
+	function updateWholeAngle() {
+	  this.wholeAngle.geometry.dispose();
+	  var geometry = new THREE.Geometry();
+	  geometry.vertices.push(new THREE.Vector3(Math.round(this.leftTopBtn.position.x), Math.round(this.leftTopBtn.position.y), 0), new THREE.Vector3(Math.round(this.leftBottomBtn.position.x), Math.round(this.leftBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rightBottomBtn.position.x), Math.round(this.rightBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rightBottomBtn.position.x), Math.round(this.rightBottomBtn.position.y), 0), new THREE.Vector3(Math.round(this.rotateBtn.position.x), Math.round(this.rotateBtn.position.y), 0), new THREE.Vector3(Math.round(this.leftTopBtn.position.x), Math.round(this.leftTopBtn.position.y), 0));
+	  geometry.faces.push(new THREE.Face3(0, 1, 2));
+	  geometry.faces.push(new THREE.Face3(3, 4, 5));
+	  this.wholeAngle.geometry = geometry;
+	}
+
+/***/ }
+/******/ ]);]]></presenter><resources/></addon>

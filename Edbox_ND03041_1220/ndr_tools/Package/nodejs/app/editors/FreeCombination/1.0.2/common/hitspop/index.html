@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="../common_wood.css">
+    <script>
+	/*文本区域 textarea 高度自适应*/
+	var autoTextarea = function (elem, extra, maxHeight) {
+        extra = extra || 0;
+        var isFirefox = !!document.getBoxObjectFor || 'mozInnerScreenX' in window,
+        isOpera = !!window.opera && !!window.opera.toString().indexOf('Opera'),
+                addEvent = function (type, callback) {
+                        elem.addEventListener ?
+                                elem.addEventListener(type, callback, false) :
+                                elem.attachEvent('on' + type, callback);
+                },
+                getStyle = elem.currentStyle ? function (name) {
+                        var val = elem.currentStyle[name];
+ 
+                        if (name === 'height' && val.search(/px/i) !== 1) {
+                                var rect = elem.getBoundingClientRect();
+                                return rect.bottom - rect.top -
+                                        parseFloat(getStyle('paddingTop')) -
+                                        parseFloat(getStyle('paddingBottom')) + 'px';        
+                        };
+ 
+                        return val;
+                } : function (name) {
+                                return getComputedStyle(elem, null)[name];
+                },
+                minHeight = parseFloat(getStyle('height'));
+ 
+        elem.style.resize = 'none';
+ 
+        var change = function () {
+                var scrollTop, height,
+                        padding = 0,
+                        style = elem.style;
+ 
+                if (elem._length === elem.value.length) return;
+                elem._length = elem.value.length;
+ 
+                if (!isFirefox && !isOpera) {
+                        padding = parseInt(getStyle('paddingTop')) + parseInt(getStyle('paddingBottom'));
+                };
+                scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+ 
+                elem.style.height = minHeight + 'px';
+                if (elem.scrollHeight > minHeight) {
+                        if (maxHeight && elem.scrollHeight > maxHeight) {
+                                height = maxHeight - padding;
+                                style.overflowY = 'auto';
+                        } else {
+                                height = elem.scrollHeight - padding;
+                                style.overflowY = 'hidden';
+                        };
+                        style.height = height + extra + 'px';
+                        scrollTop += parseInt(style.height) - elem.currHeight;
+                        document.body.scrollTop = scrollTop;
+                        document.documentElement.scrollTop = scrollTop;
+                        elem.currHeight = parseInt(style.height);
+                };
+        };
+ 
+        addEvent('propertychange', change);
+        addEvent('input', change);
+        addEvent('focus', change);
+        change();
+};
+	</script>
+</head>
+<body class="exam_wood">
+<div class="com_layout_large">
+<!--通用提示弹窗-->
+<div class="com_m_pop_hits">	
+	<div class="com_m_pop_hits_box">
+		<!--左面板宽度对应类名：com_grid_0、com_grid_1、com_grid_2 ~ com_grid_10 分别表示：无左侧面板、宽度为10%、20% ~ 100% -->
+		<div class="com_m_pop_hits_title">
+			提示
+            <a href="###" class="com_h_pop_close">关闭提示</a>
+		</div>
+		<div class="com_m_pop_hits_main">
+        	<div class="com_m_pop_hits_content">
+            	<ul class="hits_text_box">
+                	<li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">1</span>
+                    	<div class="text_input_area">
+                        	
+                        	<textarea cols="" rows="1">分数的加、减法则：同分母的分数相加减,只把分子相加减,分母不变.异分母的分数相加减,先通分,然后再加减.</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list on_edit"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">2</span>
+                    	<div class="text_input_area">
+                        	
+                        	<textarea id="textarea" cols="" rows="1">分数的加、减法则：同分母的分数相加减,只把分子相加减,分母不变.异分母的分数相加减,先通分,然后再加减.</textarea>
+                            <script> 
+								var text = document.getElementById("textarea");
+								autoTextarea(text);// 调用
+							</script>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">3</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">该题先分母通分，2x3=6；再两个分子相加：1x3+1x2;该题先分母通分，2x3=6</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">4</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">三个数相加,先把前两个数相加,或先把后两个数相加,再同第三个数相加,和不变。两数相乘,交换因数的位置,积不变。</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">5</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">百分数：表示一个数是另一个数的百分之几的数,叫做百分数.百分数也叫做百分率或百分比.</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">6</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">最小公倍数：几个数公有的倍数,叫做这几个数的公倍数,其中最小的一个叫做这几个数的最小公倍数.</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">7</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">循环小数：一个小数,从小数部分的某一位起,一个数字或几个数字依次不断的重复出现,这样的小数叫做循环小数。</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                    <li class="hits_text_list"><!--在编辑状态hits_text_list添加类名on_edit-->
+                    	<span class="order_num">8</span>
+                    	<div class="text_input_area">
+                        	<textarea cols="" rows="1">最小公倍数：几个数公有的倍数,叫做这几个数的公倍数,其中最小的一个叫做这几个数的最小公倍数.</textarea>
+                        </div>
+                        <a href="###" class="com_btn_h_delete">删除</a>
+                    </li>
+                </ul>
+				<a href="###" class="com_u_btn4"><i class="iconleft icon_add"></i>增加题目</a>
+            </div>
+            <div class="com_m_pop_hits_bottom">
+            	<a href="###" class="com_u_btn4">保存</a>
+                <a href="###" class="com_u_btn4">取消</a>
+            </div>
+		</div>
+	</div>
+</div>
+<!--/通用提示弹窗-->
+</div>
+</body>
+</html>

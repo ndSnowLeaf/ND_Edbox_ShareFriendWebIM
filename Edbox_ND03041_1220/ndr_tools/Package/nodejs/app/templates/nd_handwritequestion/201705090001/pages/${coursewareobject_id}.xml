@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<page layout="pixels" name="${page_id}" isReportable="true" scoring="percentage" width="0" height="0">
+    <addons>
+        <addon-descriptor addonId="Write"/>
+        <addon-descriptor addonId="Timer"/>
+        <addon-descriptor addonId="Button"/>
+        <addon-descriptor addonId="Panel"/>
+	</addons>
+    <modules>
+        <addonModule addonId="Timer" id="Timer" left="2" top="2" width="140" height="51" right="" bottom="" isVisible="" isLocked="" rotate="" style="">
+            <properties>
+                <property name="disallowdelete" type="string" value ="true"/>
+                <property name="canMoveOrResize" type="string" value ="false"/>
+            </properties>
+            <events>
+                <event name="setTimerValue">
+                    <handler addonId="Timer" targetId="Timer" handlerName="getTimerValue"/>
+                </event>
+            </events>
+        </addonModule>
+        <addonModule editorId="Panel" addonId="Panel" id="Panel" left="0" top="90" width="90%" height="60%" right="" bottom="" isVisible="true" isLocked="" rotate="" style="">
+            <properties>
+                <property name="module" type="string" value=""/>
+                <property name="placeholder" type="html"/>
+                <property name="text" type="html"/>
+                <property name="textStyle" type="string" value="center,middle,black,36"/>
+                <property name="hideQuickArea" type="boolean" value="true"/>
+            </properties>
+        </addonModule>
+        <addonModule editorId="Write" addonId="Write" id="Write" left="0" top="0" width="100%" height="100%" right="" bottom="" isVisible="" isLocked="" rotate="" style="">
+            <properties>
+                <property name="disallowdelete" type="string" value ="true"/>
+                <property name="canMoveOrResize" type="string" value ="false"/>
+                <property name="id" type="string" value="${coursewareobject_id}"/>
+                <property name="writer_background" type="json">
+                    <![CDATA[{"url":"", "type": 1, "top": 0, "left": 0, "right": 0, "bottom": 0, "width": 1000, "height": 600}]]>
+                </property>
+            </properties>
+            <events>
+                <event name="setButtonState">
+                    <handler addonId="Button" targetId="Button" handlerName="setButtonState"/>
+                </event>
+                <event name="setTimerState">
+                    <handler addonId="Timer" targetId="Timer" handlerName="setTimerState"/>
+                </event>
+            </events>
+        </addonModule>
+		<addonModule addonId="Button" id="Button" left="1030" top="2" width="137" height="58" right="" bottom="" isVisible="" isLocked="" rotate="" style="">
+            <properties>
+                <property name="disallowdelete" type="string" value ="true"/>
+                <property name="canMoveOrResize" type="string" value ="false"/>
+            </properties>
+            <events>
+                <event name="onSubmit">
+                    <handler addonId="Write" targetId="Write" handlerName="onSubmit"/>
+                </event>
+            </events>
+        </addonModule>
+	</modules>
+</page>

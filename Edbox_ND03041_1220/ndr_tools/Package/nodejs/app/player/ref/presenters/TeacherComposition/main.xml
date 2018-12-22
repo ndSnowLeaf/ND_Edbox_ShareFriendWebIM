@@ -1,0 +1,1992 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='TeacherComposition'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+<jsDependency>
+    <javaScript  name="qtiSupport" version="5.0.0" />
+</jsDependency>
+
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_TeacherComposition video::-webkit-media-controls-fullscreen-button {
+  display: none; }
+.addon_TeacherComposition * {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  vertical-align: baseline;
+  box-sizing: border-box; }
+.addon_TeacherComposition a {
+  color: #585858;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent; }
+.addon_TeacherComposition ol, .addon_TeacherComposition ul {
+  list-style: none; }
+.addon_TeacherComposition .clearfix {
+  overflow: hidden; }
+.addon_TeacherComposition .teacher_button {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  margin-left: -68px; }
+.addon_TeacherComposition .gray {
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray; }
+.addon_TeacherComposition .t_pagenum {
+  display: inline-block;
+  width: 100px;
+  height: 40px;
+  background-color: #56AF31;
+  color: #fff;
+  text-underline: none;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 5px;
+  cursor: pointer; }
+.addon_TeacherComposition .prev {
+  margin-left: 300px; }
+.addon_TeacherComposition .next {
+  margin-left: 50px; }
+.addon_TeacherComposition #canvas_content {
+  text-align: center; }
+.addon_TeacherComposition #composition_content {
+  max-height: 450px;
+  overflow: auto; }
+.addon_TeacherComposition #seaquestion {
+  color: #585858; }
+.addon_TeacherComposition #composition_content {
+  max-height: 450px;
+  overflow: auto; }
+.addon_TeacherComposition canvas {
+  -webkit-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+  box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 4px;
+  margin-top: 60px; }
+.addon_TeacherComposition .container {
+  position: relative;
+  height: 100%;
+  padding: 12px 24px 0 62px; }
+.addon_TeacherComposition .container .wrapper {
+  height: 100%;
+  background: url("resources/images/bookskin_mainbg.png") left top repeat-y #ffffff; }
+.addon_TeacherComposition .com_bookskin {
+  background-image: url("resources/images/bookskin_righttop.png"), url("resources/images/bookskin_top.png"), url("resources/images/bookskin_left.png"), url("resources/images/bookskin_right.png"), url("resources/images/bookskin_leftbg.png");
+  background-position: top right, top left, top left, top right, top left;
+  background-repeat: no-repeat, repeat-x, no-repeat, repeat-y, repeat-y;
+  background-size: 24px auto, auto 12px, 62px auto, 24px auto, 62px auto;
+  background-color: #f5be57; }
+.addon_TeacherComposition .comtip01 {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: 305px;
+  margin-left: -152px;
+  margin-top: -116px;
+  padding: 20px 0;
+  text-align: center;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1000; }
+.addon_TeacherComposition .comtip01 .tiptxt {
+  line-height: 26px;
+  font-size: 1.25rem;
+  color: #e6e6e6; }
+.addon_TeacherComposition .com_onlytxt {
+  padding: 30px 0; }
+.addon_TeacherComposition .com_connect_ok {
+  width: 236px;
+  margin-left: -118px;
+  padding: 10px 0; }
+.addon_TeacherComposition .icon_connect_ok {
+  display: block;
+  width: 48px;
+  height: 48px;
+  background: url("resources/images/icon_connect_ok.png") no-repeat;
+  background-size: 48px auto;
+  margin: 0 auto 10px; }
+.addon_TeacherComposition .comtip02 {
+  position: fixed;
+  right: 0;
+  bottom: 10px;
+  height: 46px;
+  opacity: 0;
+  line-height: 46px;
+  padding-left: 66px;
+  padding-right: 10px;
+  border-top-left-radius: 23px;
+  border-bottom-left-radius: 23px;
+  background: url("resources/images/icon_nonetwork.png") no-repeat 18px center rgba(0, 0, 0, 0.75);
+  background-size: auto 22px;
+  font-size: 1.125rem;
+  color: #e6e6e6;
+  z-index: 1000; }
+.addon_TeacherComposition .comtip02.tip_in {
+  -webkit-animation: tip_in 0.7s ease-out forwards;
+  animation: tip_in 0.7s ease-out forwards; }
+.addon_TeacherComposition .comtip02.tip_out {
+  -webkit-animation: tip_out 0.7s ease-out forwards;
+  animation: tip_out 0.7s ease-out forwards; }
+.addon_TeacherComposition .compop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000; }
+.addon_TeacherComposition .compop .pop_mask {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); }
+.addon_TeacherComposition .compop .popmain {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 380px;
+  height: 272px;
+  padding-top: 80px;
+  margin-top: -136px;
+  margin-left: -190px;
+  text-align: center;
+  border-radius: 10px;
+  background: url("resources/images/compop_dec2.png") repeat-x left top #ffffff;
+  background-size: auto 38px; }
+.addon_TeacherComposition .compop .popmain:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -14px;
+  width: 100%;
+  height: 38px;
+  background: url("resources/images/compop_dec1.png"), url("resources/images/compop_dec1.png");
+  background-repeat: no-repeat, no-repeat;
+  background-size: auto 100%, auto 100%;
+  background-position: 32px top, 295px top; }
+.addon_TeacherComposition .compop .popmain .poptxt {
+  line-height: 40px;
+  font-size: 1.5rem;
+  color: #333333; }
+.addon_TeacherComposition .compop .btnwrap {
+  margin-top: 40px; }
+.addon_TeacherComposition .compop .btnwrap .btn {
+  display: inline-block;
+  width: 134px;
+  height: 48px;
+  line-height: 48px;
+  font-size: 1.25rem;
+  color: #333333;
+  margin: 0 14px;
+  box-shadow: 0px 3px 3px 0px rgba(4, 0, 0, 0.2), 0px -1px 3px 0px rgba(4, 0, 0, 0.1);
+  border-radius: 24px;
+  background-image: -webkit-linear-gradient(to bottom, #fcfcfc, #e6e5e5);
+  background-image: linear-gradient(to bottom, #fcfcfc, #e6e5e5); }
+.addon_TeacherComposition .compop .btnwrap .btn:active {
+  box-shadow: 0px 2px 2px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to top, #f6f6f6, #f1f1f1);
+  background-image: linear-gradient(to top, #f6f6f6, #f1f1f1); }
+.addon_TeacherComposition .compop .btnwrap .btn.btn_submit {
+  color: #ff9000; }
+.addon_TeacherComposition .compop_listen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000; }
+.addon_TeacherComposition .compop_listen .pop_mask {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); }
+.addon_TeacherComposition .compop_listen .popmain {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 377px;
+  height: 312px;
+  margin-left: -188px;
+  margin-top: -156px;
+  background: url("resources/images/pop_listen.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .wb_wrapper {
+  position: relative;
+  height: 100%; }
+.addon_TeacherComposition .wb_wrapper .com_wb_title {
+  height: 77px;
+  border-bottom: 1px solid #dedede;
+  padding: 0 0 3px 0; }
+.addon_TeacherComposition .wb_wrapper .com_wb_title .com_wb_h2 {
+  border-bottom: 1px solid #dedede;
+  padding: 21px 0 0;
+  line-height: 53px;
+  font-size: 24px;
+  color: #333333; }
+.addon_TeacherComposition .wb_wrapper .exercise_list {
+  display: block;
+  height: 710px;
+  overflow-y: auto; }
+.addon_TeacherComposition .wb_wrapper .exercise_list li {
+  border-bottom: 1px dotted #dcdcdc;
+  padding: 10px 0 25px; }
+.addon_TeacherComposition .wb_wrapper .exercise_list li span {
+  display: block; }
+.addon_TeacherComposition .wb_wrapper .exercise_list li span.s_title {
+  line-height: 50px;
+  font-size: 20px;
+  color: #333333; }
+.addon_TeacherComposition .wb_wrapper .exercise_list li span.s_title .exercise_input {
+  width: 80px;
+  padding: 8px 5px;
+  font-size: 20px;
+  display: inline-block;
+  background: none;
+  border: none;
+  border-bottom: 1px solid #777777; }
+.addon_TeacherComposition .wb_wrapper .exercise_list li span.s_mean {
+  padding: 20px 0 0;
+  font-size: 18px;
+  color: #999999; }
+.addon_TeacherComposition .wb_wrapper .wb_imgwrap {
+  height: 754px;
+  overflow: hidden;
+  padding: 10px 0 0;
+  margin: 0 10px 0 0; }
+.addon_TeacherComposition .wb_wrapper .wb_imgwrap img {
+  display: block;
+  width: 100%;
+  height: auto; }
+.addon_TeacherComposition .list_box {
+  margin-top: 82px; }
+.addon_TeacherComposition .essay_side {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 229px;
+  height: 100%;
+  border-right: 1px solid #989898; }
+.addon_TeacherComposition .essay_side .tt {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 216px;
+  padding: 26px 0 26px 13px;
+  margin-right: 13px;
+  line-height: 26px;
+  border-bottom: 1px solid #979797;
+  font-size: 1rem;
+  color: #333;
+  background: url("resources/images/write/bookskin_mainbg.png") repeat-y;
+  z-index: 10; }
+.addon_TeacherComposition .essay_side .tt .num {
+  padding-left: 16px;
+  font-size: 1.5rem;
+  color: #ea8501; }
+.addon_TeacherComposition .essay_side .tt .all {
+  font-size: 1.25rem;
+  color: #666; }
+.addon_TeacherComposition .essay_side .essay_side_list {
+  position: relative;
+  height: 100%;
+  overflow-y: auto; }
+.addon_TeacherComposition .essay_side .essay_side_list .shadowsmall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 216px;
+  height: 11px;
+  background: url("resources/images/write/bg_shadowsmall.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .list {
+  position: relative;
+  padding: 0 13px 0 0; }
+.addon_TeacherComposition .essay_side .student {
+  display: block;
+  padding: 10px 0 10px 10px;
+  border-bottom: 1px solid #979797; }
+.addon_TeacherComposition .essay_side .head {
+  position: relative;
+  float: left;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid #fff; }
+.addon_TeacherComposition .essay_side .head img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%; }
+.addon_TeacherComposition .essay_side .icon_chose {
+  display: none;
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 21px;
+  height: 21px;
+  background: url("resources/images/write/icon_chose01.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .centre {
+  position: relative;
+  float: left;
+  width: 102px; }
+.addon_TeacherComposition .essay_side .centre em {
+  font-style: normal; }
+.addon_TeacherComposition .essay_side .name {
+  display: inline-block;
+  width: 90px;
+  padding: 5px 0 0 10px;
+  font-size: 1.03rem;
+  color: #333;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis; }
+.addon_TeacherComposition .essay_side .change_text {
+  display: none;
+  float: left;
+  width: 60px;
+  color: #fb9318;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 16px; }
+.addon_TeacherComposition .essay_side .icon_change {
+  display: none;
+  float: left;
+  width: 22px;
+  height: 21px;
+  margin: 0 5px 0 14px;
+  background: url("resources/images/write/icon_change01.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .flag {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 45px;
+  margin: 20px 13px 10px 0;
+  border-left: 1px solid #c7c7c7; }
+.addon_TeacherComposition .essay_side .icon_flag {
+  display: inline-block;
+  width: 18px;
+  height: 23px;
+  margin: 10px 0 0 20px;
+  background: url("resources/images/write/icon_flag01.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .list.write .icon_change {
+  display: block; }
+.addon_TeacherComposition .essay_side .list.revise .icon_chose {
+  display: block; }
+.addon_TeacherComposition .essay_side .list.refer .icon_chose {
+  display: block; }
+.addon_TeacherComposition .essay_side .list.refer .change_text {
+  display: none; }
+.addon_TeacherComposition .essay_side .list.refer .icon_change {
+  display: none; }
+.addon_TeacherComposition .essay_side .list.revise .icon_change {
+  display: block; }
+.addon_TeacherComposition .essay_side .list.revise .change_text {
+  display: block; }
+.addon_TeacherComposition .essay_side .list.on {
+  background: #fb9318;
+  margin-top: -1px; }
+.addon_TeacherComposition .essay_side .list.on .student {
+  border-bottom: none; }
+.addon_TeacherComposition .essay_side .list.on .icon_chose {
+  background: url("resources/images/write/icon_chose02.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .list.on .name {
+  color: #fff; }
+.addon_TeacherComposition .essay_side .list.on .icon_change {
+  background: url("resources/images/write/icon_change02.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .list.on .flag {
+  border-left: 1px solid #fff; }
+.addon_TeacherComposition .essay_side .list.on .icon_flag {
+  background: url("resources/images/write/icon_flag02.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_side .list.mark .icon_flag {
+  background: url("resources/images/write/icon_flag03.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_main {
+  position: relative;
+  height: 100%;
+  padding-top: 82px;
+  margin-left: 230px; }
+.addon_TeacherComposition .essay_main .essay_header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin-bottom: 2px;
+  background: #fff;
+  z-index: 10; }
+.addon_TeacherComposition .essay_header .header_box {
+  margin: 0 12px 0 14px;
+  padding: 12px 0 16px;
+  border-bottom: 4px double #dedede; }
+.addon_TeacherComposition .essay_button {
+  color: #ff9000;
+  display: block;
+  width: 135px;
+  height: 50px;
+  line-height: 50px;
+  border-radius: 25px;
+  text-align: center;
+  font-size: 1.25rem;
+  box-shadow: 0px 3px 3px 0px rgba(4, 0, 0, 0.2), 0px -1px 3px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to bottom, #fcfcfc, #e6e5e5);
+  background-image: linear-gradient(to bottom, #fcfcfc, #e6e5e5); }
+.addon_TeacherComposition .essay_button:active {
+  box-shadow: 0px 3px 3px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to top, #f6f6f6, #f1f1f1);
+  background-image: linear-gradient(to top, #f6f6f6, #f1f1f1); }
+.addon_TeacherComposition .essay_btnbox {
+  float: right;
+  margin-right: 8px; }
+.addon_TeacherComposition .essay_btnbox .text {
+  position: relative;
+  line-height: 50px;
+  margin-right: 20px;
+  padding-left: 26px;
+  font-size: 1rem;
+  color: #999; }
+.addon_TeacherComposition .essay_btnbox .text .icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: url("resources/images/write/icon_upload_ok.png") no-repeat; }
+.addon_TeacherComposition .essay_header .button_look {
+  float: left; }
+.addon_TeacherComposition .essay_header .button_end {
+  float: right;
+  color: #ff9000; }
+.addon_TeacherComposition .essay_header .button_disabled {
+  float: right;
+  color: #aaa; }
+.addon_TeacherComposition .essay_header .time {
+  position: absolute;
+  top: 20px;
+  left: 165px;
+  line-height: 39px;
+  padding-left: 40px;
+  font-size: 1.625rem;
+  color: #ff9000;
+  background: url("resources/images/write/icon_clock.png") no-repeat; }
+.addon_TeacherComposition .essay_header .refresh {
+  position: absolute;
+  top: 80px;
+  left: 22px;
+  padding: 8px 5px 8px 20px;
+  border-radius: 3px; }
+.addon_TeacherComposition .essay_header .refresh.up {
+  background: rgba(0, 0, 0, 0.6); }
+.addon_TeacherComposition .essay_header .refresh.up .refresh_text {
+  color: #fff; }
+.addon_TeacherComposition .essay_header .button_refresh {
+  color: #585858;
+  position: relative;
+  float: left;
+  padding-left: 26px; }
+.addon_TeacherComposition .essay_header .icon_refresh {
+  position: absolute;
+  top: 13px;
+  left: 13px;
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  background: url("resources/images/write/icon_refresh.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_header .refresh_text {
+  float: left;
+  display: inline-block;
+  line-height: 50px;
+  margin-left: 14px;
+  padding-left: 10px;
+  border-left: 1px solid #cdcdcd;
+  font-size: 16px;
+  color: #707070; }
+.addon_TeacherComposition .essay_header .refresh_text .num {
+  font-size: 1.25rem;
+  color: #ff9000; }
+.addon_TeacherComposition .essay_box {
+  position: relative;
+  max-height: 100%;
+  height: 100%;
+  overflow-y: auto; }
+.addon_TeacherComposition .essay_box .content {
+  position: relative;
+  margin: 0 12px 0 14px;
+  padding-top: 65px; }
+.addon_TeacherComposition #teacher_pagecount {
+  font-size: 20px; }
+.addon_TeacherComposition .essay_box .shadowbig {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 15px;
+  background: url("resources/images/write/bg_shadowbig.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .essay_box .title {
+  padding: 35px 0 10px 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #000; }
+.addon_TeacherComposition .essay_box .underline {
+  padding: 0 25px;
+  font-weight: normal;
+  color: #666;
+  border-bottom: 2px solid #000; }
+.addon_TeacherComposition .essay_text_box {
+  width: 100%;
+  height: 100%;
+  padding-top: 10px;
+  background: url("resources/images/write/bg_text_box.png") repeat; }
+.addon_TeacherComposition .essay_text_box .text {
+  line-height: 61px;
+  font-size: 1.5rem;
+  text-indent: 2em;
+  color: #666; }
+.addon_TeacherComposition .essay_box .essay_page {
+  font-size: 1rem;
+  text-align: center;
+  color: #000;
+  border-bottom: 1px solid #999; }
+.addon_TeacherComposition .essay_box .essay_uppull {
+  position: absolute;
+  left: 50%;
+  bottom: 26px;
+  display: inline-block;
+  width: 250px;
+  height: 42px;
+  line-height: 42px;
+  margin-left: -125px;
+  padding-left: 38px;
+  border-radius: 21px;
+  font-size: 1.25rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5); }
+.addon_TeacherComposition .essay_box .icon_uppull {
+  position: absolute;
+  left: 13px;
+  top: 12px;
+  width: 18px;
+  height: 18px;
+  background: url("resources/images/write/icon_uppull.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .writing_main {
+  margin: 0; }
+.addon_TeacherComposition .writing_main .essay_header {
+  background: url("resources/images/bookskin_mainbg.png") left top repeat-y #ffffff; }
+.addon_TeacherComposition .writing_main .essay_header .button_title {
+  float: left;
+  margin-right: 20px; }
+.addon_TeacherComposition .writing_main .essay_header .time {
+  left: 322px; }
+.addon_TeacherComposition .writing_main .essay_header .button_disabled {
+  float: right;
+  color: #aaa; }
+.addon_TeacherComposition .writing_main .essay_header .button_disabled:active {
+  box-shadow: 0px 3px 3px 0px rgba(4, 0, 0, 0.2), 0px -1px 3px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to bottom, #fcfcfc, #e6e5e5);
+  background-image: linear-gradient(to bottom, #fcfcfc, #e6e5e5); }
+.addon_TeacherComposition .writing_main .content {
+  margin: 0 98px 0 112px; }
+.addon_TeacherComposition .writing_edit {
+  position: fixed;
+  left: 77px;
+  bottom: 18px;
+  width: 70px;
+  z-index: 20; }
+.addon_TeacherComposition .writing_edit .writing_botton {
+  position: relative;
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  margin-top: 16px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 3px 0px rgba(4, 0, 0, 0.2), 0px -1px 3px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to bottom, #fcfcfc, #e6e5e5);
+  background-image: linear-gradient(to bottom, #fcfcfc, #e6e5e5); }
+.addon_TeacherComposition .writing_edit .writing_botton:active {
+  box-shadow: 0px 2px 2px 0px rgba(4, 0, 0, 0.1);
+  background-image: -webkit-linear-gradient(to top, #f6f6f6, #f1f1f1);
+  background-image: linear-gradient(to top, #f6f6f6, #f1f1f1); }
+.addon_TeacherComposition .writing_edit .botton_allclear {
+  display: none;
+  position: absolute;
+  left: 80px;
+  top: 84px;
+  z-index: 20; }
+.addon_TeacherComposition .writing_edit .clear_box.on .botton_clear {
+  box-shadow: 0px 0px 5px 0px rgba(255, 174, 0, 0.8);
+  background-image: -webkit-linear-gradient(to top, #f6f6f6, #f1f1f1);
+  background-image: linear-gradient(to top, #f6f6f6, #f1f1f1); }
+.addon_TeacherComposition .writing_edit .clear_box.on .botton_allclear {
+  display: block; }
+.addon_TeacherComposition .writing_edit .icon_back {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 41px;
+  margin: -20px 0 0 -20px;
+  background: url("resources/images/write/icon_back.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .writing_edit .icon_clear {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 43px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  background: url("resources/images/write/icon_clear.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .writing_edit .icon_allclear {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 37px;
+  margin: -18px 0 0 -18px;
+  background: url("resources/images/write/icon_allclear.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .writing_edit .icon_writing {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 37px;
+  height: 38px;
+  margin: -19px 0 0 -19px;
+  background: url("resources/images/write/icon_writing.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .stem_video {
+  position: relative;
+  left: 50%;
+  width: 460px;
+  height: 320px;
+  margin: 30px 0 0 -230px;
+  box-shadow: 0px 2px 3px 0px rgba(4, 0, 0, 0.118);
+  text-align: center; }
+.addon_TeacherComposition .stem_video .videowrap {
+  position: relative;
+  background: #252525;
+  height: 273px;
+  overflow: hidden;
+  width: 100%; }
+.addon_TeacherComposition .stem_video .videowrap .icon_video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 64px;
+  height: 64px;
+  margin: -32px 0 0 -32px;
+  background: url("resources/images/write/icon_video.png") no-repeat;
+  background-size: 100% auto;
+  z-index: 10; }
+.addon_TeacherComposition .stem_video .videowrap .icon_video:active {
+  opacity: 0.7;
+  filter: alpha(opacity=70); }
+.addon_TeacherComposition .stem_video .videowrap img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+.addon_TeacherComposition .stem_video .ctrl {
+  background-image: -moz-linear-gradient(90deg, gainsboro 0%, white 100%);
+  background-image: -webkit-linear-gradient(90deg, gainsboro 0%, white 100%);
+  background-image: -ms-linear-gradient(90deg, gainsboro 0%, white 100%);
+  height: 47px;
+  position: relative;
+  bottom: 0px;
+  padding: 10px 12px 0; }
+.addon_TeacherComposition .stem_video .ctrl .progress {
+  position: relative;
+  background-image: -moz-linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -webkit-linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -ms-linear-gradient(90deg, white 0%, gainsboro 100%);
+  sbox-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.294), inset 0px 1px 1px 0px rgba(4, 0, 0, 0.059);
+  height: 9px;
+  border-radius: 5px;
+  border: 1px solid #a2a2a2; }
+.addon_TeacherComposition .stem_video .ctrl .progress .played {
+  background-image: -moz-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -webkit-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -ms-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.294);
+  left: 0;
+  position: absolute;
+  top: 0;
+  z-index: 3;
+  height: 7px;
+  border-radius: 4px; }
+.addon_TeacherComposition .stem_video .ctrl .opt {
+  height: 26px;
+  line-height: 26px;
+  text-align: left; }
+.addon_TeacherComposition .stem_video .ctrl .opt em {
+  font-size: 0.875rem;
+  padding: 0 5px; }
+.addon_TeacherComposition .stem_video .ctrl .opt .hl {
+  color: #ff9600; }
+.addon_TeacherComposition .com_pop_tips {
+  width: 525px;
+  padding: 37px 20px 15px 34px; }
+.addon_TeacherComposition .com_pop_tips .tiptxt.tc {
+  line-height: 28px;
+  text-align: center; }
+.addon_TeacherComposition .com_pop_tips .tiptxt em {
+  color: #fb9318; }
+.addon_TeacherComposition .com_pop_tips .oper {
+  padding: 20px 0 10px; }
+.addon_TeacherComposition .com_pop_tips .essay_button {
+  margin: 10px auto 0;
+  width: 110px;
+  height: 40px;
+  line-height: 40px;
+  background: #fff;
+  font-size: 1rem;
+  color: #fb9318;
+  border-radius: 20px;
+  background: -linear-gradient(top, #fcfcfc, #e6e5e5);
+  background: -webkit-linear-gradient(top, #fcfcfc, #e6e5e5);
+  background: -moz-linear-gradient(top, #fcfcfc, #e6e5e5);
+  background: 0 -linear-gradient(top, #fcfcfc, #e6e5e5); }
+.addon_TeacherComposition .com_pop_tips .essay_button:active {
+  background: -linear-gradient(top, #e6e5e5, #fcfcfc);
+  background: -webkit-linear-gradient(top, #e6e5e5, #fcfcfc);
+  background: -moz-linear-gradient(top, #e6e5e5, #fcfcfc);
+  background: 0 -linear-gradient(top, #e6e5e5, #fcfcfc); }
+.addon_TeacherComposition .com_pop_result {
+  width: 312px;
+  padding: 37px 28px 30px;
+  border-radius: 15px; }
+.addon_TeacherComposition .com_pop_result .icon_result_ok, .addon_TeacherComposition .com_pop_result .icon_result_fail {
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 10px; }
+.addon_TeacherComposition .com_pop_result .icon_result_ok {
+  background: url("resources/images/write/icon_result_ok.png") no-repeat;
+  background-size: 72px auto; }
+.addon_TeacherComposition .com_pop_result .icon_result_fail {
+  background: url("resources/images/write/icon_result_fail.png") no-repeat;
+  background-size: 72px auto; }
+.addon_TeacherComposition .com_pop_result .tiptxt {
+  margin-top: 15px;
+  font-size: 1.5rem;
+  text-align: center; }
+.addon_TeacherComposition .com_pop_result .note {
+  margin-top: 10px;
+  font-size: 1rem;
+  text-align: center;
+  color: #b5b5b5; }
+.addon_TeacherComposition .instruction_main .header_box {
+  border-bottom: none; }
+.addon_TeacherComposition .instruction_main {
+  background: #f2f2f2; }
+.addon_TeacherComposition .instruction_main .content img {
+  width: 900px; }
+.addon_TeacherComposition .instruction_box {
+  padding: 251px 292px 135px 166px; }
+.addon_TeacherComposition .instruction_box .con {
+  position: relative;
+  padding: 22px 39px 0 33px;
+  width: 545px;
+  background: url("resources/images/write/bg_instruction_tit.png") left top no-repeat;
+  background-size: contain; }
+.addon_TeacherComposition .instruction_box .con:after {
+  display: block;
+  position: absolute;
+  left: -120px;
+  top: 33px;
+  width: 148px;
+  height: 146px;
+  background: url("resources/images/write/icon_instruction.png") left top no-repeat;
+  background-size: contain;
+  content: ''; }
+.addon_TeacherComposition .instruction_box .con .tit {
+  padding-left: 21px;
+  border-left: 2px solid #e0e0e0;
+  border-right: 2px solid #e0e0e0;
+  background: #fff;
+  font-size: 1.25rem;
+  color: #666; }
+.addon_TeacherComposition .instruction_box .con ul {
+  padding: 0 0 60px 42px;
+  border-left: 2px solid #e0e0e0;
+  border-right: 2px solid #e0e0e0;
+  background: #fff; }
+.addon_TeacherComposition .instruction_box .con ul li {
+  padding: 10px 0;
+  font-size: 1.125rem;
+  color: #333;
+  vertical-align: middle;
+  list-style-type: disc;
+  list-style-position: outside; }
+.addon_TeacherComposition .instruction_box .con ul li .icon_flag {
+  display: inline-block;
+  margin: 0 15px;
+  width: 18px;
+  height: 22px;
+  vertical-align: middle;
+  background: url("resources/images/write/icon_flag03.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .instruction_box .con ul li .icon_change {
+  display: inline-block;
+  margin: 0 15px;
+  width: 22px;
+  height: 21px;
+  vertical-align: middle;
+  background: url("resources/images/write/icon_change01.png") no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .instruction_box .con .bottom {
+  margin: -5px 2px 0;
+  height: 20px;
+  background: url("resources/images/write/bg_instruction_bottom.png") left top no-repeat;
+  background-size: 100% auto; }
+.addon_TeacherComposition .tab_stem {
+  border-bottom: 4px double #dedede; }
+.addon_TeacherComposition .tab_stem li {
+  float: left;
+  margin-left: 30px;
+  display: block;
+  padding: 0 25px;
+  line-height: 76px;
+  font-size: 1.5rem;
+  color: #333; }
+.addon_TeacherComposition .tab_stem li.on {
+  border-bottom: 4px solid #ff9000;
+  color: #ff9000; }
+.addon_TeacherComposition .stem_box {
+  height: 100%;
+  overflow-y: auto; }
+.addon_TeacherComposition .stem_box_con .stem_con {
+  min-height: 550px; }
+.addon_TeacherComposition .stem_box_con .text {
+  padding: 0 76px 0 58px;
+  line-height: 32px;
+  font-size: 1.25rem;
+  color: #666; }
+.addon_TeacherComposition .stem_box_con .text.mt32 {
+  margin-top: 32px; }
+.addon_TeacherComposition .stem_box_con .text strong {
+  color: #000; }
+.addon_TeacherComposition .stem_box_con .text .underline {
+  padding: 0 32px;
+  border-bottom: 1px solid #666; }
+.addon_TeacherComposition .stem_box_con .stem_audioview {
+  margin-top: 32px;
+  margin-left: 58px;
+  width: 315px;
+  height: 66px;
+  border: 1px solid;
+  border-color: #dddddd #c0c0c0 #a2a2a2 #c4c4c4;
+  border-radius: 50px;
+  background: linear-gradient(90deg, gainsboro 0%, white 100%);
+  background: -webkit-linear-gradient(90deg, gainsboro 0%, white 100%);
+  background: -moz-linear-gradient(90deg, gainsboro 0%, white 100%);
+  background: -ms-linear-gradient(90deg, gainsboro 0%, white 100%);
+  background: -o-linear-gradient(90deg, gainsboro 0%, white 100%);
+  box-shadow: 0px 2px 2px 0px rgba(4, 0, 0, 0.3); }
+.addon_TeacherComposition .stem_box_con .stem_audioview .btn_play {
+  float: left;
+  display: inline-block;
+  margin: 7px 14px 7px 10px;
+  width: 52px;
+  height: 52px;
+  background: url("resources/images/write/icon_play.png") no-repeat;
+  background-size: cover; }
+.addon_TeacherComposition .stem_box_con .stem_audioview .btn_play:active {
+  background: url("resources/images/write/icon_play2.png") no-repeat;
+  background-size: cover; }
+.addon_TeacherComposition .stem_box_con .stem_audioview .probar {
+  position: relative;
+  float: left;
+  display: inline-block;
+  margin-top: 18px;
+  width: 225px;
+  height: 10px;
+  border: 1px solid;
+  border-color: #a2a2a2 #b3afaf #cabfbf #b3afaf;
+  border-radius: 10px;
+  background-image: -o-linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -moz-linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -webkit-linear-gradient(90deg, white 0%, gainsboro 100%);
+  background-image: -ms-linear-gradient(90deg, white 0%, gainsboro 100%);
+  box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.75), inset 0px 2px 2px 0px rgba(4, 0, 0, 0.15); }
+.addon_TeacherComposition .stem_box_con .stem_audioview .probar .bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  height: 10px;
+  border-bottom: 1px solid #fff;
+  background-image: -linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -moz-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -o-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -webkit-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  background-image: -ms-linear-gradient(90deg, #ffa735 0%, #fddb70 100%);
+  box-shadow: 0px 1px 0px 0px rgba(255, 255, 255, 0.75);
+  border-radius: 10px; }
+.addon_TeacherComposition .stem_box_con .stem_audioview .protime {
+  float: left;
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: #666; }
+.addon_TeacherComposition .stem_box_con .stem_audioview .protime em {
+  color: #ff9600; }
+.addon_TeacherComposition .stem_box_con .fixoper {
+  position: fixed;
+  bottom: 0;
+  width: 100%; }
+.addon_TeacherComposition .stem_box_con .essay_button {
+  margin: 36px auto;
+  color: #ff9000; }
+.addon_TeacherComposition .stem_box_con .tab_sucai {
+  height: 54px;
+  background: -linear-gradient(0deg, #d2d2d2 0%, #efefef 20%);
+  background: -webkit-linear-gradient(0deg, #d2d2d2 0%, #efefef 20%);
+  background: -moz-linear-gradient(0deg, #d2d2d2, #efefef);
+  background: 0 -linear-gradient(0deg, #d2d2d2, #efefef); }
+.addon_TeacherComposition .stem_box_con .tab_sucai li {
+  position: relative;
+  float: left;
+  display: block;
+  width: 14%;
+  line-height: 54px;
+  font-size: 1.25rem;
+  color: #666;
+  text-align: center; }
+.addon_TeacherComposition .stem_box_con .tab_sucai li.on {
+  color: #ff9000; }
+.addon_TeacherComposition .stem_box_con .tab_sucai li.on:before {
+  position: absolute;
+  bottom: 7px;
+  left: 50%;
+  display: block;
+  width: 5px;
+  height: 5px;
+  content: '';
+  border-radius: 5px;
+  background: #ff9000; }
+.addon_TeacherComposition .tab_sucai_con .story {
+  padding-top: 30px;
+  min-height: 495px;
+  height: 400px;
+  overflow: auto;
+  word-wrap: break-word;
+  word-break: normal; }
+
+/*# sourceMappingURL=css.css.map */
+]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="container com_bookskin">
+    <div class="wrapper">
+        <div class="wb_wrapper">
+            <div class="essay_side" style="display:none;">
+                <div class="tt">
+
+                </div>
+                <div class="essay_side_list">
+                    <span class="shadowsmall" style="display:none;"></span>
+                    <ul class="list_box">
+                    </ul>
+                </div>
+            </div>
+            <div style="display: block;" class="essay_main writing_main">
+                <div class="essay_header">
+                    <ul class="tab_stem clearfix">
+                        <li class="on">题干</li>
+                        <li>素材</li>
+                    </ul>
+                </div>
+                <div class="stem_box">
+                    <div class="stem_box_con">
+                        <div class="stem_con">
+                            <p class="text mt32" id="composition_title"></p>
+
+                            <p class="text mt32" id="composition_content"></p>
+                        </div>
+                    </div>
+                    <div class="stem_box_con" style="display:none;">
+                        <ul class="tab_sucai">
+                        </ul>
+                        <div class="tab_sucai_con">
+                        </div>
+                    </div>
+                </div>
+                <p class="teacher_button oper"><a href="javascript:;" class="essay_button button_look">实时统计</a>
+                </p>
+            </div>
+            <div style="display:none;" class="essay_main instruction_main">
+                <div class="essay_header">
+                    <div class="header_box clearfix">
+                        <a href="javascript:;" class="essay_button" id="seaquestion" style="float: left;">查看原题</a>
+                        <span class="time"></span>
+
+                        <p class="essay_btnbox">
+                            <a href="javascript:;" class="essay_button button_end">结束练习</a>
+                        </p>
+
+                        <div class="refresh clearfix essay_box_composition" style="display: none;"><!--上拉加up-->
+                            <a href="javascript:;" class="essay_button button_refresh">
+                                <ins class="icon_refresh"></ins>
+                                重新获取</a>
+                            <span class="refresh_text"></span>
+                            <a class="t_pagenum prev">上一页</a>
+                            <a class="t_pagenum next">下一页</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="essay_box instruction_box">
+                    <div class="con"><!--instruction_box中间内容部分-->
+                        <div class="tit">在学生写作时，你可以：</div>
+                        <ul>
+                            <li>在左侧列表中任意点击一名学生，实时查看写作情况。</li>
+                            <li>使用<i class="icon_flag"></i>标记学生。</li>
+                            <li>查看学生的书写状态<i class="icon_change"></i>。</li>
+                            <li>查看已交卷人数。</li>
+                        </ul>
+                        <div class="bottom"></div>
+                    </div>
+                </div>
+                <div class="essay_box essay_box_composition" style="display: none; background-color: #fff;">
+                    <div class="content">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--提交成功-->
+    <div id="endingSuccess_dialog" class="teacher_dialog comtip01 com_pop_progress com_pop_tips" style="display:none;">
+        <a href="javascript:;" class="btn_tipclose"></a>
+
+        <p class="tiptxt tc">所有学生都已提交成功啦～</p>
+
+        <div class="oper">
+            <a class="essay_button close_dialog_button" href="javascript:;">我知道了</a>
+        </div>
+    </div>
+    <!--/提交成功-->
+    <!--重试-->
+    <div id="endError_dialog" class="teacher_dialog comtip01 com_pop_progress com_pop_tips" style="display: none;">
+        <a href="javascript:;" class="btn_tipclose"></a>
+
+        <p class="tiptxt tl">已成功收取<em>45</em>名学生作文，还有<em>5</em>名学生收卷未完成，
+            请重试～</p>
+        <a id="retryEndAnswer" class="essay_button" href="javascript:;">重试</a>
+        <a id="endError_dialog_close" style="position: absolute;right: 5px;top:5px;color: #fff;">X</a>
+    </div>
+
+    <!--/重试-->
+
+    <!--正在收卷-->
+    <div id="ending_dialog" class="teacher_dialog comtip01 com_pop_progress" style="display:none;">
+        <a href="javascript:;" class="btn_tipclose"></a>
+
+        <p class="tiptxt tl"></p>
+
+        <div class="probarwrap">
+            <span class="dec_mark"></span>
+            <span class="mainbar" style="width:50%;"></span>
+        </div>
+    </div>
+    <!--/正在收卷-->
+</div>]]>
+</view>
+
+
+<preview>
+
+
+
+</preview>
+
+
+<presenter>
+
+<![CDATA[function AddonTeacherComposition_create() {
+    var viewModel = {};
+    var currentUserId = 0;
+    var currentPageNum = 1;
+    var submitCount = 0;
+    var students = [{
+        groupId: "group_1",
+        headIcon: "resources/heads/001.jpg",
+        onlineStatus: true,
+        spareRate: 16,
+        studentId: "stu_1",
+        studentName: "学生1",
+        studentNo: "001"
+    }, {
+        groupId: "group_2",
+        headIcon: "resources/heads/002.jpg",
+        onlineStatus: false,
+        spareRate: 78,
+        studentId: "stu_2",
+        studentName: "学生2",
+        studentNo: "002"
+    }];
+    var enum_status;
+    var sync_timerId = 0;
+    var timerId = 0;
+    var isGetting = false;
+    var pageCount = 0;
+    var isProjector = false;
+    var isApp = false;// (typeof AndroidInterface != "undefined");
+    var cacheUserStatus = {};
+    var getAnswerContentCallbackTimeId = 0;
+    var isEnd = false;
+
+    students = [];//清除测试数据
+
+    var currentRuntime = player.getPlayerServices().getRuntime();
+
+    if (currentRuntime == icCreatePlayer.RUNTIME.WEB) {
+        isApp = false;
+    } else {
+        isApp = true;
+    }
+
+    //"committed(已提交)|"modifying(修改中)"|"incomplete(未开始[初始状态])"|"writing(书写中)"|"completed(已完成[终结状态])"
+    (function (status) {
+        status[status.incomplete = 1] = "incomplete",
+            status[status.writing = 2] = "writing",
+            status[status.committed = 3] = "committed",
+            status[status.modifying = 4] = "modifying",
+            status[status.completed = 5] = "completed"
+    })(enum_status || (enum_status = {}));
+
+    var presenter = function () {
+
+    };
+
+    //与教师端同步计时
+    presenter.syncTime = function (elapsedTime) {
+        var currentTime = +new Date();
+        window.clearInterval(sync_timerId);
+        sync_timerId = window.setInterval(function () {
+            var leaveTime = currentTime - elapsedTime * 1000;
+            var m = parseInt((+new Date() - leaveTime) / 1000 / 60);
+            if (m)
+                $(viewModel.view).find(".time").html("已用时:" + m + "分钟");
+            else $(viewModel.view).find(".time").html("刚刚开始");
+        }, 1000);
+    };
+
+    //列表生成
+    presenter.list = function () {
+
+        var list = $(viewModel.view).find(".list_box"),
+            str = "",
+            doneCount = 0;
+        for (var i = 0; i < students.length; i++) {
+            var stu = students[i];
+            str += '<li data-id="' + stu.studentId + '" class="list ' + getStatusClass(stu) + '">';
+            str += '<a href="###" class="student clearfix">' +
+                '<span class="head">' +
+                getIcon(stu) +
+                '<ins class="icon_chose"></ins>' +
+                '</span>' +
+                '<span class="centre">' +
+                '<em class="name">' + getName(stu) + '</em>' +
+                getOffLine(stu.onlineStatus) +
+                '</span>' +
+                '</a>' +
+                '<a href="###" class="flag"><ins class="icon_flag"></ins></a>';
+            str += '</li>';
+
+            cacheUserStatus['' + stu.studentId] = {
+                "index": i,
+                "student": stu
+            };
+            if (typeof stu.UserStatus != 'undefined' && stu.UserStatus == enum_status.completed || stu.UserStatus == enum_status.modifying || stu.UserStatus == enum_status.committed)
+                doneCount++;
+        }
+        list.html(str);
+        $(viewModel.view).find(".tt").html('已提交人数：<span class="num">' + doneCount + ' </span><span class="all">/ ' + students.length + '</span>')
+        $(viewModel.view).find(".list_box li").off("click").on("click", function (evt) {
+            var uid = $(evt.currentTarget).data('id'),
+                stu = getCurrentStudent(uid);
+
+            if (!stu || stu.onlineStatus == false)
+                return;
+
+            if (isGetting)
+                return;
+
+            isGetting = true;
+
+            currentUserId = uid;
+            currentPageNum = 1;
+            $(evt.currentTarget).addClass("on").siblings().removeClass("on");
+            $(viewModel.view).find(".instruction_box").hide();
+            $(viewModel.view).find(".essay_box_composition").show();
+            getAnswerContent();
+        });
+
+        $(".list_box a.flag").off("click").on("click", function (evt) {
+            evt.stopPropagation();
+            $(evt.currentTarget).parent().toggleClass("mark");
+        });
+    };
+
+    function getIcon(stu) {
+        if (stu.onlineStatus)
+            return '<img src=' + stu.headIcon + ' alt=""/>';
+        else return '<img class="gray" src=' + stu.headIcon + ' alt=""/>';
+    }
+
+    function getOffLine(isOnline) {
+        if (isOnline)
+            return '<ins class="icon_change"></ins><em class="change_text">(修改中)</em>';
+        else
+            return '<em class="name" style="color: blue;font-size: 14px;">离线</em>';
+    }
+
+    function getCurrentStudent(sid) {
+        for (var i = 0; i < students.length; i++) {
+            if (students[i].studentId == sid)
+                return students[i];
+        }
+    }
+
+
+    function timekeeping() {
+        var currentDate = +new Date();
+        window.clearInterval(timerId);
+        timerId = window.setInterval(function () {
+            var t = Math.floor(((+new Date()) - currentDate) / 1000 / 60);
+            if (t > 0) {
+                $(viewModel.view).find(".refresh_text").html('<em class="num">' + t + '</em>分钟前');
+            }
+        }, 1000);
+    }
+
+    //结束练习
+    presenter.end = function () {
+        isEnd = true;
+        $(viewModel.view).find(".essay_btnbox a").html("结束练习").removeClass("button_end").addClass("button_disabled");
+        window.clearInterval(sync_timerId);
+
+        if (isProjector)
+            return;
+
+        sendAndroidInterface("sendEvent", {
+            "eventName": "Exam",
+            "eventData": {
+                "source": viewModel.model.ID,
+                "type": "stop",
+                "value": {
+                    "questionType": "",
+                    "runtimeType": "",
+                    "questionId": ""
+                }
+            }
+        });
+    };
+
+
+    presenter.setPlayerController = function (controller) {
+        presenter.controller = controller;
+        presenter.presentation = controller.getPresentation();
+        presenter.eventBus = controller.getEventBus();
+        presenter.eventBus.addEventListener('DefQuizProcess', this);
+        presenter.eventBus.addEventListener("Exam", this);
+    };
+
+    presenter.onEventReceived = function (eventName, eventData) {
+        if (presenter.currentType !== 'composition') {
+            return;
+        }
+        if (eventName == 'DefQuizProcess') {
+            if (eventData.item == "composition") {
+                module_start(eventData.value);
+                presenter.syncTime(eventData.value.elapsedTime);
+            }
+        }
+        if (eventName == "Exam" && eventData.type == "hide") {
+            clearTeacherView();
+        }
+    };
+
+    presenter.pageChange = function () {
+        presenter.currentType = getCurrentType();
+        clearTeacherView();
+    };
+
+    function clearTeacherView() {
+        isEnd = false;
+        submitCount = 0;
+        $(viewModel.view).find('.teacher_dialog').hide();
+        $(viewModel.view).find(".essay_box_composition").hide();
+        $(viewModel.view).find(".essay_btnbox a").html("结束练习").removeClass("button_disabled").addClass("button_end");
+        $(viewModel.view).find("#seaquestion").click();
+        $(viewModel.view).hide();
+        $("#StudentComposition").show();
+        $(viewModel.view).find(".refresh_text").html('');
+        $(viewModel.view).find(".content").html('');
+        $(viewModel.view).find(".essay_side_list").scrollTop(0);
+        $(viewModel.view).find(".instruction_box").show();
+        window.clearInterval(timerId);
+        window.clearInterval(sync_timerId);
+        $(viewModel.view).find(".time").html("");
+        $(viewModel.view).find(".refresh_text").html('');
+        cacheUserStatus = {};
+        getCurrentStudents();
+        presenter.list();
+    }
+
+    function pauseMedia(id) {
+        //暂停学生端正在播放的视频
+        $("video").each(function (index, value) {
+            if (typeof id != 'undefined' && id == value.id)
+                return;
+            value.pause();
+        });
+        $("audio").each(function (index, value) {
+            if (typeof id != 'undefined' && id == value.id)
+                return;
+            value.pause();
+        });
+    }
+
+    window.module_start = module_start;
+    function module_start(data) {
+        pauseMedia();
+        QtiPlayer.load(data.url.replace("${ref-path}", icCreatePlayer.ref_path), {
+            refPath: icCreatePlayer.ref_path
+        }, function (data) {
+            $(viewModel.view).css({
+                "position": "fixed",
+                "z-index": "101"
+            });
+            $(viewModel.view).find(".teacher_button a").show();
+            $("#StudentComposition").hide();
+            
+            for (var i in data.modelMap)
+                viewModel.composition = data.modelMap[i];
+
+            var str = "",
+                title = viewModel.composition.title.replace(/<\/?p>|↵/gi, '').replace(/\s*<textentry[^>]*>\s*/gi, '#[][]#').split('#[][]#');
+            for (var i = 0; i < title.length; i++) {
+                if (title[i] == "")
+                    str += "____";
+                else {
+                    if (i != title.length - 1)
+                        str += title[i] + "____";
+                    else str += title[i];
+                }
+            }
+            viewModel.composition.titleArray = title;
+            viewModel.composition.title = str;
+            _databind();
+            _uiInit();
+            //_resetVideoHtml();
+            $(viewModel.view).find(".tab_stem >li").eq(0).click();
+            $(viewModel.view).show();
+        });
+    }
+
+    //重置视频区域 屏蔽全屏按钮
+    function _resetVideoHtml() {
+        var vm = viewModel;
+        $(vm.view).find('video').each(function (a, b) {
+            $(b).replaceWith($('<div style="display: inline-block;position: relative;"><div style="position: absolute;bottom: 0;right: 0;width: 42px;height: 50px;background-color: transparent;z-index: 2;"></div></div>').append($(b).clone()));
+        });
+    }
+
+    presenter.run = function (view, model) {
+        $(view).hide();
+        viewModel.view = view;
+        viewModel.model = model;
+        _bindEvent();
+        getCurrentUserInfo();
+        presenter.currentType = getCurrentType();
+    };
+    /*-----------------------------------------------互动课堂-----------------------------------------------*/
+    function sendAndroidInterface(eventName, data) {
+        if (isApp && Bridge && Bridge.callNative) {
+            return Bridge.callNative("com.nd.pad.icr.ui.IcrJsBridge", eventName, data);
+        }
+    }
+
+    function _bindEvent() {
+        getCurrentStudents();
+        presenter.list();
+        if (isApp && Bridge && Bridge.registerListener) {
+            presenter.bridgeEventId1 = Bridge.registerListener('UserState', userOnLineChange);
+            presenter.bridgeEventId3 = Bridge.registerListener('SetAnswerStatus', presenter.setAnswerStatus);
+            presenter.bridgeEventId4 = Bridge.registerListener('GetAnswerContentCallback', presenter.getAnswerContentCallback);
+            presenter.bridgeEventId5 = Bridge.registerListener('TriggerUserInput', triggerUserInput);
+            presenter.bridgeEventId6 = Bridge.registerListener('GetCompletedBatchCallBack', getCompletedCallBack);
+        }
+    }
+
+    presenter.destroy = function () {
+        if (isApp && Bridge) {
+            Bridge.unRegisterListener('UserState', presenter.bridgeEventId1);
+            Bridge.unRegisterListener('ExamCallback', presenter.bridgeEventId2);
+            Bridge.unRegisterListener('SetAnswerStatus', presenter.bridgeEventId3);
+            Bridge.unRegisterListener('GetAnswerContentCallback', presenter.bridgeEventId4);
+            Bridge.unRegisterListener('TriggerUserInput', presenter.bridgeEventId5);
+            Bridge.unRegisterListener('GetCompletedBatchCallBack', presenter.bridgeEventId6);
+        }
+    };
+
+    function getCompletedCallBack(data) {
+        presenter.setAnswerStatus(data);
+    }
+
+    //获取当前用户列表
+    function getCurrentStudents() {
+        if (typeof ClassroomUtils != 'undefined') {
+            var options = {
+                order: [{
+                    orderProperty: "seatNumberValue",
+                    orderType: "asc"
+                }, {
+                    orderProperty: "studentNo",
+                    orderType: "asc"
+                }]
+            };
+
+            var res = ClassroomUtils.getCurrentStudents(options);
+
+            if (res) {
+                students = res;
+            }
+        }
+    }
+
+    var getCurrentType = function () {
+        var ps = presenter.controller;
+        var page = presenter.presentation.getPage(ps.getCurrentPageIndex());
+        var isReportable = page.isReportable();
+        var questionInfo = {};
+        if (isReportable) {
+            var modules = page.getModules();
+            for (var i in modules) {
+                var module = ps.getModule(modules[i]);
+                if (module && module.getQuestionInfo) {
+                    questionInfo = module.getQuestionInfo();
+                    break;
+                }
+            }
+        }
+        return questionInfo.type_code;
+    };
+
+    //更新用户在线状态
+    function userOnLineChange(data) {
+        if (presenter.currentType !== 'composition') {
+            return;
+        }
+        if (isEnd)
+            return;
+
+        if (data.item == "online_status") { //data.source === viewModel.model.ID &&
+            var user = cacheUserStatus[data.value.userId]; //data.value.isOnline
+
+            user.student.onlineStatus = data.value.isOnline;
+
+            var lis = $(viewModel.view).find(".list_box li"),
+                li = lis.eq(user.index);
+
+            li.find('.centre').html('<em class="name">' + user.student.studentName + '</em>' + getOffLine(user.student.onlineStatus));
+
+            if (user.student.onlineStatus)
+                li.find('img').removeClass('gray');
+            else li.find('img').addClass('gray');
+        }
+    }
+
+    //更新用户作答状态
+    presenter.setAnswerStatus = function (data) {
+        if (presenter.currentType !== 'composition') {
+            return;
+        }
+        var user = cacheUserStatus[data.user_id];
+
+        if (!user.hasCount && enum_status[data.answer_status] >= 3) {
+            user.hasCount = true;
+            _updateDonCountUi();
+        }
+
+        if (user.student.UserStatus == enum_status[data.answer_status])
+            return;
+
+        user.student.UserStatus = enum_status[data.answer_status];
+
+        _updateAnswerStatusUI(user);
+    };
+
+    function _updateDonCountUi() {
+        $(viewModel.view).find(".tt .num").text(++submitCount);
+    }
+
+    function _updateAnswerStatusUI(user) {
+        var lis = $(viewModel.view).find(".list_box li"),
+            li = lis.eq(user.index),
+            liclass = getStatusClass(user.student);
+
+        li.removeClass("write revise refer");
+        li.addClass(liclass);
+    }
+
+    function getAnswerContent() {
+        $(viewModel.view).find(".button_refresh").html('获取中...');
+        $(viewModel.view).find(".refresh_text").html('')
+        startGetAnswerContentTimeLine();
+        sendAndroidInterface(
+            "sendEvent", {
+                "eventName": "GetAnswerContent",
+                "eventData": {
+                    "user_id": currentUserId,
+                    "question_type": "composition"
+                }
+            }
+        );
+    }
+
+    function startGetAnswerContentTimeLine() {
+        getAnswerContentCallbackTimeId = window.setTimeout(function () {
+            isGetting = false;
+            $(viewModel.view).find(".button_refresh").html('<ins class="icon_refresh"></ins>重新获取');
+        }, 10000);
+    }
+
+    function clearGetAnswerContentTimeLine() {
+        window.clearTimeout(getAnswerContentCallbackTimeId);
+    }
+
+    function getAnswerContentByPageNum() {
+        var data = sendAndroidInterface("getCompositionByStudent", {
+            'user_id': currentUserId,
+            'pages': currentPageNum,
+            "isBase64": true
+        });
+        presenter.showComposition(data);
+    }
+
+
+    presenter.getAnswerContentCallback = function (data) {
+        if (presenter.currentType !== 'composition') {
+            return;
+        }
+        if (data.data.user_id != currentUserId)
+            return;
+
+        clearGetAnswerContentTimeLine();
+        isGetting = false;
+        $(viewModel.view).find(".button_refresh").html('<ins class="icon_refresh"></ins>重新获取');
+
+        if (data.data.page_count <= 0) {
+            $(viewModel.view).find(".refresh_text").html('<em class="num">无数据</em>');
+            return;
+        }
+
+        pageCount = data.data.page_count;
+        userInput(pageCount, "page_count");
+
+
+        data = sendAndroidInterface("getCompositionByStudent", {
+            'user_id': currentUserId,
+            'pages': currentPageNum,
+            'isBase64': true
+        });
+
+        presenter.showComposition(data);
+    };
+
+    //点击显示学生作文
+    presenter.showComposition = function (data) {
+        if (data.result == true) {
+            var content = $(viewModel.view).find(".content");
+            content.html("");
+            for (var i = 0; i < data.data.write_items.length; i++) {
+                var item = data.data.write_items[i],
+                    img = $("<img>");
+                img.attr("src", item.page_url);
+                content.append(img).append('<p id="teacher_pagecount" class="essay_page ">第<span style="color:#ff9000;font-weight: bold;">' + item.page_number + '</span>页 / 共' + pageCount + '页</p>');
+            }
+            $(viewModel.view).find(".refresh_text").html('<em class="num">刚刚</em>');
+            timekeeping();
+            //传递给投影端显示
+            userInput(data, 'showComposition');
+        } else {
+            //接收失败处理 data.message
+        }
+    };
+
+    function getCurrentUserInfo() {
+        var res = sendAndroidInterface("getCurrentUserInfo", {});
+
+        if (res) {
+            isProjector = res.isProjector;
+        }
+    }
+
+    /*-------------------------------------------------private--------------------------------------------------*/
+    function triggerUserInput(eventData) {
+        if (!isProjector)
+            return;
+
+        if (eventData.source == viewModel.model.ID && eventData.item == "play") {
+            pauseMedia();
+            $(viewModel.view).find("#" + eventData.value.eId)[0].play();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "seeked") {
+            $(viewModel.view).find("#" + eventData.value.eId.id)[0].currentTime = eventData.value.eId.currentTime;
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "pause") {
+            $(viewModel.view).find("#" + eventData.value.eId)[0].pause();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "ended") {
+            $(viewModel.view).find("#" + eventData.value.eId)[0].load();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "seaquestion") {
+            $(viewModel.view).find(".writing_main").show();
+            $(viewModel.view).find(".instruction_main").hide();
+            $(viewModel.view).find(".essay_side").hide();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "tabquestion") {
+            pauseMedia();
+            var cur = $(viewModel.view).find(".tab_stem li").eq(eventData.value.eId);
+            cur.addClass('on').siblings("li").removeClass("on");
+            $(viewModel.view).find(".stem_box_con").eq(eventData.value.eId).show().siblings().hide();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "tabsucai") {
+            pauseMedia();
+            var cur = $(viewModel.view).find(".tab_sucai li").eq(eventData.value.eId);
+            cur.addClass('on').siblings("li").removeClass("on");
+            $(viewModel.view).find(".tab_sucai_con .story").siblings(".story").hide().eq(eventData.value.eId).fadeIn(400);
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "look") {
+            $(viewModel.view).find(".writing_main").hide();
+            $(viewModel.view).find(".instruction_main").show();
+            $(viewModel.view).find(".essay_side").show();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "close_dialog_button") {
+            $(viewModel.view).find(".close_dialog_button").click();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "showComposition") {
+            var list = $(viewModel.view).find('.essay_side_list');
+            $(viewModel.view).find(".instruction_box").hide();
+            $(viewModel.view).find(".essay_box_composition").show();
+            list.find('.list').removeClass('on');
+            list.find('[data-id=' + eventData.value.currentUserId + ']').addClass('on');
+            presenter.showComposition(eventData.value.eId);
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "scroll") {
+            $(viewModel.view).find(".essay_side_list").scrollTop(eventData.value.eId);
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "endError_dialog_close") {
+            $(viewModel.view).find("#endError_dialog").hide();
+            $(viewModel.view).find(".essay_btnbox a").html("收题完成").removeClass("button_end").addClass("button_disabled");
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "page_count") {
+            pageCount = eventData.value.eId;
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "endAnswer") {
+            presenter.end();
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "scrollContent") {
+            $(viewModel.view).find("#composition_content").scrollTop(eventData.value.eId);
+        }
+        if (eventData.source == viewModel.model.ID && eventData.item == "scrollsucai") {
+            $(viewModel.view).find(".tab_sucai_con div#" + eventData.value.eId.id).scrollTop(eventData.value.eId.top);
+        }
+    }
+
+    function userInput(eId, type) {
+        var result = {
+            "eventName": "UserInput",
+            "eventData": {
+                "source": viewModel.model.ID,
+                "item": type,
+                "value": {
+                    eId: eId,
+                    currentUserId: currentUserId
+                }
+            }
+        };
+        sendAndroidInterface("sendEvent", result);
+    }
+
+    function getName(stu) {
+        if (!stu.seatNumberValue && stu.seatNumberValue != 0) {
+            return stu.studentName;
+        } else {
+            var str = "";
+            if (stu.seatNumberValue <= 9)
+                str = "0";
+            return str + stu.seatNumberValue + " " + stu.studentName;
+        }
+    }
+
+    function getStatusClass(stu) {
+        if (typeof stu.UserStatus == 'undefined')
+            return "";
+
+        switch (stu.UserStatus) {
+            case enum_status.incomplete:
+                return "";
+            case enum_status.writing:
+                return "write";
+            case enum_status.modifying:
+                return "revise";
+            case enum_status.committed:
+                return "refer";
+            case enum_status.completed:
+                return "refer";
+        }
+
+        return "";
+    }
+
+
+    function _databind() {
+        //<strong>半命题作文：</strong>那是一次<span class="underline"></span>的尝试
+        if (viewModel.composition.titleType == "1") {
+            $(viewModel.view).find("#composition_title").html('<strong>全命题作文：</strong>' + viewModel.composition.title);
+        } else {
+            $(viewModel.view).find("#composition_title").html('<strong>自拟题作文：</strong>' + viewModel.composition.title);
+        }
+        $(viewModel.view).find("#composition_content").html('<strong>要求：</strong>' + viewModel.composition.content);
+        for (var i = 0, str1 = "", str2 = ""; i < viewModel.composition.asset.length; i++) {
+            if (i == 0) {
+                str1 += '<li class="on">素材1</li>';
+                str2 += '<div class="story" id="sucai_' + i + '">' + (typeof viewModel.composition.asset[i] == 'undefined' ? "" : viewModel.composition.asset[i]) + '</div>';
+            }
+            else {
+                str1 += '<li >素材' + (i + 1) + '</li>';
+                str2 += '<div class="story" style="display:none" id="sucai_' + i + '">' + (typeof viewModel.composition.asset[i] == 'undefined' ? "" : viewModel.composition.asset[i]) + '</div>';
+            }
+        }
+        $(viewModel.view).find(".tab_sucai_con").html(str2);
+        $(viewModel.view).find(".tab_sucai").html(str1);
+        $(viewModel.view).find("video").each(function (index, value) {
+            $(value).attr("id", "video_" + index);
+        });
+        $(viewModel.view).find("audio").each(function (index, value) {
+            $(value).attr("id", "audio_" + index);
+        });
+        $(viewModel.view).find("video").off("play").on("play", function (evt) {
+            userInput(evt.currentTarget.id, "play");
+            pauseMedia(evt.currentTarget.id);
+        });
+        $(viewModel.view).find("video").off("pause").on("pause", function (evt) {
+            if (evt.currentTarget.currentTime != evt.currentTarget.duration)
+                userInput(evt.currentTarget.id, "pause");
+        });
+        $(viewModel.view).find("video").off("seeked").on("seeked", function (evt) {
+            userInput({'id': evt.currentTarget.id, 'currentTime': evt.currentTarget.currentTime}, "seeked");
+        });
+        $(viewModel.view).find("audio").off("seeked").on("seeked", function (evt) {
+            userInput({'id': evt.currentTarget.id, 'currentTime': evt.currentTarget.currentTime}, "seeked");
+        });
+        $(viewModel.view).find("audio").off("play").on("play", function (evt) {
+            userInput(evt.currentTarget.id, "play");
+            pauseMedia(evt.currentTarget.id);
+        });
+        $(viewModel.view).find("audio").off("pause").on("pause", function (evt) {
+            userInput(evt.currentTarget.id, "pause");
+        });
+        $(viewModel.view).find("video").off("ended").on("ended", function (evt) {
+            evt.currentTarget.load();
+            userInput(evt.currentTarget.id, "ended");
+        });
+        $(viewModel.view).find(".tab_sucai_con .story").off("scroll").on("scroll", function (evt) {
+            userInput({
+                id: evt.currentTarget.id,
+                top: $(viewModel.view).find(".tab_sucai_con .story").scrollTop()
+            }, "scrollsucai");
+        });
+        if (typeof MathJax != 'undefined')
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+    }
+
+    function _uiInit() {
+        $(viewModel.view).find(".essay_side_list").off("scroll").on("scroll", function () {
+            userInput($(viewModel.view).find(".essay_side_list").scrollTop(), "scroll");
+        });
+
+        $(viewModel.view).find("#composition_content").off("scroll").on("scroll", function () {
+            userInput($(viewModel.view).find("#composition_content").scrollTop(), "scrollContent");
+        });
+
+        $(viewModel.view).find(".button_end").off("click").on("click", function () {
+            if ($(viewModel.view).find(".essay_btnbox a").hasClass("button_disabled"))
+                return;
+            presenter.end();
+            userInput("", "endAnswer");
+        });
+
+        $(viewModel.view).find(".button_refresh").off("click").on("click", function (evt) {
+            if (isGetting)
+                return;
+            isGetting = true;
+            getAnswerContent();
+        });
+
+        $(viewModel.view).find("a.prev").off("click").on('click', function () {
+            if (currentPageNum > 1) {
+                currentPageNum--;
+                getAnswerContentByPageNum();
+            }
+        });
+
+        $(viewModel.view).find("a.next").off("click").on('click', function () {
+            if (currentPageNum < pageCount) {
+                currentPageNum++;
+                getAnswerContentByPageNum();
+            }
+        });
+
+        $(viewModel.view).find(".button_look").off("click").on("click", function () {
+            $(viewModel.view).find(".writing_main").hide();
+            $(viewModel.view).find(".instruction_main").show();
+            $(viewModel.view).find(".essay_side").show();
+            userInput("", "look");
+        });
+
+        $(viewModel.view).find("#seaquestion").off("click").on("click", function () {
+            $(viewModel.view).find(".writing_main").show();
+            $(viewModel.view).find(".instruction_main").hide();
+            $(viewModel.view).find(".essay_side").hide();
+            userInput("", "seaquestion");
+        });
+
+        //tab切换-题干、素材切换
+        $(viewModel.view).find(".tab_stem li").off("click").on("click", function () {
+            var num = $(this).index();
+            $(this).addClass('on').siblings("li").removeClass("on");
+            $(viewModel.view).find(".stem_box_con").eq(num).show().siblings().hide();
+            pauseMedia();
+            userInput(num, "tabquestion");
+        });
+
+        //tab切换-素材切换
+        $(viewModel.view).find(".tab_sucai li").off("click").on("click", function () {
+            var num = $(this).index();
+            $(this).addClass('on').siblings("li").removeClass("on");
+            $(viewModel.view).find(".tab_sucai_con .story").siblings(".story").hide().eq(num).fadeIn(400);
+            pauseMedia();
+            userInput(num, "tabsucai");
+        });
+
+        $(viewModel.view).find(".btn_tipclose").off("click").on("click", function (evt) {
+            $(evt.currentTarget).parent().hide();
+        });
+
+        $(viewModel.view).find(".tab_sucai_con").off("touchstart").on('touchstart', function (evt) {
+            //evt.preventDefault();
+            presenter.isDown = true;
+
+            var x, touch;
+            if (evt.type === 'touchstart') {
+                touch = evt.originalEvent.touches[0];
+                x = touch.pageX;
+                presenter.lastX = x;
+            }
+        });
+        $(viewModel.view).find(".tab_sucai_con").off("touchmove").on('touchmove', function (evt) {
+            //evt.preventDefault();
+            if (!presenter.isDown)
+                return;
+            var x = 0, touch;
+            if (evt.type === 'touchmove') {
+                touch = evt.originalEvent.touches[0];
+                x = touch.pageX;
+                if (x - presenter.lastX > 100)
+                    presenter.qiehuansucai = -1;
+                if (x - presenter.lastX < -100)
+                    presenter.qiehuansucai = 1;
+            }
+        });
+        $(viewModel.view).find(".tab_sucai_con").off("touchend").on('touchend', function (evt) {
+            evt.preventDefault();
+            presenter.isDown = false;
+            var curLi = $(viewModel.view).find(".tab_sucai li.on");
+            if (presenter.qiehuansucai == 1) {
+                curLi.next().click();
+            } else if (presenter.qiehuansucai == -1) {
+                curLi.prev().click();
+            }
+            presenter.qiehuansucai = 0;
+        });
+    }
+
+    return presenter;
+}
+]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/bookskin_left.png' />
+<file src='./resources/images/bookskin_leftbg.png' />
+<file src='./resources/images/bookskin_mainbg.png' />
+<file src='./resources/images/bookskin_right.png' />
+<file src='./resources/images/bookskin_righttop.png' />
+<file src='./resources/images/bookskin_top.png' />
+<file src='./resources/images/write/bg_instruction_bottom.png' />
+<file src='./resources/images/write/bg_instruction_tit.png' />
+<file src='./resources/images/write/bg_probar.png' />
+<file src='./resources/images/write/bg_probarmain.png' />
+<file src='./resources/images/write/bg_shadowbig.png' />
+<file src='./resources/images/write/bg_shadowsmall.png' />
+<file src='./resources/images/write/bg_text_box.png' />
+<file src='./resources/images/write/bookskin_mainbg.png' />
+<file src='./resources/images/write/btn_tipclose_normal.png' />
+<file src='./resources/images/write/btn_tipclose_press.png' />
+<file src='./resources/images/write/icon_change01.png' />
+<file src='./resources/images/write/icon_change02.png' />
+<file src='./resources/images/write/icon_chose01.png' />
+<file src='./resources/images/write/icon_chose02.png' />
+<file src='./resources/images/write/icon_clock.png' />
+<file src='./resources/images/write/icon_close.png' />
+<file src='./resources/images/write/icon_flag01.png' />
+<file src='./resources/images/write/icon_flag02.png' />
+<file src='./resources/images/write/icon_flag03.png' />
+<file src='./resources/images/write/icon_instruction.png' />
+<file src='./resources/images/write/icon_play.png' />
+<file src='./resources/images/write/icon_play2.png' />
+<file src='./resources/images/write/icon_refresh.png' />
+<file src='./resources/linkup.xml' />
+<file src='./resources/locations/es_EC/lang.json' />
+<file src='./resources/locations/es_EC/zh_CN.po' />
+<file src='./resources/locations/zh_CN/lang.json' />
+<file src='./resources/locations/zh_CN/zh_CN.po' />
+
+
+</resources>
+
+</addon>

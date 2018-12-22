@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='ReadingComprehension'>
+<properties>
+
+                <property name="QuestionId" displayName="题目ID" type="string" isLocalized="false" />
+                <property name="QuestionContent" displayName="题目内容" type="json" isLocalized="false" />
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+
+
+</css>
+
+
+<view>
+
+
+</view>
+
+
+<presenter>
+
+<![CDATA[/*!   version: 1.0.0  -   updated: 2017-08-29 13:42:02   */
+window["AddonReadingComprehension_create"]=function(modules){var installedModules={};function __webpack_require__(moduleId){if(installedModules[moduleId]){return installedModules[moduleId].exports}var module=installedModules[moduleId]={i:moduleId,l:false,exports:{}};modules[moduleId].call(module.exports,module,module.exports,__webpack_require__);module.l=true;return module.exports}__webpack_require__.m=modules;__webpack_require__.c=installedModules;__webpack_require__.i=function(value){return value};__webpack_require__.d=function(exports,name,getter){if(!__webpack_require__.o(exports,name)){Object.defineProperty(exports,name,{configurable:false,enumerable:true,get:getter})}};__webpack_require__.n=function(module){var getter=module&&module.__esModule?function getDefault(){return module["default"]}:function getModuleExports(){return module};__webpack_require__.d(getter,"a",getter);return getter};__webpack_require__.o=function(object,property){return Object.prototype.hasOwnProperty.call(object,property)};__webpack_require__.p="";return __webpack_require__(__webpack_require__.s=0)}([function(module,exports,__webpack_require__){function getComponents(model,env){var modules={layout:"ObjectiveInteractionLayout",controllers:[{presenter:"I18nFilter"},{presenter:"InteractionStateRecoverFilter"},{presenter:"AnswerFlowController",depends:[{property:"TimerService",presenter:"TimerController"}]}],components:[{presenter:"SwitchToolbar",renderTo:"CompoundSwitchPanel"},{presenter:"CompoundQuestionLoader",renderTo:"CenterPanel"},{presenter:"InteractionTimer",renderTo:"TopLeftPanel"}]};var settings=[{name:"ObjectiveInteractionLayout",type:"string",value:JSON.stringify([{name:"questionType",type:"string",value:"CompoundQuestion"},{name:"specialTemplate",type:"string",value:"true"}])},{name:"AnswerFlowController",type:"string",value:JSON.stringify([{name:"linkQuestionId",type:"string",value:model.QuestionId}])},{name:"InteractionTimer",type:"string",value:JSON.stringify([{name:"view_type",type:"string",value:"new_timer"}])},{name:"TimerController",type:"string",value:JSON.stringify([{name:"timer_type",type:"string",value:model.TimerType},{name:"time_limit",type:"integer",value:model.TimeLimit}])},{name:"InteractionSubmitButton",type:"string",value:JSON.stringify([{name:"can_modify",type:"string",value:true},{name:"linkQuestionType",type:"string",value:"compound"},{name:"linkQuestionId",type:"string",value:model.QuestionId},{name:"view_type",type:"string",value:"new_em_button"}])},{name:"CompoundQuestionLoader",type:"string",value:JSON.stringify([{name:"questionId",type:"string",value:model.QuestionId},{name:"questionStem",type:"html",text:model.MainStem},{name:"questionList",type:"json",value:{questions:(model.Questions||[]).map(function(item,index){var questionData={index:index+1,id:item.SubQuestionId,type:item.SubQuestionType||"ReadingComprehension",data:{question_data:Object.assign({},item.SubQuestionData,{examId:model.ExamId,questionType:item.SubQuestionType||"ReadingComprehension"})}};if(item.SubQuestionData.stem){questionData.data.question_stem=item.SubQuestionData.stem;delete item.SubQuestionData.stem}return questionData})}},{name:"questionType",type:"string",value:"ReadingComprehension"}])},{name:"SwitchToolbar",type:"string",value:JSON.stringify([{name:"itemList",type:"json",value:{items:(model.Questions||[]).map(function(item,index){return{index:index,id:index+1,text:index,value:item.SubQuestionId,state:""}})}}])},{name:"AnswerFlowController",type:"string",value:JSON.stringify([{name:"linkQuestionId",type:"string",value:model.QuestionId}])}];switch(true){case env.isApp:case env.isStudent:modules.components.push({presenter:"InteractionSubmitButton",renderTo:"TopRightPanel"});break;case env.isPC:case env.isTeacher:case env.isWeb:modules.controllers.push({presenter:"ObjectiveStatController"},{presenter:"ClassroomStatusController"});modules.components.push({presenter:"InteractionSubmitButton",renderTo:"BottomPanel"},{presenter:"ObjectiveStatisticsRemake",renderTo:"StatisticsPanel"},{presenter:"AnswerClassStatis",renderTo:"SubjectiveStatisticsPanel"});settings.push({name:"ClassroomStatusController",type:"string",value:JSON.stringify([{name:"questionId",type:"string",value:model.QuestionId}])},{name:"AnswerClassStatis",type:"string",value:JSON.stringify([{name:"config",type:"string",value:JSON.stringify({header:false,toolbar:false})}])});break;default:break}settings.push({name:"Components",type:"json",text:JSON.stringify(modules)});return settings}var Presenter=function(_super){__extends(Presenter,_super);function Presenter(presenterName){var _this=_super.call(this,presenterName)||this;_this.metaInfo=Object.assign(_this.metaInfo||{},{name:"ReadingComprehension",type:ConstVariable.PresenterType.LAUNCHER});return _this}Presenter.prototype.$launch=function(options){this.View.style.display="none";if(!this.Model.ExamId){this.Model.ExamId=this.getExamId()}this.requireComponent("ComponentLoader",getComponents(this.Model,this.Environment),this.View,{top:0,left:0,width:0,height:0})};Presenter.prototype.$release=function(){this.removeEventListener()};Presenter.prototype.getExamId=function(){var examId="";this.addEventListener("TaskInfoCallback",ConstVariable.PresenterEventType.IC_PLAYER_EVENT,function(eventData){if(eventData&&eventData.value){examId=eventData.value.examId}});this.dispatchEvent("TaskInfo",ConstVariable.PresenterEventType.IC_PLAYER_EVENT,{item:"exam",type:"query"});return examId};return Presenter}(CommonClass);module.exports=function(){return new Presenter("ReadingComprehension")}}]);]]>
+
+</presenter>
+
+
+<resources>
+
+
+</resources>
+
+</addon>

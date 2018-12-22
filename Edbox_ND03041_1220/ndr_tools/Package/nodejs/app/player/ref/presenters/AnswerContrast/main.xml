@@ -1,0 +1,2351 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<addon id='AnswerContrast'>
+<properties>
+
+
+
+</properties>
+
+<dependencies>
+
+</dependencies>
+
+<css>
+
+<![CDATA[.addon_AnswerContrast .contrast_wrapper{width:100%;height:100%;background-color:#f8efde}.addon_AnswerContrast .content{height:70%;margin:0 auto}.addon_AnswerContrast .btn_exit{margin-bottom:0}]]>
+
+</css>
+
+
+<view>
+
+<![CDATA[<div class="ndui-pop com_pop com_pop_mid stu_screen_pic js_contrst_pop" style="display: none"><div class="ndui-pop-mask"></div><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="javascript:;" class="ndui-pop-close left js_contrast_close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a> <a href="javascript:;" class="ndui-pop-close right js_contrast_close"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a><div class="pop_wrap js_pop_wrap"></div></div></div></div><div class="ndui-pop com_pop com_pop_mid stu_screen_pic js_contrst_detail_pop" style="display: none"><div class="ndui-pop-square"><div class="ndui-pop-wrap"><a href="javascript:;" class="ndui-pop-close left js_close_tap"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a> <a href="javascript:;" class="ndui-pop-close right js_close_tap"><em></em><span class="preload_btn_close_pic1"></span><span class="preload_btn_close_pic2"></span></a><div class="js_pop_wrap" style="height:100%"></div></div></div></div>]]>
+</view>
+
+
+<presenter>
+
+<![CDATA[window["AddonAnswerContrast_create"] =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// identity function for calling harmony imports with the correct context
+/******/ 	__webpack_require__.i = function(value) { return value; };
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ * 选择界面选择逻辑控制
+ */
+
+var ContrastLogic = __webpack_require__(5);
+
+function Select(presenter) {
+    this.presenter = presenter;
+
+    this.statService = presenter.statisticsService; //统计的service
+
+    this.$selectHtml = presenter._utils.$selectHtml;
+
+    this.$exitHtml = presenter._utils.$exitHtml; //对比按钮
+
+    this.$contrastView = null; //对比界面的view
+
+    this.viewModel = null;
+
+    this.questionType = 'newhandwrite';
+
+    //当前班级的学生信息
+    this.currentStudents = [];
+
+    this.init();
+}
+
+Select.prototype = {
+    constructor: Select,
+    //初始化
+    init: function () {
+        this.dataBind();
+
+        this.eventBind();
+
+        this.eventHandle();
+
+        //获取对比界面的控制逻辑
+        this.contrastLogic = new ContrastLogic(this.presenter, this);
+
+    },
+    //数据绑定
+    dataBind: function () {
+        var self = this;
+        this.viewModel = new ViewModel(self.statService);
+
+        ko.applyBindings(self.viewModel, self.$selectHtml[0]);
+
+    },
+    //事件绑定
+    eventBind: function () {
+        var self = this;
+
+        //对比按钮事件绑定
+        this.$selectHtml.on('click', '.contrast', function (e) {
+            console.log('点击到对比');
+            self.contrastEventHandle($(this));
+        });
+
+        //选择界面退出对比按钮事件绑定
+        this.$exitHtml.on('click', '.square_tool_exit', function (e) {
+            console.log('退出对比');
+            self.exitContrast();
+        });
+
+    },
+    //监听选中事件
+    eventHandle: function () {
+        var self = this;
+        //接收来自统计的事件
+        this.presenter.$addEventListener('AnswerStatisItemChecked', 'ic_player_event', function (data) {
+
+            console.log('选中事件：', JSON.stringify(data));
+
+            //如果不是发给同屏对比的，则直接返回
+            if (data.sendTo !== 'AnswerContrast') {
+                return
+            }
+
+            //如果已经选中四个 并且是添加事件
+            if (self.viewModel.selectedStu().length > 3 && data.checked) {
+                self.statService.clearSelectedItem(data.itemInfo.studentId);
+                console.log('最多选中4个');
+                return;
+            }
+
+            //根据data中属性判断是增加或者删除
+            if (data.checked) {
+                var studentInfo = self.getInfoByStudentId(data.itemInfo.studentId);
+                //获取头像数据
+                data.itemInfo.headIcon = studentInfo.headIcon;
+                data.itemInfo.studentName = studentInfo.studentName || data.itemInfo.studentId;
+                //增加
+                self.viewModel.selectedStu.push(data.itemInfo);
+            } else {
+                //删除
+                self.viewModel.selectedStu.remove(function (item) {
+                    return item.studentId === data.itemInfo.studentId;
+                });
+            }
+        });
+    },
+    //根据学生id获取头像地址
+    getInfoByStudentId: function (studentId) {
+        var students, studentInfo;
+
+        /**
+         * 2016/7/22
+         * 获取当前的学生信息，主要是为了拿到头像
+         * 跟ccy讨论，我的意见是统计在发送选中事件时直接提供，他坚持要我自己去获取
+         * @type {"ContrastLogic"}
+         */
+
+        /**
+         * 2016/9/18 每次都获取一次当前在线学生的信息
+         * @type {List.<Object>|*}
+         */
+        students = ClassroomUtils.getCurrentStudents();
+
+        for (var i = 0, len = students.length; i < len; i++) {
+            if (studentId == students[i].studentId) {
+                studentInfo = students[i];
+                break;
+            }
+        }
+
+        
+
+        if (!studentInfo) {
+            throw new Error("未获取到学生信息！");
+        }
+
+        return studentInfo;
+    },
+    //对比按钮点击事件
+    contrastEventHandle: function ($ele) {
+        var self = this;
+        //判断是否允许对比
+        if (this.viewModel.enableContrast()) {
+            var selectedStu = self.statService.getSelectedItems();
+
+            console.log(selectedStu);
+            //进入对比界面
+            self.contrastLogic.enterContrast(selectedStu);
+
+        } else {
+            //少于两个选项，添加不可点击类名 .com_btn_disabled,已用数据绑定操作
+        }
+    },
+    //退出对比
+    exitContrast: function () {
+        //置空当前在线学生
+        this.currentStudents = null;
+
+        //统计清除选中
+        this.statService.clearSelectedItem();
+
+        //清空绑定的数据
+        this.viewModel.selectedStu.removeAll();
+
+        //退出选择模式
+        this.statService.exitSelectMode();
+
+        //隐藏顶部提示
+        this.statService.hideInjectPanel('top', 'contrast_header_tip');
+        //隐藏选择界面，显示出原来的底部
+        this.statService.hideInjectPanel('bottom', 'contrast_change');
+        this.statService.hideInjectPanel('bottom', 'contrast_select');
+        this.statService.hideInjectPanel('bottom', 'contrast_exit');
+
+        this.statService.plugin.exit('AnswerContrast');
+
+    }
+
+};
+
+//数据绑定模型
+function ViewModel(statService) {
+    var self = this;
+
+    self.statService = statService;
+
+    //当前已选中的学生
+    self.selectedStu = ko.observableArray([]);
+
+    //是否允许对比，至少选中两个
+    self.enableContrast = ko.pureComputed(function () {
+        return self.selectedStu().length > 1 ? true : false;
+    });
+
+    //删除某个选项
+    self.deleteSingle = function () {
+        console.log('删除:', this);
+        self.selectedStu.remove(this);
+        //统计取消选中
+        self.statService.clearSelectedItem(this.studentId);
+    };
+
+    //删除所有
+    self.deleteAll = function () {
+        console.log('清空');
+        //清空数据模型
+        self.selectedStu.removeAll();
+        //统计取消选中
+        self.statService.clearSelectedItem();
+    };
+}
+
+module.exports = Select;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+/**
+ * 作文提纲对比界面渲染库
+ */
+
+var minderMapRenderOption = {
+    lock: true, //默认false
+    maxScale: 2.5,
+    minScale: 0.01,
+    editAble: false, //是否可编辑
+    showMenu: false, //是否显示菜单
+    animate: false, //开启动画
+    ignoreAttrTextVisible: false, //使数据中textVisible无效
+    contentClickViewAble: false, //是否可点击查看隐藏内容
+    renderDataAutoLayout: false, //初始化数据时是否进行自动布局，默认自动布局
+    pinchIntensity: 0.8
+};
+
+function CompositionOutlineRender($contrastView, $tabView) {
+    this.$contrastView = $contrastView; //对比界面
+    this.$tabView = $tabView; //放大界面
+}
+
+CompositionOutlineRender.prototype = {
+    constructor: CompositionOutlineRender,
+
+    /**
+     * 渲染对比界面
+     * @param data 数组或者单个数据
+     * 数组 一次性渲染完所有数据
+     * 单个数据 单个数据需要传入renderIndex，以确定渲染第几个li
+     */
+    renderContrastPopup: function (data, renderIndex) {
+        var $liList = this.$contrastView.find('.js_student_list > li');
+
+        if (Array.isArray(data)) {
+
+            //重置li
+            resetContrasTView($liList);
+
+            $liList.each(function (index, ele) {
+                var curData = data[index];
+                // var renderData = getRenderData('detail', curData.thumbnailSrc);
+                var renderData = getRenderData('thumb', curData.thumbnailSrc);
+
+                $(ele).data({
+                    studentid: curData.studentId,
+                    studentname: curData.studentName
+                });
+
+                //设置姓名
+                $(ele).find('.js_student_name').text(curData.studentName);
+
+                //清空容器
+                $(ele).find('.js_com_stat_list_pic').html('');
+
+                $(ele).find('.js_com_stat_list_pic').html('<span class="pic-vertical-mc"><span>');
+                renderMinderMap($(ele).find('.pic-vertical-mc'), renderData);
+
+                //送花按钮设置studentname 和studentid
+                $(ele).find('.js_send_flower').data({
+                    studentname: curData.studentName,
+                    studentid: curData.studentId
+                });
+
+                //按钮显示控制
+                bottomBarControl($(ele), curData);
+
+            });
+        } else {
+            //更换或增加
+
+            var $ele = $liList.eq(renderIndex);
+
+            var curData = data;
+
+            // var renderData = getRenderData('detail', curData.thumbnailSrc);
+            var renderData = getRenderData('thumb', curData.thumbnailSrc);
+
+            $ele.data({
+                studentid: curData.studentId,
+                studentname: curData.studentName
+            });
+
+            //设置姓名
+            $ele.find('.js_student_name').text(curData.studentName);
+
+            //设置图片
+            $ele.find('.js_com_stat_list_pic').html('');
+
+            $ele.find('.js_com_stat_list_pic').html('<span class="pic-vertical-mc"></span>');
+            renderMinderMap($ele.find('.pic-vertical-mc'), renderData);
+
+
+
+            //送花按钮设置studentname 和studentid
+            $ele.find('.js_send_flower').data({
+                studentname: curData.studentName,
+                studentid: curData.studentId
+            });
+
+            //按钮显示控制
+            bottomBarControl($ele, curData);
+        }
+    },
+    /**
+     * 渲染放大弹窗的下方缩略图
+     * @param data
+     */
+    renderThumbnail: function (data, index) {
+        var $container = this.$tabView.find('.js_thumbnail_box');
+        var content = '';
+
+        //传入的index索引处的学生id
+        var curSelectedId = data[index].studentId;
+
+        //提取出data中有效的数据
+        var students = data.filter(function (ele, index, array) {
+            return ele.studentId !== '';
+        });
+
+        //拿到新的索引
+        for (var i = 0, len = students.length; i < len; i++) {
+            if (curSelectedId == students[i].studentId) {
+                index = i;
+                break;
+            }
+        }
+
+        students.forEach(function (ele, index, array) {
+            /**
+             * 2016/7/22 因为主观题与手写题的缩略图结构不一致
+             * 故使用动态插入dom
+             */
+
+            //学生id不为空时
+            if (ele.studentId) {
+                //对强制收题时学生作答数据为空时做兼容处理
+                var renderData = getRenderData('thumb', ele.thumbnailSrc);
+                //构造dom结构
+                content += ' <li class="js_thumbnail" data-studentid="' + ele.studentId + '"><a href="###" class="slide_a"><span class="js_pic pic-vertical-mc">';
+                // content += '<img src="' + imageSrc + '" />';
+                content += '</span> <span class="text_top"> <em class="group" style="display: none"></em><em class="num" style="display: none"></em>';
+                content += '<em class="name js_name">' + ele.studentName + '</em>';
+                setTimeout(function () {
+                    renderMinderMap($container.children().eq(index).find('.js_pic'), renderData);
+                }, 0);
+            }
+
+        });
+
+        //第一个给予选中效果
+        $container.html('').html(content).children().eq(index).addClass('on');
+    },
+    /**
+     * 渲染放大弹窗的大图
+     * @param data
+     * 单个数据 只渲染一个
+     */
+    renderDetail: function (data) {
+        var $container = this.$tabView;
+        var $renderContainer = $container.find('.js_detail_container');
+        //对强制收题时学生作答数据为空时做兼容处理
+        // var renderData = getRenderData('detail', data.detailImageSrc);
+        var renderData = getRenderData('thumb', data.detailImageSrc);
+
+        //设置名字
+        $container.find('.js_student_name').text(data.studentName);
+
+        //放进img标签
+        $renderContainer.html('').html('<div class="student_screen student_screen_pic_bg"></div>');
+        renderMinderMap($renderContainer.find('.student_screen'), renderData);
+
+    },
+    //退出放大界面时调用
+    exitDetailContrast: function () {
+
+    }
+};
+
+
+//重置对比界面的dom
+function resetContrasTView($list) {
+    $list.each(function (index, ele) {
+        //
+        $(ele).data({
+            studentid: '',
+            studentname: ''
+        });
+
+        //设置姓名
+        $(ele).find('.js_student_name').text('');
+
+        //送花按钮设置studentname 和studentid
+        $(ele).find('.js_send_flower').data({
+            studentname: '',
+            studentid: ''
+        });
+
+        $(ele).find('.js_com_stat_list_pic').html('');
+
+    });
+}
+
+
+function bottomBarControl($ele, curData) {
+    //底部按钮显示控制
+    //学生id为空
+    if (curData.studentId === '') {
+        //隐藏放大按钮
+        $ele.find('.js_icon_full').hide();
+        //隐藏更换按钮
+        $ele.find('.js_icon_constrst').hide();
+        //隐藏送花按钮
+        $ele.find('.js_send_flower').hide();
+        //显示增加按钮
+        $ele.find('.js_icon_add').show();
+
+    } else {
+
+        //显示放大按钮
+        $ele.find('.js_icon_full').show();
+        //显示更换按钮
+        $ele.find('.js_icon_constrst').show();
+        //显示送花按钮
+        $ele.find('.js_send_flower').show();
+        //隐藏增加按钮
+        $ele.find('.js_icon_add').hide();
+
+    }
+}
+
+function getRenderData(type, data) {
+    var result = {
+        value: ''
+    };
+    if (data.length) {
+        var hasData = false;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].type === type) {
+                hasData = true;
+                result = data[i];
+                break;
+            }
+        }
+        if (!hasData) {
+            result = data[0];
+        }
+    }
+    return result;
+}
+
+//渲染思维导图
+function renderMinderMap($el, data) {
+    var value = data.value;
+    if (data.data_type === 'raw') {
+        if (value) {
+            try {
+                value = JSON.parse(value);
+            } catch (e) {}
+            if (typeof value === 'object') {
+                this.minderMap = MinderMap.create(minderMapRenderOption);
+                this.minderMap.setData(value);
+                this.minderMap.render($el.get(0));
+                this.minderMap.matchParent();
+            }
+        }
+    } else {
+        $el.html('<img src="' + value + '">')
+    }
+}
+
+module.exports = CompositionOutlineRender;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by Administrator on 2016/7/19.
+ * 拼图题对比界面渲染库
+ */
+
+function GraphicGapMatchRender($contrastView, $tabView, questionUrl) {
+    this.$contrastView = $contrastView; //对比界面
+    this.$tabView = $tabView; //放大界面
+    this.questionUrl = questionUrl;
+    //创建一个qtiplayer
+    this.qtiplayer = QtiPlayer.createPlayer({
+        refPath: icCreatePlayer.ref_path
+    });
+
+    //qti渲染参数
+    this.renderOption = {
+        showTitleArea: false,
+        showLock: true,
+        showHint: false,
+        showAnswer: true,
+        platForm: 'statis',
+        expectWidth: 320,
+        expectHeight: 150,
+        theme: 'wood',
+        randomSeed: [19, 14, 17, 2, 24, 16, 4, 21, 20, 5, 22, 11, 18, 13, 15, 7, 8, 28, 1, 0, 29, 10, 23, 12, 26, 25, 27, 3, 6, 9]
+    };
+
+    this.promise = this.loadData(this.questionUrl);
+}
+
+GraphicGapMatchRender.prototype = {
+    constructor: GraphicGapMatchRender,
+
+    /**
+     * 渲染对比界面
+     * @param data 数组或者单个数据
+     * 数组 一次性渲染完所有数据
+     * 单个数据 只渲染一个
+     */
+    renderContrastPopup: function (data, renderIndex) {
+
+        var self = this;
+        var $liList = this.$contrastView.find('.js_student_list > li');
+        var userResponse = null;
+        this.$contrastView.find('.js_com_stat_list_pic').addClass('pic-vertical-mc');
+        self.renderOption.expectWidth = $liList.eq(0).find('.js_com_stat_list_pic').width(); //拼图的渲染需要知道容器的宽高
+        self.renderOption.expectHeight = $liList.eq(0).find('.js_com_stat_list_pic').height();
+
+        self.promise.done(function () {
+            if (Array.isArray(data)) {
+
+                //重置li
+                resetContrasTView($liList);
+
+                $liList.each(function (index, ele) {
+                    var curData = data[index];
+                    var $ele = $(ele);
+
+                    $ele.data({
+                        studentid: curData.studentId,
+                        studentname: curData.studentName
+                    });
+
+                    //设置姓名
+                    $ele.find('.js_student_name').text(curData.studentName);
+
+                    //送花按钮设置studentname 和studentid
+                    $ele.find('.js_send_flower').data({
+                        studentname: curData.studentName,
+                        studentid: curData.studentId
+                    });
+
+                    //有可用的学生信息才去渲染
+                    if (curData.studentId) {
+
+                        userResponse = checkAnswerData(curData);
+
+                        //调用qti渲染
+                        //解析user_response
+                        if (userResponse) {
+                            self.qtiplayer.setAnswer(userResponse);
+                            self.qtiplayer.render($ele.find('.js_com_stat_list_pic')[0], self.renderOption);
+                        }
+
+                    }
+
+                    //按钮显示控制
+                    bottomBarControl($ele, curData);
+                });
+            } else {
+                //更换或增加
+
+                var $ele = $liList.eq(renderIndex);
+
+                var curData = data;
+
+
+                $ele.data({
+                    studentid: curData.studentId,
+                    studentname: curData.studentName
+                });
+
+                //设置姓名
+                $ele.find('.js_student_name').text(curData.studentName);
+
+                //调用qti渲染
+                //解析user_response
+                userResponse = checkAnswerData(curData);
+                //渲染前清空容器
+                $ele.find('.js_com_stat_list_pic').html('');
+
+                if (userResponse) {
+                    self.qtiplayer.setAnswer(userResponse);
+                    self.qtiplayer.render($ele.find('.js_com_stat_list_pic')[0], self.renderOption);
+                }
+
+                //送花按钮设置studentname 和studentid
+                $ele.find('.js_send_flower').data({
+                    studentname: curData.studentName,
+                    studentid: curData.studentId
+                });
+
+                //按钮显示控制
+                bottomBarControl($ele, curData);
+            }
+        });
+    },
+    /**
+     * 渲染放大弹窗的下方缩略图
+     * @param data
+     */
+    renderThumbnail: function (data, index) {
+        var self = this;
+        var $container = this.$tabView.find('.js_thumbnail_box');
+        var userResponse, $lists, $tempList;
+        var content = '';
+
+        //传入的index索引处的学生id
+        var curSelectedId = data[index].studentId;
+
+        //提取出data中有效的数据
+        var students = data.filter(function (ele, index, array) {
+            return ele.studentId !== '';
+        });
+
+        //拿到新的索引
+        for (var i = 0, len = students.length; i < len; i++) {
+            if (curSelectedId == students[i].studentId) {
+                index = i;
+                break;
+            }
+        }
+
+        students.forEach(function (ele, index, array) {
+
+            //学生id不为空时
+            if (ele.studentId) {
+                //学生id不为空时,构造dom结构
+                content += ' <li class="js_thumbnail"><a href="###" class="slide_a"><span class="js_pic pic-vertical-mc" style="text-align: center;display: block;height:100%;">';
+                content += '</span> <span class="text_top"> <em class="group" style="display: none"></em><em class="num" style="display: none"></em>';
+                content += '<em class="name js_name"></em>';
+            }
+        });
+
+        //把dom结构放入弹窗
+        $container.html('').html(content).children().eq(index).addClass('on');
+        $lists = $container.children();
+
+        //获取li的宽高，qti渲染参数，宽高设置
+        this.renderOption.expectWidth = $container.children().eq(0).find('.js_pic').width();
+        this.renderOption.expectHeight = $container.children().find('.js_pic').height();
+
+        students.forEach(function (ele, index, array) {
+            if (ele.studentId) {
+                $tempList = $lists.eq(index);
+
+                //在li上添加data-studentid
+                $tempList.data({
+                    'studentid': ele.studentId
+                });
+
+                //名字显示
+                $tempList.find('.js_name').text(ele.studentName);
+
+
+                userResponse = checkAnswerData(ele);
+
+                if (userResponse) {
+                    self.qtiplayer.setAnswer(userResponse);
+                    self.qtiplayer.render($tempList.find('.js_pic')[0], self.renderOption);
+                }
+            }
+        });
+    },
+    /**
+     * 渲染放大弹窗的大图
+     * @param data
+     * 数组 一次性渲染完所有数据
+     * 单个数据 只渲染一个
+     */
+    renderDetail: function (data) {
+        var $container = this.$tabView;
+        var $renderContainer = $container.find('.js_detail_container').addClass('pic-vertical-mc');
+        var userResponse = checkAnswerData(data);
+
+        //设置名字
+        $container.find('.js_student_name').text(data.studentName);
+        //清空大图的容器
+        $renderContainer.html('');
+
+        //qti渲染参数，宽高设置
+        this.renderOption.expectWidth = $renderContainer.width();
+        this.renderOption.expectHeight = $renderContainer.height();
+
+        //调用qti渲染
+        if (userResponse) {
+            this.qtiplayer.setAnswer(userResponse);
+            this.qtiplayer.render($renderContainer[0], this.renderOption);
+        }
+
+    },
+    //退出放大界面时调用
+    exitDetailContrast: function () {
+
+    },
+    //加载拼图题数据
+    loadData: function (questionUrl) {
+        var $defer = $.Deferred();
+        this.qtiplayer.load(questionUrl, function () {
+            $defer.resolve();
+        });
+
+        return $defer.promise();
+    }
+};
+
+/**
+ * 校验答题数据
+ * value不为空则返回user_response，否则返回false
+ * @param data 拼图题学生的数据
+ * @returns {boolean}
+ */
+function checkAnswerData(data) {
+    if (data.thumbnailSrc.length > 0 && data.thumbnailSrc[0].value) {
+        return JSON.parse(data.thumbnailSrc[0].value)['user_response'][0];
+    }
+
+    return false;
+}
+
+//重置对比界面的dom
+function resetContrasTView($list) {
+    $list.each(function (index, ele) {
+        //
+        $(ele).data({
+            studentid: '',
+            studentname: ''
+        });
+
+        //设置姓名
+        $(ele).find('.js_student_name').text('');
+
+        //送花按钮设置studentname 和studentid
+        $(ele).find('.js_send_flower').data({
+            studentname: '',
+            studentid: ''
+        });
+
+        $(ele).find('.js_com_stat_list_pic').html('');
+
+    });
+}
+
+
+function bottomBarControl($ele, curData) {
+    //底部按钮显示控制
+    //学生id为空
+    if (curData.studentId === '') {
+        //隐藏放大按钮
+        $ele.find('.js_icon_full').hide();
+        //隐藏更换按钮
+        $ele.find('.js_icon_constrst').hide();
+        //隐藏送花按钮
+        $ele.find('.js_send_flower').hide();
+        //显示增加按钮
+        $ele.find('.js_icon_add').show();
+
+    } else {
+
+        //显示放大按钮
+        $ele.find('.js_icon_full').show();
+        //显示更换按钮
+        $ele.find('.js_icon_constrst').show();
+        //显示送花按钮
+        $ele.find('.js_send_flower').show();
+        //隐藏增加按钮
+        $ele.find('.js_icon_add').hide();
+
+    }
+}
+
+module.exports = GraphicGapMatchRender;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by Administrator on 2016/7/19.
+ * 新手写题对比界面渲染库
+ */
+
+function NewHandWriteRender($contrastView, $tabView) {
+    this.$contrastView = $contrastView; //对比界面
+    this.$tabView = $tabView; //放大界面
+}
+
+NewHandWriteRender.prototype = {
+    constructor: NewHandWriteRender,
+
+    /**
+     * 渲染对比界面
+     * @param data 数组或者单个数据
+     * 数组 一次性渲染完所有数据
+     * 单个数据 单个数据需要传入renderIndex，以确定渲染第几个li
+     */
+    renderContrastPopup: function (data, renderIndex) {
+        var $liList = this.$contrastView.find('.js_student_list > li');
+
+        if (Array.isArray(data)) {
+
+            //重置li
+            resetContrasTView($liList);
+
+            $liList.each(function (index, ele) {
+                var curData = data[index];
+                var imageSrc = curData.thumbnailSrc.length > 0 ? curData.thumbnailSrc[0].value : '';
+
+                $(ele).data({
+                    studentid: curData.studentId,
+                    studentname: curData.studentName
+                });
+
+                //设置姓名
+                $(ele).find('.js_student_name').text(curData.studentName);
+
+                //清空容器
+                $(ele).find('.js_com_stat_list_pic').html('');
+
+                $(ele).find('.js_com_stat_list_pic').html('<span class="pic-vertical-mc"><img  src="' + imageSrc + '" /><span>');
+
+                //送花按钮设置studentname 和studentid
+                $(ele).find('.js_send_flower').data({
+                    studentname: curData.studentName,
+                    studentid: curData.studentId
+                });
+
+                //按钮显示控制
+                bottomBarControl($(ele), curData);
+
+            });
+        } else {
+            //更换或增加
+
+            var $ele = $liList.eq(renderIndex);
+
+            var curData = data;
+
+            var imageSrc = curData.thumbnailSrc.length > 0 ? curData.thumbnailSrc[0].value : '';
+
+            $ele.data({
+                studentid: curData.studentId,
+                studentname: curData.studentName
+            });
+
+            //设置姓名
+            $ele.find('.js_student_name').text(curData.studentName);
+
+            //设置图片
+            $ele.find('.js_com_stat_list_pic').html('');
+
+            $ele.find('.js_com_stat_list_pic').html('<span class="pic-vertical-mc"><img src="' + imageSrc + '" /></span>');
+
+
+
+            //送花按钮设置studentname 和studentid
+            $ele.find('.js_send_flower').data({
+                studentname: curData.studentName,
+                studentid: curData.studentId
+            });
+
+            //按钮显示控制
+            bottomBarControl($ele, curData);
+        }
+    },
+    /**
+     * 渲染放大弹窗的下方缩略图
+     * @param data
+     */
+    renderThumbnail: function (data, index) {
+        var $container = this.$tabView.find('.js_thumbnail_box');
+        var content = '';
+
+        //传入的index索引处的学生id
+        var curSelectedId = data[index].studentId;
+
+        //提取出data中有效的数据
+        var students = data.filter(function (ele, index, array) {
+            return ele.studentId !== '';
+        });
+
+        //拿到新的索引
+        for (var i = 0, len = students.length; i < len; i++) {
+            if (curSelectedId == students[i].studentId) {
+                index = i;
+                break;
+            }
+        }
+
+        students.forEach(function (ele, index, array) {
+            /**
+             * 2016/7/22 因为主观题与手写题的缩略图结构不一致
+             * 故使用动态插入dom
+             */
+
+            //学生id不为空时
+            if (ele.studentId) {
+                //对强制收题时学生作答数据为空时做兼容处理
+                var imageSrc = ele.thumbnailSrc.length > 0 ? ele.thumbnailSrc[0].value : '';
+                //构造dom结构
+                content += ' <li class="js_thumbnail" data-studentid="' + ele.studentId + '"><a href="###" class="slide_a"><span class="js_pic pic-vertical-mc">';
+                content += '<img src="' + imageSrc + '" />';
+                content += '</span> <span class="text_top"> <em class="group" style="display: none"></em><em class="num" style="display: none"></em>';
+                content += '<em class="name js_name">' + ele.studentName + '</em>';
+            }
+
+        });
+
+        //第一个给予选中效果
+        $container.html('').html(content).children().eq(index).addClass('on');
+    },
+    /**
+     * 渲染放大弹窗的大图
+     * @param data
+     * 单个数据 只渲染一个
+     */
+    renderDetail: function (data) {
+        var $container = this.$tabView;
+        var $renderContainer = $container.find('.js_detail_container');
+        //对强制收题时学生作答数据为空时做兼容处理
+        var renderValue = data.detailImageSrc.length > 0 ? (data.detailImageSrc[0].originValue || data.detailImageSrc[0].value) : '';
+
+        //设置名字
+        $container.find('.js_student_name').text(data.studentName);
+
+        //放进img标签
+        $renderContainer.html('').html('<div class="student_screen student_screen_pic_bg"><img src="' + renderValue + '"/></div>');
+
+    },
+    //退出放大界面时调用
+    exitDetailContrast: function () {
+
+    }
+};
+
+
+//重置对比界面的dom
+function resetContrasTView($list) {
+    $list.each(function (index, ele) {
+        //
+        $(ele).data({
+            studentid: '',
+            studentname: ''
+        });
+
+        //设置姓名
+        $(ele).find('.js_student_name').text('');
+
+        //送花按钮设置studentname 和studentid
+        $(ele).find('.js_send_flower').data({
+            studentname: '',
+            studentid: ''
+        });
+
+        $(ele).find('.js_com_stat_list_pic').html('');
+
+    });
+}
+
+
+function bottomBarControl($ele, curData) {
+    //底部按钮显示控制
+    //学生id为空
+    if (curData.studentId === '') {
+        //隐藏放大按钮
+        $ele.find('.js_icon_full').hide();
+        //隐藏更换按钮
+        $ele.find('.js_icon_constrst').hide();
+        //隐藏送花按钮
+        $ele.find('.js_send_flower').hide();
+        //显示增加按钮
+        $ele.find('.js_icon_add').show();
+
+    } else {
+
+        //显示放大按钮
+        $ele.find('.js_icon_full').show();
+        //显示更换按钮
+        $ele.find('.js_icon_constrst').show();
+        //显示送花按钮
+        $ele.find('.js_send_flower').show();
+        //隐藏增加按钮
+        $ele.find('.js_icon_add').hide();
+
+    }
+}
+
+module.exports = NewHandWriteRender;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports) {
+
+/**
+ * Created by Administrator on 2016/7/19.
+ * 主观题对比界面渲染库
+ * 资源 type 有三种 文字 图片 和 音频
+ * string 文字
+ * write  手写图片
+ * image 图片
+ * audio 音频
+ */
+function SubjectivityRender($contrastView, $tabView, basePath) {
+    this.$contrastView = $contrastView; //对比界面
+    this.$tabView = $tabView; //放大界面
+    //this.basePath = basePath;//统计的basePath 用于获取图片资源
+
+    this.audioImgSrc = basePath + '/resources/images/audio.png';
+
+}
+
+SubjectivityRender.prototype = {
+    constructor: SubjectivityRender,
+
+    /**
+     * 渲染对比界面
+     * @param data 数组或者单个数据
+     * 数组 一次性渲染完所有数据
+     * 单个数据 只渲染一个
+     */
+    renderContrastPopup: function (data, renderIndex) {
+        var self = this;
+        var $liList = this.$contrastView.find('.js_student_list > li');
+        var curData, $ele, content;
+
+        if (Array.isArray(data)) {
+            //重置li
+            resetContrasTView($liList);
+
+            $liList.each(function (index, ele) {
+                curData = data[index];
+                $ele = $(ele);
+
+                //按钮显示控制
+                bottomBarControl($ele, curData);
+
+
+                $ele.data({
+                    studentid: curData.studentId,
+                    studentname: curData.studentName
+                });
+
+                //设置姓名
+                $ele.find('.js_student_name').text(curData.studentName);
+
+                //送花按钮设置studentname 和studentid
+                $ele.find('.js_send_flower').data({
+                    studentname: curData.studentName,
+                    studentid: curData.studentId
+                });
+
+                if (curData.studentId) {
+                    //渲染大图
+                    self.renderSingleImage(curData, $ele);
+
+                    //渲染缩略图
+                    self.renderContrastThumbnail(curData, $ele);
+                }
+
+            });
+        } else {
+            //更换或增加
+            $ele = this.$contrastView.find('.js_student_list > li').eq(renderIndex);
+
+            curData = data;
+
+
+            $ele.data({
+                studentid: curData.studentId,
+                studentname: curData.studentName
+            });
+
+            //设置姓名
+            $ele.find('.js_student_name').text(curData.studentName);
+
+            //送花按钮设置studentname 和studentid
+            $ele.find('.js_send_flower').data({
+                studentname: curData.studentName,
+                studentid: curData.studentId
+            });
+
+
+            //渲染大图
+            self.renderSingleImage(curData, $ele);
+
+            //渲染缩略图
+            self.renderContrastThumbnail(curData, $ele);
+
+            //按钮显示控制
+            bottomBarControl($ele, curData);
+        }
+    },
+
+    /**
+     * 渲染对比界面的小缩略图
+     * 独有方法，在renderContrastPopup中调用
+     * @param data 单个学生的数据
+     * @param $ele 需要渲染的li
+     */
+    renderContrastThumbnail: function (data, $ele) {
+
+
+        var self = this;
+        var thumbnails = data.thumbnailSrc;
+        var selectIndex = data.selectIndex; //当前选中的index
+        var $slideBox = $ele.find('.js_stat_slidebox'); //底部缩略图的容器
+        var content = []; //用于构造html
+
+
+
+        //如果不存在答题数据，则直接返回
+        if (thumbnails.length < 1) {
+            //清空容器并返回
+            $slideBox.find('.js_media_box').html('');
+            return;
+        }
+
+
+        thumbnails.forEach(function (value, index, array) {
+
+            //根据资源类型来构造不同的html
+            switch (value.type) {
+                //音频处理
+                case 'audio':
+                    content.push('<li> <a href="###" class="slide_a audio default">');
+                    content.push('<span class="pic-vertical-mc"><span class="play"></span></span>');
+                    // content.push('<img class="imgwh100" src="');
+                    // content.push(self.audioImgSrc);
+                    // content.push('" alt=""><span class="play"></span>');
+                    break;
+                    //适应生生互评文字类型
+                case 'file':
+                    //图片处理
+                case 'write':
+                case 'image':
+                    content.push('<li> <a href="###" class="slide_a">');
+                    content.push('<span class="pic-vertical-mc"><img src="');
+                    content.push(value.value);
+                    content.push('" /></span>');
+                    break;
+                    //文字处理
+                case 'string':
+                default:
+                    content.push('<li> <a href="###" class="slide_a">');
+                    content.push('<p class="view_text">');
+                    content.push(value.value);
+                    content.push('</p>');
+            }
+
+            content.push('</a></li>');
+
+        });
+
+
+        content = content.join("");
+        $slideBox.find('.js_media_box').html('').html(content)
+            .children().eq(selectIndex).addClass('on');
+
+        $slideBox.show();
+    },
+
+    /**
+     * 渲染对比界面的大图
+     * @param data 单个学生的数据
+     * @param index 要渲染的缩略图索引
+     * @param $ele 需要渲染的li
+     */
+    renderSingleImage: function (data, $ele) {
+        //如果不存在答题数据，则直接返回
+        if (data.thumbnailSrc.length < 1) {
+            $ele.find('.js_com_stat_list_pic').html('');
+            return;
+        }
+
+        //适应d类统计需要手写图片排第一个的需求
+        data.thumbnailSrc.sort(function (a, b) {
+            if (a.type === 'write') {
+                return -1;
+            }
+            if (b.type === 'write') {
+                return 1;
+            }
+        });
+
+        var self = this;
+        var content = []; //用于构造html
+        var thumbnail = data.thumbnailSrc[data.selectIndex];
+
+        //根据资源类型来构造不同的html
+        switch (thumbnail.type) {
+            //音频处理
+            case 'audio':
+                content.push('<span class="pic-vertical-mc audio_default"><span class="play"></span></span>');
+                // content.push('<img class="imgwh100" src="');
+                // content.push(self.audioImgSrc);
+                // content.push('" />');
+                break;
+                //适应生生互评文字类型
+            case 'file':
+                //图片处理
+            case 'write':
+            case 'image':
+                content.push('<span class="pic-vertical-mc"><img src="');
+                content.push(thumbnail.value);
+                content.push('" /></span>');
+                break;
+                //文字处理
+            case 'string':
+            default:
+                content.push('<p class="view_text">');
+                content.push(thumbnail.value);
+                content.push('</p>');
+        }
+
+        //将html结构放进去
+        content = content.join("");
+        $ele.find('.js_com_stat_list_pic').html('').html(content);
+    },
+
+    /**
+     * 渲染放大弹窗的下方缩略图
+     * @param data 所有选中的学生
+     */
+    renderThumbnail: function (data, index) {
+        var self = this;
+        var $container = this.$tabView.find('.js_thumbnail_box');
+        var content = '';
+        var selectedThumbnail;
+
+        //主观题特有类
+        //$container.removeClass('student_box').addClass('media_box');
+        $container.addClass('media_box site_sort');
+
+        //传入的index索引处的学生id
+        var curSelectedId = data[index].studentId;
+
+        //提取出data中有效的数据
+        var students = data.filter(function (ele, index, array) {
+            return ele.studentId !== '';
+        });
+
+        //拿到新的索引
+        for (var i = 0, len = students.length; i < len; i++) {
+            if (curSelectedId == students[i].studentId) {
+                index = i;
+                break;
+            }
+        }
+
+        students.forEach(function (ele, index, array) {
+            /**
+             * 2016/7/22 因为主观题与手写题的缩略图结构不一致
+             * 故使用动态插入dom
+             */
+
+            //学生id不为空时,并且有作答数据时进行渲染
+            if (ele.studentId) {
+                selectedThumbnail = ele.thumbnailSrc[ele.selectIndex];
+                //构造dom结构
+                content += ' <li class="js_thumbnail" data-studentid="' + ele.studentId + '">';
+
+                //如果有学生作答数据，才进行渲染
+                if (selectedThumbnail) {
+                    //根据资源类型来构造不同的html
+                    switch (selectedThumbnail.type) {
+                        //音频处理
+                        case 'audio':
+                            // content += '<a href="###" class="slide_a media"><span class="pic"><img class="imgwh100" src="' + self.audioImgSrc + '" alt=""></span><span class="text_top"><em class="name">' + ele.studentName + '</em></span><span class="icon"></span><span class="play"></span></a>';
+                            content += '<a href="###" class="slide_a audio default"><span class="pic-vertical-mc audio_default"><span class="play"></span></span><span class="text_top"><em class="name">' + ele.studentName + '</em></span><span class="icon"></span></a>';
+
+                            break;
+                            //图片处理
+                        case 'write':
+                            content += '<a href="###" class="slide_a write"><span class="pic-vertical-mc"><img src="' + selectedThumbnail.value + '" alt=""></span><span class="text_top"><em class="name">' + ele.studentName + '</em></span><span class="icon"></span> </a>';
+                            break;
+                        case 'file':
+                        case 'image':
+                            content += '<a href="###" class="slide_a picture"><span class="pic-vertical-mc"><img src="' + selectedThumbnail.value + '" alt=""></span> <span class="text_top"><em class="name">' + ele.studentName + '</em></span> <span class="icon"></span></a>';
+                            break;
+                            //文字处理
+                        case 'string':
+                        default:
+                            content += '<a href="###" class="slide_a write"><div class="box_view_text"> <p class="view_text">' + selectedThumbnail.value + '</p></div> <span class="text_top"><em class="name">' + ele.studentName + '</em></span> </a>';
+                    }
+
+                } else {
+                    content += '<a href="###" class="slide_a write"><span class="pic"></span><span class="text_top"><em class="name">' + ele.studentName + '</em></span> </a>';
+                }
+
+                content += '</li>';
+
+            }
+
+        });
+
+        //第一个给予选中效果
+        $container.html('').html(content).children().eq(index).addClass('on');
+    },
+    /**
+     * 渲染放大弹窗的大图
+     * @param data
+     * 数组 一次性渲染完所有数据
+     * 单个数据 只渲染一个
+     */
+    renderDetail: function (data) {
+
+
+        var $container = this.$tabView;
+        var $renderContainer = $container.find('.js_detail_container');
+        var content = ''; //用于构造html
+        var detailImage = data.detailImageSrc[data.selectIndex];
+
+        //设置名字
+        $container.find('.js_student_name').text(data.studentName);
+
+
+        //存在作答数据才做渲染
+        if (detailImage) {
+            //根据资源类型来构造不同的html
+            switch (detailImage.type) {
+                //音频处理
+                case 'audio':
+                    content += '<audio src="' + detailImage.value + '" controls="controls">';
+                    break;
+                    //图片处理
+                case 'file':
+                case 'write':
+                case 'image':
+                    content += '<div class="student_screen student_screen_pic_bg"><img src="' + (detailImage.originValue || detailImage.value) + '" /></div>';
+                    break;
+                    //文字处理
+                case 'string':
+                default:
+                    content += '<p class="pop_text">' + detailImage.value + '</p>';
+            }
+        }
+
+        //放进img标签
+        $renderContainer.html('').html(content);
+
+        //渲染音频
+        renderAudio($renderContainer);
+    },
+    //退出放大界面时需要做的操作
+    exitDetailContrast: function () {
+        var $container = this.$tabView;
+        var renderContainer = $container.find('.js_detail_container')[0];
+
+        //暂停音频
+        renderContainer.querySelector('audio').pause();
+    }
+};
+
+
+//重置对比界面的dom
+function resetContrasTView($list) {
+    $list.each(function (index, ele) {
+        //
+        $(ele).data({
+            studentid: '',
+            studentname: ''
+        });
+
+        //设置姓名
+        $(ele).find('.js_student_name').text('');
+
+        //送花按钮设置studentname 和studentid
+        $(ele).find('.js_send_flower').data({
+            studentname: '',
+            studentid: ''
+        });
+
+        //清空较大的图
+        $(ele).find('.js_com_stat_list_pic').html('');
+
+        //清空缩略图
+        $(ele).find('.js_stat_slidebox .js_media_box').html('');
+
+    });
+}
+
+
+function bottomBarControl($ele, curData) {
+    //底部按钮显示控制
+    //学生id为空
+    if (curData.studentId === '') {
+        //隐藏放大按钮
+        $ele.find('.js_icon_full').hide();
+        //隐藏更换按钮
+        $ele.find('.js_icon_constrst').hide();
+        //隐藏送花按钮
+        $ele.find('.js_send_flower').hide();
+        //显示增加按钮
+        $ele.find('.js_icon_add').show();
+
+    } else {
+
+        //显示放大按钮
+        $ele.find('.js_icon_full').show();
+        //显示更换按钮
+        $ele.find('.js_icon_constrst').show();
+        //显示送花按钮
+        $ele.find('.js_send_flower').show();
+        //隐藏增加按钮
+        $ele.find('.js_icon_add').hide();
+
+    }
+}
+
+
+//渲染音频
+function renderAudio($container) {
+    var mediaOption = {
+        autoAdaptSize: true,
+        mutuallyExclusive: true,
+        containerId: '',
+        returnInstances: true,
+        mediaPreload: true,
+        style: '',
+        img: {
+            render: false //是否渲染img标签
+        },
+        video: {
+            render: false,
+            width: 1000,
+            height: 490,
+            supportFullscreen: false,
+            showPlayBtnInVideo: true,
+            showFullscreenBtn: false //是否显示全屏按钮,supportFullscreen=false时有效,组件内部会判断如果当前环境不支持全屏时，则这个参数无效
+        },
+        audio: {
+            render: true,
+            width: $container.width() - 60,
+            height: $container.height() - 5 //自定义高度,默认180
+        }
+    };
+
+    var m = NDMediaPlayer.render($container[0], mediaOption);
+
+    for (var key in m) {
+        m[key].mediaPlay();
+    }
+}
+module.exports = SubjectivityRender;
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/**
+ *对比界面逻辑控制
+ */
+
+function ContrastLogic(presenter, parent) {
+    this.presenter = presenter;
+
+    this.parent = parent;
+
+    this.statService = presenter.statisticsService;
+
+
+    this.$contrastPopup = presenter._utils.$contrastPopup; //对比界面弹窗
+
+    this.$tabPopup = presenter._utils.$tabPopup; //放大窗口
+
+    this.$confirmHtml = presenter._utils.$confirmHtml; //更换作品时的确定，取消
+
+    this.viewModel = null; //数据模型
+
+    this.questionInfo = null;
+
+    this.changedStu = null; //会被更换的学生
+
+    this.render = null; //用于渲染对比界面的render
+
+    this.init();
+}
+
+ContrastLogic.prototype = {
+    constructor: ContrastLogic,
+
+    //初始化
+    init: function () {
+
+        this.viewModel = new ViewModel();
+
+        this.eventBind();
+    },
+    //根据questionType这只渲染的render
+    setRender: function () {
+        var view1 = this.$contrastPopup;
+        var view2 = this.$tabPopup;
+        var type, basePath;
+
+        //获取当前题目类型，根据题目类型使用不同的render
+        this.questionInfo = this.statService.getCurrentState();
+        //basePath = this.statService.getBasePath();//获取basePath 用于设置音频图片
+        type = this.questionInfo.questionType.toLowerCase();
+
+        switch (type) {
+            case 'freecombination':
+                //新手写
+            case 'newhandwrite':
+                // 填色游戏
+            case 'fillcolor':
+                var NewHandWriteRender = __webpack_require__(3);
+                this.render = new NewHandWriteRender(view1, view2);
+                break;
+                //拼图题需要传入questionUrl
+            case 'graphicgapmatch':
+                var GraphicGapMatchRender = __webpack_require__(2);
+                this.render = new GraphicGapMatchRender(view1, view2, this.questionInfo.questionUrl);
+                break;
+                //主观题,需要传入统计的basePath
+            case 'subjectivity':
+                // this.render = new SubjectivityRender(view1,view2,basePath);
+                var SubjectivityRender = __webpack_require__(4);
+                this.render = new SubjectivityRender(view1, view2, this.presenter.basePath);
+                break;
+                // 作文提纲题
+            case 'compositionoutline':
+                var CompositionOutlineRender = __webpack_require__(1);
+                this.render = new CompositionOutlineRender(view1, view2);
+                break;
+            default:
+                console.log('default');
+        }
+    },
+    //进入对比界面
+    enterContrast: function (selectedStu) {
+        //设置render
+        this.setRender();
+
+        //显示对比界面
+        this.showContrastPopup(true);
+
+        //设置对比界面的数据
+        this.setStudentInfo(selectedStu);
+
+    },
+
+    //事件绑定
+    eventBind: function () {
+        var self = this;
+        //对比界面缩略图点击事件
+        this.$contrastPopup.on('click', '.js_media_box li', function () {
+            //选中效果
+            $(this).addClass('on').siblings().removeClass('on');
+
+            var imageIndex = $(this).index();
+            var $parentLi = $(this).parents('.js_contrast_list');
+            var studentIndex = $parentLi.index();
+            var curStu = self.viewModel.selectedStu[studentIndex];
+
+            //这个学生当前选中第几张图片
+            curStu.selectIndex = imageIndex;
+
+            self.render.renderSingleImage(curStu, $parentLi);
+        });
+
+        //点击后显示放大窗口
+        this.$contrastPopup.on('click', '.js_icon_full', function () {
+            //获取当前点击到的学生id
+            var studentId = $(this).parents('.js_contrast_list').data('studentid');
+
+            //弹窗默认显示该学生
+            self.showTabPopup(true, studentId);
+        });
+
+        //关闭放大窗口
+        this.$tabPopup.on('click', '.js_close_tap', function () {
+            self.showTabPopup(false);
+        });
+
+        //关闭对比界面
+        this.$contrastPopup.on('click', '.js_contrast_close', function () {
+            self.exitContrast();
+        });
+
+        //放大窗口缩略图点击事件
+        this.$tabPopup.on('click', '.js_thumbnail', function () {
+            var stuId = $(this).data('studentid');
+
+            $(this).addClass('on').siblings().removeClass('on');
+
+            self.tabClickHandler(stuId);
+
+        });
+
+        //对比界面缩略图左右箭头翻页滚动事件，主观题中会有
+        this.$contrastPopup.on('click', '.js_thumbnail_next,.js_thumbnail_prev', function (e) {
+            var direction = $(this).hasClass('js_thumbnail_prev') ? 'left' : 'right';
+            var $scrollEle = $(this).parent().find('.js_media_box');
+
+            tabScroll($scrollEle, direction);
+        });
+
+        //点击更换作品或者添加
+        this.$contrastPopup.on('click', '.js_icon_constrst,.js_icon_add', function (e) {
+            var parentLi = $(this).parents('.js_contrast_list'),
+                curStu = {
+                    studentId: parentLi.data('studentid'),
+                    studentName: parentLi.data('studentname'),
+                    index: parentLi.index()
+                };
+
+            //change 更换模式 add 增加模式
+            var type = $(this).hasClass('js_icon_constrst') ? 'change' : 'add';
+
+            self.enterChangePanel(curStu, type);
+        });
+
+        //更换作品界面的底部确定按钮
+        this.$confirmHtml.on('click', '.js_confirm', function () {
+            self.confirmChangeHandler();
+        });
+
+        //更换作品界面的底部取消按钮
+        this.$confirmHtml.on('click', '.js_cancel', function () {
+            //取消更换
+            self.cancelChangeHandler();
+            //显示对比界面
+            self.showContrastPopup(true);
+        });
+
+
+    },
+
+    //显示对比弹窗
+    showContrastPopup: function (show) {
+        if (show) {
+            this.presenter._utils.$view.show();
+            this.$contrastPopup.show();
+            // this.presenter._utils.$mask.show();
+        } else {
+            this.presenter._utils.$view.hide();
+            this.$contrastPopup.hide();
+            // this.presenter._utils.$mask.hide();
+        }
+    },
+
+    //显示或隐藏放大弹窗
+    showTabPopup: function (show, id) {
+        var self = this,
+            curSelectedStu = self.viewModel.curSelectedStu,
+            selectedStu = self.viewModel.selectedStu;
+
+        var defaultStudent, showIndex; //默认要显示的学生
+
+        if (show) {
+            //显示放大界面前，请求大图数据
+            self.getDetailImages();
+
+            //显示放大界面
+            self.$tabPopup.show();
+
+            //拿到默认要显示的学生的数据
+            //缩略图初始的选中效果索引
+            for (var i = 0, len = selectedStu.length; i < len; i++) {
+                if (selectedStu[i].studentId == id) {
+                    defaultStudent = selectedStu[i];
+                    showIndex = i;
+                    break;
+                }
+            }
+
+            //要渲染的学生数据
+            curSelectedStu.studentId = defaultStudent.studentId;
+            curSelectedStu.studentName = defaultStudent.studentName;
+            curSelectedStu.detailImageSrc = defaultStudent.detailImageSrc;
+            curSelectedStu.thumbnailSrc = defaultStudent.thumbnailSrc;
+            curSelectedStu.selectIndex = defaultStudent.selectIndex;
+            //渲染大图
+            self.render.renderDetail(curSelectedStu);
+
+            //渲染缩略图
+            self.render.renderThumbnail(selectedStu, showIndex);
+
+
+        } else {
+            self.$tabPopup.hide();
+            self.render.exitDetailContrast();
+        }
+    },
+    //进入更换界面，更换对比的学生
+    enterChangePanel: function (curStu, type) {
+        var self = this;
+
+        //对学生信息合法性做一次检查
+        if (!self.checkStudentId(curStu)) {
+            throw new Error('student info is illegal!');
+            return;
+        }
+
+        if (type === 'add') {
+            curStu = null;
+        }
+
+
+        //隐藏对比界面
+        self.showContrastPopup(false);
+
+        //隐藏选择界面
+        self.statService.hideInjectPanel('bottom', 'contrast_select');
+        self.statService.hideInjectPanel('bottom', 'contrast_exit');
+
+        //显示重新选择界面
+        self.statService.showInjectPanel('bottom', 'contrast_change', true);
+
+        //进入重新选择模式
+        self.statService.enterSelectMode({
+            resetSelect: true,
+            presenterId: 'AnswerContrast'
+        }, curStu);
+    },
+    //点击更换作品后，对学生id的检查
+    checkStudentId: function (curStu) {
+        var existedId = this.viewModel.selectedStu[curStu.index].studentId;
+        if (existedId == curStu.studentId) {
+            //记录被更换的学生
+            this.changedStu = curStu;
+
+            return true;
+        }
+
+        return false;
+    },
+    //更换界面确定按钮事件处理
+    confirmChangeHandler: function () {
+        //获取当前选中的学生
+        var self = this,
+            reselectedStu = this.statService.getResetSelected(),
+            curSelectedStu = null;
+
+        if (Object(reselectedStu) === reselectedStu && reselectedStu.studentId) {
+            curSelectedStu = this.viewModel.selectedStu[this.changedStu.index];
+
+            curSelectedStu.studentId = reselectedStu.studentId;
+            curSelectedStu.studentName = reselectedStu.studentName;
+            curSelectedStu.thumbnailSrc = reselectedStu.data;
+            curSelectedStu.detailImageSrc = '';
+            curSelectedStu.selected = false;
+            curSelectedStu.selectIndex = reselectedStu.selectSmallIndex || 0;
+
+            //更换后获取大图
+            this.getDetailImages();
+
+            //显示对比界面
+            self.showContrastPopup(true);
+
+            //获取成功后渲染当前更改的li
+            self.render.renderContrastPopup(curSelectedStu, self.changedStu.index);
+        } else {
+            //显示对比界面
+            self.showContrastPopup(true);
+        }
+    },
+    //取消更换
+    cancelChangeHandler: function () {
+        //显示对比界面
+        this.showContrastPopup(true);
+        //统计选择界面重置
+        this.statService.resetSelectedItems();
+    },
+    //设置要显示的内容
+    setStudentInfo: function (selectedStu) {
+        var self = this;
+
+        //如果选中的人数少于4个，则构造空的数组元素
+        while (selectedStu.length < 4) {
+            selectedStu.push({
+                studentId: '',
+                studentName: '',
+                data: [{
+                    value: ''
+                }]
+            });
+        }
+
+
+        //放大窗口显示的数据
+        selectedStu.forEach(function (value, index, array) {
+            self.viewModel.selectedStu.push({
+                studentId: value.studentId,
+                studentName: value.studentName,
+                thumbnailSrc: value.data,
+                detailImageSrc: [],
+                selected: false, //当前是否被选中
+                selectIndex: value.selectSmallIndex || 0 //主观题被选中的缩略图索引
+            });
+        });
+
+        //渲染对比界面
+        self.render.renderContrastPopup(self.viewModel.selectedStu);
+
+    },
+    //tab点击效果设置
+    tabClickHandler: function (id) {
+        var self = this,
+            curSelectedStu = self.viewModel.curSelectedStu;
+
+
+        self.viewModel.selectedStu.forEach(function (value, index, array) {
+
+            //有可能是字符串或者数字
+            if (value.studentId == id) {
+                value.selected = true;
+
+                //设置当前选中
+                curSelectedStu.studentId = value.studentId;
+                curSelectedStu.studentName = value.studentName;
+                curSelectedStu.detailImageSrc = value.detailImageSrc;
+                curSelectedStu.thumbnailSrc = value.thumbnailSrc;
+                curSelectedStu.selectIndex = value.selectIndex;
+
+                self.render.renderDetail(curSelectedStu);
+            }
+
+        });
+    },
+
+    /**
+     * 获取当前选中的学生的作答大图
+     */
+    getDetailImages: function () {
+        var self = this,
+            selectedStu = this.viewModel.selectedStu;
+
+
+        //遍历一遍已选中的学生
+        selectedStu.forEach(function (value, index, array) {
+            //如果不存在大图数据,保该学生id
+            if (value.studentId !== '' && value.detailImageSrc.length === 0) {
+                value.detailImageSrc = value.thumbnailSrc.slice();
+                //适应d类统计需要手写图片排第一个的需求
+                value.detailImageSrc.sort(function (a, b) {
+                    if (a.type === 'write') {
+                        return -1;
+                    }
+                    if (b.type === 'write') {
+                        return 1;
+                    }
+                });
+            }
+        });
+    },
+    /**
+     * 递归调用的函数
+     * 获取作答的大图
+     */
+    getImageById: function (students, $deferred) {
+        if (students.length <= 0) {
+            $deferred.resolve();
+            return;
+        }
+
+        var self = this;
+
+        self.statService.getAnswerDetailById(students[0]).done(function (data) {
+            //异步获取到学生的数据
+
+
+            var stu = self.viewModel.selectedStu.filter(function (value, index, array) {
+                return value.studentId == students[0];
+            })[0];
+
+            //适应d类统计需要手写图片排第一个的需求
+            stu.detailImageSrc = data.answerData.data.sort(function (a, b) {
+                if (a.type === 'write') {
+                    return -1;
+                }
+                if (b.type === 'write') {
+                    return 1;
+                }
+            });
+
+            //删除第一个元素
+            students.shift();
+
+            self.getImageById(students, $deferred);
+        });
+    },
+
+    //退出对比
+    exitContrast: function () {
+
+        this.parent.exitContrast();
+
+        this.showContrastPopup(false); //隐藏对比界面
+        this.viewModel.selectedStu.length = 0; //选中学生移除
+    }
+
+};
+
+/**
+ * 2016年7月19日更改
+ * 去掉ko绑定，原因，多个题型的支持，数据格式以及渲染方式不一样
+ * @constructor
+ */
+function ViewModel() {
+    var self = this;
+
+    //已选中的学生
+    self.selectedStu = [];
+
+    //当前点击选中的学生
+    self.curSelectedStu = {
+        studentId: '',
+        studentName: '',
+        detailImageSrc: ''
+    };
+
+}
+
+function tabScroll($scrollEle, direction) {
+    var width = $scrollEle.width();
+    var scrollDistance = direction === 'left' ? -width : width;
+
+    $scrollEle.stop().animate({
+        'scrollLeft': $scrollEle.scrollLeft() + scrollDistance
+    }, 700);
+}
+
+module.exports = ContrastLogic;
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/*#DEBUG=false*/
+
+var SelectLogic = __webpack_require__(0);
+
+var Presenter = BasicPresenter.extend({
+    metaInfo: {
+        name: "AnswerContrast",
+        type: "presenterController",
+        subType: "AnswerClassStatisticsExtend"
+    },
+    /**
+     * Presenter的初始化方法
+     * @private
+     */
+    $init: function () {
+        this._super();
+
+        //D类统计的service
+        this.statisticsService = null;
+
+        //用于国际化的语言设置deferred
+        this.$translateDeferred = $.Deferred();
+    },
+    /**
+     * Presenter对外暴露的方法
+     */
+    _service_: {
+        constructor: function (parent) {
+            this.parent = parent;
+        },
+
+        //国际化语言处理
+        setLocationProperties: function (i18nModel) {
+            this.parent.i18nModel = i18nModel;
+            this.parent.$translateDeferred.resolve();
+        },
+
+        /**
+         * 在统计presenter run的时候会调用此方法完成自己底部view的注入
+         * @param topPanel 顶部panel jQuery对象
+         * @param bottomPanel 底部panel jQuery对象
+         */
+        injectLayout: function (topPanel, bottomPanel) {
+            var self = this;
+            //获取到底部选择界面模板内容
+            self.parent._utils.promise = $.get(this.parent.basePath + 'resources/templates/selectTemplate.html', function (data) {
+                var wrapper = document.createElement('div'),
+                    $selectHtml, $confirmHtml, $exitHtml, $headerTip;
+
+                wrapper.innerHTML = data;
+                //选择界面的dom
+                $selectHtml = $(wrapper).find('.com_bottom_contrast');
+                self.parent._utils.$selectHtml = $selectHtml;
+                //选择界面退出对比按钮
+                // $exitHtml = $(wrapper).find('.com_part_toolbar');
+                $exitHtml = $(wrapper).find('.ndui-tool-box');
+                self.parent._utils.$exitHtml = $exitHtml;
+                //更换作品界面的确认和取消 dom
+                $confirmHtml = $(wrapper).find('.com_bottom_control');
+                self.parent._utils.$confirmHtml = $confirmHtml;
+
+                //顶部提示
+                $headerTip = $(wrapper).find('.title_tips');
+                self.parent._utils.$headerTip = $headerTip;
+
+                topPanel.append($headerTip);
+                bottomPanel.append($selectHtml).append($exitHtml).append($confirmHtml);
+            });
+        },
+        //在这里拿到D类统计presenter的service对象，用于后续的隐藏当操作
+        setStatisticsService: function (service) {
+            if (service && this.parent.statisticsService === null) {
+                this.parent.statisticsService = service;
+            }
+        }
+    },
+    getService: function () {
+        this._service_.constructor(this);
+        return this._service_;
+    },
+    /****以下开始为icPlayer的生命周期方法*****/
+    run: function (view, model) {
+        var self = this;
+        this._utils.$view = $(view);
+        this._utils.$view.hide();
+
+        //向统计的底部按钮栏，注入对比按钮
+        self._injectContrastBtn();
+
+        ////对比弹窗的注入
+        //self._injectPopupHtml();
+
+        //注入完底部html后
+        self._afterInjectHtml();
+        self._bindEvent();
+    },
+    pageShow: function () {
+
+    },
+    pageLeave: function () {
+
+    },
+    destroy: function () {
+
+    },
+    /**如果不需要处理icplayer的状态恢复事件, 请将以下两个方法删除掉**/
+    getState: function () {
+
+    },
+    setState: function (state, options) {
+
+    },
+
+    /****以下开始为Presenter的私有方法*****/
+    _bindEvent: function () {
+        var self = this;
+
+        //对比界面退出对比按钮事件绑定
+        // this._utils.$view.on('click','.btn_exit',function(){
+        //     console.log('退出对比');
+        //     //self._exitContrast();
+        // });
+        this._utils.$view.on('click', '.js_send_flower', function () {
+            var studentId = $(this).data('studentid');
+            var studentName = $(this).data('studentname');
+            if (studentId && studentName) {
+                if (typeof PresenterFlowerTip === 'function') {
+                    PresenterFlowerTip([studentName])
+                };
+                self.$dispatchEvent('Stuff', PresenterEventType.PPT_NATIVE_EVENT, {
+                    source: 'AnswerClassStatis',
+                    item: 'FLOWER',
+                    value: {
+                        "num": 1,
+                        userIds: [studentId]
+                    }
+                });
+            }
+        });
+    },
+    _unbindEvent: function () {
+
+    },
+    /**
+     *在注入完底部html后，执行此方法
+     * 数据绑定
+     * 事件绑定
+     */
+    _afterInjectHtml: function () {
+        var self = this;
+        //service中html注入完成后再进行数据绑定
+        self._utils.promise.done(function () {
+
+            self._injectPopupHtml().done(function () {
+                //选择界面逻辑代码
+                self._utils.selectService = new SelectLogic(self);
+            });
+
+        });
+    },
+    //注入底部对比按钮
+    _injectContrastBtn: function () {
+        var self = this;
+        if (this.statisticsService !== null) {
+            this.statisticsService.injectToolbarItem([{
+                identify: 'answerContrast',
+                type: 'SimpleButton',
+                text: self.i18nModel["contrast"],
+                class: 'square_tool_exit square_tool_contrast',
+                events: [{
+                    event: 'click',
+                    fn: function () {
+                        console.log('点击到对比按钮');
+                        //进入选择模式,option 提供presenterId 标识
+                        self.statisticsService.enterSelectMode({
+                            presenterId: 'AnswerContrast'
+                        });
+
+                        self.statisticsService.plugin.enter('AnswerContrast');
+
+                        //显示顶部提示
+                        //'peerreview_contrast_content'为注入到d类统计的css类名
+                        self.statisticsService.showInjectPanel('top', 'contrast_header_tip', 'peerreview_contrast_content', false);
+
+                        //显示底部选择界面
+                        self.statisticsService.showInjectPanel('bottom', 'contrast_select', true);
+                        self.statisticsService.showInjectPanel('bottom', 'contrast_exit', true);
+
+                    }
+                }],
+                callback: function (toolbarItem) {
+                    self._utils.$toolbarItem = $(toolbarItem);
+                }
+            }], 19);
+            //19 用于d类统计底部按钮排序
+        }
+    },
+    /**
+     * 注入对比界面的弹窗html代码
+     * 对比 contrastTemplate.html
+     * 放大tab tabTemplate.html
+     */
+    _injectPopupHtml: function () {
+        var self = this,
+            deferred = $.Deferred(),
+            contrastHtmlPath = this.basePath + 'resources/templates/contrastTemplate.html',
+            tabHtmlPath = this.basePath + 'resources/templates/tabTemplate.html';
+
+        //从统计service获取弹窗
+        var find = self.statisticsService.findElementBySelector || self._utils.$view.find.bind(self._utils.$view);
+        self._utils.$contrastPopup = find('.js_contrst_pop');
+        self._utils.$tabPopup = find('.js_contrst_detail_pop');
+        // self._utils.$mask = find('.js_com_pop_mask');
+
+        //对比界面html
+        $.get(contrastHtmlPath, function (data) {
+            self._utils.$contrastPopup.find('.js_pop_wrap').html(data);
+        }).done(function () {
+            //tab窗口界面
+            $.get(tabHtmlPath, function (data) {
+                self._utils.$tabPopup.find('.js_pop_wrap').html(data);
+
+                //国际化处理
+                self._initI18n();
+
+                deferred.resolve();
+            });
+        });
+
+        return deferred;
+    },
+    //所有用到的需要保存的变量都挂在这下面
+    _utils: {
+        promise: null, //service里注入html时的返回的promise对象
+        $selectHtml: null, //注入到底部panel的dom结构，选择界面
+        $exitHtml: null, //选择界面退出对比按钮
+        $confirmHtml: null, //注入到底部的dom结构，确认和取消按钮
+        $contrastPopup: null, //对比弹窗
+        $tabPopup: null, //放大弹窗
+        $mask: null, //弹窗后面的遮罩
+        toolbarItem: null, //对比按钮点击后的回调函数参数值
+        lowerLimit: 2, //对比最少要选中两个
+        upperLimit: 4, //最多选择4个
+        detailAnswerData: null, //对比界面用到的详细作答数据
+        selectService: null,
+        studentsInfo: null //当前的所有学生的信息
+    },
+
+    //国际化处理
+    _initI18n: function () {
+        var self = this;
+
+        self.$translateDeferred.done(function () {
+            var i18nModel = self.i18nModel;
+
+
+            //顶部提示
+            self._utils.$headerTip.text(i18nModel["select_2_to_4_student"]);
+
+            //底部
+            self._utils.$selectHtml.find(".js_add_student").text(i18nModel["click_to_add"]);
+            self._utils.$selectHtml.find(".js_contrast").text(i18nModel["contrast"]);
+            self._utils.$selectHtml.find(".js_clear").text(i18nModel["cleanup"]);
+            self._utils.$exitHtml.find(".js_exit_contrast").text(i18nModel["exit_contrast"]);
+
+            //提交 取消
+            self._utils.$confirmHtml.find(".js_submit").text(i18nModel["submit"]);
+            self._utils.$confirmHtml.find(".js_close").text(i18nModel["close"]);
+
+            //关闭
+            //self._utils.$contrastPopup.find(".js_close").text(i18nModel["close"]);
+            //self._utils.$tabPopup.find(".js_close").text(i18nModel["close"]);
+
+            // self._utils.$contrastPopup.find(".js_close").text("");
+            // self._utils.$tabPopup.find(".js_close").text("");
+        });
+
+    }
+});
+
+module.exports = function () {
+    return new Presenter();
+}
+
+/***/ })
+/******/ ]);]]>
+
+</presenter>
+
+
+<resources>
+
+<file src='./resources/images/audio.png' />
+<file src='./resources/templates/contrastTemplate.html' />
+<file src='./resources/templates/selectTemplate.html' />
+<file src='./resources/templates/tabTemplate.html' />
+
+
+</resources>
+
+</addon>

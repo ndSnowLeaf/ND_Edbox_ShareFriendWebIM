@@ -1,0 +1,12 @@
+<div class="shape_module" style="color: rgb(255, 255, 255);" >
+    <div class="shape_container" draw-shape="module" page-module-draggable ng-mousedown="setCurrentEditorIfNoText($event,'shape')"></div>
+    <div class="shape_point" ng-if="module.template.line" ng-repeat="point in module.data.points" shape-point="point" module="module" draw="drawShape()">
+    </div>
+    <div class="shape_editor" slides-html-editor ng-style="module.shape.getTextStyle()"
+         ng-model="module.html" ng-focus="setCurrentEditor($event,'shape_text')"
+         on-editor-created="setEditor(editor)" on-mouse-down="cancelToolbar()"  ng-if="!module.template.disable_text"></div>
+    <div class="fct_lock_tips " ng-if="needConfirmToFix()">
+        <div class="fct_lock_tips_bg"></div>
+        <span class="fct_lock_tips_text">不需要学生拖动操作的元素请设为锁定位置</span>
+    </div>
+</div>

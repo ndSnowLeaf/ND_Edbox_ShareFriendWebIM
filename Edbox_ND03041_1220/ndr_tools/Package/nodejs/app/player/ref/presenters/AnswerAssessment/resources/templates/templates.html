@@ -1,0 +1,45 @@
+<div class="ndui-tool-box" data-identify="assessment-buttons" style="display: none;">
+    <ul class="ndui-tool-list ndui-tool-right">
+        <li class="ndui-tool-cell">
+            <a class="ndui-btn-square square_view_progress" href="javascript:;" data-mode="show_progress"
+               data-bind="click: onShowProgress">
+                <i class="ndui-btn-pic"></i>
+                <em class="ndui-btn-text" data-bind="text: labelBtnProgress">查看进度</em>
+            </a>
+        </li>
+        <li class="ndui-tool-cell" data-mode="stop_assessment" data-bind="click: onStopAssessment">
+            <a class="ndui-btn-square square_end_answer" href="javascript:;">
+                <i class="ndui-btn-pic"></i>
+                <em class="ndui-btn-text" data-bind="text: labelBtnStop">结束互评</em>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div class="com_tab_seleted_box" data-identify="assessment-star-tabs" data-bind="foreach: starTabs" style="display: none;"><a href="javascript:;" class="btn_tab" data-bind="click: $parent.onClickItem, css: {on: $parent.currentTab() == $data}">
+        <span class="tab_filter_title"><!--ko text: name--><!--/ko--><i data-bind="visible: isStar"></i></span>
+        (<span class="tab_filter_num" data-bind="text: count"></span><!--ko text: $parent.labelPerson--><!--/ko-->)
+</a></div>
+
+<!--<div class="com_layout_header" data-identify="assessment-progress" style="display: none;">-->
+    <!--<div class="com_time top_time"><label>互评时间：</label><span class="time_m"><em>0</em>分</span><span class="time_s"><em>4</em>秒</span>-->
+    <!--</div>-->
+    <!--<div class="upload"><label>提交人数：</label><span class="num"><em class="now top_count">&#45;&#45;/&#45;&#45;</em></span></div>-->
+<!--</div>-->
+
+<div data-identify="assessment-progress" style="display: none;">
+    <div class="com_time">
+        <div class="time_default ">
+            <b class="time_text _label_time">互评时间：</b>
+            <span class="time_m"><em>00</em></span>
+            <b class="time_text _label_time_m">分</b>
+            <i>:</i>
+            <span class="time_s"><em>00</em></span>
+            <b class="time_text _label_time_s">秒</b>
+        </div>
+    </div>
+    <div class="upload">
+		<b class="upload_text">提交人数：</b>
+		<span class="num">--</span>/<label class="_amount">--</label>
+	</div>
+</div>

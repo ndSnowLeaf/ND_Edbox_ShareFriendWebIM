@@ -1,0 +1,73 @@
+<style>.llkguide {
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        height: 90%;
+        z-index: 10;
+    }
+
+    .llkguide .innerpane {
+        width: 500px;
+        display: inline-block;
+        text-align: left;
+        margin-top: 10%;
+        position: relative;
+    }
+
+    .llkguide .innerpane > p {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .llkguide ul {
+        overflow: hidden;
+        list-style: none;
+        margin-top: 15px;
+    }
+
+    .llkguide li {
+        margin: 0 40px 0 0;
+        float: left;
+    }
+
+    .llkguide li img {
+        border: 1px solid transparent;
+        border-radius: 10px;
+    }
+
+    .llkguide li p {
+        font-size: 17px;
+        line-height: 36px;
+        text-align: center;
+    }
+
+    .llkguide li:hover img {
+        border: 1px solid #138ecb;
+    }
+
+    .llkguide li:hover p {
+        color: #138ecb;
+    }
+
+    .llkguide .langbox {
+        width: 206px;
+        height: 206px;
+        line-height: 206px;
+        text-align: center;
+        background-color: #F0EFEF;
+        border: 1px solid #F0EFEF;
+        border-radius: 10px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .llkguide .langbox span {
+        width: 100%;
+        height: 100%;
+        display: inline-block;
+        background: url("interaction/magicbox/assets/images/langlist.png") no-repeat center center;
+    }
+
+    .llkguide .langbox:hover {
+        border-color: #138ecb;
+    }</style><div class="exam_wood" ng-hide="isloadingData"><div class="com_layout com_layout_large"><div class="com_lay_main"><div class="com_lay_header"><new-time-box></new-time-box><div class="com_lay_toptool"><!--<a href="javascript:void(0);" class="com_u_btn1" translate='app.submit.label'></a>--></div></div><div class="com_lay_contain"><div class="com_lay_mboard"><div class="com_lay_boardtit"><h2 class="com_u_boardtit"><textarea new-edit-box default-title-setting="defaultTitleSetting" title="model.title" max-size="24" max-length="70" class="tit ng-isolate-scope ng-pristine ng-valid" placeholder="{{'app.placeholder.title' | translate }}" rows="2" style="overflow: hidden" ng-model="model.title"></textarea><!--此处建议使用p标签配合contenteditable属性的形式，也可换成input--></h2></div><div class="llkguide" ng-if="showGuide" ng-hide="isloadingData"><div class="innerpane"><p translate="magic.language.selection"></p><hr><ul><li ng-click="setQuestionLang(LANGUAGE.CHINESE);"><div class="langbox"><span translate="magic.language.chinese"></span></div></li><li ng-click="setQuestionLang(LANGUAGE.ENGLISH);"><div class="langbox"><span translate="magic.language.english"></span></div></li></ul></div></div><div class="com_lay_board" ng-if="!showGuide" ng-mouseover="mouseover($event)" ng-mouseup="mouseup($event)"><!--正文--><div class="com_m_sideboard_1 com_grid_5 manage_right"><!--右面板宽度对应类名：com_grid_0、com_grid_1、com_grid_2 ~ com_grid_10 分别表示：无右侧面板、宽度为10%、20% ~ 100% --><div class="com_m_sidehead"><span class="manage_right_tit">{{'magicbox.title.tip' | translate }}</span><!--if 有标题的话写在这儿--></div><div class="com_m_sidecon"><!-- 数字超过这里添加.full类 --><ul><li ng-repeat="item in wordTips" ng-class="{'correct_x':item.selected && item.direction=='horizontal'&& item.actived, 'correct_y':item.selected && item.direction=='vertical' && item.actived}" ng-click="activeTipBox(item, $event);" ng-keypress="saveTip($event, item);" ng-mouseover="tipOnOver(item);" ng-mouseout="tipOnOut(item);"><span class="word"><em>{{$index + 1}}.</em>{{item.word}}</span> <a class="delete" ng-click="removeTip($event, item, $index);"></a> <span class="synop" ng-show="item.actived"><input type="text" ng-blur="tipOnBlur(item);" ng-model="item.hint" text-bytes-limit="60" placeholder="{{'magicbox.tip_placeholder' | translate}}"> </span><span class="synop" ng-show="!item.actived">{{item.hint}}</span></li></ul></div></div><div class="com_m_mainboard_1 manage_left cellMiddle" onselectstart="return!1"><ul class="wordboard" ng-class="typebox" ng-keydown="keydownOnBoard($event);" ng-mousedown="mousedown($event)"><!-- 5、6格用.largeBox,7、8格用.normalBox,9、10格用.smallBox --><li class="clearfix wordboard"><div class="wordBox delete" ng-repeat="col in rows[0] track by $index"><a class="delete_icon" title="{{'magicbox.delete_la_row' | translate}}" ng-click="removeCol($event, $index);" ng-if="$index > 4"></a></div></li><li class="clearfix wordshow" ng-repeat="row in rows track by $index"><div class="wordBox" ng-click="activeWordBox(item, $event)" ng-mouseleave="mouseleave($event, item)" ng-repeat="item in row track by $index" ng-class="{'on':item.actived, 'ed_x':item.selectedH || item.forNewtipH, 'ed_y':item.selectedV || item.forNewtipV, 'ed_fix':item.duplicated }" boxx="{{item.x}}" boxy="{{item.y}}"><span class="horizontalIndex" ng-if="item.horizontalIndex">{{item.horizontalIndex}}</span> <span class="verticalIndex" ng-if="item.verticalIndex">{{item.verticalIndex}}</span> <span class="word" ng-show="!item.actived">{{item.char}}</span> <input type="text" ng-show="item.actived" ng-model="item.char" ng-trim="false" ng-blur="blurOnBox($event, item);" ng-change="changeOnBox($event, item);"></div><div class="wordBox deleBox" ng-if="$index > 4"><a class="delete_icon" title="{{'magicbox.delete_la_row' | translate}}" ng-click="removeRow($event, item, $index);"></a></div></li></ul></div></div></div></div></div><foot-tool description-id="'description-id'" is-simple-mode="false" model="model" encode-data="encodeData" decode-data="decodeData" valid-data="validPostData" api-version="v2"></foot-tool><!--  题型秒速模板 --><div style="display:none" id="description-id"><a href="javascript:;" class="mainlink"><ins></ins> <span translate="app.topic.title"></span></a><div class="toolpop"><div class="popheader"><h2 class="poptit" translate="magicbox.topic.lian_titile"></h2></div><div class="popbody"><question-guide image-root="interaction/magicbox/assets/guide" image-prefix="mfh" image-suffix=".jpg" image-amount="5" auto-switch="true"></question-guide><p class="introtxt" translate="magicbox.topic.text"></p></div><div class="popfoot"><a href="javascript:;" class="btn btn_submit" ng-click="$parent.hide()">{{'magicbox.topic.know' | translate}}</a></div></div></div></div></div><error-tip error-data="errorModel"></error-tip>

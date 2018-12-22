@@ -1,0 +1,978 @@
+<?xml version='1.0' encoding='UTF-8'?><addon id="templateid"><properties/><dependencies><jsDependency><javaScript name="basicPresenter" version="1.0.8"/><javaScript name="knockout" version="3.3.0"/><javaScript name="game-circuitdiagram" version="1.1.1"/><javaScript name="tools_common" version="1.3.0"/></jsDependency></dependencies><css><![CDATA[.exam_skin_wood .circuitdiagram_wrapper{width:100%;height:100%;position:relative;padding:2.70833em 4.16667em 5.16667em;background:#bfd3e2}.exam_skin_wood .circuitdiagram_wrapper_student{padding:2.75em 4.16667em 5.16667em}.exam_skin_wood .circuitdiagram_body{position:relative;height:100%;padding-right:14.16667em}.exam_skin_wood .circuitdiagram_main{width:100%;height:100%;overflow:hidden;position:relative}.exam_skin_wood .circuitdiagram_main .organs{position:absolute;-webkit-transform-origin:center center;transform-origin:center center}.exam_skin_wood .circuitdiagram_main .organs .spot{position:absolute;width:1.875em;height:1.875em;border-radius:50%;z-index:10;cursor:pointer}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8.disabled a,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9.disabled a{cursor:default}.exam_skin_wood .circuitdiagram_main .organs.vertical_left{-webkit-transform:rotate(-90deg);transform:rotate(-90deg)}.exam_skin_wood .circuitdiagram_main .organs.vertical_left .txt,.exam_skin_wood .circuitdiagram_main .organs.vertical_right{-webkit-transform:rotate(90deg);transform:rotate(90deg)}.exam_skin_wood .circuitdiagram_main .organs.vertical_right .txt{-webkit-transform:rotate(-90deg);transform:rotate(-90deg)}.exam_skin_wood .circuitdiagram_main .organs .pic{display:block;position:relative;background-repeat:no-repeat;background-size:100% 100%}.exam_skin_wood .circuitdiagram_main .organs .txt{text-align:center;font-size:1.5em;padding-top:.20833em}.exam_skin_wood .circuitdiagram_main .organs .txt sub{font-size:.66667em}.exam_skin_wood .circuitdiagram_main .organs.p_dianyuan .pic{width:8.83333em;height:3.66667em;background-image:url(resources/wood/images/main_dianyuan.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dianyuan .spot_1{left:-.04167em;top:.70833em}.exam_skin_wood .circuitdiagram_main .organs.p_dianyuan .spot_2{right:-.04167em;top:.70833em}.exam_skin_wood .circuitdiagram_main .organs.p_dianliubiao .pic{width:8.66667em;height:8.75em;background-image:url(resources/wood/images/main_dianliu.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dianliubiao .spot_1{left:.625em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianliubiao .spot_2{left:2.70833em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianliubiao .spot_3{left:4.79167em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianyabiao .pic{width:8.66667em;height:8.75em;background-image:url(resources/wood/images/main_dianyabiao.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dianyabiao .spot_1{left:.625em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianyabiao .spot_2{left:2.70833em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianyabiao .spot_3{left:4.79167em;top:4.5em}.exam_skin_wood .circuitdiagram_main .organs.p_dianling .pic{width:8.54167em;height:7.04167em;background-image:url(resources/wood/images/main_dianling.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dianling .spot_1{left:.20833em;top:3.75em}.exam_skin_wood .circuitdiagram_main .organs.p_dianling .spot_2{right:.20833em;top:3.75em}.exam_skin_wood .circuitdiagram_main .organs.p_hdbanzuqi .pic{width:10.16667em;height:4.16667em;background-image:url(resources/wood/images/main_huadongbianzuqi.png)}.exam_skin_wood .circuitdiagram_main .organs.p_hdbanzuqi .spot_1{left:-.625em;top:-.08333em}.exam_skin_wood .circuitdiagram_main .organs.p_hdbanzuqi .spot_2{right:-.625em;top:-.08333em}.exam_skin_wood .circuitdiagram_main .organs.p_fengshan .pic{width:8.83333em;height:6.79167em;background-image:url(resources/wood/images/main_diandongji.png)}.exam_skin_wood .circuitdiagram_main .organs.p_fengshan .spot_1{left:.20833em;top:3.33333em}.exam_skin_wood .circuitdiagram_main .organs.p_fengshan .spot_2{right:.20833em;top:3.33333em}.exam_skin_wood .circuitdiagram_main .organs.p_dianzu .pic{width:8.83333em;height:4.33333em;background-image:url(resources/wood/images/main_dianzu.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dianzu .spot_1{left:.20833em;top:.75em}.exam_skin_wood .circuitdiagram_main .organs.p_dianzu .spot_2{right:.08333em;top:.75em}.exam_skin_wood .circuitdiagram_main .organs.p_dengpao .pic{width:8.04167em;height:5.41667em;background-image:url(resources/wood/images/main_dengpao.png)}.exam_skin_wood .circuitdiagram_main .organs.p_dengpao .spot_1{left:.125em;top:2.375em}.exam_skin_wood .circuitdiagram_main .organs.p_dengpao .spot_2{right:.125em;top:2.375em}.exam_skin_wood .circuitdiagram_main .organs.p_kaiguan .pic{width:8.83333em;height:4.75em;background-image:url(resources/wood/images/main_kaiguan.png)}.exam_skin_wood .circuitdiagram_main .organs.p_kaiguan .spot_1{left:.20833em;top:1.58333em}.exam_skin_wood .circuitdiagram_main .organs.p_kaiguan .spot_2{right:.125em;top:1.58333em}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao .pic{width:5.58333em;height:2.83333em;background-image:url(resources/wood/images/sign_dianliu.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao.red .pic{background-image:url(resources/wood/images/sign_dianliu_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao.blue .pic{background-image:url(resources/wood/images/sign_dianliu_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao.vertical .pic{width:2.75em;height:5.58333em;background-image:url(resources/wood/images/sign_dianliu_vertical.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao.vertical.red .pic{background-image:url(resources/wood/images/sign_dianliu_vertical_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianliubiao.vertical.blue .pic{background-image:url(resources/wood/images/sign_dianliu_vertical_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao .pic{width:5.58333em;height:2.83333em;background-image:url(resources/wood/images/sign_dianyabiao.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao.red .pic{background-image:url(resources/wood/images/sign_dianyabiao_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao.blue .pic{background-image:url(resources/wood/images/sign_dianyabiao_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao.vertical .pic{width:2.75em;height:5.58333em;background-image:url(resources/wood/images/sign_dianyabiao_vertical.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao.vertical.red .pic{background-image:url(resources/wood/images/sign_dianyabiao_vertical_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyabiao.vertical.blue .pic{background-image:url(resources/wood/images/sign_dianyabiao_vertical_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianling .pic{width:5.58333em;height:2.45833em;background-image:url(resources/wood/images/sign_dianling.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianling.red .pic{background-image:url(resources/wood/images/sign_dianling_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianling.blue .pic{background-image:url(resources/wood/images/sign_dianling_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_hdbanzuqi .pic{width:5.58333em;height:2.54167em;background-image:url(resources/wood/images/sign_huadongbianzuqi.png)}.exam_skin_wood .circuitdiagram_main .organs.s_hdbanzuqi.red .pic{background-image:url(resources/wood/images/sign_huadongbianzuqi_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_hdbanzuqi.blue .pic{background-image:url(resources/wood/images/sign_huadongbianzuqi_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan .pic{width:5.58333em;height:2.83333em;background-image:url(resources/wood/images/sign_diandongji.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan.red .pic{background-image:url(resources/wood/images/sign_diandongji_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan.blue .pic{background-image:url(resources/wood/images/sign_diandongji_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan.vertical .pic{width:2.83333em;height:5.58333em;background-image:url(resources/wood/images/sign_diandongji_vertical.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan.vertical.red .pic{background-image:url(resources/wood/images/sign_diandongji_vertical_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_fengshan.vertical.blue .pic{background-image:url(resources/wood/images/sign_diandongji_vertical_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyuan .pic{width:5.58333em;height:3.66667em;background-image:url(resources/wood/images/sign_dianyuan.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyuan.red .pic{background-image:url(resources/wood/images/sign_dianyuan_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianyuan.blue .pic{background-image:url(resources/wood/images/sign_dianyuan_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianzu .pic{width:5.58333em;height:1.08333em;background-image:url(resources/wood/images/sign_dianzu.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianzu.red .pic{background-image:url(resources/wood/images/sign_dianzu_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dianzu.blue .pic{background-image:url(resources/wood/images/sign_dianzu_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dengpao .pic{width:5.58333em;height:2.83333em;background-image:url(resources/wood/images/sign_dengpao.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dengpao.red .pic{background-image:url(resources/wood/images/sign_dengpao_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_dengpao.blue .pic{background-image:url(resources/wood/images/sign_dengpao_blue.png)}.exam_skin_wood .circuitdiagram_main .organs.s_kaiguan .pic{width:5.58333em;height:2em;background-image:url(resources/wood/images/sign_kaiguan.png)}.exam_skin_wood .circuitdiagram_main .organs.s_kaiguan.red .pic{background-image:url(resources/wood/images/sign_kaiguan_red.png)}.exam_skin_wood .circuitdiagram_main .organs.s_kaiguan.blue .pic{background-image:url(resources/wood/images/sign_kaiguan_blue.png)}.exam_skin_wood .circuitdiagram_aside{position:absolute;right:.83333em;top:0;height:100%;padding:.83333em 0}.exam_skin_wood .circuitdiagram_aside .symbol_list{float:right;width:6.5em;background:#b0c7d8;height:100%;margin-right:3px}.exam_skin_wood .circuitdiagram_aside .symbol_list li{height:11.11%}.exam_skin_wood .circuitdiagram_aside .symbol_list li a{display:block;height:100%;width:100%;position:relative}.exam_skin_wood .circuitdiagram_aside .symbol_list li a span{width:3.16667em;position:absolute;left:50%;top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);background-repeat:no-repeat;background-size:100% 100%}.exam_skin_wood .circuitdiagram_aside .symbol_list_1{border-top-right-radius:5px;border-bottom-right-radius:5px}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1 span{height:1.91667em;background-image:url(resources/wood/images/line_dianyuan.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1:active span{background-image:url(resources/wood/images/line_dianyuan_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_1.disabled span{background-image:url(resources/wood/images/line_dianyuan_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2 span{height:1.5em;background-image:url(resources/wood/images/line_dengpao.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2:active span{background-image:url(resources/wood/images/line_dengpao_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_2.disabled span{background-image:url(resources/wood/images/line_dengpao_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3 span{height:1.25em;background-image:url(resources/wood/images/line_kaiguan.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3:active span{background-image:url(resources/wood/images/line_kaiguan_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_3.disabled span{background-image:url(resources/wood/images/line_kaiguan_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4 span{height:1.5em;background-image:url(resources/wood/images/line_dianliu.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4:active span{background-image:url(resources/wood/images/line_dianliu_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_4.disabled span{background-image:url(resources/wood/images/line_dianliu_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5 span{height:.75em;background-image:url(resources/wood/images/line_dianzu.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5:active span{background-image:url(resources/wood/images/line_dianzu_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_5.disabled span{background-image:url(resources/wood/images/line_dianzu_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6 span{height:1.5em;background-size:auto 100%;background-image:url(resources/wood/images/line_dianyabiao.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6:active span{background-image:url(resources/wood/images/line_dianyabiao_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_6.disabled span{background-image:url(resources/wood/images/line_dianyabiao_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7 span{height:1.41667em;background-image:url(resources/wood/images/line_dianling.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7:active span{background-image:url(resources/wood/images/line_dianling_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_7.disabled span{background-image:url(resources/wood/images/line_dianling_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8 span{height:1.41667em;background-image:url(resources/wood/images/line_huadongbianzuqi.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8:active span{background-image:url(resources/wood/images/line_huadongbianzuqi_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_8.disabled span{background-image:url(resources/wood/images/line_huadongbianzuqi_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9 span{height:1.58333em;background-image:url(resources/wood/images/line_diandongji.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9 a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9 a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9.ui_btn_active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9:active span{background-image:url(resources/wood/images/line_diandongji_active.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9.disabled a.active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9.disabled a:active span,.exam_skin_wood .circuitdiagram_aside .symbol_list_1 .item_9.disabled span{background-image:url(resources/wood/images/line_diandongji_dis.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2{border-top-left-radius:5px;border-bottom-left-radius:5px}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 li span{display:block;background-repeat:no-repeat;background-size:100% 100%}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_1 span{width:5.08333em;height:2.5em;background-image:url(resources/wood/images/main_dianyuan.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_2 span{width:4.66667em;height:3.33333em;background-image:url(resources/wood/images/main_dengpao.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_3 span{width:5.16667em;height:2.91667em;background-image:url(resources/wood/images/main_kaiguan.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_4 span{width:3.5em;height:3.5em;background-image:url(resources/wood/images/main_dianliu.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_5 span{width:4.95833em;height:2em;background-image:url(resources/wood/images/main_dianzu.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_6 span{width:3.5em;height:3.5em;background-image:url(resources/wood/images/main_dianyabiao.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_7 span{width:4.16667em;height:3.33333em;background-image:url(resources/wood/images/main_dianling.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_8 span{width:5.41667em;height:2.33333em;background-image:url(resources/wood/images/main_huadongbianzuqi.png)}.exam_skin_wood .circuitdiagram_aside .symbol_list_2 .item_9 span{width:4.41667em;height:3.5em;background-image:url(resources/wood/images/main_diandongji.png)}.exam_skin_wood .circuitdiagram_footer{height:5em;background:#cfdee9;position:absolute;left:0;bottom:0;width:100%}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item1{position:relative;display:inline-block;padding:0 1.25em}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item1 .tool_operate_bar{display:inline-block;margin:0 1.25em}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item1:after{content:"";position:absolute;top:.3em;right:0;bottom:0;border-left:1px solid #e7f3fc;border-right:1px solid #b3c1cb}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item2{position:relative;display:inline-block;padding:0 1.25em}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item2 .tool_operate_bar{display:inline-block;margin:0 .41667em}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item2:after{content:"";position:absolute;top:.3em;right:0;bottom:0;border-left:1px solid #e7f3fc;border-right:1px solid #b3c1cb}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3{display:inline-block;vertical-align:top;padding:.765em 3.6667em 0;text-align:center}.exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3 .circuitdiagram_switch_txt{display:block;margin:.41667em -3em 0;font-size:1.16667em}.exam_skin_wood .circuitdiagram_footer .applicationset-switch{background:#e8edf0;border-radius:1.04167em;display:inline-block;width:4.16667em;height:2.08333em;border:1px solid #989fa5;line-height:normal;position:relative;cursor:pointer;transition:left .3s,background .3s}.exam_skin_wood .circuitdiagram_footer .applicationset-switch:before{transition:left .3s;content:"";width:2.08333em;height:2.08333em;border:1px solid #a3a9ae;position:absolute;left:-2px;top:-2px;border-radius:100%;background:#f2f2f2}.exam_skin_wood .circuitdiagram_footer .applicationset-switch.checked{background:#6a9ea1}.exam_skin_wood .circuitdiagram_footer .applicationset-switch.checked:before{top:-2px;left:2.08333em;background:#f5f5f5;border-color:#397274}.exam_skin_wood .circuitdiagram_dialog_wrapper,.exam_skin_wood .circuitdiagram_footer ul li a span i{top:50%;-webkit-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%)}.exam_skin_wood .circuitdiagram_footer .applicationset-switch input[type=checkbox]{cursor:pointer;position:relative;-webkit-appearance:none;opacity:0;width:4.16667em;height:2.08333em;filter:alpha(opacity=0)}.exam_skin_wood .circuitdiagram_footer ul{padding:3px 0;text-align:center}.exam_skin_wood .circuitdiagram_footer ul li{display:inline-block;padding:.33333em 1.66667em}.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao,.exam_skin_wood .circuitdiagram_footer ul li.item_switch{padding-left:3.33333em}.exam_skin_wood .circuitdiagram_footer ul li a{display:block;color:#292525}.exam_skin_wood .circuitdiagram_footer ul li a .txt{font-size:1.16667em}.exam_skin_wood .circuitdiagram_footer ul li a span{display:block;height:2.29167em;position:relative;margin-bottom:3px}.exam_skin_wood .circuitdiagram_footer ul li a span i{position:absolute;left:50%;background-repeat:no-repeat;background-size:100% 100%}.exam_skin_wood .circuitdiagram_footer ul li.disabled a{cursor:default;color:#97a4ac}.exam_skin_wood .circuitdiagram_footer ul li.item_hdx i{width:2em;height:2.08333em;background-image:url(resources/wood/images/icon_hdx.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_hdx a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_hdx a:active i{background-image:url(resources/wood/images/icon_hdx_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_hdx.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_hdx.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_hdx.disabled a:active i{background-image:url(resources/wood/images/icon_hdx_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx i{width:2.29167em;height:1.91667em;background-image:url(resources/wood/images/icon_hzdx.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx a:active i{background-image:url(resources/wood/images/icon_hzdx_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_hzdx.disabled a:active i{background-image:url(resources/wood/images/icon_hzdx_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_choice i{width:1.625em;height:2.08333em;background-image:url(resources/wood/images/icon_xuanze.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_choice a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_choice a:active i{background-image:url(resources/wood/images/icon_xuanze_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_choice.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_choice.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_choice.disabled a:active i{background-image:url(resources/wood/images/icon_xuanze_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_del{background:url(resources/wood/images/foot_line_y.png) 100% repeat-y;padding-right:3.33333em}.exam_skin_wood .circuitdiagram_footer ul li.item_del i{width:2em;height:2.08333em;background-image:url(resources/wood/images/icon_shanchu.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_del a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_del a:active i{background-image:url(resources/wood/images/icon_shanchu_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_del.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_del.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_del.disabled a:active i{background-image:url(resources/wood/images/icon_shanchu_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao i{width:2.375em;height:2.04167em;background-image:url(resources/wood/images/icon_cexiao.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao a:active i{background-image:url(resources/wood/images/icon_cexiao_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_cexiao.disabled a:active i{background-image:url(resources/wood/images/icon_cexiao_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_huifu i{width:2.375em;height:2.04167em;background-image:url(resources/wood/images/icon_huifu.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_huifu a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_huifu a:active i{background-image:url(resources/wood/images/icon_huifu_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_huifu.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_huifu.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_huifu.disabled a:active i{background-image:url(resources/wood/images/icon_huifu_dis.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_empty{padding-right:3.33333em;background:url(resources/wood/images/foot_line_y.png) 100% repeat-y}.exam_skin_wood .circuitdiagram_footer ul li.item_empty i{width:2.54167em;height:2.33333em;background-image:url(resources/wood/images/icon_qingkong.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_empty a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_empty a:active i{background-image:url(resources/wood/images/icon_qingkong_active.png)}.exam_skin_wood .circuitdiagram_footer ul li.item_empty.disabled a i,.exam_skin_wood .circuitdiagram_footer ul li.item_empty.disabled a.active i,.exam_skin_wood .circuitdiagram_footer ul li.item_empty.disabled a:active i{background-image:url(resources/wood/images/icon_qingkong_dis.png)}.exam_skin_wood .preload_img{position:absolute;left:-99999px;width:0;height:0}.exam_skin_wood .preload_img .prl_1{background-image:url(resources/wood/images/icon_hdx_active.png)}.exam_skin_wood .preload_img .prl_2{background-image:url(resources/wood/images/icon_hzdx_active.png)}.exam_skin_wood .preload_img .prl_3{background-image:url(resources/wood/images/icon_xuanze_active.png)}.exam_skin_wood .preload_img .prl_4{background-image:url(resources/wood/images/icon_shanchu_active.png)}.exam_skin_wood .preload_img .prl_5{background-image:url(resources/wood/images/icon_cexiao_active.png)}.exam_skin_wood .preload_img .prl_6{background-image:url(resources/wood/images/icon_huifu_active.png)}.exam_skin_wood .preload_img .prl_7{background-image:url(resources/wood/images/icon_qingkong_active.png)}.exam_skin_wood .circuitdiagram_dialog_wrapper{position:absolute;left:50%;z-index:99999999}.exam_skin_wood .circuitdiagram_dialog_wrapper .com_dialog_inner{display:table-cell;vertical-align:middle;text-align:center}.exam_skin_wood .circuitdiagram_dialog_wrapper .com_dialog_box{display:inline-block;background-color:rgba(47,47,47,.8);border-radius:.41667em;padding:1.25em 2.08333em;color:#fff}.exam_skin_wood .circuitdiagram_dialog_wrapper .com_dialog_box .com_dialog_foot{text-align:center}.exam_skin_wood .circuitdiagram_dialog_wrapper .com_dialog_box .com_dialog_foot .dia_btn{font-size:1em;display:inline-block;margin:.54167em 1.08333em 0;padding:0 1em;height:2em;line-height:2em;min-width:4.5em;background:#11b0b6;cursor:pointer;color:#fff}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar .tool_operate_text,.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar .tool_operate_text{display:none}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar,.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar{min-width:4.1em}.exam_skin_wood .circuitdiagram_dialog_wrapper .com_dialog_box .com_dialog_foot .dia_btn:active{background:#62999b}.exam_skin_wood .circuitdiagram_dialog_tip .tip_txt{font-size:2em;line-height:1.66667em;padding:0;white-space:nowrap}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1{height:100%;padding-right:1.8em}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:first-of-type,.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:nth-of-type(2){max-width:11.5em;margin:0 .25em}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:first-of-type .tool_operate_text,.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:nth-of-type(2) .tool_operate_text{font-size:1em;margin-top:0}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar .tool_operate_icon.tool_del,.typefaces_long .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar .tool_operate_icon.tool_xuanze{font-size:.7em}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item2{height:100%}.typefaces_long .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar .tool_operate_imgcnt{height:3.33333em}.typefaces_long .exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3{height:100%;padding:.5em 7.29167em 0 3em}.typefaces_long .exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3 .circuitdiagram_switch_txt{margin-top:.3em;font-size:1.08333em;line-height:1;white-space:nowrap}.typefaces_long .exam_skin_wood .circuitdiagram_dialog_tip .tip_txt{white-space:normal;width:24em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1{height:100%;padding-right:1.8em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:first-of-type,.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:nth-of-type(2){max-width:11.5em;margin:0 .25em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:first-of-type .tool_operate_text,.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar:nth-of-type(2) .tool_operate_text{font-size:1em;margin-top:0}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar .tool_operate_icon.tool_del,.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item1 .tool_operate_bar .tool_operate_icon.tool_xuanze{font-size:.7em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item2{height:100%}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_btn_item2 .tool_operate_bar .tool_operate_imgcnt{height:3.33333em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3{height:100%;padding:.5em 7.29167em 0 3em}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_footer .circuitdiagram_btn_item3 .circuitdiagram_switch_txt{margin-top:.3em;font-size:1.08333em;line-height:1;white-space:nowrap}.typefaces_ru_RU .exam_skin_wood .circuitdiagram_dialog_tip .tip_txt{white-space:normal;width:24em}]]></css><view><![CDATA[<div class="exam_skin_wood"><div class="circuitdiagram_wrapper" data-bind="css:{'circuitdiagram_wrapper_student':isStudent()}"><div class="circuitdiagram_body _moveArea"><div class="circuitdiagram_main" style="overflow: visible;z-index: 1"><div class="organs p_dianliubiao" style="display:none"><span class="pic"></span></div><div class="organs p_dianyabiao" style="display:none"><span class="pic"></span></div><div class="organs p_dianling" style="display:none"><span class="pic"></span></div><div class="organs p_hdbanzuqi" style="display:none"><span class="pic"></span></div><div class="organs p_fengshan" style="display:none"><span class="pic"></span></div><div class="organs p_dianyuan" style="display:none"><span class="pic"></span></div><div class="organs p_dianzu" style="display:none"><span class="pic"></span></div><div class="organs p_dengpao" style="display:none"><span class="pic"></span></div><div class="organs p_kaiguan" style="display:none"><span class="pic"></span></div><div class="organs s_dianliubiao" style="display:none"><span class="pic"></span></div><div class="organs s_dianyabiao" style="display:none"><span class="pic"></span></div><div class="organs s_dianling" style="display:none"><span class="pic"></span></div><div class="organs s_hdbanzuqi" style="display:none"><span class="pic"></span></div><div class="organs s_fengshan" style="display:none"><span class="pic"></span></div><div class="organs s_dianyuan" style="display:none"><span class="pic"></span></div><div class="organs s_dianzu" style="display:none"><span class="pic"></span></div><div class="organs s_dengpao" style="display:none"><span class="pic"></span></div><div class="organs s_kaiguan" style="display:none"><span class="pic"></span></div><div class="circuitdiagram_dialog_wrapper _circuit_tip" data-bind="css:{'hide_dom':!tip.showTip()}"><div class="com_dialog_inner"><div class="com_dialog_box circuitdiagram_dialog_tip"><div class="tip_txt" data-bind="text:tip.tipText()"></div></div></div></div><div style="width:100%;height:100%" class="egret-player" data-entry-class="GameCircuitDiagram.Main" data-orientation="auto" data-scale-mode="showAll" data-resolution-mode="retina" data-frame-rate="30" data-content-width="1920" data-content-height="1200" data-show-paint-rect="false" data-multi-fingered="2" data-show-fps="false" data-show-log="false" data-log-filter="" data-bind="event:{mousedown:event.egretPlayerStart,touchstart:event.egretPlayerStart,mouseup:event.egretPlayerEnd,touchend:event.egretPlayerEnd}"></div></div><div class="circuitdiagram_aside"><ul class="symbol_list symbol_list_1"><li data-action="Power" data-symbol="true" class="item_1"><a><span></span></a></li><li data-action="Light" data-symbol="true" class="item_2"><a><span></span></a></li><li data-action="Switch" data-symbol="true" class="item_3"><a><span></span></a></li><li data-action="AmpereMeter" data-symbol="true" class="item_4"><a><span></span></a></li><li data-action="Resistance" data-symbol="true" class="item_5"><a><span></span></a></li><li data-action="VoltMeter" data-symbol="true" class="item_6"><a><span></span></a></li><li data-action="Bell" data-symbol="true" class="item_7"><a><span></span></a></li><li data-action="SlideRheostat" data-symbol="true" class="item_8"><a><span></span></a></li><li data-action="Fan" data-symbol="true" class="item_9"><a><span></span></a></li></ul><ul class="symbol_list symbol_list_2"><li data-action="Power" class="item_1"><a><span></span></a></li><li data-action="Light" class="item_2"><a><span></span></a></li><li data-action="Switch" class="item_3"><a><span></span></a></li><li data-action="AmpereMeter" class="item_4"><a><span></span></a></li><li data-action="Resistance" class="item_5"><a><span></span></a></li><li data-action="VoltMeter" class="item_6"><a><span></span></a></li><li data-action="Bell" class="item_7"><a><span></span></a></li><li data-action="SlideRheostat" class="item_8"><a><span></span></a></li><li data-action="Fan" class="item_9"><a><span></span></a></li></ul></div></div><div class="circuitdiagram_footer"><div class="circuitdiagram_btn_item1"><a href="javascript:;" class="tool_operate_bar _circuit_hdx" data-action="DrawPoints" data-bind="css:{'ui_btn_active':button.isActive.wire()},
+                event:{mousedown:event.actionStart.bind($data,'wire'),touchstart:event.actionStart.bind($data,'wire'),
+                mouseup:event.actionEnd.bind($data,'wire','DrawPoints'),touchend:event.actionEnd.bind($data,'wire','DrawPoints'),
+                mouseleave:event.actionEnd.bind($data,'wire','DrawPoints'),touchcancel:event.actionEnd.bind($data,'wire','DrawPoints')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_hdx"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.huadaoxian()"></span> </a><a href="javascript:;" class="tool_operate_bar _circuit_hzdx" data-action="DrawLine" data-bind="css:{'ui_btn_active':button.isActive.sWire()},
+                event:{mousedown:event.actionStart.bind($data,'sWire'),touchstart:event.actionStart.bind($data,'sWire'),
+                mouseup:event.actionEnd.bind($data,'sWire','DrawLine'),touchend:event.actionEnd.bind($data,'sWire','DrawLine'),
+                mouseleave:event.actionEnd.bind($data,'sWire','DrawLine'),touchcancel:event.actionEnd.bind($data,'sWire','DrawLine')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_hzdx"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.huazhidaoxian()"></span> </a><a href="javascript:;" class="tool_operate_bar _circuit_xz ui_btn_active" data-action="Select" data-bind="css:{'ui_btn_active':button.isActive.select()},
+                event:{mousedown:event.actionStart.bind($data,'select'),touchstart:event.actionStart.bind($data,'select'),
+                mouseup:event.actionEnd.bind($data,'select','select'),touchend:event.actionEnd.bind($data,'select','select'),
+                mouseleave:event.actionEnd.bind($data,'select','select'),touchcancel:event.actionEnd.bind($data,'select','select')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_xuanze"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.xuanze()"></span> </a><a href="javascript:;" class="tool_operate_bar _circuit_sc" data-action="Delete" data-bind="css:{'ui_btn_active':button.isActive.delete()},
+                event:{mousedown:event.actionStart.bind($data,'delete'),touchstart:event.actionStart.bind($data,'delete'),
+                mouseup:event.actionEnd.bind($data,'delete','delete'),touchend:event.actionEnd.bind($data,'delete','delete'),
+                mouseleave:event.actionEnd.bind($data,'delete','delete'),touchcancel:event.actionEnd.bind($data,'delete','delete')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_del"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.shanchu()"></span></a></div><div class="circuitdiagram_btn_item2"><a href="javascript:;" class="tool_operate_bar _circuit_cx click_disabled" data-action="Undo" data-bind="css:{'click_disabled':button.isDisabled.undo(),'ui_btn_active':button.isActive.undo()},
+                event:{mousedown:event.historyStart.bind($data,'undo'),touchstart:event.historyStart.bind($data,'undo'),
+                mouseup:event.historyEnd.bind($data,'undo'),touchend:event.historyEnd.bind($data,'undo')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_cexiao"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.chexiao()"></span> </a><a href="javascript:;" class="tool_operate_bar _circuit_hf click_disabled" data-action="Redo" data-bind="css:{'click_disabled':button.isDisabled.redo(),'ui_btn_active':button.isActive.redo()},
+                event:{mousedown:event.historyStart.bind($data,'redo'),touchstart:event.historyStart.bind($data,'redo'),
+                mouseup:event.historyEnd.bind($data,'redo'),touchend:event.historyEnd.bind($data,'redo')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_restore"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.huifu()"></span> </a><a href="javascript:;" class="tool_operate_bar _circuit_qk click_disabled" data-action="Clear" data-bind="css:{'click_disabled':button.isDisabled.clear(),'ui_btn_active':button.isActive.clear()},
+                event:{mousedown:event.historyStart.bind($data,'clear'),touchstart:event.historyStart.bind($data,'clear'),
+                mouseup:event.historyEnd.bind($data,'clear'),touchend:event.historyEnd.bind($data,'clear')}"><span class="tool_operate_imgcnt"><i class="tool_operate_icon tool_empty"></i> </span><span class="tool_operate_text js_txt" data-bind="text:i18nModel.qingkong()"></span></a></div><div class="circuitdiagram_btn_item3 _circuit_xszm" data-action="DisplayLetter" data-show="true" data-bind="click:button.action.showLetter"><label class="com_applicationset_switch" data-bind="css:{'checked':button.isActive.showLetter()}"></label><span class="circuitdiagram_switch_txt js_txt" data-bind="text:i18nModel.xianshizimu()"></span></div></div></div><div class="js_maskforCircuit" style="position: absolute;left: 0;top: 0;bottom: 0;right:0" data-bind="css:{'hide_dom':!showMask()}"></div></div>]]></view><presenter><![CDATA[/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _Service = __webpack_require__(1);
+
+	var _Service2 = _interopRequireDefault(_Service);
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	var _I18nModel = __webpack_require__(3);
+
+	var _I18nModel2 = _interopRequireDefault(_I18nModel);
+
+	var _KOModel = __webpack_require__(4);
+
+	var _KOModel2 = _interopRequireDefault(_KOModel);
+
+	var _RecoverAction = __webpack_require__(6);
+
+	var _DrawAction = __webpack_require__(7);
+
+	var _DrawAction2 = _interopRequireDefault(_DrawAction);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	(function () {
+	  var Presenter = BasicPresenter.extend({
+	    metaInfo: {
+	      name: 'CircuitDiagram',
+	      type: '' // PresenterType.PRESENTER_COMPONENT
+	    },
+	    /**
+	     * Presenter的初始化方法
+	     * @private
+	     */
+	    $init: function $init() {
+	      this._super();
+	      _ViewModel2.default.deferred = null;
+	      _ViewModel2.default.i18nModel = _I18nModel2.default;
+	      _ViewModel2.default.hasSetToEgret = false;
+	      _ViewModel2.default.tipTime = 0;
+	    },
+	    /** **以下开始为icPlayer的生命周期方法*****/
+	    run: function run(view, model) {
+	      this.initViewModel(view, model);
+	      _ViewModel2.default.drawAction = new _DrawAction2.default();
+	      _ViewModel2.default.komodel = new _KOModel2.default(this, _ViewModel2.default.$view[0]);
+	      if (model && model.__ExtendModel && !$.isEmptyObject(model.__ExtendModel)) {
+	        (0, _RecoverAction.recoverState)(this, model.__ExtendModel);
+	      }
+	    },
+	    __interface: {
+	      resizeScreen: function resizeScreen(data) {
+	        console.log(data);
+	        _ViewModel2.default.drawAction.initEvents();
+	        var id = setInterval(function () {
+	          if (window.egret_stages && _ViewModel2.default.hasSetToEgret) {
+	            window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	              'action': 'resize'
+	            });
+	            clearInterval(id);
+	          }
+	        }, 100);
+	      }
+	    },
+	    initViewModel: function initViewModel(view, model) {
+	      _ViewModel2.default.$view = $(view);
+	      _ViewModel2.default.questionId = model.question_id;
+	      _ViewModel2.default.uuid = model.$.unqiueId;
+	    },
+	    pageShow: function pageShow(view, model) {
+	      _ViewModel2.default.deferred = $.Deferred();
+	      var me = this;
+	      setTimeout(function () {
+	        egret.reUpdate({ renderMode: 'webgl' });
+	        egret.runEgret({ renderMode: 'webgl' });
+	        console.log(egret.Capabilities.renderMode);
+	        var tempId = setInterval(function () {
+	          if (window.egret_stages && !_ViewModel2.default.hasSetToEgret) {
+	            window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	              'action': 'presenterid',
+	              'uuid': _ViewModel2.default.uuid,
+	              'presenter': me
+	            });
+	          }
+	          if (_ViewModel2.default.hasSetToEgret) {
+	            clearInterval(tempId);
+	            _ViewModel2.default.komodel.showMask(false);
+	          }
+	        }, 500);
+	        _ViewModel2.default.drawAction.initEvents();
+	      }, 200);
+	      return _ViewModel2.default.deferred.promise();
+	    },
+	    setBasePath: function setBasePath(url) {
+	      icCreatePlayer.presenter_circuitdiagram = { 'url': url };
+	    },
+	    // 供egret调用切换按钮，需保证已经把presenter传给egret
+	    switchButton: function switchButton(bName, enable) {
+	      var bm = _ViewModel2.default.komodel.buttonModel;
+	      switch (bName) {
+	        case 'chexiao':
+	          bm.isDisabled.undo(!enable);
+	          break;
+	        case 'huifu':
+	          bm.isDisabled.redo(!enable);
+	          break;
+	        case 'qingkong':
+	          bm.isDisabled.clear(!enable);
+	          break;
+	        case 'xuanze':
+	          bm.isActive.select(enable);
+	          return;
+	        case 'huazhidaoxian':
+	          bm.isActive.sWire(enable);
+	          return;
+	        case 'huadaoxian':
+	          bm.isActive.wire(enable);
+	          return;
+	        case 'shanchu':
+	          bm.isActive.delete(enable);
+	          return;
+	        case 'displayLetter':
+	          bm.isActive.showLetter(enable);
+	          return;
+	      }
+	    },
+	    /**
+	    * egret通知外部已经超出边界
+	    */
+	    cancelMove: function cancelMove() {
+	      _ViewModel2.default.drawAction.cancelMove(_ViewModel2.default.drawAction);
+	    },
+	    /**
+	     * egret通知外部已经和白鹭引擎连接上
+	     */
+	    hasSetToEgret: function hasSetToEgret() {
+	      _ViewModel2.default.hasSetToEgret = true;
+	      if (_ViewModel2.default.recoverData !== '') {
+	        window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	          'action': 'recover',
+	          'recoverdata': _ViewModel2.default.recoverData
+	        });
+	      } else {
+	        if (_ViewModel2.default.deferred) {
+	          _ViewModel2.default.deferred.resolve();
+	        }
+	      }
+	    },
+	    hasRecoverOver: function hasRecoverOver() {
+	      if (_ViewModel2.default.deferred) {
+	        _ViewModel2.default.deferred.resolve();
+	      }
+	    },
+	    /**
+	     * egret调用将保存的数据传给presenter，用于传给学生端
+	     * @param data
+	     */
+	    setSaveData: function setSaveData(data) {
+	      _ViewModel2.default.saveState = data;
+	    },
+
+	    /**
+	     * 必须销毁egret，否则会有问题
+	     */
+	    destroy: function destroy() {
+	      if (window.egret_stages) {
+	        window.egret_stages[0].dispatchEventWith('DestroyAction', true, {
+	          'action': 'stopEgret'
+	        });
+	      }
+	    },
+
+	    /**
+	     * egret调用提示
+	     * @param type
+	     */
+	    showTip: function showTip(type) {
+	      var that = _ViewModel2.default;
+	      that.komodel.tipModel.showTip(false);
+	      switch (type) {
+	        case 'nospace':
+	          {
+	            that.komodel.tipModel.tipText(that.i18nModel.nospace);
+	            break;
+	          }
+	        case 'symbol':
+	          {
+	            that.komodel.tipModel.tipText(that.i18nModel.symbol_tip);
+	            break;
+	          }
+	        case 'circuit':
+	          {
+	            that.komodel.tipModel.tipText(that.i18nModel.circuit_tip);
+	            break;
+	          }
+	      }
+	      that.komodel.tipModel.showTip(true);
+	      if (that.tipTime) {
+	        clearTimeout(that.tipTime);
+	      }
+	      that.tipTime = setTimeout(function () {
+	        that.komodel.tipModel.showTip(false);
+	      }, 3000);
+	    },
+	    getService: function getService() {
+	      return new _Service2.default(this);
+	    }
+	  }, 'CircuitDiagram');
+
+	  window.AddonCircuitDiagram_create = function () {
+	    return new Presenter();
+	  };
+	})();
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Service = function () {
+	  function Service(parent) {
+	    _classCallCheck(this, Service);
+
+	    this.parent = parent;
+	  }
+	  // 获取需要同步给学生端的信息，如需编辑推送功能必须实现该接口
+
+
+	  _createClass(Service, [{
+	    key: 'getExtendData',
+	    value: function getExtendData() {
+	      return _ViewModel2.default.saveState;
+	    }
+	    // 获取题目信息，及对应配置
+
+	  }, {
+	    key: 'getQuestionInfo',
+	    value: function getQuestionInfo() {
+	      return {
+	        id: _ViewModel2.default.questionId,
+	        type_code: 'circuitdiagram',
+	        type_name: '电路图',
+	        statistics_type: 'no_need',
+	        notExistStatistics: true,
+	        noNeedQuizProgress: true
+	      };
+	    }
+	  }, {
+	    key: 'setLocationProperties',
+	    value: function setLocationProperties(location) {
+	      if (location && !$.isEmptyObject(location)) {
+	        _ViewModel2.default.i18nModel = location;
+	      }
+	    }
+	  }]);
+
+	  return Service;
+	}();
+
+	exports.default = Service;
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  $view: null,
+	  uuid: null,
+	  tipTime: 0,
+	  questionId: '',
+	  saveData: '',
+	  recoverData: '',
+	  hasSetToEgret: false
+	};
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = {
+	  'nospace': '区域不足,建议(向上或向下)画一段导线！',
+	  'symbol_tip': '抱歉，最多添加9个元件符号！',
+	  'circuit_tip': '抱歉，最多添加9个元件！',
+	  'huadaoxian': '画导线',
+	  'huazhidaoxian': '画直导线',
+	  'xuanze': '选择',
+	  'shanchu': '删除',
+	  'chexiao': '撤销',
+	  'huifu': '恢复',
+	  'qingkong': '清空',
+	  'xianshizimu': '显示字母'
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _ButtonAction = __webpack_require__(5);
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var KOModel = function () {
+	  function KOModel(presenter, bindView) {
+	    _classCallCheck(this, KOModel);
+
+	    var me = this;
+	    me.presenter = presenter;
+	    me.initModel();
+	    ko.applyBindings(me.initBindModel(), bindView);
+	    me.initI18nView();
+	    me.initButtionView();
+	  }
+
+	  _createClass(KOModel, [{
+	    key: 'initModel',
+	    value: function initModel() {
+	      var me = this;
+	      me.buttonModel = {
+	        'bSelect': {
+	          'wire': ko.observable(),
+	          'sWire': ko.observable(),
+	          'select': ko.observable(),
+	          'delete': ko.observable(),
+	          'undo': ko.observable(),
+	          'redo': ko.observable(),
+	          'clear': ko.observable(),
+	          'showLetter': ko.observable()
+	        },
+	        'isDisabled': {
+	          'undo': ko.observable(true),
+	          'redo': ko.observable(true),
+	          'clear': ko.observable(true)
+	        },
+	        'isActive': {
+	          'wire': ko.observable(false),
+	          'sWire': ko.observable(false),
+	          'select': ko.observable(true),
+	          'delete': ko.observable(false),
+	          'showLetter': ko.observable(true),
+	          'undo': ko.observable(false),
+	          'redo': ko.observable(false),
+	          'clear': ko.observable(false)
+	        },
+	        'action': {
+	          'showLetter': _ButtonAction.showLetter
+	        }
+	      };
+	      me.i18nModel = {
+	        'huadaoxian': ko.observable(),
+	        'huazhidaoxian': ko.observable(),
+	        'xuanze': ko.observable(),
+	        'shanchu': ko.observable(),
+	        'chexiao': ko.observable(),
+	        'huifu': ko.observable(),
+	        'qingkong': ko.observable(),
+	        'xianshizimu': ko.observable()
+	      };
+
+	      me.tipModel = {
+	        'showTip': ko.observable(false),
+	        'tipText': ko.observable()
+	      };
+	      me.showMask = ko.observable(true);
+
+	      me.event = {
+	        egretPlayerStart: _ButtonAction.egretPlayerStart,
+	        egretPlayerEnd: _ButtonAction.egretPlayerEnd,
+	        historyStart: _ButtonAction.historyStart,
+	        historyEnd: _ButtonAction.historyEnd,
+	        actionStart: _ButtonAction.actionStart,
+	        actionEnd: _ButtonAction.actionEnd
+	      };
+	    }
+	  }, {
+	    key: 'initBindModel',
+	    value: function initBindModel() {
+	      var me = this;
+	      return {
+	        'button': me.buttonModel,
+	        'circuit': me.circuitModel,
+	        'i18nModel': me.i18nModel,
+	        'isStudent': ko.observable(this.presenter.isApp),
+	        'tip': me.tipModel,
+	        'showMask': me.showMask,
+	        'event': me.event
+	      };
+	    }
+	  }, {
+	    key: 'initI18nView',
+	    value: function initI18nView() {
+	      var me = this;
+	      $.each(me.i18nModel, function (k, v) {
+	        if ($.isFunction(v)) {
+	          v(_ViewModel2.default.i18nModel[k]);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'initButtionView',
+	    value: function initButtionView() {
+	      var me = this;
+	      me.buttonModel.bSelect.select(true);
+	    }
+	  }]);
+
+	  return KOModel;
+	}();
+
+	exports.default = KOModel;
+
+/***/ },
+/* 5 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.showLetter = showLetter;
+	exports.egretPlayerStart = egretPlayerStart;
+	exports.egretPlayerEnd = egretPlayerEnd;
+	exports.historyStart = historyStart;
+	exports.historyEnd = historyEnd;
+	exports.actionStart = actionStart;
+	exports.actionEnd = actionEnd;
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function showLetter() {
+	  var bm = _ViewModel2.default.komodel.buttonModel;
+	  if (bm.isActive.showLetter()) {
+	    bm.isActive.showLetter(false);
+	  } else {
+	    bm.isActive.showLetter(true);
+	  }
+	  if (window.egret_stages) {
+	    window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	      'action': 'DisplayLetter',
+	      'isDisplay': bm.isActive.showLetter()
+	    });
+	  }
+	}
+	function egretPlayerStart() {
+	  var e = event;
+	  if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	    return;
+	  }
+	  e.preventDefault();
+	}
+
+	function egretPlayerEnd() {
+	  var e = event;
+	  if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	    return;
+	  }
+	  if (window.egret_stages) {
+	    window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	      'action': 'moveoutside'
+	    });
+	  }
+	}
+
+	function historyStart(type) {
+	  event.preventDefault();
+	  var bm = _ViewModel2.default.komodel.buttonModel;
+	  if (bm.isDisabled[type]()) {
+	    return;
+	  }
+	  bm.isActive[type](true);
+	  _ViewModel2.default.clickstatus = true;
+	}
+	function historyEnd(type) {
+	  if (_ViewModel2.default.clickstatus) {
+	    var bm = _ViewModel2.default.komodel.buttonModel;
+	    _ViewModel2.default.clickstatus = false;
+	    bm.isActive[type](false);
+	    if (window.egret_stages) {
+	      window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	        'action': type
+	      });
+	    }
+	  }
+	}
+
+	function actionStart(type) {
+	  event.preventDefault();
+	  _ViewModel2.default.komodel.buttonModel.isActive[type](true);
+	  _ViewModel2.default.clickstatus = true;
+	}
+	function actionEnd(type, action) {
+	  if (_ViewModel2.default.clickstatus) {
+	    _ViewModel2.default.clickstatus = false;
+	    disActiveAll();
+	    _ViewModel2.default.komodel.buttonModel.isActive[type](true);
+	    if (window.egret_stages) {
+	      window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	        'action': action
+	      });
+	    }
+	  }
+	}
+
+	function disActiveAll() {
+	  $.each(_ViewModel2.default.komodel.buttonModel.isActive, function (k, v) {
+	    if ($.isFunction(v) && k !== 'showLetter') {
+	      v(false);
+	    }
+	  });
+	}
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.recoverState = recoverState;
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function recoverState(context, state) {
+	  _ViewModel2.default.recoverData = state;
+	  var main = JSON.parse(_ViewModel2.default.recoverData[_ViewModel2.default.recoverData.mainSceneID]);
+	  var letter = main.enableDisplayLetter;
+	  var mode = main.selectMode;
+	  context.switchButton('displayLetter', letter);
+	  context.switchButton('xuanze', false);
+	  context.switchButton('huadaoxian', false);
+	  context.switchButton('huazhidaoxian', false);
+	  context.switchButton('shanchu', false);
+	  switch (mode) {
+	    case 3:
+	      {
+	        context.switchButton('shanchu', true);
+	        break;
+	      }
+	    case 1:
+	      {
+	        context.switchButton('huazhidaoxian', true);
+	        break;
+	      }
+	    case 0:
+	      {
+	        context.switchButton('huadaoxian', true);
+	        break;
+	      }
+	    case 2:
+	      {
+	        context.switchButton('xuanze', true);
+	        break;
+	      }
+	  }
+	}
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _ViewModel = __webpack_require__(2);
+
+	var _ViewModel2 = _interopRequireDefault(_ViewModel);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var DrawAction = function () {
+	  function DrawAction() {
+	    _classCallCheck(this, DrawAction);
+
+	    this.lastClick = null;
+	    this.touchstart = 'touchstart mousedown';
+	    this.touchmove = 'touchmove mousemove';
+	    this.touchend = 'touchend mouseup';
+	    this.touchcancel = 'touchcancel mouseleave';
+	    this.action = null;
+	    this.isSymbol = null;
+	    this.moveObj = null;
+	    this.selectSymbol = null;
+	    this.isMoving = false;
+	    this.hasAdd = false;
+	    this.moveObjOffsetWidth = 0;
+	    this.moveObjOffsetHeight = 0;
+	    this.canvasTop = 0;
+	    this.canvasLeft = 0;
+	    this.canvasRight = 0;
+	    this.canvasBottom = 0;
+	    this.moveAreaOffsetLeft = 0;
+	    this.moveAreaOffsetTop = 0;
+	    this.egretZoomX = 1;
+	    this.egretZoomY = 1;
+	    this.viewHoder = {
+	      canvasDiv: _ViewModel2.default.$view.find('.egret-player'),
+	      moveArea: _ViewModel2.default.$view.find('._moveArea')
+	    };
+	  }
+
+	  _createClass(DrawAction, [{
+	    key: 'getMoveObj',
+	    value: function getMoveObj(name, isSymbol) {
+	      switch (name.toLowerCase()) {
+	        case 'light':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dengpao');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dengpao');
+	            }
+	          }
+	        case 'amperemeter':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dianliubiao');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dianliubiao');
+	            }
+	          }
+	        case 'bell':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dianling');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dianling');
+	            }
+	          }
+	        case 'fan':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_fengshan');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_fengshan');
+	            }
+	          }
+	        case 'resistance':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dianzu');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dianzu');
+	            }
+	          }
+	        case 'power':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dianyuan');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dianyuan');
+	            }
+	          }
+	        case 'sliderheostat':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_hdbanzuqi');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_hdbanzuqi');
+	            }
+	          }
+	        case 'switch':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_kaiguan');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_kaiguan');
+	            }
+	          }
+	        case 'voltmeter':
+	          {
+	            if (isSymbol) {
+	              return _ViewModel2.default.$view.find('.s_dianyabiao');
+	            } else {
+	              return _ViewModel2.default.$view.find('.p_dianyabiao');
+	            }
+	          }
+	      }
+	    }
+	  }, {
+	    key: 'initEvents',
+	    value: function initEvents() {
+	      this.initListEvent(this);
+	      this.initMoveAreaEvent(this);
+	    }
+	  }, {
+	    key: 'initListEvent',
+	    value: function initListEvent(that) {
+	      var $symbollist = $(_ViewModel2.default.$view.find('.symbol_list li'));
+	      $symbollist.unbind(this.touchstart);
+	      $symbollist.unbind(this.touchmove);
+	      $symbollist.unbind(this.touchend);
+	      $symbollist.bind(this.touchstart, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        that.selectSymbol = $(this);
+	        that.selectSymbol.addClass('ui_btn_active');
+	        e.preventDefault();
+	        that.action = $(this).data().action;
+	        that.isSymbol = !!$(this).data().symbol;
+	        that.moveObj = that.getMoveObj(that.action, that.isSymbol);
+	        that.canvasTop = that.viewHoder.canvasDiv.offset().top;
+	        that.canvasLeft = that.viewHoder.canvasDiv.offset().left;
+	        that.canvasRight = that.viewHoder.canvasDiv.width() + that.canvasLeft;
+	        that.canvasBottom = that.viewHoder.canvasDiv.height() + that.canvasTop;
+	        that.moveAreaOffsetLeft = that.viewHoder.moveArea.offset().left;
+	        that.moveAreaOffsetTop = that.viewHoder.moveArea.offset().top;
+	        that.egretZoomX = that.viewHoder.canvasDiv.width() / 1920;
+	        that.egretZoomY = that.viewHoder.canvasDiv.height() / 1200;
+	        that.isMovingTime = setTimeout(function () {
+	          var X = 0;
+	          var Y = 0;
+	          X = e.clientX ? e.clientX : e.originalEvent.touches[0].clientX;
+	          Y = e.clientY ? e.clientY : e.originalEvent.touches[0].clientY;
+	          that.isMoving = true;
+	          that.moveObj.css('position', 'fixed');
+
+	          that.moveObjOffsetHeight = that.moveObj.height() / 2;
+	          that.moveObjOffsetWidth = that.moveObj.width() / 2;
+	          that.moveObj.css('top', Y - that.moveObjOffsetHeight + 'px');
+	          that.moveObj.css('left', X - that.moveObjOffsetWidth + 'px');
+	          that.moveObj.css('display', '');
+	        }, 150);
+	      });
+	      $symbollist.bind(this.touchmove, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        e.preventDefault();
+	        if (!that.isMoving) {
+	          e.stopPropagation();
+	        }
+	      });
+	      $symbollist.bind(this.touchend, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        if (that.selectSymbol) {
+	          that.selectSymbol.removeClass('ui_btn_active');
+	          that.selectSymbol = null;
+	        }
+	        e.stopPropagation();
+	        clearTimeout(that.isMovingTime);
+	        if (!that.isMoving && that.action) {
+	          if (window.egret_stages) {
+	            window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	              'action': that.action,
+	              'isSymbol': that.isSymbol
+	            });
+	            that.action = null;
+	          }
+	        } else {
+	          that.cancelMove(that);
+	        }
+	      });
+	    }
+	  }, {
+	    key: 'initMoveAreaEvent',
+	    value: function initMoveAreaEvent(that) {
+	      var $moveArea = $(that.viewHoder.moveArea);
+	      $moveArea.unbind(this.touchcancel);
+	      $moveArea.unbind(this.touchstart);
+	      $moveArea.unbind(this.touchend);
+	      $moveArea.unbind(this.touchmove);
+	      $moveArea.bind(this.touchstart, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        e.preventDefault();
+	      });
+	      $moveArea.bind(this.touchmove, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        e.preventDefault();
+	        if (that.isMovingTime) {
+	          clearTimeout(that.isMovingTime);
+	        }
+	        if (that.isMoving && that.moveObj) {
+	          var X = 0;
+	          var Y = 0;
+	          X = e.clientX ? e.clientX : e.originalEvent.touches[0].clientX;
+	          Y = e.clientY ? e.clientY : e.originalEvent.touches[0].clientY;
+	          that.moveObj.css('top', Y - that.moveObjOffsetHeight + 'px');
+	          that.moveObj.css('left', X - that.moveObjOffsetWidth + 'px');
+	          if (X < that.canvasRight && X > that.canvasLeft && Y > that.canvasTop && Y < that.canvasBottom) {
+	            var egretx = (X - that.moveAreaOffsetLeft) / that.egretZoomX;
+	            var egrety = (Y - that.moveAreaOffsetTop) / that.egretZoomY;
+	            if (window.egret_stages && !that.hasAdd && that.action) {
+	              that.moveObj.css('display', 'none');
+	              window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	                'action': that.action,
+	                'isSymbol': that.isSymbol,
+	                'notSave': true,
+	                'dragX': egretx,
+	                'dragY': egrety
+	              });
+	              that.action = null;
+	              that.hasAdd = true;
+	            }
+	            if (that.hasAdd) {
+	              if (window.egret_stages) {
+	                that.action = 'move';
+	                window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	                  'action': that.action,
+	                  'dragX': egretx,
+	                  'dragY': egrety
+	                });
+	              }
+	            }
+	          }
+	        }
+	      });
+	      $moveArea.bind(this.touchend, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        that.cancelMove(that);
+	      });
+	      $moveArea.bind(this.touchcancel, function (e) {
+	        if (e && !e.clientX && e.originalEvent.touches[0] && e.originalEvent.touches[1]) {
+	          return;
+	        }
+	        that.cancelMove(that);
+	      });
+	    }
+	  }, {
+	    key: 'cancelMove',
+	    value: function cancelMove(that) {
+	      if (that.selectSymbol) {
+	        that.selectSymbol.removeClass('ui_btn_active');
+	        that.selectSymbol = null;
+	      }
+	      if (that.isMoving && that.moveObj) {
+	        if (window.egret_stages) {
+	          that.action = 'moveend';
+	          window.egret_stages[0].dispatchEventWith('sendAction', true, {
+	            'action': that.action
+	          });
+	        }
+	        that.isMoving = false;
+	        that.hasAdd = false;
+	        clearTimeout(that.isMovingTime);
+	        that.moveObj.css('display', 'none');
+	        that.moveObj = null;
+	      }
+	    }
+	  }]);
+
+	  return DrawAction;
+	}();
+
+	exports.default = DrawAction;
+
+/***/ }
+/******/ ]);]]></presenter><resources><file src="./resources/resources.json"/><file src="./resources/wood/images/line_dengpao_active.png"/><file src="./resources/wood/images/line_dengpao_dis.png"/><file src="./resources/wood/images/line_dengpao.png"/><file src="./resources/wood/images/line_diandongji_active.png"/><file src="./resources/wood/images/line_diandongji_dis.png"/><file src="./resources/wood/images/line_diandongji.png"/><file src="./resources/wood/images/line_dianling_active.png"/><file src="./resources/wood/images/line_dianling_dis.png"/><file src="./resources/wood/images/line_dianling.png"/><file src="./resources/wood/images/line_dianliu_active.png"/><file src="./resources/wood/images/line_dianliu_dis.png"/><file src="./resources/wood/images/line_dianliu.png"/><file src="./resources/wood/images/line_dianyabiao_active.png"/><file src="./resources/wood/images/line_dianyabiao_dis.png"/><file src="./resources/wood/images/line_dianyabiao.png"/><file src="./resources/wood/images/line_dianyuan_active.png"/><file src="./resources/wood/images/line_dianyuan_dis.png"/><file src="./resources/wood/images/line_dianyuan.png"/><file src="./resources/wood/images/line_dianzu_active.png"/><file src="./resources/wood/images/line_dianzu_dis.png"/><file src="./resources/wood/images/line_dianzu.png"/><file src="./resources/wood/images/line_huadongbianzuqi_active.png"/><file src="./resources/wood/images/line_huadongbianzuqi_dis.png"/><file src="./resources/wood/images/line_huadongbianzuqi.png"/><file src="./resources/wood/images/line_kaiguan_active.png"/><file src="./resources/wood/images/line_kaiguan_dis.png"/><file src="./resources/wood/images/line_kaiguan.png"/><file src="./resources/wood/images/main_dengpao.png"/><file src="./resources/wood/images/main_diandongji.png"/><file src="./resources/wood/images/main_dianling.png"/><file src="./resources/wood/images/main_dianliu.png"/><file src="./resources/wood/images/main_dianyabiao.png"/><file src="./resources/wood/images/main_dianyuan.png"/><file src="./resources/wood/images/main_dianzu.png"/><file src="./resources/wood/images/main_huadongbianzuqi.png"/><file src="./resources/wood/images/main_kaiguan.png"/><file src="./resources/wood/images/pics_dengpao.png"/><file src="./resources/wood/images/pics_diandongji.png"/><file src="./resources/wood/images/pics_dianling.png"/><file src="./resources/wood/images/pics_dianliu.png"/><file src="./resources/wood/images/pics_dianyabiao.png"/><file src="./resources/wood/images/pics_dianyuan.png"/><file src="./resources/wood/images/pics_dianzu.png"/><file src="./resources/wood/images/pics_huadongbianzuqi.png"/><file src="./resources/wood/images/pics_kaiguan.png"/><file src="./resources/wood/images/sign_dengpao_blue.png"/><file src="./resources/wood/images/sign_dengpao_red.png"/><file src="./resources/wood/images/sign_dengpao.png"/><file src="./resources/wood/images/sign_diandongji_blue.png"/><file src="./resources/wood/images/sign_diandongji_red.png"/><file src="./resources/wood/images/sign_diandongji_vertical_blue.png"/><file src="./resources/wood/images/sign_diandongji_vertical_red.png"/><file src="./resources/wood/images/sign_diandongji_vertical.png"/><file src="./resources/wood/images/sign_diandongji.png"/><file src="./resources/wood/images/sign_dianling_blue.png"/><file src="./resources/wood/images/sign_dianling_red.png"/><file src="./resources/wood/images/sign_dianling.png"/><file src="./resources/wood/images/sign_dianliu_blue.png"/><file src="./resources/wood/images/sign_dianliu_red.png"/><file src="./resources/wood/images/sign_dianliu_vertical_blue.png"/><file src="./resources/wood/images/sign_dianliu_vertical_red.png"/><file src="./resources/wood/images/sign_dianliu_vertical.png"/><file src="./resources/wood/images/sign_dianliu.png"/><file src="./resources/wood/images/sign_dianyabiao_blue.png"/><file src="./resources/wood/images/sign_dianyabiao_red.png"/><file src="./resources/wood/images/sign_dianyabiao_vertical_blue.png"/><file src="./resources/wood/images/sign_dianyabiao_vertical_red.png"/><file src="./resources/wood/images/sign_dianyabiao_vertical.png"/><file src="./resources/wood/images/sign_dianyabiao.png"/><file src="./resources/wood/images/sign_dianyuan_blue.png"/><file src="./resources/wood/images/sign_dianyuan_red.png"/><file src="./resources/wood/images/sign_dianyuan.png"/><file src="./resources/wood/images/sign_dianzu_blue.png"/><file src="./resources/wood/images/sign_dianzu_red.png"/><file src="./resources/wood/images/sign_dianzu.png"/><file src="./resources/wood/images/sign_huadongbianzuqi_blue.png"/><file src="./resources/wood/images/sign_huadongbianzuqi_red.png"/><file src="./resources/wood/images/sign_huadongbianzuqi.png"/><file src="./resources/wood/images/sign_huadongbianzuqi2_blue.png"/><file src="./resources/wood/images/sign_huadongbianzuqi2_red.png"/><file src="./resources/wood/images/sign_huadongbianzuqi2.png"/><file src="./resources/wood/images/sign_kaiguan_blue.png"/><file src="./resources/wood/images/sign_kaiguan_red.png"/><file src="./resources/wood/images/sign_kaiguan.png"/></resources></addon>

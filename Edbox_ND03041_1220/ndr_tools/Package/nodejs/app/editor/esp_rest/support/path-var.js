@@ -1,0 +1,1 @@
+module.exports.PathVar={refPath:"${ref-path}",refQuestion:"${ref-question}",refPathAddon:"${ref-path-addon}",refRelative:"${ref-base}"};

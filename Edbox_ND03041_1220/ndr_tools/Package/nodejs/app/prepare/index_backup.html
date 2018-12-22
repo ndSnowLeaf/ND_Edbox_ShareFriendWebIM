@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>备课系统 - class.101.com</title>
+
+    <link rel="stylesheet" type="text/css" href="../editor/basic-question/import_question_style.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .head1 {
+            width: 100%;
+            color: #fff;
+            background-color: #3693f3;
+            padding-left: 10px;
+            line-height: 40px;
+            color: 16px;
+            font-weight: 400;
+        }
+
+        .head2 {
+            width: 100%;
+            background-color: #e1edfa;
+            line-height: 30px;
+        }
+
+        .list-addquestion-title {
+            padding: 13px 16px;
+            height: 24px;
+            background: #e1edfa;
+            line-height: 24px;
+            clear: both;
+        }
+
+        .list-addquestion-title .list-addquestion-base {
+            background-position: 0 -969px;
+        }
+
+        .list-addquestion-title span {
+            display: block;
+            height: 24px;
+            padding-left: 26px;
+            background: url(image/common.png) no-repeat;
+            color: #4e4e4e;
+            font-size: 16px;
+        }
+
+        .list-addquestion-title .list-addquestion-interact {
+            background-position: 0 -1001px;
+        }
+
+        .item {
+            float: left;
+            width: 140px;
+            height: 136px;
+            background-color: #efefef;
+            margin: 10px;
+        }
+
+        .item:hover {
+            opacity: 0.8;
+            background-position: 0 -140px;
+        }
+
+        .test_icon {
+            float: right;
+            width: 34px;
+            height: 17px;
+            background: url(image/tip_test.png) no-repeat;
+        }
+        .question_background {
+            width: 140px;
+            height: 140px;
+            display:inline-block;
+            margin: 5px 10px 20px 5px;
+        }
+        .question_background a{
+            width:100%;
+            height:100%;
+            background-repeat: repeat-y;
+            background-position-y: 0px;
+            cursor:pointer;
+        }
+
+    </style>
+    <script type="text/javascript" src="../js-libraries/jquery/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="./js/language.js"></script>
+    <script type="text/javascript" src="./js/jquery.inputevent.js"></script>
+    <script src="js/config.js"></script>
+    <script type="text/javascript">
+        function importQuestion(){
+            var url = "/editor/basic-question/question.html#/import_sample?";
+            var allParams = getAllParams();
+            for(key in allParams){
+                var value = allParams[key];
+                url = url+"&"+key+"="+encodeURIComponent(value);
+            }
+            window.location = url;
+        }
+        function getAllParams() {
+            var result = {};
+            var items = location.search.substr(1).split("&");
+            for (var index = 0; index < items.length; index++) {
+                var tmp = items[index].split("=");
+                if(tmp[1]){
+                    result[tmp[0]] = decodeURIComponent(tmp[1]);
+                }
+            }
+            result.sys = "pptshell";
+            return result;
+        }
+        function getParam(name) {
+            if (name = (new RegExp('[?&]' + encodeURIComponent(name) + '=([^&]*)')).exec(location.search))
+                return decodeURIComponent(name[1]);
+            return "";
+        }
+        var lang = getParam("_lang_");
+        if(lang!=''){
+            document.cookie = "_lang_="+lang;
+        }
+        language.setLanguage(lang);
+        var extra_params = ['chapter_id','chapter_title','creator'];
+        var createQuestion = function(code){
+            var url = "/editor/?template="+code;
+            var allParams = getAllParams();
+            for(key in allParams){
+                var value = allParams[key];
+                url = url+"&"+key+"="+encodeURIComponent(value);
+            }
+            window.location = url;
+        };
+        var appendQuestionOptions = function(item,element){
+            element.find("a").css("background-image","url('"+item.iconurl+"')");
+            element.click(function(){
+                createQuestion(item.code);
+            });
+        };
+        var basicQuestions = [];
+        var interactQuestions = [];
+        var showBasicQuestionTypes = function(items){
+            $(".basicQuestion").html("");
+            for(var i=0;i<items.length;i++){
+                var element = $("<div class='question_background'><a class='item'></a></div>").appendTo($(".basicQuestion"));
+                appendQuestionOptions(items[i],element);
+            }
+        }
+        var showInteractQuestions = function(items){
+            $(".interactQuestion").html("");
+            for(var i=0;i<items.length;i++){
+                var element = $("<div class='question_background'><a class='item'></a></div>").appendTo($(".interactQuestion"));
+                appendQuestionOptions(items[i],element);
+            }
+        }
+        var nohandle = false;
+        function handle(){
+            var keyword = $('#keywordinput').val();
+            searchBykeyword(keyword);
+            if($(".nes_search_select_box li").length>0){
+                $(".nes_search_select_box").show();
+            }
+            else{
+                $(".nes_search_select_box").hide();
+            }
+        }
+        function handleKeyword (event){
+            event.stopPropagation();
+            if(!nohandle){
+                handle();
+            }
+            else{
+                var inputselect = $("#keywordinput")[0];
+                var differ = inputselect.selectionEnd-inputselect.selectionStart;
+                if(differ == 0){
+                    handle();
+                }
+
+            }
+        };
+        function appendLi(type,ul){
+            var li = $('<li class="search_select_op"><a href="#">'+type.name+'</a></li>');
+            li.appendTo(ul);
+            li.on("click",function(){
+                $('#keywordinput').val(type.name);
+                searchBykeyword(type.name);
+            })
+        }
+        function searchBykeyword(keyword){
+            var ul = $(".nes_search_select_box");
+            var basics = [];
+            var interacts = [];
+            for(var i=0;i<basicQuestions.length;i++){
+                var type = basicQuestions[i];
+                if(type.name.indexOf(keyword)!=-1){
+                    basics.push(type);
+                }
+            }
+            for(var i=0;i<interactQuestions.length;i++){
+                var type = interactQuestions[i];
+                if(type.name.indexOf(keyword)!=-1){
+                    interacts.push(type);
+                }
+            }
+            showBasicQuestionTypes(basics);
+            showInteractQuestions(interacts);
+            var ul = $("#searchUL");
+            ul.html("");
+            for(var i=0;i<5;i++){
+                if(basics.length>i){
+                    var type = basics[i];
+                    appendLi(type,ul);
+                }
+                else if(basics.length+interacts.length>i){
+                    var type = interacts[i-basics.length];
+                    appendLi(type,ul);
+                }
+            }
+        }
+        $(document).on("click",function(){
+            $(".nes_search_select_box").hide();
+        })
+        $(function(){
+            $.get("/v0.1/public/templates?categoryCode=basic_question&_lang_="+lang,{},function (res) {
+                basicQuestions = res.items;
+                showBasicQuestionTypes(basicQuestions);
+            });
+            $.get("/v0.1/public/templates?categoryCode=interaction_question&_lang_="+lang,{},function (res) {
+                interactQuestions = res.items;
+                showInteractQuestions(interactQuestions);
+            });
+            $("*[data-translate]").each(function(){
+                var key = $(this).data("translate");
+                if(key){
+                    $(this).html(language.i18n(key));
+                }
+            });
+            $("#keywordinput").attr("placeholder",language.i18n("prepare.prompt.keyword"));
+
+            $("#keywordinput").on("input",handleKeyword);
+            $("#keywordinput").bind("keydown", function(event) {
+                var selection = window.getSelection();
+                if (event.keyCode == 229) {
+                    nohandle = true;
+                }
+                else{
+                    nohandle = false;
+                }
+            });
+
+        });
+    </script>
+</head>
+<body>
+
+
+<div class="exam_skin_ppt_wood height_none">
+    <div class="new_exercises_layout">
+        <div class="new_exercises_container">
+            <div class="new_exercises_hd"> 
+                <a class="nes_btn_pt nes_example" data-translate="prepare.sample" href="javascript:importQuestion()" >范例</a>
+                <!-- 下拉控件 -->
+                <div class="nes_search_box search_area_active">
+                    <input id="keywordinput" class="nes_search_input" placeholder="请输入关键字" tableindex="0">
+                    <span class="nes_btn_clear_input"></span>
+                    <span class="nes_btn_start_search" onclick="javascript:handleKeyword(event)"></span>
+                    <!--下拉内容-->
+                    <div class="nes_search_select_box" style="display:none;">
+                        <ul id="searchUL">
+
+                        </ul>
+                    </div>
+                    <!--end下拉内容-->
+                </div>
+                <!-- end下拉控件 -->
+            </div>
+        </div>
+    </div>
+</div>
+<div id="question_title" data-translate="prepare.newquestions" class="head1" style="display: none;">新建试题</div>
+<div class="list-addquestion-title">
+    <span id="basicquestion_title" data-translate="prepare.basicquestion" class="list-addquestion-base">基础题型</span>
+</div>
+<div class="content basicQuestion">
+
+</div>
+<div class="list-addquestion" style="display:block;">
+    <div class="list-addquestion-title">
+        <span id="interactionquestion_title" data-translate="prepare.interactquestion" class="list-addquestion-interact ng-scope" translate="manage.question.manutype">趣味习题</span>
+    </div>
+    <div class="content interactQuestion">
+
+    </div>
+</div>
+
+
+
+
+
+</body>
+</html>

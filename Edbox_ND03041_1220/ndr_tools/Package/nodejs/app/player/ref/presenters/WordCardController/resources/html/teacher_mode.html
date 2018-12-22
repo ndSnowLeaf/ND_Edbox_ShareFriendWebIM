@@ -1,0 +1,75 @@
+<div class="exam_skin_wood" data-bind="css: {stat_wood: inExam()==true}">
+
+    <div class="word_card_full_screen topLayer">
+        <div class="woc_com_layout">
+            <div class="woc_com_wrapper">
+                <div class="woc_com_layout_header hide_dom">
+                    <div class="wordcard_time">
+                        <div class="time_default ">
+                            <b class="time_text" _lang="lang_txt_answer_time"></b>
+                            <span class="time_m"><em class="time_default_minutes" data-bind="text: timer.minutes"></em></span>
+                            <b class="time_text" _lang="lang_txt_min"></b>
+                            <i>:</i>
+                            <span class="time_s"><em class="time_default_seconds" data-bind="text: timer.seconds"></em></span>
+                            <b class="time_text" _lang="lang_txt_sec"></b>
+                        </div>
+                    </div>
+                    <p class="upload"><span _lang="lang_txt_submitcount"><!--提交人数：--></span><span class="num" data-bind="text: progress.now"></span>/
+                        <span data-bind="text: progress.total"></span></p>
+                </div>
+                <div class="woc_com_layout_container">
+                    <div class="woc_com_layout_main">
+                        <!-- 展示 -->
+                        <div class="js_show_container" style="pointer-events: auto;" data-bind="visible: inExam() == false">
+                        </div>
+                        <!-- 全屏预览 -->
+                        <div class="js_preview_container" style="pointer-events: auto;" data-bind="visible: inExam() == false">
+                        </div>
+                        <!-- 练习 -->
+                        <div class="pratice_pptpop js_practise_root" style="pointer-events: auto;" data-bind="visible: practiseModel">
+                            <div class="js_practise_container wordcard pratice_pptpop_main">
+                                <div class="_practiseContainer chinese" data-bind="css:{hide_dom:practiseType()!='chinese'}"></div>
+                                <div class="_practiseContainer" data-bind="css:{hide_dom:practiseType()!='english'}">
+                                    <div class="com_wrapper_board en_card_wrapper english ec_wrapper ec_practice_wrapper">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 工具栏 -->
+                            <div class="pratice_pptpop_footer clearfix js_pratice_footer">
+                                <div class="btn_right_container clearfix">
+                                    <a href="#" class="teach_footer_btn js_tool_button js_complete" data-bind="css: {click_disabled: sending}, visible: inPractise">
+                                        <em class="com_sdt_word" _lang="lang_btn_complete"><!--完成--></em>
+                                    </a>
+                                    <a href="#" class="teach_footer_btn hidden js_tool_button js_reset" data-bind="css: {click_disabled: sending}, visible: inPractise() == false">
+                                        <em class="com_sdt_word" _lang="lang_btn_repeat_exercise"><!--重新练习--></em>
+                                    </a>
+                                    <a href="#" class="teach_footer_btn hidden js_tool_button js_finish" data-bind="css: {click_disabled: sending}, visible: inPractise() == false">
+                                        <em class="com_sdt_word" _lang="lang_btn_stop_exercise"><!--结束练习--></em>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="woc_com_layout_bottom layout_footbar" style="pointer-events: auto;" data-bind="visible: inExam()"></div>
+                </div>
+            </div>
+        </div>
+        <!-- 遮罩 -->
+        <div class="js_wordCard_mask wordcard_mask _practiseMask" data-bind="visible: maskShow, style: {'z-index': maskZIndex}"></div>
+    </div>
+
+    <div class="mask-dialog" data-bind="visible: popHint.isShow">
+        <div class="mask"></div>
+        <div class="dialog">
+            <p class="message" data-bind="text: popHint.hintText"></p>
+        </div>
+    </div>
+
+    <!-- 统计容器，暂不需要 -->
+    <!-- <div class="js_answer_statis"></div> -->
+</div>
+
+
+
+
+

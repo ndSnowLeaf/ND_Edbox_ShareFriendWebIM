@@ -1,0 +1,63 @@
+<div class="full" style="width:100%;height:0" ng-show="items.length>0">
+    <a href="javascript:void(0)" class="fct_title_resources_btn"  ng-click="showAttachment()" ng-show="!showattachments">
+        <span class="fct_text_em" ng-bind="'freecombination.attachment.open'|translate">展开</span>
+        <span class="fct_text_icon"></span>
+    </a>
+    <div class="fct_resources_box" ng-show="showattachments">
+        <div class="fct_res_slidebox" ng-class="{'flow':items.length>5}"><!-- 超过5个li加flow 来显示左右箭头-->
+            <a href="###" class="fct_res_slide_prev" ng-click="previous()" ng-disabled="!hasPrev()" ng-class="{'click_disabled':!hasPrev()}"></a><!-- 箭头不可点击啊添加类名 .click_disabled -->
+            <i class="fct_res_shadow_l"></i>
+            <div class="fct_res_list_box">
+                <ul>
+                    <li ng-repeat="attachment in items" ng-click="select(attachment)" ng-if="inRange(attachment)"><!-- 选中加on -->
+                        <a href="###" class="fct_slide_a insert_picture" ng-class="{'on':attachment==current}"  ng-if="attachment.type=='picture'">
+                        <span class="item_vertical_mc">
+                            <img ng-src="{{attachment.url}}" alt="" ng-click="preview(attachment)">
+                        </span>
+
+                        </a>
+                        <a href="###" class="fct_slide_a insert_video"  ng-class="{'on':attachment==current}"  ng-if="attachment.type=='video'">
+                            <span class="play" ng-click="preview(attachment)"></span>
+                        </a>
+                        <a href="###" class="fct_slide_a insert_audio" ng-class="{'on':attachment==current}"  ng-if="attachment.type=='audio'">
+                            <span class="play" ng-click="preview(attachment)"></span>
+                        </a>
+                        <a href="###" class="fct_slide_a insert_table" ng-class="{'on':attachment==current}"  ng-if="attachment.type=='table'">
+                            <div style="width:100%;height:100%;" ng-bind-html="filterTable(attachment.html)|trust"></div>
+                        </a>
+                        <a href="javascript:;" class="res_preview_delete" ng-click="deleteItem(attachment)"></a>
+                    </li>
+                </ul>
+            </div>
+            <i class="fct_res_shadow_r"></i>
+            <a href="###" class="fct_res_slide_next" ng-click="next()" ng-disabled="!hasNext()" ng-class="{'click_disabled':!hasNext()}"></a>
+        </div>
+        <a href="javascript:void(0)" class="fct_title_resources_btn fct_btn_closed" ng-click="hideAttachment()">
+            <span class="fct_text_em" ng-bind="'freecombination.attachment.close'|translate">收起</span>
+            <span class="fct_text_icon"></span>
+        </a>
+    </div>
+    <div class="fct_res_slidebox fct_res_preview_mode" ng-if="startPreivew&&showattachments"><!-- 超过5个li加flow 来显示左右箭头-->
+        <div class="fct_res_preview_box">
+            <a href="###" class="fct_res_slide_prev" ng-click="startIndex<=0||changeStartIndex(-1)" ng-class="{'click_disabled':startIndex==0}"></a><!-- 箭头不可点击啊添加类名 .click_disabled -->
+            <div class="fct_res_list_box">
+                <!-- 滑动的时候ul改变百分比 每 -100% 滑动一个 -->
+                <ul style="">
+                    <li ><!-- 选中加on -->
+                        <div class="fct_slide_a insert_picture" ng-if="current.type=='picture'">
+                            <span class="item_vertical_mc"><img ng-src="{{current.url}}" alt=""></span>
+                        </div>
+                        <div class="fct_slide_a insert_video"  ng-if="current.type=='video'||current.type=='audio'">
+                            <iframe allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true"  ng-src="{{getPreviewUrl()}}" allowfullscreen="true" border="0" webkitallowfullscreen="true" mozallowfullscreen="true" style="width:100%;height:100%;"></iframe>
+                        </div>
+                        <div class="fct_slide_a insert_table" ng-if="current.type=='table'">
+                           <div slides-html-editor style="width:100%;height:100%;" ng-model="current.html" ng-focus="setCurrentEditor($event,'text')"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <a href="###" class="fct_res_slide_next" ng-click="startIndex>=items.length-1||changeStartIndex(1)"  ng-class="{'click_disabled':startIndex>=items.length-1}"></a>
+            <a href="javascript:;" class="res_preview_closed"  ng-click="hidePreview(true)"></a>
+        </div>
+    </div>
+</div>

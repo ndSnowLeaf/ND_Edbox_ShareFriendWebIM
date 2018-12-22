@@ -1,0 +1,1 @@
+CKEDITOR.plugins.setLang("kityformula","zh-cn",{title:"公式编辑器",toolbar:"公式编辑器",contextMenu:"公式编辑器"});
